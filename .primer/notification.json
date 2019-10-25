@@ -3,12 +3,12 @@
     {
       "type": "email",
       "location": "vrbo_opex@expedia.com",
-      "severity": [
-        "info",
-        "error",
-        "warn"
-      ]
+      "severity": ["info", "error", "warn"]
+    },
+    {
+      "type": "slack",
+      "location": "#vrbo-opex-kumo-notifications",
+      "severity": ["info", "error", "warn"]
     }
   ]
 }
-
