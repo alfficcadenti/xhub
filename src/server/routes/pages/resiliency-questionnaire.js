@@ -4,7 +4,7 @@ const Serialize = require('serialize-javascript')
 const ServiceClient = require('@vrbo/service-client')
 
 // this is context for this route on every request.
-const routeInfo = { "pageTitle": "Welcome" }
+const routeInfo = { "pageTitle": "OpXHub" }
 
 // create and maintain a cached service client instance
 function getClient(name = 'example-service') {
@@ -35,9 +35,9 @@ async function getRequestInfo(request){
 
 module.exports = {
     method: 'GET',
-    path: '/welcome/{params*}',
+    path: '/resiliency-questionnaire',
     options: {
-        id: 'welcome',
+        id: 'resiliency-questionnaire',
         async handler(request,h){
             // combine the context (server, route, request)
             const requestInfo = await getRequestInfo(request)
