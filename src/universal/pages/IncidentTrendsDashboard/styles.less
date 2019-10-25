@@ -9,6 +9,44 @@
   }
 }
 
-.date-range {
-  width: fit-content;
+#filters-div {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-box;
+  display: box;
+  font-weight: normal;
+  vertical-align: middle;
+  width: 100%;
+  border-radius: 5px;
+
+  .date-range {
+    width: 350px;
+    height: @filter-size;
+    color: @filter-color;
+  }
+
+  #priority-dropdown {
+    min-width: 160px;
+    margin-left: 15px;
+    margin-right: 5px;
+    font-weight: normal;
+    border-radius: 5px;
+    height: @filter-size;
+    color: @filter-color;
+  }
+
+  #brand-dropdown {
+    min-width: 300px;
+    margin-left: 15px;
+    margin-right: 5px;
+    font-weight: normal;
+    border-radius: 5px;
+    height: @filter-size;
+    color: @filter-color;
+  }
+
+  #applyButton {
+    margin-left: 15px;
+    height: fit-content;
+  }
 }
