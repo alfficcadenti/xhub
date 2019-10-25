@@ -1,0 +1,184 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.security.AuthorizationMatrixProperty>
+      <permission>hudson.model.Item.Read:authenticated</permission>
+      <permission>hudson.model.Item.ExtendedRead:authenticated</permission>
+      <permission>com.synopsys.arc.jenkins.plugins.ownership.OwnershipPlugin.Jobs:authenticated</permission>
+      <permission>hudson.scm.SCM.Tag:authenticated</permission>
+      <permission>hudson.model.Item.Configure:authenticated</permission>
+    </hudson.security.AuthorizationMatrixProperty>
+    <hudson.plugins.buildblocker.BuildBlockerProperty plugin="build-blocker-plugin@1.7.3">
+      <useBuildBlocker>false</useBuildBlocker>
+      <blockLevel>GLOBAL</blockLevel>
+      <scanQueueFor>DISABLED</scanQueueFor>
+      <blockingJobs></blockingJobs>
+    </hudson.plugins.buildblocker.BuildBlockerProperty>
+    <com.expedia.hudson.plugins.buildstats.StatsNotifierProperty plugin="build-stats-jenkins@4.1.5">
+      <relationshipKey class="string"></relationshipKey>
+      <testReportXMLs class="string"></testReportXMLs>
+      <jacocoTestReportXml class="string"></jacocoTestReportXml>
+      <to class="string"></to>
+      <cc class="string"></cc>
+      <from class="string"></from>
+      <currentTag class="string"></currentTag>
+      <newTag class="string"></newTag>
+      <jobName class="string"></jobName>
+      <stageName class="string"></stageName>
+      <currentStage class="string"></currentStage>
+      <pipelineName class="string"></pipelineName>
+      <pipelineURL class="string"></pipelineURL>
+      <env class="string"></env>
+      <keywords class="list"/>
+      <debugOn class="boolean">false</debugOn>
+      <isTestNg class="boolean">false</isTestNg>
+      <sendTests class="boolean">false</sendTests>
+      <emailJUNITTestResults class="boolean">false</emailJUNITTestResults>
+      <sendBuildStats class="boolean">false</sendBuildStats>
+    </com.expedia.hudson.plugins.buildstats.StatsNotifierProperty>
+    <jenkins.model.BuildDiscarderProperty>
+      <strategy class="hudson.tasks.LogRotator">
+        <daysToKeep>10</daysToKeep>
+        <numToKeep>10</numToKeep>
+        <artifactDaysToKeep>-1</artifactDaysToKeep>
+        <artifactNumToKeep>-1</artifactNumToKeep>
+      </strategy>
+    </jenkins.model.BuildDiscarderProperty>
+    <com.sonyericsson.jenkins.plugins.bfa.model.ScannerJobProperty plugin="build-failure-analyzer@1.18.1">
+      <doNotScan>false</doNotScan>
+    </com.sonyericsson.jenkins.plugins.bfa.model.ScannerJobProperty>
+    <com.synopsys.arc.jenkins.plugins.ownership.jobs.JobOwnerJobProperty plugin="ownership@0.9.1">
+      <ownership>
+        <ownershipEnabled>true</ownershipEnabled>
+        <primaryOwnerId>s-ewebuildprop</primaryOwnerId>
+      </ownership>
+    </com.synopsys.arc.jenkins.plugins.ownership.jobs.JobOwnerJobProperty>
+    <org.jenkinsci.plugins.mavenrepocleaner.MavenRepoCleanerProperty plugin="maven-repo-cleaner@1.2">
+      <notOnThisProject>false</notOnThisProject>
+    </org.jenkinsci.plugins.mavenrepocleaner.MavenRepoCleanerProperty>
+    <com.chikli.hudson.plugin.naginator.NaginatorOptOutProperty plugin="naginator@1.17.2">
+      <optOut>false</optOut>
+    </com.chikli.hudson.plugin.naginator.NaginatorOptOutProperty>
+    <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@1.25">
+      <autoRebuild>false</autoRebuild>
+      <rebuildDisabled>false</rebuildDisabled>
+    </com.sonyericsson.rebuild.RebuildSettings>
+    <de.pellepelster.jenkins.walldisplay.WallDisplayJobProperty plugin="jenkinswalldisplay@0.6.33"/>
+    <org.jvnet.hudson.plugins.shelveproject.ShelveProjectProperty plugin="shelve-project-plugin@1.5"/>
+  </properties>
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@3.1.0">
+    <configVersion>2</configVersion>
+    <userRemoteConfigs>
+      <hudson.plugins.git.UserRemoteConfig>
+        <url>git@github.expedia.biz:EGPlatform/opxhub-ui.git</url>
+      </hudson.plugins.git.UserRemoteConfig>
+    </userRemoteConfigs>
+    <branches>
+      <hudson.plugins.git.BranchSpec>
+        <name>*/master</name>
+      </hudson.plugins.git.BranchSpec>
+    </branches>
+    <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+    <submoduleCfg class="list"/>
+    <extensions>
+      <hudson.plugins.git.extensions.impl.UserExclusion>
+        <excludedUsers>ewe-jenkins
+ewbldsup
+jenkins
+*jenkins*</excludedUsers>
+      </hudson.plugins.git.extensions.impl.UserExclusion>
+      <hudson.plugins.git.extensions.impl.PerBuildTag/>
+      <hudson.plugins.git.extensions.impl.LocalBranch>
+        <localBranch>master</localBranch>
+      </hudson.plugins.git.extensions.impl.LocalBranch>
+    </extensions>
+  </scm>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <jdk>(System)</jdk>
+  <triggers>
+    <com.cloudbees.jenkins.GitHubPushTrigger plugin="github@1.26.1">
+      <spec></spec>
+    </com.cloudbees.jenkins.GitHubPushTrigger>
+  </triggers>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <jenkins.plugins.nodejs.NodeJSCommandInterpreter plugin="nodejs@1.1.3">
+      <command>process.version</command>
+      <nodeJSInstallationName>node-10.15.1</nodeJSInstallationName>
+      <configId>17918394-2bc2-4fa1-9cb1-e753ae418702</configId>
+    </jenkins.plugins.nodejs.NodeJSCommandInterpreter>
+    <hudson.tasks.Shell>
+      <command>if [ ! -f ./build.sh ]; then
+  chmod 755 ./generate.sh
+  . ./generate.sh
+  if [ -d opxhub-ui ]; then
+    cd opxhub-ui
+  fi
+fi
+chmod 755 ./build.sh
+./build.sh
+exit $?</command>
+    </hudson.tasks.Shell>
+    <com.cloudbees.dockerpublish.DockerBuilder plugin="docker-build-publish@1.3.2">
+      <server plugin="docker-commons@1.6"/>
+      <registry plugin="docker-commons@1.6">
+        <url>https://kumo-docker-release-local.artylab.expedia.biz</url>
+        <credentialsId>59a854b7-17be-43cb-89da-886f991067a6</credentialsId>
+      </registry>
+      <repoName>library/opxhub-ui</repoName>
+      <noCache>false</noCache>
+      <forcePull>true</forcePull>
+      <skipBuild>false</skipBuild>
+      <skipDecorate>false</skipDecorate>
+      <repoTag>${GIT_COMMIT}</repoTag>
+      <skipPush>false</skipPush>
+      <createFingerprint>true</createFingerprint>
+      <skipTagLatest>false</skipTagLatest>
+      <buildAdditionalArgs></buildAdditionalArgs>
+      <forceTag>false</forceTag>
+    </com.cloudbees.dockerpublish.DockerBuilder>
+    <hudson.tasks.Shell>
+      <command>rm -rf primer-scripts;
+mkdir primer-scripts;
+s3cmd --verbose get s3://ewe-softwares/builds/git@ewegithub.sb.karmalab.net:EWE/primer-scripts.git/primer-scripts.tar.gz primer-scripts/;
+tar -xzvf primer-scripts/primer-scripts.tar.gz -C primer-scripts/;
+
+bash ./primer-scripts/run_primerscript.sh;</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers>
+    <org.jenkinsci.plugins.github.status.GitHubCommitStatusSetter plugin="github@1.26.1">
+      <commitShaSource class="org.jenkinsci.plugins.github.status.sources.BuildDataRevisionShaSource"/>
+      <reposSource class="org.jenkinsci.plugins.github.status.sources.AnyDefinedRepositorySource"/>
+      <contextSource class="org.jenkinsci.plugins.github.status.sources.DefaultCommitContextSource"/>
+      <statusResultSource class="org.jenkinsci.plugins.github.status.sources.ConditionalStatusResultSource"/>
+      <statusBackrefSource class="org.jenkinsci.plugins.github.status.sources.BuildRefBackrefSource"/>
+      <errorHandlers/>
+    </org.jenkinsci.plugins.github.status.GitHubCommitStatusSetter>
+  </publishers>
+  <buildWrappers>
+    <hudson.plugins.ws__cleanup.PreBuildCleanup plugin="ws-cleanup@0.32">
+      <deleteDirs>false</deleteDirs>
+      <cleanupParameter></cleanupParameter>
+      <externalDelete></externalDelete>
+    </hudson.plugins.ws__cleanup.PreBuildCleanup>
+    <hudson.plugins.build__timeout.BuildTimeoutWrapper plugin="build-timeout@1.18">
+      <strategy class="hudson.plugins.build_timeout.impl.AbsoluteTimeOutStrategy">
+        <timeoutMinutes>60</timeoutMinutes>
+      </strategy>
+      <operationList>
+        <hudson.plugins.build__timeout.operations.AbortOperation/>
+      </operationList>
+    </hudson.plugins.build__timeout.BuildTimeoutWrapper>
+    <hudson.plugins.timestamper.TimestamperBuildWrapper plugin="timestamper@1.8.8"/>
+    <hudson.plugins.ansicolor.AnsiColorBuildWrapper plugin="ansicolor@0.4.3">
+      <colorMapName>xterm</colorMapName>
+    </hudson.plugins.ansicolor.AnsiColorBuildWrapper>
+  </buildWrappers>
+</project>

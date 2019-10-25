@@ -1,0 +1,174 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.security.AuthorizationMatrixProperty>
+      <permission>hudson.model.Item.Read:authenticated</permission>
+      <permission>hudson.model.Item.ExtendedRead:authenticated</permission>
+      <permission>com.synopsys.arc.jenkins.plugins.ownership.OwnershipPlugin.Jobs:authenticated</permission>
+      <permission>hudson.scm.SCM.Tag:authenticated</permission>
+      <permission>hudson.model.Item.Configure:authenticated</permission>
+    </hudson.security.AuthorizationMatrixProperty>
+    <hudson.plugins.buildblocker.BuildBlockerProperty plugin="build-blocker-plugin@1.7.3">
+      <useBuildBlocker>false</useBuildBlocker>
+      <blockLevel>GLOBAL</blockLevel>
+      <scanQueueFor>DISABLED</scanQueueFor>
+      <blockingJobs></blockingJobs>
+    </hudson.plugins.buildblocker.BuildBlockerProperty>
+    <com.expedia.hudson.plugins.buildstats.StatsNotifierProperty plugin="build-stats-jenkins@4.1.5">
+      <relationshipKey class="string"></relationshipKey>
+      <testReportXMLs class="string"></testReportXMLs>
+      <jacocoTestReportXml class="string"></jacocoTestReportXml>
+      <to class="string"></to>
+      <cc class="string"></cc>
+      <from class="string"></from>
+      <currentTag class="string"></currentTag>
+      <newTag class="string"></newTag>
+      <jobName class="string"></jobName>
+      <stageName class="string"></stageName>
+      <currentStage class="string"></currentStage>
+      <pipelineName class="string"></pipelineName>
+      <pipelineURL class="string"></pipelineURL>
+      <env class="string"></env>
+      <keywords class="list"/>
+      <debugOn class="boolean">false</debugOn>
+      <isTestNg class="boolean">false</isTestNg>
+      <sendTests class="boolean">false</sendTests>
+      <emailJUNITTestResults class="boolean">false</emailJUNITTestResults>
+      <sendBuildStats class="boolean">false</sendBuildStats>
+    </com.expedia.hudson.plugins.buildstats.StatsNotifierProperty>
+    <com.sonyericsson.jenkins.plugins.bfa.model.ScannerJobProperty plugin="build-failure-analyzer@1.18.1">
+      <doNotScan>false</doNotScan>
+    </com.sonyericsson.jenkins.plugins.bfa.model.ScannerJobProperty>
+    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.26.1">
+      <projectUrl>https://github.expedia.biz/EGPlatform/opxhub-ui</projectUrl>
+      <displayName></displayName>
+    </com.coravy.hudson.plugins.github.GithubProjectProperty>
+    <com.synopsys.arc.jenkins.plugins.ownership.jobs.JobOwnerJobProperty plugin="ownership@0.9.1">
+      <ownership>
+        <ownershipEnabled>true</ownershipEnabled>
+        <primaryOwnerId>s-ewebuildprop</primaryOwnerId>
+        <coownersIds class="sorted-set"/>
+      </ownership>
+    </com.synopsys.arc.jenkins.plugins.ownership.jobs.JobOwnerJobProperty>
+    <org.jenkinsci.plugins.mavenrepocleaner.MavenRepoCleanerProperty plugin="maven-repo-cleaner@1.2">
+      <notOnThisProject>false</notOnThisProject>
+    </org.jenkinsci.plugins.mavenrepocleaner.MavenRepoCleanerProperty>
+    <com.chikli.hudson.plugin.naginator.NaginatorOptOutProperty plugin="naginator@1.17.2">
+      <optOut>false</optOut>
+    </com.chikli.hudson.plugin.naginator.NaginatorOptOutProperty>
+    <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@1.25">
+      <autoRebuild>false</autoRebuild>
+      <rebuildDisabled>false</rebuildDisabled>
+    </com.sonyericsson.rebuild.RebuildSettings>
+    <de.pellepelster.jenkins.walldisplay.WallDisplayJobProperty plugin="jenkinswalldisplay@0.6.33"/>
+    <org.jvnet.hudson.plugins.shelveproject.ShelveProjectProperty plugin="shelve-project-plugin@1.5"/>
+  </properties>
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@3.1.0">
+    <configVersion>2</configVersion>
+    <userRemoteConfigs>
+      <hudson.plugins.git.UserRemoteConfig>
+        <refspec>+refs/pull/*:refs/remotes/origin/pr/*</refspec>
+        <url>git@github.expedia.biz:EGPlatform/opxhub-ui.git</url>
+      </hudson.plugins.git.UserRemoteConfig>
+    </userRemoteConfigs>
+    <branches>
+      <hudson.plugins.git.BranchSpec>
+        <name>${sha1}</name>
+      </hudson.plugins.git.BranchSpec>
+    </branches>
+    <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+    <submoduleCfg class="list"/>
+    <extensions>
+      <hudson.plugins.git.extensions.impl.LocalBranch>
+        <localBranch>**</localBranch>
+      </hudson.plugins.git.extensions.impl.LocalBranch>
+    </extensions>
+  </scm>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <jdk>(System)</jdk>
+  <triggers>
+    <org.jenkinsci.plugins.ghprb.GhprbTrigger plugin="ghprb@1.35.0">
+      <spec></spec>
+      <latestVersion>3</latestVersion>
+      <configVersion>3</configVersion>
+      <adminlist></adminlist>
+      <allowMembersOfWhitelistedOrgsAsAdmin>false</allowMembersOfWhitelistedOrgsAsAdmin>
+      <orgslist>EGPlatform</orgslist>
+      <cron></cron>
+      <buildDescTemplate></buildDescTemplate>
+      <onlyTriggerPhrase>false</onlyTriggerPhrase>
+      <useGitHubHooks>true</useGitHubHooks>
+      <permitAll>false</permitAll>
+      <whitelist></whitelist>
+      <autoCloseFailedPullRequests>false</autoCloseFailedPullRequests>
+      <displayBuildErrorsOnDownstreamBuilds>false</displayBuildErrorsOnDownstreamBuilds>
+      <whiteListTargetBranches>
+        <org.jenkinsci.plugins.ghprb.GhprbBranch>
+          <branch></branch>
+        </org.jenkinsci.plugins.ghprb.GhprbBranch>
+      </whiteListTargetBranches>
+      <blackListTargetBranches>
+        <org.jenkinsci.plugins.ghprb.GhprbBranch>
+          <branch></branch>
+        </org.jenkinsci.plugins.ghprb.GhprbBranch>
+      </blackListTargetBranches>
+      <gitHubAuthId>c70393a5-730e-4c55-a947-5914cadd4a30</gitHubAuthId>
+      <triggerPhrase></triggerPhrase>
+      <skipBuildPhrase>.*\[skip\W+ci\].*</skipBuildPhrase>
+      <blackListLabels></blackListLabels>
+      <whiteListLabels></whiteListLabels>
+      <extensions>
+        <org.jenkinsci.plugins.ghprb.extensions.status.GhprbSimpleStatus>
+          <commitStatusContext></commitStatusContext>
+          <triggeredStatus></triggeredStatus>
+          <startedStatus></startedStatus>
+          <statusUrl></statusUrl>
+          <addTestResults>false</addTestResults>
+        </org.jenkinsci.plugins.ghprb.extensions.status.GhprbSimpleStatus>
+      </extensions>
+    </org.jenkinsci.plugins.ghprb.GhprbTrigger>
+  </triggers>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <jenkins.plugins.nodejs.NodeJSCommandInterpreter plugin="nodejs@1.1.3">
+      <command>process.version</command>
+      <nodeJSInstallationName>node-10.15.1</nodeJSInstallationName>
+      <configId>17918394-2bc2-4fa1-9cb1-e753ae418702</configId>
+    </jenkins.plugins.nodejs.NodeJSCommandInterpreter>
+    <hudson.tasks.Shell>
+      <command>chmod 755 ./build.sh
+./build.sh
+exit $?</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers>
+    <org.jenkinsci.plugins.github.status.GitHubCommitStatusSetter plugin="github@1.26.1">
+      <commitShaSource class="org.jenkinsci.plugins.github.status.sources.BuildDataRevisionShaSource"/>
+      <reposSource class="org.jenkinsci.plugins.github.status.sources.AnyDefinedRepositorySource"/>
+      <contextSource class="org.jenkinsci.plugins.github.status.sources.DefaultCommitContextSource"/>
+      <statusResultSource class="org.jenkinsci.plugins.github.status.sources.ConditionalStatusResultSource"/>
+      <statusBackrefSource class="org.jenkinsci.plugins.github.status.sources.BuildRefBackrefSource"/>
+      <errorHandlers/>
+    </org.jenkinsci.plugins.github.status.GitHubCommitStatusSetter>
+  </publishers>
+  <buildWrappers>
+    <hudson.plugins.build__timeout.BuildTimeoutWrapper plugin="build-timeout@1.18">
+      <strategy class="hudson.plugins.build_timeout.impl.AbsoluteTimeOutStrategy">
+        <timeoutMinutes>60</timeoutMinutes>
+      </strategy>
+      <operationList>
+        <hudson.plugins.build__timeout.operations.AbortOperation/>
+      </operationList>
+    </hudson.plugins.build__timeout.BuildTimeoutWrapper>
+    <hudson.plugins.timestamper.TimestamperBuildWrapper plugin="timestamper@1.8.8"/>
+    <hudson.plugins.ansicolor.AnsiColorBuildWrapper plugin="ansicolor@0.4.3">
+      <colorMapName>xterm</colorMapName>
+    </hudson.plugins.ansicolor.AnsiColorBuildWrapper>
+  </buildWrappers>
+</project>
