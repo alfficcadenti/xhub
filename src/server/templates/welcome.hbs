@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang='en-us'>
+
+<head>
+  <title>{{siteName}} - {{pageTitle}}</title>
+  <meta charset="utf-8" />
+  <meta name="description" content="{{description}}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+  <link rel="shortcut icon" href="{{resolveAsset 'favicon.ico'}}" />
+  <link rel="stylesheet" href="{{resolveAsset 'bundle.css'}}">
+</head>
+
+<body>
+
+  <div class="container main-app-container">
+    {{!-- Main entry point for react app --}}
+    <div id="root">{{{body}}}</div>
+
+  </div>
+  <script>window.__properties = JSON.parse('{{{properties}}}')</script>
+  <script src="{{resolveAsset 'runtime.js'}} "></script>
+  <script src="{{resolveAsset 'vendor.js'}} "></script>
+  <script src="{{resolveAsset 'bundle.js'}}"></script>
+
+
+</body>
+
+</html>

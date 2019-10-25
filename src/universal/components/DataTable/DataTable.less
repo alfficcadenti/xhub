@@ -1,0 +1,78 @@
+@import "../../mixins.less";
+
+.data-table__download {
+  float: right;
+  font-weight: 400;
+  border-radius: 0;
+  box-shadow: none;
+  border: none;
+  padding: @spacing-1x;
+}
+
+.pagination {
+  .btn-group {
+    margin-right: @spacing-2x;
+  }
+
+  .pagesize-dropdown {
+    margin-left: @spacing-1x;
+
+    .Dropdown__toggle {
+      height: @spacing-6x;
+      line-height: @small-font-line-height;
+    }
+
+    .Dropdown__menu {
+      min-width: @spacing-9x;
+    }
+  }
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: separate;
+  font-size: @small-font-size;
+  line-height: @small-font-line-height;
+  margin: @spacing-2x 0;
+  word-break: break-word;
+
+  .pointer {
+    cursor: pointer;
+  }
+
+  th {
+    color: @color-text-default;
+    white-space: nowrap;
+  }
+
+  td:nth-child(1),
+  td:nth-child(2) {
+    white-space: nowrap;
+  }
+
+  th,
+  td {
+    border-top: 1px @color-border-contrast solid;
+    padding: @spacing-1x;
+
+    .column-info {
+      display: inline-block;
+      margin-left: 4px;
+      font-weight: 400;
+
+      .Tooltip b {
+        color: @color-text-inverse;
+      }
+    }
+  }
+
+  .data-table-header {
+    color: @text-color;
+    background: @table-header-bg;
+    font-weight: 400;
+  }
+}
+
+.data-table__msg {
+  padding: @spacing-1x 0;
+}

@@ -1,0 +1,133 @@
+{
+  // application configuration
+  "server": {
+    "app": {
+      "secrets": {
+        "$filter": "env.NODE_ENV",
+        "development": {
+            "password": "pXGGf>8a5mi#HVLVCjzs"
+        },
+        "$default": {
+            "password": "secret:password"
+        }
+      },
+      // Service-client configuration
+      "services": {
+        "plugins": ["require:@vrbo/service-client-statsd"],
+        "base": {
+          "plugins": {
+            "statsd": {
+              "hostname": {
+                "$filter": "env.NODE_ENV",
+                "$default": "localhost",
+                "production": "statsd"
+              },
+              "transmit": {
+                "$filter": "env.NODE_ENV",
+                "$default": false,
+                "production": true
+              }
+            }
+          }
+        },
+        "overrides": {
+          "example-service": {
+            "protocol": "https:",
+            "hostname": "jsonplaceholder.typicode.com",
+            "connectTimeout": 1000,
+            "timeout": 3000
+          }
+        }
+      },
+      "dbConfig": {
+        "server": "CHCXSNOPSVM001.sea.corp.expecn.com",
+        "authentication": {
+            "type": "ntlm",
+            "options": {
+                "domain": "sea",
+                "userName": "s-hubblesnowmirror"
+            }
+        },
+        "options": {
+            "database": "ServiceNowMirror"
+        },
+        "pool": {
+          "max": 10,
+          "min": 0,
+          "idleTimeoutMillis": 30000
+        }
+      }
+    }
+  },
+
+  // register hapi plugins
+  "register": {
+    // plugin for serving static content from application
+    "inert": {
+      "plugin": "require:inert"
+    },
+    // plugin for reading babel prime property files
+    "catalyst-l10n-reader": {
+      "plugin": "require:@homeaway/catalyst-l10n-reader",
+      "options": {
+        "pathTemplate": "./src/i18n/app_{locale}.properties"
+      }
+    },
+    // plugin for providing endpoint for healthchecks, etc.
+    "catalyst-status": {
+      "plugin": "require:@homeaway/catalyst-status",
+      "options": {
+        "routes": [
+          {
+            "path": "/isActive",
+            "response": { "status": 200, "payload": "ACTIVE" }
+          },
+          {
+            "path": "/buildInfo",
+            "handler": "exec:./status#buildInfo"
+          }
+        ]
+      }
+    },
+    // plugin for statsd monitoring
+    "hapi-statsd": {
+      "plugin": "require:@homeaway/catalyst-monitoring-statsd",
+      "options": {
+        "host": {
+          "$filter": "env.NODE_ENV",
+          "$default": "localhost",
+          "production": "statsd"
+        },
+        "transmit": {
+          "$filter": "env.NODE_ENV",
+          "$default": false,
+          "production": true
+        },
+        "normalizePathParameters": false,
+        "prefix": "opxhub"
+      }
+    },
+    // plugin for hbs and react server side rendering
+    "catalyst-render": {
+      "plugin": "require:@vrbo/catalyst-render",
+      "options": {
+        "resolveAssetHelper": {
+          "name": "resolveAsset",
+          "helper": "require:./templates/helpers/resolveAsset.js"
+        },
+        "routes": [
+          {
+            "route": "require:./routes/pages/welcome",
+            "component": "require:../universal/components/App/ServerApp.js",
+            "template": "templates/welcome.hbs"
+          },
+          {
+            "route": "require:./routes/pages/incident-trends",
+            "component": "require:../universal/components/App/ServerApp.js",
+            "template": "templates/welcome.hbs"
+          }
+        ]
+      }
+    }
+  }
+}
