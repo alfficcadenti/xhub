@@ -5,10 +5,10 @@
       "secrets": {
         "$filter": "env.NODE_ENV",
         "development": {
-            "password": "pXGGf>8a5mi#HVLVCjzs"
+          "password": "pXGGf>8a5mi#HVLVCjzs"
         },
         "$default": {
-            "password": "secret:password"
+          "password": "pXGGf>8a5mi#HVLVCjzs"
         }
       },
       // Service-client configuration
@@ -42,14 +42,14 @@
       "dbConfig": {
         "server": "CHCXSNOPSVM001.sea.corp.expecn.com",
         "authentication": {
-            "type": "ntlm",
-            "options": {
-                "domain": "sea",
-                "userName": "s-hubblesnowmirror"
-            }
+          "type": "ntlm",
+          "options": {
+            "domain": "sea",
+            "userName": "s-hubblesnowmirror"
+          }
         },
         "options": {
-            "database": "ServiceNowMirror"
+          "database": "ServiceNowMirror"
         },
         "pool": {
           "max": 10,
