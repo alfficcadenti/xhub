@@ -1,0 +1,30 @@
+{
+  "global": {
+    "isactive_support": {
+      "enabled": true,
+      "file": "/opt/opxhub-ui/active.txt"
+    },
+    "loadbalancer": {
+      "https_enabled": true,
+      "http_enabled": false 
+    },
+    "app_ssl_port": 8080,
+    "app_ssl_protocol": "HTTP",
+    "app_name": "opxhub-ui",
+    "source_repo": "git@github.expedia.biz:EGPlatform/opxhub-ui.git",
+    "team": "Operational Excellence",
+    "portfolio": "EWE Primer",
+    "product_area": "HomeAway",
+    "notify": {
+      "email": {
+        "addresses": [
+          "vrbo_opex@expedia.com"
+        ]
+      },
+      "hipchat": {
+        "room": "Primer Notifications"
+      }
+    },
+    "ssl_negotiation_policy": "ELBSecurityPolicy-TLS-1-2-2017-01"
+  }
+}

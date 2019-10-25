@@ -1,0 +1,53 @@
+{
+  "global": {
+    "auto_scaling_group": {
+      "min_count": 1,
+      "max_count": 2
+    },
+    "vpc_purpose": "application",
+    "instance": {
+      "subnet_purpose": "app",
+      "ami_tag": "ewe-base-ami",
+      "ports": [
+        {
+          "port": "22",
+          "protocol": "tcp",
+          "visibility": "internal"
+        }
+      ]
+    },
+    "loadbalancer": {
+      "scheme": "internal",
+      "health_check": {
+        "instance_port": 8443,
+        "ping_path": "/isActive",
+        "unhealthy_threshold": 10,
+        "healthy_threshold": 3,
+        "ping_protocol": "HTTPS",
+        "interval": 15,
+        "timeout": 5,
+        "max_attempts": 120
+      },
+      "timeout": 300,
+      "listeners": [
+        {
+          "instance_protocol": "https",
+          "instance_port": 8443,
+          "lb_port": 443,
+          "lb_protocol": "https",
+          "instance_visibility": "internal",
+          "lb_visibility": "internal",
+          "ssl_negotiation_policy": "ELBSecurityPolicy-TLS-1-2-2017-01"
+        }
+      ]
+    }
+  },
+  "test": {
+    "loadbalancer": {
+      "elb_sticky_policy": {
+        "name": "ewetest-sticky-session-policy",
+        "timeout": 1800
+      }
+    }
+  }
+}

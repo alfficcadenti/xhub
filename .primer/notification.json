@@ -1,0 +1,14 @@
+{
+  "methods": [
+    {
+      "type": "email",
+      "location": "vrbo_opex@expedia.com",
+      "severity": [
+        "info",
+        "error",
+        "warn"
+      ]
+    }
+  ]
+}
+
