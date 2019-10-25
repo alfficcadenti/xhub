@@ -36,7 +36,7 @@
         },
         "token": "ewetestEcsDeploy"
       },
-      "successChildren": ["ReleaseTest_opxhub"],
+      "successChildren": ["ReleaseTest_opxhub-ui"],
       "triggerType": "automatic"
     },
     {
@@ -54,7 +54,6 @@
         },
         "token": "ewetestReleaseDockerEcs"
       },
-      "successChildren": ["Perf_opxhub-ui"],
       "triggerType": "automatic"
     }
   ],
