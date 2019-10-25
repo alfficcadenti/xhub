@@ -54,7 +54,7 @@ module.exports = {
         id: 'api-product-list',
         handler: (req,h) => {
           return h.proxy({
-            host: 'opxhub-service.us-west-2.test.expedia.com/api/v1/incidents',
+            host: 'opxhub-service.us-west-2.test.expedia.com/api/v1/products',
             port: '8080',
             protocol: 'http'
           })
