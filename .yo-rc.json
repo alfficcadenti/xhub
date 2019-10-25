@@ -1,0 +1,21 @@
+{
+  "@homeaway/generator-catalyst-eg": {
+    "appName": "opxhub",
+    "team": "Operational Excellence",
+    "user": "gkeren",
+    "roleName": "opxhub",
+    "mail": "vrbo_opex@expedia.com",
+    "gitHost": "github.expedia.biz",
+    "gitOrg": "HomeAway",
+    "gitName": "opxhub",
+    "sourceRepo": "https://github.expedia.biz/HomeAway/opxhub",
+    "initLocalGitRepo": false,
+    "commitGeneratedCode": false,
+    "generatorLog": [
+      {
+        "date": "2019-09-23T16:05:06.499Z",
+        "version": "1.1.6"
+      }
+    ]
+  }
+}

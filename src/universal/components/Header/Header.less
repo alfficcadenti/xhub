@@ -1,0 +1,66 @@
+@import "../../mixins.less";
+
+.Header {
+  color: @color-text-inverse;
+  background: @opxhub-eg-header-background;
+  height: @spacing-6x;
+  width: 100%;
+  margin-bottom: @spacing-1x;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+  .Header--logo {
+    margin-left: @spacing-2x;
+    float: left;
+
+    svg {
+      margin-top: 4px;
+    }
+  }
+
+  .SVGIcon {
+    color: @color-text-inverse;
+  }
+
+  .Header--icon {
+    padding: @spacing-1x;
+    height: @spacing-6x;
+    width: @spacing-5x;
+  }
+
+  .Header--menu .Dropdown__toggle {
+    padding: @spacing-1x 0;
+  }
+
+  .Dropdown__toggle {
+    font-size: @h2-font-size;
+    color: @color-text-inverse;
+    border: none;
+    background: none;
+    padding: @spacing-1x;
+    box-shadow: none;
+  }
+
+  .Dropdown__menu {
+    color: @text-color;
+    z-index: 1040;
+    min-width: 440px;
+  }
+
+  .Header--help {
+    float: right;
+    margin-right: @spacing-5x;
+    padding: @spacing-1x;
+    height: @spacing-6x;
+    width: @spacing-5x;
+
+    .Dropdown__toggle {
+      padding: 0;
+      margin-top: -@spacing-1x;
+      margin-left: -@spacing-1x;
+    }
+
+    svg {
+      margin-top: 4px;
+    }
+  }
+}
