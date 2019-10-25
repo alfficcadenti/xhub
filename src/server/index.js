@@ -8,7 +8,7 @@ const Error = require('./error');
 const {routes} = require('./routes/index');
 
 const ExpediaCACerts = require('@homeaway/ca-certs-expedia')
-const SecretHandler = require('@homeaway/shortstop-secret-expedia-vault');
+// const SecretHandler = require('@homeaway/shortstop-secret-expedia-vault');
 
 ExpediaCACerts.load(); // necessary to establish secure communication with Vault
 
@@ -17,9 +17,9 @@ async function start(options = {}) {
     // builds, composes, and configures server via manifest.json
     const server = await Catalyst.init({
         userConfigPath: Path.resolve(__dirname, 'manifest.json'),
-        shortstopHandlers: {
-            secret: await SecretHandler.init({appName: 'opxhub'})
-        },
+        // shortstopHandlers: {
+        //     secret: await SecretHandler.init({appName: 'opxhub'})
+        // },
         onConfig(config) {
             ServiceClient.mergeConfig(config.get('server.app.services'))
             return config;
