@@ -15,34 +15,53 @@ describe('<IncidentTrendsDashboard/>', () => {
 
     describe('handleDateRangeChange', () => {
 
-        it('sets start and end dates', async () => {
+        it('sets start and end dates in the state', async () => {
             const wrapper = shallow(<IncidentTrendsDashboard />);
             const instance = wrapper.instance();
             instance.handleDateRangeChange('2019-09-20', '2019-09-22');
             expect(instance.state.startDate).to.equal('2019-09-20');
             expect(instance.state.endDate).to.equal('2019-09-22');
-
-        });
-
-        it('assign filterIncidents based on dates', async () => {
-            const wrapper = shallow(<IncidentTrendsDashboard />);
-            const instance = wrapper.instance();
-            instance.setState({allIncidents: mockData})
-            instance.handleDateRangeChange('2019-09-20', '2019-09-21');
-            expect(instance.state.filteredIncidents.length).to.equal(2);
         });
     })
 
     describe('onDateRangeClear', () => {
         
-        it('clears start, end date and filtered incidents', async () => {
+        it('clears start, end date', async () => {
             const wrapper = shallow(<IncidentTrendsDashboard />);
             const instance = wrapper.instance();
             instance.setState({filteredIncidents: mockData, startDate:'2019-09-20', endDate:'2019-09-20'})
             instance.handleClearDates();
             expect(instance.state.startDate).to.equal('');
             expect(instance.state.endDate).to.equal('');
-            expect(instance.state.filteredIncidents).to.have.length(0);
+        });
+    })
+
+    describe('applyFilters', () => {
+
+        it('filters state.allIncidents based on the dates in filteredIncidents', async () => {
+            const wrapper = shallow(<IncidentTrendsDashboard />);
+            const instance = wrapper.instance();
+            instance.setState({allIncidents: mockData})
+            instance.handleDateRangeChange('2019-09-20', '2019-09-21');
+            instance.applyFilters();
+            expect(instance.state.filteredIncidents.length).to.equal(2);
+        });
+
+        it('filters state.allIncidents based on the Priority in filteredIncidents', async () => {
+            const wrapper = shallow(<IncidentTrendsDashboard />);
+            const instance = wrapper.instance();
+            instance.setState({allIncidents: mockData, incPriority: '2-High'})
+            instance.applyFilters();
+            expect(instance.state.filteredIncidents.length).to.equal(3);
+        });
+
+        it('filters state.allIncidents based on the Brand in filteredIncidents', async () => {
+            const wrapper = shallow(<IncidentTrendsDashboard />);
+            const instance = wrapper.instance();
+            instance.setState({allIncidents: mockData})
+            instance.handleBrandChange('eCommerce Platform (eCP)')
+            instance.applyFilters();
+            expect(instance.state.filteredIncidents.length).to.equal(2);
         });
     })
 });
