@@ -6,6 +6,7 @@ const ServiceClient = require('@vrbo/service-client');
 const Path = require('path');
 const Error = require('./error');
 const {routes} = require('./routes/index');
+const H2o2 = require('h2o2');
 
 async function start(options = {}) {
 
@@ -45,6 +46,7 @@ async function start(options = {}) {
     server.decorate('server', 'siteInfo', () => ({ siteName: 'OpxHub' }))
 
     // start the server
+    await server.register(H2o2)
     await server.start();
     server.log(['info'], `server running: ${server.info.uri}`);
 
