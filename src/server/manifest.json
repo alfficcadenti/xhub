@@ -117,17 +117,12 @@
         },
         "routes": [
           {
-            "route": "require:./routes/pages/welcome",
+            "route": "require:./routes/pages/resiliency-questionnaire",
             "component": "require:../universal/components/App/ServerApp.js",
             "template": "templates/welcome.hbs"
           },
           {
             "route": "require:./routes/pages/incident-trends",
-            "component": "require:../universal/components/App/ServerApp.js",
-            "template": "templates/welcome.hbs"
-          },
-          {
-            "route": "require:./routes/pages/resiliency-questionnaire",
             "component": "require:../universal/components/App/ServerApp.js",
             "template": "templates/welcome.hbs"
           }
