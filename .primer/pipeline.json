@@ -1,151 +1,61 @@
 {
-    "appName": "opxhub-ui",
-    "description": null,
-    "disabled": false,
-    "name": "opxhub-ui",
-    "owner": "aficcadenti",
-    "steps": [
-        {
-            "action": {
-                "name": "primerBuildsJenkins"
-            },
-            "actionId": "opxhub-ui-master",
-            "description": null,
-            "disabled": false,
-            "ignoreResult": false,
-            "name": "Build_opxhub-ui",
-            "params": {
-                "token": "masterBuild"
-            },
-            "successChildren": [
-                "DeployTest_opxhub-ui"
-            ],
-            "triggerType": "automatic"
+  "appName": "opxhub-ui",
+  "description": null,
+  "disabled": false,
+  "name": "opxhub-ui",
+  "owner": "aficcadenti",
+  "steps": [
+    {
+      "action": {
+        "name": "primerBuildsJenkins"
+      },
+      "actionId": "opxhub-ui-master",
+      "description": null,
+      "disabled": false,
+      "ignoreResult": false,
+      "name": "Build_opxhub-ui",
+      "params": {
+        "token": "masterBuild"
+      },
+      "successChildren": ["DeployTest_opxhub-ui"],
+      "triggerType": "automatic"
+    },
+    {
+      "action": {
+        "name": "ewedeployJenkins"
+      },
+      "actionId": "ewetest_deploy-docker-ecs",
+      "description": null,
+      "disabled": false,
+      "ignoreResult": false,
+      "name": "DeployTest_opxhub-ui",
+      "params": {
+        "jobParameters": {
+          "PERFORM_RELEASE": false,
+          "ROLE_NAME": "opxhub-ui"
         },
-        {
-            "action": {
-                "name": "ewedeployJenkins"
-            },
-            "actionId": "ewetest_deploy-docker-ecs",
-            "description": null,
-            "disabled": false,
-            "ignoreResult": false,
-            "name": "DeployTest_opxhub-ui",
-            "params": {
-                "jobParameters": {
-                    "PERFORM_RELEASE": false,
-                    "ROLE_NAME": "opxhub-ui"
-                },
-                "token": "ewetestEcsDeploy"
-            },
-            "successChildren": [
-                "BrowserTest_opxhub-ui"
-            ],
-            "triggerType": "automatic"
+        "token": "ewetestEcsDeploy"
+      },
+      "successChildren": ["ReleaseTest_opxhub-ui"],
+      "triggerType": "automatic"
+    },
+    {
+      "action": {
+        "name": "ewedeployJenkins"
+      },
+      "actionId": "ewetest_release-docker-ecs",
+      "description": null,
+      "disabled": false,
+      "ignoreResult": false,
+      "name": "ReleaseTest_opxhub-ui",
+      "params": {
+        "jobParameters": {
+          "ROLE_NAME": "opxhub-ui"
         },
-        {
-            "params": {
-                "jobParameters": {
-                    "GITHUB_URL": "https://github.expedia.biz/EGPlatform/opxhub-ui.git",
-                    "BRANCH": "master",
-                    "DEPLOYED_URL": "https://canary-opxhub-ui.us-west-2.test.expedia.com/"
-                },
-              "token": "HomeAwayBrowserTests"
-            },
-            "name": "BrowserTest_opxhub-ui",
-            "action": {
-              "name": "primerBuildsJenkins"
-            },
-            "actionId": "ha-browser-test",
-            "disabled": false,
-            "triggerType": "automatic",
-            "description": null,
-            "ignoreResult": false,
-            "successChildren": [
-                "ReleaseTest_opxhub-ui"
-            ],
-            "failChildren": []
-        },
-        {
-            "action": {
-                "name": "ewedeployJenkins"
-            },
-            "actionId": "ewetest_release-docker-ecs",
-            "description": null,
-            "disabled": false,
-            "ignoreResult": false,
-            "name": "ReleaseTest_opxhub-ui",
-            "params": {
-                "jobParameters": {
-                    "ROLE_NAME": "opxhub-ui"
-                },
-                "token": "ewetestReleaseDockerEcs"
-            },
-            "successChildren": [
-                "Perf_opxhub-ui"
-            ],
-            "triggerType": "automatic"
-        },
-        {
-            "action": {
-                "name": "eweperfJenkins"
-            },
-            "actionId": "primer-perftest-template",
-            "description": null,
-            "disabled": false,
-            "ignoreResult": false,
-            "name": "Perf_opxhub-ui",
-            "params": {
-                "jobParameters": {
-                    "ENVIRONMENT": "test",
-                    "REGION": "us-west-2",
-                    "ROLE_NAME": "opxhub-ui"
-                },
-                "token": "perfPrimerAutomationToken"
-            },
-            "successChildren": [
-                "DeployProd_opxhub-ui"
-            ],
-            "triggerType": "automatic"
-        },
-        {
-            "action": {
-                "name": "ewedeployJenkins"
-            },
-            "actionId": "eweprod-ee_deploy-docker-ecs",
-            "description": null,
-            "disabled": false,
-            "ignoreResult": false,
-            "name": "DeployProd_opxhub-ui",
-            "params": {
-                "jobParameters": {
-                    "ROLE_NAME": "opxhub-ui"
-                },
-                "token": "eweprodeeEcsDeploy"
-            },
-            "successChildren": [
-                "ReleaseProd_opxhub-ui"
-            ],
-            "triggerType": "automatic"
-        },
-        {
-            "action": {
-                "name": "ewedeployJenkins"
-            },
-            "actionId": "eweprod-ee_release-docker-ecs",
-            "description": null,
-            "disabled": false,
-            "ignoreResult": false,
-            "name": "ReleaseProd_opxhub-ui",
-            "params": {
-                "jobParameters": {
-                    "ROLE_NAME": "opxhub-ui"
-                },
-                "token": "eweprodeeEcsRelease"
-            },
-            "successChildren": [],
-            "triggerType": "automatic"
-        }
-    ],
-    "team": "Operational Excellence"
+        "token": "ewetestReleaseDockerEcs"
+      },
+      "triggerType": "automatic"
+    }
+  ],
+  "team": "Operational Excellence"
 }
