@@ -1,9 +1,9 @@
 import incidentData from './incidentData';
-import productList from './productList';
+import products from './products';
 
 const apiRoutes = [
     incidentData,
-    productList
+    products
 ];
 
 export default apiRoutes;
