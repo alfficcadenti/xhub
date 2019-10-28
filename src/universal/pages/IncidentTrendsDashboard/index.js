@@ -64,21 +64,21 @@ class IncidentTrendsDashboard extends Component {
     }
     
     getAllIncidents = (data = []) => {
-        return data.map((incident) => ({
-            'incident_summary': incident['Short Description'], 
-            'incident_number': incident.Incident,
-            'startedAt': incident.OpenDate,
-            'Root_Cause': incident['Root Cause'],
-            'priority': incident['ticketPriority'],
-            'duration': h.formatDurationToHours(incident['Inc Duration']),
-            'Root_Cause_Owner': incident['Root Cause Owner'],
-            'Brand': incident.Brand,
-            'Status': incident.ticketStatus
+        return data.map((inc) => ({
+            'incident_summary': inc.incidentSummary, 
+            'incident_number': inc.incidentNumber,
+            'startedAt': inc.startedAt,
+            'Root_Cause': inc.rootCause,
+            'priority': inc.priority,
+            'duration': h.formatDurationToHours(inc.duration),
+            'Root_Cause_Owner': inc.rootCauseOwner,
+            'Brand': inc.brand,
+            'Status': inc.status
         }));
     };
 
     loadIncident = () => {
-        fetch('api/incident-data')
+        fetch('api/v1/incidents')
             .then((resp) => {
                 if (!resp.ok) {
                     this.setState({error: true});
@@ -87,7 +87,7 @@ class IncidentTrendsDashboard extends Component {
                 return resp.json();
             })
             .then((data) => {
-                const allIncidents = this.getAllIncidents(data.recordset);
+                const allIncidents = this.getAllIncidents(data);
                 this.setState({
                     allIncidents,
                     filteredIncidents: allIncidents,
