@@ -1,31 +1,27 @@
 import React, {Component, Fragment} from 'react';
 import SearchableList from '@homeaway/react-searchable-list';
 import PropTypes from 'prop-types';
+import LoadingContainer from '../../components/LoadingContainer';
 import './styles.less';
 
 class ResiliencyQuestionnaire extends Component {
     constructor(props) {
         super(props);
 
-        const options=['apple',
-        'apricot',
-        'avocado',
-    ];
-
-    const inputProps = {
-        label: 'Product name',
-        id: 'searchable-list-input'
-    };
+        const productInputProps = {
+            label: 'Product name',
+            id: 'product-list-input'
+        };
 
         this.state = {
-            options,
-            inputProps,
-            productList: []
+            productInputProps,
+            error:'',
+            products: []
         };
     }
-    
+
     loadProductList = () => {
-        fetch('api/product-list')
+        fetch('api/v1/products')
             .then((resp) => {
                 if (!resp.ok) {
                     this.setState({error: true});
@@ -34,13 +30,8 @@ class ResiliencyQuestionnaire extends Component {
                 return resp.json();
             })
             .then((data) => {
-                // eslint-disable-next-line no-console
-                //console.log(Object.keys(data))
-                const productList = Object.values(data).map(prod => prod.name)
-                // eslint-disable-next-line no-console
-                console.log(productList)
                 this.setState({
-                    productList
+                    products: data.content
                 })
             })
             // eslint-disable-next-line no-console
@@ -53,16 +44,22 @@ class ResiliencyQuestionnaire extends Component {
     
     render() {
         const {
-            productList,
-            inputProps
+            products,
+            productInputProps,
+            error
         } = this.state;
+        const isLoading = !error && !products.length
+
         return (
             <Fragment>
                 <h1>Resiliency Questionnaire</h1>
-                <SearchableList 
-                    options={productList} 
-                    inputProps={inputProps}
-                />
+                <LoadingContainer isLoading={isLoading} error={error}>
+                    <SearchableList 
+                        labelKey="name"
+                        options={products}
+                        inputProps={productInputProps}
+                    />
+                </LoadingContainer>
             </Fragment>
         );
     }
