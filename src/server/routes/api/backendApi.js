@@ -1,8 +1,8 @@
 module.exports = {
     method: 'GET',
-    path: '/api/v1/products',
+    path: '/api/v1/{param*}',
     options: {
-        id: 'api-products',
+        id: 'backend-api-get',
         handler: (req,h) => {
             return h.proxy({
               host: 'opxhub-service.us-west-2.test.expedia.com',

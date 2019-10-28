@@ -1,7 +1,6 @@
 import React, {Component, Fragment} from 'react';
-import SearchableList from '@homeaway/react-searchable-list';
 import PropTypes from 'prop-types';
-import LoadingContainer from '../../components/LoadingContainer';
+import InputListComponent from '../../components/InputListComponent';
 import './styles.less';
 
 class ResiliencyQuestionnaire extends Component {
@@ -13,10 +12,30 @@ class ResiliencyQuestionnaire extends Component {
             id: 'product-list-input'
         };
 
+        const applicationInputProps = {
+            label: 'Application name',
+            id: 'application-list-input'
+        };
+
+        const product = {
+            id: '',
+            name: ''
+        }
+
+        const application = {
+            id: '',
+            name: ''
+        }
+
         this.state = {
             productInputProps,
-            error:'',
-            products: []
+            applicationInputProps,
+            productError: '',
+            applicationError: '',
+            products: [],
+            applications: [],
+            product,
+            application
         };
     }
 
@@ -24,7 +43,7 @@ class ResiliencyQuestionnaire extends Component {
         fetch('api/v1/products')
             .then((resp) => {
                 if (!resp.ok) {
-                    this.setState({error: true});
+                    this.setState({productError: 'Error: Products list not available'});
                     throw new Error;
                 }
                 return resp.json();
@@ -37,6 +56,58 @@ class ResiliencyQuestionnaire extends Component {
             // eslint-disable-next-line no-console
             .catch((error) => {console.log(error)})
     }
+
+    loadApplicationList = (productName) => {
+        const url = 'api/v1/applications?product='+productName;
+        fetch(url)
+            .then((resp) => {
+                if (!resp.ok) {
+                    this.setState({applicationError: 'No application for this product'});
+                    throw new Error;
+                }
+                return resp.json();
+            })
+            .then((data) => {
+                this.setState({
+                    applications: data.content,
+                })
+            })
+            // eslint-disable-next-line no-console
+            .catch((error) => {console.log(error)});
+    }
+
+    loadQuestionList = () => {
+    }
+
+    selectProduct = (product) => {
+        const newProduct = {
+            id: product[0] && product[0].id,
+            name: product[0] && product[0].name
+        }
+
+        const application = {
+            id: '',
+            name: ''
+        }
+
+        this.setState({
+            product: newProduct,
+            application
+        })
+
+        newProduct.name && this.loadApplicationList(newProduct.name)
+    }
+
+    selectApplication = (application) => {
+        const newApplication = {
+            id: application[0] && application[0].id,
+            name: application[0] && application[0].name
+        }
+        this.setState({
+            application: newApplication,
+        })
+        newApplication.name && this.loadQuestionList();
+    }
     
     componentDidMount() {
         this.loadProductList();
@@ -44,22 +115,36 @@ class ResiliencyQuestionnaire extends Component {
     
     render() {
         const {
-            products,
             productInputProps,
-            error
+            applicationInputProps,
+            productError,
+            applicationError,
+            applications,
+            products,
+            product
         } = this.state;
-        const isLoading = !error && !products.length
+
+        const loadingProduct = !productError && !products.length;
+        const loadingApplications = product.name && !applications.length;
 
         return (
             <Fragment>
                 <h1>Resiliency Questionnaire</h1>
-                <LoadingContainer isLoading={isLoading} error={error}>
-                    <SearchableList 
-                        labelKey="name"
-                        options={products}
-                        inputProps={productInputProps}
-                    />
-                </LoadingContainer>
+                {<InputListComponent 
+                    isLoading={loadingProduct} 
+                    error={productError} 
+                    options={products}
+                    inputProps={productInputProps}
+                    onChange={this.selectProduct}
+                />}
+                 
+                {product.name && <InputListComponent 
+                    isLoading={loadingApplications} 
+                    error={applicationError} 
+                    options={applications} 
+                    inputProps={applicationInputProps}
+                    onChange={this.selectApplication}
+                />}
             </Fragment>
         );
     }

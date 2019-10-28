@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {LoadingOverlay} from '@homeaway/react-loading-overlay';
+import {Alert} from '@homeaway/react-alerts';
 import './styles.less';
 
 class LoadingContainer extends React.PureComponent {
@@ -8,7 +9,7 @@ class LoadingContainer extends React.PureComponent {
         const {isLoading, error, children} = this.props;
         return ( <div className="loading-container">
                  {isLoading && !error && <LoadingOverlay />}
-                 {!isLoading && children}
+                 {error ? <Alert className="loading-alert" msg={error} dismissible /> : !isLoading && children}
              </div>);
     }
 }
