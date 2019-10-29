@@ -9,7 +9,7 @@ class LoadingContainer extends React.PureComponent {
         const {isLoading, error, children} = this.props;
         return ( <div className="loading-container">
                  {isLoading && !error && <LoadingOverlay />}
-                 {error ? <Alert className="loading-alert" msg={error} dismissible /> : !isLoading && children}
+                 {error ? <Alert className="loading-alert" msg={error} /> : !isLoading && children}
              </div>);
     }
 }

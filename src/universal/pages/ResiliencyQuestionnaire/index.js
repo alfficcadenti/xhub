@@ -43,7 +43,7 @@ class ResiliencyQuestionnaire extends Component {
         fetch('api/v1/products')
             .then((resp) => {
                 if (!resp.ok) {
-                    this.setState({productError: 'Error: Products list not available'});
+                    this.setState({productError: 'Error: Products list not available. Try to refresh'});
                     throw new Error;
                 }
                 return resp.json();

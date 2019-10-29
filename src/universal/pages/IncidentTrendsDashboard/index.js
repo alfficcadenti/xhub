@@ -35,7 +35,7 @@ class IncidentTrendsDashboard extends Component {
             selectedRCPortfolio: RC_PORTFOLIOS,
             selectedRCPortfolioGroup: RC_PORTFOLIO_GROUPS,
             isLoading: true,
-            error: null,
+            error: '',
             presetText: 'Last 7 Days',
             startDate: '',
             endDate: '',
@@ -81,7 +81,7 @@ class IncidentTrendsDashboard extends Component {
         fetch('api/v1/incidents')
             .then((resp) => {
                 if (!resp.ok) {
-                    this.setState({error: true});
+                    this.setState({error: 'Incidents not available. Try to refresh'});
                     throw new Error;
                 }
                 return resp.json();
