@@ -1,6 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import InputListComponent from '../../components/InputListComponent';
+import ResiliencyQuestions from '../../components/ResiliencyQuestions';
 import './styles.less';
 
 class ResiliencyQuestionnaire extends Component {
@@ -32,10 +33,13 @@ class ResiliencyQuestionnaire extends Component {
             applicationInputProps,
             productError: '',
             applicationError: '',
+            questionError: '',
             products: [],
             applications: [],
+            questions: [],
             product,
-            application
+            application,
+            answers: []
         };
     }
 
@@ -77,6 +81,21 @@ class ResiliencyQuestionnaire extends Component {
     }
 
     loadQuestionList = () => {
+        fetch('/api/resiliency-questions')
+            .then((resp) => {
+                if (!resp.ok) {
+                    this.setState({questionError: 'No questions available'});
+                    throw new Error;
+                }
+                return resp.json();
+            })
+            .then((data) => {
+                this.setState({
+                    questions: data,
+                })
+            })
+            // eslint-disable-next-line no-console
+            .catch((error) => {console.log(error)});
     }
 
     selectProduct = (product) => {
@@ -108,6 +127,17 @@ class ResiliencyQuestionnaire extends Component {
         })
         newApplication.name && this.loadQuestionList();
     }
+
+    handleSubmit = () => {
+        const questionnaireDOM = document.getElementsByClassName('FormTextArea__textarea');
+        const {product, application} = this.state;
+        const questions = Array.from(questionnaireDOM).map(({id, value}) => ({ key: id, value}))
+        const questionnaire = {product, application,questions}
+        fetch('/api/v1/resiliency/questionnaire', {
+            method: 'POST',
+            body: JSON.stringify(questionnaire)
+        })
+    }
     
     componentDidMount() {
         this.loadProductList();
@@ -119,32 +149,56 @@ class ResiliencyQuestionnaire extends Component {
             applicationInputProps,
             productError,
             applicationError,
+            questionError,
             applications,
+            questions,
             products,
-            product
+            product,
+            application
         } = this.state;
 
-        const loadingProduct = !productError && !products.length;
-        const loadingApplications = product.name && !applications.length;
+        const loadingProduct = !products.length && !productError;
+        const loadingApplications = !applications.length && product.name && !applicationError;
+        const loadingQuestions = !questions.length && application.name && !questionError;
 
         return (
             <Fragment>
                 <h1>Resiliency Questionnaire</h1>
-                {<InputListComponent 
-                    isLoading={loadingProduct} 
-                    error={productError} 
-                    options={products}
-                    inputProps={productInputProps}
-                    onChange={this.selectProduct}
-                />}
-                 
-                {product.name && <InputListComponent 
-                    isLoading={loadingApplications} 
-                    error={applicationError} 
-                    options={applications} 
-                    inputProps={applicationInputProps}
-                    onChange={this.selectApplication}
-                />}
+                <div className='resiliency-questions-form'>
+                    {<InputListComponent 
+                        isLoading={loadingProduct} 
+                        error={productError} 
+                        options={products}
+                        inputProps={productInputProps}
+                        onChange={this.selectProduct}
+                    />}
+                    
+                    {product.name && <InputListComponent 
+                        isLoading={loadingApplications} 
+                        error={applicationError} 
+                        options={applications} 
+                        inputProps={applicationInputProps}
+                        onChange={this.selectApplication}
+                    />}
+
+                    {
+                        product.name && application.name && <Fragment>
+                            <ResiliencyQuestions 
+                                isLoading={loadingQuestions} 
+                                error={questionError} 
+                                questions={questions}
+                            />
+                            <button 
+                                id='submitButton'
+                                type="button" 
+                                className='btn btn-default active'
+                                onClick={this.handleSubmit}>
+                                Submit
+                            </button>
+                        </Fragment>
+                    }
+                    
+                </div>
             </Fragment>
         );
     }

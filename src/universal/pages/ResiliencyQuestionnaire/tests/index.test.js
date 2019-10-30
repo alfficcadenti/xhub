@@ -47,6 +47,7 @@ describe('<ResiliencyQuestionnaire/>', () => {
             const testApp = {name: "distributed-automation-dashboard-web", id: 1753}
             const wrapper = shallow(<ResiliencyQuestionnaire />);
             const instance = wrapper.instance();
+            sinon.stub(instance, 'loadQuestionList');
             instance.selectApplication([testApp]);
             expect(instance.state.application).to.eql(testApp);
         });
