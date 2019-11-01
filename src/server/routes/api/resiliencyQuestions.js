@@ -26,6 +26,9 @@ module.exports = {
     method: 'GET',
     path: '/api/resiliency-questions',
     options: {
+        log: {
+            collect: true
+          },
         id: 'resiliencyQuestions',
         handler: () => (questions)
     }
