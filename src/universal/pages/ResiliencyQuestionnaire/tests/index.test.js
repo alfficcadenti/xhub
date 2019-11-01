@@ -1,9 +1,15 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import {expect} from 'chai';
 import sinon from 'sinon';
 import {shallow, mount} from 'enzyme';
 import ResiliencyQuestionnaire from '../index';
 import mockProductData from './mockProductList.json';
+
+import {JSDOM} from 'jsdom';
+const dom = new JSDOM('<!doctype html><html><body></body></html>');
+global.window = dom.window;
+global.document = dom.window.document;
 
 describe('<ResiliencyQuestionnaire/>', () => {
     sinon.stub(ResiliencyQuestionnaire.prototype, 'componentDidMount');
@@ -70,4 +76,25 @@ describe('<ResiliencyQuestionnaire/>', () => {
             expect(wrapper.find('div.Alert')).to.have.lengthOf(1);
         });
     })
+
+    // describe('getQuestionnaireAnswers()', () => {
+
+    //     it('returns array', () => {
+    //         const questions = [
+    //             {id: 1, question: 'Regions'},
+    //             {id: 2, question: '#AZs'},
+    //         ]
+    //         const product = {id:1, name: "test"}
+    //         const application = {id:1, name: "test"}
+    //         const testApp = {name: "distributed-automation-dashboard-web", id: 1753}
+    //         const wrapper = mount(<ResiliencyQuestionnaire />);
+    //         const instance = wrapper.instance();
+    //         sinon.stub(instance, 'loadQuestionList');
+    //         wrapper.setState({questions, product, application});
+    //         instance.selectApplication([testApp]);
+    //         // eslint-disable-next-line no-console
+    //         console.log(wrapper.html())
+    //         expect(instance.getQuestionnaireAnswers()).to.be.true;
+    //     })
+    // })
 });

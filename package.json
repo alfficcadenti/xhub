@@ -50,6 +50,9 @@
       "js",
       "jsx"
     ],
+    "setupFiles": [
+      "<rootDir>/tools/test-setup.js"
+    ],
     "setupFilesAfterEnv": [
       "<rootDir>/tools/test-setup.js"
     ],
@@ -90,7 +93,7 @@
     "@homeaway/react-event-tracking": "^2.0.1",
     "@homeaway/react-form-components": "^7.6.1",
     "@homeaway/react-loading-overlay": "^6.0.0",
-    "@homeaway/react-modal": "^9.0.1",
+    "@homeaway/react-modal": "^9.0.2",
     "@homeaway/react-nav-calendar-month": "^6.7.2",
     "@homeaway/react-navigation": "^6.0.4",
     "@homeaway/react-searchable-list": "^3.0.3",

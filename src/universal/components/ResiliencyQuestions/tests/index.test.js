@@ -1,40 +1,33 @@
 import React from 'react';
-import {shallow} from 'enzyme';
+import {mount} from 'enzyme';
+import {expect} from 'chai';
 import ResiliencyQuestion from '../index';
 
 const questions = [
     {id: 1, question: 'Regions'},
     {id: 2, question: '#AZs'},
-    {id: 3, question: '#Instances'},
-    {id: 4, question: 'Segment?'},
-    {id: 5, question: 'Chaos?'},
-    {id: 6, question: 'AS Verified?'},
-    {id: 7, question: 'SPOF?'},
-    {id: 8, question: '4 Golden Indicators'},
-    {id: 9, question: '% Prod Traffic'},
-    {id: 10, question: 'Rev Loss pm'},
-    {id: 11, question: 'Multi-Region ETA'},
-    {id: 12, question: 'Resilient ETA'},
-    {id: 13, question: 'Pipeline Leadtime'},
-    {id: 14, question: 'Release Cadence'},
-    {id: 15, question: 'Release Confirmation'},
-    {id: 16, question: 'Rollback Time'},
-    {id: 17, question: 'Rollback Exercise Cadence'},
-    {id: 18, question: 'Release Success Rate'},
-    {id: 19, question: 'Circuit Breakers'},
-    {id: 20, question: 'Throttling'},
-    {id: 21, question: 'Notes'}
 ]
 
+const snapShot = '<div class="loading-container"><div class="resiliency-question form-group floating-label empty"><textarea class="FormTextArea__textarea form-control FormTextArea__textarea--auto-expand" aria-label="Regions" id="Regions" style="max-height: 15em; overflow: hidden; height: 2px;"></textarea><label class="FormTextArea__floating-label" for="Regions">Regions</label></div><div class="resiliency-question form-group floating-label empty"><textarea class="FormTextArea__textarea form-control FormTextArea__textarea--auto-expand" aria-label="#AZs" id="#AZs" style="max-height: 15em; overflow: hidden; height: 2px;"></textarea><label class="FormTextArea__floating-label" for="#AZs">#AZs</label></div></div>';
+
 describe('<ResiliencyQuestion /> ', () => {
-    test('renders correctly', () => {
+    it('renders correctly', () => {
         const props = {
             error: '',
             isLoading: false,
             questions
         };
-        const wrapper = shallow(<ResiliencyQuestion {...props} />);
+        const wrapper = mount(<ResiliencyQuestion {...props} />);
+        expect(wrapper).to.have.lengthOf(1);
+    });
 
-        expect(wrapper).toHaveLength(1);
+    it('matches the snapshot', () => {
+        const props = {
+            error: '',
+            isLoading: false,
+            questions
+        };
+        const wrapper = mount(<ResiliencyQuestion {...props} />);
+        expect(wrapper.html()).to.be.equal(snapShot)
     });
 })

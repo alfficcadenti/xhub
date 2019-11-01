@@ -12,6 +12,7 @@ class ResiliencyQuestions extends PureComponent {
             label={question}
             autoExpand
             maxHeight="15em"
+            className='resiliency-question'
         />
     )}
 

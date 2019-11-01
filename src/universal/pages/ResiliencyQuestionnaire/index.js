@@ -2,6 +2,8 @@ import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import InputListComponent from '../../components/InputListComponent';
 import ResiliencyQuestions from '../../components/ResiliencyQuestions';
+import {Divider} from '@homeaway/react-collapse';
+import Modal from '@homeaway/react-modal';
 import './styles.less';
 
 class ResiliencyQuestionnaire extends Component {
@@ -39,7 +41,9 @@ class ResiliencyQuestionnaire extends Component {
             questions: [],
             product,
             application,
-            answers: []
+            answers: [],
+            isOpen: false,
+            modalMessage: ''
         };
     }
 
@@ -72,9 +76,14 @@ class ResiliencyQuestionnaire extends Component {
                 return resp.json();
             })
             .then((data) => {
-                this.setState({
-                    applications: data.content,
-                })
+                if (!data.content.length) {
+                    this.setState({applicationError: 'No application for this product'});
+                } else {
+                    this.setState({
+                        applications: data.content,
+                        applicationError: ''
+                    })    
+                }
             })
             // eslint-disable-next-line no-console
             .catch((error) => {console.log(error)});
@@ -128,15 +137,55 @@ class ResiliencyQuestionnaire extends Component {
         newApplication.name && this.loadQuestionList();
     }
 
-    handleSubmit = () => {
-        const questionnaireDOM = document.getElementsByClassName('FormTextArea__textarea');
-        const {product, application} = this.state;
-        const questions = Array.from(questionnaireDOM).map(({id, value}) => ({ key: id, value}))
-        const questionnaire = {product, application,questions}
-        fetch('/api/v1/resiliency/questionnaire', {
+    getQuestionnaireAnswers = () => {
+        const questionnaireDOM = document.getElementById('resiliency-questions-form').getElementsByClassName('FormTextArea__textarea');
+        return Array.from(questionnaireDOM).map(({id, value}) => ({ key: id, value}));
+    }
+
+    submitQuestionnaire = (product, application,questions) => {
+        return fetch('/api/v1/resiliency/questionnaire', {
             method: 'POST',
-            body: JSON.stringify(questionnaire)
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({product, application, questions})
         })
+    }
+
+    handleSubmit = () => {
+        const {product, application} = this.state;
+        const questions = this.getQuestionnaireAnswers();
+        this.submitQuestionnaire(product, application,questions).then(resp => {
+            if (!resp.ok) {
+                throw new Error(resp);
+            }
+            return resp.json();
+        }) 
+        .then(result => {
+            this.questionnaireSuccess(result)
+        })
+        .catch(error => {
+            this.questionnaireError(error)
+        });
+    }
+
+    questionnaireSuccess = () => {
+        this.setState({modalMessage: 'Questionnaire succesfully submitted'});
+        this.handleOpen();
+    }
+
+    questionnaireError = () => {
+        this.setState({modalMessage: 'Error. Try Again.'});
+        this.handleOpen();
+    }
+
+    handleOpen = () => {
+        this.setState({isOpen: true});
+    }
+
+    handleClose = () => {
+        this.setState({isOpen: false, modalMessage: ''});
     }
     
     componentDidMount() {
@@ -154,7 +203,8 @@ class ResiliencyQuestionnaire extends Component {
             questions,
             products,
             product,
-            application
+            application,
+            modalMessage
         } = this.state;
 
         const loadingProduct = !products.length && !productError;
@@ -163,26 +213,30 @@ class ResiliencyQuestionnaire extends Component {
 
         return (
             <Fragment>
-                <h1>Resiliency Questionnaire</h1>
-                <div className='resiliency-questions-form'>
-                    {<InputListComponent 
-                        isLoading={loadingProduct} 
-                        error={productError} 
-                        options={products}
-                        inputProps={productInputProps}
-                        onChange={this.selectProduct}
-                    />}
+                <h1>{"BEX 'r' Certification Resiliency Questionnaire"}</h1>
+                <div id='resiliency-questions-form'>
+                    {
+                        <InputListComponent 
+                            isLoading={loadingProduct} 
+                            error={productError} 
+                            options={products}
+                            inputProps={productInputProps}
+                            onChange={this.selectProduct}
+                        />
+                    }
                     
-                    {product.name && <InputListComponent 
+                    {
+                        product.name && <InputListComponent 
                         isLoading={loadingApplications} 
                         error={applicationError} 
                         options={applications} 
                         inputProps={applicationInputProps}
                         onChange={this.selectApplication}
-                    />}
+                        />
+                    }
 
                     {
-                        product.name && application.name && <Fragment>
+                        product.name && application.name && <Divider heading="Fill the below questionnaire" expanded={true}>
                             <ResiliencyQuestions 
                                 isLoading={loadingQuestions} 
                                 error={questionError} 
@@ -193,11 +247,18 @@ class ResiliencyQuestionnaire extends Component {
                                 type="button" 
                                 className='btn btn-default active'
                                 onClick={this.handleSubmit}>
-                                Submit
+                                Submit Questionnaire
                             </button>
-                        </Fragment>
+                        </Divider>
                     }
-                    
+                    <Modal
+                        id="questionnaire-modal"
+                        isOpen={this.state.isOpen}
+                        onClose={this.handleClose}
+                        header={false}
+                    >
+                        {modalMessage}
+                    </Modal>
                 </div>
             </Fragment>
         );

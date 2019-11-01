@@ -1,7 +1,10 @@
-import backendApi from './backendApi';
+import backendApiGet from './backendApiGet';
+import backendApiPost from './backendApiPost';
+
 import resiliencyQuestions from './resiliencyQuestions';
 const apiRoutes = [
-    backendApi,
+    backendApiPost,
+    backendApiGet,
     resiliencyQuestions
 ];
 
