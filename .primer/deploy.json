@@ -1,8 +1,8 @@
 {
   "global": {
     "auto_scaling_group": {
-      "min_count": 1,
-      "max_count": 2,
+      "min_count": 2,
+      "max_count": 5,
       "initial_count": 2
     },
     "vpc_purpose": "application",
