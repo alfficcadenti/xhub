@@ -1,12 +1,17 @@
 {
   "global": {
+    "auto_scaling_group": {
+      "min_count": 2,
+      "max_count": 5,
+      "initial_count": 2
+    },
     "isactive_support": {
       "enabled": true,
       "file": "/opt/opxhub-ui/active.txt"
     },
     "loadbalancer": {
       "https_enabled": true,
-      "http_enabled": false 
+      "http_enabled": false
     },
     "app_ssl_port": 8080,
     "app_ssl_protocol": "HTTP",
@@ -17,9 +22,7 @@
     "product_area": "HomeAway",
     "notify": {
       "email": {
-        "addresses": [
-          "vrbo_opex@expedia.com"
-        ]
+        "addresses": ["vrbo_opex@expedia.com"]
       },
       "hipchat": {
         "room": "Primer Notifications"
