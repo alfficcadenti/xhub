@@ -181,7 +181,7 @@ class ResiliencyQuestionnaire extends Component {
 
         return (
             <Fragment>
-                <h1 id='page-title'>{"BEX 'r' Certification Resiliency Questionnaire"}</h1>
+                <h1 id='pageTitle'>{"BEX 'r' Certification Resiliency Questionnaire"}</h1>
                 <div id='resiliency-questions-form'>
                     {
                         <InputListComponent 

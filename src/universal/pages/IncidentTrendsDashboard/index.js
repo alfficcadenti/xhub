@@ -165,7 +165,7 @@ class IncidentTrendsDashboard extends Component {
         const {allIncidents, activeIndex, error, isLoading, startDate, endDate, incPriority, selectedBrand} = this.state;
         return (
             <Fragment>
-                <h1>Incidents trends</h1>
+                <h1 id='pageTitle'>Incidents trends</h1>
                 <div id='filters-div'>
                     <DatePicker
                         startDate={startDate}
