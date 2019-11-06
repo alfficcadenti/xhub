@@ -4,7 +4,11 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 import {shallow, mount} from 'enzyme';
 import ResiliencyQuestionnaire from '../index';
+import QuestionForm from '../QuestionForm';
+import History from '../History';
 import mockProductData from './mockProductList.json';
+import mockAppDetails from './mockAppDetails.json';
+
 
 import {JSDOM} from 'jsdom';
 const dom = new JSDOM('<!doctype html><html><body></body></html>');
@@ -53,18 +57,8 @@ describe('<ResiliencyQuestionnaire/>', () => {
             const testApp = {name: "distributed-automation-dashboard-web", id: 1753}
             const wrapper = shallow(<ResiliencyQuestionnaire />);
             const instance = wrapper.instance();
-            sinon.stub(instance, 'loadQuestionList');
             instance.selectApplication([testApp]);
             expect(instance.state.application).to.eql(testApp);
-        });
-
-        it('calls loadQuestionList with selected application name', async () => {
-            const testApp = {name: "distributed-automation-dashboard-web", id: 1753}
-            const wrapper = shallow(<ResiliencyQuestionnaire />);
-            const instance = wrapper.instance();
-            const spy = sinon.stub(instance, 'loadQuestionList');
-            instance.selectApplication([testApp]);
-            expect(spy.calledOnce).to.be.true;
         });
     })
 
@@ -77,24 +71,79 @@ describe('<ResiliencyQuestionnaire/>', () => {
         });
     })
 
-    // describe('getQuestionnaireAnswers()', () => {
 
-    //     it('returns array', () => {
-    //         const questions = [
-    //             {id: 1, question: 'Regions'},
-    //             {id: 2, question: '#AZs'},
-    //         ]
-    //         const product = {id:1, name: "test"}
-    //         const application = {id:1, name: "test"}
-    //         const testApp = {name: "distributed-automation-dashboard-web", id: 1753}
-    //         const wrapper = mount(<ResiliencyQuestionnaire />);
-    //         const instance = wrapper.instance();
-    //         sinon.stub(instance, 'loadQuestionList');
-    //         wrapper.setState({questions, product, application});
-    //         instance.selectApplication([testApp]);
-    //         // eslint-disable-next-line no-console
-    //         console.log(wrapper.html())
-    //         expect(instance.getQuestionnaireAnswers()).to.be.true;
-    //     })
-    // })
+
+    describe('<QuestionForm/>', () => {
+        sinon.stub(QuestionForm.prototype, 'componentDidMount');
+        const product = mockAppDetails.product;
+        const application = mockAppDetails.application;
+        const message = 'this is the message';
+
+        it('renders successfully with state.isOpen eql to false', () => {
+            const wrapper = shallow(<QuestionForm product={product} application={application}/>);
+            expect(wrapper).to.have.length(1);
+            expect(wrapper.state(['isOpen'])).to.be.false;
+        });
+
+
+        describe('handleSubmit()', () => {
+            it('calls submitQuestionnaire() with args', () => {
+                const wrapper = shallow(<QuestionForm product={product} application={application}/>);
+                const instance = wrapper.instance();
+                sinon.stub(instance, 'getQuestionnaireAnswers');
+                const spy = sinon.stub(instance, 'submitQuestionnaire');
+                spy.resolves('Ok');
+                instance.handleSubmit();
+                expect(spy.calledOnce).to.be.true;
+                expect(spy.withArgs(product,application).calledOnce).to.be.true;
+            })
+        });
+
+        describe('questionnaireSubmitResult(message)', () => {
+            it('save the given message in the state.modalMessage', () => {
+                const wrapper = shallow(<QuestionForm product={product} application={application}/>);
+                const instance = wrapper.instance();
+                instance.questionnaireSubmitResult(message);
+                expect(wrapper.state(['modalMessage'])).to.be.eql(message);
+            })
+
+            it('calls handleOpen()', () => {
+                const wrapper = mount(<QuestionForm product={product} application={application}/>);
+                const instance = wrapper.instance();
+                const spy = sinon.spy(instance, 'handleOpen');
+                instance.questionnaireSubmitResult(message);
+                expect(spy.calledOnce).to.be.true;
+            })
+        });
+
+        describe('handleOpen()', () => {
+            it('set state.isOpen as true', () => {
+                const wrapper = shallow(<QuestionForm product={product} application={application}/>);
+                const instance = wrapper.instance();
+                instance.handleOpen();
+                expect(wrapper.state(['isOpen'])).to.be.true;
+            })
+        });
+
+        describe('handleClose()', () => {
+            it('set state.isOpen as false and remove modalMessage', () => {
+                const wrapper = shallow(<QuestionForm product={product} application={application}/>);
+                const instance = wrapper.instance();
+                instance.handleClose();
+                expect(wrapper.state(['isOpen'])).to.be.false;
+            })
+        });
+    });
+
+    describe('<History/>', () => {
+        sinon.stub(History.prototype, 'componentDidMount');
+        const product = mockAppDetails.product;
+        const application = mockAppDetails.application;
+
+        it('renders successfully', () => {
+            const wrapper = shallow(<History product={product} application={application}/>);
+            expect(wrapper).to.have.length(1);
+        });
+    });
 });
+

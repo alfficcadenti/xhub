@@ -1,0 +1,10 @@
+{
+  "product": {
+    "name": "Traffic Engineering",
+    "id": 1
+  },
+  "application": {
+    "name": "test-application",
+    "id": 2
+  }
+}

@@ -1,10 +1,12 @@
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import InputListComponent from '../../components/InputListComponent';
-import ResiliencyQuestions from '../../components/ResiliencyQuestions';
-import {Divider} from '@homeaway/react-collapse';
-import Modal from '@homeaway/react-modal';
+import {Route, Redirect} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import './styles.less';
+import QuestionForm from './QuestionForm';
+import History from './History';
+import {Navigation} from '@homeaway/react-navigation';
 
 class ResiliencyQuestionnaire extends Component {
     constructor(props) {
@@ -36,6 +38,7 @@ class ResiliencyQuestionnaire extends Component {
             productError: '',
             applicationError: '',
             questionError: '',
+            historyError: '',
             products: [],
             applications: [],
             questions: [],
@@ -43,12 +46,29 @@ class ResiliencyQuestionnaire extends Component {
             application,
             answers: [],
             isOpen: false,
-            modalMessage: ''
+            modalMessage: '',
+            activeIndex: 0
         };
+
+        this.links = [
+            {
+                id: 'questions', 
+                label: 'Questionnaire', 
+                href: '/resiliency-questionnaire/questions',
+                node: <Link to="/resiliency-questionnaire/questions">{'Questionnaire'}</Link>
+
+            },
+            {
+                id: 'history', 
+                label: 'History', 
+                href: '/resiliency-questionnaire/history',
+                node: <Link to="/resiliency-questionnaire/history">{'History'}</Link>
+            }            
+        ];
     }
 
     loadProductList = () => {
-        fetch('api/v1/products')
+        fetch('/api/v1/products')
             .then((resp) => {
                 if (!resp.ok) {
                     this.setState({productError: 'Error: Products list not available. Try to refresh'});
@@ -65,8 +85,8 @@ class ResiliencyQuestionnaire extends Component {
             .catch((error) => {console.log(error)})
     }
 
-    loadApplicationList = (productName) => {
-        const url = 'api/v1/applications?product='+productName;
+    loadApplicationList = (productName = '') => {
+        const url = '/api/v1/applications?product='+productName;
         fetch(url)
             .then((resp) => {
                 if (!resp.ok) {
@@ -84,24 +104,6 @@ class ResiliencyQuestionnaire extends Component {
                         applicationError: ''
                     })    
                 }
-            })
-            // eslint-disable-next-line no-console
-            .catch((error) => {console.log(error)});
-    }
-
-    loadQuestionList = () => {
-        fetch('/api/resiliency-questions')
-            .then((resp) => {
-                if (!resp.ok) {
-                    this.setState({questionError: 'No questions available'});
-                    throw new Error;
-                }
-                return resp.json();
-            })
-            .then((data) => {
-                this.setState({
-                    questions: data,
-                })
             })
             // eslint-disable-next-line no-console
             .catch((error) => {console.log(error)});
@@ -134,58 +136,27 @@ class ResiliencyQuestionnaire extends Component {
         this.setState({
             application: newApplication,
         })
-        newApplication.name && this.loadQuestionList();
     }
 
-    getQuestionnaireAnswers = () => {
-        const questionnaireDOM = document.getElementById('resiliency-questions-form').getElementsByClassName('FormTextArea__textarea');
-        return Array.from(questionnaireDOM).map(({id, value}) => ({ key: id, value}));
-    }
-
-    submitQuestionnaire = (product, application,questions) => {
-        return fetch('/api/v1/resiliency/questionnaire', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({product, application, questions})
-        })
-    }
-
-    handleSubmit = () => {
-        const {product, application} = this.state;
-        const questions = this.getQuestionnaireAnswers();
-        this.submitQuestionnaire(product, application,questions).then(resp => {
-            if (!resp.ok) {
-                throw new Error(resp);
-            }
-            return resp.json();
-        }) 
-        .then(result => {
-            this.questionnaireSuccess(result)
-        })
-        .catch(error => {
-            this.questionnaireError(error)
+    handleNavigationClick = async (e, activeIndex) => {
+        this.setState({
+            activeIndex
         });
     }
 
-    questionnaireSuccess = () => {
-        this.setState({modalMessage: 'Questionnaire succesfully submitted'});
-        this.handleOpen();
+    renderQuestions = () => {
+        const {product, application} = this.state;
+        return (product.name && application.name && <QuestionForm 
+        application={application}
+        product={product}
+    />)
     }
 
-    questionnaireError = () => {
-        this.setState({modalMessage: 'Error. Try Again.'});
-        this.handleOpen();
-    }
-
-    handleOpen = () => {
-        this.setState({isOpen: true});
-    }
-
-    handleClose = () => {
-        this.setState({isOpen: false, modalMessage: ''});
+    renderHistory = () => {
+        const {product, application} = this.state;
+        return (product.name && application.name && <History 
+            applicationId={application.id}
+        />)
     }
     
     componentDidMount() {
@@ -198,22 +169,19 @@ class ResiliencyQuestionnaire extends Component {
             applicationInputProps,
             productError,
             applicationError,
-            questionError,
             applications,
-            questions,
             products,
             product,
             application,
-            modalMessage
+            activeIndex
         } = this.state;
 
         const loadingProduct = !products.length && !productError;
         const loadingApplications = !applications.length && product.name && !applicationError;
-        const loadingQuestions = !questions.length && application.name && !questionError;
 
         return (
             <Fragment>
-                <h1>{"BEX 'r' Certification Resiliency Questionnaire"}</h1>
+                <h1 id='page-title'>{"BEX 'r' Certification Resiliency Questionnaire"}</h1>
                 <div id='resiliency-questions-form'>
                     {
                         <InputListComponent 
@@ -236,29 +204,28 @@ class ResiliencyQuestionnaire extends Component {
                     }
 
                     {
-                        product.name && application.name && <Divider heading="Fill the below questionnaire" expanded={true}>
-                            <ResiliencyQuestions 
-                                isLoading={loadingQuestions} 
-                                error={questionError} 
-                                questions={questions}
+                        product.name && application.name && 
+                        <Fragment>
+                            <Navigation
+                            noMobileSelect={false}
+                            activeIndex={activeIndex}
+                            links={this.links}
+                            onLinkClick={this.handleNavigationClick}
                             />
-                            <button 
-                                id='submitButton'
-                                type="button" 
-                                className='btn btn-default active'
-                                onClick={this.handleSubmit}>
-                                Submit Questionnaire
-                            </button>
-                        </Divider>
+                            <Redirect to={this.links[activeIndex].href} />
+                            <Route 
+                                path="/resiliency-questionnaire/questions" 
+                                render={this.renderQuestions} 
+                            />
+                            <Route 
+                                path="/resiliency-questionnaire/history" 
+                                render={this.renderHistory} 
+                            />
+                        </Fragment>
                     }
-                    <Modal
-                        id="questionnaire-modal"
-                        isOpen={this.state.isOpen}
-                        onClose={this.handleClose}
-                        header={false}
-                    >
-                        {modalMessage}
-                    </Modal>
+          
+                    
+                  
                 </div>
             </Fragment>
         );
