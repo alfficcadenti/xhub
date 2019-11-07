@@ -1,10 +1,18 @@
 {
   "global": {
-    "auto_scaling_group": {
+    "instances": {
       "min_count": 2,
       "max_count": 5,
-      "initial_count": 2
+      "initial_count": 2,
+      "autoscale_dimensions": ["CPUUtilization", "MemoryUtilization"],
+      "scale_in_adjustment": -1,
+      "scale_out_adjustment": 2,
+      "cpu_scale_in_threshold": 40,
+      "cpu_scale_out_threshold": 100,
+      "memory_scale_in_threshold": 40,
+      "memory_scale_out_threshold": 75
     },
+    "no-auto-delete": true,
     "isactive_support": {
       "enabled": true,
       "file": "/opt/opxhub-ui/active.txt"
