@@ -1,16 +1,16 @@
 {
   "global": {
     "instances": {
+      "destroy_old": true,
+      "removeOldFromElb": true,
       "min_count": 2,
-      "max_count": 5,
+      "max_count": 3,
       "initial_count": 2,
-      "autoscale_dimensions": ["CPUUtilization", "MemoryUtilization"],
+      "autoscale_dimensions": ["CPUUtilization"],
       "scale_in_adjustment": -1,
       "scale_out_adjustment": 2,
       "cpu_scale_in_threshold": 40,
-      "cpu_scale_out_threshold": 100,
-      "memory_scale_in_threshold": 40,
-      "memory_scale_out_threshold": 75
+      "cpu_scale_out_threshold": 100
     },
     "no-auto-delete": true,
     "isactive_support": {
