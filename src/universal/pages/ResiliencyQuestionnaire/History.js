@@ -10,10 +10,12 @@ class History extends Component {
         this.state = {
             historyError: '',
             history: [],
+            isLoading: false
         };
     }
 
     loadHistory = (applicationId = '') => {
+        this.setState({isLoading: true});
         const baseUrl = '/api/v1/resiliency/questionnaires?applicationId='
         fetch(baseUrl+applicationId)
             .then((resp) => {
@@ -25,11 +27,15 @@ class History extends Component {
             })
             .then((data) => {
                 if (!data.length) {
-                    this.setState({historyError: 'No questionnaire submitted previously'});
+                    this.setState({
+                        historyError: 'No questionnaire submitted previously', 
+                        isLoading: false
+                    });
                 } else {
                     this.setState({
                         history: data,
-                        historyError: ''
+                        historyError: '',
+                        isLoading: false
                     })    
                 }
             })
@@ -45,18 +51,15 @@ class History extends Component {
         const {
             historyError,
             history,
+            isLoading
         } = this.state;
-        const {
-            applicationId,
-        } = this.props;
 
-        const loadingHistory = !history && applicationId && !historyError;
         return (
             <Fragment>
                         <SavedQuestionnaire 
                             history={history} 
                             error={historyError} 
-                            isLoading={loadingHistory}
+                            isLoading={isLoading}
                         />
             </Fragment>
         );
