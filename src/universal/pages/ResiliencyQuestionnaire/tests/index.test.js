@@ -97,22 +97,25 @@ describe('<ResiliencyQuestionnaire/>', () => {
                 expect(spy.calledOnce).to.be.true;
                 expect(spy.withArgs(product,application).calledOnce).to.be.true;
             })
+
+            it('calls handleOpen() that open the modal', () => {
+                const wrapper = mount(<QuestionForm product={product} application={application}/>);
+                const instance = wrapper.instance();
+                sinon.stub(instance, 'getQuestionnaireAnswers');
+                const spy = sinon.stub(instance, 'submitQuestionnaire');
+                spy.resolves('Ok');
+                const handleOpen = sinon.spy(instance, 'handleOpen');
+                instance.handleSubmit(message);
+                expect(handleOpen.calledOnce).to.be.true;
+            })
         });
 
-        describe('questionnaireSubmitResult(message)', () => {
+        describe('displayPostResult(message)', () => {
             it('save the given message in the state.modalMessage', () => {
                 const wrapper = shallow(<QuestionForm product={product} application={application}/>);
                 const instance = wrapper.instance();
-                instance.questionnaireSubmitResult(message);
+                instance.displayPostResult(message);
                 expect(wrapper.state(['modalMessage'])).to.be.eql(message);
-            })
-
-            it('calls handleOpen()', () => {
-                const wrapper = mount(<QuestionForm product={product} application={application}/>);
-                const instance = wrapper.instance();
-                const spy = sinon.spy(instance, 'handleOpen');
-                instance.questionnaireSubmitResult(message);
-                expect(spy.calledOnce).to.be.true;
             })
         });
 

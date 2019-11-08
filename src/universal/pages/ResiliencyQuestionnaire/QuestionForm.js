@@ -43,7 +43,8 @@ class QuestionForm extends Component {
             application,
             answers: [],
             isOpen: false,
-            modalMessage: ''
+            modalMessage: '',
+            sendingAnswers: false
         };
     }
 
@@ -84,6 +85,7 @@ class QuestionForm extends Component {
     }
 
     handleSubmit = () => {
+        this.handleOpen();
         const {product, application} = this.props;
         const questions = this.getQuestionnaireAnswers();
         this.submitQuestionnaire(product, application, questions).then(resp => {
@@ -92,21 +94,20 @@ class QuestionForm extends Component {
             }
             return resp.json();
         }) 
-        .then(() => this.questionnaireSubmitResult('Questionnaire succesfully submitted'))
-        .catch(() => this.questionnaireSubmitResult('Error. Try Again.'));
+        .then(() => this.displayPostResult('Questionnaire successfully submitted'))
+        .catch(() => this.displayPostResult('Error. Try Again.'));
     }
 
-    questionnaireSubmitResult = (message = '') => {
-        this.setState({modalMessage: message});
-        this.handleOpen();
+    displayPostResult = (message = '') => {
+        this.setState({modalMessage: message, sendingAnswers: false});
     }
 
     handleOpen = () => {
-        this.setState({isOpen: true});
+        this.setState({isOpen: true, sendingAnswers: true});
     }
 
     handleClose = () => {
-        this.setState({isOpen: false, modalMessage: ''});
+        this.setState({isOpen: false, modalMessage: '', sendingAnswers: false});
     }
     
     componentDidMount() {
@@ -117,6 +118,7 @@ class QuestionForm extends Component {
         const {
             questionError,
             questions,
+            sendingAnswers,
             modalMessage
         } = this.state;
         const {
@@ -146,7 +148,8 @@ class QuestionForm extends Component {
                         onClose={this.handleClose}
                         header={false}
                     >
-                        {modalMessage}
+                        <LoadingContainer isLoading={sendingAnswers}>{modalMessage}</LoadingContainer>
+                        
                     </Modal>
             </LoadingContainer>
         );
