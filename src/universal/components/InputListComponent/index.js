@@ -14,10 +14,11 @@ class InputListComponent extends PureComponent {
             error,
             options,
             inputProps,
+            id
         } = this.props;
 
         return (
-            <LoadingContainer isLoading={isLoading} error={error}>
+            <LoadingContainer isLoading={isLoading} error={error} id={id}>
                 <SearchableList 
                     labelKey="name"
                     options={options}
@@ -36,7 +37,8 @@ InputListComponent.defaultProps = {
     inputProps: {
         label: 'Field Name',
         id: 'list-input'
-    }
+    },
+    id: null
 };
 
 InputListComponent.propTypes = {
@@ -46,6 +48,7 @@ InputListComponent.propTypes = {
         PropTypes.shape()
     ]),
     isLoading: PropTypes.bool,
+    id: PropTypes.string,
     options: PropTypes.array,
     inputProps: PropTypes.object,
     onChange: PropTypes.func

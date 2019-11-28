@@ -1,0 +1,12 @@
+{
+  "content": [
+    {
+      "name": "Flight",
+      "id": 1
+    },
+    {
+      "name": "GPS",
+      "id": 2
+    }
+  ]
+}

@@ -6,6 +6,7 @@ import {shallow, mount} from 'enzyme';
 import ResiliencyQuestionnaire from '../index';
 import QuestionForm from '../QuestionForm';
 import History from '../History';
+import mockLoBDetails from './mockLoBList.json';
 import mockProductData from './mockProductList.json';
 import mockAppDetails from './mockAppDetails.json';
 
@@ -25,8 +26,30 @@ describe('<ResiliencyQuestionnaire/>', () => {
 
     it('renders a div with class SearchableListBase', () => {
         const wrapper = mount(<ResiliencyQuestionnaire />);
-        wrapper.setState({products: mockProductData.content});
+        wrapper.setState({lobs: mockLoBDetails.content});
         expect(wrapper.find('div.SearchableListBase')).to.have.lengthOf(1);
+    })
+
+    describe('selectLoB', () => {
+        
+        it('saves LoB name and id in the state from the first element of the array in input', async () => {
+            const testLob = {name: "Flights", id: 1}
+            const wrapper = shallow(<ResiliencyQuestionnaire />);
+            const instance = wrapper.instance();
+            sinon.stub(instance, 'loadProductList');
+            instance.selectLob([testLob]);
+            expect(instance.state.lob).to.eql(testLob);
+        });
+
+        it('calls loadProductList with selected LoB name', async () => {
+            const testLob = {name: "Flights", id: 1}
+            const wrapper = shallow(<ResiliencyQuestionnaire />);
+            const instance = wrapper.instance();
+            const spy = sinon.stub(instance, 'loadProductList');
+            instance.selectLob([testLob]);
+            expect(spy.calledOnce).to.be.true;
+            expect(spy.withArgs("Flights").calledOnce).to.be.true;
+        });
     })
 
     describe('selectProduct', () => {
@@ -64,9 +87,9 @@ describe('<ResiliencyQuestionnaire/>', () => {
 
     describe('InputListComponent with errors', () => {
         
-        it('display a div with class alert if productError is not null', async () => {
+        it('display a div with class alert if lobError is not null', async () => {
             const wrapper = mount(<ResiliencyQuestionnaire />);
-            wrapper.setState({productError: 'error message'});
+            wrapper.setState({lobError: 'error message'});
             expect(wrapper.find('div.Alert')).to.have.lengthOf(1);
         });
     })

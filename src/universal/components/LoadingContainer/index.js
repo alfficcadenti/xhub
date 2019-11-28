@@ -6,8 +6,9 @@ import './styles.less';
 
 class LoadingContainer extends React.PureComponent {
     render() {
-        const {isLoading, error, children} = this.props;
-        return ( <div className="loading-container">
+        const {isLoading, error, children, id} = this.props;
+        
+        return ( <div className="loading-container" id= {id}>
                  {isLoading && !error && <LoadingOverlay />}
                  {error ? <Alert className="loading-alert" msg={error} /> : !isLoading && children}
              </div>);
@@ -16,7 +17,8 @@ class LoadingContainer extends React.PureComponent {
 
 LoadingContainer.defaultProps = {
     error: null,
-    children: null
+    children: null,
+    id: null
 };
 
 LoadingContainer.propTypes = {
@@ -25,6 +27,7 @@ LoadingContainer.propTypes = {
         PropTypes.string,
         PropTypes.shape()
     ]),
+    id: PropTypes.string,
     children: PropTypes.node
 };
 
