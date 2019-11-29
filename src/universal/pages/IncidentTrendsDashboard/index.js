@@ -1,4 +1,5 @@
 import React, {Component, Fragment} from 'react';
+import {Route, Link, Switch} from 'react-router-dom';
 import moment from 'moment';
 import 'moment-timezone';
 import * as h from '../../components/utils/formatDate';
@@ -18,7 +19,7 @@ import {
     BRANDS
 } from './constants';
 import {
-    Incidents
+    Incidents, Overview
 } from './tabs/index';
 import './styles.less';
 
@@ -58,8 +59,21 @@ class IncidentTrendsDashboard extends Component {
         };
 
         this.links = [
-            {id: 'incidents', label: 'Incidents', href: '/incident-trends/incidents'}
+            {
+                id: 'incidents', 
+                label: 'Incidents', 
+                href: '/incident-trends/incidents',
+                node: <Link to="/incident-trends/incidents">{'Incidents'}</Link>
+            },
+            {
+                id: 'overview', 
+                label: 'Overview', 
+                href: '/incident-trends/overview',
+                node: <Link to="/incident-trends/overview">{'Overview'}</Link>
+            }   
         ];
+
+
         
     }
     
@@ -96,6 +110,12 @@ class IncidentTrendsDashboard extends Component {
             })
             // eslint-disable-next-line no-console
             .catch((error) => {console.log(error)})
+    }
+
+    handleNavigationClick = async (e, activeIndex) => {
+        this.setState({
+            activeIndex
+        });
     }
 
     handleDateRangeChange = (startDate, endDate) => {
@@ -156,13 +176,21 @@ class IncidentTrendsDashboard extends Component {
             filteredIncidents={displayIncidents}
         />
     }
+
+    renderOverviewTab = () => {
+        const {filteredIncidents =[]} = this.state;
+        const displayIncidents = filteredIncidents;
+        return <Overview
+            filteredIncidents={displayIncidents}
+        />
+    }
     
     componentDidMount() {
         this.loadIncident();
     }
     
     render() {
-        const {allIncidents, activeIndex, error, isLoading, startDate, endDate, incPriority, selectedBrand} = this.state;
+        const {activeIndex, error, isLoading, startDate, endDate, incPriority, selectedBrand} = this.state;
         return (
             <Fragment>
                 <h1 id='pageTitle'>Incidents trends</h1>
@@ -190,8 +218,24 @@ class IncidentTrendsDashboard extends Component {
                     links={this.links}
                     onLinkClick={this.handleNavigationClick}
                 />
-                    <LoadingContainer isLoading={isLoading} error={error}>
-                    { allIncidents.length && this.renderIncidentsTab()}
+                    <LoadingContainer isLoading={isLoading} error={error} id={'incident-main-div'}>
+                    <Switch>
+                            <Route 
+                                path="/incident-trends" 
+                                render={this.renderIncidentsTab} 
+                                exact
+                            />
+                            <Route 
+                                path="/incident-trends/incidents" 
+                                render={this.renderIncidentsTab} 
+                                
+                            />
+                            <Route 
+                                path="/incident-trends/overview" 
+                                render={this.renderOverviewTab} 
+                                
+                            />
+                    </Switch>
                     </LoadingContainer>
             </Fragment>
         );
@@ -201,5 +245,6 @@ class IncidentTrendsDashboard extends Component {
 IncidentTrendsDashboard.propTypes = {
     value: PropTypes.string,
     list: PropTypes.array,
+    location: PropTypes.object
 };
 export default IncidentTrendsDashboard;

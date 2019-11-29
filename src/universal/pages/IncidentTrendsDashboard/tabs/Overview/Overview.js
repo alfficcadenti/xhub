@@ -2,20 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import DataTable from '../../../../components/DataTable/index';
-import incidentsHelper from '../../incidentsHelper';
+import h from '../../incidentsHelper';
 
-const columns = ['Incident', 'Priority', 'Brand', 'Started', 'Summary', 'Duration', 'Root Cause Owners', 'Status'];
-
-const columnsInfo = {
-    Started: (<div><b>Started</b><br />Displayed in browser&apos;s local time</div>)
-};
+const columns = ['Brand', 'P1', 'P2', 'Total'];
 
 const renderTable = (filteredIncidents) => (
     <DataTable
-        data={incidentsHelper.getIncidentsData(filteredIncidents)}
+        data={h.getIncDataByBrand(filteredIncidents)}
         columns={columns}
-        columnsInfo={columnsInfo}
-        paginated={true}
+        paginated={false}
     />
 );
 
@@ -23,18 +18,18 @@ const renderNoResults = () => (
     <p>No Results Found</p>
 );
 
-const Incidents = (props) => (
-        <div data-wdio="incidents-table">
+const Overview = (props) => (
+        <div data-wdio="incidents-byBrand-table" id="inc-overview-table"> 
             {
                 props.filteredIncidents.length
                     ? renderTable(props.filteredIncidents)
                     : renderNoResults()
             }
         </div>
-);
+        );
 
-Incidents.propTypes = {
+Overview.propTypes = {
     filteredIncidents: PropTypes.arrayOf(PropTypes.shape()).isRequired
 };
 
-export default Incidents;
+export default Overview;

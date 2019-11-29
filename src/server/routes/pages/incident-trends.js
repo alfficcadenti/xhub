@@ -49,8 +49,9 @@ module.exports = {
             const startRender = Date.now();
             const body = ReactDOMServer.renderToString(
                 <ServerApp path={request.path}
-                           list={context.list}
-                           value={context.value} />
+                    location={request.url.pathname}
+                    list={context.list}
+                    value={context.value} />
             );
             const renderTime = Date.now() - startRender;
 
@@ -63,3 +64,36 @@ module.exports = {
         }
     }
 }
+
+module.exports = {
+    method: 'GET',
+    path: '/incident-trends/{path*}',
+    options: {
+        id: 'incident-trends-sub',
+        async handler(request,h){
+            // combine the context (server, route, request)
+            const requestInfo = await getRequestInfo(request)
+            const siteInfo = request.server.siteInfo()
+            const context = {...siteInfo, ...routeInfo, ...requestInfo};
+
+            // render react component and monitor timing
+            const ServerApp = request.pre.component.default;
+            const startRender = Date.now();
+            const body = ReactDOMServer.renderToString(
+                <ServerApp path={request.path}
+                    location={request.url.pathname}
+                    list={context.list}
+                    value={context.value} />
+            );
+            const renderTime = Date.now() - startRender;
+
+            const statsd = request.plugins['@homeaway/catalyst-monitoring-statsd'];
+            statsd.timing('react_ssr_render_time', renderTime);
+
+            // render the output with context and handlebars.
+            const template = request.pre.template;
+            return h.view(template, { body, properties:Serialize({value: context.value, list: context.list}), ...context })
+        }
+    }
+}
+

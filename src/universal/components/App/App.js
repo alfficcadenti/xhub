@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react';
-import {Route} from 'react-router-dom';
+import {Route, Switch} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Header from "../Header/Header";
 import IncidentTrendsDashboard from '../../pages/IncidentTrendsDashboard';
@@ -10,8 +10,10 @@ function App(props) {
         <Fragment>
             <Header />
             <div className="main-container">
-                <Route path="/incident-trends" render={() => <IncidentTrendsDashboard value={props.value} list={props.list} />}/>
-                <Route path="/resiliency-questionnaire" render={() => <ResiliencyQuestionnaire value={props.value} list={props.list} />}/>
+                <Switch>
+                    <Route path="/incident-trends" render={() => <IncidentTrendsDashboard value={props.value} list={props.list} />}/>
+                    <Route path="/resiliency-questionnaire" render={() => <ResiliencyQuestionnaire value={props.value} list={props.list} />}/>
+                </Switch>
             </div>
         </Fragment>
     );
@@ -19,7 +21,8 @@ function App(props) {
 
 App.propTypes = {
     value: PropTypes.string,
-    list: PropTypes.array
+    list: PropTypes.array,
+    path: PropTypes.string
 };
 
 export default App

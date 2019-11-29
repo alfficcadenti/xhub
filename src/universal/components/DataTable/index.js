@@ -21,7 +21,7 @@ class DataTable extends Component {
             sortDisabled: false,
             filename: 'hubble-table.csv',
             csvColumns: [],
-            paginated: true,
+            paginated: props.paginated,
             pageSize: 25,
             currPageIndex: 0
         };
@@ -234,7 +234,7 @@ class DataTable extends Component {
     }
 }
 DataTable.propTypes = {
-    data: PropTypes.arrayOf(PropTypes.shape()).isRequired
-
+    data: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+    paginated: PropTypes.bool
 };
 export default DataTable;

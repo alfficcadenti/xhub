@@ -1,8 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import InputListComponent from '../../components/InputListComponent';
-import {Route, Redirect} from 'react-router-dom';
-import {Link} from 'react-router-dom';
+import {Route, Redirect, Link} from 'react-router-dom';
 import './styles.less';
 import QuestionForm from './QuestionForm';
 import History from './History';

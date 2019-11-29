@@ -3,13 +3,14 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 import {shallow} from 'enzyme';
 import IncidentTrendsDashboard from '../index';
-import mockData from './filteredData.test.json'
+import mockData from './filteredData.test.json';
 
 describe('<IncidentTrendsDashboard/>', () => {
     sinon.stub(IncidentTrendsDashboard.prototype, 'componentDidMount');
 
     it('renders successfully and redirects to overview given base url', () => {
         const wrapper = shallow(<IncidentTrendsDashboard />);
+
         expect(wrapper).to.have.length(1);
     });
 
@@ -52,7 +53,7 @@ describe('<IncidentTrendsDashboard/>', () => {
             const instance = wrapper.instance();
             instance.setState({allIncidents: mockData, incPriority: '2-High'})
             instance.applyFilters();
-            expect(instance.state.filteredIncidents.length).to.equal(3);
+            expect(instance.state.filteredIncidents.length).to.equal(2);
         });
 
         it('filters state.allIncidents based on the Brand in filteredIncidents', async () => {
@@ -61,7 +62,7 @@ describe('<IncidentTrendsDashboard/>', () => {
             instance.setState({allIncidents: mockData})
             instance.handleBrandChange('eCommerce Platform (eCP)')
             instance.applyFilters();
-            expect(instance.state.filteredIncidents.length).to.equal(2);
+            expect(instance.state.filteredIncidents.length).to.equal(1);
         });
     })
 });
