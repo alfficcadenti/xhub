@@ -1,5 +1,9 @@
 import moment from 'moment';
 
 export function formatDurationToHours(duration) {
-    return moment.utc(moment.duration(duration/1000, "seconds").asMilliseconds()).format('HH:mm:ss')
+    return moment.utc(moment.duration(duration/1000, "seconds").asMilliseconds()).format('HH:mm:ss') || ''
+}
+
+export function formatDurationToH(duration) {
+    return moment.utc(moment.duration(duration/1000, "seconds").asMilliseconds()).format('HH') || ''
 }

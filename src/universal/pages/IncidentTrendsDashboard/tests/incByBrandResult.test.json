@@ -1,0 +1,42 @@
+[
+  [
+    {
+      "Brand": "Expedia Partner Solutions (EPS)",
+      "Status": "Closed",
+      "duration": "100000",
+      "incident_number": "INC4419505",
+      "incident_summary": "EAN Degraded",
+      "priority": "1-Critical",
+      "startedAt": "2019-09-25T14:58:24.000Z"
+    },
+    {
+      "Brand": "Expedia Partner Solutions (EPS)",
+      "Status": "Closed",
+      "duration": "100000",
+      "incident_number": "INC4419505",
+      "incident_summary": "EAN Degraded",
+      "priority": "2-High",
+      "startedAt": "2019-09-21T14:58:24.000Z"
+    }
+  ],
+  [
+    {
+      "Brand": "eCommerce Platform (eCP)",
+      "Status": "Closed",
+      "duration": "100000",
+      "incident_number": "INC4419505",
+      "incident_summary": "EAN Degraded",
+      "priority": "2-High",
+      "startedAt": "2019-09-20T14:58:24.000Z"
+    },
+    {
+      "Brand": "eCommerce Platform (eCP)",
+      "Status": "Closed",
+      "duration": "500000",
+      "incident_number": "INC4419505",
+      "incident_summary": "EAN Degraded",
+      "priority": "2-High",
+      "startedAt": "2019-09-20T14:58:24.000Z"
+    }
+  ]
+]

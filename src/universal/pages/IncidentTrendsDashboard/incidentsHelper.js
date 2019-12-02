@@ -1,34 +1,135 @@
 import moment from 'moment';
+import * as h from '../../components/utils/formatDate';
+import {DATE_FORMAT} from './constants';
+import { isArray } from 'util';
 
 const getIncidentsData = (filteredIncidents = []) => {
-    return Object.values(filteredIncidents).map((inc) => (
-        {
+    const incidentNewFormat = filteredIncidents.map((inc) => {
+        return {
             Incident: inc.incident_number,
             Priority: inc.priority || '',
             Brand: inc.Brand || '',
             Started: moment.utc(inc.startedAt).local().format('YYYY-MM-DD HH:mm'),
             Summary: inc.incident_summary || '',
-            Duration: inc.duration || '',
+            Duration: inc.duration ? h.formatDurationToHours(inc.duration) : '',
             'Root Cause Owners': inc.Root_Cause_Owner || '',
             Status: inc.Status || ''
         }
-    ));
+    });
+    return incidentNewFormat;
 };
 
 const distinct = (value,index,self) => {
     return self.indexOf(value) === index;
 }
 
-const getIncDataByBrand = (inc) => {
-    const distinctBrands = inc.map(x => x.Brand).filter( distinct )
-    return distinctBrands.map(elem => {
-        const P1inc = inc.filter(x=>x.priority === "1-Critical").filter(x=>x.Brand===elem).length
-        const P2inc = inc.filter(x=>x.priority === "2-High").filter(x=>x.Brand===elem).length
-        const total = inc.filter(x=>x.Brand===elem).length
-        return {'Brand':elem, 'P1':P1inc, 'P2':P2inc, 'Total': total}
-    });
+const listOfBrands = (inc = []) => (inc.map(x => x.Brand).filter( distinct ))
+
+const weeksInterval = (inc = []) => (
+    inc.length === 0 || !isArray(inc) ? 
+        [] :
+        [
+            Math.min(...inc.map(x=> moment(x.startedAt).week())), 
+            Math.max(...inc.map(x=> moment(x.startedAt).week()))
+        ]
+)
+
+const brandIncidents = (inc, brand) => (inc.filter(x=>x.Brand===brand))
+
+const incidentsOfTheWeek = (inc, week = '') => (inc.filter(inc => (moment(inc.startedAt).week() === week)))
+
+const incidentsInTimeFrame = (inc, startDate = '', endDate = moment.now) => (
+    inc.filter(
+        inc => (
+            moment(inc.startedAt).format(DATE_FORMAT) >= startDate && 
+            moment(inc.startedAt).format(DATE_FORMAT) <= endDate)
+        )
+)
+
+const getIncMetricsByBrand = (inc = []) => (
+    listOfBrands(inc)
+        .map(brand => {
+            const brandIncidentsList = brandIncidents(inc,brand);
+            const brandMTTR = h.formatDurationToHours(mttr(brandIncidentsList));
+            const P1inc = brandIncidentsList.filter(x=>x.priority === "1-Critical").length
+            const P2inc = brandIncidentsList.filter(x=>x.priority === "2-High").length
+            const total = brandIncidentsList.length
+            const brandTotalDuration = h.formatDurationToHours(totalDuration(brandIncidentsList))
+            return {
+                'Brand':brand, 
+                'P1':P1inc, 
+                'P2':P2inc, 
+                'Total': total, 
+                "MTTR": brandMTTR, 
+                "Total Duration": brandTotalDuration
+            }
+    })
+)
+
+const getMTTRByBrand = (inc = []) => (
+    listOfBrands(inc)
+        .map(brand => {
+            const brandIncidentsList = brandIncidents(inc,brand);
+            const brandMTTR = Number(h.formatDurationToH(mttr(brandIncidentsList)));
+            return {
+                'Brand':brand, 
+                "MTTR": brandMTTR, 
+            }
+    })
+)
+
+const listOfIncByBrands = (inc = []) => (
+    listOfBrands(inc)
+        .map(brand => brandIncidents(inc, brand))
+)
+
+const totalDurationByBrand = (inc = []) => (
+    listOfIncByBrands(inc)
+            .map(x=>{return {
+                "Brand":x[0].Brand,
+                "totalDuration":totalDuration(x)
+                }
+            })
+)
+
+const totalDuration = (inc = []) => (
+    inc.reduce((acc,curr)=>(acc+Number(curr.duration)),0)
+)
+
+const mttr = (inc = []) => (totalDuration(inc) / inc.length) || 0 ;
+
+const weeklyMTTRbyBrand = (inc = []) => {
+    const weeks = weeksInterval(inc)
+    const incsByBrand = listOfIncByBrands(inc)
+    return incsByBrand.map(x => {
+        const brandName = x[0].Brand
+        const weeklyMTTR = []
+        let i;
+        for (i = weeks[0]; i <= weeks[1] ; i++) {
+            weeklyMTTR.push(h.formatDurationToH(mttr(incidentsOfTheWeek(x,i))))
+        }
+        return { brand: brandName, data: weeklyMTTR}
+    })  
+}
+
+const range = (start, end) => {
+    if(start === end) return [start];
+    return [start, ...range(start + 1, end)];
 }
 
 export default {
-    getIncidentsData,getIncDataByBrand
+    getIncidentsData,
+    getIncMetricsByBrand,
+    totalDurationByBrand,
+    listOfBrands,
+    listOfIncByBrands,
+    totalDuration,
+    mttr,
+    brandIncidents,
+    incidentsInTimeFrame,
+    getMTTRByBrand,
+    weeksInterval,
+    incidentsOfTheWeek,
+    weeklyMTTRbyBrand,
+    range
 };

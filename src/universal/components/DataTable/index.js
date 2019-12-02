@@ -19,7 +19,6 @@ class DataTable extends Component {
             sortByColumn: null,
             sortByDirection: 'desc',
             sortDisabled: false,
-            filename: 'hubble-table.csv',
             csvColumns: [],
             paginated: props.paginated,
             pageSize: 25,
@@ -28,7 +27,7 @@ class DataTable extends Component {
     }
 
     static getDerivedStateFromProps(props, currState) {
-        if (currState.data.length !== props.data.length) {
+        if (currState.data !== props.data) {
             return {...props};
         } if (currState.data.length > 0) {
             return {...currState};

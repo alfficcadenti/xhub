@@ -1,8 +1,8 @@
 import React, {Component, Fragment} from 'react';
-import {Route, Link, Switch} from 'react-router-dom';
+import {Link} from 'react-router-dom';
+// import {Route, Switch} from 'react-router-dom';
 import moment from 'moment';
 import 'moment-timezone';
-import * as h from '../../components/utils/formatDate';
 import PropTypes from 'prop-types';
 import LoadingContainer from '../../components/LoadingContainer';
 import FilterDropDown from '../../components/FilterDropDown';
@@ -25,6 +25,8 @@ import './styles.less';
 
 const brandDefaultValue = 'All';
 const priorityDefaultValue = 'All - P1 & P2';
+const endDateDefaultValue = moment().format("YYYY-MM-DD")
+const startDateDefaultValue = moment(endDateDefaultValue).subtract(6, "months").format("YYYY-MM-DD")
 
 class IncidentTrendsDashboard extends Component {
     constructor(props) {
@@ -37,9 +39,10 @@ class IncidentTrendsDashboard extends Component {
             selectedRCPortfolioGroup: RC_PORTFOLIO_GROUPS,
             isLoading: true,
             error: '',
-            presetText: 'Last 7 Days',
-            startDate: '',
-            endDate: '',
+            presetText: 'Last 6 Months',
+            startDate: startDateDefaultValue,
+            endDate: endDateDefaultValue,
+            minDate: moment('2019-01-01').toDate(),
             incType: 'Production',
             incPriority: priorityDefaultValue,
             allIncidents: [],
@@ -84,7 +87,7 @@ class IncidentTrendsDashboard extends Component {
             'startedAt': inc.startedAt,
             'Root_Cause': inc.rootCause,
             'priority': inc.priority,
-            'duration': h.formatDurationToHours(inc.duration),
+            'duration': inc.duration,
             'Root_Cause_Owner': inc.rootCauseOwner,
             'Brand': inc.brand,
             'Status': inc.status
@@ -92,7 +95,7 @@ class IncidentTrendsDashboard extends Component {
     };
 
     loadIncident = () => {
-        fetch('api/v1/incidents')
+        fetch('/api/v1/incidents')
             .then((resp) => {
                 if (!resp.ok) {
                     this.setState({error: 'Incidents not available. Try to refresh'});
@@ -169,16 +172,16 @@ class IncidentTrendsDashboard extends Component {
     // TABS / ROUTES
     // ==================
 
-    renderIncidentsTab = () => {
-        const {filteredIncidents =[]} = this.state;
+    renderIncidentsTab = (filteredIncidents) => {
+        //const {filteredIncidents =[]} = this.state;
         const displayIncidents = filteredIncidents;
         return <Incidents
             filteredIncidents={displayIncidents}
         />
     }
 
-    renderOverviewTab = () => {
-        const {filteredIncidents =[]} = this.state;
+    renderOverviewTab = (filteredIncidents) => {
+        //const {filteredIncidents = []} = this.state;
         const displayIncidents = filteredIncidents;
         return <Overview
             filteredIncidents={displayIncidents}
@@ -190,7 +193,7 @@ class IncidentTrendsDashboard extends Component {
     }
     
     render() {
-        const {activeIndex, error, isLoading, startDate, endDate, incPriority, selectedBrand} = this.state;
+        const {activeIndex, error, isLoading, startDate, endDate, minDate, incPriority, selectedBrand, filteredIncidents} = this.state;
         return (
             <Fragment>
                 <h1 id='pageTitle'>Incidents trends</h1>
@@ -198,7 +201,7 @@ class IncidentTrendsDashboard extends Component {
                     <DatePicker
                         startDate={startDate}
                         endDate={endDate}
-                        minDate={moment('2019-08-01').toDate()}
+                        minDate={minDate}
                         handleDateRangeChange={this.handleDateRangeChange}
                         handleClearDates={this.handleClearDates}
                     />
@@ -219,7 +222,9 @@ class IncidentTrendsDashboard extends Component {
                     onLinkClick={this.handleNavigationClick}
                 />
                     <LoadingContainer isLoading={isLoading} error={error} id={'incident-main-div'}>
-                    <Switch>
+
+                    {activeIndex === 0 ? this.renderIncidentsTab(filteredIncidents) : this.renderOverviewTab(filteredIncidents)}
+                    {/* <Switch>
                             <Route 
                                 path="/incident-trends" 
                                 render={this.renderIncidentsTab} 
@@ -235,7 +240,7 @@ class IncidentTrendsDashboard extends Component {
                                 render={this.renderOverviewTab} 
                                 
                             />
-                    </Switch>
+                    </Switch> */}
                     </LoadingContainer>
             </Fragment>
         );

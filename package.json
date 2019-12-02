@@ -112,6 +112,8 @@
     "css-modules-require-hook": "^4.2.3",
     "debug": "^4.1.1",
     "dgram": "^1.0.1",
+    "echarts": "^4.5.0",
+    "echarts-for-react": "^2.0.15-beta.1",
     "fs": "0.0.1-security",
     "h2o2": "^8.2.0",
     "handlebars": "^4.4.0",
