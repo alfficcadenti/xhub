@@ -6,10 +6,10 @@ import { isArray } from 'util';
 const getIncidentsData = (filteredIncidents = []) => {
     const incidentNewFormat = filteredIncidents.map((inc) => {
         return {
-            Incident: inc.incident_number,
+            Incident: inc.incident_number || '',
             Priority: inc.priority || '',
             Brand: inc.Brand || '',
-            Started: moment.utc(inc.startedAt).local().format('YYYY-MM-DD HH:mm'),
+            Started: moment.utc(inc.startedAt).local().format('YYYY-MM-DD HH:mm') || '',
             Summary: inc.incident_summary || '',
             Duration: inc.duration ? h.formatDurationToHours(inc.duration) : '',
             'Root Cause Owners': inc.Root_Cause_Owner || '',
@@ -117,6 +117,11 @@ const range = (start, end) => {
     return [start, ...range(start + 1, end)];
 }
 
+const weeklyRange = (start, end) => {
+    if(moment(start) >= moment(end)) return [start];
+    return [start, ...weeklyRange(moment(start).add(7, 'days').format(DATE_FORMAT), end)];
+}
+
 export default {
     getIncidentsData,
     getIncMetricsByBrand,
@@ -131,5 +136,6 @@ export default {
     weeksInterval,
     incidentsOfTheWeek,
     weeklyMTTRbyBrand,
-    range
+    range,
+    weeklyRange
 };

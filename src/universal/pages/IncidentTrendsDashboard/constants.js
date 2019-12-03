@@ -21,5 +21,6 @@ exports.BRANDS = [
     'Expedia Partner Solutions (EPS)', 
     'Lodging Partner Services (LPS)', 
     'Hotwire - Consolidated', 
-    'Hotels Worldwide (HWW)'
+    'Hotels Worldwide (HWW)',
+    'Home Away'
     ]

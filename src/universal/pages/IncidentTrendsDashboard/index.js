@@ -1,6 +1,4 @@
 import React, {Component, Fragment} from 'react';
-import {Link} from 'react-router-dom';
-// import {Route, Switch} from 'react-router-dom';
 import moment from 'moment';
 import 'moment-timezone';
 import PropTypes from 'prop-types';
@@ -25,8 +23,8 @@ import './styles.less';
 
 const brandDefaultValue = 'All';
 const priorityDefaultValue = 'All - P1 & P2';
-const endDateDefaultValue = moment().format("YYYY-MM-DD")
-const startDateDefaultValue = moment(endDateDefaultValue).subtract(6, "months").format("YYYY-MM-DD")
+const endDateDefaultValue = moment().format(DATE_FORMAT)
+const startDateDefaultValue = moment("2019-01-01").format(DATE_FORMAT)
 
 class IncidentTrendsDashboard extends Component {
     constructor(props) {
@@ -61,18 +59,14 @@ class IncidentTrendsDashboard extends Component {
             datePickerOpen: false
         };
 
-        this.links = [
+        this.navLinks = [
             {
                 id: 'incidents', 
-                label: 'Incidents', 
-                href: '/incident-trends/incidents',
-                node: <Link to="/incident-trends/incidents">{'Incidents'}</Link>
+                label: 'Incidents'
             },
             {
                 id: 'overview', 
                 label: 'Overview', 
-                href: '/incident-trends/overview',
-                node: <Link to="/incident-trends/overview">{'Overview'}</Link>
             }   
         ];
 
@@ -169,22 +163,18 @@ class IncidentTrendsDashboard extends Component {
     }
 
     // ==================
-    // TABS / ROUTES
+    //         TABS 
     // ==================
 
     renderIncidentsTab = (filteredIncidents) => {
-        //const {filteredIncidents =[]} = this.state;
-        const displayIncidents = filteredIncidents;
         return <Incidents
-            filteredIncidents={displayIncidents}
+            filteredIncidents={filteredIncidents}
         />
     }
 
     renderOverviewTab = (filteredIncidents) => {
-        //const {filteredIncidents = []} = this.state;
-        const displayIncidents = filteredIncidents;
         return <Overview
-            filteredIncidents={displayIncidents}
+            filteredIncidents={filteredIncidents}
         />
     }
     
@@ -218,29 +208,11 @@ class IncidentTrendsDashboard extends Component {
                 <Navigation
                     noMobileSelect
                     activeIndex={activeIndex}
-                    links={this.links}
+                    links={this.navLinks}
                     onLinkClick={this.handleNavigationClick}
                 />
                     <LoadingContainer isLoading={isLoading} error={error} id={'incident-main-div'}>
-
-                    {activeIndex === 0 ? this.renderIncidentsTab(filteredIncidents) : this.renderOverviewTab(filteredIncidents)}
-                    {/* <Switch>
-                            <Route 
-                                path="/incident-trends" 
-                                render={this.renderIncidentsTab} 
-                                exact
-                            />
-                            <Route 
-                                path="/incident-trends/incidents" 
-                                render={this.renderIncidentsTab} 
-                                
-                            />
-                            <Route 
-                                path="/incident-trends/overview" 
-                                render={this.renderOverviewTab} 
-                                
-                            />
-                    </Switch> */}
+                        {activeIndex === 0 ? this.renderIncidentsTab(filteredIncidents) : this.renderOverviewTab(filteredIncidents)}
                     </LoadingContainer>
             </Fragment>
         );

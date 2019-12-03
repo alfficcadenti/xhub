@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ReactEcharts from 'echarts-for-react';
 import DataTable from '../../../../components/DataTable/index';
 import h from '../../incidentsHelper';
+import moment from 'moment';
 
 const overviewTablecolumns = ['Brand', 'P1', 'P2', 'Total', 'MTTR', 'Total Duration'];
 
@@ -23,7 +24,10 @@ const getMTTRbyBrandForChart = (inc) => (
         }))
 )
 
-const setOption = (series,weeks) => {
+const setOption = (filteredIncidents) => {
+    const series = getMTTRbyBrandForChart(filteredIncidents);
+    const weeksInt = h.weeksInterval(filteredIncidents);
+    const xAxisValues = h.weeklyRange(moment().week(weeksInt[0]).format("YYYY-MM-DD"),moment().week(weeksInt[1]).format("YYYY-MM-DD"))
     const chartOpt = {
         legend: {
             data: series.map(x=>x.name)
@@ -31,7 +35,7 @@ const setOption = (series,weeks) => {
         tooltip: {},
         xAxis: {
             type: 'category',
-            data: weeks
+            data: xAxisValues
         },
         yAxis: {
             name: 'Avg Duration (Hours)',
@@ -46,14 +50,10 @@ const setOption = (series,weeks) => {
 }
 
 const renderChart = (filteredIncidents) => {
-    const series = getMTTRbyBrandForChart(filteredIncidents);
-    const weeksInt = h.weeksInterval(filteredIncidents);
-    const weeks = h.range(weeksInt[0],weeksInt[1]).map(x=>'week '+x)
-
     return (
         <div id='MTTRChartDiv'>
             <h3>MTTR by Brand</h3>
-            <ReactEcharts option={setOption(series,weeks)}/>
+            <ReactEcharts option={setOption(filteredIncidents)} key={Math.random()}/>
         </div>
     )
 }
