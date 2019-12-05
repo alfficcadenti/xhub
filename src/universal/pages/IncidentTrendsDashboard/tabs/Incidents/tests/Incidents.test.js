@@ -12,7 +12,7 @@ describe('<Incidents/>', () => {
             />
         );
         const props = wrapper.find('DataTable').props();
-        expect(props.data[0].Incident).to.be.eql('INC4419505')
+        expect(props.data[0].Incident).to.be.eql("<a key='INC4419505link' href='https://expedia.service-now.com/go.do?id=INC4419505' target='_blank'>INC4419505</a>")
         expect(props.data[0].Priority).to.be.eql('1-Critical')
         expect(props.data[0].Brand).to.be.eql('Expedia Partner Solutions (EPS)')
         expect(props.data[0].Duration).to.be.eql("<a name='1.3333333333333333'></a>a minute")

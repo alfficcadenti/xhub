@@ -6,7 +6,7 @@ import { isArray } from 'util';
 const getIncidentsData = (filteredIncidents = []) => {
     const incidentNewFormat = filteredIncidents.map((inc) => {
         return {
-            Incident: inc.incident_number || '',
+            Incident: incLink(inc.incident_number) || '',
             Priority: inc.priority || '',
             Brand: inc.Brand || '',
             Started: moment.utc(inc.startedAt).local().format('YYYY-MM-DD HH:mm') || '',
@@ -18,6 +18,8 @@ const getIncidentsData = (filteredIncidents = []) => {
     });
     return incidentNewFormat;
 };
+
+const incLink = (incNumber) => (`<a key='${incNumber}link' href='https://expedia.service-now.com/go.do?id=${incNumber}' target='_blank'>${incNumber}</a>`)
 
 const distinct = (value,index,self) => {
     return self.indexOf(value) === index;
