@@ -11,7 +11,7 @@ const getIncidentsData = (filteredIncidents = []) => {
             Brand: inc.Brand || '',
             Started: moment.utc(inc.startedAt).local().format('YYYY-MM-DD HH:mm') || '',
             Summary: inc.incident_summary || '',
-            Duration: inc.duration ? h.formatDurationToHours(inc.duration) : '',
+            Duration: inc.duration ? h.formatDurationForTable(inc.duration) : '',
             'Root Cause Owners': inc.Root_Cause_Owner || '',
             Status: inc.Status || ''
         }
@@ -49,6 +49,7 @@ const incidentsInTimeFrame = (inc, startDate = '', endDate = moment.now) => (
 const getIncMetricsByBrand = (inc = []) => (
     listOfBrands(inc)
         .map(brand => {
+
             const brandIncidentsList = brandIncidents(inc,brand);
             const brandMTTR = h.formatDurationToHours(mttr(brandIncidentsList));
             const P1inc = brandIncidentsList.filter(x=>x.priority === "1-Critical").length
@@ -122,6 +123,9 @@ const weeklyRange = (start, end) => {
     return [start, ...weeklyRange(moment(start).add(7, 'days').format(DATE_FORMAT), end)];
 }
 
+const top5LongestDuration = (inc) => (inc.sort((a,b)=>(Number(b.duration) - Number(a.duration))).slice(0, 5))
+const top5ShortestDuration = (inc) => (inc.sort((a,b)=>(Number(a.duration) - Number(b.duration))).slice(0, 5))
+
 export default {
     getIncidentsData,
     getIncMetricsByBrand,
@@ -137,5 +141,7 @@ export default {
     incidentsOfTheWeek,
     weeklyMTTRbyBrand,
     range,
-    weeklyRange
+    weeklyRange,
+    top5LongestDuration,
+    top5ShortestDuration
 };

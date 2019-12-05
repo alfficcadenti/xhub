@@ -6,7 +6,7 @@ import mockResult from './incByBrandResult.test.json';
 
 const dataResult = {
         "Brand": "Expedia Partner Solutions (EPS)",
-        "Duration": "00:00:08",
+        "Duration": "<a name='0.13333333333333333'></a>a few seconds",
         "Incident": "INC4419505",
         "Priority": "1-Critical",
         "Root Cause Owners": "EAN Release - Deploy",
@@ -28,19 +28,19 @@ const durationByBrandResult = [
 const incMetricsByBrand = [
     {
         "Brand": "Expedia Partner Solutions (EPS)", 
+        "MTTR": "0h 1m ", 
         "P1": 1, 
         "P2": 1, 
-        "Total": 2,
-        "MTTR": "00:01:40",
-        "Total Duration": "00:03:20"
+        "Total": 2, 
+        "Total Duration": "0h 3m "
     }, 
     {
         "Brand": "eCommerce Platform (eCP)", 
+        "MTTR": "0h 5m ", 
         "P1": 0, 
         "P2": 2, 
-        "Total": 2,
-        "MTTR": "00:05:00",
-        "Total Duration": "00:10:00",
+        "Total": 2, 
+        "Total Duration": "0h 10m "
     }
 ]
 

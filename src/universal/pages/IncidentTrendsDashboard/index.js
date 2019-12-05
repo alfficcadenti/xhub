@@ -17,7 +17,7 @@ import {
     BRANDS
 } from './constants';
 import {
-    Incidents, Overview
+    Incidents, Overview, Top5
 } from './tabs/index';
 import './styles.less';
 
@@ -66,11 +66,13 @@ class IncidentTrendsDashboard extends Component {
             },
             {
                 id: 'overview', 
-                label: 'Overview', 
-            }   
+                label: 'Overview'
+            },
+            {
+                id: 'top5', 
+                label: 'Top 5'
+            }      
         ];
-
-
         
     }
     
@@ -177,6 +179,12 @@ class IncidentTrendsDashboard extends Component {
             filteredIncidents={filteredIncidents}
         />
     }
+
+    renderTop5Tab = (filteredIncidents) => {
+        return <Top5
+            filteredIncidents={filteredIncidents}
+        />
+    }
     
     componentDidMount() {
         this.loadIncident();
@@ -212,7 +220,23 @@ class IncidentTrendsDashboard extends Component {
                     onLinkClick={this.handleNavigationClick}
                 />
                     <LoadingContainer isLoading={isLoading} error={error} id={'incident-main-div'}>
-                        {activeIndex === 0 ? this.renderIncidentsTab(filteredIncidents) : this.renderOverviewTab(filteredIncidents)}
+
+                    {(() => {
+                        switch(activeIndex) {
+                        case 0:
+                            return this.renderIncidentsTab(filteredIncidents);
+                        case 1:
+                            return this.renderOverviewTab(filteredIncidents);
+                        case 2:
+                            return this.renderTop5Tab(filteredIncidents);
+                        default:
+                            return this.renderIncidentsTab(filteredIncidents);
+                        }
+                    })()}
+
+                        {/* {
+                            activeIndex === 0 ? this.renderIncidentsTab(filteredIncidents) : this.renderOverviewTab(filteredIncidents)
+                        } */}
                     </LoadingContainer>
             </Fragment>
         );
