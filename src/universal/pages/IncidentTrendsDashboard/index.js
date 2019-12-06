@@ -6,6 +6,7 @@ import LoadingContainer from '../../components/LoadingContainer';
 import FilterDropDown from '../../components/FilterDropDown';
 import {Navigation} from '@homeaway/react-navigation';
 import DatePicker from '../../components/DatePicker/index'
+import h from './incidentsHelper'
 
 import {
     RC_PORTFOLIOS,
@@ -61,35 +62,21 @@ class IncidentTrendsDashboard extends Component {
 
         this.navLinks = [
             {
-                id: 'incidents', 
-                label: 'Incidents'
-            },
-            {
                 id: 'overview', 
                 label: 'Overview'
             },
             {
                 id: 'top5', 
                 label: 'Top 5'
-            }      
+            },
+            {
+                id: 'incidents', 
+                label: 'Incidents'
+            },      
         ];
         
     }
     
-    getAllIncidents = (data = []) => {
-        return data.map((inc) => ({
-            'incident_summary': inc.incidentSummary, 
-            'incident_number': inc.incidentNumber,
-            'startedAt': inc.startedAt,
-            'Root_Cause': inc.rootCause,
-            'priority': inc.priority,
-            'duration': inc.duration,
-            'Root_Cause_Owner': inc.rootCauseOwner,
-            'Brand': inc.brand,
-            'Status': inc.status
-        }));
-    };
-
     loadIncident = () => {
         fetch('/api/v1/incidents')
             .then((resp) => {
@@ -100,7 +87,9 @@ class IncidentTrendsDashboard extends Component {
                 return resp.json();
             })
             .then((data) => {
-                const allIncidents = this.getAllIncidents(data);
+                const allIncidents = h.getAllIncidents(data);
+                // eslint-disable-next-line no-console
+                console.log(data)
                 this.setState({
                     allIncidents,
                     filteredIncidents: allIncidents,
@@ -224,13 +213,13 @@ class IncidentTrendsDashboard extends Component {
                     {(() => {
                         switch(activeIndex) {
                         case 0:
-                            return this.renderIncidentsTab(filteredIncidents);
-                        case 1:
                             return this.renderOverviewTab(filteredIncidents);
-                        case 2:
+                        case 1:
                             return this.renderTop5Tab(filteredIncidents);
-                        default:
+                        case 2:
                             return this.renderIncidentsTab(filteredIncidents);
+                        default:
+                            return this.renderOverviewTab(filteredIncidents);
                         }
                     })()}
 

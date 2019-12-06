@@ -3,6 +3,22 @@ import * as h from '../../components/utils/formatDate';
 import {DATE_FORMAT} from './constants';
 import { isArray } from 'util';
 
+const getAllIncidents = (data = []) => {
+    return data.map((inc) => ({
+        'incident_summary': inc.incidentSummary, 
+        'incident_number': inc.incidentNumber,
+        'startedAt': inc.startedAt,
+        'Root_Cause': inc.rootCause,
+        'priority': inc.priority,
+        'duration': inc.duration,
+        'ttd': inc.ttd,
+        'ttr': inc.ttr,
+        'Root_Cause_Owner': inc.rootCauseOwner,
+        'Brand': inc.brand,
+        'Status': inc.status
+    }));
+};
+
 const getIncidentsData = (filteredIncidents = []) => {
     const incidentNewFormat = filteredIncidents.map((inc) => {
         return {
@@ -12,6 +28,8 @@ const getIncidentsData = (filteredIncidents = []) => {
             Started: moment.utc(inc.startedAt).local().format('YYYY-MM-DD HH:mm') || '',
             Summary: inc.incident_summary || '',
             Duration: inc.duration ? h.formatDurationForTable(inc.duration) : '',
+            TTD: inc.ttd ? h.formatDurationForTable(inc.ttd) : '',
+            TTR: inc.ttr ? h.formatDurationForTable(inc.ttr) : '',
             'Root Cause Owners': inc.Root_Cause_Owner || '',
             Status: inc.Status || ''
         }
@@ -51,9 +69,9 @@ const incidentsInTimeFrame = (inc, startDate = '', endDate = moment.now) => (
 const getIncMetricsByBrand = (inc = []) => (
     listOfBrands(inc)
         .map(brand => {
-
             const brandIncidentsList = brandIncidents(inc,brand);
             const brandMTTR = h.formatDurationToHours(mttr(brandIncidentsList));
+            const brandMTTD = h.formatDurationToHours(mttd(brandIncidentsList));
             const P1inc = brandIncidentsList.filter(x=>x.priority === "1-Critical").length
             const P2inc = brandIncidentsList.filter(x=>x.priority === "2-High").length
             const total = brandIncidentsList.length
@@ -63,7 +81,8 @@ const getIncMetricsByBrand = (inc = []) => (
                 'P1':P1inc, 
                 'P2':P2inc, 
                 'Total': total, 
-                "MTTR": brandMTTR, 
+                "MTTD": brandMTTD,
+                "MTTR": brandMTTR,
                 "Total Duration": brandTotalDuration
             }
     })
@@ -99,7 +118,29 @@ const totalDuration = (inc = []) => (
     inc.reduce((acc,curr)=>(acc+Number(curr.duration)),0)
 )
 
-const mttr = (inc = []) => (totalDuration(inc) / inc.length) || 0 ;
+const totalTTR = (inc = []) => (
+    inc.reduce((acc,curr)=>(acc+Number(curr.ttr)),0)
+)
+
+const totalTTD = (inc = []) => (
+    inc.reduce((acc,curr)=>(acc+Number(curr.ttd)),0)
+)
+
+const mttr = (inc = []) => (totalTTR(inc) / inc.length) || 0 ;
+const mttd = (inc = []) => (totalTTD(inc) / inc.length) || 0 ;
+
+const weeklyMTTRMTTD = (inc = []) => {
+    //const output = [{ serie: 'MTTR', data: []},{ serie: 'MTTD', data: []}]
+    const weeks = weeksInterval(inc)
+        const weeklyMTTR = []
+        const weeklyMTTD = []
+        let i;
+        for (i = weeks[0]; i <= weeks[1] ; i++) {
+            weeklyMTTR.push(h.formatDurationToH(mttr(incidentsOfTheWeek(inc,i))))
+            weeklyMTTD.push(h.formatDurationToH(mttd(incidentsOfTheWeek(inc,i))))
+        }
+        return [{ serie: 'MTTR', data: weeklyMTTR},{ serie: 'MTTD', data: weeklyMTTD}]
+}
 
 const weeklyMTTRbyBrand = (inc = []) => {
     const weeks = weeksInterval(inc)
@@ -111,7 +152,21 @@ const weeklyMTTRbyBrand = (inc = []) => {
         for (i = weeks[0]; i <= weeks[1] ; i++) {
             weeklyMTTR.push(h.formatDurationToH(mttr(incidentsOfTheWeek(x,i))))
         }
-        return { brand: brandName, data: weeklyMTTR}
+        return { serie: brandName, data: weeklyMTTR}
+    })  
+}
+
+const weeklyMTTDbyBrand = (inc = []) => {
+    const weeks = weeksInterval(inc)
+    const incsByBrand = listOfIncByBrands(inc)
+    return incsByBrand.map(x => {
+        const brandName = x[0].Brand
+        const weeklyMTTD = []
+        let i;
+        for (i = weeks[0]; i <= weeks[1] ; i++) {
+            weeklyMTTD.push(h.formatDurationToH(mttd(incidentsOfTheWeek(x,i))))
+        }
+        return { serie: brandName, data: weeklyMTTD}
     })  
 }
 
@@ -129,6 +184,7 @@ const top5LongestDuration = (inc) => (inc.sort((a,b)=>(Number(b.duration) - Numb
 const top5ShortestDuration = (inc) => (inc.sort((a,b)=>(Number(a.duration) - Number(b.duration))).slice(0, 5))
 
 export default {
+    getAllIncidents,
     getIncidentsData,
     getIncMetricsByBrand,
     totalDurationByBrand,
@@ -141,7 +197,9 @@ export default {
     getMTTRByBrand,
     weeksInterval,
     incidentsOfTheWeek,
-    weeklyMTTRbyBrand,
+    weeklyMTTRMTTD,
+    weeklyMTTRbyBrand,    
+    weeklyMTTDbyBrand,
     range,
     weeklyRange,
     top5LongestDuration,

@@ -28,7 +28,8 @@ const durationByBrandResult = [
 const incMetricsByBrand = [
     {
         "Brand": "Expedia Partner Solutions (EPS)", 
-        "MTTR": "0h 1m ", 
+        "MTTR": "0h 0m ", 
+        "MTTD": "0h 0m ", 
         "P1": 1, 
         "P2": 1, 
         "Total": 2, 
@@ -36,7 +37,8 @@ const incMetricsByBrand = [
     }, 
     {
         "Brand": "eCommerce Platform (eCP)", 
-        "MTTR": "0h 5m ", 
+        "MTTR": "0h 2m ", 
+        "MTTD": "0h 2m ",  
         "P1": 0, 
         "P2": 2, 
         "Total": 2, 
@@ -123,7 +125,7 @@ describe('incidentsHelper', () => {
     describe('mttr', () => {
         it('returns the MTTR of a given array of incidents', () => {
             const result = h.mttr(mockData2);
-            expect(result).to.be.eql(200000);
+            expect(result).to.be.eql(100000);
         });
 
         it('returns 0 if input array is empty', () => {

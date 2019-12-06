@@ -5,7 +5,7 @@ import DataTable from '../../../../components/DataTable/index';
 import h from '../../incidentsHelper';
 import moment from 'moment';
 
-const overviewTablecolumns = ['Brand', 'P1', 'P2', 'Total', 'MTTR', 'Total Duration'];
+const overviewTablecolumns = ['Brand', 'P1', 'P2', 'Total', 'MTTD', 'MTTR', 'Total Duration'];
 
 const renderTable = (filteredIncidents) => (
     <DataTable
@@ -15,19 +15,17 @@ const renderTable = (filteredIncidents) => (
     />
 );
 
-const getMTTRbyBrandForChart = (inc) => (
-    h.weeklyMTTRbyBrand(inc)
+const formatSeriesForChart = (data = []) => (
+    data
         .map(x => ({
-            name: x.brand, 
+            name: x.serie, 
             data: x.data, 
             type: 'line'
         }))
 )
 
-const setOption = (filteredIncidents) => {
-    const series = getMTTRbyBrandForChart(filteredIncidents);
-    const weeksInt = h.weeksInterval(filteredIncidents);
-    const xAxisValues = h.weeklyRange(moment().week(weeksInt[0]).format("YYYY-MM-DD"),moment().week(weeksInt[1]).format("YYYY-MM-DD"))
+const setChartOptions = (series = [], xAxisValues = []) => {
+
     const chartOpt = {
         legend: {
             data: series.map(x=>x.name)
@@ -49,11 +47,15 @@ const setOption = (filteredIncidents) => {
     return chartOpt
 }
 
-const renderChart = (filteredIncidents) => {
+const renderChart = (data =[], dataToSeriesFunc, title) => {
+    const series = formatSeriesForChart(dataToSeriesFunc(data))
+    const weeksInterval = h.weeksInterval(data);
+    const xAxisValues = h.weeklyRange(moment().week(weeksInterval[0]).format("YYYY-MM-DD"),moment().week(weeksInterval[1]).format("YYYY-MM-DD"))
+
     return (
-        <div id='MTTRChartDiv'>
-            <h3>MTTR by Brand</h3>
-            <ReactEcharts option={setOption(filteredIncidents)} key={Math.random()}/>
+        <div id={title.replace(/\s+/g, '-')}>
+            <h3>{title}</h3>
+            <ReactEcharts option={setChartOptions(series, xAxisValues)} key={Math.random()}/>
         </div>
     )
 }
@@ -61,7 +63,9 @@ const renderChart = (filteredIncidents) => {
 const renderResults = (filteredIncidents) => (
     <div>
         {renderTable(filteredIncidents)}
-        {renderChart(filteredIncidents)}
+        {renderChart(filteredIncidents, h.weeklyMTTRMTTD, 'MTTD vs MTTR')}
+        {renderChart(filteredIncidents, h.weeklyMTTDbyBrand, 'MTTD by Brand')}
+        {renderChart(filteredIncidents, h.weeklyMTTRbyBrand, 'MTTR by Brand')}
     </div>
 );
 

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import DataTable from '../../../../components/DataTable/index';
 import incidentsHelper from '../../incidentsHelper';
 
-const columns = ['Incident', 'Priority', 'Brand', 'Started', 'Summary', 'Duration', 'Root Cause Owners', 'Status'];
+const columns = ['Incident', 'Priority', 'Brand', 'Started', 'Summary', 'Duration', 'TTD', 'TTR', 'Root Cause Owners', 'Status'];
 
 const columnsInfo = {
     Started: (<div><b>Started</b><br />Displayed in browser&apos;s local time</div>)
