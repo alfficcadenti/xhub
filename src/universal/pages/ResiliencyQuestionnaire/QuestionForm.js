@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ResiliencyQuestions from '../../components/ResiliencyQuestions';
 import Modal from '@homeaway/react-modal';
 import LoadingContainer from '../../components/LoadingContainer';
+import Cookies from 'js-cookie'
 import './styles.less';
 
 class QuestionForm extends Component {
@@ -48,7 +49,8 @@ class QuestionForm extends Component {
         };
     }
 
-    
+    loadUserInfo = () => (Cookies.get('username'));
+
     loadQuestionList = () => {
         fetch('/api/resiliency-questions')
             .then((resp) => {
@@ -74,13 +76,14 @@ class QuestionForm extends Component {
     }
 
     submitQuestionnaire = (product, application, questions) => {
+        const username = this.loadUserInfo();
         return fetch('/api/v1/resiliency/questionnaire', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({product, application, questions})
+            body: JSON.stringify({username, product, application, questions})
         })
     }
 
@@ -94,7 +97,8 @@ class QuestionForm extends Component {
             }
             return resp.json();
         }) 
-        .then(() => this.displayPostResult('Questionnaire successfully submitted'))
+        // eslint-disable-next-line no-console
+        .then((res) => {console.log(res);this.displayPostResult('Questionnaire successfully submitted')})
         .catch(() => this.displayPostResult('Error. Try Again.'));
     }
 

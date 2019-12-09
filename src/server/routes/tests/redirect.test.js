@@ -10,7 +10,7 @@ describe("redirect route", () => {
     expect(typeof redirect.options.handler).toEqual('function');
 
     const h = {redirect(url){
-      expect(url).toEqual('/incident-trends');
+      expect(url).toEqual('/login');
     }}
     redirect.options.handler(null,h);
   });

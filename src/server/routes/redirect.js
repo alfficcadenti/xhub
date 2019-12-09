@@ -5,7 +5,7 @@ module.exports = {
     options: {
         id: 'root',
         handler(request,h) {
-            return h.redirect('/incident-trends');
+            return h.redirect('/login');
         }
     }
 };

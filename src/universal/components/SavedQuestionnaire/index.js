@@ -7,12 +7,13 @@ import './styles.less';
 class SavedQuestionnaire extends PureComponent {
 
     renderQuestionnaire= (questionnaire,idx) => {
-        const id = questionnaire.timestamp || idx 
+        const username = questionnaire.questionnaire.username || 'unknown';
+        const id = questionnaire.timestamp.concat(' ',username) || idx+1;
         return (
-        <Divider heading={(id+1).toString()} id={id} key={id}>
+        <Divider heading={(id).toString()} id={id} key={id}>
             {
                 questionnaire.questionnaire.questions.map(q => 
-                    <div classNames='questionDiv' key={q.key}>
+                    <div className='questionDiv' key={q.key}>
                         <span className='question'>{q.key}</span>
                         <span className='answers'>{q.value}</span>
                     </div>)

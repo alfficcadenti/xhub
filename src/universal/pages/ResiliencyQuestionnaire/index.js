@@ -341,8 +341,6 @@ class ResiliencyQuestionnaire extends Component {
                         </Fragment>
                     }
           
-                    
-                  
                 </div>
             </Fragment>
         );
