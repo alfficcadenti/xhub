@@ -4,11 +4,9 @@
     "app": {
       "secrets": {
         "$filter": "env.NODE_ENV",
-        "development": {
-          "password": "pXGGf>8a5mi#HVLVCjzs"
-        },
         "$default": {
-          "password": "pXGGf>8a5mi#HVLVCjzs"
+          "oauthClientId": "secret:oauthClientId",
+          "oauthClientSecret": "secret:oauthClientSecret"
         }
       },
       // Service-client configuration
