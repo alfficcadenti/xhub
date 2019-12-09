@@ -66,13 +66,13 @@ class IncidentTrendsDashboard extends Component {
                 label: 'Overview'
             },
             {
-                id: 'top5', 
-                label: 'Top 5'
-            },
-            {
                 id: 'incidents', 
                 label: 'Incidents'
-            },      
+            },
+            {
+                id: 'top5', 
+                label: 'Top 5'
+            }
         ];
         
     }
@@ -215,17 +215,14 @@ class IncidentTrendsDashboard extends Component {
                         case 0:
                             return this.renderOverviewTab(filteredIncidents);
                         case 1:
-                            return this.renderTop5Tab(filteredIncidents);
-                        case 2:
                             return this.renderIncidentsTab(filteredIncidents);
+                        case 2:
+                            return this.renderTop5Tab(filteredIncidents);
                         default:
                             return this.renderOverviewTab(filteredIncidents);
                         }
                     })()}
-
-                        {/* {
-                            activeIndex === 0 ? this.renderIncidentsTab(filteredIncidents) : this.renderOverviewTab(filteredIncidents)
-                        } */}
+                    
                     </LoadingContainer>
             </Fragment>
         );
