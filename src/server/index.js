@@ -19,7 +19,7 @@ async function start(options = {}) {
     const server = await Catalyst.init({
         userConfigPath: Path.resolve(__dirname, 'manifest.json'),
         shortstopHandlers: {
-            secret: await SecretHandler.init({appName: 'opxhub'})
+            secret: await SecretHandler.init({appName: 'opxhub-ui'})
         },
         onConfig(config) {
             ServiceClient.mergeConfig(config.get('server.app.services'))

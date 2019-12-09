@@ -3,11 +3,8 @@
   "server": {
     "app": {
       "secrets": {
-        "$filter": "env.NODE_ENV",
-        "$default": {
-          "oauthClientId": "secret:oauthClientId",
-          "oauthClientSecret": "secret:oauthClientSecret"
-        }
+        "oauthClientId": "secret:oauthClientId",
+        "oauthClientSecret": "secret:oauthClientSecret"
       },
       // Service-client configuration
       "services": {
