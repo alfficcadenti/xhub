@@ -4,7 +4,7 @@ function login(request, response) {
         return request.oauthClient.login(request).then((id) => {
            const ttl = id.exp - id.iat;
             return response
-                .redirect('/incident-trends')
+                .redirect('/')
                 .header('Set-Cookie', `access_token=${id.tokenDecoded.token};Path=/;HttpOnly;Max-Age=${ttl};`)
                 .header('Set-Cookie', `username=${id.username};Path=/;Max-Age=${ttl};`, {'append':true})
         }).catch((e) => {
@@ -13,6 +13,8 @@ function login(request, response) {
         });
     }
     if ('access_token' in request.state) {
+        // eslint-disable-next-line no-console
+        console.log('Access Token login')
         return request.oauthClient.verify(request.state.access_token)
             .then(() => response.redirect('/incident-trends'))
             .catch(() => response.redirect(request.oauthClient.authorizeUrl(request)));

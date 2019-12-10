@@ -77,6 +77,8 @@ class QuestionForm extends Component {
 
     submitQuestionnaire = (product, application, questions) => {
         const username = this.loadUserInfo();
+        // eslint-disable-next-line no-console
+        console.log(username)
         return fetch('/api/v1/resiliency/questionnaire', {
             method: 'POST',
             headers: {
