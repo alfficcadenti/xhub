@@ -4,12 +4,12 @@ function login(request, response) {
         return request.oauthClient.login(request).then((id) => {
            const ttl = id.exp - id.iat;
             return response
-                .redirect('/')
+                .redirect('/incident-trends')
                 .header('Set-Cookie', `access_token=${id.tokenDecoded.token};Path=/;HttpOnly;Max-Age=${ttl};`)
                 .header('Set-Cookie', `username=${id.username};Path=/;Max-Age=${ttl};`, {'append':true})
         }).catch((e) => {
             request.log('Login error', e); // eslint-disable-line no-console
-            return response.redirect('/');
+            return response.redirect('/incident-trends');
         });
     }
     if ('access_token' in request.state) {

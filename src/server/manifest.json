@@ -55,7 +55,7 @@
         "production": {
           "oauthClientId": "secret:oauthClientId",
           "oauthClientSecret": "secret:oauthClientSecret",
-          "baseUrl": "http://expediagroup.okta.com/"
+          "baseUrl": "https://expediagroup.okta.com"
         }
       }
     }

@@ -87,8 +87,8 @@ class OktaAuth {
     }
 
     redirectUri(request) {
-        // const protocol = environmentResolver.isDevelopment() ? 'http' : 'https';
-        return `https%3A%2F%2F${request.info.host}%2Flogin`;
+        const protocol = (process.env.NODE_ENV === 'development') ? 'http' : 'https';
+        return `${protocol}%3A%2F%2F${request.info.host}%2Flogin`;
     }
 
     authorizeUrl(request) {
