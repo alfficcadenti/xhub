@@ -129,6 +129,11 @@
             "route": "require:./routes/pages/incident-trends",
             "component": "require:../universal/components/App/ServerApp.js",
             "template": "templates/welcome.hbs"
+          },
+          {
+            "route": "require:./routes/pages/psr",
+            "component": "require:../universal/components/App/ServerApp.js",
+            "template": "templates/welcome.hbs"
           }
         ]
       }

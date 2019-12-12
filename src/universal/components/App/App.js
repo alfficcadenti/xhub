@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Header from "../Header/Header";
 import IncidentTrendsDashboard from '../../pages/IncidentTrendsDashboard';
 import ResiliencyQuestionnaire from '../../pages/ResiliencyQuestionnaire';
+import PSR from '../../pages/PSR';
 
 function App(props) {
     return (
@@ -13,6 +14,7 @@ function App(props) {
                 <Switch>
                     <Route path="/incident-trends" render={() => <IncidentTrendsDashboard value={props.value} list={props.list} />}/>
                     <Route path="/resiliency-questionnaire" render={() => <ResiliencyQuestionnaire value={props.value} list={props.list} />}/>
+                    <Route path="/psr" render={() => <PSR />}/>
                 </Switch>
             </div>
         </Fragment>

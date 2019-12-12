@@ -12,6 +12,10 @@ class SiteMenu extends Component {
             {
                 link: '/resiliency-questionnaire',
                 text: 'Resiliency Questionnaire'
+            },
+            {
+                link: '/psr',
+                text: 'Purchase Success Rate'
             }
         ]
     }
