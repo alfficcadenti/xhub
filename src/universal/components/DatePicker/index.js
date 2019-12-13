@@ -15,7 +15,7 @@ class DatePicker extends Component {
 
     render() {
         const {startDate = '', endDate = '', minDate = ''} = this.props;
-        return (<div className="DatePicker">
+        return (
             <DateRangePicker
                 onDateRangeChange={this.handleDateRangeChange}
                 onDateRangeClear={this.handleClearDates}
@@ -27,10 +27,8 @@ class DatePicker extends Component {
                 endDate={endDate}
                 minDate={minDate}
                 dayTemplateComponent={DayAvailability}
-                
                 id='dateRangeFilter'
-        />
-    </div>
+            />
         );
     }
 }

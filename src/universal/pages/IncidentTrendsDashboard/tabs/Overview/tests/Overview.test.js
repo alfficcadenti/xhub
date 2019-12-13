@@ -17,6 +17,7 @@ describe('<Overview />', () => {
         expect(props.data[0].P2).to.be.eql(2)
         expect(props.data[0].Total).to.be.eql(3)
     });
+
     it('renders No Result message when no data available', () => {
         const data = [];
         const wrapper = shallow(

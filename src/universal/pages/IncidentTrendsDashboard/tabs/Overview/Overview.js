@@ -53,7 +53,7 @@ const renderChart = (data =[], dataToSeriesFunc, title) => {
     const xAxisValues = h.weeklyRange(moment().week(weeksInterval[0]).format("YYYY-MM-DD"),moment().week(weeksInterval[1]).format("YYYY-MM-DD"))
 
     return (
-        <div id={title.replace(/\s+/g, '-')}>
+        <div className='IncidentChartDiv' id={title.replace(/\s+/g, '-')}>
             <h3>{title}</h3>
             <ReactEcharts option={setChartOptions(series, xAxisValues)} key={Math.random()}/>
         </div>

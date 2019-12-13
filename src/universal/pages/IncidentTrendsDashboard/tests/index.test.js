@@ -8,10 +8,12 @@ import mockData from './filteredData.test.json';
 describe('<IncidentTrendsDashboard/>', () => {
     sinon.stub(IncidentTrendsDashboard.prototype, 'componentDidMount');
 
-    it('renders successfully and redirects to overview given base url', () => {
+    it('renders successfully and call renderOverviewTab by default', () => {
         const wrapper = shallow(<IncidentTrendsDashboard />);
-
-        expect(wrapper).to.have.length(1);
+        const instance = wrapper.instance();
+        const spy = sinon.stub(instance, 'renderOverviewTab');
+        instance.forceUpdate();
+        expect(spy.calledOnce).to.be.true;
     });
 
     describe('handleDateRangeChange', () => {
@@ -52,7 +54,9 @@ describe('<IncidentTrendsDashboard/>', () => {
             const wrapper = shallow(<IncidentTrendsDashboard />);
             const instance = wrapper.instance();
             instance.setState({allIncidents: mockData, incPriority: '2-High'})
+            instance.handleDateRangeChange('2019-08-20', '2019-10-22');
             instance.applyFilters();
+            instance.forceUpdate();
             expect(instance.state.filteredIncidents.length).to.equal(2);
         });
 
@@ -61,7 +65,9 @@ describe('<IncidentTrendsDashboard/>', () => {
             const instance = wrapper.instance();
             instance.setState({allIncidents: mockData})
             instance.handleBrandChange('eCommerce Platform (eCP)')
+            instance.handleDateRangeChange('2019-08-20', '2019-10-22');
             instance.applyFilters();
+            instance.forceUpdate();
             expect(instance.state.filteredIncidents.length).to.equal(1);
         });
     })

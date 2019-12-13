@@ -2,6 +2,7 @@
 
 #filters-div {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   font-weight: normal;
   vertical-align: middle;
@@ -14,10 +15,14 @@
     color: @filter-color;
   }
 
+  div.date-range,
+  div.Dropdown,
+  button#applyButton {
+    margin: 5px;
+  }
+
   #priority-dropdown {
     min-width: 160px;
-    margin-left: 15px;
-    margin-right: 5px;
     font-weight: normal;
     border-radius: 5px;
     height: @filter-size;
@@ -26,8 +31,6 @@
 
   #brand-dropdown {
     min-width: 300px;
-    margin-left: 15px;
-    margin-right: 5px;
     font-weight: normal;
     border-radius: 5px;
     height: @filter-size;
@@ -35,18 +38,19 @@
   }
 
   #applyButton {
-    margin-left: 15px;
     height: fit-content;
   }
 }
 
 #incident-main-div {
   text-align: -webkit-center;
+  text-align: -moz-center;
+
+  .IncidentChartDiv {
+    margin: 1.5em;
+  }
+
   #inc-overview-table {
     width: 50%;
   }
-}
-
-#MTTRChartDiv {
-  margin-top: 2em;
 }

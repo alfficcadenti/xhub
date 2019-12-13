@@ -7,25 +7,14 @@ import FilterDropDown from '../../components/FilterDropDown';
 import {Navigation} from '@homeaway/react-navigation';
 import DatePicker from '../../components/DatePicker/index'
 import h from './incidentsHelper'
-
-import {
-    RC_PORTFOLIOS,
-    RC_PORTFOLIO_GROUPS,
-    IMPACTED_PORTFOLIOS,
-    IMPACTED_PORTFOLIO_GROUPS,
-    DATE_FORMAT,
-    PRIORITIES,
-    BRANDS
-} from './constants';
-import {
-    Incidents, Overview, Top5
-} from './tabs/index';
+import {DATE_FORMAT, PRIORITIES, BRANDS} from './constants';
+import {Incidents, Overview, Top5} from './tabs/index';
 import './styles.less';
 
 const brandDefaultValue = 'All';
 const priorityDefaultValue = 'All - P1 & P2';
 const endDateDefaultValue = moment().format(DATE_FORMAT)
-const startDateDefaultValue = moment("2019-01-01").format(DATE_FORMAT)
+const startDateDefaultValue = moment().subtract(1, 'month').format(DATE_FORMAT)
 
 class IncidentTrendsDashboard extends Component {
     constructor(props) {
@@ -34,44 +23,36 @@ class IncidentTrendsDashboard extends Component {
             activeIndex: 0,
             selectedBrand: brandDefaultValue,
             portfolios: [],
-            selectedRCPortfolio: RC_PORTFOLIOS,
-            selectedRCPortfolioGroup: RC_PORTFOLIO_GROUPS,
             isLoading: true,
             error: '',
-            presetText: 'Last 6 Months',
+            presetText: 'Last 1 Month',
             startDate: startDateDefaultValue,
             endDate: endDateDefaultValue,
             minDate: moment('2019-01-01').toDate(),
             incType: 'Production',
             incPriority: priorityDefaultValue,
             allIncidents: [],
-            meanTrendsData: [],
             filteredIncidents: [],
-            pirData: [],
-            counter: {},
-            filteredRcas: [],
             monthlyTrendData: {},
             weeklyTrendData: {},
-            p1P2RadioValue: 'p1RadioIncidents',
-            meanTimeTrendsData: {},
-            showMoreFilters: false,
-            selectedImpactedPortfolioGroup: IMPACTED_PORTFOLIO_GROUPS,
-            selectedImpactedPortfolio: IMPACTED_PORTFOLIOS,
             datePickerOpen: false
         };
 
         this.navLinks = [
             {
                 id: 'overview', 
-                label: 'Overview'
+                label: 'Overview',
+                href: '/incident-trends'
             },
             {
                 id: 'incidents', 
-                label: 'Incidents'
+                label: 'Incidents',
+                href: '/incident-trends'
             },
             {
                 id: 'top5', 
-                label: 'Top 5'
+                label: 'Top 5',
+                href: '/incident-trends'
             }
         ];
         
@@ -88,14 +69,11 @@ class IncidentTrendsDashboard extends Component {
             })
             .then((data) => {
                 const allIncidents = h.getAllIncidents(data);
-                // eslint-disable-next-line no-console
-                console.log(data)
                 this.setState({
                     allIncidents,
-                    filteredIncidents: allIncidents,
                     isLoading: false
                 })
-            })
+            }).then(()=>this.applyFilters())
             // eslint-disable-next-line no-console
             .catch((error) => {console.log(error)})
     }
