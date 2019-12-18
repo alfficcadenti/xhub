@@ -35,7 +35,7 @@ async function getRequestInfo(request){
 
 module.exports = {
     method: 'GET',
-    path: '/resiliency-questionnaire',
+    path: '/resiliency-questionnaire/{path*}',
     options: {
         id: 'resiliency-questionnaire',
         async handler(request,h){

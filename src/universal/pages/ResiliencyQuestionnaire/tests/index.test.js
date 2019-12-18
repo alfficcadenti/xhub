@@ -159,6 +159,37 @@ describe('<ResiliencyQuestionnaire/>', () => {
                 expect(wrapper.state(['isOpen'])).to.be.false;
             })
         });
+
+        describe('preSubmit()', () => {
+            it('check for errors', () => {
+                const wrapper = shallow(<QuestionForm product={product} application={application}/>);
+                const instance = wrapper.instance();
+                sinon.stub(instance, 'handleSubmit');
+                const checkForErrors = sinon.spy(instance, 'checkForErrors');
+                instance.preSubmit();
+                expect(checkForErrors.calledOnce).to.be.true;
+            })
+
+            it('if errors do not call handleSubmit()', () => {
+                const wrapper = shallow(<QuestionForm product={product} application={application}/>);
+                const instance = wrapper.instance();
+                const handleSubmit = sinon.stub(instance, 'handleSubmit');
+                const checkForErrors = sinon.stub(instance, 'checkForErrors');
+                checkForErrors.returns(2)
+                instance.preSubmit();
+                expect(handleSubmit.calledOnce).to.be.false;
+            })
+
+            it('if no errors do call handleSubmit()', () => {
+                const wrapper = shallow(<QuestionForm product={product} application={application}/>);
+                const instance = wrapper.instance();
+                const handleSubmit = sinon.stub(instance, 'handleSubmit');
+                const checkForErrors = sinon.stub(instance, 'checkForErrors');
+                checkForErrors.returns(0)
+                instance.preSubmit();
+                expect(handleSubmit.calledOnce).to.be.true;
+            })
+        });
     });
 
     describe('<History/>', () => {

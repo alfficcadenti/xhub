@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ResiliencyQuestions from '../../components/ResiliencyQuestions';
 import Modal from '@homeaway/react-modal';
 import LoadingContainer from '../../components/LoadingContainer';
+import h from '../../components/utils/formatString'
 import Cookies from 'js-cookie'
 import './styles.less';
 
@@ -69,16 +70,15 @@ class QuestionForm extends Component {
             .catch((error) => {console.log(error)});
     }
 
-    getQuestionnaireAnswers = () => {
-        //to be refactored using refs
-        const questionnaireDOM = document.getElementById('resiliency-questions-form').getElementsByClassName('FormTextArea__textarea');
-        return Array.from(questionnaireDOM).map(({id, value}) => ({ key: id, value}));
-    }
+    getQuestionnaireAnswers = () => (
+        Array.from(this.state.questions.map(x=> {
+            const id = (x.type === 'date') ? 'input-'+h.replaceSpaces(x.question) : h.replaceSpaces(x.question)
+            return {key: x.question, value: document.getElementById(id).value}
+        }))
+    )
 
     submitQuestionnaire = (product, application, questions) => {
         const username = this.loadUserInfo();
-        // eslint-disable-next-line no-console
-        console.log(username)
         return fetch('/api/v1/resiliency/questionnaire', {
             method: 'POST',
             headers: {
@@ -89,18 +89,38 @@ class QuestionForm extends Component {
         })
     }
 
+    checkForErrors = () => (
+        (Array.from(
+            document.getElementsByClassName('help-block'))
+                .map(
+                    x=>(x.innerHTML)
+                ).filter(
+                    x=>x.includes('Error')
+                )
+        ).length
+    )
+
+    preSubmit = () => {
+        if(this.checkForErrors() > 0) {
+            this.handleOpen();
+            this.displayPostResult('Error: answers contain errors')
+        } else {
+            this.handleSubmit()
+        }
+    }
+    
     handleSubmit = () => {
         this.handleOpen();
+        
         const {product, application} = this.props;
-        const questions = this.getQuestionnaireAnswers();
-        this.submitQuestionnaire(product, application, questions).then(resp => {
+        const answers = this.getQuestionnaireAnswers();
+        this.submitQuestionnaire(product, application, answers).then(resp => {
             if (!resp.ok) {
                 throw new Error(resp);
             }
             return resp.json();
         }) 
-        // eslint-disable-next-line no-console
-        .then((res) => {console.log(res);this.displayPostResult('Questionnaire successfully submitted')})
+        .then(() => {this.displayPostResult('Questionnaire successfully submitted')})
         .catch(() => this.displayPostResult('Error. Try Again.'));
     }
 
@@ -143,7 +163,7 @@ class QuestionForm extends Component {
                                 id='submitButton'
                                 type="button" 
                                 className='btn btn-default active'
-                                onClick={this.handleSubmit}>
+                                onClick={this.preSubmit}>
                                 Submit Questionnaire
                             </button>
                     
