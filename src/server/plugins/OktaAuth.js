@@ -122,8 +122,6 @@ class OktaAuth {
                 }
                 const token = oauthResponse.payload.access_token;
                 this.id_token = oauthResponse.payload.id_token;
-                // eslint-disable-next-line no-console
-                console.log('HERE oauthResponsePayload',JSON.stringify(oauthResponse.payload))
                 return this.verify(token).then((decoded) => {
                     return {
                         ...decoded,
@@ -136,8 +134,6 @@ class OktaAuth {
                         'Authorization': `Bearer ${tokenDecoded.token}`,
                     }})
                     .then(data => {
-                    // // eslint-disable-next-line no-console
-                    // console.log('HERE userInfo',data.payload)
                     const username = data.payload.userinfo;
                     return {username,tokenDecoded}
                 })

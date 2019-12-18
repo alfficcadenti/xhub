@@ -20,8 +20,6 @@ describe('<GaugeChart /> ', () => {
 
     it('renders correctly', () => {
         const wrapper = shallow(<GaugeChart {...props} />);
-        // eslint-disable-next-line no-console
-        console.log(wrapper.html());
         expect(wrapper).to.have.lengthOf(1);
     });
 

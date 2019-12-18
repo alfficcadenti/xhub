@@ -13,8 +13,6 @@ function login(request, response) {
         });
     }
     if ('access_token' in request.state) {
-        // eslint-disable-next-line no-console
-        console.log('Access Token login')
         return request.oauthClient.verify(request.state.access_token)
             .then(() => response.redirect('/incident-trends'))
             .catch(() => response.redirect(request.oauthClient.authorizeUrl(request)));

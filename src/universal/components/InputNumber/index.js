@@ -25,7 +25,7 @@ class InputNumber extends Component {
 
     helpTextString = (range) => {
         if (range.min && !range.max) {
-            return `min value ${range.min}`
+            return `minimum value ${range.min}`
         }
         if (range.min && range.max) {
             return `value between ${range.min} - ${range.max}`
@@ -50,17 +50,15 @@ class InputNumber extends Component {
     checkValue = (event) => {
         const {range} = this.props;
 
-        if(this.outsideRange(event.target.value, Number(range.min), Number(range.max))) {
+        (this.outsideRange(event.target.value, Number(range.min), Number(range.max))) ? 
             this.setState({
                 error: `Error: value is not valid`,
                 value: event.target.value
-            })
-        } else {
+            }) :
             this.setState({
                 value: event.target.value, 
                 error:''
             })
-        }
     }
 
     render() {
