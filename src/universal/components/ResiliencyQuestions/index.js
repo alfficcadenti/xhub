@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {FormTextArea} from '@homeaway/react-form-components';
 import SearchableList from '@homeaway/react-searchable-list';
 import InputNumber from '../InputNumber'
+import InputText from '../InputText'
 import {DatePicker} from '@homeaway/react-date-pickers';
 import h from '../utils/formatString'
 import moment from 'moment';
@@ -32,11 +32,10 @@ class ResiliencyQuestions extends Component {
     }
 
     renderQuestionInput = (id,question) =>  (
-        <FormTextArea 
+        <InputText 
             key={id}
             id={id}
-            label={question}
-            autoExpand
+            question={question} 
         />
     )
 
