@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matches the snapshot 1`] = `
+<div
+  className="form-group floating-label empty"
+>
+  <textarea
+    aria-label=""
+    className="FormTextArea__textarea form-control FormTextArea__textarea--auto-expand"
+    id={null}
+    name={null}
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    value=""
+  />
+  <label
+    className="FormTextArea__floating-label"
+    htmlFor={null}
+  >
+    
+  </label>
+</div>
+`;

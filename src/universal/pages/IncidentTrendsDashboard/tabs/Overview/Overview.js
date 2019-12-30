@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import ReactEcharts from 'echarts-for-react';
 import DataTable from '../../../../components/DataTable/index';
 import h from '../../incidentsHelper';
-import moment from 'moment';
 
 const overviewTablecolumns = ['Brand', 'P1', 'P2', 'Total', 'MTTD', 'MTTR', 'Total Duration'];
 
@@ -49,8 +48,8 @@ const setChartOptions = (series = [], xAxisValues = []) => {
 
 const renderChart = (data =[], dataToSeriesFunc, title) => {
     const series = formatSeriesForChart(dataToSeriesFunc(data))
-    const weeksInterval = h.weeksInterval(data);
-    const xAxisValues = h.weeklyRange(moment().week(weeksInterval[0]).format("YYYY-MM-DD"),moment().week(weeksInterval[1]).format("YYYY-MM-DD"))
+    const dates = h.datesInterval(data);
+    const xAxisValues = h.weeklyRange(dates[0],dates[1])
 
     return (
         <div className='IncidentChartDiv' id={title.replace(/\s+/g, '-')}>

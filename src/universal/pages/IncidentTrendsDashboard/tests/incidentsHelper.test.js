@@ -174,6 +174,18 @@ describe('incidentsHelper', () => {
             const result = h.weeksInterval([]);
             expect(result).to.be.eql([]);
         });
+    });    
+    
+    describe('datesInterval', () => {
+        it('returns the min and max dates of a given array of incidents', () => {
+            const result = h.datesInterval(mockData2);
+            expect(result).to.be.eql(['2019-09-20','2019-09-25']);
+        });
+
+        it('returns empty array if input array is empty', () => {
+            const result = h.datesInterval([]);
+            expect(result).to.be.eql([]);
+        });
     });
 
     describe('incidentsOfTheWeek', () => {

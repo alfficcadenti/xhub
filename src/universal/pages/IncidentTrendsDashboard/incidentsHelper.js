@@ -45,6 +45,19 @@ const distinct = (value,index,self) => {
 
 const listOfBrands = (inc = []) => (inc.map(x => x.Brand).filter( distinct ))
 
+const max = (accumulator, currentValue) => (currentValue > accumulator ? currentValue : accumulator);
+const min = (accumulator, currentValue) => (currentValue < accumulator ? currentValue : accumulator);
+
+const datesInterval = (inc = []) => {
+    const dates = inc.map(x=> moment(x.startedAt))
+    return dates.length === 0 || !isArray(dates) ? 
+    [] :
+    [
+        moment(dates.reduce(min)).format(DATE_FORMAT), 
+        moment(dates.reduce(max)).format(DATE_FORMAT)
+    ]
+}
+
 const weeksInterval = (inc = []) => (
     inc.length === 0 || !isArray(inc) ? 
         [] :
@@ -130,42 +143,41 @@ const mttr = (inc = []) => (totalTTR(inc) / inc.length) || 0 ;
 const mttd = (inc = []) => (totalTTD(inc) / inc.length) || 0 ;
 
 const weeklyMTTRMTTD = (inc = []) => {
-    //const output = [{ serie: 'MTTR', data: []},{ serie: 'MTTD', data: []}]
-    const weeks = weeksInterval(inc)
-        const weeklyMTTR = []
-        const weeklyMTTD = []
-        let i;
-        for (i = weeks[0]; i <= weeks[1] ; i++) {
-            weeklyMTTR.push(h.formatDurationToH(mttr(incidentsOfTheWeek(inc,i))))
-            weeklyMTTD.push(h.formatDurationToH(mttd(incidentsOfTheWeek(inc,i))))
-        }
-        return [{ serie: 'MTTR', data: weeklyMTTR},{ serie: 'MTTD', data: weeklyMTTD}]
+    const weeks = datesInterval(inc)
+    const weeksInterval = weeklyRange(weeks[0],weeks[1])
+    const weeklyMTTR = []
+    const weeklyMTTD = [] 
+    weeksInterval.forEach(date => {
+        weeklyMTTR.push(h.formatDurationToH(mttr(incidentsOfTheWeek(inc,moment(date).week()))))
+        weeklyMTTD.push(h.formatDurationToH(mttd(incidentsOfTheWeek(inc,moment(date).week()))))
+    });
+    return [{ serie: 'MTTR', data: weeklyMTTR},{ serie: 'MTTD', data: weeklyMTTD}]
 }
 
 const weeklyMTTRbyBrand = (inc = []) => {
-    const weeks = weeksInterval(inc)
+    const weeks = datesInterval(inc)
+    const weeksInterval = weeklyRange(weeks[0],weeks[1])
     const incsByBrand = listOfIncByBrands(inc)
     return incsByBrand.map(x => {
         const brandName = x[0].Brand
         const weeklyMTTR = []
-        let i;
-        for (i = weeks[0]; i <= weeks[1] ; i++) {
-            weeklyMTTR.push(h.formatDurationToH(mttr(incidentsOfTheWeek(x,i))))
-        }
+        weeksInterval.forEach(date => {
+            weeklyMTTR.push(h.formatDurationToH(mttr(incidentsOfTheWeek(x,moment(date).week()))))
+        });
         return { serie: brandName, data: weeklyMTTR}
     })  
 }
 
 const weeklyMTTDbyBrand = (inc = []) => {
-    const weeks = weeksInterval(inc)
+    const weeks = datesInterval(inc)
+    const weeksInterval = weeklyRange(weeks[0],weeks[1])
     const incsByBrand = listOfIncByBrands(inc)
     return incsByBrand.map(x => {
         const brandName = x[0].Brand
         const weeklyMTTD = []
-        let i;
-        for (i = weeks[0]; i <= weeks[1] ; i++) {
-            weeklyMTTD.push(h.formatDurationToH(mttd(incidentsOfTheWeek(x,i))))
-        }
+        weeksInterval.forEach(date => {
+            weeklyMTTD.push(h.formatDurationToH(mttr(incidentsOfTheWeek(x,moment(date).week()))))
+        });
         return { serie: brandName, data: weeklyMTTD}
     })  
 }
@@ -176,7 +188,7 @@ const range = (start, end) => {
 }
 
 const weeklyRange = (start, end) => {
-    if(moment(start) >= moment(end)) return [start];
+    if(start >= end) return [start];
     return [start, ...weeklyRange(moment(start).add(7, 'days').format(DATE_FORMAT), end)];
 }
 
@@ -195,6 +207,7 @@ export default {
     brandIncidents,
     incidentsInTimeFrame,
     getMTTRByBrand,
+    datesInterval,
     weeksInterval,
     incidentsOfTheWeek,
     weeklyMTTRMTTD,

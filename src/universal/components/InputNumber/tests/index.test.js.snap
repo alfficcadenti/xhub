@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matches the snapshot 1`] = `
+<div
+  className="form-group floating-label empty"
+>
+  <input
+    aria-invalid={false}
+    aria-label="% Prod Traffic"
+    className="form-control"
+    id="%-Prod-Traffic"
+    onChange={[Function]}
+    onKeyPress={[Function]}
+    readOnly={undefined}
+    type="number"
+    value=""
+  />
+  <label
+    className=""
+    htmlFor="%-Prod-Traffic"
+  >
+    % Prod Traffic
+  </label>
+</div>
+`;
