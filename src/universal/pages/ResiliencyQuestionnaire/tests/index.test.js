@@ -201,6 +201,17 @@ describe('<ResiliencyQuestionnaire/>', () => {
             const wrapper = shallow(<History product={product} application={application}/>);
             expect(wrapper).to.have.length(1);
         });
+
+        it('renders error message', () => {
+            const wrapper = mount(<History product={product} application={application}/>);
+            wrapper.setState({
+                historyError: 'No questionnaire submitted previously',
+                isLoading: false
+            });
+            expect(wrapper.find('div.Alert')).to.have.lengthOf(1);
+            expect(wrapper.find('div.Alert').text()).to.be.eql('No questionnaire submitted previously');
+
+        });
     });
 });
 

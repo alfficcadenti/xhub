@@ -277,49 +277,50 @@ class ResiliencyQuestionnaire extends Component {
         return (
             <Fragment>
                 <h1 id='pageTitle'>{"BEX 'r' Certification Resiliency Questionnaire"}</h1>
-                <div id='resiliency-questions-form'>
-                    {
-                        <InputListComponent 
-                            isLoading={loadingLob} 
-                            error={lobError} 
-                            options={lobs}
-                            inputProps={lobInputProps}
-                            onChange={this.selectLob}
-                        />
-                    }
-
-{
-                        lob.name && <InputListComponent 
-                            isLoading={loadingProduct} 
-                            error={productError} 
-                            options={products}
-                            inputProps={productInputProps}
-                            onChange={this.selectProduct}
-                        />
-                    }
-
-                    {
-                        product.name && <div id='applicationForm'>
-                            {!applicationError && !application.name.length &&
-                                <InputListComponent 
-                                isLoading={loadingApplications} 
-                                error={applicationError} 
-                                options={['Tier 1', 'Tier 2','Tier 3']} 
-                                inputProps={TierInputProps}
-                                onChange={this.selectTier}
-                                />
-                            }
+                <div id='resiliency-questions-form-container'>
+                    <div className='resiliency-questions-form'>
+                        {
                             <InputListComponent 
-                                id='applicationNameInput'
-                                isLoading={loadingApplications} 
-                                error={applicationError} 
-                                options={filteredApplications} 
-                                inputProps={applicationInputProps}
-                                onChange={this.selectApplication}
-                                />
-                        </div>
-                    }
+                                isLoading={loadingLob} 
+                                error={lobError} 
+                                options={lobs}
+                                inputProps={lobInputProps}
+                                onChange={this.selectLob}
+                            />
+                        }
 
+                        {
+                            lob.name && <InputListComponent 
+                                isLoading={loadingProduct} 
+                                error={productError} 
+                                options={products}
+                                inputProps={productInputProps}
+                                onChange={this.selectProduct}
+                            />
+                        }
+
+                        {
+                            product.name && <div id='applicationForm'>
+                                {!applicationError && !application.name.length &&
+                                    <InputListComponent 
+                                    isLoading={loadingApplications} 
+                                    error={applicationError} 
+                                    options={['Tier 1', 'Tier 2','Tier 3']} 
+                                    inputProps={TierInputProps}
+                                    onChange={this.selectTier}
+                                    />
+                                }
+                                <InputListComponent 
+                                    id='applicationNameInput'
+                                    isLoading={loadingApplications} 
+                                    error={applicationError} 
+                                    options={filteredApplications} 
+                                    inputProps={applicationInputProps}
+                                    onChange={this.selectApplication}
+                                    />
+                            </div>
+                        }
+                    </div>
                     {
                         lob.name && product.name && application.name && 
                         <Fragment>
@@ -328,6 +329,7 @@ class ResiliencyQuestionnaire extends Component {
                             activeIndex={activeIndex}
                             links={this.links}
                             onLinkClick={this.handleNavigationClick}
+                            leftAlign={false}
                             />
                             <Redirect to={this.links[activeIndex].href} />
                             <Route 

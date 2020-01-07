@@ -154,30 +154,32 @@ class QuestionForm extends Component {
         const loadingQuestions = !questions.length && application.name && !questionError;
 
         return (
-            <LoadingContainer isLoading={loadingQuestions} error={questionError}>
-                        <h4>Fill the questionnaire below</h4>
-                            <ResiliencyQuestions 
-                                questions={questions}
-                            />
-                            <button 
-                                id='submitButton'
-                                type="button" 
-                                className='btn btn-default active'
-                                onClick={this.preSubmit}>
-                                Submit Questionnaire
-                            </button>
-                    
-                    
-                    <Modal
-                        id="questionnaire-modal"
-                        isOpen={this.state.isOpen}
-                        onClose={this.handleClose}
-                        header={false}
-                    >
-                        <LoadingContainer isLoading={sendingAnswers}>{modalMessage}</LoadingContainer>
+            <div className='resiliency-questions-form'>
+                <LoadingContainer isLoading={loadingQuestions} error={questionError}>
+                            <h4>Fill the questionnaire below</h4>
+                                <ResiliencyQuestions 
+                                    questions={questions}
+                                />
+                                <button 
+                                    id='submitButton'
+                                    type="button" 
+                                    className='btn btn-default active'
+                                    onClick={this.preSubmit}>
+                                    Submit Questionnaire
+                                </button>
                         
-                    </Modal>
-            </LoadingContainer>
+                        
+                        <Modal
+                            id="questionnaire-modal"
+                            isOpen={this.state.isOpen}
+                            onClose={this.handleClose}
+                            header={false}
+                        >
+                            <LoadingContainer isLoading={sendingAnswers}>{modalMessage}</LoadingContainer>
+                            
+                        </Modal>
+                </LoadingContainer>
+            </div>
         );
     }
 }

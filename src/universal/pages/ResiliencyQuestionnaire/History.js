@@ -57,7 +57,7 @@ class History extends Component {
         return (
             <Fragment>
                         <SavedQuestionnaire 
-                            history={history} 
+                            history={history.reverse()} 
                             error={historyError} 
                             isLoading={isLoading}
                         />

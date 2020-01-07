@@ -36,4 +36,15 @@ describe('<SavedQuestionnaire /> ', () => {
         const wrapper = renderer.create(<SavedQuestionnaire {...props} />);
         expect(wrapper).to.matchSnapshot();
     });
+
+    it('matches the snapshot with only one saved questionnaire', () => {
+        const props = {
+            error: '',
+            isLoading: false,
+            history: [history[0]]
+        };
+        chaiJestSnapshot.setTestName("matches the snapshot with only one saved questionnaire");
+        const wrapper = renderer.create(<SavedQuestionnaire {...props} />);
+        expect(wrapper).to.matchSnapshot();
+    });
 })
