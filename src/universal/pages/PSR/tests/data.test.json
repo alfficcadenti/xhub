@@ -2,26 +2,36 @@
   {
     "date": "2019-12-06",
     "brand": "egencia",
-    "successPercentage": 97.0
+    "successPercentage": 97.0,
+    "interval": "daily",
+    "lineofbusiness": "PSR"
   },
   {
     "date": "2019-12-05",
     "brand": "egencia",
-    "successPercentage": 88.8
+    "successPercentage": 88.8,
+    "interval": "daily",
+    "lineofbusiness": "PSR"
   },
   {
     "date": "2019-12-05",
     "brand": "vrbo",
-    "successPercentage": 84.0
+    "successPercentage": 84.0,
+    "interval": "daily",
+    "lineofbusiness": "PSR"
   },
   {
     "date": "2019-12-07",
     "brand": "vrbo",
-    "successPercentage": 82.7
+    "successPercentage": 82.7,
+    "interval": "monthly",
+    "lineofbusiness": "PSR"
   },
   {
     "date": "2019-12-06",
     "brand": "vrbo",
-    "successPercentage": 85.0
+    "successPercentage": 85.0,
+    "interval": "monthly",
+    "lineofbusiness": "PSR Flights"
   }
 ]

@@ -1,22 +1,62 @@
 div#psrContainer {
-  display: flex;
   justify-content: center;
-  flex-wrap: wrap;
 
-  div.brandPsr {
-    float: left;
-    text-align: center;
+  div#dailyPsrContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 
-    .brandName {
-      font-size: 1.5em;
-      height: 35px;
+    div.brandPsr:hover {
+      background-color: #00008d36;
     }
 
-    div.lastUpdate {
-      font-weight: 300;
-      font-style: oblique;
-      margin-bottom: 1.2em;
-      margin-top: 1.2em;
+    div.brandPsr {
+      float: left;
+      text-align: center;
+      padding-top: 10px;
+
+      .brandName {
+        font-size: 1.5em;
+        height: 35px;
+      }
+
+      div.lastUpdate {
+        font-weight: 300;
+        font-style: oblique;
+        margin-bottom: 1.2em;
+        margin-top: 1.2em;
+      }
+    }
+  }
+
+  div#PSRDetails {
+    text-align: center;
+    border: 1em, grey;
+    border-style: solid;
+
+    div#detailsHeader {
+      border-bottom: solid;
+      display: flex;
+      margin: 5px;
+      width: 100%;
+      max-width: 100%;
+
+      span {
+        width: 25%;
+        margin: 5px;
+        font-weight: bold;
+      }
+    }
+    div.detailsRow {
+      display: flex;
+      margin: 5px;
+      width: 100%;
+      max-width: 100%;
+
+      span {
+        width: 25%;
+        margin: 5px;
+      }
     }
   }
 }

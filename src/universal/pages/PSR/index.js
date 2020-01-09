@@ -1,7 +1,8 @@
 import React, {Component, Fragment} from 'react';
 import 'moment-timezone';
 import LoadingContainer from '../../components/LoadingContainer';
-import GaugeChart from '../../components/GaugeChart';
+import BrandDailyPSR from './BrandDailyPSR';
+import BrandPSRDetails from './BrandPSRDetails';
 import h from './psrHelpers'
 import './styles.less';
 
@@ -10,7 +11,8 @@ class PSR extends Component {
         super(props);
         this.state = {
             data: [],
-            isLoading: true
+            isLoading: true,
+            openDetails: false,
         };
         
     }
@@ -34,45 +36,59 @@ class PSR extends Component {
             .catch((error) => {console.log(error)})
     }
 
-    psrValuesToDisplay = (data = []) => (
-        h.listOfBrands(data)
-            .map(
-            x => (h.getPSROnDate(h.psrValuesByBrand(data,x),h.lastPSRAvailableDate(h.psrValuesByBrand(data,x))))
-        )
-    )
-
-    psrRender = (brand,value,date) => (
-        <div className='brandPsr' key={brand + date}>
-            {
-                h.brandLogoFile(brand) ? 
-                <img className='brandLogoImg' alt={`${brand}-logo`} src={h.brandLogoFile(brand)} height="35"/> : 
-                <h3 className='brandName'>{brand}</h3>
+    lastDailyPSRValuesToDisplayByBrand = (data = []) => {
+        const psrDailyData = h.psrValuesByLOB((h.psrValuesByInterval(data,'daily')),'PSR')
+        return h.listOfBrands(psrDailyData)
+        .map(
+            x => {
+                const psrData = h.psrValuesByBrand(psrDailyData,x);
+                return h.getPSROnDate(psrData,h.lastPSRAvailableDate(psrData))
             }
-            <div className='lastUpdate'>{date ? `Last update ${date}` : ''}</div>
-            <GaugeChart title={brand} value={value} />
-        </div>
-    )
-    
+        )
+    }
+
+    displayPSRDetails = (brand) => {
+        this.setState({
+            selectedBrand: brand, 
+            openDetails: !this.state.openDetails
+        })
+    }
+
     componentDidMount() {
         this.loadPsr();
     }
     
     render() {
-        const {isLoading, data} = this.state;
-        const psrValues = !isLoading && this.psrValuesToDisplay(data);
+        const {isLoading, data, openDetails, selectedBrand} = this.state;
+        const lastDailyPSRValuesByBrand = !isLoading && this.lastDailyPSRValuesToDisplayByBrand(data);
+        const error = !isLoading && lastDailyPSRValuesByBrand.length===0 ? 'Error: No Daily PSR to display' : ''
+        const brandLOBPSRs = h.psrValuesByDate(h.psrDetailsByBrand(data,selectedBrand),h.lastPSRAvailableDate(h.psrDetailsByBrand(data,selectedBrand)))
         return (
             <Fragment>
                 <h1 id='pageTitle'>Purchase Success Rates</h1>
-                <LoadingContainer isLoading={isLoading}>
+                <LoadingContainer isLoading={isLoading} error={error}>
                     <div id='psrContainer'>
-                        {
-                            !isLoading && 
-                            psrValues.map(
-                                psr=>(
-                                    this.psrRender(psr.brand,psr.successPercentage,psr.date
+                        <div id='dailyPsrContainer'>
+                            {
+                                !isLoading && !error && 
+                                lastDailyPSRValuesByBrand.map(
+                                    psr => (
+                                        <BrandDailyPSR 
+                                            key={psr.brand+'PSRComponent'} 
+                                            brand={psr.brand} 
+                                            dailyPSRValue={psr.successPercentage} 
+                                            date={psr.date} 
+                                            onClick={this.displayPSRDetails}
+                                        />
                                     )
                                 )
-                            )
+                            }
+                        </div>
+                        {
+                            openDetails && selectedBrand && brandLOBPSRs.length!==0 &&
+                            <BrandPSRDetails 
+                                data={brandLOBPSRs}  
+                            />
                         }
                     </div>
                 </LoadingContainer>

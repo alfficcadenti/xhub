@@ -5,7 +5,19 @@ const distinct = (value,index,self) => {
 
 const listOfBrands = (data = []) => (data.map(x => x.brand).filter( distinct ));
 
+const listOfLOB = (data = []) => (data.map(x => x.lineofbusiness).filter( distinct ));
+
 const psrValuesByBrand = (data = [], brand) => (data.filter(x=>x.brand===brand));
+
+const psrValuesByLOB = (data = [], lob) => (data.filter(x=>x.lineofbusiness===lob));
+
+const psrValuesByDate = (data = [], lob) => (data.filter(x=>x.date===lob));
+
+const psrValuesByInterval = (data = [], interval) => (data.filter(x=>x.interval===interval)) 
+
+const findPSRValueByInterval = (data = [], interval) => (data.find(x=>x.interval===interval)) 
+
+const psrDetailsByBrand = (data = [], brand) => (data.filter(x=>x.brand===brand));
 
 const lastPSRAvailableDate = (data = []) => (data.reduce((acc,curr) => {
     return (curr.date > acc) ? curr.date : acc;
@@ -27,7 +39,13 @@ const brandLogoFile = (brand) => {
 
 export default {
     listOfBrands,
+    listOfLOB,
     psrValuesByBrand,
+    psrValuesByLOB,
+    psrValuesByDate,
+    psrValuesByInterval,
+    findPSRValueByInterval,
+    psrDetailsByBrand,
     lastPSRAvailableDate,
     getPSROnDate,
     brandLogoFile
