@@ -50,7 +50,7 @@ class PSR extends Component {
     displayPSRDetails = (brand) => {
         this.setState({
             selectedBrand: brand, 
-            openDetails: !this.state.openDetails
+            openDetails: true
         })
     }
 
@@ -79,6 +79,7 @@ class PSR extends Component {
                                             dailyPSRValue={psr.successPercentage} 
                                             date={psr.date} 
                                             onClick={this.displayPSRDetails}
+                                            selected = {psr.brand === selectedBrand}
                                         />
                                     )
                                 )

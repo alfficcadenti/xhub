@@ -20,10 +20,13 @@ class BrandDailyPSR extends Component {
             brand,
             dailyPSRValue,
             date,
+            selected
         } = this.props;
 
+        const classValue = selected ? 'brandPsr selected' : 'brandPsr'
+
         return (
-            <div className='brandPsr' key={brand + date} onClick={this.openDetails}>
+            <div className={classValue} key={brand + date} onClick={this.openDetails}>
             {
                 h.brandLogoFile(brand) ? 
                 <img className='brandLogoImg' alt={`${brand}-logo`} src={h.brandLogoFile(brand)} height="35"/> : 
@@ -40,6 +43,7 @@ BrandDailyPSR.propTypes = {
     brand: PropTypes.string,
     dailyPSRValue : PropTypes.number,
     date: PropTypes.string,
-    onClick: PropTypes.func
+    onClick: PropTypes.func,
+    selected: PropTypes.bool
 };
 export default BrandDailyPSR;
