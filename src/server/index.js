@@ -15,11 +15,21 @@ ExpediaCACerts.load(); // necessary to establish secure communication with Vault
 
 async function start(options = {}) {
 
+    const env = process.env.EXPEDIA_DEPLOYED_ENVIRONMENT || process.env.EXPEDIA_ENVIRONMENT || process.env.NODE_ENV;
+
+    function getSecret() {
+        if (!env || env === 'dev' || env === 'development') {
+            return null
+        } else {
+            return SecretHandler.init({appName: 'opxhub-ui'})
+        }
+    }
+    
     // builds, composes, and configures server via manifest.json
     const server = await Catalyst.init({
         userConfigPath: Path.resolve(__dirname, 'manifest.json'),
         shortstopHandlers: {
-            secret: await SecretHandler.init({appName: 'opxhub-ui'})
+            secret: await getSecret()
         },
         onConfig(config) {
             ServiceClient.mergeConfig(config.get('server.app.services'))

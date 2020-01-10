@@ -6,7 +6,6 @@
 *.pid
 *.gz
 *.orig
-temp.json
 
 work
 build
@@ -39,6 +38,3 @@ Thumbs.db
 .Trashes
 
 config/buildInfo.js
-
-temp.json
-temp
