@@ -8,8 +8,9 @@ div#psrContainer {
     flex-wrap: wrap;
     justify-content: center;
 
-    div.brandPsr:hover {
-      background-color: #0066db38;
+    div.brandPsr:hover,
+    div.brandPsr.selected {
+      background-color: @hover-background;
       cursor: pointer;
     }
 
@@ -34,13 +35,15 @@ div#psrContainer {
 
   div#PSRDetails {
     text-align: center;
-    border: 1em, grey;
-    border-style: solid;
+    //border: 1em, grey;
+    //border-style: solid;
+    background-color: @hover-background;
 
     div#detailsHeader {
       border-bottom: solid;
       display: flex;
       margin: 5px;
+      margin-top: 0;
       width: 100%;
       max-width: 100%;
 
