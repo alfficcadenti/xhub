@@ -20,7 +20,7 @@ const renderResults = (filteredIncidents) => (
                 <h3>Top 5 Longest Duration Incidents</h3>
                 {renderTable(h.top5LongestDuration(filteredIncidents),top5Tablecolumns)}
             </div>
-        }
+        }  
         {
             <div id='TopShortestDuration'>
                 <h3>Top 5 Shortest Duration Incidents</h3>

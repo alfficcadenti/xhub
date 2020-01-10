@@ -1,7 +1,7 @@
 @import "../../mixins.less";
 
 div#psrContainer {
-  justify-content: center;
+  text-align: center;
 
   div#dailyPsrContainer {
     display: flex;
@@ -34,35 +34,14 @@ div#psrContainer {
   }
 
   div#PSRDetails {
-    text-align: center;
-    //border: 1em, grey;
-    //border-style: solid;
+    width: 50%;
+    justify-content: center;
     background-color: @hover-background;
+    display: inline-block;
 
-    div#detailsHeader {
-      border-bottom: solid;
-      display: flex;
-      margin: 5px;
-      margin-top: 0;
-      width: 100%;
-      max-width: 100%;
-
-      span {
-        width: 25%;
-        margin: 5px;
-        font-weight: bold;
-      }
-    }
-    div.detailsRow {
-      display: flex;
-      margin: 5px;
-      width: 100%;
-      max-width: 100%;
-
-      span {
-        width: 25%;
-        margin: 5px;
-      }
+    th {
+      text-align: center;
+      background-color: @hover-background;
     }
   }
 }
