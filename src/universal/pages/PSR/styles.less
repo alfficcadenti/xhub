@@ -8,9 +8,12 @@ div#psrContainer {
     flex-wrap: wrap;
     justify-content: center;
 
-    div.brandPsr:hover,
-    div.brandPsr.selected {
+    div.brandPsr:hover {
       background-color: @hover-background;
+      cursor: pointer;
+    }
+    div.brandPsr.selected {
+      background-color: @selected-background;
       cursor: pointer;
     }
 
@@ -36,12 +39,12 @@ div#psrContainer {
   div#PSRDetails {
     width: 50%;
     justify-content: center;
-    background-color: @hover-background;
+    background-color: @selected-background;
     display: inline-block;
 
     th {
       text-align: center;
-      background-color: @hover-background;
+      background-color: @selected-background;
     }
   }
 }
