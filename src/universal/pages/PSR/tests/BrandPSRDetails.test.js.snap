@@ -1,0 +1,117 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matches the snapshot 1`] = `
+<div
+  id="PSRDetails"
+>
+  <div>
+    <table
+      className="data-table"
+    >
+      <thead
+        className="data-table-header"
+      >
+        <tr>
+          <th
+            className="pointer"
+            onClick={[Function]}
+          >
+            Line Of Business
+          </th>
+          <th
+            className="pointer"
+            onClick={[Function]}
+          >
+            Last 24 hours
+          </th>
+          <th
+            className="pointer"
+            onClick={[Function]}
+          >
+            Last 7 days
+          </th>
+          <th
+            className="pointer"
+            onClick={[Function]}
+          >
+            Last 28 days
+          </th>
+        </tr>
+      </thead>
+      <tbody
+        className="data-table-body"
+      >
+        <tr>
+          <td
+            className=""
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "PSR",
+              }
+            }
+          />
+          <td
+            className=""
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "97.00 %",
+              }
+            }
+          />
+          <td
+            className=""
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "",
+              }
+            }
+          />
+          <td
+            className=""
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "82.70 %",
+              }
+            }
+          />
+        </tr>
+        <tr>
+          <td
+            className=""
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "PSR Flights",
+              }
+            }
+          />
+          <td
+            className=""
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "",
+              }
+            }
+          />
+          <td
+            className=""
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "",
+              }
+            }
+          />
+          <td
+            className=""
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "85.00 %",
+              }
+            }
+          />
+        </tr>
+      </tbody>
+    </table>
+    <div />
+  </div>
+</div>
+`;
