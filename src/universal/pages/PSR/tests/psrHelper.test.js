@@ -24,9 +24,9 @@ const vrboPSRs = [{
     "successPercentage": 85.0,
     "interval": "monthly", 
     "lineofbusiness": "PSR Flights"
-  }]
+}]
 
-  const dailyPSRs = [
+const dailyPSRs = [
     {
       "date": "2019-12-06",
       "brand": "egencia",
@@ -48,17 +48,19 @@ const vrboPSRs = [{
       "interval": "daily",
       "lineofbusiness": "PSR"
     }
-  ]
+]
 
-  const lobPSRs =   [{
+const lobPSRs =   [{
     "date": "2019-12-06",
     "brand": "vrbo",
     "successPercentage": 85.0,
     "interval": "monthly", 
     "lineofbusiness": "PSR Flights"
-  }]
+}]
 
-  const vrboPsr = {"brand": "vrbo", "date": "2019-12-07", "successPercentage": 82.7, "interval": "monthly", "lineofbusiness": "PSR"}
+const vrboPsr = {"brand": "vrbo", "date": "2019-12-07", "successPercentage": 82.7, "interval": "monthly", "lineofbusiness": "PSR"}
+
+const psrDetailsForTable = [{"Last 24 hours": "97.00 %", "Last 28 days": "82.70 %", "Last 7 days": "", "Line Of Business": "PSR"}, {"Last 24 hours": "", "Last 28 days": "85.00 %", "Last 7 days": "", "Line Of Business": "PSR Flights"}]
 
 describe('psrHelpers', () => {
     describe('listOfBrands()', () => {
@@ -143,6 +145,18 @@ describe('psrHelpers', () => {
         it('returns an object with the psrValue', () => {
             const result = h.getPSROnDate(h.psrValuesByBrand(mockData,'vrbo'),h.lastPSRAvailableDate(h.psrValuesByBrand(mockData,'vrbo')));
             expect(result).to.be.eql(vrboPsr);
+        });
+    });
+
+    describe('formatDataForTable()', () => {
+        it('returns empty array if input is not passed', () => {
+            const result = h.formatDataForTable();
+            expect(result).to.be.eql([]);
+        });
+
+        it('returns an array with data formatted for the table', () => {
+            const result = h.formatDataForTable(mockData);
+            expect(result).to.be.eql(psrDetailsForTable);
         });
     });
 
