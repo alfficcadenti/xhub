@@ -25,6 +25,20 @@ const lastPSRAvailableDate = (data = []) => (data.reduce((acc,curr) => {
 
 const getPSROnDate = (data = [], date = '') => (data.find(x=>x.date===date))
 
+const formatDataForTable = (data) => (
+    listOfLOB(data).map(lob => {
+        const daily = findPSRValueByInterval(psrValuesByLOB(data, lob),'daily')
+        const weekly = findPSRValueByInterval(psrValuesByLOB(data, lob),'weekly')
+        const monthly = findPSRValueByInterval(psrValuesByLOB(data, lob),'monthly')
+        return {
+            'Line Of Business': lob,
+            'Last 24 hours': (daily && daily['successPercentage'].toFixed(2)+' %') || '',
+            'Last 7 days': (weekly && weekly['successPercentage'].toFixed(2)+' %') || '',
+            'Last 28 days': (monthly && monthly['successPercentage'].toFixed(2)+' %') || '',
+        }
+    })
+)
+
 const brandLogoFile = (brand) => {
     if (brand === 'vrbo' || brand === 'egencia' || brand === 'hcom') {
         try {
@@ -48,5 +62,6 @@ export default {
     psrDetailsByBrand,
     lastPSRAvailableDate,
     getPSROnDate,
+    formatDataForTable,
     brandLogoFile
 };

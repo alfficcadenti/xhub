@@ -1,12 +1,15 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import {expect} from 'chai';
+import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import {shallow, mount} from 'enzyme';
 import PSR from '../index';
 import BrandDailyPSR from '../BrandDailyPSR'
 import BrandPSRDetails from '../BrandPSRDetails'
 import mockData from './data.test.json';
+import chaiJestSnapshot from 'chai-jest-snapshot';
+import renderer from 'react-test-renderer';
+chai.use(chaiJestSnapshot);
 
 const mockDetails = [{
     "date": "2019-12-06",
@@ -31,11 +34,15 @@ const mockDetails = [{
   }]
 
 import {JSDOM} from 'jsdom';
-const dom = new JSDOM('<!doctype html><html><body></body></html>');
-global.window = dom.window;
-global.document = dom.window.document;
+
+beforeEach(function() {
+    chaiJestSnapshot.setFilename(__filename + ".snap");
+});
 
 describe('<PSR/>', () => {
+    const dom = new JSDOM('<!doctype html><html><body></body></html>');
+    global.window = dom.window;
+    global.document = dom.window.document;
     sinon.stub(PSR.prototype, 'componentDidMount');
 
     it('renders successfully', () => {
@@ -48,6 +55,12 @@ describe('<PSR/>', () => {
         wrapper.setState({data: mockData, isLoading: false});
         expect(wrapper.find('div.brandPsr')).to.have.length(2);
     });
+
+    it('matches the snapshot', () => {
+        chaiJestSnapshot.setTestName("matches the snapshot");
+        const wrapper = renderer.create(<PSR />);
+        expect(wrapper).to.matchSnapshot();
+    });
 });
 
 describe('<BrandDailyPSR/>', () => {
@@ -57,7 +70,8 @@ describe('<BrandDailyPSR/>', () => {
         brand: 'vrbo',
         dailyPSRValue: 98,
         date: '2019-01-01',
-        onClick: spy
+        onClick: spy,
+        selected: true
     };
 
     it('renders successfully', () => {
@@ -66,24 +80,21 @@ describe('<BrandDailyPSR/>', () => {
     });
 
     it('renders a div.brandPsr', () => {
-        const wrapper = shallow(<BrandDailyPSR  {...props} />);
+        const wrapper = shallow(<BrandDailyPSR {...props} />);
         wrapper.setState({isOpen: true});
         expect(wrapper.find('div.brandPsr')).to.have.length(1);
     });
 
     it('onClick trigger the func on props', () => {
-        const wrapper = shallow(<BrandDailyPSR  {...props} />);
+        const wrapper = shallow(<BrandDailyPSR {...props} />);
         wrapper.setState({isOpen: true});
         wrapper.find('div.brandPsr').simulate('click')
         expect(spy.calledOnce).to.be.true;
     });
-});
 
-describe('<BrandPSRDetails/>', () => {
-    it('renders successfully the values for the different intervals', () => {
-        const wrapper = shallow(<BrandPSRDetails data={mockDetails}/>);
-        expect(wrapper.find('span#dailyPSR').text()).to.be.eql('84 %');
-        expect(wrapper.find('span#weeklyPSR-Flights').text()).to.be.eql('85 %');
-        expect(wrapper.find('span#monthlyPSR-Hotel').text()).to.be.eql('82.7 %');
+    it('matches the snapshot', () => {
+        chaiJestSnapshot.setTestName("matches the snapshot");
+        const wrapper = renderer.create(<BrandDailyPSR {...props} />);
+        expect(wrapper).to.matchSnapshot();
     });
 });
