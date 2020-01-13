@@ -5,7 +5,6 @@ div#psrContainer {
 
   div#dailyPsrContainer {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
 
     div.brandPsr:hover {
@@ -41,6 +40,14 @@ div#psrContainer {
     justify-content: center;
     background-color: @selected-background;
     display: inline-block;
+
+    table {
+      width: 100%;
+      white-space: pre-wrap;
+      th {
+        white-space: pre-wrap;
+      }
+    }
 
     th {
       text-align: center;

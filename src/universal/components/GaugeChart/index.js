@@ -15,7 +15,7 @@ class GaugeChart extends PureComponent {
                 id={title}
                 nrOfLevels={20}
                 percent={value/100} 
-                style={{height: 200, width: 250}}
+                style={{height: 150, width: 250}}
                 colors={["#FF5F6D", "#00FF00"]}
                 textColor={'#000000'}
             />

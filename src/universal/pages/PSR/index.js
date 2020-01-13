@@ -62,7 +62,9 @@ class PSR extends Component {
         const {isLoading, data, openDetails, selectedBrand} = this.state;
         const lastDailyPSRValuesByBrand = !isLoading && this.lastDailyPSRValuesToDisplayByBrand(data);
         const error = !isLoading && lastDailyPSRValuesByBrand.length===0 ? 'Error: No Daily PSR to display' : ''
-        const brandLOBPSRs = h.psrValuesByDate(h.psrDetailsByBrand(data,selectedBrand),h.lastPSRAvailableDate(h.psrDetailsByBrand(data,selectedBrand)))
+        const brandLOBPSRs = selectedBrand && h.psrValuesByDate(h.psrDetailsByBrand(data,selectedBrand),h.lastPSRAvailableDate(h.psrDetailsByBrand(data,selectedBrand)))
+        const brandDailyPSRs = selectedBrand && h.extractDataForPSRChart(data,selectedBrand)
+
         return (
             <Fragment>
                 <h1 id='pageTitle'>Purchase Success Rates</h1>
@@ -89,6 +91,7 @@ class PSR extends Component {
                             openDetails && selectedBrand && brandLOBPSRs.length!==0 &&
                             <BrandPSRDetails 
                                 data={brandLOBPSRs}  
+                                dailyData={brandDailyPSRs}
                             />
                         }
                     </div>

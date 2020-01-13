@@ -5,33 +5,10 @@ import sinon from 'sinon';
 import {shallow, mount} from 'enzyme';
 import PSR from '../index';
 import BrandDailyPSR from '../BrandDailyPSR'
-import BrandPSRDetails from '../BrandPSRDetails'
 import mockData from './data.test.json';
 import chaiJestSnapshot from 'chai-jest-snapshot';
 import renderer from 'react-test-renderer';
 chai.use(chaiJestSnapshot);
-
-const mockDetails = [{
-    "date": "2019-12-06",
-    "brand": "egencia",
-    "successPercentage": 84.0,
-    "interval": "daily", 
-    "lineofbusiness": "PSR"
-  },
-  {
-    "date": "2019-12-06",
-    "brand": "egencia",
-    "successPercentage": 82.7,
-    "interval": "monthly", 
-    "lineofbusiness": "PSR Hotel"
-  },
-  {
-    "date": "2019-12-06",
-    "brand": "egencia",
-    "successPercentage": 85.0,
-    "interval": "weekly", 
-    "lineofbusiness": "PSR Flights"
-  }]
 
 import {JSDOM} from 'jsdom';
 
