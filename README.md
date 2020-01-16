@@ -22,10 +22,16 @@ Splunk Log Dashboard: https://splunkewe.us-west-2.test.monitoring.expedia.com/en
    npm install
    ```
 
-3. Run the application
+3. Run the script build to generate the buildInfo.js
+
+   ```bash
+   npm build
+   ```
+
+4. Run the application
 
    ```bash
    npm start
    ```
 
-4. Navigate to `localhost:8080`
+5. Navigate to `localhost:8080`
