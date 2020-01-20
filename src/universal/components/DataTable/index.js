@@ -5,7 +5,7 @@ import Tooltip from '@homeaway/react-tooltip';
 import {SVGIcon} from '@homeaway/react-svg';
 import {INFO__16} from '@homeaway/svg-defs';
 import './DataTable.less';
-import { Dropdown, DropdownItem } from '@homeaway/react-dropdown';
+import {Dropdown, DropdownItem} from '@homeaway/react-dropdown';
 import PropTypes from 'prop-types';
 
 class DataTable extends Component {
@@ -34,8 +34,8 @@ class DataTable extends Component {
         }
         return null;
     }
-    
-    getCSVData = () => this.state.data.map(row => {
+
+    getCSVData = () => this.state.data.map((row) => {
         const csvRow = [];
         const columns = this.state.csvColumns.length > 0
             ? this.state.csvColumns
@@ -138,14 +138,14 @@ class DataTable extends Component {
     );
 
     getPrevPage = () => {
-        this.setState(prevState => ({
+        this.setState((prevState) => ({
             currPageIndex: prevState.currPageIndex - 1
         }));
     }
 
 
     getNextPage = () => {
-        this.setState(prevState => ({
+        this.setState((prevState) => ({
             currPageIndex: prevState.currPageIndex + 1
         }));
     }

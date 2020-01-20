@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import ResiliencyQuestions from '../../components/ResiliencyQuestions';
 import Modal from '@homeaway/react-modal';
 import LoadingContainer from '../../components/LoadingContainer';
-import h from '../../components/utils/formatString'
-import Cookies from 'js-cookie'
+import h from '../../components/utils/formatString';
+import Cookies from 'js-cookie';
 import './styles.less';
 
 class QuestionForm extends Component {
@@ -24,12 +24,12 @@ class QuestionForm extends Component {
         const product = {
             id: '',
             name: ''
-        }
+        };
 
         const application = {
             id: '',
             name: ''
-        }
+        };
 
         this.state = {
             productInputProps,
@@ -57,23 +57,25 @@ class QuestionForm extends Component {
             .then((resp) => {
                 if (!resp.ok) {
                     this.setState({questionError: 'No questions available'});
-                    throw new Error;
+                    throw new Error();
                 }
                 return resp.json();
             })
             .then((data) => {
                 this.setState({
                     questions: data,
-                })
+                });
             })
             // eslint-disable-next-line no-console
-            .catch((error) => {console.log(error)});
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     getQuestionnaireAnswers = () => (
-        Array.from(this.state.questions.map(x=> {
-            const id = (x.type === 'date') ? 'input-'+h.replaceSpaces(x.question) : h.replaceSpaces(x.question)
-            return {key: x.question, value: document.getElementById(id).value}
+        Array.from(this.state.questions.map((x) => {
+            const id = (x.type === 'date') ? `input-${h.replaceSpaces(x.question)}` : h.replaceSpaces(x.question);
+            return {key: x.question, value: document.getElementById(id).value};
         }))
     )
 
@@ -86,42 +88,44 @@ class QuestionForm extends Component {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({username, product, application, questions})
-        })
+        });
     }
 
     checkForErrors = () => (
         (Array.from(
             document.getElementsByClassName('help-block'))
-                .map(
-                    x=>(x.innerHTML)
-                ).filter(
-                    x=>x.includes('Error')
-                )
+            .map(
+                (x) => (x.innerHTML)
+            ).filter(
+                (x) => x.includes('Error')
+            )
         ).length
     )
 
     preSubmit = () => {
-        if(this.checkForErrors() > 0) {
+        if (this.checkForErrors() > 0) {
             this.handleOpen();
-            this.displayPostResult('Error: answers contain errors')
+            this.displayPostResult('Error: answers contain errors');
         } else {
-            this.handleSubmit()
+            this.handleSubmit();
         }
     }
-    
+
     handleSubmit = () => {
         this.handleOpen();
-        
+
         const {product, application} = this.props;
         const answers = this.getQuestionnaireAnswers();
-        this.submitQuestionnaire(product, application, answers).then(resp => {
+        this.submitQuestionnaire(product, application, answers).then((resp) => {
             if (!resp.ok) {
                 throw new Error(resp);
             }
             return resp.json();
-        }) 
-        .then(() => {this.displayPostResult('Questionnaire successfully submitted')})
-        .catch(() => this.displayPostResult('Error. Try Again.'));
+        })
+            .then(() => {
+                this.displayPostResult('Questionnaire successfully submitted');
+            })
+            .catch(() => this.displayPostResult('Error. Try Again.'));
     }
 
     displayPostResult = (message = '') => {
@@ -135,11 +139,11 @@ class QuestionForm extends Component {
     handleClose = () => {
         this.setState({isOpen: false, modalMessage: '', sendingAnswers: false});
     }
-    
+
     componentDidMount() {
         this.loadQuestionList();
     }
-    
+
     render() {
         const {
             questionError,
@@ -154,30 +158,31 @@ class QuestionForm extends Component {
         const loadingQuestions = !questions.length && application.name && !questionError;
 
         return (
-            <div className='resiliency-questions-form'>
+            <div className="resiliency-questions-form">
                 <LoadingContainer isLoading={loadingQuestions} error={questionError}>
-                            <h4>Fill the questionnaire below</h4>
-                                <ResiliencyQuestions 
-                                    questions={questions}
-                                />
-                                <button 
-                                    id='submitButton'
-                                    type="button" 
-                                    className='btn btn-default active'
-                                    onClick={this.preSubmit}>
+                    <h4>Fill the questionnaire below</h4>
+                    <ResiliencyQuestions
+                        questions={questions}
+                    />
+                    <button
+                        id="submitButton"
+                        type="button"
+                        className="btn btn-default active"
+                        onClick={this.preSubmit}
+                    >
                                     Submit Questionnaire
-                                </button>
-                        
-                        
-                        <Modal
-                            id="questionnaire-modal"
-                            isOpen={this.state.isOpen}
-                            onClose={this.handleClose}
-                            header={false}
-                        >
-                            <LoadingContainer isLoading={sendingAnswers}>{modalMessage}</LoadingContainer>
-                            
-                        </Modal>
+                    </button>
+
+
+                    <Modal
+                        id="questionnaire-modal"
+                        isOpen={this.state.isOpen}
+                        onClose={this.handleClose}
+                        header={false}
+                    >
+                        <LoadingContainer isLoading={sendingAnswers}>{modalMessage}</LoadingContainer>
+
+                    </Modal>
                 </LoadingContainer>
             </div>
         );

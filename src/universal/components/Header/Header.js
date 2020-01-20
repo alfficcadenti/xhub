@@ -13,7 +13,7 @@ const Header = () => (
             <SVGIcon className="Header--icon" markup={GLOBE__24} />
         </Link>
         <Dropdown id="Header--menu" label="OpXHub" className="Header--menu">
-             <SiteMenu />
+            <SiteMenu />
         </Dropdown>
     </header>
 );

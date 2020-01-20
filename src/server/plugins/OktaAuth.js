@@ -9,7 +9,7 @@ class OktaAuth {
         this.clientId = (process.env.NODE_ENV === 'development') ?
             require('../../../devOkta.json').okta.oauthClientId :
             server.app.config.get('oauthApi.oauthClientId');
-        //this.clientId = server.app.config.get('secrets.oauthClientId');
+        // this.clientId = server.app.config.get('secrets.oauthClientId');
         this.oauthUrl = server.app.config.get('oauthApi.baseUrl');
         this.oauthApiClient = new HttpClient('oauthClient', {
             timeout: server.app.config.get('oauthApi.timeout'),
@@ -133,10 +133,10 @@ class OktaAuth {
                     headers: {
                         'Authorization': `Bearer ${tokenDecoded.token}`,
                     }})
-                    .then(data => {
-                    const username = data.payload.userinfo;
-                    return {username,tokenDecoded}
-                })
+                    .then((data) => {
+                        const username = data.payload.userinfo;
+                        return {username, tokenDecoded};
+                    });
             });
         });
     }

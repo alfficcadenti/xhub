@@ -1,7 +1,7 @@
 import React from 'react';
 import {StaticRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import App from "./App";
+import App from './App';
 
 function ServerApp(props) {
     return (
@@ -15,4 +15,4 @@ ServerApp.propTypes = {
     value: PropTypes.string,
     list: PropTypes.array
 };
-export default ServerApp
+export default ServerApp;

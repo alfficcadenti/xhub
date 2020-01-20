@@ -16,18 +16,17 @@ const renderTable = (filteredIncidents) => (
 
 const formatSeriesForChart = (data = []) => (
     data
-        .map(x => ({
-            name: x.serie, 
-            data: x.data, 
+        .map((x) => ({
+            name: x.serie,
+            data: x.data,
             type: 'line'
         }))
-)
+);
 
 const setChartOptions = (series = [], xAxisValues = []) => {
-
     const chartOpt = {
         legend: {
-            data: series.map(x=>x.name)
+            data: series.map((x) => x.name)
         },
         tooltip: {},
         xAxis: {
@@ -41,23 +40,23 @@ const setChartOptions = (series = [], xAxisValues = []) => {
             nameRotate: 90,
             type: 'value'
         },
-            series: series
-    }
-    return chartOpt
-}
+        series
+    };
+    return chartOpt;
+};
 
-const renderChart = (data =[], dataToSeriesFunc, title) => {
-    const series = formatSeriesForChart(dataToSeriesFunc(data))
+const renderChart = (data = [], dataToSeriesFunc, title) => {
+    const series = formatSeriesForChart(dataToSeriesFunc(data));
     const dates = h.datesInterval(data);
-    const xAxisValues = h.weeklyRange(dates[0],dates[1])
+    const xAxisValues = h.weeklyRange(dates[0], dates[1]);
 
     return (
-        <div className='IncidentChartDiv' id={title.replace(/\s+/g, '-')}>
+        <div className="IncidentChartDiv" id={title.replace(/\s+/g, '-')}>
             <h3>{title}</h3>
             <ReactEcharts option={setChartOptions(series, xAxisValues)} key={Math.random()}/>
         </div>
-    )
-}
+    );
+};
 
 const renderResults = (filteredIncidents) => (
     <div>
@@ -73,7 +72,7 @@ const renderNoResults = () => (
 );
 
 const Overview = (props) => {
-    return (<div data-wdio="incidents-byBrand-table" id="inc-overview-table"> 
+    return (<div data-wdio="incidents-byBrand-table" id="inc-overview-table">
         {
             props.filteredIncidents.length
                 ? renderResults(props.filteredIncidents)
@@ -81,7 +80,7 @@ const Overview = (props) => {
         }
     </div>
     );
-}
+};
 
 Overview.propTypes = {
     filteredIncidents: PropTypes.arrayOf(PropTypes.shape()).isRequired

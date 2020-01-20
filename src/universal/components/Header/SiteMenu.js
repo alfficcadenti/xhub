@@ -28,10 +28,10 @@ class SiteMenu extends Component {
 
     render() {
         return (
-                <ul className="dashboard-list">
-                    {this.state.dashboardsList.map((dashboard) => this.renderLink(dashboard))}
-                </ul>
-            
+            <ul className="dashboard-list">
+                {this.state.dashboardsList.map((dashboard) => this.renderLink(dashboard))}
+            </ul>
+
         );
     }
 }

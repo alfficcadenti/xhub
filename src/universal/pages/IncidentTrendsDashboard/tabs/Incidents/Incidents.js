@@ -15,7 +15,7 @@ const renderTable = (filteredIncidents) => (
         data={incidentsHelper.getIncidentsData(filteredIncidents)}
         columns={columns}
         columnsInfo={columnsInfo}
-        paginated={true}
+        paginated
     />
 );
 
@@ -24,13 +24,13 @@ const renderNoResults = () => (
 );
 
 const Incidents = (props) => (
-        <div data-wdio="incidents-table">
-            {
-                props.filteredIncidents.length
-                    ? renderTable(props.filteredIncidents)
-                    : renderNoResults()
-            }
-        </div>
+    <div data-wdio="incidents-table">
+        {
+            props.filteredIncidents.length
+                ? renderTable(props.filteredIncidents)
+                : renderNoResults()
+        }
+    </div>
 );
 
 Incidents.propTypes = {

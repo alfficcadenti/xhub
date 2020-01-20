@@ -2,65 +2,65 @@ import {expect} from 'chai';
 import h from '../psrHelpers';
 import mockData from './data.test.json';
 
-const brands = ['egencia','vrbo']
+const brands = ['egencia', 'vrbo'];
 
 const vrboPSRs = [{
-    "date": "2019-12-05",
-    "brand": "vrbo",
-    "successPercentage": 84.0,
-    "interval": "daily", 
-    "lineofbusiness": "PSR"
-  },
-  {
-    "date": "2019-12-07",
-    "brand": "vrbo",
-    "successPercentage": 82.7,
-    "interval": "monthly", 
-    "lineofbusiness": "PSR"
-  },
-  {
-    "date": "2019-12-06",
-    "brand": "vrbo",
-    "successPercentage": 85.0,
-    "interval": "monthly", 
-    "lineofbusiness": "PSR Flights"
-}]
+    'date': '2019-12-05',
+    'brand': 'vrbo',
+    'successPercentage': 84.0,
+    'interval': 'daily',
+    'lineofbusiness': 'PSR'
+},
+{
+    'date': '2019-12-07',
+    'brand': 'vrbo',
+    'successPercentage': 82.7,
+    'interval': 'monthly',
+    'lineofbusiness': 'PSR'
+},
+{
+    'date': '2019-12-06',
+    'brand': 'vrbo',
+    'successPercentage': 85.0,
+    'interval': 'monthly',
+    'lineofbusiness': 'PSR Flights'
+}];
 
 const dailyPSRs = [
     {
-      "date": "2019-12-06",
-      "brand": "egencia",
-      "successPercentage": 97.0,
-      "interval": "daily",
-      "lineofbusiness": "PSR"
+        'date': '2019-12-06',
+        'brand': 'egencia',
+        'successPercentage': 97.0,
+        'interval': 'daily',
+        'lineofbusiness': 'PSR'
     },
     {
-      "date": "2019-12-05",
-      "brand": "egencia",
-      "successPercentage": 88.8,
-      "interval": "daily",
-      "lineofbusiness": "PSR"
+        'date': '2019-12-05',
+        'brand': 'egencia',
+        'successPercentage': 88.8,
+        'interval': 'daily',
+        'lineofbusiness': 'PSR'
     },
     {
-      "date": "2019-12-05",
-      "brand": "vrbo",
-      "successPercentage": 84.0,
-      "interval": "daily",
-      "lineofbusiness": "PSR"
+        'date': '2019-12-05',
+        'brand': 'vrbo',
+        'successPercentage': 84.0,
+        'interval': 'daily',
+        'lineofbusiness': 'PSR'
     }
-]
+];
 
-const lobPSRs =   [{
-    "date": "2019-12-06",
-    "brand": "vrbo",
-    "successPercentage": 85.0,
-    "interval": "monthly", 
-    "lineofbusiness": "PSR Flights"
-}]
+const lobPSRs = [{
+    'date': '2019-12-06',
+    'brand': 'vrbo',
+    'successPercentage': 85.0,
+    'interval': 'monthly',
+    'lineofbusiness': 'PSR Flights'
+}];
 
-const vrboPsr = {"brand": "vrbo", "date": "2019-12-07", "successPercentage": 82.7, "interval": "monthly", "lineofbusiness": "PSR"}
+const vrboPsr = {'brand': 'vrbo', 'date': '2019-12-07', 'successPercentage': 82.7, 'interval': 'monthly', 'lineofbusiness': 'PSR'};
 
-const psrDetailsForTable = [{"Last 24 hours": "97.00 %", "Last 28 days": "82.70 %", "Last 7 days": "", "Line Of Business": "PSR"}, {"Last 24 hours": "", "Last 28 days": "85.00 %", "Last 7 days": "", "Line Of Business": "PSR Flights"}]
+const psrDetailsForTable = [{'Last 24 hours': '97.00 %', 'Last 28 days': '82.70 %', 'Last 7 days': '', 'Line Of Business': 'PSR'}, {'Last 24 hours': '', 'Last 28 days': '85.00 %', 'Last 7 days': '', 'Line Of Business': 'PSR Flights'}];
 
 describe('psrHelpers', () => {
     describe('listOfBrands()', () => {
@@ -82,7 +82,7 @@ describe('psrHelpers', () => {
         });
 
         it('returns an array with list of the psrValues for the brand', () => {
-            const result = h.psrValuesByBrand(mockData,'vrbo');
+            const result = h.psrValuesByBrand(mockData, 'vrbo');
             expect(result).to.be.eql(vrboPSRs);
         });
     });
@@ -94,7 +94,7 @@ describe('psrHelpers', () => {
         });
 
         it('returns an array with list of of the psrValues for the interval', () => {
-            const result = h.psrValuesByInterval(mockData,'daily');
+            const result = h.psrValuesByInterval(mockData, 'daily');
             expect(result).to.be.eql(dailyPSRs);
         });
     });
@@ -106,8 +106,8 @@ describe('psrHelpers', () => {
         });
 
         it('returns the first value with the interval specified from an array in input', () => {
-            const firstDaily = {"brand": "egencia", "date": "2019-12-06", "interval": "daily", "lineofbusiness": "PSR", "successPercentage": 97}
-            const result = h.findPSRValueByInterval(mockData,'daily');
+            const firstDaily = {'brand': 'egencia', 'date': '2019-12-06', 'interval': 'daily', 'lineofbusiness': 'PSR', 'successPercentage': 97};
+            const result = h.findPSRValueByInterval(mockData, 'daily');
             expect(result).to.be.eql(firstDaily);
         });
     });
@@ -119,7 +119,7 @@ describe('psrHelpers', () => {
         });
 
         it('returns an array with list of the psrValues for the LOB', () => {
-            const result = h.psrValuesByLOB(mockData,'PSR Flights');
+            const result = h.psrValuesByLOB(mockData, 'PSR Flights');
             expect(result).to.be.eql(lobPSRs);
         });
     });
@@ -131,7 +131,7 @@ describe('psrHelpers', () => {
         });
 
         it('returns an array with list of the psrValues for the brand', () => {
-            const result = h.lastPSRAvailableDate(h.psrValuesByBrand(mockData,'vrbo'));
+            const result = h.lastPSRAvailableDate(h.psrValuesByBrand(mockData, 'vrbo'));
             expect(result).to.be.eql('2019-12-07');
         });
     });
@@ -143,7 +143,7 @@ describe('psrHelpers', () => {
         });
 
         it('returns an object with the psrValue', () => {
-            const result = h.getPSROnDate(h.psrValuesByBrand(mockData,'vrbo'),h.lastPSRAvailableDate(h.psrValuesByBrand(mockData,'vrbo')));
+            const result = h.getPSROnDate(h.psrValuesByBrand(mockData, 'vrbo'), h.lastPSRAvailableDate(h.psrValuesByBrand(mockData, 'vrbo')));
             expect(result).to.be.eql(vrboPsr);
         });
     });
@@ -171,5 +171,4 @@ describe('psrHelpers', () => {
             expect(results).to.be.eql(undefined);
         });
     });
-    
 });

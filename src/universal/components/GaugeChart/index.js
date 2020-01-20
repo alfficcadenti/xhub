@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import ReactGaugeChart from 'react-gauge-chart';
 
 class GaugeChart extends PureComponent {
-
     render() {
         const {
             title,
@@ -11,15 +10,15 @@ class GaugeChart extends PureComponent {
         } = this.props;
 
         return (
-            <ReactGaugeChart 
+            <ReactGaugeChart
                 id={title}
                 nrOfLevels={20}
-                percent={value/100} 
+                percent={value / 100}
                 style={{height: 150, width: 250}}
-                colors={["#FF5F6D", "#00FF00"]}
+                colors={['#FF5F6D', '#00FF00']}
                 textColor={'#000000'}
             />
-        )
+        );
     }
 }
 

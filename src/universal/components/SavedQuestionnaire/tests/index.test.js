@@ -4,16 +4,15 @@ import chai, {expect} from 'chai';
 import chaiJestSnapshot from 'chai-jest-snapshot';
 import SavedQuestionnaire from '../index';
 import renderer from 'react-test-renderer';
-import mockHistory from './mockHistory.json'
+import mockHistory from './mockHistory.json';
 chai.use(chaiJestSnapshot);
 
 const history = mockHistory;
 
 describe('<SavedQuestionnaire /> ', () => {
-
-    beforeEach(function() {
-        chaiJestSnapshot.setFilename(__filename + ".snap");
-      });
+    beforeEach(() => {
+        chaiJestSnapshot.setFilename(`${__filename}.snap`);
+    });
 
 
     it('renders correctly', () => {
@@ -32,7 +31,7 @@ describe('<SavedQuestionnaire /> ', () => {
             isLoading: false,
             history
         };
-        chaiJestSnapshot.setTestName("matches the snapshot");
+        chaiJestSnapshot.setTestName('matches the snapshot');
         const wrapper = renderer.create(<SavedQuestionnaire {...props} />);
         expect(wrapper).to.matchSnapshot();
     });
@@ -43,8 +42,8 @@ describe('<SavedQuestionnaire /> ', () => {
             isLoading: false,
             history: [history[0]]
         };
-        chaiJestSnapshot.setTestName("matches the snapshot with only one saved questionnaire");
+        chaiJestSnapshot.setTestName('matches the snapshot with only one saved questionnaire');
         const wrapper = renderer.create(<SavedQuestionnaire {...props} />);
         expect(wrapper).to.matchSnapshot();
     });
-})
+});

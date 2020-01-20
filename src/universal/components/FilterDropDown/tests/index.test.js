@@ -15,4 +15,4 @@ describe('<FilterDropDown /> ', () => {
         const wrapper = shallow(<FilterDropDown {...props} />);
         expect(wrapper).toHaveLength(1);
     });
-}); 
+});

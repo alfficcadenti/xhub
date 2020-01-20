@@ -8,7 +8,7 @@ class InputText extends Component {
         this.state = {
             value: '',
             error: ''
-        }
+        };
     }
 
     onChange = (event) => {
@@ -33,7 +33,7 @@ class InputText extends Component {
                 value={this.state.value}
                 autoExpand
             />
-        )
+        );
     }
 }
 
