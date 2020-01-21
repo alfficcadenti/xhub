@@ -17,13 +17,13 @@ const renderResults = (filteredIncidents) => (
     <div>
         {
             <div id="TopLongestDuration">
-                <h3>Top 5 Longest Duration Incidents</h3>
+                <h3>{'Top 5 Longest Duration Incidents'}</h3>
                 {renderTable(h.top5LongestDuration(filteredIncidents), top5Tablecolumns)}
             </div>
         }
         {
             <div id="TopShortestDuration">
-                <h3>Top 5 Shortest Duration Incidents</h3>
+                <h3>{'Top 5 Shortest Duration Incidents'}</h3>
                 {renderTable(h.top5ShortestDuration(filteredIncidents), top5Tablecolumns)}
             </div>
         }
@@ -31,7 +31,7 @@ const renderResults = (filteredIncidents) => (
 );
 
 const renderNoResults = () => (
-    <p>No Results Found</p>
+    <p>{'No Results Found'}</p>
 );
 
 const Top5 = (props) => {

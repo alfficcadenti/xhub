@@ -8,11 +8,12 @@ import mockData from './filteredData.test.json';
 describe('<IncidentTrendsDashboard/>', () => {
     sinon.stub(IncidentTrendsDashboard.prototype, 'componentDidMount');
 
-    it('renders successfully and call renderOverviewTab by default', () => {
+    it('renders successfully and call renderTabs', () => {
         const wrapper = shallow(<IncidentTrendsDashboard />);
         const instance = wrapper.instance();
-        const spy = sinon.stub(instance, 'renderOverviewTab');
+        const spy = sinon.stub(instance, 'renderTabs');
         instance.forceUpdate();
+        // eslint-disable-next-line no-unused-expressions
         expect(spy.calledOnce).to.be.true;
     });
 

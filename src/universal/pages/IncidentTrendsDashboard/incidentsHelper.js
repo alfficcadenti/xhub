@@ -67,16 +67,13 @@ const weeksInterval = (inc = []) => (
         ]
 );
 
-const brandIncidents = (inc, brand) => (inc.filter((x) => x.Brand === brand));
+const brandIncidents = (inc, brand) => inc.filter((x) => x.Brand === brand);
 
-const incidentsOfTheWeek = (inc, week = '') => (inc.filter((inc) => (moment(inc.startedAt).week() === week)));
+const incidentsOfTheWeek = (inc, week = '') => inc.filter((inc) => (moment(inc.startedAt).week() === week));
 
-const incidentsInTimeFrame = (inc, startDate = '', endDate = moment.now) => (
-    inc.filter(
-        (inc) => (
-            moment(inc.startedAt).format(DATE_FORMAT) >= startDate &&
-            moment(inc.startedAt).format(DATE_FORMAT) <= endDate)
-    )
+const incidentsInTimeFrame = (inc, startDate = '', endDate = moment.now) => inc.filter((inc) => (
+    moment(inc.startedAt).format(DATE_FORMAT) >= startDate &&
+    moment(inc.startedAt).format(DATE_FORMAT) <= endDate)
 );
 
 const getIncMetricsByBrand = (inc = []) => (

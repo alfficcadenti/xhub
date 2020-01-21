@@ -66,6 +66,7 @@ describe('<BrandDailyPSR/>', () => {
         const wrapper = shallow(<BrandDailyPSR {...props} />);
         wrapper.setState({isOpen: true});
         wrapper.find('div.brandPsr').simulate('click');
+        // eslint-disable-next-line no-unused-expressions
         expect(spy.calledOnce).to.be.true;
     });
 

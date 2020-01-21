@@ -50,6 +50,10 @@ class QuestionForm extends Component {
         };
     }
 
+    componentDidMount() {
+        this.loadQuestionList();
+    }
+
     loadUserInfo = () => (Cookies.get('username'));
 
     loadQuestionList = () => {
@@ -66,18 +70,18 @@ class QuestionForm extends Component {
                     questions: data,
                 });
             })
-            // eslint-disable-next-line no-console
             .catch((error) => {
+                // eslint-disable-next-line no-console
                 console.log(error);
             });
-    }
+    };
 
     getQuestionnaireAnswers = () => (
         Array.from(this.state.questions.map((x) => {
             const id = (x.type === 'date') ? `input-${h.replaceSpaces(x.question)}` : h.replaceSpaces(x.question);
             return {key: x.question, value: document.getElementById(id).value};
         }))
-    )
+    );
 
     submitQuestionnaire = (product, application, questions) => {
         const username = this.loadUserInfo();
@@ -89,7 +93,7 @@ class QuestionForm extends Component {
             },
             body: JSON.stringify({username, product, application, questions})
         });
-    }
+    };
 
     checkForErrors = () => (
         (Array.from(
@@ -100,7 +104,7 @@ class QuestionForm extends Component {
                 (x) => x.includes('Error')
             )
         ).length
-    )
+    );
 
     preSubmit = () => {
         if (this.checkForErrors() > 0) {
@@ -109,7 +113,7 @@ class QuestionForm extends Component {
         } else {
             this.handleSubmit();
         }
-    }
+    };
 
     handleSubmit = () => {
         this.handleOpen();
@@ -126,23 +130,19 @@ class QuestionForm extends Component {
                 this.displayPostResult('Questionnaire successfully submitted');
             })
             .catch(() => this.displayPostResult('Error. Try Again.'));
-    }
+    };
 
     displayPostResult = (message = '') => {
         this.setState({modalMessage: message, sendingAnswers: false});
-    }
+    };
 
     handleOpen = () => {
         this.setState({isOpen: true, sendingAnswers: true});
-    }
+    };
 
     handleClose = () => {
         this.setState({isOpen: false, modalMessage: '', sendingAnswers: false});
-    }
-
-    componentDidMount() {
-        this.loadQuestionList();
-    }
+    };
 
     render() {
         const {
@@ -160,7 +160,7 @@ class QuestionForm extends Component {
         return (
             <div className="resiliency-questions-form">
                 <LoadingContainer isLoading={loadingQuestions} error={questionError}>
-                    <h4>Fill the questionnaire below</h4>
+                    <h4>{'Fill the questionnaire below'}</h4>
                     <ResiliencyQuestions
                         questions={questions}
                     />
@@ -170,7 +170,7 @@ class QuestionForm extends Component {
                         className="btn btn-default active"
                         onClick={this.preSubmit}
                     >
-                                    Submit Questionnaire
+                        {'Submit Questionnaire'}
                     </button>
 
 
@@ -190,7 +190,14 @@ class QuestionForm extends Component {
 }
 
 QuestionForm.propTypes = {
-    product: PropTypes.object,
-    application: PropTypes.object,
+    product: PropTypes.shape({
+        id: PropTypes.number,
+        name: PropTypes.string
+    }).isRequired,
+    application: PropTypes.shape({
+        id: PropTypes.number,
+        name: PropTypes.string
+    }).isRequired
 };
+
 export default QuestionForm;

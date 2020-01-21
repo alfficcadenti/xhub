@@ -25,12 +25,14 @@ export default withAuth(class Test extends Component {
     }
 
     render() {
+        const {userinfo} = this.state;
+
         return (
             <div>
-                {this.state.userinfo !== null &&
-          <div>
-              <p>Welcome back, {this.state.userinfo.name}!</p>
-          </div>
+                {userinfo !== null &&
+                    <div>
+                        <p>{`Welcome back, ${userinfo.name}!`}</p>
+                    </div>
                 }
                 {this.state.userInfo}
             </div>

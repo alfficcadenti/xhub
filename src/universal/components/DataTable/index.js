@@ -45,7 +45,7 @@ class DataTable extends Component {
             csvRow.push(value ? String(value).replace(/<[^>]*>?/gm, '') : value);
         });
         return csvRow;
-    })
+    });
 
     onClickSort = (column) => {
         if (this.state.sortDisabled) {
@@ -74,12 +74,12 @@ class DataTable extends Component {
             data.sort((a, b) => -comparator(a, b)); // reverse
             this.setState({data, sortByColumn: column, sortByDirection: 'asc'});
         }
-    }
+    };
 
     applyRule = (item, col) => {
         const found = this.state.rules.find((rule) => rule.column === col);
         return found ? found.setClass(item[col]) : '';
-    }
+    };
 
     renderColumn = (item, col) => (
         isValidElement(item[col])
@@ -91,7 +91,7 @@ class DataTable extends Component {
                     dangerouslySetInnerHTML={{__html: sanitizeHtml(item[col])}} // eslint-disable-line
                 />
             )
-    )
+    );
 
     renderRow = (item) => (
         <tr key={uuid()}>
@@ -108,7 +108,7 @@ class DataTable extends Component {
         }
         const start = currPageIndex * pageSize;
         return data.slice(start, start + pageSize).map(this.renderRow);
-    }
+    };
 
     renderColumnInfo = (content) => (
         <div className="column-info">
@@ -116,7 +116,7 @@ class DataTable extends Component {
                 <SVGIcon inlineFlex markup={INFO__16} />
             </Tooltip>
         </div>
-    )
+    );
 
     renderTableHeaderColumn = (column) => (
         <th
@@ -131,7 +131,7 @@ class DataTable extends Component {
                     : null
             }
         </th>
-    )
+    );
 
     renderTableHeader = () => (
         <tr>{this.state.columns.map(this.renderTableHeaderColumn)}</tr>
@@ -141,26 +141,26 @@ class DataTable extends Component {
         this.setState((prevState) => ({
             currPageIndex: prevState.currPageIndex - 1
         }));
-    }
+    };
 
 
     getNextPage = () => {
         this.setState((prevState) => ({
             currPageIndex: prevState.currPageIndex + 1
         }));
-    }
+    };
 
     renderPrevButton = (show) => (
-        <button type="button" className="btn btn-default" onClick={this.getPrevPage} disabled={!show}>Previous</button>
-    )
+        <button type="button" className="btn btn-default" onClick={this.getPrevPage} disabled={!show}>{'Previous'}</button>
+    );
 
     renderNextButton = (show) => (
-        <button type="button" className="btn btn-default" onClick={this.getNextPage} disabled={!show}>Next</button>
-    )
+        <button type="button" className="btn btn-default" onClick={this.getNextPage} disabled={!show}>{'Next'}</button>
+    );
 
     getPage = (i) => {
         this.setState({currPageIndex: i});
-    }
+    };
 
     renderPageButtons = () => {
         const {
@@ -186,7 +186,7 @@ class DataTable extends Component {
             );
         }
         return <Fragment>{result}</Fragment>;
-    }
+    };
 
     renderPagination = () => {
         const {
@@ -205,7 +205,7 @@ class DataTable extends Component {
                     {this.renderPageButtons(showNext || showPrev)}
                     {this.renderNextButton(showNext)}
                 </div>
-                Page Size:
+                {'Page Size:'}
                 <Dropdown id="pagesize-dropdown" label={this.state.pageSize} className="pagesize-dropdown">
                     <DropdownItem link="#" text="25" onClick={() => this.setState({pageSize: 25})} />
                     <DropdownItem link="#" text="50" onClick={() => this.setState({pageSize: 50})} />
@@ -214,7 +214,7 @@ class DataTable extends Component {
                 </Dropdown>
             </div>
         );
-    }
+    };
 
     render() {
         return (
@@ -228,7 +228,7 @@ class DataTable extends Component {
                         {this.renderPagination()}
                     </div>
                 )
-                : <p className="data-table__msg">No Results Found</p>
+                : <p className="data-table__msg">{'No Results Found'}</p>
         );
     }
 }

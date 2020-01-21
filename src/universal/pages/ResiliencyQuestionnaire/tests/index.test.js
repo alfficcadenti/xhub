@@ -46,7 +46,9 @@ describe('<ResiliencyQuestionnaire/>', () => {
             const instance = wrapper.instance();
             const spy = sinon.stub(instance, 'loadProductList');
             instance.selectLob([testLob]);
+            // eslint-disable-next-line no-unused-expressions
             expect(spy.calledOnce).to.be.true;
+            // eslint-disable-next-line no-unused-expressions
             expect(spy.withArgs('Flights').calledOnce).to.be.true;
         });
     });
@@ -67,7 +69,9 @@ describe('<ResiliencyQuestionnaire/>', () => {
             const instance = wrapper.instance();
             const spy = sinon.stub(instance, 'loadApplicationList');
             instance.selectProduct([testProduct]);
+            // eslint-disable-next-line no-unused-expressions
             expect(spy.calledOnce).to.be.true;
+            // eslint-disable-next-line no-unused-expressions
             expect(spy.withArgs('Traffic Engineering').calledOnce).to.be.true;
         });
     });
@@ -100,6 +104,7 @@ describe('<ResiliencyQuestionnaire/>', () => {
         it('renders successfully with state.isOpen eql to false', () => {
             const wrapper = shallow(<QuestionForm product={product} application={application}/>);
             expect(wrapper).to.have.length(1);
+            // eslint-disable-next-line no-unused-expressions
             expect(wrapper.state(['isOpen'])).to.be.false;
         });
 
@@ -112,7 +117,9 @@ describe('<ResiliencyQuestionnaire/>', () => {
                 const spy = sinon.stub(instance, 'submitQuestionnaire');
                 spy.resolves('Ok');
                 instance.handleSubmit();
+                // eslint-disable-next-line no-unused-expressions
                 expect(spy.calledOnce).to.be.true;
+                // eslint-disable-next-line no-unused-expressions
                 expect(spy.withArgs(product, application).calledOnce).to.be.true;
             });
 
@@ -124,6 +131,7 @@ describe('<ResiliencyQuestionnaire/>', () => {
                 spy.resolves('Ok');
                 const handleOpen = sinon.spy(instance, 'handleOpen');
                 instance.handleSubmit(message);
+                // eslint-disable-next-line no-unused-expressions
                 expect(handleOpen.calledOnce).to.be.true;
             });
         });
@@ -142,6 +150,7 @@ describe('<ResiliencyQuestionnaire/>', () => {
                 const wrapper = shallow(<QuestionForm product={product} application={application}/>);
                 const instance = wrapper.instance();
                 instance.handleOpen();
+                // eslint-disable-next-line no-unused-expressions
                 expect(wrapper.state(['isOpen'])).to.be.true;
             });
         });
@@ -151,6 +160,7 @@ describe('<ResiliencyQuestionnaire/>', () => {
                 const wrapper = shallow(<QuestionForm product={product} application={application}/>);
                 const instance = wrapper.instance();
                 instance.handleClose();
+                // eslint-disable-next-line no-unused-expressions
                 expect(wrapper.state(['isOpen'])).to.be.false;
             });
         });
@@ -162,6 +172,7 @@ describe('<ResiliencyQuestionnaire/>', () => {
                 sinon.stub(instance, 'handleSubmit');
                 const checkForErrors = sinon.spy(instance, 'checkForErrors');
                 instance.preSubmit();
+                // eslint-disable-next-line no-unused-expressions
                 expect(checkForErrors.calledOnce).to.be.true;
             });
 
@@ -172,6 +183,7 @@ describe('<ResiliencyQuestionnaire/>', () => {
                 const checkForErrors = sinon.stub(instance, 'checkForErrors');
                 checkForErrors.returns(2);
                 instance.preSubmit();
+                // eslint-disable-next-line no-unused-expressions
                 expect(handleSubmit.calledOnce).to.be.false;
             });
 
@@ -182,6 +194,7 @@ describe('<ResiliencyQuestionnaire/>', () => {
                 const checkForErrors = sinon.stub(instance, 'checkForErrors');
                 checkForErrors.returns(0);
                 instance.preSubmit();
+                // eslint-disable-next-line no-unused-expressions
                 expect(handleSubmit.calledOnce).to.be.true;
             });
         });

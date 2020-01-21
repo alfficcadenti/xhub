@@ -1,5 +1,4 @@
 import React, {Component, Fragment} from 'react';
-import PropTypes from 'prop-types';
 import InputListComponent from '../../components/InputListComponent';
 import {Route, Redirect, Link} from 'react-router-dom';
 import './styles.less';
@@ -86,6 +85,10 @@ class ResiliencyQuestionnaire extends Component {
         ];
     }
 
+    componentDidMount() {
+        this.loadLoBList();
+    }
+
     loadLoBList = () => {
         fetch('/api/v1/lob')
             .then((resp) => {
@@ -100,8 +103,8 @@ class ResiliencyQuestionnaire extends Component {
                     lobs: data.content
                 });
             })
-            // eslint-disable-next-line no-console
             .catch((error) => {
+                // eslint-disable-next-line no-console
                 console.log(error);
             });
     }
@@ -125,11 +128,11 @@ class ResiliencyQuestionnaire extends Component {
                     });
                 }
             })
-            // eslint-disable-next-line no-console
             .catch((error) => {
+                // eslint-disable-next-line no-console
                 console.log(error);
             });
-    }
+    };
 
     loadApplicationList = (productName = '') => {
         const url = `/api/v1/applications?product=${productName}`;
@@ -151,11 +154,11 @@ class ResiliencyQuestionnaire extends Component {
                     });
                 }
             })
-            // eslint-disable-next-line no-console
             .catch((error) => {
+                // eslint-disable-next-line no-console
                 console.log(error);
             });
-    }
+    };
 
     selectLob = (lob) => {
         const newLob = {
@@ -180,8 +183,10 @@ class ResiliencyQuestionnaire extends Component {
             productError: ''
         });
 
-        newLob.name && this.loadProductList(newLob.name);
-    }
+        if (newLob.name) {
+            this.loadProductList(newLob.name);
+        }
+    };
 
     selectProduct = (product) => {
         const newProduct = {
@@ -200,8 +205,10 @@ class ResiliencyQuestionnaire extends Component {
             applicationError: ''
         });
 
-        newProduct.name && this.loadApplicationList(newProduct.name);
-    }
+        if (newProduct.name) {
+            this.loadApplicationList(newProduct.name);
+        }
+    };
 
     selectTier = (tier) => {
         const application = {
@@ -212,16 +219,16 @@ class ResiliencyQuestionnaire extends Component {
             tierFilter: tier,
             application
         });
-    }
+    };
 
     filteredApplications = () => {
         const {tierFilter, applications} = this.state;
-        const filteredApplications = tierFilter.length ? applications.filter((app) => app.serviceTier === tierFilter[0]) : applications;
-        return filteredApplications;
-    }
+
+        return tierFilter.length ? applications.filter((app) => app.serviceTier === tierFilter[0]) : applications;
+    };
 
     selectApplication = (application) => {
-        let newApplication = {
+        const newApplication = {
             id: application[0] ? application[0].id : '',
             name: application[0] ? application[0].name : ''
         };
@@ -229,32 +236,29 @@ class ResiliencyQuestionnaire extends Component {
         this.setState({
             application: newApplication,
         });
-    }
+    };
 
     handleNavigationClick = async (e, activeIndex) => {
         this.setState({
             activeIndex
         });
-    }
+    };
 
     renderQuestions = () => {
         const {product, application} = this.state;
-        return (product.name && application.name && <QuestionForm
+
+        return (product.name && application.name &&
+        <QuestionForm
             application={application}
             product={product}
         />);
-    }
+    };
 
     renderHistory = () => {
         const {product, application} = this.state;
-        return (product.name && application.name && <History
-            applicationId={application.id}
-        />);
-    }
 
-    componentDidMount() {
-        this.loadLoBList();
-    }
+        return (product.name && application.name && <History applicationId={application.id} />);
+    };
 
     render() {
         const {
@@ -285,18 +289,17 @@ class ResiliencyQuestionnaire extends Component {
                 <h1 id="pageTitle">{"BEX 'r' Certification Resiliency Questionnaire"}</h1>
                 <div id="resiliency-questions-form-container">
                     <div className="resiliency-questions-form">
-                        {
-                            <InputListComponent
-                                isLoading={loadingLob}
-                                error={lobError}
-                                options={lobs}
-                                inputProps={lobInputProps}
-                                onChange={this.selectLob}
-                            />
-                        }
+                        <InputListComponent
+                            isLoading={loadingLob}
+                            error={lobError}
+                            options={lobs}
+                            inputProps={lobInputProps}
+                            onChange={this.selectLob}
+                        />
 
                         {
-                            lob.name && <InputListComponent
+                            lob.name &&
+                            <InputListComponent
                                 isLoading={loadingProduct}
                                 error={productError}
                                 options={products}
@@ -355,8 +358,4 @@ class ResiliencyQuestionnaire extends Component {
     }
 }
 
-ResiliencyQuestionnaire.propTypes = {
-    value: PropTypes.string,
-    list: PropTypes.array,
-};
 export default ResiliencyQuestionnaire;

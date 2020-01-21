@@ -14,6 +14,10 @@ class History extends Component {
         };
     }
 
+    componentDidMount() {
+        this.loadHistory(this.props.applicationId);
+    }
+
     loadHistory = (applicationId = '') => {
         this.setState({isLoading: true});
         const baseUrl = '/api/v1/resiliency/questionnaires?applicationId=';
@@ -39,15 +43,11 @@ class History extends Component {
                     });
                 }
             })
-            // eslint-disable-next-line no-console
             .catch((error) => {
+                // eslint-disable-next-line no-console
                 console.log(error);
             });
-    }
-
-    componentDidMount() {
-        this.loadHistory(this.props.applicationId);
-    }
+    };
 
     render() {
         const {

@@ -7,7 +7,7 @@ import incidentsHelper from '../../incidentsHelper';
 const columns = ['Incident', 'Priority', 'Brand', 'Started', 'Summary', 'Duration', 'TTD', 'TTR', 'Root Cause Owners', 'Status'];
 
 const columnsInfo = {
-    Started: (<div><b>Started</b><br />Displayed in browser&apos;s local time</div>)
+    Started: (<div><b>{'Started'}</b><br />{'Displayed in browser'}&apos;{'s local time'}</div>)
 };
 
 const renderTable = (filteredIncidents) => (
@@ -20,7 +20,7 @@ const renderTable = (filteredIncidents) => (
 );
 
 const renderNoResults = () => (
-    <p>No Results Found</p>
+    <p>{'No Results Found'}</p>
 );
 
 const Incidents = (props) => (

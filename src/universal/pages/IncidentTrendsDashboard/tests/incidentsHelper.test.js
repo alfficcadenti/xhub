@@ -148,6 +148,7 @@ describe('incidentsHelper', () => {
         });
 
         it('assigns default values to endDate and startDate if not specified', () => {
+            // eslint-disable-next-line no-undefined
             const startDate = undefined;
             const endDate = '2019-09-22';
             let result = h.incidentsInTimeFrame(mockData2, startDate, endDate);

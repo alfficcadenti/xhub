@@ -23,16 +23,21 @@ class InputNumber extends Component {
             return 0;
         }
         return value.toString().split('.')[1] || 0;
-    }
+    };
 
     helpTextString = (range) => {
-        if (range.min && !range.max) {
-            return `minimum value ${range.min}`;
+        let result = '';
+
+        if (range.min) {
+            if (!range.max) {
+                result = `minimum value ${range.min}`;
+            } else {
+                result = `value between ${range.min} - ${range.max}`;
+            }
         }
-        if (range.min && range.max) {
-            return `value between ${range.min} - ${range.max}`;
-        }
-    }
+
+        return result;
+    };
 
     validation = (event) => {
         const {
@@ -51,7 +56,7 @@ class InputNumber extends Component {
                 event.preventDefault();
             }
         }
-    }
+    };
 
     checkValue = (event) => {
         const {range} = this.props;
@@ -74,7 +79,7 @@ class InputNumber extends Component {
             range
         } = this.props;
 
-        const helpText = (range.min || range.max) ? this.helpTextString(range) : '';
+        const helpText = this.helpTextString(range);
 
         return (
             <FormInput
@@ -103,7 +108,10 @@ InputNumber.propTypes = {
     id: PropTypes.string,
     question: PropTypes.string,
     type: PropTypes.string,
-    range: PropTypes.object,
+    range: PropTypes.shape({
+        min: PropTypes.string,
+        max: PropTypes.string,
+    })
 };
 
 export default InputNumber;

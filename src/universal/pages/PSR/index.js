@@ -16,6 +16,10 @@ class PSR extends Component {
         };
     }
 
+    componentDidMount() {
+        this.loadPsr();
+    }
+
     loadPsr = () => {
         fetch('/api/v1/psr')
             .then((resp) => {
@@ -31,11 +35,11 @@ class PSR extends Component {
                     isLoading: false
                 });
             })
-            // eslint-disable-next-line no-console
             .catch((error) => {
+                // eslint-disable-next-line no-console
                 console.log(error);
             });
-    }
+    };
 
     lastDailyPSRValuesToDisplayByBrand = (data = []) => {
         const psrDailyData = h.psrValuesByLOB((h.psrValuesByInterval(data, 'daily')), 'PSR');
@@ -46,18 +50,14 @@ class PSR extends Component {
                     return h.getPSROnDate(psrData, h.lastPSRAvailableDate(psrData));
                 }
             );
-    }
+    };
 
     displayPSRDetails = (brand) => {
         this.setState({
             selectedBrand: brand,
             openDetails: true
         });
-    }
-
-    componentDidMount() {
-        this.loadPsr();
-    }
+    };
 
     render() {
         const {isLoading, data, openDetails, selectedBrand} = this.state;
@@ -68,7 +68,7 @@ class PSR extends Component {
 
         return (
             <Fragment>
-                <h1 id="pageTitle">Purchase Success Rates</h1>
+                <h1 id="pageTitle">{'Purchase Success Rates'}</h1>
                 <LoadingContainer isLoading={isLoading} error={error}>
                     <div id="psrContainer">
                         <div id="dailyPsrContainer">

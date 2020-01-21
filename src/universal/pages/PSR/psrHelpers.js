@@ -46,10 +46,10 @@ const brandLogoFile = (brand) => {
         try {
             return require(`../../img/logo-${brand}.png`);
         } catch {
-            return undefined;
+            return null;
         }
     } else {
-        return undefined;
+        return null;
     }
 };
 

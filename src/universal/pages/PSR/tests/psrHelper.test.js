@@ -102,6 +102,7 @@ describe('psrHelpers', () => {
     describe('findPSRValueByInterval()', () => {
         it('returns undefined if data is not passed', () => {
             const result = h.findPSRValueByInterval();
+            // eslint-disable-next-line no-undefined
             expect(result).to.be.eql(undefined);
         });
 
@@ -139,6 +140,7 @@ describe('psrHelpers', () => {
     describe('getPSROnDate()', () => {
         it('returns empty string if input is not passed', () => {
             const result = h.getPSROnDate();
+            // eslint-disable-next-line no-undefined
             expect(result).to.be.eql(undefined);
         });
 
@@ -163,12 +165,12 @@ describe('psrHelpers', () => {
     describe('brandLogoFile()', () => {
         it('returns undefined when no input', () => {
             const result = h.brandLogoFile();
-            expect(result).to.be.eql(undefined);
+            expect(result).to.be.eql(null);
         });
 
         it('returns undefined for input different than vrbo, egencia or hcom', () => {
             const results = h.brandLogoFile('test');
-            expect(results).to.be.eql(undefined);
+            expect(results).to.be.eql(null);
         });
     });
 });
