@@ -22,6 +22,12 @@ Splunk Log Dashboard: https://splunkewe.us-west-2.test.monitoring.expedia.com/en
    npm install
    ```
 
+   in case of issues with `npm install` you may need to uncomment the `.npmrc` file or simply run:
+
+   ```bash
+   npm config set registry https://npm.homeawaycorp.com/artifactory/api/npm/npm
+   ```
+
 3. Run the script build to generate the buildInfo.js
 
    ```bash
