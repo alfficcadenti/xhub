@@ -48,7 +48,7 @@ const listOfBrands = (inc = []) => (inc.map(x => x.Brand).filter( distinct ))
 const max = (accumulator, currentValue) => (currentValue > accumulator ? currentValue : accumulator);
 const min = (accumulator, currentValue) => (currentValue < accumulator ? currentValue : accumulator);
 
-const datesInterval = (inc = []) => {
+const getMarginDateValues = (inc = []) => {
     const dates = inc.map(x=> moment(x.startedAt))
     return dates.length === 0 || !isArray(dates) ? 
     [] :
@@ -143,7 +143,7 @@ const mttr = (inc = []) => (totalTTR(inc) / inc.length) || 0 ;
 const mttd = (inc = []) => (totalTTD(inc) / inc.length) || 0 ;
 
 const weeklyMTTRMTTD = (inc = []) => {
-    const weeks = datesInterval(inc)
+    const weeks = getMarginDateValues(inc)
     const weeksInterval = weeklyRange(weeks[0],weeks[1])
     const weeklyMTTR = []
     const weeklyMTTD = [] 
@@ -155,7 +155,7 @@ const weeklyMTTRMTTD = (inc = []) => {
 }
 
 const weeklyMTTRbyBrand = (inc = []) => {
-    const weeks = datesInterval(inc)
+    const weeks = getMarginDateValues(inc)
     const weeksInterval = weeklyRange(weeks[0],weeks[1])
     const incsByBrand = listOfIncByBrands(inc)
     return incsByBrand.map(x => {
@@ -169,7 +169,7 @@ const weeklyMTTRbyBrand = (inc = []) => {
 }
 
 const weeklyMTTDbyBrand = (inc = []) => {
-    const weeks = datesInterval(inc)
+    const weeks = getMarginDateValues(inc)
     const weeksInterval = weeklyRange(weeks[0],weeks[1])
     const incsByBrand = listOfIncByBrands(inc)
     return incsByBrand.map(x => {
@@ -207,7 +207,7 @@ export default {
     brandIncidents,
     incidentsInTimeFrame,
     getMTTRByBrand,
-    datesInterval,
+    getMarginDateValues,
     weeksInterval,
     incidentsOfTheWeek,
     weeklyMTTRMTTD,

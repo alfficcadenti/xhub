@@ -48,7 +48,7 @@ const setChartOptions = (series = [], xAxisValues = []) => {
 
 const renderChart = (data =[], dataToSeriesFunc, title) => {
     const series = formatSeriesForChart(dataToSeriesFunc(data))
-    const dates = h.datesInterval(data);
+    const dates = h.getMarginDateValues(data);
     const xAxisValues = h.weeklyRange(dates[0],dates[1])
 
     return (

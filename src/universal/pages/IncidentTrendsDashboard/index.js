@@ -8,7 +8,7 @@ import {Navigation} from '@homeaway/react-navigation';
 import DatePicker from '../../components/DatePicker/index'
 import h from './incidentsHelper'
 import {DATE_FORMAT, PRIORITIES, BRANDS} from './constants';
-import {Incidents, Overview, Top5} from './tabs/index';
+import {Incidents, Overview, Top5, LostRevenue} from './tabs/index';
 import './styles.less';
 
 const brandDefaultValue = 'All';
@@ -52,6 +52,11 @@ class IncidentTrendsDashboard extends Component {
             {
                 id: 'top5', 
                 label: 'Top 5',
+                href: '/incident-trends'
+            },
+            {
+                id: 'lostRevenue',
+                label: 'Lost Revenue',
                 href: '/incident-trends'
             }
         ];
@@ -196,6 +201,8 @@ class IncidentTrendsDashboard extends Component {
                             return this.renderIncidentsTab(filteredIncidents);
                         case 2:
                             return this.renderTop5Tab(filteredIncidents);
+                        case 3:
+                             return <LostRevenue filteredIncidents={filteredIncidents} />;
                         default:
                             return this.renderOverviewTab(filteredIncidents);
                         }
