@@ -88,27 +88,27 @@ function useRevenueLoss() {
       })
   }, []);
 
-  return {
-    lostRevenues,
-    brands,
-    opacity,
-    isLoading
-  };
-}
-
-const LostRevenue = () => {
-  const {opacity, lostRevenues, brands, isLoading} = useRevenueLoss();
-  const [legendFill, setLegendFill] = useState(opacity);
-
   const handleOnClick = (e) => {
     const { dataKey } = e;
     const toggleOpacity = (prop) => prop === 0.2 ? 1 : 0.2;
 
-    setLegendFill({
-      ...legendFill,
-      [dataKey]: toggleOpacity(legendFill[dataKey])
+    setOpacity({
+      ...opacity,
+      [dataKey]: toggleOpacity(opacity[dataKey])
     });
   };
+
+  return {
+    lostRevenues,
+    brands,
+    handleOnClick,
+    isLoading,
+    opacity
+  };
+}
+
+const LostRevenue = () => {
+  const {handleOnClick, opacity, lostRevenues, brands, isLoading} = useRevenueLoss();
 
   return (<div id="lost-revenue">
       <LoadingContainer isLoading={isLoading} id={'incident-main-div'}>
