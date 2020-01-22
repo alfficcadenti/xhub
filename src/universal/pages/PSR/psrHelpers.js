@@ -1,4 +1,4 @@
-
+/* eslint-disable complexity */
 const distinct = (value, index, self) => {
     return self.indexOf(value) === index;
 };

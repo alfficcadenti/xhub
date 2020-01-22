@@ -8,6 +8,7 @@ const routeInfo = {'pageTitle': 'OpXHub'};
 
 // create and maintain a cached service client instance
 function getClient(name = 'example-service') {
+    // eslint-disable-next-line no-return-assign
     return getClient.client ? getClient.client : getClient.client = ServiceClient.create(name);
 }
 
@@ -60,6 +61,7 @@ module.exports = {
 
             // render the output with context and handlebars.
             const template = request.pre.template;
+            // eslint-disable-next-line new-cap
             return h.view(template, {body, properties: Serialize({value: context.value, list: context.list}), ...context});
         }
     }

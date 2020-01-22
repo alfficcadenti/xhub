@@ -23,6 +23,7 @@ async function error(server) {
                 });
                 const message = err.output.payload.message;
                 const statusCode = err.output.payload.statusCode;
+                // eslint-disable-next-line no-undefined
                 const stack = process.env.NODE_ENV !== 'production' ? request.response.stack : undefined;
                 return h.view('error', {statusCode, message, title: `${statusCode} Error`, color: 'grey', stack}).code(statusCode);
             }

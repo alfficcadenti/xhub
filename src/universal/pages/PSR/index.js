@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import React, {Component, Fragment} from 'react';
 import 'moment-timezone';
 import LoadingContainer from '../../components/LoadingContainer';

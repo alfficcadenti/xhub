@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import React, {Component, Fragment} from 'react';
 import InputListComponent from '../../components/InputListComponent';
 import {Route, Redirect, Link} from 'react-router-dom';

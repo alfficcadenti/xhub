@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {FormInput} from '@homeaway/react-form-components';
