@@ -64,8 +64,7 @@ class PSR extends Component {
         const {isLoading, data, openDetails, selectedBrand} = this.state;
         const lastDailyPSRValuesByBrand = !isLoading && this.lastDailyPSRValuesToDisplayByBrand(data);
         const error = !isLoading && lastDailyPSRValuesByBrand.length === 0 ? 'Error: No Daily PSR to display' : '';
-        const brandLOBPSRs = selectedBrand && h.psrValuesByDate(h.psrDetailsByBrand(data, selectedBrand), h.lastPSRAvailableDate(h.psrDetailsByBrand(data, selectedBrand)));
-        const brandDailyPSRs = selectedBrand && h.extractDataForPSRChart(data, selectedBrand);
+        const brandData = selectedBrand && h.psrDetailsByBrand(data, selectedBrand);
 
         return (
             <Fragment>
@@ -90,10 +89,9 @@ class PSR extends Component {
                             }
                         </div>
                         {
-                            openDetails && selectedBrand && brandLOBPSRs.length !== 0 &&
+                            openDetails && selectedBrand && brandData.length !== 0 &&
                             <BrandPSRDetails
-                                data={brandLOBPSRs}
-                                dailyData={brandDailyPSRs}
+                                data={brandData}
                             />
                         }
                     </div>

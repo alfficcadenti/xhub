@@ -9,11 +9,11 @@ const listOfLOB = (data = []) => (data.map((x) => x.lineofbusiness).filter(disti
 
 const psrValuesByBrand = (data = [], brand) => (data.filter((x) => x.brand === brand));
 
-const extractDataForPSRChart = (data = [], brand) => (data.filter((x) => x.brand === brand && x.lineofbusiness === 'PSR' && x.interval === 'daily'));
-
 const psrValuesByLOB = (data = [], lob) => (data.filter((x) => x.lineofbusiness === lob));
 
 const psrValuesByDate = (data = [], lob) => (data.filter((x) => x.date === lob));
+
+const findValuesByDate = (data = [], lob) => (data.find((x) => x.date === lob));
 
 const psrValuesByInterval = (data = [], interval) => (data.filter((x) => x.interval === interval));
 
@@ -56,10 +56,10 @@ const brandLogoFile = (brand) => {
 export default {
     listOfBrands,
     listOfLOB,
-    extractDataForPSRChart,
     psrValuesByBrand,
     psrValuesByLOB,
     psrValuesByDate,
+    findValuesByDate,
     psrValuesByInterval,
     findPSRValueByInterval,
     psrDetailsByBrand,
