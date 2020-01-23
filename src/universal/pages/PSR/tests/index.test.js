@@ -4,7 +4,7 @@ import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import {shallow, mount} from 'enzyme';
 import PSR from '../index';
-import BrandDailyPSR from '../BrandDailyPSR'
+import BrandDailyPSR from '../BrandDailyPSR';
 import mockData from './data.test.json';
 import chaiJestSnapshot from 'chai-jest-snapshot';
 import renderer from 'react-test-renderer';
@@ -12,8 +12,8 @@ chai.use(chaiJestSnapshot);
 
 import {JSDOM} from 'jsdom';
 
-beforeEach(function() {
-    chaiJestSnapshot.setFilename(__filename + ".snap");
+beforeEach(() => {
+    chaiJestSnapshot.setFilename(`${__filename}.snap`);
 });
 
 describe('<PSR/>', () => {
@@ -34,14 +34,14 @@ describe('<PSR/>', () => {
     });
 
     it('matches the snapshot', () => {
-        chaiJestSnapshot.setTestName("matches the snapshot");
+        chaiJestSnapshot.setTestName('matches the snapshot');
         const wrapper = renderer.create(<PSR />);
         expect(wrapper).to.matchSnapshot();
     });
 });
 
 describe('<BrandDailyPSR/>', () => {
-    const spy = sinon.spy();        
+    const spy = sinon.spy();
     const props = {
         key: 'vrboPSRComponent',
         brand: 'vrbo',
@@ -65,12 +65,13 @@ describe('<BrandDailyPSR/>', () => {
     it('onClick trigger the func on props', () => {
         const wrapper = shallow(<BrandDailyPSR {...props} />);
         wrapper.setState({isOpen: true});
-        wrapper.find('div.brandPsr').simulate('click')
+        wrapper.find('div.brandPsr').simulate('click');
+        // eslint-disable-next-line no-unused-expressions
         expect(spy.calledOnce).to.be.true;
     });
 
     it('matches the snapshot', () => {
-        chaiJestSnapshot.setTestName("matches the snapshot");
+        chaiJestSnapshot.setTestName('matches the snapshot');
         const wrapper = renderer.create(<BrandDailyPSR {...props} />);
         expect(wrapper).to.matchSnapshot();
     });

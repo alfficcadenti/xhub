@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import classNames from 'classnames';
-import PropTypes from 'prop-types'; 
+import PropTypes from 'prop-types';
 
 
 class DayAvailability extends Component {
     static propTypes = {
         day: PropTypes.number,
         isPast: PropTypes.bool,
-            isToday: PropTypes.bool,
+        isToday: PropTypes.bool,
         dayData: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]) // eslint-disable-line react/forbid-prop-types
     }
 

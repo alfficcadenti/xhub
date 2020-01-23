@@ -5,7 +5,7 @@ import SearchableList from '@homeaway/react-searchable-list';
 
 class InputListComponent extends PureComponent {
     onChange = (selected) => {
-        this.props.onChange(selected)
+        this.props.onChange(selected);
     }
 
     render() {
@@ -19,14 +19,14 @@ class InputListComponent extends PureComponent {
 
         return (
             <LoadingContainer isLoading={isLoading} error={error} id={id}>
-                <SearchableList 
+                <SearchableList
                     labelKey="name"
                     options={options}
                     inputProps={inputProps}
                     onChange={this.onChange}
-            />
+                />
             </LoadingContainer>
-    )
+        );
     }
 }
 

@@ -1,4 +1,4 @@
-const replaceSpaces = (string) => (string.toString().replace(/ /g, '-'))
+const replaceSpaces = (string) => (string.toString().replace(/ /g, '-'));
 
 export default {
     replaceSpaces

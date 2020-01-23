@@ -14,21 +14,25 @@ class History extends Component {
         };
     }
 
+    componentDidMount() {
+        this.loadHistory(this.props.applicationId);
+    }
+
     loadHistory = (applicationId = '') => {
         this.setState({isLoading: true});
-        const baseUrl = '/api/v1/resiliency/questionnaires?applicationId='
-        fetch(baseUrl+applicationId)
+        const baseUrl = '/api/v1/resiliency/questionnaires?applicationId=';
+        fetch(baseUrl + applicationId)
             .then((resp) => {
                 if (!resp.ok) {
                     this.setState({historyError: 'Error. Try again.'});
-                    throw new Error;
+                    throw new Error();
                 }
                 return resp.json();
             })
             .then((data) => {
                 if (!data.length) {
                     this.setState({
-                        historyError: 'No questionnaire submitted previously', 
+                        historyError: 'No questionnaire submitted previously',
                         isLoading: false
                     });
                 } else {
@@ -36,17 +40,15 @@ class History extends Component {
                         history: data,
                         historyError: '',
                         isLoading: false
-                    })    
+                    });
                 }
             })
-            // eslint-disable-next-line no-console
-            .catch((error) => {console.log(error)});
-    }
-    
-    componentDidMount() {
-        this.loadHistory(this.props.applicationId);
-    }
-    
+            .catch((error) => {
+                // eslint-disable-next-line no-console
+                console.log(error);
+            });
+    };
+
     render() {
         const {
             historyError,
@@ -56,11 +58,11 @@ class History extends Component {
 
         return (
             <Fragment>
-                        <SavedQuestionnaire 
-                            history={history.reverse()} 
-                            error={historyError} 
-                            isLoading={isLoading}
-                        />
+                <SavedQuestionnaire
+                    history={history.reverse()}
+                    error={historyError}
+                    isLoading={isLoading}
+                />
             </Fragment>
         );
     }

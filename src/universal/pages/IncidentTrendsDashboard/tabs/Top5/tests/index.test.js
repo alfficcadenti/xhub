@@ -5,7 +5,6 @@ import Top5 from '../Top5';
 import mockData from './filteredData.test.json';
 
 describe('<Top5 />', () => {
-
     it('renders No Result message when no data available', () => {
         const data = [];
         const wrapper = shallow(
@@ -26,7 +25,5 @@ describe('<Top5 />', () => {
         const topShortTable = wrapper.find('#TopShortestDuration');
         expect(topLongTable).to.have.lengthOf(1);
         expect(topShortTable).to.have.lengthOf(1);
-        
     });
-
 });
