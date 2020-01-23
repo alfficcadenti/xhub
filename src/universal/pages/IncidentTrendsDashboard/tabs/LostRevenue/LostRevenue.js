@@ -20,14 +20,10 @@ function useRevenueLoss() {
     const startDate = '2019-10-28';
     const endDate = '2020-01-19';
 
-    const filterByBrand = (data = [], brandName) => data.filter((item) => item.brand === brandName);
-
     const sumBrandLossPerInterval = (data = [], brandName) => {
-        const filteredByBrand = filterByBrand(data, brandName);
+        const filteredByBrand = data.filter((item) => item.brand === brandName);
 
-        return filteredByBrand.reduce((acc, curr) => {
-            return (acc + Number(curr.estimatedLostRevenue));
-        }, 0) || 0;
+        return filteredByBrand.reduce((acc, curr) => (acc + Number(curr.estimatedLostRevenue)), 0) || 0;
     };
 
     const createOpacityConfig = (legendLabels) => {
