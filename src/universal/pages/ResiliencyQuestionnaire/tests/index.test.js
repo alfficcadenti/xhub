@@ -28,12 +28,11 @@ describe('<ResiliencyQuestionnaire/>', () => {
         const wrapper = mount(<ResiliencyQuestionnaire />);
         wrapper.setState({lobs: mockLoBDetails.content});
         expect(wrapper.find('div.SearchableListBase')).to.have.lengthOf(1);
-    })
+    });
 
     describe('selectLoB', () => {
-        
         it('saves LoB name and id in the state from the first element of the array in input', async () => {
-            const testLob = {name: "Flights", id: 1}
+            const testLob = {name: 'Flights', id: 1};
             const wrapper = shallow(<ResiliencyQuestionnaire />);
             const instance = wrapper.instance();
             sinon.stub(instance, 'loadProductList');
@@ -42,20 +41,21 @@ describe('<ResiliencyQuestionnaire/>', () => {
         });
 
         it('calls loadProductList with selected LoB name', async () => {
-            const testLob = {name: "Flights", id: 1}
+            const testLob = {name: 'Flights', id: 1};
             const wrapper = shallow(<ResiliencyQuestionnaire />);
             const instance = wrapper.instance();
             const spy = sinon.stub(instance, 'loadProductList');
             instance.selectLob([testLob]);
+            // eslint-disable-next-line no-unused-expressions
             expect(spy.calledOnce).to.be.true;
-            expect(spy.withArgs("Flights").calledOnce).to.be.true;
+            // eslint-disable-next-line no-unused-expressions
+            expect(spy.withArgs('Flights').calledOnce).to.be.true;
         });
-    })
+    });
 
     describe('selectProduct', () => {
-        
         it('saves product name and id in the state from the first element of the array in input', async () => {
-            const testProduct = {name: "Traffic Engineering", id: 1}
+            const testProduct = {name: 'Traffic Engineering', id: 1};
             const wrapper = shallow(<ResiliencyQuestionnaire />);
             const instance = wrapper.instance();
             sinon.stub(instance, 'loadApplicationList');
@@ -64,36 +64,35 @@ describe('<ResiliencyQuestionnaire/>', () => {
         });
 
         it('calls loadApplicationList with selected product name', async () => {
-            const testProduct = {name: "Traffic Engineering", id: 1}
+            const testProduct = {name: 'Traffic Engineering', id: 1};
             const wrapper = shallow(<ResiliencyQuestionnaire />);
             const instance = wrapper.instance();
             const spy = sinon.stub(instance, 'loadApplicationList');
             instance.selectProduct([testProduct]);
+            // eslint-disable-next-line no-unused-expressions
             expect(spy.calledOnce).to.be.true;
-            expect(spy.withArgs("Traffic Engineering").calledOnce).to.be.true;
+            // eslint-disable-next-line no-unused-expressions
+            expect(spy.withArgs('Traffic Engineering').calledOnce).to.be.true;
         });
-    })
+    });
 
     describe('selectApplication', () => {
-        
         it('saves application name and id in the state from the first element of the array in input', async () => {
-            const testApp = {name: "distributed-automation-dashboard-web", id: 1753}
+            const testApp = {name: 'distributed-automation-dashboard-web', id: 1753};
             const wrapper = shallow(<ResiliencyQuestionnaire />);
             const instance = wrapper.instance();
             instance.selectApplication([testApp]);
             expect(instance.state.application).to.eql(testApp);
         });
-    })
+    });
 
     describe('InputListComponent with errors', () => {
-        
         it('display a div with class alert if lobError is not null', async () => {
             const wrapper = mount(<ResiliencyQuestionnaire />);
             wrapper.setState({lobError: 'error message'});
             expect(wrapper.find('div.Alert')).to.have.lengthOf(1);
         });
-    })
-
+    });
 
 
     describe('<QuestionForm/>', () => {
@@ -105,6 +104,7 @@ describe('<ResiliencyQuestionnaire/>', () => {
         it('renders successfully with state.isOpen eql to false', () => {
             const wrapper = shallow(<QuestionForm product={product} application={application}/>);
             expect(wrapper).to.have.length(1);
+            // eslint-disable-next-line no-unused-expressions
             expect(wrapper.state(['isOpen'])).to.be.false;
         });
 
@@ -117,9 +117,11 @@ describe('<ResiliencyQuestionnaire/>', () => {
                 const spy = sinon.stub(instance, 'submitQuestionnaire');
                 spy.resolves('Ok');
                 instance.handleSubmit();
+                // eslint-disable-next-line no-unused-expressions
                 expect(spy.calledOnce).to.be.true;
-                expect(spy.withArgs(product,application).calledOnce).to.be.true;
-            })
+                // eslint-disable-next-line no-unused-expressions
+                expect(spy.withArgs(product, application).calledOnce).to.be.true;
+            });
 
             it('calls handleOpen() that open the modal', () => {
                 const wrapper = mount(<QuestionForm product={product} application={application}/>);
@@ -129,8 +131,9 @@ describe('<ResiliencyQuestionnaire/>', () => {
                 spy.resolves('Ok');
                 const handleOpen = sinon.spy(instance, 'handleOpen');
                 instance.handleSubmit(message);
+                // eslint-disable-next-line no-unused-expressions
                 expect(handleOpen.calledOnce).to.be.true;
-            })
+            });
         });
 
         describe('displayPostResult(message)', () => {
@@ -139,7 +142,7 @@ describe('<ResiliencyQuestionnaire/>', () => {
                 const instance = wrapper.instance();
                 instance.displayPostResult(message);
                 expect(wrapper.state(['modalMessage'])).to.be.eql(message);
-            })
+            });
         });
 
         describe('handleOpen()', () => {
@@ -147,8 +150,9 @@ describe('<ResiliencyQuestionnaire/>', () => {
                 const wrapper = shallow(<QuestionForm product={product} application={application}/>);
                 const instance = wrapper.instance();
                 instance.handleOpen();
+                // eslint-disable-next-line no-unused-expressions
                 expect(wrapper.state(['isOpen'])).to.be.true;
-            })
+            });
         });
 
         describe('handleClose()', () => {
@@ -156,8 +160,9 @@ describe('<ResiliencyQuestionnaire/>', () => {
                 const wrapper = shallow(<QuestionForm product={product} application={application}/>);
                 const instance = wrapper.instance();
                 instance.handleClose();
+                // eslint-disable-next-line no-unused-expressions
                 expect(wrapper.state(['isOpen'])).to.be.false;
-            })
+            });
         });
 
         describe('preSubmit()', () => {
@@ -167,28 +172,31 @@ describe('<ResiliencyQuestionnaire/>', () => {
                 sinon.stub(instance, 'handleSubmit');
                 const checkForErrors = sinon.spy(instance, 'checkForErrors');
                 instance.preSubmit();
+                // eslint-disable-next-line no-unused-expressions
                 expect(checkForErrors.calledOnce).to.be.true;
-            })
+            });
 
             it('if errors do not call handleSubmit()', () => {
                 const wrapper = shallow(<QuestionForm product={product} application={application}/>);
                 const instance = wrapper.instance();
                 const handleSubmit = sinon.stub(instance, 'handleSubmit');
                 const checkForErrors = sinon.stub(instance, 'checkForErrors');
-                checkForErrors.returns(2)
+                checkForErrors.returns(2);
                 instance.preSubmit();
+                // eslint-disable-next-line no-unused-expressions
                 expect(handleSubmit.calledOnce).to.be.false;
-            })
+            });
 
             it('if no errors do call handleSubmit()', () => {
                 const wrapper = shallow(<QuestionForm product={product} application={application}/>);
                 const instance = wrapper.instance();
                 const handleSubmit = sinon.stub(instance, 'handleSubmit');
                 const checkForErrors = sinon.stub(instance, 'checkForErrors');
-                checkForErrors.returns(0)
+                checkForErrors.returns(0);
                 instance.preSubmit();
+                // eslint-disable-next-line no-unused-expressions
                 expect(handleSubmit.calledOnce).to.be.true;
-            })
+            });
         });
     });
 
@@ -210,7 +218,6 @@ describe('<ResiliencyQuestionnaire/>', () => {
             });
             expect(wrapper.find('div.Alert')).to.have.lengthOf(1);
             expect(wrapper.find('div.Alert').text()).to.be.eql('No questionnaire submitted previously');
-
         });
     });
 });

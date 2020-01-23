@@ -8,23 +8,21 @@ const Error = require('./error');
 const {routes} = require('./routes/index');
 const H2o2 = require('h2o2');
 
-const ExpediaCACerts = require('@homeaway/ca-certs-expedia')
+const ExpediaCACerts = require('@homeaway/ca-certs-expedia');
 const SecretHandler = require('@homeaway/shortstop-secret-expedia-vault');
 
 ExpediaCACerts.load(); // necessary to establish secure communication with Vault
 
 async function start(options = {}) {
-
     const env = process.env.EXPEDIA_DEPLOYED_ENVIRONMENT || process.env.EXPEDIA_ENVIRONMENT || process.env.NODE_ENV;
 
     function getSecret() {
         if (!env || env === 'dev' || env === 'development') {
-            return null
-        } else {
-            return SecretHandler.init({appName: 'opxhub-ui'})
+            return null;
         }
+        return SecretHandler.init({appName: 'opxhub-ui'});
     }
-    
+
     // builds, composes, and configures server via manifest.json
     const server = await Catalyst.init({
         userConfigPath: Path.resolve(__dirname, 'manifest.json'),
@@ -32,7 +30,7 @@ async function start(options = {}) {
             secret: await getSecret()
         },
         onConfig(config) {
-            ServiceClient.mergeConfig(config.get('server.app.services'))
+            ServiceClient.mergeConfig(config.get('server.app.services'));
             return config;
         },
         ...options
@@ -46,25 +44,25 @@ async function start(options = {}) {
 
     // set up production route for static assets
     const isProd = (process.env.NODE_ENV || 'development') === 'production';
-    const hasCDN = !! process.env.CDN_URL;
-    if (isProd && !hasCDN){
+    const hasCDN = !!process.env.CDN_URL;
+    if (isProd && !hasCDN) {
         server.route({
             method: 'GET',
             path: '/{param*}',
             handler: {
                 directory: {
-                    path:  Path.join(__dirname,'../static')
+                    path: Path.join(__dirname, '../static')
                 }
             }
-        })
+        });
     }
 
     // example of decorating the server context.
     // available via `server.siteInfo()` or `request.server.siteInfo()`
-    server.decorate('server', 'siteInfo', () => ({ siteName: 'OpxHub' }))
+    server.decorate('server', 'siteInfo', () => ({siteName: 'OpxHub'}));
 
     // start the server
-    await server.register(H2o2)
+    await server.register(H2o2);
     await server.start();
     server.log(['info'], `server running: ${server.info.uri}`);
 
@@ -75,8 +73,7 @@ async function start(options = {}) {
 if (require.main === module) {
     // this is getting called from script, start the server.
     start();
-}
-else {
+} else {
     // export the function for testing.
     module.exports = start;
 }

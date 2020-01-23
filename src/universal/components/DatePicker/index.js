@@ -5,8 +5,8 @@ import DayAvailability from './DayAvailability';
 import './styles.less';
 
 class DatePicker extends Component {
-    handleDateRangeChange  = (startDate, endDate) => {
-        this.props.handleDateRangeChange(startDate, endDate)
+    handleDateRangeChange = (startDate, endDate) => {
+        this.props.handleDateRangeChange(startDate, endDate);
     }
 
     handleClearDates = () => {
@@ -27,7 +27,7 @@ class DatePicker extends Component {
                 endDate={endDate}
                 minDate={minDate}
                 dayTemplateComponent={DayAvailability}
-                id='dateRangeFilter'
+                id="dateRangeFilter"
             />
         );
     }
@@ -39,6 +39,6 @@ DatePicker.propTypes = {
     minDate: PropTypes.instanceOf(Date),
     handleDateRangeChange: PropTypes.func.isRequired,
     handleClearDates: PropTypes.func.isRequired
-}
+};
 
 export default DatePicker;

@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import { Dropdown, DropdownItem } from '@homeaway/react-dropdown';
+import {Dropdown, DropdownItem} from '@homeaway/react-dropdown';
 import PropTypes from 'prop-types';
 
 class FilterDropDown extends PureComponent {
@@ -7,13 +7,13 @@ class FilterDropDown extends PureComponent {
         const {id, list, selectedValue, onClickHandler} = this.props;
         return (
             <Dropdown id={id} label={selectedValue}>
-            {
-                list.map((item) => (
-                    <DropdownItem key={item} text={item} link="#" onClick={() => onClickHandler(item)} />
-                ))
-            }
-        </Dropdown>
-        )
+                {
+                    list.map((item) => (
+                        <DropdownItem key={item} text={item} link="#" onClick={() => onClickHandler(item)} />
+                    ))
+                }
+            </Dropdown>
+        );
     }
 }
 

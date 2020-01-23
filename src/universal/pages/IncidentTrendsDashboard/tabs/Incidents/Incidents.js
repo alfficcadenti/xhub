@@ -7,7 +7,7 @@ import incidentsHelper from '../../incidentsHelper';
 const columns = ['Incident', 'Priority', 'Brand', 'Started', 'Summary', 'Duration', 'TTD', 'TTR', 'Root Cause Owners', 'Status'];
 
 const columnsInfo = {
-    Started: (<div><b>Started</b><br />Displayed in browser&apos;s local time</div>)
+    Started: (<div><b>{'Started'}</b><br />{'Displayed in browser'}&apos;{'s local time'}</div>)
 };
 
 const renderTable = (filteredIncidents) => (
@@ -15,22 +15,22 @@ const renderTable = (filteredIncidents) => (
         data={incidentsHelper.getIncidentsData(filteredIncidents)}
         columns={columns}
         columnsInfo={columnsInfo}
-        paginated={true}
+        paginated
     />
 );
 
 const renderNoResults = () => (
-    <p>No Results Found</p>
+    <p>{'No Results Found'}</p>
 );
 
 const Incidents = (props) => (
-        <div data-wdio="incidents-table">
-            {
-                props.filteredIncidents.length
-                    ? renderTable(props.filteredIncidents)
-                    : renderNoResults()
-            }
-        </div>
+    <div data-wdio="incidents-table">
+        {
+            props.filteredIncidents.length
+                ? renderTable(props.filteredIncidents)
+                : renderNoResults()
+        }
+    </div>
 );
 
 Incidents.propTypes = {

@@ -2,7 +2,7 @@ import React from 'react';
 import {BrowserRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {hot} from 'react-hot-loader';
-import App from "./App";
+import App from './App';
 
 function ClientApp(props) {
     return (

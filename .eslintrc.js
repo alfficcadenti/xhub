@@ -13,13 +13,16 @@ module.exports = {
         "react"
     ],
     "extends": [
-        "eslint:recommended",
-        "plugin:react/recommended",
+        "@homeaway/eslint-config",
+        "@homeaway/eslint-config/node8",
+        "@homeaway/eslint-config/es6",
+        "@homeaway/eslint-config/react",
+        "@homeaway/eslint-config/jsx-a11y"
     ],
     "settings": {
         "react": {
             "pragma": "React",
-            "version": "16.7"
+            "version": "16.12"
         }
     }
-}
+};

@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react';
 import {Route, Switch} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import Header from "../Header/Header";
+import Header from '../Header/Header';
 import IncidentTrendsDashboard from '../../pages/IncidentTrendsDashboard';
 import ResiliencyQuestionnaire from '../../pages/ResiliencyQuestionnaire';
 import PSR from '../../pages/PSR';
@@ -27,4 +27,4 @@ App.propTypes = {
     path: PropTypes.string
 };
 
-export default App
+export default App;

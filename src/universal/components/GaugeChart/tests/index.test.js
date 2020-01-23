@@ -8,10 +8,9 @@ import renderer from 'react-test-renderer';
 chai.use(chaiJestSnapshot);
 
 describe('<GaugeChart /> ', () => {
-
-    beforeEach(function() {
-        chaiJestSnapshot.setFilename(__filename + ".snap");
-      });
+    beforeEach(() => {
+        chaiJestSnapshot.setFilename(`${__filename}.snap`);
+    });
 
     const props = {
         title: 'title',
@@ -24,8 +23,8 @@ describe('<GaugeChart /> ', () => {
     });
 
     it('matches the snapshot', () => {
-        chaiJestSnapshot.setTestName("matches the snapshot");
+        chaiJestSnapshot.setTestName('matches the snapshot');
         const wrapper = renderer.create(<GaugeChart {...props} />);
         expect(wrapper).to.matchSnapshot();
     });
-})
+});

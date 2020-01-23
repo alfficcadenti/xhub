@@ -4,7 +4,7 @@ module.exports = {
     path: '/',
     options: {
         id: 'root',
-        handler(request,h) {
+        handler(request, h) {
             return h.redirect('/login');
         }
     }

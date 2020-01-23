@@ -8,22 +8,21 @@ import moment from 'moment';
 chai.use(chaiJestSnapshot);
 
 const questions = [
-    {id: 1, question: 'Deployed in Regions', type: 'category', values: ['us-west-1','us-east-1','eu-west-1','ap-northeast-1','ap-southeast-1','ap-southeast-2','other']},
+    {id: 1, question: 'Deployed in Regions', type: 'category', values: ['us-west-1', 'us-east-1', 'eu-west-1', 'ap-northeast-1', 'ap-southeast-1', 'ap-southeast-2', 'other']},
     {id: 2, question: '# Availability Zones Deployed to', type: 'integer'},
     {id: 3, question: '# Instances Deployed', type: 'integer'},
-    {id: 4, question: 'Deployed to Segment?', type: 'category', values: ['True','False']},
-    {id: 5, question: 'Chaos Monkey Enabled?', type: 'category', values: ['True','False']},
-    {id: 6, question: 'Auto-Scaling Verified By', type: 'category', values: ['Not Validated','Production Observation','AWS Console','Chaos Monkey','Gremlin','Other']},
+    {id: 4, question: 'Deployed to Segment?', type: 'category', values: ['True', 'False']},
+    {id: 5, question: 'Chaos Monkey Enabled?', type: 'category', values: ['True', 'False']},
+    {id: 6, question: 'Auto-Scaling Verified By', type: 'category', values: ['Not Validated', 'Production Observation', 'AWS Console', 'Chaos Monkey', 'Gremlin', 'Other']},
     {id: 7, question: 'Single Points of Failure', type: 'text'},
     {id: 15, question: 'Multi-Region ETA', type: 'date'},
     {id: 16, question: 'Resilient ETA', type: 'date'},
-]
+];
 
 describe('<ResiliencyQuestion /> ', () => {
-
-    beforeEach(function() {
-        chaiJestSnapshot.setFilename(__filename + ".snap");
-      });
+    beforeEach(() => {
+        chaiJestSnapshot.setFilename(`${__filename}.snap`);
+    });
 
     const props = {
         error: '',
@@ -38,7 +37,7 @@ describe('<ResiliencyQuestion /> ', () => {
     });
 
     it('matches the snapshot', () => {
-        chaiJestSnapshot.setTestName("matches the snapshot");
+        chaiJestSnapshot.setTestName('matches the snapshot');
         const wrapper = renderer.create(<ResiliencyQuestion {...props} />);
         expect(wrapper).to.matchSnapshot();
     });
@@ -51,7 +50,7 @@ describe('<ResiliencyQuestion /> ', () => {
                     'Resilient-ETA': moment('2019-12-09').format('YYYY-MM-DD'),
                 },
                 errorMsg: ''
-            }
+            };
             const wrapper = mount(<ResiliencyQuestion {...props} />);
             wrapper.setState(state);
             const instance = wrapper.instance();
@@ -66,12 +65,12 @@ describe('<ResiliencyQuestion /> ', () => {
                     'Resilient-ETA': moment('2019-12-09').format('YYYY-MM-DD'),
                 },
                 errorMsg: ''
-            }
+            };
             const wrapper = mount(<ResiliencyQuestion {...props} />);
             wrapper.setState(state);
             const instance = wrapper.instance();
             instance.checkDatesError();
             expect(wrapper.state(['errorMsg'])).to.be.eql('');
         });
-    })
-})
+    });
+});
