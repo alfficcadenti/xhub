@@ -197,6 +197,47 @@ const weeklyRange = (start, end) => {
 const top5LongestDuration = (inc) => (inc.sort((a, b) => (Number(b.duration) - Number(a.duration))).slice(0, 5));
 const top5ShortestDuration = (inc) => (inc.sort((a, b) => (Number(a.duration) - Number(b.duration))).slice(0, 5));
 
+export const createOpacityConfig = (legendLabels) => {
+    return legendLabels.reduce((prev, legendLabel) => ({
+        ...prev,
+        [legendLabel]: 1
+    }), {});
+};
+
+const sumBrandLossPerInterval = (data = [], brandName) => {
+    const filteredByBrand = data.filter((item) => item.brand === brandName);
+
+    return filteredByBrand.reduce((acc, curr) => (acc + Number(curr.estimatedLostRevenue)), 0) || 0;
+};
+
+export const prepareBrandLossData = (data, brandsNames) => {
+    const [lowerMarginDateValue, maxMarginDateValue] = getMarginDateValues(data);
+    const weekIntervals = weeklyRange(lowerMarginDateValue, maxMarginDateValue);
+
+    // sum up lost revenue values for each brand (per each week interval)
+    // make recharts-like data to feed into chart
+
+    return weekIntervals.reduce((prev, weekInterval) => {
+        const incidentsPerInterval = incidentsOfTheWeek(data, moment(weekInterval).week());
+
+        const newMetricPoint = brandsNames.reduce((map, brand) => ({
+            ...map,
+            [brand]: sumBrandLossPerInterval(incidentsPerInterval, brand)
+        }), {});
+
+        newMetricPoint.weekInterval = weekInterval;
+
+        return [
+            ...prev,
+            newMetricPoint
+        ];
+    }, []);
+};
+
+export const extractBrandNames = (data) => data
+    .map((item) => item.brand)
+    .filter(distinct);
+
 export default {
     getAllIncidents,
     getIncidentsData,
