@@ -47,4 +47,4 @@ printBoxedMessage "Dedupe"
 
 # if dedupe fails, it is probably due to this: https://github.com/npm/npm/issues/20173
 # to remedy: check in package-lock.json and remove the "|| printBoxedMessage ..."
-npm dedupe || printBoxedMessage "WARNING: dedupe failed, ignoring for now"
+npm dedupe # || printBoxedMessage "WARNING: dedupe failed, ignoring for now"
