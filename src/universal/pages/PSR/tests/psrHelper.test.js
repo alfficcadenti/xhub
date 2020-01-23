@@ -113,6 +113,20 @@ describe('psrHelpers', () => {
         });
     });
 
+    describe('findValuesByDate()', () => {
+        it('returns undefined if data is not passed', () => {
+            const result = h.findValuesByDate();
+            // eslint-disable-next-line no-undefined
+            expect(result).to.be.eql(undefined);
+        });
+
+        it('returns the first value with the interval specified from an array in input', () => {
+            const firstDaily = {'brand': 'egencia', 'date': '2019-12-06', 'interval': 'daily', 'lineofbusiness': 'PSR', 'successPercentage': 97};
+            const result = h.findValuesByDate(mockData, '2019-12-06');
+            expect(result).to.be.eql(firstDaily);
+        });
+    });
+
     describe('psrValuesByLOB()', () => {
         it('returns empty array if data is not passed', () => {
             const result = h.psrValuesByLOB();

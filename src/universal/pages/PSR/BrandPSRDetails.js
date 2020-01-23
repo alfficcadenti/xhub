@@ -3,21 +3,44 @@ import h from './psrHelpers';
 import PropTypes from 'prop-types';
 import DataTable from '../../components/DataTable/index';
 import ReactEcharts from 'echarts-for-react';
+import moment from 'moment';
 import './styles.less';
 
 class BrandPSRDetails extends PureComponent {
-    setChartOptions = (series = []) => (
-        {
+    chartOptions = (series = []) => {
+        let dates = [];
+        for (let i = 0; i < 7; i++) {
+            dates.push(moment().subtract(i, 'day').format('YYYY-MM-DD'));
+        }
+        dates = dates.reverse();
+
+        const data = h.listOfLOB(series).map((lob) => {
+            let last7daysValue = [];
+            dates.forEach((date) => {
+                const dayValue = h.findValuesByDate(h.psrValuesByLOB(series, lob), date);
+                // eslint-disable-next-line no-undefined
+                last7daysValue.push((dayValue && dayValue.successPercentage) || undefined);
+            });
+
+            return {
+                name: lob,
+                type: 'line',
+                data: last7daysValue,
+                color: lob === 'PSR' ? '#00c' : '',
+                lineStyle: {width: lob === 'PSR' ? 3 : 2}
+
+            };
+        });
+        const legend = h.listOfLOB(series);
+
+        return {
             legend: {
-                data: series.map((x) => x.name)
+                data: legend
             },
             tooltip: {},
             xAxis: {
                 type: 'category',
-                data: series.map((x) => x.date),
-            },
-            markLine: {
-
+                data: dates
             },
             yAxis: {
                 name: 'Brand Daily PSR',
@@ -25,20 +48,16 @@ class BrandPSRDetails extends PureComponent {
                 nameGap: 50,
                 nameRotate: 90,
                 type: 'value',
-                min: Math.min(...series.map((x) => x.successPercentage)) - 3
+                min: (Math.min(...series.map((x) => x.successPercentage)) - 2).toFixed()
             },
-            series: [{
-                name: 'PSR',
-                data: series.map((x) => x.successPercentage),
-                type: 'line',
-                color: '#00008d'
-            }]
-        }
-    )
+            series: data
+        };
+    }
 
     render() {
-        const {data, dailyData} = this.props;
-        const dataForTable = h.formatDataForTable(data);
+        const {data} = this.props;
+        const dataForTable = h.formatDataForTable(h.psrValuesByDate(data, h.lastPSRAvailableDate(data)));
+        const last7DaysDailyPSR = h.psrValuesByInterval(data, 'daily');
 
         return (
             <div id="PSRDetails">
@@ -48,7 +67,8 @@ class BrandPSRDetails extends PureComponent {
                     paginated={false}
                 />
                 <ReactEcharts
-                    option={this.setChartOptions(dailyData)}
+                    option={this.chartOptions(last7DaysDailyPSR)}
+                    key={Math.random()}
                 />
             </div>
         );
@@ -56,8 +76,6 @@ class BrandPSRDetails extends PureComponent {
 }
 
 BrandPSRDetails.propTypes = {
-    data: PropTypes.array,
-    dailyData: PropTypes.array,
-
+    data: PropTypes.array
 };
 export default BrandPSRDetails;
