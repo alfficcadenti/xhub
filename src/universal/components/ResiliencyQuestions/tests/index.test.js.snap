@@ -344,7 +344,7 @@ Array [
             placeholder="Multi-Region ETA"
             readOnly="readOnly"
             type="text"
-            value="1/23/2020"
+            value="1/24/2020"
           />
           <label
             className=""
@@ -401,7 +401,7 @@ Array [
             placeholder="Resilient ETA"
             readOnly="readOnly"
             type="text"
-            value="1/23/2020"
+            value="1/24/2020"
           />
           <label
             className=""

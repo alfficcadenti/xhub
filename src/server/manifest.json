@@ -108,7 +108,7 @@
           "production": true
         },
         "normalizePathParameters": false,
-        "prefix": "opxhub"
+        "prefix": "opxhub-ui"
       }
     },
     // plugin for hbs and react server side rendering

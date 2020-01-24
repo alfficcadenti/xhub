@@ -5,7 +5,7 @@ const hasCdn = !!process.env.CDN_URL;
 let prefix = '/';
 if (hasCdn) {
     const {version} = require('../../../../config/buildInfo');
-    prefix = `${process.env.CDN_URL}/opxhub/${version}/assets/`;
+    prefix = `${process.env.CDN_URL}/opxhub-ui/${version}/assets/`;
 }
 
 let manifest;
