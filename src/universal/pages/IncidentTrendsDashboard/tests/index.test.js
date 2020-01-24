@@ -12,7 +12,7 @@ describe('<IncidentTrendsDashboard/>', () => {
     });
 
     it('sets correctly default start and end dates', async () => {
-        const startDateDefaultValue = moment().subtract(1, 'month').format(DATE_FORMAT);
+        const startDateDefaultValue = moment().subtract(6, 'weeks').format(DATE_FORMAT);
         const endDateDefaultValue = moment().format(DATE_FORMAT);
 
         const props = wrapper.find('DatePicker').props();
