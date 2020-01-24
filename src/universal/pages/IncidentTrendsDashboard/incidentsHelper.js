@@ -45,7 +45,9 @@ const incLink = (incNumber) => (`<a key='${incNumber}link' href='https://expedia
 
 const distinct = (value, index, self) => self.indexOf(value) === index;
 
-const listOfBrands = (inc = []) => (inc.map((x) => x.Brand).filter(distinct));
+const listOfBrands = (inc = []) => inc
+    .map((x) => x.Brand)
+    .filter(distinct);
 
 const max = (accumulator, currentValue) => (currentValue > accumulator ? currentValue : accumulator);
 const min = (accumulator, currentValue) => (currentValue < accumulator ? currentValue : accumulator);
@@ -198,7 +200,7 @@ const top5LongestDuration = (inc) => (inc.sort((a, b) => (Number(b.duration) - N
 const top5ShortestDuration = (inc) => (inc.sort((a, b) => (Number(a.duration) - Number(b.duration))).slice(0, 5));
 
 export const createOpacityConfig = (legendLabels) => {
-    return legendLabels.reduce((prev, legendLabel) => ({
+    return legendLabels && legendLabels.reduce((prev, legendLabel) => ({
         ...prev,
         [legendLabel]: 1
     }), {});
@@ -212,12 +214,12 @@ const sumBrandLossPerInterval = (data = [], brandName) => {
 
 export const prepareBrandLossData = (data, brandsNames) => {
     const [lowerMarginDateValue, maxMarginDateValue] = getMarginDateValues(data);
-    const weekIntervals = weeklyRange(lowerMarginDateValue, maxMarginDateValue);
+    const weekIntervals = (lowerMarginDateValue || maxMarginDateValue) && weeklyRange(lowerMarginDateValue, maxMarginDateValue);
 
     // sum up lost revenue values for each brand (per each week interval)
     // make recharts-like data to feed into chart
 
-    return weekIntervals.reduce((prev, weekInterval) => {
+    return weekIntervals && weekIntervals.reduce((prev, weekInterval) => {
         const incidentsPerInterval = incidentsOfTheWeek(data, moment(weekInterval).week());
 
         const newMetricPoint = brandsNames.reduce((map, brand) => ({
@@ -234,7 +236,7 @@ export const prepareBrandLossData = (data, brandsNames) => {
     }, []);
 };
 
-export const extractBrandNames = (data) => data
+export const extractBrandNames = (data) => data && data
     .map((item) => item.brand)
     .filter(distinct);
 
@@ -259,6 +261,5 @@ export default {
     range,
     weeklyRange,
     top5LongestDuration,
-    top5ShortestDuration,
-    distinct
+    top5ShortestDuration
 };

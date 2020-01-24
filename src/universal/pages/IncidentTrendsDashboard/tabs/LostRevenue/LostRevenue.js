@@ -7,11 +7,14 @@ import {
     Legend,
     LineChart
 } from 'recharts';
-import {createOpacityConfig} from '../../incidentsHelper';
+import {createOpacityConfig, extractBrandNames, prepareBrandLossData} from '../../incidentsHelper';
 
 
-const LostRevenue = ({lostRevenues, brands}) => {
-    const [opacity, setOpacity] = useState(brands ? createOpacityConfig(brands) : {});
+const LostRevenue = ({filteredLostRevenues}) => {
+    const [opacity, setOpacity] = useState(createOpacityConfig(extractBrandNames(filteredLostRevenues)) ? createOpacityConfig(extractBrandNames(filteredLostRevenues)) : {});
+
+    const brands = extractBrandNames(filteredLostRevenues);
+    const lostRevenues = prepareBrandLossData(filteredLostRevenues, brands);
 
     const handleOnClick = (e) => {
         const {dataKey} = e;
@@ -23,7 +26,7 @@ const LostRevenue = ({lostRevenues, brands}) => {
         });
     };
 
-    return (<div id="lost-revenue">
+    const renderChart = () => (
         <LineChart
             width={1000}
             height={300}
@@ -40,6 +43,14 @@ const LostRevenue = ({lostRevenues, brands}) => {
                 })
             }
         </LineChart>
+    );
+
+    return (<div id="lost-revenue">
+        {
+            (filteredLostRevenues && filteredLostRevenues.length) ?
+                renderChart() :
+                <p>{'No Results Found'}</p>
+        }
     </div>
     );
 };

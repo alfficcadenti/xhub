@@ -5,7 +5,7 @@ import LoadingContainer from '../../components/LoadingContainer';
 import FilterDropDown from '../../components/FilterDropDown';
 import {Navigation} from '@homeaway/react-navigation';
 import DatePicker from '../../components/DatePicker/index';
-import h, {extractBrandNames, prepareBrandLossData} from './incidentsHelper';
+import h from './incidentsHelper';
 import {DATE_FORMAT, PRIORITIES, BRANDS} from './constants';
 import {Incidents, Overview, Top5, LostRevenue} from './tabs/index';
 import './styles.less';
@@ -13,9 +13,9 @@ import './styles.less';
 
 const brandDefaultValue = 'All';
 const priorityDefaultValue = 'All - P1 & P2';
-const startDateDefaultValue = moment().subtract(6, 'weeks').format(DATE_FORMAT);
+const startDateDefaultValue = moment().subtract(7, 'weeks').format(DATE_FORMAT);
 const endDateDefaultValue = moment().format(DATE_FORMAT);
-const minDate = moment(startDateDefaultValue).toDate();
+const minDate = moment('2019-01-01').toDate();
 const navLinks = [
     {
         id: 'overview',
@@ -50,14 +50,20 @@ const IncidentTrendsDashboard = () => {
     const [incPriority, setIncPriority] = useState(priorityDefaultValue);
     const [allIncidents, setAllIncidents] = useState([]);
     const [filteredIncidents, setFilteredIncidents] = useState([]);
-    const [lostRevenues, setLostRevenues] = useState([]);
-    const [brands, setBrands] = useState([]);
+    const [allLostRevenues, setAllLostRevenues] = useState([]);
+    const [filteredLostRevenues, setFilteredLostRevenues] = useState([]);
 
     const applyFilters = () => {
         let incidents = [...allIncidents];
+        let lostRevenues = [...allLostRevenues];
 
         if (startDate || endDate) {
             incidents = incidents.filter((inc) =>
+                moment(inc.startedAt).format(DATE_FORMAT) >= startDate &&
+                moment(inc.startedAt).format(DATE_FORMAT) <= endDate
+            );
+
+            lostRevenues = lostRevenues.filter((inc) =>
                 moment(inc.startedAt).format(DATE_FORMAT) >= startDate &&
                 moment(inc.startedAt).format(DATE_FORMAT) <= endDate
             );
@@ -65,19 +71,22 @@ const IncidentTrendsDashboard = () => {
 
         if (incPriority !== priorityDefaultValue) {
             incidents = incidents.filter((inc) => inc.priority === incPriority);
+            lostRevenues = lostRevenues.filter((inc) => inc.priority === incPriority);
         }
 
         if (selectedBrand !== brandDefaultValue) {
             incidents = incidents.filter((inc) => inc.Brand === selectedBrand);
+            lostRevenues = lostRevenues.filter((inc) => inc.Brand === selectedBrand);
         }
 
         setFilteredIncidents(incidents);
+        setFilteredLostRevenues(lostRevenues);
     };
 
     useEffect(() => {
         const requests = [
             fetch('/api/v1/incidents'),
-            fetch(`/api/v1/lostrevenue?startDate=${startDateDefaultValue}&endDate=${endDateDefaultValue}`)
+            fetch(`/api/v1/lostrevenue?startDate=2019-01-01&endDate=${endDateDefaultValue}`)
         ];
 
         Promise.all(requests.map((request) => {
@@ -88,13 +97,7 @@ const IncidentTrendsDashboard = () => {
             .then(([incidents, revenues]) => {
                 const rawIncidents = h.getAllIncidents(incidents);
                 setAllIncidents(rawIncidents);
-                setFilteredIncidents(rawIncidents);
-
-                const brandNames = extractBrandNames(revenues);
-                const allLostRevenues = prepareBrandLossData(revenues, brandNames);
-
-                setBrands(brandNames);
-                setLostRevenues(allLostRevenues);
+                setAllLostRevenues(revenues);
 
                 setIsLoading(false);
             })
@@ -104,6 +107,10 @@ const IncidentTrendsDashboard = () => {
                 console.log(err);
             });
     }, []);
+
+    useEffect(() => {
+        applyFilters();
+    }, [allIncidents, allLostRevenues]);
 
     const handleNavigationClick = async (e, activeLinkIndex) => setActiveIndex(activeLinkIndex);
 
@@ -131,7 +138,7 @@ const IncidentTrendsDashboard = () => {
             case 2:
                 return <Top5 filteredIncidents={filteredIncidents} />;
             case 3:
-                return <LostRevenue lostRevenues={lostRevenues} brands={brands}/>;
+                return <LostRevenue filteredLostRevenues={filteredLostRevenues} />;
             default:
                 return <Overview filteredIncidents={filteredIncidents} />;
         }
