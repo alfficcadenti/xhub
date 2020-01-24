@@ -1,5 +1,5 @@
 {
-  "name": "opxhub",
+  "name": "opxhub-ui",
   "version": "1.0.0",
   "description": "",
   "license": "UNLICENSED",
@@ -7,10 +7,10 @@
   "contributors": [],
   "repository": {
     "type": "git",
-    "url": "https://github.expedia.biz/HomeAway/opxhub"
+    "url": "https://github.expedia.biz/EGPlatform/opxhub-ui"
   },
   "bugs": {
-    "url": "https://github.expedia.biz/HomeAway/opxhub/issues"
+    "url": "https://github.expedia.biz/EGPlatform/opxhub-ui/issues"
   },
   "engines": {
     "node": ">=10.0.0",
@@ -85,6 +85,7 @@
     "@homeaway/catalyst-monitoring-statsd": "^1.1.0",
     "@homeaway/catalyst-status": "^1.0.3",
     "@homeaway/edap-wrapper": "^0.4.1",
+    "@homeaway/eslint-config": "^4.2.0",
     "@homeaway/http-client": "^4.1.0",
     "@homeaway/raf-optimized": "^1.2.0",
     "@homeaway/react-alerts": "^8.0.0",
@@ -129,12 +130,15 @@
     "jwk-to-pem": "^2.0.2",
     "jws": "^3.2.2",
     "knex": "^0.19.5",
+    "kumo-metrics-npm": "^1.0.0",
     "lodash.debounce": "^4.0.8",
     "lodash.isequal": "^4.5.0",
     "lodash.throttle": "^4.1.1",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.27",
     "mssql": "^5.1.0",
+    "node-gyp": "^6.1.0",
+    "os": "^0.1.1",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
     "react-csv": "^1.1.2",
@@ -164,7 +168,6 @@
     "@babel/preset-env": "^7.7.7",
     "@babel/preset-react": "^7.7.4",
     "@babel/register": "^7.7.7",
-    "@homeaway/eslint-config": "^4.2.0",
     "@wdio/cli": "^5.18.4",
     "@wdio/dot-reporter": "^5.16.5",
     "@wdio/local-runner": "^5.18.4",

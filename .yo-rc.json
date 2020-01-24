@@ -1,14 +1,14 @@
 {
   "@homeaway/generator-catalyst-eg": {
-    "appName": "opxhub",
+    "appName": "opxhub-ui",
     "team": "Operational Excellence",
     "user": "gkeren",
-    "roleName": "opxhub",
+    "roleName": "opxhub-ui",
     "mail": "vrbo_opex@expedia.com",
     "gitHost": "github.expedia.biz",
     "gitOrg": "HomeAway",
-    "gitName": "opxhub",
-    "sourceRepo": "https://github.expedia.biz/HomeAway/opxhub",
+    "gitName": "opxhub-ui",
+    "sourceRepo": "https://github.expedia.biz/EGPlatform/opxhub-ui",
     "initLocalGitRepo": false,
     "commitGeneratedCode": false,
     "generatorLog": [
