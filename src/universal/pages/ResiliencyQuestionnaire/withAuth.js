@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import {withAuth} from '@okta/okta-react';
 import React, {Component} from 'react';
 

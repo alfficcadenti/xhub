@@ -1,72 +1,46 @@
 import React from 'react';
-import {expect} from 'chai';
-import sinon from 'sinon';
 import {shallow} from 'enzyme';
 import IncidentTrendsDashboard from '../index';
-import mockData from './filteredData.test.json';
+import {DATE_FORMAT} from '../constants';
+import moment from 'moment';
 
 describe('<IncidentTrendsDashboard/>', () => {
-    sinon.stub(IncidentTrendsDashboard.prototype, 'componentDidMount');
+    const wrapper = shallow(<IncidentTrendsDashboard />);
 
-    it('renders successfully and call renderTabs', () => {
-        const wrapper = shallow(<IncidentTrendsDashboard />);
-        const instance = wrapper.instance();
-        const spy = sinon.stub(instance, 'renderTabs');
-        instance.forceUpdate();
-        // eslint-disable-next-line no-unused-expressions
-        expect(spy.calledOnce).to.be.true;
+    it('renders successfully', () => {
+        shallow(<IncidentTrendsDashboard/>);
     });
 
-    describe('handleDateRangeChange', () => {
-        it('sets start and end dates in the state', async () => {
-            const wrapper = shallow(<IncidentTrendsDashboard />);
-            const instance = wrapper.instance();
-            instance.handleDateRangeChange('2019-09-20', '2019-09-22');
-            expect(instance.state.startDate).to.equal('2019-09-20');
-            expect(instance.state.endDate).to.equal('2019-09-22');
-        });
+    it('sets correctly default start and end dates', async () => {
+        const startDateDefaultValue = moment().subtract(1, 'month').format(DATE_FORMAT);
+        const endDateDefaultValue = moment().format(DATE_FORMAT);
+
+        const props = wrapper.find('DatePicker').props();
+        expect(props.startDate).toBe(startDateDefaultValue);
+        expect(props.endDate).toBe(endDateDefaultValue);
     });
 
-    describe('onDateRangeClear', () => {
-        it('clears start, end date', async () => {
-            const wrapper = shallow(<IncidentTrendsDashboard />);
-            const instance = wrapper.instance();
-            instance.setState({filteredIncidents: mockData, startDate: '2019-09-20', endDate: '2019-09-20'});
-            instance.handleClearDates();
-            expect(instance.state.startDate).to.equal('');
-            expect(instance.state.endDate).to.equal('');
-        });
+    it('Navigation tab has correct tabs', async () => {
+        const props = wrapper.find('Navigation').props();
+        expect(props.links[0].id).toBe('overview');
+        expect(props.links[1].id).toBe('incidents');
+        expect(props.links[2].id).toBe('top5');
+        expect(props.links[3].id).toBe('lostRevenue');
     });
 
-    describe('applyFilters', () => {
-        it('filters state.allIncidents based on the dates in filteredIncidents', async () => {
-            const wrapper = shallow(<IncidentTrendsDashboard />);
-            const instance = wrapper.instance();
-            instance.setState({allIncidents: mockData});
-            instance.handleDateRangeChange('2019-09-20', '2019-09-21');
-            instance.applyFilters();
-            expect(instance.state.filteredIncidents.length).to.equal(2);
-        });
+    it('Navigation receives active index 0 by default', async () => {
+        const props = wrapper.find('Navigation').props();
+        expect(props.activeIndex).toBe(0);
+    });
 
-        it('filters state.allIncidents based on the Priority in filteredIncidents', async () => {
-            const wrapper = shallow(<IncidentTrendsDashboard />);
-            const instance = wrapper.instance();
-            instance.setState({allIncidents: mockData, incPriority: '2-High'});
-            instance.handleDateRangeChange('2019-08-20', '2019-10-22');
-            instance.applyFilters();
-            instance.forceUpdate();
-            expect(instance.state.filteredIncidents.length).to.equal(2);
-        });
+    it('FilterDropDown renders 2 times', async () => {
+        const props = wrapper.find('FilterDropDown').first().props();
+        expect(props.selectedValue).toBe('All - P1 & P2');
+    });
 
-        it('filters state.allIncidents based on the Brand in filteredIncidents', async () => {
-            const wrapper = shallow(<IncidentTrendsDashboard />);
-            const instance = wrapper.instance();
-            instance.setState({allIncidents: mockData});
-            instance.handleBrandChange('eCommerce Platform (eCP)');
-            instance.handleDateRangeChange('2019-08-20', '2019-10-22');
-            instance.applyFilters();
-            instance.forceUpdate();
-            expect(instance.state.filteredIncidents.length).to.equal(1);
-        });
+    it('LoadingContainer should have right props', async () => {
+        const props = wrapper.find('LoadingContainer').props();
+        expect(props.isLoading).toEqual(true);
+        expect(props.error).toEqual('');
     });
 });

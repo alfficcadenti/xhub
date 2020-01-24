@@ -13,9 +13,9 @@ import './styles.less';
 
 const brandDefaultValue = 'All';
 const priorityDefaultValue = 'All - P1 & P2';
-const startDateDefaultValue = moment().subtract(1, 'month').format(DATE_FORMAT);
+const startDateDefaultValue = moment().subtract(6, 'weeks').format(DATE_FORMAT);
 const endDateDefaultValue = moment().format(DATE_FORMAT);
-const minDate = moment('2019-01-01').toDate();
+const minDate = moment(startDateDefaultValue).toDate();
 const navLinks = [
     {
         id: 'overview',
@@ -50,8 +50,8 @@ const IncidentTrendsDashboard = () => {
     const [incPriority, setIncPriority] = useState(priorityDefaultValue);
     const [allIncidents, setAllIncidents] = useState([]);
     const [filteredIncidents, setFilteredIncidents] = useState([]);
-    const [lostRevenues, setLostRevenues] = useState(null);
-    const [brands, setBrands] = useState(null);
+    const [lostRevenues, setLostRevenues] = useState([]);
+    const [brands, setBrands] = useState([]);
 
     const applyFilters = () => {
         let incidents = [...allIncidents];
@@ -75,12 +75,9 @@ const IncidentTrendsDashboard = () => {
     };
 
     useEffect(() => {
-        const lostRevenueStartDate = '2019-10-28';
-        const lostRevenueEndDate = '2020-01-19';
-
         const requests = [
             fetch('/api/v1/incidents'),
-            fetch(`/api/v1/lostrevenue?startDate=${lostRevenueStartDate}&endDate=${lostRevenueEndDate}`)
+            fetch(`/api/v1/lostrevenue?startDate=${startDateDefaultValue}&endDate=${endDateDefaultValue}`)
         ];
 
         Promise.all(requests.map((request) => {
@@ -91,6 +88,7 @@ const IncidentTrendsDashboard = () => {
             .then(([incidents, revenues]) => {
                 const rawIncidents = h.getAllIncidents(incidents);
                 setAllIncidents(rawIncidents);
+                setFilteredIncidents(rawIncidents);
 
                 const brandNames = extractBrandNames(revenues);
                 const allLostRevenues = prepareBrandLossData(revenues, brandNames);
@@ -106,10 +104,6 @@ const IncidentTrendsDashboard = () => {
                 console.log(err);
             });
     }, []);
-
-    useEffect(() => {
-        applyFilters();
-    }, [allIncidents]);
 
     const handleNavigationClick = async (e, activeLinkIndex) => setActiveIndex(activeLinkIndex);
 

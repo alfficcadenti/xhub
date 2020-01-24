@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import 'core-js/es6/promise'; // For IE 11 support
 import React from 'react';
 import ReactDOM from 'react-dom';

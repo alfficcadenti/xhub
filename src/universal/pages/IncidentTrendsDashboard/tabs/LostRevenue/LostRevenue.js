@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, {useState} from 'react';
 import {
     Line,
@@ -12,21 +11,17 @@ import {createOpacityConfig} from '../../incidentsHelper';
 
 
 const LostRevenue = ({lostRevenues, brands}) => {
-    // const [opacity, setOpacity] = useState(null);
+    const [opacity, setOpacity] = useState(brands ? createOpacityConfig(brands) : {});
 
-    // const opacityConfig = createOpacityConfig(brands);
-    //
-    // setOpacity(opacityConfig);
-    //
-    // const handleOnClick = (e) => {
-    //     const {dataKey} = e;
-    //     const toggleOpacity = (prop) => prop === 0.2 ? 1 : 0.2;
-    //
-    //     setOpacity({
-    //         ...opacity,
-    //         [dataKey]: toggleOpacity(opacity[dataKey])
-    //     });
-    // };
+    const handleOnClick = (e) => {
+        const {dataKey} = e;
+        const toggleOpacity = (prop) => prop === 0.2 ? 1 : 0.2;
+
+        setOpacity({
+            ...opacity,
+            [dataKey]: toggleOpacity(opacity[dataKey])
+        });
+    };
 
     return (<div id="lost-revenue">
         <LineChart
@@ -38,13 +33,10 @@ const LostRevenue = ({lostRevenues, brands}) => {
             <CartesianGrid stroke="#f5f5f5" />
             <XAxis dataKey="weekInterval" />
             <YAxis width={100} />
-            {/* <Legend onClick={handleOnClick}/>*/}
-            <Legend />
-            <Legend />
+            <Legend onClick={handleOnClick}/>
             {
                 brands && brands.map((brand, i) => {
-                    // return <Line type="monotone" dataKey={brand} stroke={`#${i}88${i}d8`} key={brand} strokeOpacity={opacity[brand]} />;
-                    return <Line type="monotone" dataKey={brand} stroke={`#${i}88${i}d8`} key={brand} />;
+                    return <Line type="monotone" dataKey={brand} stroke={`#${i}88${i}d8`} key={brand} strokeOpacity={opacity[brand]} />;
                 })
             }
         </LineChart>
