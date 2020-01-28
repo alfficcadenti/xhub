@@ -8,6 +8,8 @@ Kumo: https://console.kumo.expedia.biz/apps/opxhub-ui
 
 Splunk Log Dashboard: https://splunkewe.us-west-2.test.monitoring.expedia.com/en-US/app/search/opxhubui
 
+Grafana Dashboard: https://grafana.test.expedia.com/d/ZPlMgQyZz/opxhub-ui-monitoring-dashboard?orgId=1&from=now-7d&to=now
+
 ## Development
 
 1. To start developing locally, clone the project:
