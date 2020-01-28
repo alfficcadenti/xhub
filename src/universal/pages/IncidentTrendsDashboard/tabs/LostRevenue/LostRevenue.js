@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactEcharts from 'echarts-for-react';
 import {
-    prepareBrandLossData
+    prepareBrandLossData,
+    lostRevenueTooltipFormatter
 } from '../../incidentsHelper';
-
 
 const setChartOptions = (series = [], xAxisValues = [], tooltipData) => ({
     legend: {
@@ -11,17 +11,7 @@ const setChartOptions = (series = [], xAxisValues = [], tooltipData) => ({
     },
     tooltip: {
         trigger: 'item',
-        formatter({name, seriesName}) {
-            const incidents = tooltipData[name][seriesName];
-            const incidentsString = incidents.map((item) => {
-                return `<div class="incident-wrapper">
-                        <span class="incident-number">${item.incidentNumberLink}</span>
-                        <span class="incident-lost-revenue">${item.lostRevenue}</span>
-                        </div>`;
-            }).join('');
-
-            return `<div class="lost-revenue-tooltip">${incidentsString}</div>`;
-        },
+        formatter: lostRevenueTooltipFormatter.bind(null, tooltipData),
         position(point) {
             return [point[0], point[1]];
         },

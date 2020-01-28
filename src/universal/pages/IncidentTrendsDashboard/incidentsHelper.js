@@ -46,7 +46,7 @@ const incLink = (incNumber) => (`<a key='${incNumber}link' href='https://expedia
 const distinct = (value, index, self) => self.indexOf(value) === index;
 
 const listOfBrands = (inc = []) => inc
-    .map((x) => x.Brand)
+    .map((x) => x.Brand || x.brand)
     .filter(distinct);
 
 const max = (accumulator, currentValue) => (currentValue > accumulator ? currentValue : accumulator);
@@ -214,10 +214,6 @@ const formatSeriesForChart = (data = []) => data
         type: 'line'
     }));
 
-const extractBrandNames = (data) => data && data
-    .map((item) => item.brand)
-    .filter(distinct);
-
 const extractIncidentsNumbers = (data) => data && data
     .map((item) => item.incidentNumber)
     .filter(distinct);
@@ -261,7 +257,7 @@ const filterIncidentsPerInterval = (data = [], brandName) => {
 export const prepareBrandLossData = (filteredLostRevenues) => {
     const [lowerMarginDateValue, maxMarginDateValue] = getMarginDateValues(filteredLostRevenues);
     const weekIntervals = weeklyRange(lowerMarginDateValue, maxMarginDateValue);
-    const brandNames = extractBrandNames(filteredLostRevenues);
+    const brandNames = listOfBrands(filteredLostRevenues);
 
     const rawSeries = brandNames && brandNames.reduce((prev, brandName) => {
         const data = weekIntervals.map((weekInterval) => {
@@ -303,6 +299,18 @@ export const prepareBrandLossData = (filteredLostRevenues) => {
         tooltipData,
         weekIntervals
     };
+};
+
+export const lostRevenueTooltipFormatter = (tooltipData, {name, seriesName}) => {
+    const incidents = tooltipData[name][seriesName];
+    const incidentsString = incidents.map((item) => {
+        return `<div class="incident-wrapper">
+                        <span class="incident-number">${item.incidentNumberLink}</span>
+                        <span class="incident-lost-revenue">${item.lostRevenue}</span>
+                        </div>`;
+    }).join('');
+
+    return `<div class="lost-revenue-tooltip">${incidentsString}</div>`;
 };
 
 export default {
