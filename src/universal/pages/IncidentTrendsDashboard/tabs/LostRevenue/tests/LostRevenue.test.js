@@ -9,27 +9,6 @@ describe('<LostRevenue />', () => {
         shallow(<LostRevenue filteredLostRevenues={mockData} />);
     });
 
-    it('length of line should be equal to brands length', () => {
-        const wrapper = shallow(
-            <LostRevenue
-                filteredLostRevenues={mockData}
-            />
-        );
-        expect(wrapper.find('Line')).toHaveLength(1);
-    });
-
-    it('first line should be equal to first brand', () => {
-        const wrapper = shallow(
-            <LostRevenue
-                filteredLostRevenues={mockData}
-            />
-        );
-
-        const props = wrapper.find('Line').first().props();
-
-        expect(props.dataKey).toBe('Expedia');
-    });
-
     it('renders No Result message when no data available', () => {
         const data = [];
         const wrapper = shallow(

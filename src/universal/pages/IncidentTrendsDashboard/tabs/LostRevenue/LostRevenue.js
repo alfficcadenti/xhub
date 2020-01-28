@@ -1,58 +1,67 @@
-import React, {useState} from 'react';
+import React from 'react';
+import ReactEcharts from 'echarts-for-react';
 import {
-    Line,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Legend,
-    LineChart
-} from 'recharts';
-import {createOpacityConfig, extractBrandNames, prepareBrandLossData} from '../../incidentsHelper';
+    prepareBrandLossData
+} from '../../incidentsHelper';
 
+
+const setChartOptions = (series = [], xAxisValues = [], tooltipData) => ({
+    legend: {
+        data: series.map((x) => x.name)
+    },
+    tooltip: {
+        trigger: 'item',
+        formatter({name, seriesName}) {
+            const incidents = tooltipData[name][seriesName];
+            const incidentsString = incidents.map((item) => {
+                return `<div class="incident-wrapper">
+                        <span class="incident-number">${item.incidentNumberLink}</span>
+                        <span class="incident-lost-revenue">${item.lostRevenue}</span>
+                        </div>`;
+            }).join('');
+
+            return `<div class="lost-revenue-tooltip">${incidentsString}</div>`;
+        },
+        position(point) {
+            return [point[0], point[1]];
+        },
+        enterable: true,
+        backgroundColor: 'gainsboro',
+        textStyle: {
+            fontWeight: 'bold'
+        }
+    },
+    xAxis: {
+        type: 'category',
+        data: xAxisValues
+    },
+    yAxis: {
+        nameLocation: 'middle',
+        nameGap: 30,
+        nameRotate: 90,
+        type: 'value'
+    },
+    series
+});
+
+const renderChart = (data = []) => {
+    const {tooltipData, series, weekIntervals: xAxisValues} = prepareBrandLossData(data);
+
+    return (
+        <div className="IncidentChartDiv">
+            <h3>{'Lost Revenues by Brand'}</h3>
+            <ReactEcharts option={setChartOptions(series, xAxisValues, tooltipData)} key={Math.random()}/>
+        </div>
+    );
+};
 
 const LostRevenue = ({filteredLostRevenues}) => {
-    const [opacity, setOpacity] = useState(createOpacityConfig(extractBrandNames(filteredLostRevenues)) ? createOpacityConfig(extractBrandNames(filteredLostRevenues)) : {});
-
-    const brands = extractBrandNames(filteredLostRevenues);
-    const lostRevenues = prepareBrandLossData(filteredLostRevenues, brands);
-
-    const handleOnClick = (e) => {
-        const {dataKey} = e;
-        const toggleOpacity = (prop) => prop === 0.2 ? 1 : 0.2;
-
-        setOpacity({
-            ...opacity,
-            [dataKey]: toggleOpacity(opacity[dataKey])
-        });
-    };
-
-    const renderChart = () => (
-        <LineChart
-            width={1000}
-            height={300}
-            data={lostRevenues}
-            marginTop={200}
-        >
-            <CartesianGrid stroke="#f5f5f5" />
-            <XAxis dataKey="weekInterval" />
-            <YAxis width={100} />
-            <Legend onClick={handleOnClick}/>
-            {
-                brands && brands.map((brand, i) => {
-                    return <Line type="monotone" dataKey={brand} stroke={`#${i}88${i}d8`} key={brand} strokeOpacity={opacity[brand]} />;
-                })
-            }
-        </LineChart>
-    );
-
     return (<div id="lost-revenue">
         {
             (filteredLostRevenues && filteredLostRevenues.length) ?
-                renderChart() :
-                <p>{'No Results Found'}</p>
+                renderChart(filteredLostRevenues) : <p>{'No Results Found'}</p>
         }
-    </div>
-    );
+    </div>);
 };
 
 export default LostRevenue;
