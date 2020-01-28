@@ -228,7 +228,7 @@ const sumBrandLossPerInterval = (data = [], brandName) => {
     return filteredByBrand.reduce((acc, curr) => (acc + Number(curr.estimatedLostRevenue)), 0) || 0;
 };
 
-const sortInDescendingOrderAndTrimFirstFive = (data) => data
+const sortInDescOrderAndGetFirstFive = (data) => data
     .sort((a, b) => b.lostRevenue - a.lostRevenue)
     .slice(0, 5);
 
@@ -255,7 +255,7 @@ const filterIncidentsPerInterval = (data = [], brandName) => {
         ];
     }, []);
 
-    return sortInDescendingOrderAndTrimFirstFive(tooltipEntryData);
+    return sortInDescOrderAndGetFirstFive(tooltipEntryData);
 };
 
 export const prepareBrandLossData = (filteredLostRevenues) => {
