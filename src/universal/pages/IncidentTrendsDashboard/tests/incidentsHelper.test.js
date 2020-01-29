@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import h from '../incidentsHelper';
+import h, {getIncidentsData, sumPropertyInArray} from '../incidentsHelper';
 import mockData from './filteredData.test.json';
 import mockData2 from './incData.test.json';
 import mockResult from './incByBrandResult.test.json';
@@ -49,12 +49,12 @@ const incMetricsByBrand = [
 describe('incidentsHelper', () => {
     describe('getIncidentsData', () => {
         it('returns empty array if filteredIncidents is not passed', () => {
-            const result = h.getIncidentsData();
+            const result = getIncidentsData();
             expect(result).to.be.eql([]);
         });
 
         it('returns array populated if filteredIncidents are passed', () => {
-            const result = h.getIncidentsData([mockData[0]]);
+            const result = getIncidentsData([mockData[0]]);
             expect(result[0].Brand).to.be.eql(dataResult.Brand);
             expect(result[0].Duration).to.be.eql(dataResult.Duration);
             expect(result[0].Incident).to.be.eql(dataResult.Incident);
@@ -65,7 +65,7 @@ describe('incidentsHelper', () => {
         });
 
         it('returns empty string when values are null', () => {
-            const result = h.getIncidentsData([mockData[1]]);
+            const result = getIncidentsData([mockData[1]]);
             expect(result[0]['Root Cause Owners']).to.be.eql('');
             expect(result[0].Summary).to.be.eql('');
             expect(result[0].Duration).to.be.eql('');
@@ -112,12 +112,12 @@ describe('incidentsHelper', () => {
 
     describe('totalDuration', () => {
         it('returns the total duration of a given array of incidents', () => {
-            const result = h.totalDuration(mockData2);
+            const result = sumPropertyInArray(mockData2, 'duration');
             expect(result).to.be.eql(800000);
         });
 
         it('returns 0 if input array is empty', () => {
-            const result = h.totalDuration([]);
+            const result = sumPropertyInArray([], 'duration');
             expect(result).to.be.eql(0);
         });
     });

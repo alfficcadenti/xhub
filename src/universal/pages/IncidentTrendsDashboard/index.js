@@ -5,7 +5,7 @@ import LoadingContainer from '../../components/LoadingContainer';
 import FilterDropDown from '../../components/FilterDropDown';
 import {Navigation} from '@homeaway/react-navigation';
 import DatePicker from '../../components/DatePicker/index';
-import h from './incidentsHelper';
+import {getUniqueIncidents, adjustIncidentProperties} from './incidentsHelper';
 import {DATE_FORMAT, PRIORITIES, BRANDS} from './constants';
 import {Incidents, Overview, Top5, LostRevenue} from './tabs/index';
 import './styles.less';
@@ -48,69 +48,62 @@ const IncidentTrendsDashboard = () => {
     const [startDate, setStartDate] = useState(startDateDefaultValue);
     const [endDate, setEndDate] = useState(endDateDefaultValue);
     const [incPriority, setIncPriority] = useState(priorityDefaultValue);
+    const [allUniqueIncidents, setAllIUniqueIncidents] = useState([]);
+    const [filteredUniqueIncidents, setFilteredUniqueIncidents] = useState([]);
     const [allIncidents, setAllIncidents] = useState([]);
-    const [filteredIncidents, setFilteredIncidents] = useState([]);
-    const [allLostRevenues, setAllLostRevenues] = useState([]);
-    const [filteredLostRevenues, setFilteredLostRevenues] = useState([]);
+    const [filteredAllIncidents, setFilteredAllIncidents] = useState([]);
 
     const applyFilters = () => {
+        let uniqueIncidents = [...allUniqueIncidents];
         let incidents = [...allIncidents];
-        let lostRevenues = [...allLostRevenues];
 
         if (startDate || endDate) {
-            incidents = incidents.filter((inc) =>
+            uniqueIncidents = uniqueIncidents.filter((inc) =>
                 moment(inc.startedAt).format(DATE_FORMAT) >= startDate &&
                 moment(inc.startedAt).format(DATE_FORMAT) <= endDate
             );
 
-            lostRevenues = lostRevenues.filter((inc) =>
+            incidents = incidents.filter((inc) =>
                 moment(inc.startedAt).format(DATE_FORMAT) >= startDate &&
                 moment(inc.startedAt).format(DATE_FORMAT) <= endDate
             );
         }
 
         if (incPriority !== priorityDefaultValue) {
+            uniqueIncidents = uniqueIncidents.filter((inc) => inc.priority === incPriority);
             incidents = incidents.filter((inc) => inc.priority === incPriority);
-            lostRevenues = lostRevenues.filter((inc) => inc.priority === incPriority);
         }
 
         if (selectedBrand !== brandDefaultValue) {
+            uniqueIncidents = uniqueIncidents.filter((inc) => inc.Brand === selectedBrand);
             incidents = incidents.filter((inc) => inc.Brand === selectedBrand);
-            lostRevenues = lostRevenues.filter((inc) => inc.Brand === selectedBrand);
         }
 
-        setFilteredIncidents(incidents);
-        setFilteredLostRevenues(lostRevenues);
+        setFilteredUniqueIncidents(uniqueIncidents);
+        setFilteredAllIncidents(incidents);
     };
 
     useEffect(() => {
-        const requests = [
-            fetch('/api/v1/incidents'),
-            fetch(`/api/v1/lostrevenue?startDate=2019-01-01&endDate=${endDateDefaultValue}`)
-        ];
+        fetch('/api/v1/incidents')
+            .then((response) => response.json())
+            .then((incidents) => {
+                const uniqueIncidents = getUniqueIncidents(incidents);
+                setAllIUniqueIncidents(adjustIncidentProperties(uniqueIncidents));
 
-        Promise.all(requests.map((request) => {
-            return request
-                .then((response) => response.json()
-                    .then((data) => data));
-        }))
-            .then(([incidents, revenues]) => {
-                const rawIncidents = h.getAllIncidents(incidents);
-                setAllIncidents(rawIncidents);
-                setAllLostRevenues(revenues);
+                setAllIncidents(incidents);
 
                 setIsLoading(false);
             })
             .catch((err) => {
-                setError('Incidents not available. Try to refresh');
+                setError('Incidents are not available. Try to refresh');
                 // eslint-disable-next-line no-console
-                console.log(err);
+                console.error(err);
             });
     }, []);
 
     useEffect(() => {
         applyFilters();
-    }, [allIncidents, allLostRevenues]);
+    }, [allUniqueIncidents, allIncidents]);
 
     const handleNavigationClick = async (e, activeLinkIndex) => setActiveIndex(activeLinkIndex);
 
@@ -122,7 +115,7 @@ const IncidentTrendsDashboard = () => {
     const handleClearDates = () => {
         setStartDate('');
         setEndDate('');
-        setFilteredIncidents([]);
+        setFilteredUniqueIncidents([]);
     };
 
     const handlePriorityChange = (priority) => setIncPriority(priority);
@@ -132,15 +125,15 @@ const IncidentTrendsDashboard = () => {
     const renderTabs = () => {
         switch (activeIndex) {
             case 0:
-                return <Overview filteredIncidents={filteredIncidents} />;
+                return <Overview filteredIncidents={filteredUniqueIncidents} />;
             case 1:
-                return <Incidents filteredIncidents={filteredIncidents} />;
+                return <Incidents filteredIncidents={filteredUniqueIncidents} />;
             case 2:
-                return <Top5 filteredIncidents={filteredIncidents} />;
+                return <Top5 filteredIncidents={filteredUniqueIncidents} />;
             case 3:
-                return <LostRevenue filteredLostRevenues={filteredLostRevenues} />;
+                return <LostRevenue filteredLostRevenues={filteredAllIncidents} />;
             default:
-                return <Overview filteredIncidents={filteredIncidents} />;
+                return <Overview filteredIncidents={filteredUniqueIncidents} />;
         }
     };
 

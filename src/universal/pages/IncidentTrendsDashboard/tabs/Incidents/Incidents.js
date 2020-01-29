@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import DataTable from '../../../../components/DataTable/index';
-import incidentsHelper from '../../incidentsHelper';
+import {getIncidentsData} from '../../incidentsHelper';
 
 const columns = ['Incident', 'Priority', 'Brand', 'Started', 'Summary', 'Duration', 'TTD', 'TTR', 'Root Cause Owners', 'Status'];
 
@@ -12,7 +12,7 @@ const columnsInfo = {
 
 const renderTable = (filteredIncidents) => (
     <DataTable
-        data={incidentsHelper.getIncidentsData(filteredIncidents)}
+        data={getIncidentsData(filteredIncidents)}
         columns={columns}
         columnsInfo={columnsInfo}
         paginated
