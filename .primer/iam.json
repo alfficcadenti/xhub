@@ -6,10 +6,7 @@
           {
             "Action": ["s3:ListBucket", "s3:GetObject"],
             "Effect": "Allow",
-            "Resource": [
-              "arn:aws:s3:::platform-expsite-test",
-              "arn:aws:s3:::platform-expsite-test/*"
-            ]
+            "Resource": ["arn:aws:s3:::opxhub-ui", "arn:aws:s3:::opxhub-ui/*"]
           },
           {
             "Action": ["sts:AssumeRole"],
