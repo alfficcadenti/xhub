@@ -19,6 +19,12 @@ npm -v
 ###
 # Install Dependencies
 ###
+printBoxedMessage "Install node-gyp"
+npm install -g node-gyp
+
+###
+# Install Dependencies
+###
 printBoxedMessage "Install"
 npm install
 
