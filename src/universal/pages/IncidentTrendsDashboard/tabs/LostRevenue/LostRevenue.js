@@ -5,6 +5,8 @@ import {
     lostRevenueTooltipFormatter
 } from '../../incidentsHelper';
 
+const tooltipBgColor = 'gainsboro';
+
 const setChartOptions = (series = [], xAxisValues = [], tooltipData) => ({
     legend: {
         data: series.map((x) => x.name)
@@ -16,7 +18,7 @@ const setChartOptions = (series = [], xAxisValues = [], tooltipData) => ({
             return [point[0], point[1]];
         },
         enterable: true,
-        backgroundColor: 'gainsboro',
+        backgroundColor: tooltipBgColor,
         textStyle: {
             fontWeight: 'bold'
         }

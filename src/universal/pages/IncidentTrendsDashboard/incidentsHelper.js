@@ -254,17 +254,10 @@ const filterIncidentsPerInterval = (data = [], brandName) => {
     return sortInDescOrderAndGetFirstFive(tooltipEntryData);
 };
 
-export const prepareBrandLossData = (filteredLostRevenues) => {
-    const [lowerMarginDateValue, maxMarginDateValue] = getMarginDateValues(filteredLostRevenues);
-    const weekIntervals = weeklyRange(lowerMarginDateValue, maxMarginDateValue);
-    const brandNames = listOfBrands(filteredLostRevenues);
-
-    const rawSeries = brandNames && brandNames.reduce((prev, brandName) => {
+const prepareRawSeriesForLostRevenue = (brandNames, weekIntervals, incidentsPerIntervalMap) => {
+    return brandNames && brandNames.reduce((prev, brandName) => {
         const data = weekIntervals.map((weekInterval) => {
-            const week = moment(weekInterval).week();
-            const incidentsPerInterval = incidentsOfTheWeek(filteredLostRevenues, week);
-
-            return sumBrandLossPerInterval(incidentsPerInterval, brandName);
+            return sumBrandLossPerInterval(incidentsPerIntervalMap[weekInterval], brandName);
         });
 
         const newMetricPoint = {
@@ -277,15 +270,13 @@ export const prepareBrandLossData = (filteredLostRevenues) => {
             newMetricPoint
         ];
     }, []);
-    const series = formatSeriesForChart(rawSeries);
+};
 
-    const tooltipData = weekIntervals.reduce((prev, weekInterval) => {
-        const week = moment(weekInterval).week();
-        const incidentsPerInterval = incidentsOfTheWeek(filteredLostRevenues, week);
-
+const prepareTooltipDataForLostRevenue = (brandNames, weekIntervals, incidentsPerIntervalMap) => {
+    return weekIntervals.reduce((prev, weekInterval) => {
         const newMetricPoint = brandNames.reduce((map, brand) => ({
             ...map,
-            [brand]: filterIncidentsPerInterval(incidentsPerInterval, brand)
+            [brand]: filterIncidentsPerInterval(incidentsPerIntervalMap[weekInterval], brand)
         }), {});
 
         return {
@@ -293,6 +284,28 @@ export const prepareBrandLossData = (filteredLostRevenues) => {
             [weekInterval]: newMetricPoint
         };
     }, {});
+};
+
+const buildIncidentsPerIntervalMap = (weekIntervals, filteredLostRevenues) => {
+    return weekIntervals.reduce((prev, weekInterval) => {
+        const week = moment(weekInterval).week();
+        const incidentsPerInterval = incidentsOfTheWeek(filteredLostRevenues, week);
+
+        return {
+            ...prev,
+            [weekInterval]: incidentsPerInterval
+        };
+    }, {});
+};
+
+export const prepareBrandLossData = (filteredLostRevenues) => {
+    const [lowerMarginDateValue, maxMarginDateValue] = getMarginDateValues(filteredLostRevenues);
+    const weekIntervals = weeklyRange(lowerMarginDateValue, maxMarginDateValue);
+    const brandNames = listOfBrands(filteredLostRevenues);
+    const incidentsPerIntervalMap = buildIncidentsPerIntervalMap(weekIntervals, filteredLostRevenues);
+    const rawSeries = prepareRawSeriesForLostRevenue(brandNames, weekIntervals, incidentsPerIntervalMap);
+    const series = formatSeriesForChart(rawSeries);
+    const tooltipData = prepareTooltipDataForLostRevenue(brandNames, weekIntervals, incidentsPerIntervalMap);
 
     return {
         series,
