@@ -41,6 +41,9 @@
           "ssl_negotiation_policy": "ELBSecurityPolicy-TLS-1-2-2017-01"
         }
       ]
+    },
+    "metrics_agent": {
+      "enabled": true
     }
   },
   "test": {

@@ -1,0 +1,40 @@
+{
+  "global": {
+    "instance": {
+      "iam_instance_profile": {
+        "inline_policies": [
+          {
+            "Action": ["s3:ListBucket", "s3:GetObject"],
+            "Effect": "Allow",
+            "Resource": [
+              "arn:aws:s3:::platform-expsite-test",
+              "arn:aws:s3:::platform-expsite-test/*"
+            ]
+          },
+          {
+            "Action": ["sts:AssumeRole"],
+            "Effect": "Allow",
+            "Resource": ["arn:aws:iam::810409578363:role/gaas-client"]
+          }
+        ],
+        "managed_policies": ["AmazonS3ReadOnlyAccess"],
+        "trust_policies": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": ["ec2.amazonaws.com", "ecs-tasks.amazonaws.com"]
+            },
+            "Action": "sts:AssumeRole"
+          },
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::408096535527:role/User"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      }
+    }
+  }
+}
