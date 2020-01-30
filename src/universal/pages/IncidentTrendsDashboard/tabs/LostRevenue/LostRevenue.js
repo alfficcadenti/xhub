@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactEcharts from 'echarts-for-react';
 import {
-    prepareBrandLossData,
+    buildBrandLossData,
     lostRevenueTooltipFormatter
 } from '../../incidentsHelper';
 
@@ -9,7 +9,7 @@ const tooltipBgColor = 'gainsboro';
 
 const setChartOptions = (series = [], xAxisValues = [], tooltipData) => ({
     legend: {
-        data: series.map((x) => x.name)
+        data: series.map((item) => item.name)
     },
     tooltip: {
         trigger: 'item',
@@ -37,7 +37,7 @@ const setChartOptions = (series = [], xAxisValues = [], tooltipData) => ({
 });
 
 const renderChart = (data = []) => {
-    const {tooltipData, series, weekIntervals: xAxisValues} = prepareBrandLossData(data);
+    const {tooltipData, series, weekIntervals: xAxisValues} = buildBrandLossData(data);
 
     return (
         <div className="IncidentChartDiv">

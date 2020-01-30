@@ -2,7 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactEcharts from 'echarts-for-react';
 import DataTable from '../../../../components/DataTable/index';
-import h from '../../incidentsHelper';
+import {
+    getMarginDateValues,
+    getIncMetricsByBrand,
+    weeklyMTTRMTTD,
+    weeklyMTTRbyBrand,
+    weeklyMTTDbyBrand,
+    weeklyRange
+} from '../../incidentsHelper';
 
 const overviewTableColumns = ['Brand', 'P1', 'P2', 'Total', 'MTTD', 'MTTR', 'Total Duration'];
 
@@ -36,8 +43,8 @@ const setChartOptions = (series = [], xAxisValues = []) => {
 
 const renderChart = (data = [], dataToSeriesFunc, title) => {
     const series = formatSeriesForChart(dataToSeriesFunc(data));
-    const dates = h.getMarginDateValues(data);
-    const xAxisValues = h.weeklyRange(dates[0], dates[1]);
+    const dates = getMarginDateValues(data);
+    const xAxisValues = weeklyRange(dates[0], dates[1]);
 
     return (
         <div className="IncidentChartDiv" id={title.replace(/\s+/g, '-')}>
@@ -50,13 +57,13 @@ const renderChart = (data = [], dataToSeriesFunc, title) => {
 const renderResults = (filteredIncidents) => (
     <div>
         <DataTable
-            data={h.getIncMetricsByBrand(filteredIncidents)}
+            data={getIncMetricsByBrand(filteredIncidents)}
             columns={overviewTableColumns}
             paginated={false}
         />
-        {renderChart(filteredIncidents, h.weeklyMTTRMTTD, 'MTTD vs MTTR')}
-        {renderChart(filteredIncidents, h.weeklyMTTDbyBrand, 'MTTD by Brand')}
-        {renderChart(filteredIncidents, h.weeklyMTTRbyBrand, 'MTTR by Brand')}
+        {renderChart(filteredIncidents, weeklyMTTRMTTD, 'MTTD vs MTTR')}
+        {renderChart(filteredIncidents, weeklyMTTDbyBrand, 'MTTD by Brand')}
+        {renderChart(filteredIncidents, weeklyMTTRbyBrand, 'MTTR by Brand')}
     </div>
 );
 
