@@ -26,7 +26,7 @@ npm install -g node-gyp
 # Install Dependencies
 ###
 printBoxedMessage "Install"
-npm install
+npm ci
 
 ###
 # Run package building
