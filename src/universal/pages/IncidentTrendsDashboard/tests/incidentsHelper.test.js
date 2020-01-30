@@ -1,5 +1,16 @@
 import {expect} from 'chai';
-import h, {getIncidentsData, sumPropertyInArray} from '../incidentsHelper';
+import {
+    getIncidentsData,
+    sumPropertyInArrayOfObjects,
+    getMarginDateValues,
+    weeksInterval,
+    incidentsOfTheWeek,
+    incidentsInTimeFrame,
+    getIncMetricsByBrand,
+    listOfIncByBrands,
+    totalDurationByBrand,
+    mttr
+} from '../incidentsHelper';
 import mockData from './filteredData.test.json';
 import mockData2 from './incData.test.json';
 import mockResult from './incByBrandResult.test.json';
@@ -76,60 +87,60 @@ describe('incidentsHelper', () => {
 
     describe('totalDurationByBrand', () => {
         it('returns array with brand and totalDuration for a given array of incidents', () => {
-            const result = h.totalDurationByBrand(mockData2);
+            const result = totalDurationByBrand(mockData2);
             expect(result).to.be.eql(durationByBrandResult);
         });
 
         it('returns empty array if input is empty', () => {
-            const result = h.totalDurationByBrand([]);
+            const result = totalDurationByBrand([]);
             expect(result).to.be.eql([]);
         });
     });
 
     describe('getIncMetricsByBrand', () => {
         it('returns array with metrics by Brand for a given array of incidents', () => {
-            const result = h.getIncMetricsByBrand(mockData2);
+            const result = getIncMetricsByBrand(mockData2);
             expect(result).to.be.eql(incMetricsByBrand);
         });
 
         it('returns empty array if input is empty', () => {
-            const result = h.getIncMetricsByBrand([]);
+            const result = getIncMetricsByBrand([]);
             expect(result).to.be.eql([]);
         });
     });
 
     describe('listOfIncByBrands', () => {
         it('returns array with brand and totalDuration for a given array of incidents', () => {
-            const result = h.listOfIncByBrands(mockData2);
+            const result = listOfIncByBrands(mockData2);
             expect(result).to.be.eql(mockResult);
         });
 
         it('returns empty array if input is empty', () => {
-            const result = h.listOfIncByBrands([]);
+            const result = listOfIncByBrands([]);
             expect(result).to.be.eql([]);
         });
     });
 
     describe('totalDuration', () => {
         it('returns the total duration of a given array of incidents', () => {
-            const result = sumPropertyInArray(mockData2, 'duration');
+            const result = sumPropertyInArrayOfObjects(mockData2, 'duration');
             expect(result).to.be.eql(800000);
         });
 
         it('returns 0 if input array is empty', () => {
-            const result = sumPropertyInArray([], 'duration');
+            const result = sumPropertyInArrayOfObjects([], 'duration');
             expect(result).to.be.eql(0);
         });
     });
 
     describe('mttr', () => {
         it('returns the MTTR of a given array of incidents', () => {
-            const result = h.mttr(mockData2);
+            const result = mttr(mockData2);
             expect(result).to.be.eql(100000);
         });
 
         it('returns 0 if input array is empty', () => {
-            const result = h.mttr([]);
+            const result = mttr([]);
             expect(result).to.be.eql(0);
         });
     });
@@ -138,12 +149,12 @@ describe('incidentsHelper', () => {
         it('returns the list of incidents started in a specified timeframe for a given array of incidents', () => {
             const startDate = '2019-09-21';
             const endDate = '2019-09-26';
-            const result = h.incidentsInTimeFrame(mockData2, startDate, endDate);
+            const result = incidentsInTimeFrame(mockData2, startDate, endDate);
             expect(result.length).to.be.eql(2);
         });
 
         it('returns empty array if input array is empty', () => {
-            const result = h.incidentsInTimeFrame([], '', '');
+            const result = incidentsInTimeFrame([], '', '');
             expect(result).to.be.eql([]);
         });
 
@@ -151,57 +162,57 @@ describe('incidentsHelper', () => {
             // eslint-disable-next-line no-undefined
             const startDate = undefined;
             const endDate = '2019-09-22';
-            let result = h.incidentsInTimeFrame(mockData2, startDate, endDate);
+            let result = incidentsInTimeFrame(mockData2, startDate, endDate);
             expect(result.length).to.be.eql(3);
-            result = h.incidentsInTimeFrame(mockData2, startDate, startDate);
+            result = incidentsInTimeFrame(mockData2, startDate, startDate);
             expect(result.length).to.be.eql(4);
         });
 
         it('returns the list of incidents of a specific day', () => {
             const startDate = '2019-09-21';
             const endDate = '2019-09-21';
-            const result = h.incidentsInTimeFrame(mockData2, startDate, endDate);
+            const result = incidentsInTimeFrame(mockData2, startDate, endDate);
             expect(result.length).to.be.eql(1);
         });
     });
 
     describe('weeksInterval', () => {
         it('returns the min and max week of a given array of incidents', () => {
-            const result = h.weeksInterval(mockData2);
+            const result = weeksInterval(mockData2);
             expect(result).to.be.eql([38, 39]);
         });
 
         it('returns empty array if input array is empty', () => {
-            const result = h.weeksInterval([]);
+            const result = weeksInterval([]);
             expect(result).to.be.eql([]);
         });
     });
 
     describe('getMarginDateValues', () => {
         it('returns the min and max dates of a given array of incidents', () => {
-            const result = h.getMarginDateValues(mockData2);
+            const result = getMarginDateValues(mockData2);
             expect(result).to.be.eql(['2019-09-20', '2019-09-25']);
         });
 
         it('returns empty array if input array is empty', () => {
-            const result = h.getMarginDateValues([]);
+            const result = getMarginDateValues([]);
             expect(result).to.be.eql([]);
         });
     });
 
     describe('incidentsOfTheWeek', () => {
         it('returns the incidents of a specific week from an array of incidents in input', () => {
-            const result = h.incidentsOfTheWeek(mockData2, 38);
+            const result = incidentsOfTheWeek(mockData2, 38);
             expect(result.length).to.be.eql(3);
         });
 
         it('returns empty array if the week is not a number', () => {
-            const result = h.incidentsOfTheWeek(mockData2);
+            const result = incidentsOfTheWeek(mockData2);
             expect(result).to.be.eql([]);
         });
 
         it('returns empty array if input array is empty', () => {
-            const result = h.incidentsOfTheWeek([]);
+            const result = incidentsOfTheWeek([]);
             expect(result).to.be.eql([]);
         });
     });

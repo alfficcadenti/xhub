@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import DataTable from '../../../../components/DataTable/index';
-import {getIncidentsData, top5LongestDuration, top5ShortestDuration} from '../../incidentsHelper';
+import {getIncidentsData, sortInDescOrderAndGetTop5, sortInAscOrderAndGetTop5} from '../../incidentsHelper';
 
 const top5Tablecolumns = ['Incident', 'Priority', 'Summary', 'Root Cause Owners', 'Started', 'Duration'];
 
@@ -18,13 +18,13 @@ const renderResults = (filteredIncidents) => (
         {
             <div id="TopLongestDuration">
                 <h3>{'Top 5 Longest Duration Incidents'}</h3>
-                {renderTable(top5LongestDuration(filteredIncidents), top5Tablecolumns)}
+                {renderTable(sortInDescOrderAndGetTop5(filteredIncidents, 'duration'), top5Tablecolumns)}
             </div>
         }
         {
             <div id="TopShortestDuration">
                 <h3>{'Top 5 Shortest Duration Incidents'}</h3>
-                {renderTable(top5ShortestDuration(filteredIncidents), top5Tablecolumns)}
+                {renderTable(sortInAscOrderAndGetTop5(filteredIncidents, 'duration'), top5Tablecolumns)}
             </div>
         }
     </div>

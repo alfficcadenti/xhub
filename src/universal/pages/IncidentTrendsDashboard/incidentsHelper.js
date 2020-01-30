@@ -34,7 +34,7 @@ export const getUniqueIncidents = (rawIncidents) => {
 
 export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
     .map((inc) => ({
-        Incident: incLink(inc.incident_number) || '',
+        Incident: buildIncLink(inc.incident_number) || '',
         Priority: inc.priority || '',
         Brand: inc.Brand || '',
         Started: moment.utc(inc.startedAt).local().format('YYYY-MM-DD HH:mm') || '',
@@ -46,12 +46,12 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
         Status: inc.Status || ''
     }));
 
-const incLink = (incNumber) => (`<a key='${incNumber}link' href='https://expedia.service-now.com/go.do?id=${incNumber}' target='_blank'>${incNumber}</a>`);
+const buildIncLink = (incNumber) => (`<a key='${incNumber}link' href='https://expedia.service-now.com/go.do?id=${incNumber}' target='_blank'>${incNumber}</a>`);
 
 const distinct = (value, index, self) => self.indexOf(value) === index;
 
-const listOfBrands = (incidents = []) => incidents
-    .map((incident) => incident.Brand || incident.impactedBrand)
+const getListOfUniqueProperties = (incidents = [], prop) => incidents
+    .map((incident) => incident[prop])
     .filter(distinct);
 
 const max = (accumulator, currentValue) => (currentValue > accumulator ? currentValue : accumulator);
@@ -68,7 +68,7 @@ export const getMarginDateValues = (incidents = []) => {
         ];
 };
 
-const weeksInterval = (incidents = []) => (
+export const weeksInterval = (incidents = []) => (
     incidents.length === 0 || !isArray(incidents) ?
         [] :
         [
@@ -79,14 +79,14 @@ const weeksInterval = (incidents = []) => (
 
 const brandIncidents = (incidents, brand) => incidents.filter((incident) => incident.Brand === brand);
 
-const incidentsOfTheWeek = (inc, week = '') => inc.filter((inc) => (moment(inc.startedAt).week() === week));
+export const incidentsOfTheWeek = (inc, week = '') => inc.filter((inc) => moment(inc.startedAt).week() === week);
 
-const incidentsInTimeFrame = (inc, startDate = '', endDate = moment.now) => inc.filter((inc) => (
+export const incidentsInTimeFrame = (inc, startDate = '', endDate = moment.now) => inc.filter((inc) => (
     moment(inc.startedAt).format(DATE_FORMAT) >= startDate &&
     moment(inc.startedAt).format(DATE_FORMAT) <= endDate)
 );
 
-const getIncMetricsByBrand = (inc = []) => listOfBrands(inc)
+export const getIncMetricsByBrand = (inc = []) => getListOfUniqueProperties(inc, 'Brand')
     .map((brand) => {
         const brandIncidentsList = brandIncidents(inc, brand);
         const brandMTTR = h.formatDurationToHours(mttr(brandIncidentsList));
@@ -94,7 +94,7 @@ const getIncMetricsByBrand = (inc = []) => listOfBrands(inc)
         const P1inc = brandIncidentsList.filter((incident) => incident.priority === '1-Critical').length;
         const P2inc = brandIncidentsList.filter((incident) => incident.priority === '2-High').length;
         const total = brandIncidentsList.length;
-        const brandTotalDuration = h.formatDurationToHours(sumPropertyInArray(brandIncidentsList, 'duration'));
+        const brandTotalDuration = h.formatDurationToHours(sumPropertyInArrayOfObjects(brandIncidentsList, 'duration'));
 
         return {
             'Brand': brand,
@@ -107,47 +107,36 @@ const getIncMetricsByBrand = (inc = []) => listOfBrands(inc)
         };
     });
 
-const getMTTRByBrand = (inc = []) => listOfBrands(inc)
-    .map((brand) => {
-        const brandIncidentsList = brandIncidents(inc, brand);
-        const brandMTTR = Number(h.formatDurationToH(mttr(brandIncidentsList)));
-
-        return {
-            'Brand': brand,
-            'MTTR': brandMTTR,
-        };
-    });
-
-const listOfIncByBrands = (inc = []) => listOfBrands(inc)
+export const listOfIncByBrands = (inc = []) => getListOfUniqueProperties(inc, 'Brand')
     .map((brand) => brandIncidents(inc, brand));
 
-const totalDurationByBrand = (incidents = []) => listOfIncByBrands(incidents)
+export const totalDurationByBrand = (incidents = []) => listOfIncByBrands(incidents)
     .map((incident) => ({
         'Brand': incident[0].Brand,
-        'totalDuration': sumPropertyInArray(incident, 'duration')
+        'totalDuration': sumPropertyInArrayOfObjects(incident, 'duration')
     }));
 
-export const sumPropertyInArray = (incidents = [], propertyToSum) =>
+export const sumPropertyInArrayOfObjects = (incidents = [], propertyToSum) =>
     incidents.reduce((acc, curr) => (acc + Number(curr[propertyToSum])), 0);
 
-const mttr = (inc = []) => (sumPropertyInArray(inc, 'ttr') / inc.length) || 0;
-const mttd = (inc = []) => (sumPropertyInArray(inc, 'ttd') / inc.length) || 0;
+export const mttr = (incidents = []) => (sumPropertyInArrayOfObjects(incidents, 'ttr') / incidents.length) || 0;
+const mttd = (incidents = []) => (sumPropertyInArrayOfObjects(incidents, 'ttd') / incidents.length) || 0;
 
-const weeklyMTTRMTTD = (inc = []) => {
-    const weeks = getMarginDateValues(inc);
+export const weeklyMTTRMTTD = (incidents = []) => {
+    const weeks = getMarginDateValues(incidents);
     const weeksInterval = weeklyRange(weeks[0], weeks[1]);
     const weeklyMTTR = [];
     const weeklyMTTD = [];
 
     weeksInterval.forEach((date) => {
-        weeklyMTTR.push(h.formatDurationToH(mttr(incidentsOfTheWeek(inc, moment(date).week()))));
-        weeklyMTTD.push(h.formatDurationToH(mttd(incidentsOfTheWeek(inc, moment(date).week()))));
+        weeklyMTTR.push(h.formatDurationToH(mttr(incidentsOfTheWeek(incidents, moment(date).week()))));
+        weeklyMTTD.push(h.formatDurationToH(mttd(incidentsOfTheWeek(incidents, moment(date).week()))));
     });
 
     return [{serie: 'MTTR', data: weeklyMTTR}, {serie: 'MTTD', data: weeklyMTTD}];
 };
 
-const weeklyMTTRbyBrand = (inc = []) => {
+export const weeklyMTTRbyBrand = (inc = []) => {
     const weeks = getMarginDateValues(inc);
     const weeksInterval = weeklyRange(weeks[0], weeks[1]);
     const incsByBrand = listOfIncByBrands(inc);
@@ -164,7 +153,7 @@ const weeklyMTTRbyBrand = (inc = []) => {
     });
 };
 
-const weeklyMTTDbyBrand = (inc = []) => {
+export const weeklyMTTDbyBrand = (inc = []) => {
     const weeks = getMarginDateValues(inc);
     const weeksInterval = weeklyRange(weeks[0], weeks[1]);
     const incsByBrand = listOfIncByBrands(inc);
@@ -179,13 +168,6 @@ const weeklyMTTDbyBrand = (inc = []) => {
 
         return {serie: brandName, data: weeklyMTTD};
     });
-};
-
-const range = (start, end) => {
-    if (start === end) {
-        return [start];
-    }
-    return [start, ...range(start + 1, end)];
 };
 
 export const weeklyRange = (start, end) => {
@@ -204,8 +186,13 @@ export const weeklyRange = (start, end) => {
     ];
 };
 
-export const top5LongestDuration = (inc) => (inc.sort((a, b) => (Number(b.duration) - Number(a.duration))).slice(0, 5));
-export const top5ShortestDuration = (inc) => (inc.sort((a, b) => (Number(a.duration) - Number(b.duration))).slice(0, 5));
+export const sortInAscOrderAndGetTop5 = (incidents, fieldToSort) => incidents
+    .sort((a, b) => Number(a[fieldToSort]) - Number(b[fieldToSort]))
+    .slice(0, 5);
+
+export const sortInDescOrderAndGetTop5 = (incidents, fieldToSort) => incidents
+    .sort((a, b) => Number(b[fieldToSort]) - Number(a[fieldToSort]))
+    .slice(0, 5);
 
 const formatSeriesForChart = (data = []) => data
     .map((item) => ({
@@ -213,29 +200,28 @@ const formatSeriesForChart = (data = []) => data
         type: 'line'
     }));
 
-const extractIncidentsNumbers = (data) => data && data
-    .map((item) => item.incidentNumber)
-    .filter(distinct);
+const filterByImpactedBrand = (incidents, brandName) => incidents
+    .filter((incident) => incident.impactedBrand === brandName);
 
 const sumBrandLossPerInterval = (data = [], brandName) => {
-    const filteredByBrand = data.filter((item) => item.impactedBrand === brandName);
+    const filteredByImpactedBrand = filterByImpactedBrand(data, brandName);
+    const propertyToSum = 'estimatedRevenueLoss';
 
-    return sumPropertyInArray(filteredByBrand, 'estimatedRevenueLoss');
+    return sumPropertyInArrayOfObjects(filteredByImpactedBrand, propertyToSum);
 };
 
-const sortInDescOrderAndGetFirstFive = (data) => data
-    .sort((a, b) => b.lostRevenue - a.lostRevenue)
-    .slice(0, 5);
-
 const filterIncidentsPerInterval = (data = [], brandName) => {
-    const filteredByBrand = data.filter((item) => item.impactedBrand === brandName);
-    const uniqueIncidentNumbers = extractIncidentsNumbers(filteredByBrand);
+    const propertyToSum = 'estimatedRevenueLoss';
+    const propertyToSort = 'lostRevenue';
+    const propertyToGetUniqueValues = 'incidentNumber';
+    const filteredByImpactedBrand = filterByImpactedBrand(data, brandName);
+    const uniqueIncidentNumbers = getListOfUniqueProperties(filteredByImpactedBrand, propertyToGetUniqueValues);
 
     const tooltipEntryData = uniqueIncidentNumbers.reduce((prev, incidentNumber) => {
-        const incidentNumberLink = incLink(incidentNumber);
-        const incidentsFilteredByUniqueNumber = filteredByBrand
+        const incidentNumberLink = buildIncLink(incidentNumber);
+        const incidentsFilteredByUniqueNumber = filteredByImpactedBrand
             .filter((item) => item.incidentNumber === incidentNumber);
-        const lostRevenue = sumPropertyInArray(incidentsFilteredByUniqueNumber, 'estimatedRevenueLoss').toFixed();
+        const lostRevenue = sumPropertyInArrayOfObjects(incidentsFilteredByUniqueNumber, propertyToSum).toFixed();
 
         const tooltipEntry = {
             incidentNumberLink,
@@ -248,7 +234,7 @@ const filterIncidentsPerInterval = (data = [], brandName) => {
         ];
     }, []);
 
-    return sortInDescOrderAndGetFirstFive(tooltipEntryData);
+    return sortInDescOrderAndGetTop5(tooltipEntryData, propertyToSort);
 };
 
 const buildRawSeriesForLostRevenue = (brandNames, weekIntervals, incidentsPerIntervalMap) => {
@@ -295,11 +281,11 @@ const buildIncidentsPerIntervalHash = (weekIntervals, filteredLostRevenues) => w
 export const buildBrandLossData = (filteredLostRevenues) => {
     const [lowerMarginDateValue, maxMarginDateValue] = getMarginDateValues(filteredLostRevenues);
     const weekIntervals = weeklyRange(lowerMarginDateValue, maxMarginDateValue);
-    const brandNames = listOfBrands(filteredLostRevenues);
+    const impactedBrands = getListOfUniqueProperties(filteredLostRevenues, 'impactedBrand');
     const incidentsPerIntervalHash = buildIncidentsPerIntervalHash(weekIntervals, filteredLostRevenues);
-    const rawSeries = buildRawSeriesForLostRevenue(brandNames, weekIntervals, incidentsPerIntervalHash);
+    const rawSeries = buildRawSeriesForLostRevenue(impactedBrands, weekIntervals, incidentsPerIntervalHash);
     const series = formatSeriesForChart(rawSeries);
-    const tooltipData = buildTooltipDataForLostRevenue(brandNames, weekIntervals, incidentsPerIntervalHash);
+    const tooltipData = buildTooltipDataForLostRevenue(impactedBrands, weekIntervals, incidentsPerIntervalHash);
 
     return {
         series,
@@ -318,23 +304,4 @@ export const lostRevenueTooltipFormatter = (tooltipData, {name, seriesName}) => 
     }).join('');
 
     return `<div class="lost-revenue-tooltip">${incidentsString}</div>`;
-};
-
-export default {
-    getIncMetricsByBrand,
-    totalDurationByBrand,
-    listOfBrands,
-    listOfIncByBrands,
-    mttr,
-    brandIncidents,
-    incidentsInTimeFrame,
-    getMTTRByBrand,
-    getMarginDateValues,
-    weeksInterval,
-    incidentsOfTheWeek,
-    weeklyMTTRMTTD,
-    weeklyMTTRbyBrand,
-    weeklyMTTDbyBrand,
-    range,
-    weeklyRange
 };
