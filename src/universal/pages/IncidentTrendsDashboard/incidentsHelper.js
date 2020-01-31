@@ -68,23 +68,9 @@ export const getMarginDateValues = (incidents = []) => {
         ];
 };
 
-export const weeksInterval = (incidents = []) => (
-    incidents.length === 0 || !isArray(incidents) ?
-        [] :
-        [
-            Math.min(...incidents.map((incident) => moment(incident.startedAt).week())),
-            Math.max(...incidents.map((incident) => moment(incident.startedAt).week()))
-        ]
-);
-
 const brandIncidents = (incidents, brand) => incidents.filter((incident) => incident.Brand === brand);
 
 export const incidentsOfTheWeek = (inc, week = '') => inc.filter((inc) => moment(inc.startedAt).week() === week);
-
-export const incidentsInTimeFrame = (inc, startDate = '', endDate = moment.now) => inc.filter((inc) => (
-    moment(inc.startedAt).format(DATE_FORMAT) >= startDate &&
-    moment(inc.startedAt).format(DATE_FORMAT) <= endDate)
-);
 
 export const getIncMetricsByBrand = (inc = []) => getListOfUniqueProperties(inc, 'Brand')
     .map((brand) => {
@@ -109,12 +95,6 @@ export const getIncMetricsByBrand = (inc = []) => getListOfUniqueProperties(inc,
 
 export const listOfIncByBrands = (inc = []) => getListOfUniqueProperties(inc, 'Brand')
     .map((brand) => brandIncidents(inc, brand));
-
-export const totalDurationByBrand = (incidents = []) => listOfIncByBrands(incidents)
-    .map((incident) => ({
-        'Brand': incident[0].Brand,
-        'totalDuration': sumPropertyInArrayOfObjects(incident, 'duration')
-    }));
 
 export const sumPropertyInArrayOfObjects = (incidents = [], propertyToSum) =>
     incidents.reduce((acc, curr) => (acc + Number(curr[propertyToSum])), 0);
