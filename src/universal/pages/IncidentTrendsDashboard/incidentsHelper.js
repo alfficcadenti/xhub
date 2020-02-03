@@ -49,10 +49,12 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
 const buildIncLink = (incNumber) => (`<a key='${incNumber}link' href='https://expedia.service-now.com/go.do?id=${incNumber}' target='_blank'>${incNumber}</a>`);
 
 const distinct = (value, index, self) => self.indexOf(value) === index;
+const removeEmptyStringsFromArray = (item) => item;
 
 const getListOfUniqueProperties = (incidents = [], prop) => incidents
     .map((incident) => incident[prop])
-    .filter(distinct);
+    .filter(distinct)
+    .filter(removeEmptyStringsFromArray);
 
 const max = (accumulator, currentValue) => (currentValue > accumulator ? currentValue : accumulator);
 const min = (accumulator, currentValue) => (currentValue < accumulator ? currentValue : accumulator);
@@ -190,6 +192,9 @@ const sumBrandLossPerInterval = (data = [], brandName) => {
     return sumPropertyInArrayOfObjects(filteredByImpactedBrand, propertyToSum);
 };
 
+const formatToUSDollarCurrency = (number) => number.
+    toLocaleString('en-US', {style: 'currency', currency: 'USD'});
+
 const filterIncidentsPerInterval = (data = [], brandName) => {
     const propertyToSum = 'estimatedRevenueLoss';
     const propertyToSort = 'lostRevenue';
@@ -201,7 +206,7 @@ const filterIncidentsPerInterval = (data = [], brandName) => {
         const incidentNumberLink = buildIncLink(incidentNumber);
         const incidentsFilteredByUniqueNumber = filteredByImpactedBrand
             .filter((item) => item.incidentNumber === incidentNumber);
-        const lostRevenue = sumPropertyInArrayOfObjects(incidentsFilteredByUniqueNumber, propertyToSum).toFixed();
+        const lostRevenue = sumPropertyInArrayOfObjects(incidentsFilteredByUniqueNumber, propertyToSum);
 
         const tooltipEntry = {
             incidentNumberLink,
@@ -279,9 +284,12 @@ export const lostRevenueTooltipFormatter = (tooltipData, {name, seriesName}) => 
     const incidentsString = incidents.map((item) => {
         return `<div class="incident-wrapper">
                         <span class="incident-number">${item.incidentNumberLink}</span>
-                        <span class="incident-lost-revenue">${item.lostRevenue}</span>
+                        <span class="incident-lost-revenue">${formatToUSDollarCurrency(item.lostRevenue)}</span>
                         </div>`;
     }).join('');
 
-    return `<div class="lost-revenue-tooltip">${incidentsString}</div>`;
+    return `<div class="lost-revenue-tooltip">
+        <p class="brand-name">${seriesName}</p>
+        ${incidentsString}
+    </div>`;
 };

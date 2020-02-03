@@ -20,7 +20,8 @@ const setChartOptions = (series = [], xAxisValues = [], tooltipData) => ({
         enterable: true,
         backgroundColor: tooltipBgColor,
         textStyle: {
-            fontWeight: 'bold'
+            fontWeight: 'bold',
+            color: 'red'
         }
     },
     xAxis: {

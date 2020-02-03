@@ -1,0 +1,421 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matches the snapshot 1`] = `
+Array [
+  <div
+    className="SearchableListBase"
+    tabIndex="-1"
+  >
+    <div
+      aria-controls="SearchList"
+      aria-expanded={false}
+      aria-haspopup="listbox"
+      aria-label="7 items in list, use the up and down keys to navigate"
+      aria-owns="SearchList"
+      className="SearchListInput"
+      role="combobox"
+    >
+      <input
+        aria-hidden="true"
+        className="SearchListInput__hint"
+        disabled={true}
+        tabIndex="-1"
+        type="text"
+        value=""
+      />
+      <div
+        className="form-group floating-label empty"
+      >
+        <input
+          aria-autocomplete="both"
+          aria-invalid={false}
+          aria-label="Deployed in Regions"
+          autoComplete="off"
+          className="form-control"
+          id="Deployed-in-Regions"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          onKeyPress={undefined}
+          placeholder="Deployed in Regions"
+          readOnly={undefined}
+          type="text"
+          value=""
+        />
+        <label
+          className=""
+          htmlFor="Deployed-in-Regions"
+        >
+          Deployed in Regions
+        </label>
+      </div>
+      <span
+        aria-live="polite"
+        className="sr-only"
+        role="status"
+      >
+        No items selected
+      </span>
+    </div>
+  </div>,
+  <div
+    className="form-group floating-label empty"
+  >
+    <input
+      aria-invalid={false}
+      aria-label="# Availability Zones Deployed to"
+      className="form-control"
+      id="#-Availability-Zones-Deployed-to"
+      onChange={[Function]}
+      onKeyPress={[Function]}
+      placeholder="# Availability Zones Deployed to"
+      readOnly={undefined}
+      type="number"
+      value=""
+    />
+    <label
+      className=""
+      htmlFor="#-Availability-Zones-Deployed-to"
+    >
+      # Availability Zones Deployed to
+    </label>
+    
+    
+  </div>,
+  <div
+    className="form-group floating-label empty"
+  >
+    <input
+      aria-invalid={false}
+      aria-label="# Instances Deployed"
+      className="form-control"
+      id="#-Instances-Deployed"
+      onChange={[Function]}
+      onKeyPress={[Function]}
+      placeholder="# Instances Deployed"
+      readOnly={undefined}
+      type="number"
+      value=""
+    />
+    <label
+      className=""
+      htmlFor="#-Instances-Deployed"
+    >
+      # Instances Deployed
+    </label>
+    
+    
+  </div>,
+  <div
+    className="SearchableListBase"
+    tabIndex="-1"
+  >
+    <div
+      aria-controls="SearchList"
+      aria-expanded={false}
+      aria-haspopup="listbox"
+      aria-label="2 items in list, use the up and down keys to navigate"
+      aria-owns="SearchList"
+      className="SearchListInput"
+      role="combobox"
+    >
+      <input
+        aria-hidden="true"
+        className="SearchListInput__hint"
+        disabled={true}
+        tabIndex="-1"
+        type="text"
+        value=""
+      />
+      <div
+        className="form-group floating-label empty"
+      >
+        <input
+          aria-autocomplete="both"
+          aria-invalid={false}
+          aria-label="Deployed to Segment?"
+          autoComplete="off"
+          className="form-control"
+          id="Deployed-to-Segment?"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          onKeyPress={undefined}
+          placeholder="Deployed to Segment?"
+          readOnly={undefined}
+          type="text"
+          value=""
+        />
+        <label
+          className=""
+          htmlFor="Deployed-to-Segment?"
+        >
+          Deployed to Segment?
+        </label>
+      </div>
+      <span
+        aria-live="polite"
+        className="sr-only"
+        role="status"
+      >
+        No items selected
+      </span>
+    </div>
+  </div>,
+  <div
+    className="SearchableListBase"
+    tabIndex="-1"
+  >
+    <div
+      aria-controls="SearchList"
+      aria-expanded={false}
+      aria-haspopup="listbox"
+      aria-label="2 items in list, use the up and down keys to navigate"
+      aria-owns="SearchList"
+      className="SearchListInput"
+      role="combobox"
+    >
+      <input
+        aria-hidden="true"
+        className="SearchListInput__hint"
+        disabled={true}
+        tabIndex="-1"
+        type="text"
+        value=""
+      />
+      <div
+        className="form-group floating-label empty"
+      >
+        <input
+          aria-autocomplete="both"
+          aria-invalid={false}
+          aria-label="Chaos Monkey Enabled?"
+          autoComplete="off"
+          className="form-control"
+          id="Chaos-Monkey-Enabled?"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          onKeyPress={undefined}
+          placeholder="Chaos Monkey Enabled?"
+          readOnly={undefined}
+          type="text"
+          value=""
+        />
+        <label
+          className=""
+          htmlFor="Chaos-Monkey-Enabled?"
+        >
+          Chaos Monkey Enabled?
+        </label>
+      </div>
+      <span
+        aria-live="polite"
+        className="sr-only"
+        role="status"
+      >
+        No items selected
+      </span>
+    </div>
+  </div>,
+  <div
+    className="SearchableListBase"
+    tabIndex="-1"
+  >
+    <div
+      aria-controls="SearchList"
+      aria-expanded={false}
+      aria-haspopup="listbox"
+      aria-label="6 items in list, use the up and down keys to navigate"
+      aria-owns="SearchList"
+      className="SearchListInput"
+      role="combobox"
+    >
+      <input
+        aria-hidden="true"
+        className="SearchListInput__hint"
+        disabled={true}
+        tabIndex="-1"
+        type="text"
+        value=""
+      />
+      <div
+        className="form-group floating-label empty"
+      >
+        <input
+          aria-autocomplete="both"
+          aria-invalid={false}
+          aria-label="Auto-Scaling Verified By"
+          autoComplete="off"
+          className="form-control"
+          id="Auto-Scaling-Verified-By"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          onKeyPress={undefined}
+          placeholder="Auto-Scaling Verified By"
+          readOnly={undefined}
+          type="text"
+          value=""
+        />
+        <label
+          className=""
+          htmlFor="Auto-Scaling-Verified-By"
+        >
+          Auto-Scaling Verified By
+        </label>
+      </div>
+      <span
+        aria-live="polite"
+        className="sr-only"
+        role="status"
+      >
+        No items selected
+      </span>
+    </div>
+  </div>,
+  <div
+    className="form-group floating-label empty"
+  >
+    <textarea
+      aria-label="Single Points of Failure"
+      className="FormTextArea__textarea form-control FormTextArea__textarea--auto-expand"
+      id="Single-Points-of-Failure"
+      name="Single-Points-of-Failure"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onFocus={[Function]}
+      placeholder="Single Points of Failure"
+      value=""
+    />
+    <label
+      className="FormTextArea__floating-label"
+      htmlFor="Single-Points-of-Failure"
+    >
+      Single Points of Failure
+    </label>
+  </div>,
+  <div
+    className="date-picker"
+  >
+    <div
+      className=""
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      onMouseLeave={[Function]}
+      onMouseOver={[Function]}
+      role="presentation"
+      style={
+        Object {
+          "display": "block",
+          "outline": 0,
+          "position": "relative",
+        }
+      }
+      tabIndex={null}
+    >
+      <div
+        className="position-relative"
+      >
+        <div
+          className="date-picker__input form-group floating-label not-empty"
+        >
+          <input
+            aria-invalid={false}
+            aria-label="Check in date expanded. Choose a date from the table below. Tab into the table and use the arrow keys for navigation."
+            className="form-control"
+            data-wdio="date-picker-input"
+            id="input-Multi-Region-ETA"
+            name="Multi-Region ETA"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            onKeyPress={undefined}
+            placeholder="Multi-Region ETA"
+            readOnly="readOnly"
+            type="text"
+            value="2/3/2020"
+          />
+          <label
+            className=""
+            htmlFor="input-Multi-Region-ETA"
+          >
+            Multi-Region ETA
+          </label>
+        </div>
+        <div
+          className="picker__overlay picker__overlay--selectable"
+          onClick={[Function]}
+        />
+      </div>
+    </div>
+  </div>,
+  <div
+    className="date-picker"
+  >
+    <div
+      className=""
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      onMouseLeave={[Function]}
+      onMouseOver={[Function]}
+      role="presentation"
+      style={
+        Object {
+          "display": "block",
+          "outline": 0,
+          "position": "relative",
+        }
+      }
+      tabIndex={null}
+    >
+      <div
+        className="position-relative"
+      >
+        <div
+          className="date-picker__input form-group floating-label not-empty"
+        >
+          <input
+            aria-invalid={false}
+            aria-label="Check in date expanded. Choose a date from the table below. Tab into the table and use the arrow keys for navigation."
+            className="form-control"
+            data-wdio="date-picker-input"
+            id="input-Resilient-ETA"
+            name="Resilient ETA"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            onKeyPress={undefined}
+            placeholder="Resilient ETA"
+            readOnly="readOnly"
+            type="text"
+            value="2/3/2020"
+          />
+          <label
+            className=""
+            htmlFor="input-Resilient-ETA"
+          >
+            Resilient ETA
+          </label>
+        </div>
+        <div
+          className="picker__overlay picker__overlay--selectable"
+          onClick={[Function]}
+        />
+      </div>
+    </div>
+  </div>,
+]
+`;
