@@ -33,6 +33,7 @@
     "test:browser": "npm run wdio:clean && wdio tests/browser/wdio.conf.js",
     "test:browser:remote": "npm run wdio:clean && BROWSERNAME=win10_chrome wdio tests/browser/wdio.conf.sauce.js",
     "test:unit": "BABEL_ENV=test jest --colors --verbose -u --testNamePattern",
+    "test:style": "stylelint --fix src/**/*.less",
     "tool:checkAssetSize": "node ./tools/sizes/checkAssetSize.js",
     "wdio:clean": "node tests/browser/tools/tasks/clean.js"
   },
@@ -167,6 +168,7 @@
     "@babel/preset-env": "^7.7.7",
     "@babel/preset-react": "^7.7.4",
     "@babel/register": "^7.7.7",
+    "@homeaway/node-stylelint": "^3.1.1",
     "@wdio/cli": "^5.18.4",
     "@wdio/dot-reporter": "^5.16.5",
     "@wdio/local-runner": "^5.18.4",
@@ -207,6 +209,7 @@
     "react-test-renderer": "^16.12.0",
     "sinon": "^7.5.0",
     "style-loader": "^0.23.1",
+    "stylelint": "^13.0.0",
     "terser-webpack-plugin": "^1.4.3",
     "wdio": "^3.0.3",
     "webdriverio": "^5.18.4",

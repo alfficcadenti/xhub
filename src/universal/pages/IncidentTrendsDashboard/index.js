@@ -139,7 +139,7 @@ const IncidentTrendsDashboard = () => {
 
     return (
         <Fragment>
-            <h1 id="pageTitle">{'Incidents trends'}</h1>
+            <h1 className="page-title">{'Incidents trends'}</h1>
             <div id="filters-div">
                 <DatePicker
                     startDate={startDate}

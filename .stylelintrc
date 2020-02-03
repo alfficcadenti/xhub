@@ -1,0 +1,9 @@
+{
+  "extends": [
+    "./node_modules/@homeaway/node-stylelint/lib/.stylelintrc"
+  ],
+  "ignoreFiles": ["**/*.js"],
+  "rules": {
+    "at-rule-no-unknown": null
+  }
+}
