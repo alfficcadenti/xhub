@@ -68,7 +68,7 @@ class PSR extends Component {
 
         return (
             <Fragment>
-                <h1 id="pageTitle">{'Purchase Success Rates'}</h1>
+                <h1 className="page-title">{'Purchase Success Rates'}</h1>
                 <LoadingContainer isLoading={isLoading} error={error}>
                     <div id="psrContainer">
                         <div id="dailyPsrContainer">
