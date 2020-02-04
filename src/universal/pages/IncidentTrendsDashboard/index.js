@@ -7,7 +7,7 @@ import {Navigation} from '@homeaway/react-navigation';
 import DatePicker from '../../components/DatePicker/index';
 import {getUniqueIncidents, adjustIncidentProperties} from './incidentsHelper';
 import {DATE_FORMAT, PRIORITIES, BRANDS} from './constants';
-import {Incidents, Overview, Top5, LostRevenue} from './tabs/index';
+import {Incidents, Overview, Top5, FinancialImpact} from './tabs/index';
 import './styles.less';
 
 
@@ -33,8 +33,8 @@ const navLinks = [
         href: '/incident-trends'
     },
     {
-        id: 'lostRevenue',
-        label: 'Lost Revenue',
+        id: 'financialImpact',
+        label: 'Financial Impact',
         href: '/incident-trends'
     }
 ];
@@ -131,7 +131,7 @@ const IncidentTrendsDashboard = () => {
             case 2:
                 return <Top5 filteredIncidents={filteredUniqueIncidents} />;
             case 3:
-                return <LostRevenue filteredLostRevenues={filteredAllIncidents} />;
+                return <FinancialImpact filteredIncidents={filteredAllIncidents} />;
             default:
                 return <Overview filteredIncidents={filteredUniqueIncidents} />;
         }
@@ -140,7 +140,7 @@ const IncidentTrendsDashboard = () => {
     return (
         <Fragment>
             <h1 className="page-title">{'Incidents trends'}</h1>
-            <div id="filters-div">
+            <div id="filters-wrapper">
                 <DatePicker
                     startDate={startDate}
                     endDate={endDate}
@@ -165,7 +165,7 @@ const IncidentTrendsDashboard = () => {
                 links={navLinks}
                 onLinkClick={handleNavigationClick}
             />
-            <LoadingContainer isLoading={isLoading} error={error} id={'incident-main-div'}>
+            <LoadingContainer isLoading={isLoading} error={error} id={'incident-main'}>
                 {renderTabs()}
             </LoadingContainer>
         </Fragment>
