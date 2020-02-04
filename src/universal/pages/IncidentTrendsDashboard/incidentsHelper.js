@@ -145,7 +145,7 @@ export const weeklyMTTDbyBrand = (inc = []) => {
         const weeklyMTTD = [];
 
         weeksInterval.forEach((date) => {
-            weeklyMTTD.push(h.formatDurationToH(mttr(incidentsOfTheWeek(incident, moment(date).week()))));
+            weeklyMTTD.push(h.formatDurationToH(mttd(incidentsOfTheWeek(incident, moment(date).week()))));
         });
 
         return {name: brandName, data: weeklyMTTD};

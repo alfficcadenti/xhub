@@ -6,7 +6,8 @@ import mockData from './lostRevenueData.test.json';
 
 describe('<FinancialImpact />', () => {
     it('renders successfully', () => {
-        shallow(<FinancialImpact filteredIncidents={mockData} />);
+        const wrapper = shallow(<FinancialImpact filteredIncidents={mockData} />);
+        expect(wrapper).toHaveLength(1);
     });
 
     it('renders No Result message when no data available', () => {
