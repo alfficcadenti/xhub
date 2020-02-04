@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactEcharts from 'echarts-for-react';
-import {financialImpactTooltipFormatter} from '../../pages/incidentTrendsDashboard/incidentsHelper';
+import {financialImpactTooltipFormatter} from '../../components/utils/tooltipFormatter';
 import './styles.less';
 
 const tooltipBgColor = 'gainsboro';

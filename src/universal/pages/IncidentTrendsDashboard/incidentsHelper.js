@@ -191,9 +191,6 @@ const sumBrandLossPerInterval = (data = [], brandName, propertyToSum) => {
     return sumPropertyInArrayOfObjects(filteredByImpactedBrand, propertyToSum);
 };
 
-const formatToUSDollarCurrency = (number) => number.
-    toLocaleString('en-US', {style: 'currency', currency: 'USD'});
-
 const filterIncidentsPerInterval = (data = [], brandName, propertyToSum) => {
     const propertyToSort = 'lostRevenue';
     const propertyToGetUniqueValues = 'incidentNumber';
@@ -275,19 +272,4 @@ export const buildFinancialImpactData = (incidents, propertyToSum) => {
         tooltipData,
         weekIntervals
     };
-};
-
-export const financialImpactTooltipFormatter = (tooltipData, {name, seriesName}) => {
-    const incidents = tooltipData[name][seriesName];
-    const incidentsString = incidents.map((item) => {
-        return `<div class="incident-wrapper">
-                        <span class="incident-number">${item.incidentNumberLink}</span>
-                        <span class="incident-financial-impact">${formatToUSDollarCurrency(item.lostRevenue)}</span>
-                        </div>`;
-    }).join('');
-
-    return `<div class="financial-impact-tooltip">
-        <p class="brand-name">${seriesName}</p>
-        ${incidentsString}
-    </div>`;
 };
