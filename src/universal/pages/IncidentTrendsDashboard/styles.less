@@ -1,6 +1,6 @@
 @import "../../mixins.less";
 
-#filters-div {
+#filters-wrapper {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -42,39 +42,15 @@
   }
 }
 
-#incident-main-div {
+#incident-main {
   text-align: -webkit-center;
   text-align: -moz-center;
-
-  .IncidentChartDiv {
-    margin: 1.5em;
-  }
 
   #inc-overview-table {
     width: 50%;
   }
 
-  #lost-revenue {
+  .financial-impact {
     margin-top: 90px;
-
-    .lost-revenue-tooltip {
-      .brand-name {
-        margin-bottom: 5px;
-        color: brown;
-        font-weight: bold;
-      }
-
-      .incident-wrapper {
-        display: flex;
-
-        .incident-number {
-          margin-right: 15px;
-        }
-
-        .incident-lost-revenue {
-          margin-left: auto;
-        }
-      }
-    }
   }
 }

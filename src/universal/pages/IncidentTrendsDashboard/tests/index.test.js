@@ -25,7 +25,7 @@ describe('<IncidentTrendsDashboard/>', () => {
         expect(props.links[0].id).toBe('overview');
         expect(props.links[1].id).toBe('incidents');
         expect(props.links[2].id).toBe('top5');
-        expect(props.links[3].id).toBe('lostRevenue');
+        expect(props.links[3].id).toBe('financialImpact');
     });
 
     it('Navigation receives active index 0 by default', async () => {

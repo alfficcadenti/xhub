@@ -1,19 +1,20 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import LostRevenue from '../LostRevenue';
+import FinancialImpact from '../FinancialImpact';
 import mockData from './lostRevenueData.test.json';
 
 
-describe('<LostRevenue />', () => {
+describe('<FinancialImpact />', () => {
     it('renders successfully', () => {
-        shallow(<LostRevenue filteredLostRevenues={mockData} />);
+        const wrapper = shallow(<FinancialImpact filteredIncidents={mockData} />);
+        expect(wrapper).toHaveLength(1);
     });
 
     it('renders No Result message when no data available', () => {
         const data = [];
         const wrapper = shallow(
-            <LostRevenue
-                filteredLostRevenues={data}
+            <FinancialImpact
+                filteredIncidents={data}
             />
         );
         expect(wrapper.find('div').text()).toEqual('No Results Found');

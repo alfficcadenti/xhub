@@ -115,7 +115,7 @@ export const weeklyMTTRMTTD = (incidents = []) => {
         weeklyMTTD.push(h.formatDurationToH(mttd(incidentsOfTheWeek(incidents, moment(date).week()))));
     });
 
-    return [{serie: 'MTTR', data: weeklyMTTR}, {serie: 'MTTD', data: weeklyMTTD}];
+    return [{name: 'MTTR', data: weeklyMTTR}, {name: 'MTTD', data: weeklyMTTD}];
 };
 
 export const weeklyMTTRbyBrand = (inc = []) => {
@@ -131,7 +131,7 @@ export const weeklyMTTRbyBrand = (inc = []) => {
             weeklyMTTR.push(h.formatDurationToH(mttr(incidentsOfTheWeek(incident, moment(date).week()))));
         });
 
-        return {serie: brandName, data: weeklyMTTR};
+        return {name: brandName, data: weeklyMTTR};
     });
 };
 
@@ -145,14 +145,14 @@ export const weeklyMTTDbyBrand = (inc = []) => {
         const weeklyMTTD = [];
 
         weeksInterval.forEach((date) => {
-            weeklyMTTD.push(h.formatDurationToH(mttr(incidentsOfTheWeek(incident, moment(date).week()))));
+            weeklyMTTD.push(h.formatDurationToH(mttd(incidentsOfTheWeek(incident, moment(date).week()))));
         });
 
-        return {serie: brandName, data: weeklyMTTD};
+        return {name: brandName, data: weeklyMTTD};
     });
 };
 
-export const weeklyRange = (start, end) => {
+export const weeklyRange = (start = '', end = '') => {
     if (start >= end) {
         return [start];
     }
@@ -176,7 +176,7 @@ export const sortInDescOrderAndGetTop5 = (incidents, fieldToSort) => incidents
     .sort((a, b) => Number(b[fieldToSort]) - Number(a[fieldToSort]))
     .slice(0, 5);
 
-const formatSeriesForChart = (data = []) => data
+export const formatSeriesForChart = (data = []) => data
     .map((item) => ({
         ...item,
         type: 'line'
@@ -185,18 +185,13 @@ const formatSeriesForChart = (data = []) => data
 const filterByImpactedBrand = (incidents, brandName) => incidents
     .filter((incident) => incident.impactedBrand === brandName);
 
-const sumBrandLossPerInterval = (data = [], brandName) => {
+const sumBrandLossPerInterval = (data = [], brandName, propertyToSum) => {
     const filteredByImpactedBrand = filterByImpactedBrand(data, brandName);
-    const propertyToSum = 'estimatedRevenueLoss';
 
     return sumPropertyInArrayOfObjects(filteredByImpactedBrand, propertyToSum);
 };
 
-const formatToUSDollarCurrency = (number) => number.
-    toLocaleString('en-US', {style: 'currency', currency: 'USD'});
-
-const filterIncidentsPerInterval = (data = [], brandName) => {
-    const propertyToSum = 'estimatedRevenueLoss';
+const filterIncidentsPerInterval = (data = [], brandName, propertyToSum) => {
     const propertyToSort = 'lostRevenue';
     const propertyToGetUniqueValues = 'incidentNumber';
     const filteredByImpactedBrand = filterByImpactedBrand(data, brandName);
@@ -222,10 +217,10 @@ const filterIncidentsPerInterval = (data = [], brandName) => {
     return sortInDescOrderAndGetTop5(tooltipEntryData, propertyToSort);
 };
 
-const buildRawSeriesForLostRevenue = (brandNames, weekIntervals, incidentsPerIntervalMap) => {
+const buildRawSeriesForFinancialImpact = (brandNames, weekIntervals, incidentsPerIntervalMap, propertyToSum) => {
     return brandNames && brandNames.reduce((prev, brandName) => {
         const data = weekIntervals.map((weekInterval) =>
-            sumBrandLossPerInterval(incidentsPerIntervalMap[weekInterval], brandName));
+            sumBrandLossPerInterval(incidentsPerIntervalMap[weekInterval], brandName, propertyToSum));
 
         const newMetricPoint = {
             name: brandName,
@@ -239,11 +234,11 @@ const buildRawSeriesForLostRevenue = (brandNames, weekIntervals, incidentsPerInt
     }, []);
 };
 
-const buildTooltipDataForLostRevenue = (brandNames, weekIntervals, incidentsPerIntervalMap) => weekIntervals
+const buildFinancialImpactTooltipData = (brandNames, weekIntervals, incidentsPerIntervalMap, propertyToSum) => weekIntervals
     .reduce((prev, weekInterval) => {
         const newMetricPoint = brandNames.reduce((map, brand) => ({
             ...map,
-            [brand]: filterIncidentsPerInterval(incidentsPerIntervalMap[weekInterval], brand)
+            [brand]: filterIncidentsPerInterval(incidentsPerIntervalMap[weekInterval], brand, propertyToSum)
         }), {});
 
         return {
@@ -252,10 +247,10 @@ const buildTooltipDataForLostRevenue = (brandNames, weekIntervals, incidentsPerI
         };
     }, {});
 
-const buildIncidentsPerIntervalHash = (weekIntervals, filteredLostRevenues) => weekIntervals
+const buildIncidentsPerIntervalHash = (weekIntervals, incidents) => weekIntervals
     .reduce((prev, weekInterval) => {
         const week = moment(weekInterval).week();
-        const incidentsPerInterval = incidentsOfTheWeek(filteredLostRevenues, week);
+        const incidentsPerInterval = incidentsOfTheWeek(incidents, week);
 
         return {
             ...prev,
@@ -263,33 +258,18 @@ const buildIncidentsPerIntervalHash = (weekIntervals, filteredLostRevenues) => w
         };
     }, {});
 
-export const buildBrandLossData = (filteredLostRevenues) => {
-    const [lowerMarginDateValue, maxMarginDateValue] = getMarginDateValues(filteredLostRevenues);
+export const buildFinancialImpactData = (incidents, propertyToSum) => {
+    const [lowerMarginDateValue, maxMarginDateValue] = getMarginDateValues(incidents);
     const weekIntervals = weeklyRange(lowerMarginDateValue, maxMarginDateValue);
-    const impactedBrands = getListOfUniqueProperties(filteredLostRevenues, 'impactedBrand');
-    const incidentsPerIntervalHash = buildIncidentsPerIntervalHash(weekIntervals, filteredLostRevenues);
-    const rawSeries = buildRawSeriesForLostRevenue(impactedBrands, weekIntervals, incidentsPerIntervalHash);
+    const impactedBrands = getListOfUniqueProperties(incidents, 'impactedBrand');
+    const incidentsPerIntervalHash = buildIncidentsPerIntervalHash(weekIntervals, incidents);
+    const rawSeries = buildRawSeriesForFinancialImpact(impactedBrands, weekIntervals, incidentsPerIntervalHash, propertyToSum);
     const series = formatSeriesForChart(rawSeries);
-    const tooltipData = buildTooltipDataForLostRevenue(impactedBrands, weekIntervals, incidentsPerIntervalHash);
+    const tooltipData = buildFinancialImpactTooltipData(impactedBrands, weekIntervals, incidentsPerIntervalHash, propertyToSum);
 
     return {
         series,
         tooltipData,
         weekIntervals
     };
-};
-
-export const lostRevenueTooltipFormatter = (tooltipData, {name, seriesName}) => {
-    const incidents = tooltipData[name][seriesName];
-    const incidentsString = incidents.map((item) => {
-        return `<div class="incident-wrapper">
-                        <span class="incident-number">${item.incidentNumberLink}</span>
-                        <span class="incident-lost-revenue">${formatToUSDollarCurrency(item.lostRevenue)}</span>
-                        </div>`;
-    }).join('');
-
-    return `<div class="lost-revenue-tooltip">
-        <p class="brand-name">${seriesName}</p>
-        ${incidentsString}
-    </div>`;
 };
