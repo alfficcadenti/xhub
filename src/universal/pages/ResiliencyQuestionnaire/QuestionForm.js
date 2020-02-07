@@ -85,7 +85,7 @@ class QuestionForm extends Component {
 
     submitQuestionnaire = (product, application, questions) => {
         const username = this.loadUserInfo();
-        return fetch('/api/v1/resiliency/questionnaire', {
+        return fetch('/resiliency/questionnaire', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

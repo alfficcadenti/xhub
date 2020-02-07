@@ -41,6 +41,17 @@
           }
         }
       },
+      "apiServiceConfig": {
+        "hostname": "opxhub-service.us-west-2.test.expedia.com",
+        "protocol": "https:",
+        "routes": {
+          "resiliencyQuestionnaire": {
+            "path": "/api/v1/resiliency/questionnaire",
+            "operation": "POST_api_v1_resiliency_questionnaire",
+            "method": "POST"
+          }
+        }
+      },
       "oauthApi": {
         "$filter": "env.NODE_ENV",
         "$default": {
