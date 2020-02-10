@@ -92,7 +92,7 @@ class OktaAuth {
     }
 
     authorizeUrl(request) {
-        return `${this.oauthUrl}/oauth2/v1/authorize?` +
+        return `${this.oauthUrl}/oauth2/default/v1/authorize?` +
             `client_id=${this.clientId}` +
             '&response_type=code' +
             '&state=S0M3St4t3' +
