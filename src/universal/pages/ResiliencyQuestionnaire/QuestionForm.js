@@ -54,7 +54,7 @@ class QuestionForm extends Component {
         this.loadQuestionList();
     }
 
-    loadUserInfo = () => (Cookies.get('username'));
+    loadUserInfo = () => (Cookies.get('email'));
 
     loadQuestionList = () => {
         fetch('/api/resiliency-questions')

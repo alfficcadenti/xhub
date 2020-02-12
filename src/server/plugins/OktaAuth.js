@@ -97,7 +97,7 @@ class OktaAuth {
             '&response_type=code' +
             '&state=S0M3St4t3' +
             `&redirect_uri=${this.redirectUri(request)}` +
-            '&scope=openid';
+            '&scope=openid email';
     }
 
     login(request) {
@@ -107,7 +107,7 @@ class OktaAuth {
                 `&client_secret=${clientSecret}` +
                 `&redirect_uri=${this.redirectUri(request)}` +
                 '&grant_type=authorization_code';
-            return this.oauthApiClient.post('/oauth2/default/v1/token', {
+            return this.oauthApiClient.post('/oauth2/v1/token', {
                 payload: formData,
                 headers: {
                     'content-type': 'application/x-www-form-urlencoded'
@@ -129,13 +129,13 @@ class OktaAuth {
                     };
                 });
             }).then((tokenDecoded) => {
-                return this.oauthApiClient.post('/oauth2/default/v1/userinfo', {
+                return this.oauthApiClient.post('/oauth2/v1/userinfo', {
                     headers: {
                         'Authorization': `Bearer ${tokenDecoded.token}`,
                     }})
                     .then((data) => {
-                        const username = data.payload.userinfo;
-                        return {username, tokenDecoded};
+                        const {email} = data.payload;
+                        return {email, tokenDecoded};
                     });
             });
         });
