@@ -54,7 +54,13 @@ class QuestionForm extends Component {
         this.loadQuestionList();
     }
 
-    loadUserInfo = () => (Cookies.get('email').split('@')[0]);
+    loadUserInfo = () => {
+        try {
+            return Cookies.get('email').split('@')[0];
+        } catch (e) {
+            return null;
+        }
+    };
 
     loadQuestionList = () => {
         fetch('/api/resiliency-questions')
@@ -180,8 +186,11 @@ class QuestionForm extends Component {
                         onClose={this.handleClose}
                         header={false}
                     >
-                        <LoadingContainer isLoading={sendingAnswers}>{modalMessage}</LoadingContainer>
-
+                        <LoadingContainer
+                            isLoading={sendingAnswers}
+                        >
+                            {modalMessage}
+                        </LoadingContainer>
                     </Modal>
                 </LoadingContainer>
             </div>

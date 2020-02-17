@@ -7,6 +7,7 @@ import {DatePicker} from '@homeaway/react-date-pickers';
 import h from '../utils/formatString';
 import moment from 'moment';
 import DayTemplatePast from './DayTemplatePast';
+import Tooltip from '@homeaway/react-tooltip';
 import './styles.less';
 
 class ResiliencyQuestions extends Component {
@@ -14,9 +15,9 @@ class ResiliencyQuestions extends Component {
         super(props);
         this.state = {
             dates: {
-                'Multi-Region-ETA': moment().format('YYYY-MM-DD'),
-                'Resilient-ETA': moment().format('YYYY-MM-DD'),
-                'Last-Rollback-Date': moment().format('YYYY-MM-DD'),
+                'Multi-Region-ETA': '',
+                'Resilient-ETA': '',
+                'Last-Rollback-Date': '',
             },
             errorMsg: ''
         };
@@ -102,20 +103,33 @@ class ResiliencyQuestions extends Component {
 
     handleDateChange = (event) => (this.setState({dates: {date: event}}))
 
+    renderQuestionType = (questionObj) => {
+        const id = h.replaceSpaces(questionObj.question);
+        if (questionObj.type === 'category') {
+            return this.renderCategoryQuestion(id, questionObj.question, questionObj.values);
+        } else if (questionObj.type === 'number' || questionObj.type === 'integer') {
+            return this.renderNumericQuestion(id, questionObj.question, questionObj.type, questionObj.values);
+        } else if (questionObj.type === 'date') {
+            return this.renderDateQuestion(id, questionObj.question);
+        }
+        return this.renderQuestionInput(id, questionObj.question);
+    }
+
     render() {
         const {questions} = this.props;
+        const style = {display: 'block'};
+
         return (
-            questions.map((q) => {
-                const id = h.replaceSpaces(q.question);
-                if (q.type === 'category') {
-                    return this.renderCategoryQuestion(id, q.question, q.values);
-                } else if (q.type === 'number' || q.type === 'integer') {
-                    return this.renderNumericQuestion(id, q.question, q.type, q.values);
-                } else if (q.type === 'date') {
-                    return this.renderDateQuestion(id, q.question);
-                }
-                return this.renderQuestionInput(id, q.question);
-            })
+            questions.map((question) => (
+                <Tooltip
+                    placement="right"
+                    tooltipType="tooltip--lg"
+                    content={question.definition}
+                    wrapperStyle={style}
+                >
+                    {this.renderQuestionType(question)}
+                </Tooltip>
+            ))
         );
     }
 }
