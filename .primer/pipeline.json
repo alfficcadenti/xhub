@@ -24,7 +24,7 @@
       "action": {
         "name": "ewedeployJenkins"
       },
-      "actionId": "ewetest_deploy-docker-ecs",
+      "actionId": "ewetest-int_deploy-docker-ecs",
       "description": null,
       "disabled": false,
       "ignoreResult": false,
@@ -43,7 +43,7 @@
       "action": {
         "name": "ewedeployJenkins"
       },
-      "actionId": "ewetest_release-docker-ecs",
+      "actionId": "ewetest-int_release-docker-ecs",
       "description": null,
       "disabled": false,
       "ignoreResult": false,
