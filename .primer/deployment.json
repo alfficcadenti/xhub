@@ -37,5 +37,17 @@
       }
     },
     "ssl_negotiation_policy": "ELBSecurityPolicy-TLS-1-2-2017-01"
+  },
+  "ewetest": {
+    "instances": {
+      "initial_count": 2
+    }
+  },
+  "ewetest-int": {
+    "instances": {
+      "initial_count": 1,
+      "min_count": 1,
+      "max_count": 1
+    }
   }
 }

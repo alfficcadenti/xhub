@@ -17,7 +17,7 @@
       "params": {
         "token": "masterBuild"
       },
-      "successChildren": ["DeployTest_opxhub-ui"],
+      "successChildren": ["Deploy_To_Int"],
       "triggerType": "automatic"
     },
     {
@@ -28,7 +28,7 @@
       "description": null,
       "disabled": false,
       "ignoreResult": false,
-      "name": "DeployTest_opxhub-ui",
+      "name": "Deploy_To_Int",
       "params": {
         "jobParameters": {
           "PERFORM_RELEASE": false,
@@ -36,7 +36,7 @@
         },
         "token": "ewetestEcsDeploy"
       },
-      "successChildren": ["ReleaseTest_opxhub-ui"],
+      "successChildren": ["Release_To_Int"],
       "triggerType": "automatic"
     },
     {
@@ -47,14 +47,51 @@
       "description": null,
       "disabled": false,
       "ignoreResult": false,
-      "name": "ReleaseTest_opxhub-ui",
+      "name": "Release_To_Int",
       "params": {
         "jobParameters": {
           "ROLE_NAME": "opxhub-ui"
         },
         "token": "ewetestReleaseDockerEcs"
       },
+      "successChildren": ["Deploy_To_Test"],
       "triggerType": "automatic"
+    },
+    {
+      "action": {
+        "name": "ewedeployJenkins"
+      },
+      "actionId": "ewetest_deploy-docker-ecs",
+      "description": null,
+      "disabled": false,
+      "ignoreResult": false,
+      "name": "Deploy_To_Test",
+      "params": {
+        "jobParameters": {
+          "PERFORM_RELEASE": false,
+          "ROLE_NAME": "opxhub-ui"
+        },
+        "token": "ewetestEcsDeploy"
+      },
+      "successChildren": ["Release_To_Test"],
+      "triggerType": "automatic"
+    },
+    {
+      "action": {
+        "name": "ewedeployJenkins"
+      },
+      "actionId": "ewetest_release-docker-ecs",
+      "description": null,
+      "disabled": false,
+      "ignoreResult": false,
+      "name": "Release_To_Test",
+      "params": {
+        "jobParameters": {
+          "ROLE_NAME": "opxhub-ui"
+        },
+        "token": "ewetestReleaseDockerEcs"
+      },
+      "triggerType": "manual"
     }
   ],
   "team": "Operational Excellence"
