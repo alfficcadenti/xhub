@@ -17,16 +17,17 @@ echo "***** npm version:"
 npm -v
 
 ###
-# Install Dependencies
+# Install node-gyp prior node packages
 ###
 printBoxedMessage "Install node-gyp"
-npm install -g node-gyp
+npm install node-gyp@5.1.0
+
 
 ###
 # Install Dependencies
 ###
 printBoxedMessage "Install"
-npm ci
+npm install
 
 ###
 # Run package building
