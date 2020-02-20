@@ -1,10 +1,8 @@
 /* eslint-disable complexity */
-import kumoMetricsNpm from 'kumo-metrics-npm';
-
 require('source-map-support').install();
 require('css-modules-require-hook')({}); // enable processing of css in external modules
 
-const customConfig = require('./config/config');
+// const customConfig = require('./config/config');
 const Catalyst = require('@vrbo/catalyst-server');
 const ServiceClient = require('@vrbo/service-client');
 const Path = require('path');
@@ -14,12 +12,6 @@ const H2o2 = require('h2o2');
 
 const ExpediaCACerts = require('@homeaway/ca-certs-expedia');
 const SecretHandler = require('@homeaway/shortstop-secret-expedia-vault');
-
-const KumoHttpMetricsLogger = kumoMetricsNpm.MetricLogger;
-const kumoHttpMetricsLogger = new KumoHttpMetricsLogger(customConfig.statsd); // Only appName is required.
-kumoHttpMetricsLogger.logSystemMetrics();
-kumoHttpMetricsLogger.logInboundHttpMetrics();
-kumoHttpMetricsLogger.logOutboundHttpMetrics();
 
 ExpediaCACerts.load(); // necessary to establish secure communication with Vault
 
