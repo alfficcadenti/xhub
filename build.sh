@@ -20,14 +20,14 @@ npm -v
 # Install node-gyp prior node packages
 ###
 printBoxedMessage "Install node-gyp"
-npm install node-gyp@5.1.0
-
+npm install -g node-gyp@5.1.0
 
 ###
 # Install Dependencies
 ###
 printBoxedMessage "Install"
-npm install
+npm cache clean --force
+npm ci
 
 ###
 # Run package building
