@@ -111,13 +111,13 @@
         "port": 8125,
         "appName": "opxhub-ui",
         "host": {
-          "$filter": "env.NODE_ENV",
+          "$filter": "env.EXPEDIA_ENVIRONMENT",
           "$default": "localhost",
           "test": "statsd",
           "production": "statsd"
         },
         "transmit": {
-          "$filter": "env.NODE_ENV",
+          "$filter": "env.EXPEDIA_ENVIRONMENT",
           "$default": false,
           "test": true,
           "production": true
