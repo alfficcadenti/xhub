@@ -17,16 +17,9 @@ echo "***** npm version:"
 npm -v
 
 ###
-# Install node-gyp prior node packages
-###
-printBoxedMessage "Install node-gyp"
-npm install -g node-gyp@5.1.0
-
-###
 # Install Dependencies
 ###
 printBoxedMessage "Install"
-npm cache clean --force
 npm ci
 
 ###

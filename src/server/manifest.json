@@ -111,12 +111,14 @@
         "host": {
           "$filter": "env.EXPEDIA_ENVIRONMENT",
           "$default": "localhost",
-          "production": "statsd"
+          "production": "statsd",
+          "test": "statsd"
         },
         "transmit": {
           "$filter": "env.EXPEDIA_ENVIRONMENT",
           "$default": false,
-          "production": true
+          "production": true,
+          "test": true
         },
         "normalizePathParameters": false,
         "prefix": "opxhub-ui"
