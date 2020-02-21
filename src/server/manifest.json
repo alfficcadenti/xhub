@@ -108,18 +108,14 @@
     "hapi-statsd": {
       "plugin": "require:@homeaway/catalyst-monitoring-statsd",
       "options": {
-        "port": 8125,
-        "appName": "opxhub-ui",
         "host": {
           "$filter": "env.EXPEDIA_ENVIRONMENT",
           "$default": "localhost",
-          "test": "statsd",
           "production": "statsd"
         },
         "transmit": {
           "$filter": "env.EXPEDIA_ENVIRONMENT",
           "$default": false,
-          "test": true,
           "production": true
         },
         "normalizePathParameters": false,
