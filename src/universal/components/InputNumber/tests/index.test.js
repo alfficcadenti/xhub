@@ -81,7 +81,7 @@ describe('<InputNumber /> ', () => {
             expect(wrapper.instance().outsideRange(value, min, max)).to.be.true;
         });
 
-        it('return true when the value in input is within the range of min max in input', () => {
+        it('return true when the value in input is outside the range of min max in input', () => {
             const value = 0;
             const min = 1;
             const max = 100;
@@ -90,7 +90,16 @@ describe('<InputNumber /> ', () => {
             expect(wrapper.instance().outsideRange(value, min, max)).to.be.true;
         });
 
-        it('return false when the value in input is outside the range of min max in input', () => {
+        it('return true when the value is negative and the minimum is zero', () => {
+            const value = -1;
+            const min = 0;
+            const max = 100;
+            const props = questions[1];
+            const wrapper = mount(<InputNumber {...props} />);
+            expect(wrapper.instance().outsideRange(value, min, max)).to.be.true;
+        });
+
+        it('return false when the value in input is within the range of min max in input', () => {
             const value = 55;
             const min = 0;
             const max = 100;

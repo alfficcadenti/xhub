@@ -17,7 +17,7 @@ class InputNumber extends Component {
 
     onlyPositives = (event) => (event.key === '-' ? true : false)
 
-    outsideRange = (value, min, max) => ((!(max && value > max) && !(min && value < min)) ? false : true)
+    outsideRange = (value, min, max) => ((!(max && value > max) && !(value < min)) ? false : true)
 
     decimals = (value) => {
         if (Math.floor(value) === value) {
