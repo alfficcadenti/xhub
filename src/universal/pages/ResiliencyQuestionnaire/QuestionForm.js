@@ -31,6 +31,16 @@ class QuestionForm extends Component {
             name: ''
         };
 
+        const regions = {
+            'us-west-1': false,
+            'us-east-1': false,
+            'eu-west-1': false,
+            'ap-northeast-1': false,
+            'ap-southeast-1': false,
+            'ap-southeast-2': false,
+            'other': false
+        };
+
         this.state = {
             productInputProps,
             applicationInputProps,
@@ -46,7 +56,8 @@ class QuestionForm extends Component {
             answers: [],
             isOpen: false,
             modalMessage: '',
-            sendingAnswers: false
+            sendingAnswers: false,
+            regions
         };
     }
 
@@ -84,8 +95,12 @@ class QuestionForm extends Component {
 
     getQuestionnaireAnswers = () => (
         Array.from(this.state.questions.map((x) => {
-            const id = (x.type === 'date') ? `input-${h.replaceSpaces(x.question)}` : h.replaceSpaces(x.question);
-            return {key: x.question, value: document.getElementById(id).value};
+            if (x.type === 'date') {
+                return {key: x.question, value: document.getElementById(`input-${h.replaceSpaces(x.question)}`).value};
+            } else if (x.type === 'regions') {
+                return {key: x.question, value: Object.keys(this.state.regions).filter((region) => this.state.regions[region]).toString()};
+            }
+            return {key: x.question, value: document.getElementById(h.replaceSpaces(x.question)).value};
         }))
     );
 
@@ -126,12 +141,13 @@ class QuestionForm extends Component {
 
         const {product, application} = this.props;
         const answers = this.getQuestionnaireAnswers();
-        this.submitQuestionnaire(product, application, answers).then((resp) => {
-            if (!resp.ok) {
-                throw new Error(resp);
-            }
-            return resp.json();
-        })
+        this.submitQuestionnaire(product, application, answers)
+            .then((resp) => {
+                if (!resp.ok) {
+                    throw new Error(resp);
+                }
+                return resp;
+            })
             .then(() => {
                 this.displayPostResult('Questionnaire successfully submitted');
             })
@@ -150,12 +166,15 @@ class QuestionForm extends Component {
         this.setState({isOpen: false, modalMessage: '', sendingAnswers: false});
     };
 
+    saveRegions = (region) => (this.setState({regions: {...this.state.regions, ...region}}))
+
     render() {
         const {
             questionError,
             questions,
             sendingAnswers,
-            modalMessage
+            modalMessage,
+            regions
         } = this.state;
         const {
             application,
@@ -169,7 +188,10 @@ class QuestionForm extends Component {
                     <h4>{'Fill the questionnaire below'}</h4>
                     <ResiliencyQuestions
                         questions={questions}
+                        saveRegions={this.saveRegions}
+                        regions={regions}
                     />
+
                     <button
                         id="submitButton"
                         type="button"
@@ -178,7 +200,6 @@ class QuestionForm extends Component {
                     >
                         {'Submit Questionnaire'}
                     </button>
-
 
                     <Modal
                         id="questionnaire-modal"

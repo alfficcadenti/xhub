@@ -7,12 +7,45 @@
       color: #7a7a7a;
     }
   }
+
   td.day.no-gridlines.selectable.clickable {
     &:hover,
     &:focus {
       cursor: pointer;
       color: #292929;
       background-color: rgba(41, 41, 41, 0.12);
+    }
+  }
+}
+
+#RegionQuestionDiv {
+  min-height: 140px;
+  display: grid;
+  height: auto;
+  width: auto;
+  overflow: scroll;
+
+  label#RegionQuestionLabel {
+    justify-self: flex-start;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 0;
+  }
+
+  form#Deployed-in-Regions {
+    grid-template-columns: 33% 33% 33%;
+    grid-template-rows: 33% 33% 33%;
+    display: inline-grid;
+    font-size: 0.8rem;
+    justify-content: center;
+    align-content: center;
+    margin-bottom: 0;
+
+    div {
+      margin-left: 0;
+      label {
+        margin-bottom: 5px;
+      }
     }
   }
 }

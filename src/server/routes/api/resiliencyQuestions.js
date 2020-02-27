@@ -1,5 +1,5 @@
 const questions = [
-    {id: 1, question: 'Deployed in Regions', type: 'category', values: ['us-west-1', 'us-east-1', 'eu-west-1', 'ap-northeast-1', 'ap-southeast-1', 'ap-southeast-2', 'other'], definition: 'Names of AWS regions are taking active traffic. Normally there will only be one listed'},
+    {id: 1, question: 'Deployed in Regions', type: 'regions', values: ['us-west-1', 'us-east-1', 'eu-west-1', 'ap-northeast-1', 'ap-southeast-1', 'ap-southeast-2', 'other'], definition: 'Names of AWS regions are taking active traffic. Normally there will only be one listed'},
     {id: 2, question: '# Availability Zones Deployed to', type: 'integer', values: {min: '1', max: ''}, definition: 'For each Region, how many Availability Zones are being deployed to.'},
     {id: 3, question: '# Instances Deployed', type: 'integer', values: {min: '0', max: ''}, definition: 'Total number of instances configured to be running (Minimum)'},
     {id: 4, question: 'Deployed to Segment?', type: 'category', values: ['True', 'False'], definition: 'Is the application serving production traffic from a segmented account (rather than the shared accounts) - Y/N'},

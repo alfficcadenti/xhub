@@ -8,7 +8,7 @@ import moment from 'moment';
 chai.use(chaiJestSnapshot);
 
 const questions = [
-    {id: 1, question: 'Deployed in Regions', type: 'category', values: ['us-west-1', 'us-east-1', 'eu-west-1', 'ap-northeast-1', 'ap-southeast-1', 'ap-southeast-2', 'other']},
+    {id: 1, question: 'Deployed in Regions', type: 'regions', values: ['us-west-1', 'us-east-1', 'eu-west-1', 'ap-northeast-1', 'ap-southeast-1', 'ap-southeast-2', 'other']},
     {id: 2, question: '# Availability Zones Deployed to', type: 'integer'},
     {id: 3, question: '# Instances Deployed', type: 'integer'},
     {id: 4, question: 'Deployed to Segment?', type: 'category', values: ['True', 'False']},
@@ -19,6 +19,16 @@ const questions = [
     {id: 16, question: 'Resilient ETA', type: 'date'},
 ];
 
+const regions = {
+    'us-west-1': true,
+    'us-east-1': false,
+    'eu-west-1': false,
+    'ap-northeast-1': false,
+    'ap-southeast-1': false,
+    'ap-southeast-2': false,
+    'other': false
+};
+
 describe('<ResiliencyQuestion /> ', () => {
     beforeEach(() => {
         chaiJestSnapshot.setFilename(`${__filename}.snap`);
@@ -27,7 +37,8 @@ describe('<ResiliencyQuestion /> ', () => {
     const props = {
         error: '',
         isLoading: false,
-        questions
+        questions,
+        regions
     };
 
 

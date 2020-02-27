@@ -4,6 +4,7 @@ import SearchableList from '@homeaway/react-searchable-list';
 import InputNumber from '../InputNumber';
 import InputText from '../InputText';
 import {DatePicker} from '@homeaway/react-date-pickers';
+import {Checkbox} from '@homeaway/react-form-components';
 import h from '../utils/formatString';
 import moment from 'moment';
 import DayTemplatePast from './DayTemplatePast';
@@ -38,6 +39,29 @@ class ResiliencyQuestions extends Component {
             id={id}
             question={question}
         />
+    )
+
+    renderRegionQuestion = (id, question, values) => (
+        <div id="region-question-div" className="form-control form-group">
+            <label htmlFor="region-question-div" id="region-question-label" className="form-group floating-label label">
+                {question}:
+            </label>
+            <form className="form-inline form-group" id={id}>
+                {
+                    values.map((value) => (
+                        <Checkbox
+                            id={value}
+                            key={value}
+                            name={value}
+                            label={value}
+                            checked={this.props.regions[value]}
+                            onChange={this.handleOptionClicked}
+                            inline
+                        />
+                    ))
+                }
+            </form>
+        </div>
     )
 
     renderNumericQuestion = (id, question, type, values) => (
@@ -95,13 +119,15 @@ class ResiliencyQuestions extends Component {
         />
     )
 
-    handleMultiRegionDate = (event) => (this.setState({dates: {...this.state.dates, 'Multi-Region-ETA': event}}))
+    handleMultiRegionDate = (event) => this.setState({dates: {...this.state.dates, 'Multi-Region-ETA': event}})
 
-    handleResilientDate = (event) => (this.setState({dates: {...this.state.dates, 'Resilient-ETA': event}}))
+    handleResilientDate = (event) => this.setState({dates: {...this.state.dates, 'Resilient-ETA': event}})
 
-    handleLastRollbackDate = (event) => (this.setState({dates: {...this.state.dates, 'Last-Rollback-Date': event}}))
+    handleLastRollbackDate = (event) => this.setState({dates: {...this.state.dates, 'Last-Rollback-Date': event}})
 
-    handleDateChange = (event) => (this.setState({dates: {date: event}}))
+    handleDateChange = (event) => this.setState({dates: {date: event}})
+
+    handleOptionClicked = (event) => this.props.saveRegions({[event.target.name]: event.target.checked})
 
     renderQuestionType = (questionObj) => {
         const id = h.replaceSpaces(questionObj.question);
@@ -109,6 +135,8 @@ class ResiliencyQuestions extends Component {
             return this.renderCategoryQuestion(id, questionObj.question, questionObj.values);
         } else if (questionObj.type === 'number' || questionObj.type === 'integer') {
             return this.renderNumericQuestion(id, questionObj.question, questionObj.type, questionObj.values);
+        } else if (questionObj.type === 'regions') {
+            return this.renderRegionQuestion(id, questionObj.question, questionObj.values);
         } else if (questionObj.type === 'date') {
             return this.renderDateQuestion(id, questionObj.question);
         }
@@ -140,6 +168,8 @@ ResiliencyQuestions.defaultProps = {
 
 ResiliencyQuestions.propTypes = {
     questions: PropTypes.array,
+    saveRegions: PropTypes.func,
+    regions: PropTypes.object
 };
 
 export default ResiliencyQuestions;

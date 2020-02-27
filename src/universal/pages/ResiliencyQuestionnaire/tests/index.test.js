@@ -198,6 +198,24 @@ describe('<ResiliencyQuestionnaire/>', () => {
                 expect(handleSubmit.calledOnce).to.be.true;
             });
         });
+
+        describe('saveRegions()', () => {
+            it('save regions option in the state', () => {
+                const regions = {
+                    'us-west-1': true,
+                    'us-east-1': false,
+                    'eu-west-1': false,
+                    'ap-northeast-1': false,
+                    'ap-southeast-1': false,
+                    'ap-southeast-2': false,
+                    'other': false
+                };
+                const wrapper = shallow(<QuestionForm product={product} application={application}/>);
+                const instance = wrapper.instance();
+                instance.saveRegions({'us-west-1': true});
+                expect(wrapper.state('regions')).to.be.eql(regions);
+            });
+        });
     });
 
     describe('<History/>', () => {
