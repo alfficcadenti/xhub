@@ -5,7 +5,10 @@
       "product": { "name": "Quality Engineering", "id": 2 },
       "application": { "name": "ewe-bugdebt-trend", "id": 657 },
       "questions": [
-        { "key": "Regions", "value": "us-west-2" },
+        {
+          "key": "Deployed in Regions",
+          "value": "{\"us-west-1\":false,\"us-east-1\":false,\"eu-west-1\":false,\"ap-northeast-1\":true,\"ap-southeast-1\":false}"
+        },
         { "key": "#AZs", "value": "4" },
         { "key": "#Instances", "value": "10" },
         { "key": "Segment?", "value": "yes" },
@@ -35,7 +38,10 @@
       "product": { "name": "Quality Engineering", "id": 2 },
       "application": { "name": "ewe-bugdebt-trend", "id": 657 },
       "questions": [
-        { "key": "Regions", "value": "asd" },
+        {
+          "key": "Regions",
+          "value": "{\"us-west-1\":false,\"us-east-1\":false,\"eu-west-1\":false,\"ap-northeast-1\":true,\"ap-southeast-1\":false}"
+        },
         { "key": "#AZs", "value": "asd" },
         { "key": "#Instances", "value": "" },
         { "key": "Segment?", "value": "" },

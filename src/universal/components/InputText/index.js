@@ -21,6 +21,7 @@ class InputText extends Component {
         const {
             id,
             question,
+            value
         } = this.props;
 
         return (
@@ -30,7 +31,7 @@ class InputText extends Component {
                 name={id}
                 label={question}
                 onChange={this.onChange}
-                value={this.state.value}
+                value={value || this.state.value}
                 autoExpand
             />
         );
@@ -39,7 +40,7 @@ class InputText extends Component {
 
 InputText.defaultProps = {
     id: null,
-    question: '',
+    question: ''
 };
 
 InputText.propTypes = {

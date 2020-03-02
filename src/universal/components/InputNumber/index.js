@@ -77,7 +77,8 @@ class InputNumber extends Component {
         const {
             id,
             question,
-            range
+            range,
+            value
         } = this.props;
 
         const helpText = this.helpTextString(range);
@@ -90,7 +91,7 @@ class InputNumber extends Component {
                 type="number"
                 onChange={this.checkValue}
                 onKeyPress={this.validation}
-                value={this.state.value}
+                value={value || this.state.value}
                 errorMsg={this.state.error}
                 helpText={helpText}
             />
@@ -102,7 +103,8 @@ InputNumber.defaultProps = {
     id: null,
     question: '',
     type: null,
-    range: {min: '', max: ''}
+    range: {min: '', max: ''},
+    value: ''
 };
 
 InputNumber.propTypes = {
@@ -112,7 +114,8 @@ InputNumber.propTypes = {
     range: PropTypes.shape({
         min: PropTypes.string,
         max: PropTypes.string,
-    })
+    }),
+    value: PropTypes.number
 };
 
 export default InputNumber;

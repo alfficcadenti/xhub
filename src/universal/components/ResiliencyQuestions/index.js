@@ -33,15 +33,16 @@ class ResiliencyQuestions extends Component {
         }
     }
 
-    renderQuestionInput = (id, question) => (
+    renderQuestionInput = (id, question, defaultValue) => (
         <InputText
             key={id}
             id={id}
             question={question}
+            value={defaultValue}
         />
     )
 
-    renderRegionQuestion = (id, question, values) => (
+    renderRegionQuestion = (id, question, values, defaultValue) => (
         <div id="region-question-div" className="form-control form-group">
             <label htmlFor="region-question-div" id="region-question-label" className="form-group floating-label label">
                 {question}:
@@ -54,7 +55,7 @@ class ResiliencyQuestions extends Component {
                             key={value}
                             name={value}
                             label={value}
-                            checked={this.props.regions[value]}
+                            checked={defaultValue[value] || this.props.regions[value]}
                             onChange={this.handleOptionClicked}
                             inline
                         />
@@ -64,17 +65,18 @@ class ResiliencyQuestions extends Component {
         </div>
     )
 
-    renderNumericQuestion = (id, question, type, values) => (
+    renderNumericQuestion = (id, question, type, values, defaultValue) => (
         <InputNumber
             key={id}
             id={id}
             question={question}
             type={type}
             range={values}
+            value={defaultValue}
         />
     )
 
-    renderDateQuestion = (id, question) => {
+    renderDateQuestion = (id, question, defaultValue) => {
         let handleDateChange = this.handleDateChange;
         let dayTemplateComponent;
         let errorMsg = '';
@@ -90,11 +92,12 @@ class ResiliencyQuestions extends Component {
             handleDateChange = this.handleLastRollbackDate;
             dayTemplateComponent = DayTemplatePast;
         }
+        const formattedDefaultDate = defaultValue ? moment(defaultValue).format('YYYY-MM-DD') : '';
 
         return (
             <DatePicker
                 key={id}
-                date={this.state.dates[id]}
+                date={formattedDefaultDate || this.state.dates[id]}
                 onDateChange={handleDateChange}
                 label={question}
                 name={question}
@@ -107,7 +110,7 @@ class ResiliencyQuestions extends Component {
         );
     }
 
-    renderCategoryQuestion = (id, question, values) => (
+    renderCategoryQuestion = (id, question, values, defaultValue = []) => (
         <SearchableList
             key={id}
             labelKey={id}
@@ -116,8 +119,10 @@ class ResiliencyQuestions extends Component {
                 label: question,
                 id
             }}
+            selected={defaultValue}
         />
     )
+
 
     handleMultiRegionDate = (event) => this.setState({dates: {...this.state.dates, 'Multi-Region-ETA': event}})
 
@@ -129,24 +134,26 @@ class ResiliencyQuestions extends Component {
 
     handleOptionClicked = (event) => this.props.saveRegions({[event.target.name]: event.target.checked})
 
-    renderQuestionType = (questionObj) => {
+    renderQuestionType = (questionObj, lastQuestionnaire) => {
         const id = h.replaceSpaces(questionObj.question);
+        const lastAnswer = lastQuestionnaire.find(({key}) => h.replaceSpaces(key) === id);
+        const defaultValue = lastAnswer && lastAnswer.value ? lastAnswer.value : '';
+
         if (questionObj.type === 'category') {
-            return this.renderCategoryQuestion(id, questionObj.question, questionObj.values);
+            return this.renderCategoryQuestion(id, questionObj.question, questionObj.values, [defaultValue]);
         } else if (questionObj.type === 'number' || questionObj.type === 'integer') {
-            return this.renderNumericQuestion(id, questionObj.question, questionObj.type, questionObj.values);
+            return this.renderNumericQuestion(id, questionObj.question, questionObj.type, questionObj.values, Number(defaultValue));
         } else if (questionObj.type === 'regions') {
-            return this.renderRegionQuestion(id, questionObj.question, questionObj.values);
+            return this.renderRegionQuestion(id, questionObj.question, questionObj.values, defaultValue);
         } else if (questionObj.type === 'date') {
-            return this.renderDateQuestion(id, questionObj.question);
+            return this.renderDateQuestion(id, questionObj.question, defaultValue);
         }
-        return this.renderQuestionInput(id, questionObj.question);
+        return this.renderQuestionInput(id, questionObj.question, defaultValue);
     }
 
     render() {
-        const {questions} = this.props;
+        const {questions, lastQuestionnaire} = this.props;
         const style = {display: 'block'};
-
         return (
             questions.map((question) => (
                 <Tooltip
@@ -155,7 +162,7 @@ class ResiliencyQuestions extends Component {
                     content={question.definition}
                     wrapperStyle={style}
                 >
-                    {this.renderQuestionType(question)}
+                    {this.renderQuestionType(question, lastQuestionnaire)}
                 </Tooltip>
             ))
         );
@@ -164,12 +171,14 @@ class ResiliencyQuestions extends Component {
 
 ResiliencyQuestions.defaultProps = {
     questions: [],
+    lastQuestionnaire: [],
 };
 
 ResiliencyQuestions.propTypes = {
     questions: PropTypes.array,
     saveRegions: PropTypes.func,
-    regions: PropTypes.object
+    regions: PropTypes.object,
+    lastQuestionnaire: PropTypes.array
 };
 
 export default ResiliencyQuestions;

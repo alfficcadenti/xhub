@@ -18,6 +18,9 @@ global.document = dom.window.document;
 
 describe('<ResiliencyQuestionnaire/>', () => {
     sinon.stub(ResiliencyQuestionnaire.prototype, 'componentDidMount');
+    const testApp = {name: 'distributed-automation-dashboard-web', id: 1753};
+    const testProduct = {name: 'Traffic Engineering', id: 1};
+    const tierSelected = ['Tier 1'];
 
     it('renders successfully', () => {
         const wrapper = shallow(<ResiliencyQuestionnaire />);
@@ -55,7 +58,6 @@ describe('<ResiliencyQuestionnaire/>', () => {
 
     describe('selectProduct', () => {
         it('saves product name and id in the state from the first element of the array in input', async () => {
-            const testProduct = {name: 'Traffic Engineering', id: 1};
             const wrapper = shallow(<ResiliencyQuestionnaire />);
             const instance = wrapper.instance();
             sinon.stub(instance, 'loadApplicationList');
@@ -64,7 +66,6 @@ describe('<ResiliencyQuestionnaire/>', () => {
         });
 
         it('calls loadApplicationList with selected product name', async () => {
-            const testProduct = {name: 'Traffic Engineering', id: 1};
             const wrapper = shallow(<ResiliencyQuestionnaire />);
             const instance = wrapper.instance();
             const spy = sinon.stub(instance, 'loadApplicationList');
@@ -78,11 +79,30 @@ describe('<ResiliencyQuestionnaire/>', () => {
 
     describe('selectApplication', () => {
         it('saves application name and id in the state from the first element of the array in input', async () => {
-            const testApp = {name: 'distributed-automation-dashboard-web', id: 1753};
             const wrapper = shallow(<ResiliencyQuestionnaire />);
             const instance = wrapper.instance();
             instance.selectApplication([testApp]);
             expect(instance.state.application).to.eql(testApp);
+        });
+    });
+
+    describe('selectTier', () => {
+        it('saves tier in the state', async () => {
+            const wrapper = shallow(<ResiliencyQuestionnaire />);
+            const instance = wrapper.instance();
+            instance.selectTier(tierSelected);
+            expect(instance.state.tierFilter).to.eql(tierSelected);
+        });
+    });
+
+    describe('renderQuestions()', () => {
+        it('returns a QuestionForm component with application and product from the state', async () => {
+            const wrapper = shallow(<ResiliencyQuestionnaire />);
+            const QuestionFormReturn = <QuestionForm application={testApp} product={testProduct} />;
+            const instance = wrapper.instance();
+            wrapper.setState({application: testApp, product: testProduct});
+            const questionsForm = instance.renderQuestions();
+            expect(questionsForm).to.be.eql(QuestionFormReturn);
         });
     });
 
@@ -96,10 +116,10 @@ describe('<ResiliencyQuestionnaire/>', () => {
 
 
     describe('<QuestionForm/>', () => {
-        sinon.stub(QuestionForm.prototype, 'componentDidMount');
         const product = mockAppDetails.product;
         const application = mockAppDetails.application;
         const message = 'this is the message';
+        sinon.stub(QuestionForm.prototype, 'componentDidMount');
 
         it('renders successfully with state.isOpen eql to false', () => {
             const wrapper = shallow(<QuestionForm product={product} application={application}/>);
@@ -107,7 +127,6 @@ describe('<ResiliencyQuestionnaire/>', () => {
             // eslint-disable-next-line no-unused-expressions
             expect(wrapper.state(['isOpen'])).to.be.false;
         });
-
 
         describe('handleSubmit()', () => {
             it('calls submitQuestionnaire() with args', () => {

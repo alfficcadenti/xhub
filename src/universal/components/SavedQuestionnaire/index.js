@@ -20,6 +20,15 @@ class SavedQuestionnaire extends PureComponent {
         </div>
     )
 
+    formatRegionsAnswer = (regions) => {
+        try {
+            const regionsObj = JSON.parse(regions);
+            return Object.keys(regionsObj).filter((k) => regionsObj[k]).join(', ');
+        } catch (e) {
+            return regions;
+        }
+    }
+
     lastQuestionnaire= (last, previous) => {
         const username = last.questionnaire.username || 'by unknown';
         const id = last.timestamp.concat(' ', username) || 1;
@@ -32,8 +41,8 @@ class SavedQuestionnaire extends PureComponent {
                         return (
                             <div className="questionDiv" key={q.key}>
                                 <span className="question">{q.key}</span>
-                                <span className="answers old-answers">{previous.questionnaire.questions[idx].value}</span>
-                                <span className={lastValueClass}>{q.value}</span>
+                                <span className="answers old-answers">{q.key === 'Deployed in Regions' ? this.formatRegionsAnswer(previous.questionnaire.questions[idx].value) : previous.questionnaire.questions[idx].value}</span>
+                                <span className={lastValueClass}>{q.key === 'Deployed in Regions' ? this.formatRegionsAnswer(q.value) : q.value}</span>
                             </div>
                         );
                     }
@@ -53,7 +62,7 @@ class SavedQuestionnaire extends PureComponent {
                     questionnaire.questionnaire.questions.map((q) =>
                         (<div className="questionDiv" key={q.key}>
                             <span className="question">{q.key}</span>
-                            <span className="answers">{q.value}</span>
+                            <span className="answers">{q.key === 'Deployed in Regions' ? this.formatRegionsAnswer(q.value) : q.value}</span>
                         </div>))
                 }
             </Divider>

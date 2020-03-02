@@ -117,11 +117,34 @@ describe('<InputNumber /> ', () => {
             expect(wrapper.instance().decimals(value)).to.be.eql('77');
         });
 
-        it('return 0 when hte number in input has no decimals', () => {
+        it('return 0 when the number in input has no decimals', () => {
             const value = 555;
             const props = questions[1];
             const wrapper = mount(<InputNumber {...props} />);
             expect(wrapper.instance().decimals(value)).to.be.eql(0);
+        });
+    });
+
+    describe('helpTextString()', () => {
+        it('returns a string based on the minimum value', () => {
+            const range = {min: '0', max: ''};
+            const props = questions[1];
+            const wrapper = mount(<InputNumber {...props} />);
+            expect(wrapper.instance().helpTextString(range)).to.be.eql('minimum value 0');
+        });
+
+        it('returns a string based on the range value if max is specified', () => {
+            const range = {min: '0', max: '100'};
+            const props = questions[1];
+            const wrapper = mount(<InputNumber {...props} />);
+            expect(wrapper.instance().helpTextString(range)).to.be.eql('value between 0 - 100');
+        });
+
+        it('returns empty strings if min and max values are not present', () => {
+            const range = {min: '', max: ''};
+            const props = questions[1];
+            const wrapper = mount(<InputNumber {...props} />);
+            expect(wrapper.instance().helpTextString(range)).to.be.eql('');
         });
     });
 });

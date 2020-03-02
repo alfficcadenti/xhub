@@ -53,6 +53,7 @@ class QuestionForm extends Component {
             questions: [],
             product,
             application,
+            lastQuestionnaire: [],
             answers: [],
             isOpen: false,
             modalMessage: '',
@@ -63,6 +64,7 @@ class QuestionForm extends Component {
 
     componentDidMount() {
         this.loadQuestionList();
+        this.loadHistory(this.props.application.id);
     }
 
     loadUserInfo = () => {
@@ -72,6 +74,40 @@ class QuestionForm extends Component {
             return null;
         }
     };
+
+    loadHistory = (applicationId = '') => {
+        const baseUrl = '/api/v1/resiliency/questionnaires?applicationId=';
+        fetch(baseUrl + applicationId)
+            .then((resp) => {
+                if (!resp.ok) {
+                    this.setState({historyError: 'Error. Try again.'});
+                    throw new Error();
+                }
+                return resp.json();
+            })
+            .then((data) => {
+                if (data.length && data[0].questionnaire.questions) {
+                    const lastQuestionnaire = data.reverse()[0].questionnaire.questions;
+                    const regions = lastQuestionnaire.find(({key}) => key === 'Deployed in Regions').value;
+                    this.setState({
+                        lastQuestionnaire,
+                        regions: this.formatRegionsAnswer(regions)
+                    });
+                }
+            })
+            .catch((error) => {
+                // eslint-disable-next-line no-console
+                console.log(error);
+            });
+    };
+
+    formatRegionsAnswer = (regions) => {
+        try {
+            return JSON.parse(regions);
+        } catch (e) {
+            return this.state.regions;
+        }
+    }
 
     loadQuestionList = () => {
         fetch('/api/resiliency-questions')
@@ -98,7 +134,7 @@ class QuestionForm extends Component {
             if (x.type === 'date') {
                 return {key: x.question, value: document.getElementById(`input-${h.replaceSpaces(x.question)}`).value};
             } else if (x.type === 'regions') {
-                return {key: x.question, value: Object.keys(this.state.regions).filter((region) => this.state.regions[region]).toString()};
+                return {key: x.question, value: JSON.stringify(this.state.regions)};
             }
             return {key: x.question, value: document.getElementById(h.replaceSpaces(x.question)).value};
         }))
@@ -138,7 +174,6 @@ class QuestionForm extends Component {
 
     handleSubmit = () => {
         this.handleOpen();
-
         const {product, application} = this.props;
         const answers = this.getQuestionnaireAnswers();
         this.submitQuestionnaire(product, application, answers)
@@ -148,9 +183,7 @@ class QuestionForm extends Component {
                 }
                 return resp;
             })
-            .then(() => {
-                this.displayPostResult('Questionnaire successfully submitted');
-            })
+            .then(() => this.displayPostResult('Questionnaire successfully submitted'))
             .catch(() => this.displayPostResult('Error. Try Again.'));
     };
 
@@ -174,7 +207,8 @@ class QuestionForm extends Component {
             questions,
             sendingAnswers,
             modalMessage,
-            regions
+            regions,
+            lastQuestionnaire
         } = this.state;
         const {
             application,
@@ -190,6 +224,7 @@ class QuestionForm extends Component {
                         questions={questions}
                         saveRegions={this.saveRegions}
                         regions={regions}
+                        lastQuestionnaire={lastQuestionnaire}
                     />
 
                     <button

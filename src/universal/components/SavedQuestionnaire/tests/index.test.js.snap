@@ -97,17 +97,17 @@ exports[`matches the snapshot 1`] = `
           <span
             className="question"
           >
-            Regions
+            Deployed in Regions
           </span>
           <span
             className="answers old-answers"
           >
-            asd
+            ap-northeast-1
           </span>
           <span
-            className="answers new-value"
+            className="answers"
           >
-            us-west-2
+            ap-northeast-1
           </span>
         </div>
         <div
@@ -585,7 +585,7 @@ exports[`matches the snapshot 1`] = `
           <span
             className="answers"
           >
-            asd
+            {"us-west-1":false,"us-east-1":false,"eu-west-1":false,"ap-northeast-1":true,"ap-southeast-1":false}
           </span>
         </div>
         <div
@@ -2100,12 +2100,12 @@ exports[`matches the snapshot with only one saved questionnaire 1`] = `
           <span
             className="question"
           >
-            Regions
+            Deployed in Regions
           </span>
           <span
             className="answers"
           >
-            us-west-2
+            ap-northeast-1
           </span>
         </div>
         <div
