@@ -19,7 +19,7 @@ module.exports.resiliencyQuestionnaire = {
             const serverConfig = req.server.app.config.get('apiServiceConfig');
             const client = ServiceClient.create('backend-service', {
                 hostname: serverConfig.hostname,
-                port: 443,
+                port: serverConfig.port,
                 protocol: serverConfig.protocol,
             });
             const {statusCode} = await client.request({
