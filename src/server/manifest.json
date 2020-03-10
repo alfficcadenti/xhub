@@ -36,31 +36,46 @@
           "example-service": {
             "protocol": "https:",
             "hostname": "jsonplaceholder.typicode.com",
-            "connectTimeout": 1000,
-            "timeout": 3000
+            "connectTimeout": 10000,
+            "timeout": 5000
           }
         }
       },
       "apiServiceConfig": {
-        "hostname": "opxhub-service.us-west-2.test.expedia.com",
-        "protocol": "https:",
-        "routes": {
-          "resiliencyQuestionnaire": {
-            "path": "/api/v1/resiliency/questionnaire",
-            "operation": "POST_api_v1_resiliency_questionnaire",
-            "method": "POST"
-          },
-          "apiService": {
-            "method": "GET",
-            "operation": "GET_api_v1"
+        "$filter": "env.EXPEDIA_ENVIRONMENT",
+        "$default": {
+          "hostname": "opxhub-service.us-west-2.int.expedia.com",
+          "protocol": "https:",
+          "routes": {
+            "resiliencyQuestionnaire": {
+              "path": "/api/v1/resiliency/questionnaire",
+              "operation": "POST_api_v1_resiliency_questionnaire",
+              "method": "POST"
+            },
+            "apiService": {
+              "method": "GET",
+              "operation": "GET_api_v1"
+            }
           }
+        },
+        "int": {
+          "hostname": "opxhub-service.us-west-2.int.expedia.com",
+          "protocol": "https:"
+        },
+        "test": {
+          "hostname": "opxhub-service.us-west-2.test.expedia.com",
+          "protocol": "https:"
+        },
+        "production": {
+          "hostname": "opxhub-service.us-west-2.test.expedia.com",
+          "protocol": "https:"
         }
       },
       "oauthApi": {
         "$filter": "env.NODE_ENV",
         "$default": {
-          "connectionTimeout": 3000,
-          "timeout": 30000
+          "connectionTimeout": 10000,
+          "timeout": 10000
         },
         "development": {
           "oauthClientId": "",
