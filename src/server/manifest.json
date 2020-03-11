@@ -31,14 +31,6 @@
               }
             }
           }
-        },
-        "overrides": {
-          "example-service": {
-            "protocol": "https:",
-            "hostname": "jsonplaceholder.typicode.com",
-            "connectTimeout": 1000,
-            "timeout": 3000
-          }
         }
       },
       "apiServiceConfig": {
