@@ -44,8 +44,6 @@
       "apiServiceConfig": {
         "$filter": "env.EXPEDIA_ENVIRONMENT",
         "$default": {
-          "connectionTimeout": 10000,
-          "timeout": 10000,
           "hostname": "opxhub-service.us-west-2.int.expedia.com",
           "protocol": "https:",
           "routes": {
@@ -60,18 +58,24 @@
             }
           }
         },
+        "int": {
+          "hostname": "opxhub-service.us-west-2.int.expedia.com",
+          "protocol": "https:"
+        },
         "test": {
-          "hostname": "opxhub-service.us-west-2.test.expedia.com"
+          "hostname": "opxhub-service.us-west-2.test.expedia.com",
+          "protocol": "https:"
         },
         "production": {
-          "hostname": "opxhub-service.us-west-2.test.expedia.com"
+          "hostname": "opxhub-service.us-west-2.test.expedia.com",
+          "protocol": "https:"
         }
       },
       "oauthApi": {
         "$filter": "env.NODE_ENV",
         "$default": {
           "connectionTimeout": 10000,
-          "timeout": 30000
+          "timeout": 10000
         },
         "development": {
           "oauthClientId": "",
