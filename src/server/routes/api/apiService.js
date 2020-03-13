@@ -22,6 +22,7 @@ module.exports.apiService = {
                 operation: serverConfig.routes.apiService.operation,
                 queryParams: req.url.query ? req.url.query : {}
             });
+            req.log('[API-REQUEST-DETAILS]', client, serverConfig.routes.apiService.method, serverConfig.routes.apiService.operation);
             return payload;
         } catch (e) {
             req.log('[ERROR]', e);
