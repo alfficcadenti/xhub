@@ -149,6 +149,11 @@ class QuestionForm extends Component {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({username, product, application, questions})
+        }).then((resp) => {
+            if (resp.ok) {
+                return resp.json();
+            }
+            return resp;
         });
     };
 
@@ -178,7 +183,7 @@ class QuestionForm extends Component {
         const answers = this.getQuestionnaireAnswers();
         this.submitQuestionnaire(product, application, answers)
             .then((resp) => {
-                if (!resp.ok) {
+                if (resp !== 200) {
                     throw new Error(resp);
                 }
                 return resp;

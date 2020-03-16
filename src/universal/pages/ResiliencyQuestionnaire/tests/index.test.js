@@ -134,7 +134,7 @@ describe('<ResiliencyQuestionnaire/>', () => {
                 const instance = wrapper.instance();
                 sinon.stub(instance, 'getQuestionnaireAnswers');
                 const spy = sinon.stub(instance, 'submitQuestionnaire');
-                spy.resolves('Ok');
+                spy.resolves(200);
                 instance.handleSubmit();
                 // eslint-disable-next-line no-unused-expressions
                 expect(spy.calledOnce).to.be.true;

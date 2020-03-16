@@ -31,7 +31,7 @@ class InputText extends Component {
                 name={id}
                 label={question}
                 onChange={this.onChange}
-                value={value || this.state.value}
+                value={this.state.value || value}
                 autoExpand
             />
         );
