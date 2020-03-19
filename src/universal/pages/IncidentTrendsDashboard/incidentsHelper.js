@@ -19,7 +19,8 @@ export const adjustIncidentProperties = (data = []) => {
         'ttr': inc.ttr,
         'Root_Cause_Owner': inc.rootCauseOwner,
         'Brand': inc.brand,
-        'Status': inc.status
+        'Status': inc.status,
+        'tag': inc.tag
     }));
 };
 
@@ -43,7 +44,8 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
         TTD: inc.ttd ? h.formatDurationForTable(inc.ttd) : '',
         TTR: inc.ttr ? h.formatDurationForTable(inc.ttr) : '',
         'Root Cause Owners': inc.Root_Cause_Owner || '',
-        Status: inc.Status || ''
+        Status: inc.Status || '',
+        Tag: inc.tag || '',
     }));
 
 const buildIncLink = (incNumber) => (`<a key='${incNumber}link' href='https://expedia.service-now.com/go.do?id=${incNumber}' target='_blank'>${incNumber}</a>`);

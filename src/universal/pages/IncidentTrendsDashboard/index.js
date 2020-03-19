@@ -5,6 +5,7 @@ import LoadingContainer from '../../components/LoadingContainer';
 import FilterDropDown from '../../components/FilterDropDown';
 import {Navigation} from '@homeaway/react-navigation';
 import DatePicker from '../../components/DatePicker/index';
+import {Checkbox} from '@homeaway/react-form-components';
 import {getUniqueIncidents, adjustIncidentProperties} from './incidentsHelper';
 import {DATE_FORMAT, PRIORITIES, BRANDS} from './constants';
 import {Incidents, Overview, Top5, FinancialImpact} from './tabs/index';
@@ -13,6 +14,7 @@ import './styles.less';
 
 const brandDefaultValue = 'All';
 const priorityDefaultValue = 'All - P1 & P2';
+const covidTagDefaultValue = true;
 const startDateDefaultValue = moment().subtract(7, 'weeks').format(DATE_FORMAT);
 const endDateDefaultValue = moment().format(DATE_FORMAT);
 const minDate = moment('2019-01-01').toDate();
@@ -36,13 +38,14 @@ const navLinks = [
         id: 'financialImpact',
         label: 'Financial Impact',
         href: '/incident-trends'
-    }
+    },
 ];
 
 
 const IncidentTrendsDashboard = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [selectedBrand, setSelectedBrand] = useState(brandDefaultValue);
+    const [selectedCovidTag, setSelectedCovidTag] = useState(covidTagDefaultValue);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
     const [startDate, setStartDate] = useState(startDateDefaultValue);
@@ -79,6 +82,11 @@ const IncidentTrendsDashboard = () => {
             incidents = incidents.filter((inc) => inc.Brand === selectedBrand);
         }
 
+        if (selectedCovidTag) {
+            uniqueIncidents = uniqueIncidents.filter((inc) => inc.tag.includes('covid-19'));
+            incidents = incidents.filter((inc) => inc.tag.includes('covid-19'));
+        }
+
         setFilteredUniqueIncidents(uniqueIncidents);
         setFilteredAllIncidents(incidents);
     };
@@ -89,9 +97,7 @@ const IncidentTrendsDashboard = () => {
             .then((incidents) => {
                 const uniqueIncidents = getUniqueIncidents(incidents);
                 setAllIUniqueIncidents(adjustIncidentProperties(uniqueIncidents));
-
                 setAllIncidents(incidents);
-
                 setIsLoading(false);
             })
             .catch((err) => {
@@ -122,6 +128,8 @@ const IncidentTrendsDashboard = () => {
 
     const handleBrandChange = (brand) => setSelectedBrand(brand);
 
+    const handleCovidTagChange = () => setSelectedCovidTag(!selectedCovidTag);
+
     const renderTabs = () => {
         switch (activeIndex) {
             case 0:
@@ -150,6 +158,7 @@ const IncidentTrendsDashboard = () => {
                 />
                 <FilterDropDown id="priority-dropdown" list={PRIORITIES} selectedValue={incPriority} onClickHandler={handlePriorityChange}/>
                 <FilterDropDown id="brand-dropdown" list={BRANDS} selectedValue={selectedBrand} onClickHandler={handleBrandChange}/>
+                <Checkbox name="covid-19" label="Covid-19" checked={selectedCovidTag} onChange={handleCovidTagChange}/>
                 <button
                     id="applyButton"
                     type="button"
