@@ -58,22 +58,26 @@ class QuestionForm extends Component {
             isOpen: false,
             modalMessage: '',
             sendingAnswers: false,
-            regions
+            regions,
+            username: '',
         };
     }
 
     componentDidMount() {
         this.loadQuestionList();
         this.loadHistory(this.props.application.id);
+        this.loadUserInfo();
     }
 
+    // eslint-disable-next-line consistent-return
     loadUserInfo = () => {
         try {
-            return Cookies.get('email').split('@')[0];
+            const username = Cookies.get('email').split('@')[0];
+            this.setState({username});
         } catch (e) {
             return null;
         }
-    };
+    }
 
     loadHistory = (applicationId = '') => {
         const baseUrl = '/api/v1/resiliency/questionnaires?applicationId=';
@@ -140,8 +144,7 @@ class QuestionForm extends Component {
         }))
     );
 
-    submitQuestionnaire = (product, application, questions) => {
-        const username = this.loadUserInfo();
+    submitQuestionnaire = (username, product, application, questions) => {
         return fetch('/resiliency/questionnaire', {
             method: 'POST',
             headers: {
@@ -169,7 +172,10 @@ class QuestionForm extends Component {
     );
 
     preSubmit = () => {
-        if (this.checkForErrors() > 0) {
+        if (!this.state.username) {
+            this.handleOpen();
+            this.displayPostResult('Error: user not logged in, try refreshing the page');
+        } else if (this.checkForErrors() > 0) {
             this.handleOpen();
             this.displayPostResult('Error: answers contain errors');
         } else {
@@ -180,8 +186,9 @@ class QuestionForm extends Component {
     handleSubmit = () => {
         this.handleOpen();
         const {product, application} = this.props;
+        const {username} = this.state;
         const answers = this.getQuestionnaireAnswers();
-        this.submitQuestionnaire(product, application, answers)
+        this.submitQuestionnaire(username, product, application, answers)
             .then((resp) => {
                 if (resp !== 200) {
                     throw new Error(resp);
@@ -213,14 +220,13 @@ class QuestionForm extends Component {
             sendingAnswers,
             modalMessage,
             regions,
-            lastQuestionnaire
+            lastQuestionnaire,
         } = this.state;
         const {
             application,
         } = this.props;
 
         const loadingQuestions = !questions.length && application.name && !questionError;
-
         return (
             <div className="resiliency-questions-form">
                 <LoadingContainer isLoading={loadingQuestions} error={questionError}>
@@ -247,9 +253,7 @@ class QuestionForm extends Component {
                         onClose={this.handleClose}
                         header={false}
                     >
-                        <LoadingContainer
-                            isLoading={sendingAnswers}
-                        >
+                        <LoadingContainer isLoading={sendingAnswers}>
                             {modalMessage}
                         </LoadingContainer>
                     </Modal>
