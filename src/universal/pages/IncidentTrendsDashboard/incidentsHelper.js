@@ -6,6 +6,8 @@ import moment from 'moment';
 import * as h from '../../components/utils/formatDate';
 import {DATE_FORMAT} from './constants';
 import {isArray} from 'util';
+import uuid from 'uuid/v1';
+import React from 'react';
 
 export const adjustIncidentProperties = (data = []) => {
     return data.map((inc) => ({
@@ -45,6 +47,23 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
         'Root Cause Owners': inc.Root_Cause_Owner || '',
         Status: inc.Status || ''
     }));
+
+export const getIncidentsRowTableData = (filteredIncidents = []) => filteredIncidents
+    .map((inc) => ({
+        id: uuid(),
+        incident: buildIncLinkHomeawayTable(inc.incident_number) || '',
+        priority: inc.priority || '',
+        brand: inc.Brand || '',
+        started: moment.utc(inc.startedAt).local().format('YYYY-MM-DD HH:mm') || '',
+        summary: inc.incident_summary || '',
+        duration: inc.duration ? h.formatDurationForHomeawayTable(inc.duration) : '',
+        ttd: inc.ttd ? h.formatDurationForHomeawayTable(inc.ttd) : '',
+        ttr: inc.ttr ? h.formatDurationForHomeawayTable(inc.ttr) : '',
+        rootCauseOwners: inc.Root_Cause_Owner || '',
+        status: inc.Status || ''
+    }));
+
+const buildIncLinkHomeawayTable = (incNumber) => (<a key={`${incNumber}link`} href={`https://expedia.service-now.com/go.do?id=${incNumber}`} target="_blank">{incNumber}</a>);
 
 const buildIncLink = (incNumber) => (`<a key='${incNumber}link' href='https://expedia.service-now.com/go.do?id=${incNumber}' target='_blank'>${incNumber}</a>`);
 

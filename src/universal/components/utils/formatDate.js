@@ -1,3 +1,4 @@
+import React from 'react';
 import moment from 'moment';
 
 export function formatDurationToHours(duration) {
@@ -17,4 +18,9 @@ export function formatDurationToH(duration) {
 export function formatDurationForTable(m) {
     const duration = moment.duration(Number(m), 'milliseconds');
     return `<a name='${String(duration.asMinutes()).padStart(6, 0)}'></a>${duration.humanize()}`;
+}
+
+export function formatDurationForHomeawayTable(m) {
+    const duration = moment.duration(Number(m), 'milliseconds');
+    return `${duration.humanize()}`;
 }
