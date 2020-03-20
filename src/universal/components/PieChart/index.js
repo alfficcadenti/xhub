@@ -43,7 +43,7 @@ const setChartOptions = (data = []) => ({
     ]
 });
 
-const doughnutchartStyle = {height: '600px', width: '500px'};
+const doughnutchartStyle = {height: '450px', width: '350px'};
 
 const PieChart = ({title, data}) => {
     return (
