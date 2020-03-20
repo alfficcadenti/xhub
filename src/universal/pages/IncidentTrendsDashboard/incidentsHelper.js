@@ -48,6 +48,8 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
         Tag: inc.tag || '',
     }));
 
+export const getQualityData = (filteredDefects = []) => getIncidentsData(filteredDefects);
+
 const buildIncLink = (incNumber) => (`<a key='${incNumber}link' href='https://expedia.service-now.com/go.do?id=${incNumber}' target='_blank'>${incNumber}</a>`);
 
 const distinct = (value, index, self) => self.indexOf(value) === index;
