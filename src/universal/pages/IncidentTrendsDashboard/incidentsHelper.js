@@ -291,3 +291,28 @@ export const buildFinancialImpactData = (incidents, propertyToSum) => {
         weekIntervals
     };
 };
+
+const getBucketCount = (filteredItems, date, bucketSize) => {
+    const lower = moment(date);
+    const upper = moment(date).add(1, bucketSize);
+    return filteredItems
+        .filter((defect) => (moment(defect.startedAt).isBetween(lower, upper, bucketSize, '[)')))
+        .length;
+};
+
+export const getLineData = (startDate, endDate, filteredItems) => {
+    const start = moment(startDate);
+    const end = moment(endDate);
+    const bucketSize = (start.diff(end, 'days') <= 14)
+        ? 'days'
+        : 'weeks';
+    const axisData = [];
+    const data = [];
+    while (start.isSameOrBefore(end)) {
+        axisData.push(start.format('YYYY-MM-DD'));
+        data.push(getBucketCount(filteredItems, start, bucketSize));
+        start.add(1, bucketSize);
+    }
+
+    return {axisData, data};
+};
