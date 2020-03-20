@@ -3,36 +3,53 @@ import ReactEcharts from 'echarts-for-react';
 import './styles.less';
 
 const setChartOptions = (data = []) => ({
-    tooltip: {
-        trigger: 'item',
-        formatter: '{a} <br/>{b} : {c} ({d}%)'
-    },
     legend: {
         type: 'scroll',
-        orient: 'vertical',
-        bottom: 16
+        orient: '',
+        selectedMode: false,
+        x: 'center',
+        y: 'bottom',
+        height: 150,
+        padding: 10
     },
     series: [
         {
-            name: '',
+            name: 'Chart',
             type: 'pie',
-            radius: '75%',
-            center: ['50%', '40%'],
-            data,
-            animation: false,
+            radius: ['80%', '35%'],
+            avoidLabelOverlap: true,
+            top: '-25%',
             label: {
-                position: 'inside'
-            }
+                normal: {
+                    show: false,
+                    position: 'center'
+                },
+                emphasis: {
+                    show: true,
+                    formatter: '{d}% \n {b}',
+                    textStyle: {
+                        fontSize: '14',
+                        fontWeight: 'bold'
+                    }
+                }
+            },
+            labelLine: {
+                normal: {
+                    show: false
+                }
+            },
+            data
         }
     ]
 });
 
+const doughnutchartStyle = {height: '600px', width: '500px'};
 
 const PieChart = ({title, data}) => {
     return (
         <div className="pie-wrapper">
             <h3>{title}</h3>
-            <ReactEcharts option={setChartOptions(data)} key={Math.random()}/>
+            <ReactEcharts option={setChartOptions(data)} style={doughnutchartStyle} key={Math.random()}/>
         </div>
     );
 };
