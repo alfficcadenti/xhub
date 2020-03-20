@@ -25,12 +25,26 @@ export const adjustIncidentProperties = (data = []) => {
 };
 
 export const getUniqueIncidents = (rawIncidents) => {
-    const uniqueIncidentsHash = rawIncidents.reduce((prev, current) => ({
-        ...prev,
-        [current.incidentNumber]: current
-    }), {});
-
-    return Object.keys(uniqueIncidentsHash).map((item) => uniqueIncidentsHash[item]);
+    const group = rawIncidents.reduce((acc, item) => {
+        const {incidentNumber} = item;
+        if (acc[incidentNumber]) {
+            acc[incidentNumber].push(item);
+        } else {
+            acc[incidentNumber] = [item];
+        }
+        return acc;
+    }, {});
+    const output = [];
+    // eslint-disable-next-line no-unused-vars
+    for (let [key, val] of Object.entries(group)) {
+        const obj = {...val[0]};
+        obj.tag = [val[0].tag];
+        for (let i = 1; i < val.length; ++i) {
+            obj.tag.push(val[i].tag);
+        }
+        output.push(obj);
+    }
+    return output;
 };
 
 export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
