@@ -2,6 +2,7 @@ import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import DataTable from '../../../../components/DataTable/index';
 import ChartWrapper from '../../../../components/ChartWrapper';
+import LineChart from '../../../../components/LineChart/index';
 import {
     getMarginDateValues,
     getIncMetricsByBrand,
@@ -9,22 +10,27 @@ import {
     weeklyMTTRbyBrand,
     weeklyMTTDbyBrand,
     weeklyRange,
-    formatSeriesForChart
+    formatSeriesForChart,
+    getLineData
 } from '../../incidentsHelper';
 
 const overviewTableColumns = ['Brand', 'P1', 'P2', 'Total', 'MTTD', 'MTTR', 'Total Duration'];
 
-const Overview = ({filteredIncidents}) => {
+const Overview = ({startDate, endDate, filteredIncidents}) => {
     const mttdVsMttrSeries = formatSeriesForChart(weeklyMTTRMTTD(filteredIncidents));
     const mttdByBrandSeries = formatSeriesForChart(weeklyMTTDbyBrand(filteredIncidents));
     const mttrByBrandSeries = formatSeriesForChart(weeklyMTTRbyBrand(filteredIncidents));
     const dates = getMarginDateValues(filteredIncidents);
     const xAxisValues = weeklyRange(dates[0], dates[1]);
+    const {axisData, data} = getLineData(startDate, endDate, filteredIncidents);
 
     return (<div data-wdio="incidents-byBrand-table" id="inc-overview-table">
         {
             filteredIncidents && filteredIncidents.length ?
                 <Fragment>
+                    <div data-wdio="incidents-line-chart">
+                        <LineChart title="Incidents Trend" data={data} xAxis={axisData} />
+                    </div>
                     <DataTable
                         data={getIncMetricsByBrand(filteredIncidents)}
                         columns={overviewTableColumns}

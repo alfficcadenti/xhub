@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 
 import DataTable from '../../../../components/DataTable/index';
 import LineChart from '../../../../components/LineChart/index';
 import PieChart from '../../../../components/PieChart/index';
-import {getQualityData} from '../../incidentsHelper';
+import {getQualityData, getLineData} from '../../incidentsHelper';
 
 const columns = ['Incident', 'Priority', 'Brand', 'Started', 'Summary', 'Duration', 'TTD', 'TTR', 'Root Cause Owners', 'Status'];
 
@@ -24,30 +23,6 @@ const getPieData = (filteredDefects, property) => {
             return acc;
         }, {});
     return Object.entries(counts).map(([name, value]) => ({name, value}));
-};
-
-const getBucketCount = (filteredDefects, date, bucketSize) => {
-    const lower = moment(date);
-    const upper = moment(date).add(1, bucketSize);
-    return filteredDefects
-        .filter((defect) => (moment(defect.startedAt).isBetween(lower, upper, bucketSize, '[)')))
-        .length;
-};
-
-const getLineData = (startDate, endDate, filteredDefects) => {
-    const start = moment(startDate);
-    const end = moment(endDate);
-    const bucketSize = (start.diff(end, 'days') <= 14)
-        ? 'days'
-        : 'weeks';
-    const axisData = [];
-    const data = [];
-    while (start.isSameOrBefore(end)) {
-        axisData.push(start.format('YYYY-MM-DD'));
-        data.push(getBucketCount(filteredDefects, start, bucketSize));
-        start.add(1, bucketSize);
-    }
-    return {axisData, data};
 };
 
 const renderContent = (startDate, endDate, filteredDefects) => {
