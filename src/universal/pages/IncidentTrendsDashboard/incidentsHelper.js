@@ -18,10 +18,26 @@ export const adjustIncidentProperties = (data = []) => {
         'ttd': inc.ttd,
         'ttr': inc.ttr,
         'Root_Cause_Owner': inc.rootCauseOwner,
-        'Brand': inc.brand,
+        'Brand': divisionToBrand(inc.brand),
+        'Division': inc.brand,
         'Status': inc.status,
         'tag': inc.tag
     }));
+};
+
+const divisionToBrand = (division = '') => {
+    switch (division) {
+        case 'Egencia - Consolidated':
+            return 'Egencia';
+        case 'vrbo':
+            return 'Vrbo';
+        case 'Home Away':
+            return 'Vrbo';
+        case 'Hotels Worldwide (HWW)':
+            return 'Hotels.com';
+        default:
+            return 'BEX - Expedia Group';
+    }
 };
 
 export const getUniqueIncidents = (rawIncidents) => {
@@ -52,6 +68,7 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
         Incident: buildIncLink(inc.incident_number) || '',
         Priority: inc.priority || '',
         Brand: inc.Brand || '',
+        Division: inc.Division || '',
         Started: moment.utc(inc.startedAt).local().format('YYYY-MM-DD HH:mm') || '',
         Summary: inc.incident_summary || '',
         Duration: inc.duration ? h.formatDurationForTable(inc.duration) : '',

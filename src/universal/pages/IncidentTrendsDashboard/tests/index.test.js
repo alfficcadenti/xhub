@@ -29,9 +29,9 @@ describe('<IncidentTrendsDashboard/>', () => {
         expect(props.links[4].id).toBe('financialImpact');
     });
 
-    it('Navigation receives active index 0 by default', async () => {
+    it('Navigation receives active index 1 by default', async () => {
         const props = wrapper.find('Navigation').props();
-        expect(props.activeIndex).toBe(0);
+        expect(props.activeIndex).toBe(1);
     });
 
     it('FilterDropDown renders 2 times', async () => {

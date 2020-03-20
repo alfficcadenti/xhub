@@ -14,13 +14,8 @@ exports.PRIORITIES = [
 ];
 exports.BRANDS = [
     'All',
-    'Classic Vacations (CV)',
-    'eCommerce Platform (eCP)',
-    'Egencia - Consolidated',
-    'Expedia Worldwide (EWW)',
-    'Expedia Partner Solutions (EPS)',
-    'Lodging Partner Services (LPS)',
-    'Hotwire - Consolidated',
-    'Hotels Worldwide (HWW)',
-    'Home Away'
+    'BEX - Expedia Group',
+    'Egencia',
+    'Hotels.com',
+    'Vrbo'
 ];

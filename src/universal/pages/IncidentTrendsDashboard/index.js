@@ -48,7 +48,7 @@ const navLinks = [
 
 
 const IncidentTrendsDashboard = () => {
-    const [activeIndex, setActiveIndex] = useState(0);
+    const [activeIndex, setActiveIndex] = useState(1);
     const [selectedBrand, setSelectedBrand] = useState(brandDefaultValue);
     const [selectedCovidTag, setSelectedCovidTag] = useState(covidTagDefaultValue);
     const [isLoading, setIsLoading] = useState(true);
@@ -137,7 +137,7 @@ const IncidentTrendsDashboard = () => {
             case 4:
                 return <FinancialImpact filteredIncidents={filteredAllIncidents} />;
             default:
-                return <Overview filteredIncidents={filteredUniqueIncidents} />;
+                return <Incidents filteredIncidents={filteredUniqueIncidents} />;
         }
     };
 
