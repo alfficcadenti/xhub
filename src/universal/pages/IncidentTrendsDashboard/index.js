@@ -6,7 +6,7 @@ import FilterDropDown from '../../components/FilterDropDown';
 import {Navigation} from '@homeaway/react-navigation';
 import DatePicker from '../../components/DatePicker/index';
 import {Checkbox} from '@homeaway/react-form-components';
-import {getUniqueIncidents, adjustIncidentProperties} from './incidentsHelper';
+import {getUniqueTickets, adjustTicketProperties} from './incidentsHelper';
 import {DATE_FORMAT, PRIORITIES, BRANDS} from './constants';
 import {Incidents, Overview, Top5, Quality, FinancialImpact} from './tabs/index';
 import './styles.less';
@@ -55,35 +55,48 @@ const IncidentTrendsDashboard = () => {
     const [error, setError] = useState('');
     const [startDate, setStartDate] = useState(startDateDefaultValue);
     const [endDate, setEndDate] = useState(endDateDefaultValue);
-    const [incPriority, setIncPriority] = useState(priorityDefaultValue);
-    const [allUniqueIncidents, setAllIUniqueIncidents] = useState([]);
+    const [selectedPriority, setSelectedPriority] = useState(priorityDefaultValue);
+    const [isDirtyForm, setIsDirtyForm] = useState(false);
+    // incidents
+    const [allUniqueIncidents, setAllUniqueIncidents] = useState([]);
     const [filteredUniqueIncidents, setFilteredUniqueIncidents] = useState([]);
     const [allIncidents, setAllIncidents] = useState([]);
     const [filteredAllIncidents, setFilteredAllIncidents] = useState([]);
-    const [isDirtyForm, setIsDirtyForm] = useState(false);
+    // defects
+    const [allUniqueDefects, setAllUniqueDefects] = useState([]);
+    const [filteredUniqueDefects, setFilteredUniqueDefects] = useState([]);
+    const [allDefects, setAllDefects] = useState([]);
 
     const applyFilters = () => {
-        const isWithinRange = (inc) => !(startDate || endDate) || moment(inc.startedAt).isBetween(startDate, endDate, null, '[]');
-        const matchesPriority = (inc) => incPriority === priorityDefaultValue || inc.priority === incPriority;
-        const matchesBrand = (inc) => selectedBrand === brandDefaultValue || inc.Brand === selectedBrand;
-        const matchesTag = (inc) => !selectedCovidTag || inc.tag.includes('covid-19');
-        const filterIncidents = (inc) => isWithinRange(inc) && matchesPriority(inc) && matchesBrand(inc) && matchesTag(inc);
-        setFilteredUniqueIncidents([...allUniqueIncidents].filter(filterIncidents));
-        setFilteredAllIncidents([...allIncidents].filter(filterIncidents));
+        const isWithinRange = (t) => !(startDate || endDate) || !t.startedAt || moment(t.startedAt).isBetween(startDate, endDate, null, '[]');
+        const matchesPriority = (t) => selectedPriority === priorityDefaultValue || t.priority === selectedPriority;
+        const matchesBrand = (t) => selectedBrand === brandDefaultValue || t.Brand === selectedBrand;
+        const matchesTag = (t) => !selectedCovidTag || t.tag.includes('covid-19');
+        const filterTickets = (t) => isWithinRange(t) && matchesPriority(t) && matchesBrand(t) && matchesTag(t);
+        // incidents
+        setFilteredUniqueIncidents([...allUniqueIncidents].filter(filterTickets));
+        setFilteredAllIncidents([...allIncidents].filter(filterTickets));
+        // defects
+        setFilteredUniqueDefects([...allUniqueDefects].filter(filterTickets));
         setIsDirtyForm(false);
     };
 
     useEffect(() => {
-        fetch('/api/v1/incidents')
-            .then((response) => response.json())
-            .then((incidents) => {
-                const uniqueIncidents = getUniqueIncidents(incidents);
-                setAllIUniqueIncidents(adjustIncidentProperties(uniqueIncidents));
+        Promise.all([fetch('/api/v1/incidents'), fetch('/api/v1/defects')])
+            .then((responses) => Promise.all(responses.map((r) => r.json())))
+            .then(([incidents, defects]) => {
+                // incidents
+                const uniqueIncidents = getUniqueTickets(incidents, 'incidentNumber');
+                setAllUniqueIncidents(adjustTicketProperties(uniqueIncidents, 'incident'));
                 setAllIncidents(incidents);
+                // defects
+                const uniqueDefects = getUniqueTickets(defects, 'defectNumber');
+                setAllUniqueDefects(adjustTicketProperties(uniqueDefects, 'defect'));
+                setAllDefects(defects);
                 setIsLoading(false);
             })
             .catch((err) => {
-                setError('Incidents are not available. Try to refresh');
+                setError('Not all incidents and/or defects are available. Refresh the page to try again.');
                 // eslint-disable-next-line no-console
                 console.error(err);
             });
@@ -91,7 +104,7 @@ const IncidentTrendsDashboard = () => {
 
     useEffect(() => {
         applyFilters();
-    }, [allUniqueIncidents, allIncidents]);
+    }, [allUniqueIncidents, allIncidents, allUniqueDefects, allDefects]);
 
     const handleNavigationClick = (e, activeLinkIndex) => setActiveIndex(activeLinkIndex);
 
@@ -105,11 +118,12 @@ const IncidentTrendsDashboard = () => {
         setStartDate('');
         setEndDate('');
         setFilteredUniqueIncidents([]);
+        setFilteredUniqueDefects([]);
         setIsDirtyForm(true);
     };
 
     const handlePriorityChange = (priority) => {
-        setIncPriority(priority);
+        setSelectedPriority(priority);
         setIsDirtyForm(true);
     };
 
@@ -133,7 +147,7 @@ const IncidentTrendsDashboard = () => {
             case 2:
                 return <Top5 filteredIncidents={filteredUniqueIncidents} />;
             case 3:
-                return <Quality startDate={startDate} endDate={endDate} filteredDefects={filteredUniqueIncidents} />;
+                return <Quality startDate={startDate} endDate={endDate} filteredDefects={filteredUniqueDefects} />;
             case 4:
                 return <FinancialImpact filteredIncidents={filteredAllIncidents} />;
             default:
@@ -152,7 +166,7 @@ const IncidentTrendsDashboard = () => {
                     handleDateRangeChange={handleDateRangeChange}
                     handleClearDates={handleClearDates}
                 />
-                <FilterDropDown id="priority-dropdown" list={PRIORITIES} selectedValue={incPriority} onClickHandler={handlePriorityChange}/>
+                <FilterDropDown id="priority-dropdown" list={PRIORITIES} selectedValue={selectedPriority} onClickHandler={handlePriorityChange}/>
                 <FilterDropDown id="brand-dropdown" list={BRANDS} selectedValue={selectedBrand} onClickHandler={handleBrandChange}/>
                 <Checkbox name="covid-19" label="Covid-19" checked={selectedCovidTag} onChange={handleCovidTagChange}/>
                 <button

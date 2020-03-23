@@ -10,23 +10,26 @@ import {DATE_FORMAT} from './constants';
 import {isArray} from 'util';
 import uuid from 'uuid/v1';
 
-export const adjustIncidentProperties = (data = []) => {
-    return data.map((inc) => ({
-        'incident_summary': inc.incidentSummary,
-        'incident_number': inc.incidentNumber,
-        'startedAt': inc.startedAt,
-        'Root_Cause': inc.rootCause,
-        'priority': inc.priority,
-        'duration': inc.duration,
-        'ttd': inc.ttd,
-        'ttr': inc.ttr,
-        'Root_Cause_Owner': inc.rootCauseOwner,
-        'Brand': divisionToBrand(inc.brand),
-        'Division': inc.brand,
-        'Status': inc.status,
-        'tag': inc.tag,
-        'executiveSummary': inc.executiveSummary
-    }));
+export const adjustTicketProperties = (tickets = [], type = 'incident') => {
+    return tickets.map((t) => {
+        const result = {
+            ...t,
+            'Brand': divisionToBrand(t.brand),
+            'Division': t.brand,
+            'Status': t.status
+        };
+        if (type === 'incident') {
+            result.ticket_summary = t.incidentSummary;
+            result.ticket_number = t.incidentNumber;
+        } else if (type === 'defect') {
+            result.ticket_summary = t.defectSummary;
+            result.ticket_number = t.defectNumber;
+            result.duration = (t.openDate && t.resolvedDate)
+                ? moment(t.resolvedDate).diff(t.openDate, 'milliseconds')
+                : '';
+        }
+        return (result);
+    });
 };
 
 const divisionToBrand = (division = '') => {
@@ -44,13 +47,13 @@ const divisionToBrand = (division = '') => {
     }
 };
 
-export const getUniqueIncidents = (rawIncidents) => {
-    const group = rawIncidents.reduce((acc, item) => {
-        const {incidentNumber} = item;
-        if (acc[incidentNumber]) {
-            acc[incidentNumber].push(item);
+export const getUniqueTickets = (tickets, property) => {
+    const group = tickets.reduce((acc, item) => {
+        const id = item[property];
+        if (acc[id]) {
+            acc[id].push(item);
         } else {
-            acc[incidentNumber] = [item];
+            acc[id] = [item];
         }
         return acc;
     }, {});
@@ -70,24 +73,38 @@ export const getUniqueIncidents = (rawIncidents) => {
 export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
     .map((inc) => ({
         id: uuid(),
-        Incident: buildIncLink(inc.incident_number) || '',
+        Incident: buildTicketLink(inc.ticket_number) || '',
         Priority: inc.priority || '',
         Brand: inc.Brand || '',
         Division: inc.Division || '',
         Started: moment.utc(inc.startedAt).local().format('YYYY-MM-DD HH:mm') || '',
-        Summary: inc.incident_summary || '',
+        Summary: inc.ticket_summary || '',
         Duration: inc.duration ? h.formatDurationForTable(inc.duration) : '',
         TTD: inc.ttd ? h.formatDurationForTable(inc.ttd) : '',
         TTR: inc.ttr ? h.formatDurationForTable(inc.ttr) : '',
-        'Root Cause Owners': inc.Root_Cause_Owner || '',
+        'Root Cause Owners': inc.rootCauseOwner || '',
         Status: inc.Status || '',
         Tag: inc.tag || '',
         executiveSummary: inc.executiveSummary || ''
     }));
 
-const buildIncLink = (incNumber) => (<a key={`${incNumber}link`} href={`https://expedia.service-now.com/go.do?id=${incNumber}`} target="_blank">{incNumber}</a>);
+const buildTicketLink = (id) => (<a key={`${id}link`} href={`https://expedia.service-now.com/go.do?id=${id}`} target="_blank">{id}</a>);
 
-export const getQualityData = (filteredDefects = []) => getIncidentsData(filteredDefects);
+export const getQualityData = (filteredDefects = []) => filteredDefects
+    .map((t) => ({
+        Defect: buildTicketLink(t.ticket_number) || '',
+        Priority: t.priority || '',
+        Brand: t.Brand || '',
+        Division: t.Division || '',
+        Opened: moment(t.openDate).local().format('YYYY-MM-DD HH:mm') || '',
+        Resolved: moment(t.resolveDate).local().format('YYYY-MM-DD HH:mm') || '',
+        Summary: t.ticket_summary || '',
+        Project: t.project || '',
+        Duration: t.duration ? h.formatDurationForTable(t.duration) : '',
+        'Impacted Brand': t.impactedBrand || '',
+        Status: t.Status || '',
+        Tag: t.tag || '',
+    }));
 
 const distinct = (value, index, self) => self.indexOf(value) === index;
 const removeEmptyStringsFromArray = (item) => item;
@@ -239,7 +256,7 @@ const filterIncidentsPerInterval = (data = [], brandName, propertyToSum) => {
     const uniqueIncidentNumbers = getListOfUniqueProperties(filteredByImpactedBrand, propertyToGetUniqueValues);
 
     const tooltipEntryData = uniqueIncidentNumbers.reduce((prev, incidentNumber) => {
-        const incidentNumberLink = buildIncLink(incidentNumber);
+        const incidentNumberLink = buildTicketLink(incidentNumber);
         const incidentsFilteredByUniqueNumber = filteredByImpactedBrand
             .filter((item) => item.incidentNumber === incidentNumber);
         const lostRevenue = sumPropertyInArrayOfObjects(incidentsFilteredByUniqueNumber, propertyToSum);
@@ -315,15 +332,15 @@ export const buildFinancialImpactData = (incidents, propertyToSum) => {
     };
 };
 
-const getBucketCount = (filteredItems, date, bucketSize) => {
+const getBucketCount = (filteredItems, date, bucketSize, key) => {
     const lower = moment(date);
     const upper = moment(date).add(1, bucketSize);
     return filteredItems
-        .filter((defect) => (moment(defect.startedAt).isBetween(lower, upper, bucketSize, '[)')))
+        .filter((defect) => (moment(defect[key]).isBetween(lower, upper, bucketSize, '[)')))
         .length;
 };
 
-export const getLineData = (startDate, endDate, filteredItems) => {
+export const getLineData = (startDate, endDate, filteredItems, key) => {
     const start = moment(startDate);
     const end = moment(endDate);
     const bucketSize = (start.diff(end, 'days') <= 14)
@@ -333,7 +350,7 @@ export const getLineData = (startDate, endDate, filteredItems) => {
     const data = [];
     while (start.isSameOrBefore(end)) {
         axisData.push(start.format('YYYY-MM-DD'));
-        data.push(getBucketCount(filteredItems, start, bucketSize));
+        data.push(getBucketCount(filteredItems, start, bucketSize, key));
         start.add(1, bucketSize);
     }
 

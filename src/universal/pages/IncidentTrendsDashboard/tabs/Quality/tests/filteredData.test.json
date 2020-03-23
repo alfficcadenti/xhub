@@ -1,18 +1,18 @@
 [
     {
       "Brand": "Expedia Partner Solutions (EPS)",
-      "Root_Cause": "rollback EAN Edge Service   Expedia-Partner-Solutions/DARK-2027-Integrate-with-PRS-handlers-in-Edge",
-      "Root_Cause_Owner": "EAN Release - Deploy",
+      "rootCause": "rollback EAN Edge Service   Expedia-Partner-Solutions/DARK-2027-Integrate-with-PRS-handlers-in-Edge",
+      "rootCauseOwner": "EAN Release - Deploy",
       "Status": "Closed",
       "duration": "80000",
-      "incident_number": "INC4419505",
+      "ticket_number": "INC4419505",
       "priority": "1-Critical",
       "startedAt": "2019-09-25T14:58:24.000Z",
-      "incident_summary": "EAN Degraded"
+      "ticket_summary": "EAN Degraded"
     },
     {
-      "Root_Cause": "rollback EAN Edge Service   Expedia-Partner-Solutions/DARK-2027-Integrate-with-PRS-handlers-in-Edge",
-      "incident_number": "INC4419505",
+      "rootCause": "rollback EAN Edge Service   Expedia-Partner-Solutions/DARK-2027-Integrate-with-PRS-handlers-in-Edge",
+      "ticket_number": "INC4419505",
       "startedAt": "2019-09-25T14:58:24.000Z"
     }
   ]

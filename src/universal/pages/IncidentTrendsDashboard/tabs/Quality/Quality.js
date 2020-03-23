@@ -6,7 +6,7 @@ import LineChart from '../../../../components/LineChart/index';
 import PieChart from '../../../../components/PieChart/index';
 import {getQualityData, getLineData} from '../../incidentsHelper';
 
-const columns = ['Incident', 'Priority', 'Brand', 'Started', 'Summary', 'Duration', 'TTD', 'TTR', 'Root Cause Owners', 'Status'];
+const columns = ['Defect', 'Priority', 'Brand', 'Opened', 'Resolved', 'Summary', 'Project', 'Duration', 'Impacted Brand', 'Status'];
 
 const columnsInfo = {
     Started: (<div><b>{'Started'}</b><br />{'Displayed in browser'}&apos;{'s local time'}</div>)
@@ -26,7 +26,7 @@ const getPieData = (filteredDefects, property) => {
 };
 
 const renderContent = (startDate, endDate, filteredDefects) => {
-    const {axisData, data} = getLineData(startDate, endDate, filteredDefects);
+    const {axisData, data} = getLineData(startDate, endDate, filteredDefects, 'openDate');
     return (
         <>
             <div data-wdio="defects-line-chart">

@@ -1,7 +1,7 @@
 import React from 'react';
 import {expect} from 'chai';
 import {
-    getUniqueIncidents,
+    getUniqueTickets,
     getIncidentsData,
     sumPropertyInArrayOfObjects,
     getMarginDateValues,
@@ -150,7 +150,7 @@ describe('incidentsHelper', () => {
         });
     });
 
-    describe('getUniqueIncidents', () => {
+    describe('getUniqueTickets', () => {
         it('returns list of unique incidents with tag containing array of tags from multiple row same incident', () => {
             const mockRawIncidents = [{
                 'incidentSummary': 'test',
@@ -179,7 +179,7 @@ describe('incidentsHelper', () => {
                 'tag': ['covid-19']
             }];
 
-            const result = getUniqueIncidents(mockRawIncidents);
+            const result = getUniqueTickets(mockRawIncidents, 'incidentNumber');
             expect(result).to.be.eql(expectedResult);
         });
     });
