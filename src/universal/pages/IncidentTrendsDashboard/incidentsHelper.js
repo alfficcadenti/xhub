@@ -20,18 +20,49 @@ export const adjustIncidentProperties = (data = []) => {
         'ttd': inc.ttd,
         'ttr': inc.ttr,
         'Root_Cause_Owner': inc.rootCauseOwner,
-        'Brand': inc.brand,
-        'Status': inc.status
+        'Brand': divisionToBrand(inc.brand),
+        'Division': inc.brand,
+        'Status': inc.status,
+        'tag': inc.tag
     }));
 };
 
-export const getUniqueIncidents = (rawIncidents) => {
-    const uniqueIncidentsHash = rawIncidents.reduce((prev, current) => ({
-        ...prev,
-        [current.incidentNumber]: current
-    }), {});
+const divisionToBrand = (division = '') => {
+    switch (division) {
+        case 'Egencia - Consolidated':
+            return 'Egencia';
+        case 'vrbo':
+            return 'Vrbo';
+        case 'Home Away':
+            return 'Vrbo';
+        case 'Hotels Worldwide (HWW)':
+            return 'Hotels.com';
+        default:
+            return 'BEX - Expedia Group';
+    }
+};
 
-    return Object.keys(uniqueIncidentsHash).map((item) => uniqueIncidentsHash[item]);
+export const getUniqueIncidents = (rawIncidents) => {
+    const group = rawIncidents.reduce((acc, item) => {
+        const {incidentNumber} = item;
+        if (acc[incidentNumber]) {
+            acc[incidentNumber].push(item);
+        } else {
+            acc[incidentNumber] = [item];
+        }
+        return acc;
+    }, {});
+    const output = [];
+    // eslint-disable-next-line no-unused-vars
+    for (let [key, val] of Object.entries(group)) {
+        const obj = {...val[0]};
+        obj.tag = [val[0].tag];
+        for (let i = 1; i < val.length; ++i) {
+            obj.tag.push(val[i].tag);
+        }
+        output.push(obj);
+    }
+    return output;
 };
 
 export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
@@ -39,21 +70,24 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
         Incident: buildIncLink(inc.incident_number) || '',
         Priority: inc.priority || '',
         Brand: inc.Brand || '',
+        Division: inc.Division || '',
         Started: moment.utc(inc.startedAt).local().format('YYYY-MM-DD HH:mm') || '',
         Summary: inc.incident_summary || '',
         Duration: inc.duration ? h.formatDurationForTable(inc.duration) : '',
         TTD: inc.ttd ? h.formatDurationForTable(inc.ttd) : '',
         TTR: inc.ttr ? h.formatDurationForTable(inc.ttr) : '',
         'Root Cause Owners': inc.Root_Cause_Owner || '',
-        Status: inc.Status || ''
+        Status: inc.Status || '',
+        Tag: inc.tag || '',
     }));
 
 export const getIncidentsRowTableData = (filteredIncidents = []) => filteredIncidents
     .map((inc) => ({
         id: uuid(),
-        incident: buildIncLinkHomeawayTable(inc.incident_number) || '',
+        incident: buildIncLinkHomeAwayTable(inc.incident_number) || '',
         priority: inc.priority || '',
         brand: inc.Brand || '',
+        division: inc.Division || '',
         started: moment.utc(inc.startedAt).local().format('YYYY-MM-DD HH:mm') || '',
         summary: inc.incident_summary || '',
         duration: inc.duration ? h.formatDurationForHomeawayTable(inc.duration) : '',
@@ -63,7 +97,9 @@ export const getIncidentsRowTableData = (filteredIncidents = []) => filteredInci
         status: inc.Status || ''
     }));
 
-const buildIncLinkHomeawayTable = (incNumber) => (<a key={`${incNumber}link`} href={`https://expedia.service-now.com/go.do?id=${incNumber}`} target="_blank">{incNumber}</a>);
+const buildIncLinkHomeAwayTable = (incNumber) => (<a key={`${incNumber}link`} href={`https://expedia.service-now.com/go.do?id=${incNumber}`} target="_blank">{incNumber}</a>);
+
+export const getQualityData = (filteredDefects = []) => getIncidentsData(filteredDefects);
 
 const buildIncLink = (incNumber) => (`<a key='${incNumber}link' href='https://expedia.service-now.com/go.do?id=${incNumber}' target='_blank'>${incNumber}</a>`);
 
@@ -291,4 +327,29 @@ export const buildFinancialImpactData = (incidents, propertyToSum) => {
         tooltipData,
         weekIntervals
     };
+};
+
+const getBucketCount = (filteredItems, date, bucketSize) => {
+    const lower = moment(date);
+    const upper = moment(date).add(1, bucketSize);
+    return filteredItems
+        .filter((defect) => (moment(defect.startedAt).isBetween(lower, upper, bucketSize, '[)')))
+        .length;
+};
+
+export const getLineData = (startDate, endDate, filteredItems) => {
+    const start = moment(startDate);
+    const end = moment(endDate);
+    const bucketSize = (start.diff(end, 'days') <= 14)
+        ? 'days'
+        : 'weeks';
+    const axisData = [];
+    const data = [];
+    while (start.isSameOrBefore(end)) {
+        axisData.push(start.format('YYYY-MM-DD'));
+        data.push(getBucketCount(filteredItems, start, bucketSize));
+        start.add(1, bucketSize);
+    }
+
+    return {axisData, data};
 };

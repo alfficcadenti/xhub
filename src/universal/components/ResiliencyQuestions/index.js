@@ -92,12 +92,13 @@ class ResiliencyQuestions extends Component {
             handleDateChange = this.handleLastRollbackDate;
             dayTemplateComponent = DayTemplatePast;
         }
-        const formattedDefaultDate = defaultValue ? moment(defaultValue).format('YYYY-MM-DD') : '';
-
+        const formattedDefaultDate = defaultValue
+            ? moment(defaultValue).format('YYYY-MM-DD')
+            : this.state.dates[id];
         return (
             <DatePicker
                 key={id}
-                date={formattedDefaultDate || this.state.dates[id]}
+                date={formattedDefaultDate}
                 onDateChange={handleDateChange}
                 label={question}
                 name={question}
@@ -175,10 +176,10 @@ ResiliencyQuestions.defaultProps = {
 };
 
 ResiliencyQuestions.propTypes = {
-    questions: PropTypes.array,
+    questions: PropTypes.arrayOf(PropTypes.shape()),
     saveRegions: PropTypes.func,
-    regions: PropTypes.object,
-    lastQuestionnaire: PropTypes.array
+    regions: PropTypes.shape(),
+    lastQuestionnaire: PropTypes.shape(PropTypes.shape())
 };
 
 export default ResiliencyQuestions;

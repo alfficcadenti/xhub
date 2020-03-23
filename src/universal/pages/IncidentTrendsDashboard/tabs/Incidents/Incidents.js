@@ -14,6 +14,7 @@ class DataTableWrapper extends Component {
             {id: 'incident', name: 'Incident'},
             {id: 'priority', name: 'Priority'},
             {id: 'brand', name: 'Brand'},
+            {id: 'division', name: 'Division'},
             {id: 'started', name: 'Started'},
             {id: 'summary', name: 'Summary'},
             {id: 'duration', name: 'Duration'},

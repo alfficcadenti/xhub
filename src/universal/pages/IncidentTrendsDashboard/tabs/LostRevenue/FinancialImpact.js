@@ -23,7 +23,7 @@ const FinancialImpact = ({filteredIncidents}) => {
                         tooltipData={tooltipRevenueLossData}
                         series={revenueLossSeries}
                         xAxisValues={revenueLossWeekIntervals}
-                        title="Lost Revenues by Brand"
+                        title="Lost Revenues by Impacted Brand"
                     />
                     <ChartWrapper
                         tooltipData={tooltipGrossLossData}

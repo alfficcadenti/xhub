@@ -5,14 +5,16 @@ import LoadingContainer from '../../components/LoadingContainer';
 import FilterDropDown from '../../components/FilterDropDown';
 import {Navigation} from '@homeaway/react-navigation';
 import DatePicker from '../../components/DatePicker/index';
+import {Checkbox} from '@homeaway/react-form-components';
 import {getUniqueIncidents, adjustIncidentProperties} from './incidentsHelper';
 import {DATE_FORMAT, PRIORITIES, BRANDS} from './constants';
-import {Incidents, Overview, Top5, FinancialImpact} from './tabs/index';
+import {Incidents, Overview, Top5, Quality, FinancialImpact} from './tabs/index';
 import './styles.less';
 
 
 const brandDefaultValue = 'All';
 const priorityDefaultValue = 'All - P1 & P2';
+const covidTagDefaultValue = true;
 const startDateDefaultValue = moment().subtract(7, 'weeks').format(DATE_FORMAT);
 const endDateDefaultValue = moment().format(DATE_FORMAT);
 const minDate = moment('2019-01-01').toDate();
@@ -33,16 +35,22 @@ const navLinks = [
         href: '/incident-trends'
     },
     {
+        id: 'quality',
+        label: 'Quality',
+        href: '/quality'
+    },
+    {
         id: 'financialImpact',
         label: 'Financial Impact',
         href: '/incident-trends'
-    }
+    },
 ];
 
 
 const IncidentTrendsDashboard = () => {
-    const [activeIndex, setActiveIndex] = useState(0);
+    const [activeIndex, setActiveIndex] = useState(1);
     const [selectedBrand, setSelectedBrand] = useState(brandDefaultValue);
+    const [selectedCovidTag, setSelectedCovidTag] = useState(covidTagDefaultValue);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
     const [startDate, setStartDate] = useState(startDateDefaultValue);
@@ -52,35 +60,17 @@ const IncidentTrendsDashboard = () => {
     const [filteredUniqueIncidents, setFilteredUniqueIncidents] = useState([]);
     const [allIncidents, setAllIncidents] = useState([]);
     const [filteredAllIncidents, setFilteredAllIncidents] = useState([]);
+    const [isDirtyForm, setIsDirtyForm] = useState(false);
 
     const applyFilters = () => {
-        let uniqueIncidents = [...allUniqueIncidents];
-        let incidents = [...allIncidents];
-
-        if (startDate || endDate) {
-            uniqueIncidents = uniqueIncidents.filter((inc) =>
-                moment(inc.startedAt).format(DATE_FORMAT) >= startDate &&
-                moment(inc.startedAt).format(DATE_FORMAT) <= endDate
-            );
-
-            incidents = incidents.filter((inc) =>
-                moment(inc.startedAt).format(DATE_FORMAT) >= startDate &&
-                moment(inc.startedAt).format(DATE_FORMAT) <= endDate
-            );
-        }
-
-        if (incPriority !== priorityDefaultValue) {
-            uniqueIncidents = uniqueIncidents.filter((inc) => inc.priority === incPriority);
-            incidents = incidents.filter((inc) => inc.priority === incPriority);
-        }
-
-        if (selectedBrand !== brandDefaultValue) {
-            uniqueIncidents = uniqueIncidents.filter((inc) => inc.Brand === selectedBrand);
-            incidents = incidents.filter((inc) => inc.Brand === selectedBrand);
-        }
-
-        setFilteredUniqueIncidents(uniqueIncidents);
-        setFilteredAllIncidents(incidents);
+        const isWithinRange = (inc) => !(startDate || endDate) || moment(inc.startedAt).isBetween(startDate, endDate, null, '[]');
+        const matchesPriority = (inc) => incPriority === priorityDefaultValue || inc.priority === incPriority;
+        const matchesBrand = (inc) => selectedBrand === brandDefaultValue || inc.Brand === selectedBrand;
+        const matchesTag = (inc) => !selectedCovidTag || inc.tag.includes('covid-19');
+        const filterIncidents = (inc) => isWithinRange(inc) && matchesPriority(inc) && matchesBrand(inc) && matchesTag(inc);
+        setFilteredUniqueIncidents([...allUniqueIncidents].filter(filterIncidents));
+        setFilteredAllIncidents([...allIncidents].filter(filterIncidents));
+        setIsDirtyForm(false);
     };
 
     useEffect(() => {
@@ -89,9 +79,7 @@ const IncidentTrendsDashboard = () => {
             .then((incidents) => {
                 const uniqueIncidents = getUniqueIncidents(incidents);
                 setAllIUniqueIncidents(adjustIncidentProperties(uniqueIncidents));
-
                 setAllIncidents(incidents);
-
                 setIsLoading(false);
             })
             .catch((err) => {
@@ -105,35 +93,51 @@ const IncidentTrendsDashboard = () => {
         applyFilters();
     }, [allUniqueIncidents, allIncidents]);
 
-    const handleNavigationClick = async (e, activeLinkIndex) => setActiveIndex(activeLinkIndex);
+    const handleNavigationClick = (e, activeLinkIndex) => setActiveIndex(activeLinkIndex);
 
     const handleDateRangeChange = (start, end) => {
         setStartDate(start || startDate);
         setEndDate(end || endDate);
+        setIsDirtyForm(true);
     };
 
     const handleClearDates = () => {
         setStartDate('');
         setEndDate('');
         setFilteredUniqueIncidents([]);
+        setIsDirtyForm(true);
     };
 
-    const handlePriorityChange = (priority) => setIncPriority(priority);
+    const handlePriorityChange = (priority) => {
+        setIncPriority(priority);
+        setIsDirtyForm(true);
+    };
 
-    const handleBrandChange = (brand) => setSelectedBrand(brand);
+    const handleBrandChange = (brand) => {
+        setSelectedBrand(brand);
+        setIsDirtyForm(true);
+    };
 
+    const handleCovidTagChange = () => {
+        setSelectedCovidTag(!selectedCovidTag);
+        setIsDirtyForm(true);
+    };
+
+    // eslint-disable-next-line complexity
     const renderTabs = () => {
         switch (activeIndex) {
             case 0:
-                return <Overview filteredIncidents={filteredUniqueIncidents} />;
+                return <Overview startDate={startDate} endDate={endDate} filteredIncidents={filteredUniqueIncidents} />;
             case 1:
                 return <Incidents filteredIncidents={filteredUniqueIncidents} />;
             case 2:
                 return <Top5 filteredIncidents={filteredUniqueIncidents} />;
             case 3:
+                return <Quality startDate={startDate} endDate={endDate} filteredDefects={filteredUniqueIncidents} />;
+            case 4:
                 return <FinancialImpact filteredIncidents={filteredAllIncidents} />;
             default:
-                return <Overview filteredIncidents={filteredUniqueIncidents} />;
+                return <Incidents filteredIncidents={filteredUniqueIncidents} />;
         }
     };
 
@@ -150,11 +154,13 @@ const IncidentTrendsDashboard = () => {
                 />
                 <FilterDropDown id="priority-dropdown" list={PRIORITIES} selectedValue={incPriority} onClickHandler={handlePriorityChange}/>
                 <FilterDropDown id="brand-dropdown" list={BRANDS} selectedValue={selectedBrand} onClickHandler={handleBrandChange}/>
+                <Checkbox name="covid-19" label="Covid-19" checked={selectedCovidTag} onChange={handleCovidTagChange}/>
                 <button
                     id="applyButton"
                     type="button"
-                    className="btn btn-default active"
+                    className="btn btn-primary active"
                     onClick={applyFilters}
+                    disabled={!isDirtyForm}
                 >
                     {'Apply'}
                 </button>

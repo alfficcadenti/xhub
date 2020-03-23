@@ -131,6 +131,8 @@ describe('<ResiliencyQuestionnaire/>', () => {
         describe('handleSubmit()', () => {
             it('calls submitQuestionnaire() with args', () => {
                 const wrapper = shallow(<QuestionForm product={product} application={application}/>);
+                const username = 'user-test';
+                wrapper.setState({username});
                 const instance = wrapper.instance();
                 sinon.stub(instance, 'getQuestionnaireAnswers');
                 const spy = sinon.stub(instance, 'submitQuestionnaire');
@@ -139,7 +141,7 @@ describe('<ResiliencyQuestionnaire/>', () => {
                 // eslint-disable-next-line no-unused-expressions
                 expect(spy.calledOnce).to.be.true;
                 // eslint-disable-next-line no-unused-expressions
-                expect(spy.withArgs(product, application).calledOnce).to.be.true;
+                expect(spy.withArgs(username, product, application).calledOnce).to.be.true;
             });
 
             it('calls handleOpen() that open the modal', () => {
@@ -187,6 +189,8 @@ describe('<ResiliencyQuestionnaire/>', () => {
         describe('preSubmit()', () => {
             it('check for errors', () => {
                 const wrapper = shallow(<QuestionForm product={product} application={application}/>);
+                const username = 'user-test';
+                wrapper.setState({username});
                 const instance = wrapper.instance();
                 sinon.stub(instance, 'handleSubmit');
                 const checkForErrors = sinon.spy(instance, 'checkForErrors');
@@ -208,6 +212,8 @@ describe('<ResiliencyQuestionnaire/>', () => {
 
             it('if no errors do call handleSubmit()', () => {
                 const wrapper = shallow(<QuestionForm product={product} application={application}/>);
+                const username = 'user-test';
+                wrapper.setState({username});
                 const instance = wrapper.instance();
                 const handleSubmit = sinon.stub(instance, 'handleSubmit');
                 const checkForErrors = sinon.stub(instance, 'checkForErrors');
@@ -215,6 +221,19 @@ describe('<ResiliencyQuestionnaire/>', () => {
                 instance.preSubmit();
                 // eslint-disable-next-line no-unused-expressions
                 expect(handleSubmit.calledOnce).to.be.true;
+            });
+
+            it('if no username do not call handleSubmit()', () => {
+                const wrapper = shallow(<QuestionForm product={product} application={application}/>);
+                const username = '';
+                wrapper.setState({username});
+                const instance = wrapper.instance();
+                const handleSubmit = sinon.stub(instance, 'handleSubmit');
+                const checkForErrors = sinon.stub(instance, 'checkForErrors');
+                checkForErrors.returns(0);
+                instance.preSubmit();
+                // eslint-disable-next-line no-unused-expressions
+                expect(handleSubmit.calledOnce).to.be.false;
             });
         });
 
