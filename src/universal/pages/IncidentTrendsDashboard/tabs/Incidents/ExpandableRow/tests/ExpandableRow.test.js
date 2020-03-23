@@ -11,6 +11,7 @@ describe('ExpandableRow component testing', () => {
         wrapper = shallow(
             <ExpandableRow
                 executiveSummary={'Multiple Contact Centers SynApps Degraded'}
+                rootCauseOwners={'Resolution notes summary here'}
             />
         );
     });
@@ -24,6 +25,7 @@ describe('ExpandableRow component testing', () => {
     });
 
     it('renders ExpandableRow summary correctly', () => {
-        expect(wrapper.find('.expandable-row-section').text()).to.eql('Multiple Contact Centers SynApps Degraded');
+        expect(wrapper.find('.expandable-row-section').first().text()).to.eql('Multiple Contact Centers SynApps Degraded');
+        expect(wrapper.find('.expandable-row-section').at(1).text()).to.eql('Resolution notes summary here');
     });
 });
