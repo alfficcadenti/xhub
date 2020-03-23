@@ -69,10 +69,12 @@ export const getUniqueTickets = (tickets, property) => {
     return output;
 };
 
+const buildTicketLink = (id, url) => (<a key={`${id}link`} href={url} target="_blank">{id}</a>);
+
 export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
     .map((inc) => ({
         id: uuid(),
-        Incident: buildTicketLink(inc.ticket_number) || '',
+        Incident: buildTicketLink(inc.ticket_number, `https://expedia.service-now.com/go.do?id=${inc.ticket_number}`) || '',
         Priority: inc.priority || '',
         Brand: inc.Brand || '',
         Division: inc.Division || '',
@@ -87,11 +89,9 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
         executiveSummary: inc.executiveSummary || ''
     }));
 
-const buildTicketLink = (id) => (<a key={`${id}link`} href={`https://expedia.service-now.com/go.do?id=${id}`} target="_blank">{id}</a>);
-
 export const getQualityData = (filteredDefects = []) => filteredDefects
     .map((t) => ({
-        Defect: buildTicketLink(t.ticket_number) || '',
+        Defect: buildTicketLink(t.ticket_number, t.url) || '',
         Priority: t.priority || '',
         Brand: t.Brand || '',
         Division: t.Division || '',
