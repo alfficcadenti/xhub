@@ -33,14 +33,13 @@ export const adjustTicketProperties = (tickets = [], type = 'incident') => {
 };
 
 const divisionToBrand = (division = '') => {
-    switch (division) {
-        case 'Egencia - Consolidated':
+    switch (division.toUpperCase()) {
+        case 'EGENCIA - CONSOLIDATED':
             return 'Egencia';
-        case 'vrbo':
+        case 'VRBO':
+        case 'HOME AWAY':
             return 'Vrbo';
-        case 'Home Away':
-            return 'Vrbo';
-        case 'Hotels Worldwide (HWW)':
+        case 'HOTELS WORLDWIDE (HWW)':
             return 'Hotels.com';
         default:
             return 'BEX - Expedia Group';
