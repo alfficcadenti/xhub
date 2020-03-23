@@ -2,12 +2,13 @@
 /* eslint-disable  no-use-before-define */
 /* eslint-disable no-shadow */
 
+import React from 'react';
+import {renderToString} from 'react-dom/server';
 import moment from 'moment';
 import * as h from '../../components/utils/formatDate';
 import {DATE_FORMAT} from './constants';
 import {isArray} from 'util';
 import uuid from 'uuid/v1';
-import React from 'react';
 
 export const adjustIncidentProperties = (data = []) => {
     return data.map((inc) => ({
@@ -23,7 +24,8 @@ export const adjustIncidentProperties = (data = []) => {
         'Brand': divisionToBrand(inc.brand),
         'Division': inc.brand,
         'Status': inc.status,
-        'tag': inc.tag
+        'tag': inc.tag,
+        'executiveSummary': inc.executiveSummary
     }));
 };
 
@@ -67,6 +69,7 @@ export const getUniqueIncidents = (rawIncidents) => {
 
 export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
     .map((inc) => ({
+        id: uuid(),
         Incident: buildIncLink(inc.incident_number) || '',
         Priority: inc.priority || '',
         Brand: inc.Brand || '',
@@ -79,29 +82,12 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
         'Root Cause Owners': inc.Root_Cause_Owner || '',
         Status: inc.Status || '',
         Tag: inc.tag || '',
+        executiveSummary: inc.executiveSummary || ''
     }));
 
-export const getIncidentsRowTableData = (filteredIncidents = []) => filteredIncidents
-    .map((inc) => ({
-        id: uuid(),
-        incident: buildIncLinkHomeAwayTable(inc.incident_number) || '',
-        priority: inc.priority || '',
-        brand: inc.Brand || '',
-        division: inc.Division || '',
-        started: moment.utc(inc.startedAt).local().format('YYYY-MM-DD HH:mm') || '',
-        summary: inc.incident_summary || '',
-        duration: inc.duration ? h.formatDurationForHomeawayTable(inc.duration) : '',
-        ttd: inc.ttd ? h.formatDurationForHomeawayTable(inc.ttd) : '',
-        ttr: inc.ttr ? h.formatDurationForHomeawayTable(inc.ttr) : '',
-        rootCauseOwners: inc.Root_Cause_Owner || '',
-        status: inc.Status || ''
-    }));
-
-const buildIncLinkHomeAwayTable = (incNumber) => (<a key={`${incNumber}link`} href={`https://expedia.service-now.com/go.do?id=${incNumber}`} target="_blank">{incNumber}</a>);
+const buildIncLink = (incNumber) => (<a key={`${incNumber}link`} href={`https://expedia.service-now.com/go.do?id=${incNumber}`} target="_blank">{incNumber}</a>);
 
 export const getQualityData = (filteredDefects = []) => getIncidentsData(filteredDefects);
-
-const buildIncLink = (incNumber) => (`<a key='${incNumber}link' href='https://expedia.service-now.com/go.do?id=${incNumber}' target='_blank'>${incNumber}</a>`);
 
 const distinct = (value, index, self) => self.indexOf(value) === index;
 const removeEmptyStringsFromArray = (item) => item;
@@ -259,7 +245,7 @@ const filterIncidentsPerInterval = (data = [], brandName, propertyToSum) => {
         const lostRevenue = sumPropertyInArrayOfObjects(incidentsFilteredByUniqueNumber, propertyToSum);
 
         const tooltipEntry = {
-            incidentNumberLink,
+            incidentNumberLink: renderToString(incidentNumberLink),
             lostRevenue
         };
 

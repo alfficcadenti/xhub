@@ -1,18 +1,22 @@
 [
   {
-    "Brand": "Expedia Partner Solutions (EPS)",
-    "Root_Cause": "rollback EAN Edge Service   Expedia-Partner-Solutions/DARK-2027-Integrate-with-PRS-handlers-in-Edge",
-    "Root_Cause_Owner": "EAN Release - Deploy",
-    "Status": "Closed",
-    "duration": "80000",
-    "incident_number": "INC4419505",
-    "priority": "1-Critical",
-    "startedAt": "2019-09-25T14:58:24.000Z",
-    "incident_summary": "EAN Degraded"
-  },
-  {
-    "Root_Cause": "rollback EAN Edge Service   Expedia-Partner-Solutions/DARK-2027-Integrate-with-PRS-handlers-in-Edge",
-    "incident_number": "INC4419505",
-    "startedAt": "2019-09-25T14:58:24.000Z"
+      "incidentSummary": "Multiple Contact Centers SynApps Degraded",
+      "incidentNumber": "INC4624976",
+      "startedAt": "2020-01-02 19:17:00.0000000",
+      "openDate": "2019-12-31 00:37:41.0000000",
+      "resolvedDate": "2020-01-06 03:47:50.0000000",
+      "rootCause": "CUCM Chandler response time was higher so Synapps request timed out. But CUCM continued processing the request partially and both the system became out of sync.CUCM PHX instance has better response time and now Synapps is pointing to same instance. After this, team cleaned up both CUCM and Synapps devices which were in bad state. Post cleanup, re-provisioning was successful. ",
+      "executiveSummary": "Multiple Contact Centers SynApps Degraded",
+      "priority": "2-High",
+      "rootCauseOwner": "ECP-GCO-Proxy-Services",
+      "duration": "279840000",
+      "ttd": "1200000",
+      "ttr": "278640000",
+      "brand": "Platform & Marketplaces",
+      "status": "Closed",
+      "estimatedRevenueLoss": "",
+      "estimatedGrossLoss": "",
+      "impactedBrand": "",
+      "tag": ""
   }
 ]

@@ -23,11 +23,11 @@ const renderNoResults = () => (
     <p>{'No Results Found'}</p>
 );
 
-const Covid = (props) => (
+const Covid = ({filteredIncidents}) => (
     <div data-wdio="incidents-table">
         {
-            props.filteredIncidents.length
-                ? renderTable(props.filteredIncidents)
+            filteredIncidents.length
+                ? renderTable(filteredIncidents)
                 : renderNoResults()
         }
     </div>
