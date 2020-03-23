@@ -16,5 +16,5 @@ export function formatDurationToH(duration) {
 
 export function formatDurationForTable(m) {
     const duration = moment.duration(Number(m), 'milliseconds');
-    return `<a name='${String(duration.asMinutes()).padStart(6, 0)}'></a>${duration.humanize()}`;
+    return `${duration.humanize()}`;
 }

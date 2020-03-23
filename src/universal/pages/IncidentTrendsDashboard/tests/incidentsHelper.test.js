@@ -1,3 +1,4 @@
+import React from 'react';
 import {expect} from 'chai';
 import {
     getUniqueIncidents,
@@ -15,8 +16,8 @@ import mockResult from './incByBrandResult.test.json';
 
 const dataResult = {
     'Brand': 'Expedia Partner Solutions (EPS)',
-    'Duration': "<a name='0.13333333333333333'></a>a few seconds",
-    'Incident': "<a key='INC4419505link' href='https://expedia.service-now.com/go.do?id=INC4419505' target='_blank'>INC4419505</a>",
+    'Duration': 'a few seconds',
+    'Incident': (<a key="INC4419505link" href="https://expedia.service-now.com/go.do?id=INC4419505" target="_blank">INC4419505</a>),
     'Priority': '1-Critical',
     'Root Cause Owners': 'EAN Release - Deploy',
     'Status': 'Closed',

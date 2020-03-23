@@ -1,4 +1,3 @@
-
 import {expect} from 'chai';
 import * as h from '../formatDate';
 
@@ -16,6 +15,6 @@ describe('formatDurationToH', () => {
 
 describe('formatDurationForTable', () => {
     it('returns the duration from milliseconds in HH:mm:ss format', async () => {
-        expect(h.formatDurationForTable(5000000)).to.be.eql("<a name='83.33333333333333'></a>an hour");
+        expect(h.formatDurationForTable(5000000)).to.be.eql('an hour');
     });
 });
