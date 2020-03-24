@@ -82,15 +82,40 @@ class DataTableWrapper extends Component {
             ...header,
             sorter: header.id === this.state.sortName ? {direction: this.state.sortDirection} : {}
         }));
+        const timeDurationColumnIds = ['Duration', 'TTD', 'TTR'];
+        const isTimeDurationColumn = (columnName) => timeDurationColumnIds.includes(columnName);
 
         const rows = this.dataList
             .slice().sort((a, b) => {
-                if (a[this.state.sortName] > b[this.state.sortName]) {
-                    return this.state.sortDirection === 'DESC' ? -1 : 1;
-                }
+                const {sortName, sortDirection} = this.state;
 
-                if (a[this.state.sortName] < b[this.state.sortName]) {
-                    return this.state.sortDirection === 'DESC' ? 1 : -1;
+                if (isTimeDurationColumn(sortName)) {
+                    const timeDurationMap = {
+                        'Duration': 'rawDuration',
+                        'TTD': 'rawTTD',
+                        'TTR': 'rawTTR'
+                    };
+                    const aRawDuration = Number(a[timeDurationMap[sortName]]);
+                    const bRawDuration = Number(b[timeDurationMap[sortName]]);
+
+                    if (aRawDuration > bRawDuration) {
+                        return sortDirection === 'DESC' ? -1 : 1;
+                    }
+
+                    if (aRawDuration < bRawDuration) {
+                        return sortDirection === 'DESC' ? 1 : -1;
+                    }
+                } else {
+                    const aSortName = a[sortName];
+                    const bSortName = b[sortName];
+
+                    if (aSortName > bSortName) {
+                        return sortDirection === 'DESC' ? -1 : 1;
+                    }
+
+                    if (aSortName < bSortName) {
+                        return sortDirection === 'DESC' ? 1 : -1;
+                    }
                 }
 
                 return 0;
