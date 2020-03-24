@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import DataTable from '../../../../components/DataTable/index';
 import LineChart from '../../../../components/LineChart/index';
 import PieChart from '../../../../components/PieChart/index';
+import HelpText from './../../../../components/HelpText/HelpText';
 import {getQualityData, getLineData} from '../../incidentsHelper';
 
 const columns = ['Defect', 'Priority', 'Brand', 'Opened', 'Resolved', 'Summary', 'Project', 'Duration', 'Impacted Brand', 'Status'];
@@ -41,7 +42,9 @@ const renderContent = (startDate, endDate, filteredDefects, selectedCovidTag) =>
                 <PieChart data={getPieData(filteredDefects, 'priority')} title="Priority" />
             </div>
             <div data-wdio="defects-table">
-                <h3 className="section-header__text" style={{marginTop: '512px'}}>{`Defects (${filteredDefects.length} results)`}</h3>
+                <h3 className="section-header__text" style={{marginTop: '512px'}}>{`Defects (${filteredDefects.length} results)`}
+                    <HelpText text="Refresh every 15 minutes" />
+                </h3>
                 <DataTable
                     data={getQualityData(filteredDefects)}
                     columns={columns}
