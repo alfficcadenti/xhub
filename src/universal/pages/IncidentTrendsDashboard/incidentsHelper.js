@@ -21,6 +21,8 @@ export const adjustTicketProperties = (tickets = [], type = 'incident') => {
         if (type === 'incident') {
             result.ticket_summary = t.incidentSummary;
             result.ticket_number = t.incidentNumber;
+            result.duration = t.duration && t.resolvedDate ? t.duration : null;
+            result.ttr = t.ttr && t.resolvedDate ? t.ttr : null;
         } else if (type === 'defect') {
             result.ticket_summary = t.defectSummary;
             result.ticket_number = t.defectNumber;
@@ -74,36 +76,38 @@ const buildTicketLink = (id, url) => (<a key={`${id}link`} href={url} target="_b
 export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
     .map((inc) => ({
         id: uuid(),
-        Incident: buildTicketLink(inc.ticket_number, `https://expedia.service-now.com/go.do?id=${inc.ticket_number}`) || '',
-        Priority: inc.priority || '',
-        Brand: inc.Brand || '',
-        Division: inc.Division || '',
-        Started: moment.utc(inc.startedAt).local().format('YYYY-MM-DD HH:mm') || '',
-        Summary: inc.ticket_summary || '',
-        Duration: inc.duration ? h.formatDurationForTable(inc.duration) : '',
-        TTD: inc.ttd ? h.formatDurationForTable(inc.ttd) : '',
-        TTR: inc.ttr ? h.formatDurationForTable(inc.ttr) : '',
-        'Root Cause Owners': inc.rootCauseOwner || '',
-        Status: inc.Status || '',
-        Tag: inc.tag || '',
-        executiveSummary: inc.executiveSummary || ''
-    }));
+        Incident: buildTicketLink(inc.ticket_number, `https://expedia.service-now.com/go.do?id=${inc.ticket_number}`) || '-',
+        Priority: inc.priority || '-',
+        Brand: inc.Brand || '-',
+        Division: inc.Division || '-',
+        Started: moment.utc(inc.startedAt).local().format('YYYY-MM-DD HH:mm') || '-',
+        Summary: inc.ticket_summary || '-',
+        Duration: inc.duration ? h.formatDurationForTable(inc.duration) : '-',
+        TTD: inc.ttd ? h.formatDurationForTable(inc.ttd) : '-',
+        TTR: inc.ttr ? h.formatDurationForTable(inc.ttr) : '-',
+        'Root Cause Owners': inc.rootCauseOwner || '-',
+        Status: inc.Status || '-',
+        Tag: inc.tag || '-',
+        executiveSummary: inc.executiveSummary || '-'
+    }))
+    .sort((a, b) => moment(a.Started).isBefore(b.Started));
 
 export const getQualityData = (filteredDefects = []) => filteredDefects
     .map((t) => ({
-        Defect: buildTicketLink(t.ticket_number, t.url) || '',
-        Priority: t.priority || '',
-        Brand: t.Brand || '',
-        Division: t.Division || '',
-        Opened: moment(t.openDate).local().format('YYYY-MM-DD HH:mm') || '',
-        Resolved: moment(t.resolveDate).local().format('YYYY-MM-DD HH:mm') || '',
-        Summary: t.ticket_summary || '',
-        Project: t.project || '',
-        Duration: t.duration ? h.formatDurationForTable(t.duration) : '',
-        'Impacted Brand': t.impactedBrand || '',
-        Status: t.Status || '',
-        Tag: t.tag || '',
-    }));
+        Defect: buildTicketLink(t.ticket_number, t.url) || '-',
+        Priority: t.priority || '-',
+        Brand: t.Brand || '-',
+        Division: t.Division || '-',
+        Opened: moment(t.openDate).local().format('YYYY-MM-DD HH:mm') || '-',
+        Resolved: moment(t.resolvedDate).local().format('YYYY-MM-DD HH:mm') || '-',
+        Summary: t.ticket_summary || '-',
+        Project: t.project || '-',
+        Duration: t.duration && t.resolvedDate ? h.formatDurationForTable(t.duration) : '-',
+        'Impacted Brand': t.impactedBrand || '-',
+        Status: t.Status || '-',
+        Tag: t.tag || '-',
+    }))
+    .sort((a, b) => moment(a.Opened).isBefore(b.Opened));
 
 const distinct = (value, index, self) => self.indexOf(value) === index;
 const removeEmptyStringsFromArray = (item) => item;

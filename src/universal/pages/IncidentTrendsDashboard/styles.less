@@ -35,12 +35,18 @@
     color: @filter-color;
   }
 
-  #brand-dropdown {
-    min-width: 300px;
+  #brand-dropdown,
+  #status-dropdown {
+    min-width: 220px;
     font-weight: normal;
     border-radius: 5px;
     height: @filter-size;
     color: @filter-color;
+    overflow: hidden;
+  }
+
+  #status-dropdown {
+    min-width: 130px;
   }
 
   #applyButton {
@@ -59,4 +65,12 @@
   .financial-impact {
     margin-top: 90px;
   }
+}
+
+.Datatable__header {
+  background: #e3f4fc;
+  border-top: 1px #908f8f solid;
+  border-bottom: 1px #908f8f solid;
+  color: #292929;
+  font-size: 0.875rem;
 }

@@ -65,11 +65,11 @@ describe('incidentsHelper', () => {
 
         it('returns empty string when values are null', () => {
             const result = getIncidentsData([mockData[1]]);
-            expect(result[0]['Root Cause Owners']).to.be.eql('');
-            expect(result[0].Summary).to.be.eql('');
-            expect(result[0].Duration).to.be.eql('');
-            expect(result[0].Status).to.be.eql('');
-            expect(result[0].Priority).to.be.eql('');
+            expect(result[0]['Root Cause Owners']).to.be.eql('-');
+            expect(result[0].Summary).to.be.eql('-');
+            expect(result[0].Duration).to.be.eql('-');
+            expect(result[0].Status).to.be.eql('-');
+            expect(result[0].Priority).to.be.eql('-');
         });
     });
 

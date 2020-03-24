@@ -25,12 +25,15 @@ const getPieData = (filteredDefects, property) => {
     return Object.entries(counts).map(([name, value]) => ({name, value}));
 };
 
-const renderContent = (startDate, endDate, filteredDefects) => {
+const renderContent = (startDate, endDate, filteredDefects, selectedCovidTag) => {
     const {axisData, data} = getLineData(startDate, endDate, filteredDefects, 'openDate');
+    const lineChartTitle = selectedCovidTag
+        ? 'Defect Trends [covid-19]'
+        : 'Defect Trends';
     return (
-        <>
+        <div className="quality-tab__content">
             <div data-wdio="defects-line-chart">
-                <LineChart title="Defects Trend" data={data} xAxis={axisData} />
+                <LineChart title={lineChartTitle} info="Defects are bucketed by Opened date." data={data} xAxis={axisData} />
             </div>
             <div data-wdio="defects-pie-charts">
                 <PieChart data={getPieData(filteredDefects, 'Brand')} title="Brand" />
@@ -38,6 +41,7 @@ const renderContent = (startDate, endDate, filteredDefects) => {
                 <PieChart data={getPieData(filteredDefects, 'priority')} title="Priority" />
             </div>
             <div data-wdio="defects-table">
+                <h3 className="section-header__text" style={{marginTop: '512px'}}>{`Defects (${filteredDefects.length} results)`}</h3>
                 <DataTable
                     data={getQualityData(filteredDefects)}
                     columns={columns}
@@ -45,7 +49,7 @@ const renderContent = (startDate, endDate, filteredDefects) => {
                     paginated
                 />
             </div>
-        </>
+        </div>
     );
 };
 
@@ -53,11 +57,11 @@ const renderNoResults = () => (
     <p>{'No Results Found'}</p>
 );
 
-const Quality = ({startDate, endDate, filteredDefects}) => (
+const Quality = ({startDate, endDate, filteredDefects, selectedCovidTag}) => (
     <div data-wdio="quality-content">
         {
             filteredDefects.length
-                ? renderContent(startDate, endDate, filteredDefects)
+                ? renderContent(startDate, endDate, filteredDefects, selectedCovidTag)
                 : renderNoResults()
         }
     </div>
@@ -66,7 +70,8 @@ const Quality = ({startDate, endDate, filteredDefects}) => (
 Quality.propTypes = {
     startDate: PropTypes.string.isRequired,
     endDate: PropTypes.string.isRequired,
-    filteredDefects: PropTypes.arrayOf(PropTypes.shape()).isRequired
+    filteredDefects: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+    selectedCovidTag: PropTypes.bool.isRequired
 };
 
 export default Quality;

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import moment from 'moment';
 import {getIncidentsData} from '../../../incidentsHelper';
 import ExpandableRow from '../ExpandableRow/ExpandableRow';
 import DataTable from '@homeaway/react-data-table';
@@ -24,7 +25,7 @@ class DataTableWrapper extends Component {
         this.state = {
             expandedRows: {},
             pager: {
-                itemsPerPage: 5,
+                itemsPerPage: 10,
                 pageNumber: 1,
                 numItems: this.dataList.length
             }
@@ -32,6 +33,18 @@ class DataTableWrapper extends Component {
 
         this.onToggleExpand = this.onToggleExpand.bind(this);
         this.onPageUpdate = this.onPageUpdate.bind(this);
+    }
+
+    UNSAFE_componentWillReceiveProps(nextProps) { //eslint-disable-line
+        this.dataList = getIncidentsData(nextProps.filteredIncidents);
+        this.setState({
+            expandedRows: {},
+            pager: {
+                itemsPerPage: 10,
+                pageNumber: 1,
+                numItems: this.dataList.length
+            }
+        });
     }
 
     onToggleExpand(data, isExpanded) {
@@ -78,6 +91,8 @@ class DataTableWrapper extends Component {
                 expanded: this.state.expandedRows[id],
                 expansion: <ExpandableRow executiveSummary={executiveSummary} rootCauseOwners={rootCauseOwners} />
             }));
+        // Sort by Started
+        rows.sort((a, b) => moment(b.cols[4]).format('YYYYMMDD') - moment(a.cols[4]).format('YYYYMMDD'));
 
         const colConfig = {flex: {0: 0.5, 1: 0.5, 2: 0.7, 3: 1, 4: 0.5, 5: 1.3, 6: 0.5, 7: 0.5, 8: 0.5, 9: 0.8, 10: 0.5, 11: 0.5}};
 

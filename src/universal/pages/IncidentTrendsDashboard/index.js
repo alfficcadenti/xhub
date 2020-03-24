@@ -7,12 +7,12 @@ import {Navigation} from '@homeaway/react-navigation';
 import DatePicker from '../../components/DatePicker/index';
 import {Checkbox} from '@homeaway/react-form-components';
 import {getUniqueTickets, adjustTicketProperties} from './incidentsHelper';
-import {DATE_FORMAT, PRIORITIES, BRANDS} from './constants';
+import {DATE_FORMAT, PRIORITIES, BRANDS, ALL_STATUSES} from './constants';
 import {Incidents, Overview, Top5, Quality, FinancialImpact} from './tabs/index';
 import './styles.less';
 
-
-const brandDefaultValue = 'All';
+const statusDefaultValue = 'All Statuses';
+const brandDefaultValue = 'All Brands';
 const priorityDefaultValue = 'All - P1 & P2';
 const covidTagDefaultValue = true;
 const startDateDefaultValue = moment().subtract(7, 'weeks').format(DATE_FORMAT);
@@ -49,6 +49,7 @@ const navLinks = [
 
 const IncidentTrendsDashboard = () => {
     const [activeIndex, setActiveIndex] = useState(1);
+    const [selectedStatus, setSelectedStatus] = useState(statusDefaultValue);
     const [selectedBrand, setSelectedBrand] = useState(brandDefaultValue);
     const [selectedCovidTag, setSelectedCovidTag] = useState(covidTagDefaultValue);
     const [isLoading, setIsLoading] = useState(true);
@@ -71,8 +72,9 @@ const IncidentTrendsDashboard = () => {
         const isWithinRange = (t) => !(startDate || endDate) || !t.startedAt || moment(t.startedAt).isBetween(startDate, endDate, null, '[]');
         const matchesPriority = (t) => selectedPriority === priorityDefaultValue || t.priority === selectedPriority;
         const matchesBrand = (t) => selectedBrand === brandDefaultValue || t.Brand === selectedBrand;
+        const matchesStatus = (t) => selectedStatus === statusDefaultValue || t.status === selectedStatus;
         const matchesTag = (t) => !selectedCovidTag || t.tag.includes('covid-19');
-        const filterTickets = (t) => isWithinRange(t) && matchesPriority(t) && matchesBrand(t) && matchesTag(t);
+        const filterTickets = (t) => isWithinRange(t) && matchesPriority(t) && matchesBrand(t) && matchesStatus(t) && matchesTag(t);
         // incidents
         setFilteredUniqueIncidents([...allUniqueIncidents].filter(filterTickets));
         setFilteredAllIncidents([...allIncidents].filter(filterTickets));
@@ -132,6 +134,11 @@ const IncidentTrendsDashboard = () => {
         setIsDirtyForm(true);
     };
 
+    const handleStatusChange = (status) => {
+        setSelectedStatus(status);
+        setIsDirtyForm(true);
+    };
+
     const handleCovidTagChange = () => {
         setSelectedCovidTag(!selectedCovidTag);
         setIsDirtyForm(true);
@@ -147,7 +154,7 @@ const IncidentTrendsDashboard = () => {
             case 2:
                 return <Top5 filteredIncidents={filteredUniqueIncidents} />;
             case 3:
-                return <Quality startDate={startDate} endDate={endDate} filteredDefects={filteredUniqueDefects} />;
+                return <Quality startDate={startDate} endDate={endDate} filteredDefects={filteredUniqueDefects} selectedCovidTag={selectedCovidTag}/>;
             case 4:
                 return <FinancialImpact filteredIncidents={filteredAllIncidents} />;
             default:
@@ -157,7 +164,7 @@ const IncidentTrendsDashboard = () => {
 
     return (
         <Fragment>
-            <h1 className="page-title">{'Incidents trends'}</h1>
+            <h1 className="page-title">{'Defect & Incident Trends'}</h1>
             <div id="filters-wrapper">
                 <DatePicker
                     startDate={startDate}
@@ -168,7 +175,8 @@ const IncidentTrendsDashboard = () => {
                 />
                 <FilterDropDown id="priority-dropdown" list={PRIORITIES} selectedValue={selectedPriority} onClickHandler={handlePriorityChange}/>
                 <FilterDropDown id="brand-dropdown" list={BRANDS} selectedValue={selectedBrand} onClickHandler={handleBrandChange}/>
-                <Checkbox name="covid-19" label="Covid-19" checked={selectedCovidTag} onChange={handleCovidTagChange}/>
+                <FilterDropDown id="status-dropdown" list={ALL_STATUSES} selectedValue={selectedStatus} onClickHandler={handleStatusChange}/>
+                <Checkbox name="covid-19" label="covid-19" checked={selectedCovidTag} onChange={handleCovidTagChange}/>
                 <button
                     id="applyButton"
                     type="button"

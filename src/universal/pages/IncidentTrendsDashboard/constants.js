@@ -13,9 +13,22 @@ exports.PRIORITIES = [
     'All - P1 & P2'
 ];
 exports.BRANDS = [
-    'All',
+    'All Brands',
     'BEX - Expedia Group',
     'Egencia',
     'Hotels.com',
     'Vrbo'
+];
+exports.ALL_STATUSES = [
+    'All Statuses',
+    'Accepted',
+    'Awaiting Release',
+    'Closed',
+    'Done',
+    'In Production',
+    'In Progress',
+    'In Test',
+    'Open',
+    'Released',
+    'Resolved'
 ];
