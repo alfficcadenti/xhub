@@ -10,6 +10,7 @@ exports.FETCH_OPTION = {Accept: 'application/json', 'Content-Type': 'application
 exports.PRIORITIES = [
     '1-Critical',
     '2-High',
+    '3-Medium',
     'All - P1 & P2'
 ];
 exports.BRANDS = [
