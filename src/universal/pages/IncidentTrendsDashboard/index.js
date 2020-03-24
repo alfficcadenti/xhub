@@ -84,6 +84,8 @@ const IncidentTrendsDashboard = () => {
     };
 
     useEffect(() => {
+        const query = new URLSearchParams(window.location.search);
+        setSelectedCovidTag(query.get('covidFilter') === 'true');
         Promise.all([fetch('/api/v1/incidents'), fetch('/api/v1/defects')])
             .then((responses) => Promise.all(responses.map((r) => r.json())))
             .then(([incidents, defects]) => {

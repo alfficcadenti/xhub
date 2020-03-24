@@ -48,7 +48,7 @@ module.exports = {
             const startRender = Date.now();
             const body = ReactDOMServer.renderToString(
                 <ServerApp path={request.path}
-                    location={request.url.pathname}
+                    location={request.url}
                 />
             );
             const renderTime = Date.now() - startRender;

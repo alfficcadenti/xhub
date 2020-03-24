@@ -9,7 +9,7 @@ import './Header.less';
 
 const Header = () => (
     <header className="Header">
-        <Link to="/incident-trends" className="Header--logo">
+        <Link to="/home" className="Header--logo" >
             <SVGIcon className="Header--icon" markup={GLOBE__24} />
         </Link>
         <Dropdown id="Header--menu" label="OpXHub" className="Header--menu">

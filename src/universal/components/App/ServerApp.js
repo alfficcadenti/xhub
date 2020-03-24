@@ -1,16 +1,13 @@
 import React from 'react';
 import {StaticRouter} from 'react-router-dom';
-import PropTypes from 'prop-types';
 import App from './App';
 
-function ServerApp(props) {
+function ServerApp(location) {
     return (
-        <StaticRouter location={props.path} context={{}}>
-            <App location={props.path}/>
+        <StaticRouter location={location} context={{}}>
+            <App location={location}/>
         </StaticRouter>
     );
 }
-ServerApp.propTypes = {
-    path: PropTypes.string,
-};
+
 export default ServerApp;

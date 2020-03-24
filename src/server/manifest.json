@@ -166,6 +166,11 @@
         },
         "routes": [
           {
+            "route": "require:./routes/pages/home",
+            "component": "require:../universal/components/App/ServerApp.js",
+            "template": "templates/welcome.hbs"
+          },
+          {
             "route": "require:./routes/pages/resiliency-questionnaire",
             "component": "require:../universal/components/App/ServerApp.js",
             "template": "templates/welcome.hbs"

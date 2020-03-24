@@ -14,7 +14,7 @@ function login(request, response) {
     }
     if ('access_token' in request.state) {
         return request.oauthClient.verify(request.state.access_token)
-            .then(() => response.redirect('/incident-trends'))
+            .then(() => response.redirect('/home'))
             .catch(() => response.redirect(request.oauthClient.authorizeUrl(request)));
     }
     return response.redirect(request.oauthClient.authorizeUrl(request));

@@ -6,9 +6,9 @@ const routeInfo = {'pageTitle': 'OpXHub'};
 
 module.exports = {
     method: 'GET',
-    path: '/psr/{path*}',
+    path: '/home/{path*}',
     options: {
-        id: 'psr',
+        id: 'home',
         async handler(request, h) {
             const siteInfo = request.server.siteInfo();
             const context = {...siteInfo, ...routeInfo};

@@ -5,4 +5,4 @@ import ReactDOM from 'react-dom';
 import ClientApp from './components/App/ClientApp';
 import './favicon.ico';
 
-ReactDOM.hydrate(<ClientApp />, document.getElementById('root'));
+ReactDOM.render(<ClientApp />, document.getElementById('root'));
