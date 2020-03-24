@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import moment from 'moment';
 import {getIncidentsData} from '../../../incidentsHelper';
 import ExpandableRow from '../ExpandableRow/ExpandableRow';
 import DataTable from '@homeaway/react-data-table';
@@ -28,10 +27,13 @@ class DataTableWrapper extends Component {
                 itemsPerPage: 10,
                 pageNumber: 1,
                 numItems: this.dataList.length
-            }
+            },
+            sortName: 'Started',
+            sortDirection: 'DESC'
         };
 
         this.onToggleExpand = this.onToggleExpand.bind(this);
+        this.onSortableHeaderClick = this.onSortableHeaderClick.bind(this);
         this.onPageUpdate = this.onPageUpdate.bind(this);
     }
 
@@ -44,6 +46,13 @@ class DataTableWrapper extends Component {
                 pageNumber: 1,
                 numItems: this.dataList.length
             }
+        });
+    }
+
+    onSortableHeaderClick(header, direction) {
+        this.setState({
+            sortName: header.id,
+            sortDirection: direction
         });
     }
 
@@ -69,7 +78,23 @@ class DataTableWrapper extends Component {
         const startPaginationIndex = (this.state.pager.pageNumber - 1) * this.state.pager.itemsPerPage;
         const endPaginationIndex = startPaginationIndex + this.state.pager.itemsPerPage;
 
+        const headers = this.dataHeaders.map((header) => ({
+            ...header,
+            sorter: header.id === this.state.sortName ? {direction: this.state.sortDirection} : {}
+        }));
+
         const rows = this.dataList
+            .slice().sort((a, b) => {
+                if (a[this.state.sortName] > b[this.state.sortName]) {
+                    return this.state.sortDirection === 'DESC' ? -1 : 1;
+                }
+
+                if (a[this.state.sortName] < b[this.state.sortName]) {
+                    return this.state.sortDirection === 'DESC' ? 1 : -1;
+                }
+
+                return 0;
+            })
             .slice(startPaginationIndex, endPaginationIndex)
             .map(({
                 id,
@@ -91,8 +116,6 @@ class DataTableWrapper extends Component {
                 expanded: this.state.expandedRows[id],
                 expansion: <ExpandableRow executiveSummary={executiveSummary} rootCauseOwners={rootCauseOwners} />
             }));
-        // Sort by Started
-        rows.sort((a, b) => moment(b.cols[4]).format('YYYYMMDD') - moment(a.cols[4]).format('YYYYMMDD'));
 
         const colConfig = {flex: {0: 0.5, 1: 0.5, 2: 0.7, 3: 1, 4: 0.5, 5: 1.3, 6: 0.5, 7: 0.5, 8: 0.5, 9: 0.8, 10: 0.5, 11: 0.5}};
 
@@ -106,7 +129,7 @@ class DataTableWrapper extends Component {
 
         return (
             <DataTable
-                headers={this.dataHeaders}
+                headers={headers}
                 rows={rows}
                 rowConfig={{expandable: true}}
                 onToggleExpand={this.onToggleExpand}
@@ -114,6 +137,7 @@ class DataTableWrapper extends Component {
                 colConfig={colConfig}
                 pager={pager}
                 onPageUpdate={this.onPageUpdate}
+                onSortableHeaderClick={this.onSortableHeaderClick}
             />
         );
     }
