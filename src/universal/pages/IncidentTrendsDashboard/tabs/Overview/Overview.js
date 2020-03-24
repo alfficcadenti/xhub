@@ -22,7 +22,7 @@ const Overview = ({startDate, endDate, filteredIncidents}) => {
     const mttrByBrandSeries = formatSeriesForChart(weeklyMTTRbyBrand(filteredIncidents));
     const dates = getMarginDateValues(filteredIncidents);
     const xAxisValues = weeklyRange(dates[0], dates[1]);
-    const {axisData, data} = getLineData(startDate, endDate, filteredIncidents);
+    const {axisData, data} = getLineData(startDate, endDate, filteredIncidents, 'openDate');
 
     return (<div data-wdio="incidents-byBrand-table" id="inc-overview-table">
         {
