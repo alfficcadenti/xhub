@@ -29,7 +29,7 @@ const Overview = ({startDate, endDate, filteredIncidents}) => {
             filteredIncidents && filteredIncidents.length ?
                 <Fragment>
                     <div data-wdio="incidents-line-chart">
-                        <LineChart title="Incidents Trend" data={data} xAxis={axisData} />
+                        <LineChart title="Incidents Trend" info="Incidents are bucketed by Opened date." data={data} xAxis={axisData} />
                     </div>
                     <DataTable
                         data={getIncMetricsByBrand(filteredIncidents)}
