@@ -19,7 +19,7 @@ const dataResult = {
     'Duration': 'a few seconds',
     'Incident': (<a key="INC4419505link" href="https://expedia.service-now.com/go.do?id=INC4419505" target="_blank">INC4419505</a>),
     'Priority': '1-Critical',
-    'Root Cause Owners': 'EAN Release - Deploy',
+    'Root Cause Owner': 'EAN Release - Deploy',
     'Status': 'Closed',
     'Summary': 'EAN Degraded',
 };
@@ -60,12 +60,12 @@ describe('incidentsHelper', () => {
             expect(result[0].Priority).to.be.eql(dataResult.Priority);
             expect(result[0].Status).to.be.eql(dataResult.Status);
             expect(result[0].Summary).to.be.eql(dataResult.Summary);
-            expect(result[0]['Root Cause Owners']).to.be.eql(dataResult['Root Cause Owners']);
+            expect(result[0]['Root Cause Owner']).to.be.eql(dataResult['Root Cause Owner']);
         });
 
         it('returns empty string when values are null', () => {
             const result = getIncidentsData([mockData[1]]);
-            expect(result[0]['Root Cause Owners']).to.be.eql('-');
+            expect(result[0]['Root Cause Owner']).to.be.eql('-');
             expect(result[0].Summary).to.be.eql('-');
             expect(result[0].Duration).to.be.eql('-');
             expect(result[0].Status).to.be.eql('-');

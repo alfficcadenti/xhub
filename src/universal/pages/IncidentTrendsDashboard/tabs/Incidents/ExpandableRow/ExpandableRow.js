@@ -2,7 +2,7 @@ import React from 'react';
 import './ExpandableRow.less';
 
 
-const ExpandableRow = ({executiveSummary, rootCauseOwners}) => (
+const ExpandableRow = ({executiveSummary, rootCause}) => (
     <div className="expandable-row-wrapper">
         <div className="expandable-row">
             <span className="expandable-row-header">{'Incident Executive Summary:'}</span>
@@ -13,7 +13,7 @@ const ExpandableRow = ({executiveSummary, rootCauseOwners}) => (
         <div className="expandable-row">
             <span className="expandable-row-header">{'Resolution Notes:'}</span>
             <div className="expandable-row-section">
-                {rootCauseOwners}
+                {rootCause}
             </div>
         </div>
     </div>

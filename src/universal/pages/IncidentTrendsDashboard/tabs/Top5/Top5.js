@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import DataTable from '../../../../components/DataTable/index';
 import {getIncidentsData, sortInDescOrderAndGetTop5, sortInAscOrderAndGetTop5} from '../../incidentsHelper';
 
-const top5Tablecolumns = ['Incident', 'Priority', 'Summary', 'Root Cause Owners', 'Started', 'Duration'];
+const top5Tablecolumns = ['Incident', 'Priority', 'Summary', 'Root Cause Owner', 'Started', 'Duration'];
 
 const renderTable = (data, columns) => (
     <DataTable

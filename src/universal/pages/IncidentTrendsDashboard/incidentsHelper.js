@@ -71,12 +71,15 @@ export const getUniqueTickets = (tickets, property) => {
     return output;
 };
 
-const buildTicketLink = (id, url) => (<a key={`${id}link`} href={url} target="_blank">{id}</a>);
+const buildTicketLink = (id = '', brand = '', url = '') => {
+    const brandUrl = brand === 'Vrbo' ? url : `https://expedia.service-now.com/go.do?id=${id}`;
+    return (<a key={`${id}link`} href={brandUrl} target="_blank">{id}</a>);
+};
 
 export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
     .map((inc) => ({
         id: uuid(),
-        Incident: buildTicketLink(inc.ticket_number, `https://expedia.service-now.com/go.do?id=${inc.ticket_number}`) || '-',
+        Incident: buildTicketLink(inc.ticket_number, inc.Brand, inc.url) || '-',
         Priority: inc.priority || '-',
         Brand: inc.Brand || '-',
         Division: inc.Division || '-',
@@ -85,7 +88,8 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
         Duration: inc.duration ? h.formatDurationForTable(inc.duration) : '-',
         TTD: inc.ttd ? h.formatDurationForTable(inc.ttd) : '-',
         TTR: inc.ttr ? h.formatDurationForTable(inc.ttr) : '-',
-        'Root Cause Owners': inc.rootCauseOwner || '-',
+        'Root Cause': inc.rootCause || '-',
+        'Root Cause Owner': inc.rootCauseOwner || '-',
         Status: inc.Status || '-',
         Tag: inc.tag || '-',
         executiveSummary: inc.executiveSummary || '-'
@@ -94,7 +98,7 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
 
 export const getQualityData = (filteredDefects = []) => filteredDefects
     .map((t) => ({
-        Defect: buildTicketLink(t.ticket_number, t.url) || '-',
+        Defect: buildTicketLink(t.ticket_number, t.Brand, t.url) || '-',
         Priority: t.priority || '-',
         Brand: t.Brand || '-',
         Division: t.Division || '-',

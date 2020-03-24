@@ -12,7 +12,7 @@ describe('<Quality/>', () => {
             />
         );
         const props = wrapper.find('DataTable').props();
-        expect(props.data[0].Defect).to.be.eql(<a key="INC4419505link" href="https://jira.homeawaycorp.com/browse/RM-11051" target="_blank">INC4419505</a>);
+        expect(props.data[0].Defect).to.be.eql(<a key="INC4419505link" href="https://expedia.service-now.com/go.do?id=INC4419505" target="_blank">INC4419505</a>);
         expect(props.data[0].Priority).to.be.eql('1-Critical');
         expect(props.data[0].Status).to.be.eql('Closed');
     });

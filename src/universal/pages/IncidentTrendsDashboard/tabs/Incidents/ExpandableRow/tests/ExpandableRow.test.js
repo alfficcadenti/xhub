@@ -11,7 +11,7 @@ describe('ExpandableRow component testing', () => {
         wrapper = shallow(
             <ExpandableRow
                 executiveSummary={'Multiple Contact Centers SynApps Degraded'}
-                rootCauseOwners={'Resolution notes summary here'}
+                rootCause={'Resolution notes summary here'}
             />
         );
     });

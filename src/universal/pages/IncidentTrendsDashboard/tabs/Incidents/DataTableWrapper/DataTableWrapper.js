@@ -107,14 +107,14 @@ class DataTableWrapper extends Component {
                 Duration,
                 TTD,
                 TTR,
-                'Root Cause Owners': rootCauseOwners,
+                'Root Cause': rootCause,
                 Status,
                 executiveSummary
             }) => ({
                 id,
                 cols: [Incident, Priority, Brand, Division, Started, Summary, Duration, TTD, TTR, Status],
                 expanded: this.state.expandedRows[id],
-                expansion: <ExpandableRow executiveSummary={executiveSummary} rootCauseOwners={rootCauseOwners} />
+                expansion: <ExpandableRow executiveSummary={executiveSummary} rootCause={rootCause} />
             }));
 
         const colConfig = {flex: {0: 0.5, 1: 0.5, 2: 0.7, 3: 1, 4: 0.5, 5: 1.3, 6: 0.5, 7: 0.5, 8: 0.5, 9: 0.8, 10: 0.5, 11: 0.5}};
