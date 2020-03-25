@@ -88,6 +88,20 @@ class DataTableWrapper extends Component {
         const rows = this.dataList
             .slice().sort((a, b) => {
                 const {sortName, sortDirection} = this.state;
+                const sortLogic = (aItem, bItem) => {
+                    const aValue = typeof aItem === 'string' ? aItem.toLowerCase() : aItem;
+                    const bValue = typeof bItem === 'string' ? bItem.toLowerCase() : bItem;
+
+                    if (aValue > bValue) {
+                        return sortDirection === 'DESC' ? -1 : 1;
+                    }
+
+                    if (aValue < bValue) {
+                        return sortDirection === 'DESC' ? 1 : -1;
+                    }
+
+                    return 0;
+                };
 
                 if (isTimeDurationColumn(sortName)) {
                     const timeDurationMap = {
@@ -98,38 +112,18 @@ class DataTableWrapper extends Component {
                     const aRawDuration = Number(a[timeDurationMap[sortName]]);
                     const bRawDuration = Number(b[timeDurationMap[sortName]]);
 
-                    if (aRawDuration > bRawDuration) {
-                        return sortDirection === 'DESC' ? -1 : 1;
-                    }
-
-                    if (aRawDuration < bRawDuration) {
-                        return sortDirection === 'DESC' ? 1 : -1;
-                    }
+                    return sortLogic(aRawDuration, bRawDuration);
                 } else if (sortName === 'Incident') {
                     const aSortName = a[sortName].key;
                     const bSortName = b[sortName].key;
 
-                    if (aSortName > bSortName) {
-                        return sortDirection === 'DESC' ? -1 : 1;
-                    }
-
-                    if (aSortName < bSortName) {
-                        return sortDirection === 'DESC' ? 1 : -1;
-                    }
-                } else {
-                    const aSortName = a[sortName];
-                    const bSortName = b[sortName];
-
-                    if (aSortName.toLowerCase() > bSortName.toLowerCase()) {
-                        return sortDirection === 'DESC' ? -1 : 1;
-                    }
-
-                    if (aSortName.toLowerCase() < bSortName.toLowerCase()) {
-                        return sortDirection === 'DESC' ? 1 : -1;
-                    }
+                    return sortLogic(aSortName, bSortName);
                 }
 
-                return 0;
+                const aSortName = a[sortName];
+                const bSortName = b[sortName];
+
+                return sortLogic(aSortName, bSortName);
             })
             .slice(startPaginationIndex, endPaginationIndex)
             .map(({
