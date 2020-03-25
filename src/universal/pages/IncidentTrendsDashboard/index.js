@@ -13,7 +13,7 @@ import './styles.less';
 
 const statusDefaultValue = 'All Statuses';
 const brandDefaultValue = 'All Brands';
-const priorityDefaultValue = 'All - P1 & P2';
+const priorityDefaultValue = 'All - P1, P2 & P3';
 const covidTagDefaultValue = true;
 const startDateDefaultValue = moment().subtract(7, 'weeks').format(DATE_FORMAT);
 const endDateDefaultValue = moment().format(DATE_FORMAT);

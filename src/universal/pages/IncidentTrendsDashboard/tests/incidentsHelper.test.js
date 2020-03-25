@@ -8,6 +8,8 @@ import {
     incidentsOfTheWeek,
     getIncMetricsByBrand,
     listOfIncByBrands,
+    convertPriorityFormat,
+    divisionToBrand,
     mttr
 } from '../incidentsHelper';
 import mockData from './filteredData.test.json';
@@ -147,6 +149,52 @@ describe('incidentsHelper', () => {
         it('returns empty array if input array is empty', () => {
             const result = incidentsOfTheWeek([]);
             expect(result).to.be.eql([]);
+        });
+    });
+
+    describe('convertPriorityFormat', () => {
+        it('returns 1-Critical when the input value is P1 - Blocker', () => {
+            const result = convertPriorityFormat('P1 - Blocker');
+            expect(result).to.be.eql('1-Critical');
+        });
+
+        it('returns 2-High when the input value is P2 - Major', () => {
+            const result = convertPriorityFormat('P2 - Major');
+            expect(result).to.be.eql('2-High');
+        });
+
+        it('returns 3-Medium when the input value is P3 - Normal', () => {
+            const result = convertPriorityFormat('P3 - Normal');
+            expect(result).to.be.eql('3-Medium');
+        });
+
+        it('returns same value as default if input doesn t match cases', () => {
+            const result = convertPriorityFormat('P4 test');
+            expect(result).to.be.eql('P4 test');
+        });
+    });
+
+    describe('divisionToBrand', () => {
+        it('returns Egencia when the input value is EGENCIA - CONSOLIDATED', () => {
+            const result = divisionToBrand('EGENCIA - CONSOLIDATED');
+            expect(result).to.be.eql('Egencia');
+        });
+
+        it('returns Vrbo when the input value is VRBO or HOME AWAY', () => {
+            const result = divisionToBrand('VRBO');
+            expect(result).to.be.eql('Vrbo');
+            const result2 = divisionToBrand('HOME AWAY');
+            expect(result2).to.be.eql('Vrbo');
+        });
+
+        it('returns Hotels.com when the input value is HOTELS WORLDWIDE (HWW)', () => {
+            const result = divisionToBrand('HOTELS WORLDWIDE (HWW)');
+            expect(result).to.be.eql('Hotels.com');
+        });
+
+        it('returns BEX - Expedia Group as default when the input value doesn t match', () => {
+            const result = divisionToBrand('random text');
+            expect(result).to.be.eql('BEX - Expedia Group');
         });
     });
 
