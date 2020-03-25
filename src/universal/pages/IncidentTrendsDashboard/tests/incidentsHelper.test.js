@@ -190,6 +190,8 @@ describe('incidentsHelper', () => {
         it('returns Hotels.com when the input value is HOTELS WORLDWIDE (HWW)', () => {
             const result = divisionToBrand('HOTELS WORLDWIDE (HWW)');
             expect(result).to.be.eql('Hotels.com');
+            const result2 = divisionToBrand('HCOM');
+            expect(result2).to.be.eql('Hotels.com');
         });
 
         it('returns BEX - Expedia Group as default when the input value doesn t match', () => {
