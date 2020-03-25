@@ -87,6 +87,9 @@ export const getUniqueTickets = (tickets, property) => {
 };
 
 const buildTicketLink = (id = '', brand = '', url = '') => {
+    if (url) {
+        return (<a key={`${id}link`} href={url} target="_blank">{id}</a>);
+    }
     const brandUrl = brand === 'Vrbo' ? url : `https://expedia.service-now.com/go.do?id=${id}`;
     return (<a key={`${id}link`} href={brandUrl} target="_blank">{id}</a>);
 };
