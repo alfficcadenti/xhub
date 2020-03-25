@@ -83,7 +83,7 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
         Priority: inc.priority || '-',
         Brand: inc.Brand || '-',
         Division: inc.Division || '-',
-        Started: moment.utc(inc.startedAt).local().format('YYYY-MM-DD HH:mm') || '-',
+        Started: moment.utc(inc.startedAt).local().isValid() ? moment.utc(inc.startedAt).local().format('YYYY-MM-DD HH:mm') : '-',
         Summary: inc.ticket_summary || '-',
         Duration: inc.duration ? h.formatDurationForTable(inc.duration) : '-',
         rawDuration: inc.duration,

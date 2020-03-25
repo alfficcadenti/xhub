@@ -105,15 +105,26 @@ class DataTableWrapper extends Component {
                     if (aRawDuration < bRawDuration) {
                         return sortDirection === 'DESC' ? 1 : -1;
                     }
-                } else {
-                    const aSortName = a[sortName];
-                    const bSortName = b[sortName];
+                } else if (sortName === 'Incident') {
+                    const aSortName = a[sortName].key;
+                    const bSortName = b[sortName].key;
 
                     if (aSortName > bSortName) {
                         return sortDirection === 'DESC' ? -1 : 1;
                     }
 
                     if (aSortName < bSortName) {
+                        return sortDirection === 'DESC' ? 1 : -1;
+                    }
+                } else {
+                    const aSortName = a[sortName];
+                    const bSortName = b[sortName];
+
+                    if (aSortName.toLowerCase() > bSortName.toLowerCase()) {
+                        return sortDirection === 'DESC' ? -1 : 1;
+                    }
+
+                    if (aSortName.toLowerCase() < bSortName.toLowerCase()) {
                         return sortDirection === 'DESC' ? 1 : -1;
                     }
                 }
