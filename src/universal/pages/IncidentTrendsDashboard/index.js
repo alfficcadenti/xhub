@@ -15,7 +15,7 @@ const statusDefaultValue = 'All Statuses';
 const brandDefaultValue = 'All Brands';
 const priorityDefaultValue = 'All - P1, P2 & P3';
 const covidTagDefaultValue = true;
-const startDateDefaultValue = moment().subtract(7, 'weeks').format(DATE_FORMAT);
+const startDateDefaultValue = moment().subtract(90, 'days').format(DATE_FORMAT);
 const endDateDefaultValue = moment().format(DATE_FORMAT);
 const minDate = moment('2019-01-01').toDate();
 const navLinks = [
@@ -69,7 +69,7 @@ const IncidentTrendsDashboard = () => {
     const [allDefects, setAllDefects] = useState([]);
 
     const applyFilters = () => {
-        const isWithinRange = (t) => !(startDate || endDate) || !t.startedAt || moment(t.startedAt).isBetween(startDate, endDate, null, '[]');
+        const isWithinRange = (t) => !(startDate || endDate) || !t.openDate || moment(t.openDate).isBetween(startDate, endDate, null, '[]');
         const matchesPriority = (t) => selectedPriority === priorityDefaultValue || t.priority === selectedPriority;
         const matchesBrand = (t) => selectedBrand === brandDefaultValue || t.Brand === selectedBrand;
         const matchesStatus = (t) => selectedStatus === statusDefaultValue || t.status === selectedStatus;
