@@ -14,7 +14,7 @@ class DataTableWrapper extends Component {
             {id: 'Priority', name: 'Priority'},
             {id: 'Brand', name: 'Brand'},
             {id: 'Division', name: 'Division'},
-            {id: 'Started', name: 'Started'},
+            {id: 'Opened', name: 'Opened'},
             {id: 'Summary', name: 'Summary'},
             {id: 'Duration', name: 'Duration'},
             {id: 'TTD', name: 'TTD'},
@@ -28,7 +28,7 @@ class DataTableWrapper extends Component {
                 pageNumber: 1,
                 numItems: this.dataList.length
             },
-            sortName: 'Started',
+            sortName: 'Opened',
             sortDirection: 'DESC'
         };
 
@@ -127,7 +127,7 @@ class DataTableWrapper extends Component {
                 Priority,
                 Brand,
                 Division,
-                Started,
+                Opened,
                 Summary,
                 Duration,
                 TTD,
@@ -137,7 +137,7 @@ class DataTableWrapper extends Component {
                 executiveSummary
             }) => ({
                 id,
-                cols: [Incident, Priority, Brand, Division, Started, Summary, Duration, TTD, TTR, Status],
+                cols: [Incident, Priority, Brand, Division, Opened, Summary, Duration, TTD, TTR, Status],
                 expanded: this.state.expandedRows[id],
                 expansion: <ExpandableRow executiveSummary={executiveSummary} rootCause={rootCause} />
             }));
