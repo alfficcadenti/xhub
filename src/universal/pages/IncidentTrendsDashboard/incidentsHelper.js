@@ -56,6 +56,7 @@ export const divisionToBrand = (division = '') => {
         case 'HOME AWAY':
             return 'Vrbo';
         case 'HOTELS WORLDWIDE (HWW)':
+        case 'HCOM':
             return 'Hotels.com';
         default:
             return 'BEX - Expedia Group';
