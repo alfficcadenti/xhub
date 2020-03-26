@@ -86,7 +86,7 @@ const IncidentTrendsDashboard = () => {
     useEffect(() => {
         const query = new URLSearchParams(window.location.search);
         setSelectedCovidTag(query.get('covidFilter') === 'true');
-        Promise.all([fetch('/api/v1/incidents'), fetch('/api/v1/defects')])
+        Promise.all([fetch(`/api/v1/incidents?startDate=${startDate}&endDate=${endDate}`), fetch(`/api/v1/defects?startDate=${startDate}&endDate=${endDate}`)])
             .then((responses) => Promise.all(responses.map((r) => r.json())))
             .then(([incidents, defects]) => {
                 // incidents
@@ -104,7 +104,7 @@ const IncidentTrendsDashboard = () => {
                 // eslint-disable-next-line no-console
                 console.error(err);
             });
-    }, []);
+    }, [startDate, endDate]);
 
     useEffect(() => {
         applyFilters();
