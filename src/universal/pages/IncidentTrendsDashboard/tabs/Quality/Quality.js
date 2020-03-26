@@ -1,17 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import DataTable from '../../../../components/DataTable/index';
+import DataTableWrapper from './DataTableWrapper/DataTableWrapper';
 import LineChart from '../../../../components/LineChart/index';
 import PieChart from '../../../../components/PieChart/index';
 import HelpText from './../../../../components/HelpText/HelpText';
-import {getQualityData, getLineData} from '../../incidentsHelper';
+import {getLineData} from '../../incidentsHelper';
+import './Quality.less';
 
-const columns = ['Defect', 'Priority', 'Brand', 'Opened', 'Resolved', 'Summary', 'Project', 'Duration', 'Impacted Brand', 'Status'];
 
-const columnsInfo = {
-    Started: (<div><b>{'Started'}</b><br />{'Displayed in browser'}&apos;{'s local time'}</div>)
-};
+const renderTable = (filteredIncidents) => (
+    <div className="defects-table">
+        <h3 className="section-header__text">{`Defects (${filteredIncidents.length} results)`}
+            <HelpText text="Refresh every 15 minutes" />
+        </h3>
+        <DataTableWrapper filteredIncidents={filteredIncidents}/>
+    </div>
+);
 
 const getPieData = (filteredDefects, property) => {
     const counts = filteredDefects
@@ -41,17 +46,7 @@ const renderContent = (startDate, endDate, filteredDefects, selectedCovidTag) =>
                 <PieChart data={getPieData(filteredDefects, 'Status')} title="Status" />
                 <PieChart data={getPieData(filteredDefects, 'priority')} title="Priority" />
             </div>
-            <div data-wdio="defects-table">
-                <h3 className="section-header__text" style={{marginTop: '512px'}}>{`Defects (${filteredDefects.length} results)`}
-                    <HelpText text="Refresh every 15 minutes" />
-                </h3>
-                <DataTable
-                    data={getQualityData(filteredDefects)}
-                    columns={columns}
-                    columnsInfo={columnsInfo}
-                    paginated
-                />
-            </div>
+            {renderTable(filteredDefects)}
         </div>
     );
 };

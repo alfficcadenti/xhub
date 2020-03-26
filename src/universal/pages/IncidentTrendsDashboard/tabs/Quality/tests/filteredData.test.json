@@ -1,20 +1,23 @@
 [
     {
-      "Brand": "Expedia Partner Solutions (EPS)",
-      "rootCause": "rollback EAN Edge Service   Expedia-Partner-Solutions/DARK-2027-Integrate-with-PRS-handlers-in-Edge",
-      "rootCauseOwner": "EAN Release - Deploy",
-      "Status": "Closed",
-      "duration": "80000",
-      "ticket_number": "INC4419505",
-      "priority": "1-Critical",
-      "startedAt": "2019-09-25T14:58:24.000Z",
-      "ticket_summary": "EAN Degraded",
-      "url": "https://jira.homeawaycorp.com/browse/RM-11051"
-    },
-    {
-      "rootCause": "rollback EAN Edge Service   Expedia-Partner-Solutions/DARK-2027-Integrate-with-PRS-handlers-in-Edge",
-      "ticket_number": "INC4419505",
-      "startedAt": "2019-09-25T14:58:24.000Z"
+        "defectSummary": "Tick box on cancellation LP fails to render on iOS",
+        "defectNumber": "LASER-358",
+        "startedAt": "",
+        "openDate": "2020-03-21 12:38:57-05",
+        "resolvedDate": "2020-03-22 09:02:00-05",
+        "rootCause": "",
+        "priority": "",
+        "rootCauseOwner": "",
+        "duration": "",
+        "ttd": "",
+        "ttr": "",
+        "brand": "BEX",
+        "project": "LASER",
+        "status": "In Production",
+        "estimatedRevenueLoss": "",
+        "estimatedGrossLoss": "",
+        "impactedBrand": "BEX",
+        "tag": "covid-19",
+        "url": "https://jira.expedia.biz/browse/LASER-358"
     }
-  ]
-  
+]
