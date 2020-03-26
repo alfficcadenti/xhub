@@ -26,10 +26,10 @@ const Home = () => {
         <Link
             to={{pathname: item.link}}
             key={`link-${item.id}`}
+            className="dashboard-button"
         >
             <span
                 id={item.id}
-                className="dashboard-button"
                 key={item.id}
             >
                 {item.text}
