@@ -37,12 +37,14 @@ const Home = () => {
         </Link>
     );
 
-    const covidLink = () => (<Link
-        to={{pathname: '/incident-trends', search: '?covidFilter=true'}}
-        key={'link-covid-incidents'}
-    >
-        {'Monitor the incidents related to the COVID-19'}
-    </Link>);
+    const covidLink = () => (
+        <Link
+            to={{pathname: '/incident-trends', search: '?covidFilter=true'}}
+            key={'link-covid-incidents'}
+        >
+            {'Monitor the incidents related to the COVID-19'}
+        </Link>
+    );
 
     return (
         <Fragment>

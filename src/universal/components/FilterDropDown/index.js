@@ -20,7 +20,7 @@ class FilterDropDown extends PureComponent {
 FilterDropDown.propTypes = {
     id: PropTypes.string,
     selectedValue: PropTypes.string,
-    list: PropTypes.array.isRequired,
+    list: PropTypes.arrayOf(PropTypes.string).isRequired,
     onClickHandler: PropTypes.func.isRequired,
 };
 export default FilterDropDown;
