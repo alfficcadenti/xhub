@@ -67,14 +67,14 @@ const IncidentTrendsDashboard = () => {
     const [allUniqueDefects, setAllUniqueDefects] = useState([]);
     const [filteredUniqueDefects, setFilteredUniqueDefects] = useState([]);
     const [allDefects, setAllDefects] = useState([]);
+    const [isApplyClicked, setIsApplyClicked] = useState(false);
 
     const applyFilters = () => {
-        const isWithinRange = (t) => !(startDate || endDate) || !t.openDate || moment(t.openDate).isBetween(startDate, endDate, null, '[]');
         const matchesPriority = (t) => selectedPriority === priorityDefaultValue || t.priority === selectedPriority;
         const matchesBrand = (t) => selectedBrand === brandDefaultValue || t.Brand === selectedBrand;
         const matchesStatus = (t) => selectedStatus === statusDefaultValue || t.status === selectedStatus;
         const matchesTag = (t) => !selectedCovidTag || t.tag.includes('covid-19');
-        const filterTickets = (t) => isWithinRange(t) && matchesPriority(t) && matchesBrand(t) && matchesStatus(t) && matchesTag(t);
+        const filterTickets = (t) => matchesPriority(t) && matchesBrand(t) && matchesStatus(t) && matchesTag(t);
         // incidents
         setFilteredUniqueIncidents([...allUniqueIncidents].filter(filterTickets));
         setFilteredAllIncidents([...allIncidents].filter(filterTickets));
@@ -84,6 +84,7 @@ const IncidentTrendsDashboard = () => {
     };
 
     useEffect(() => {
+        setIsLoading(true);
         const query = new URLSearchParams(window.location.search);
         setSelectedCovidTag(query.get('covidFilter') === 'true');
         Promise.all([fetch(`/api/v1/incidents?startDate=${startDate}&endDate=${endDate}`), fetch(`/api/v1/defects?startDate=${startDate}&endDate=${endDate}`)])
@@ -100,11 +101,12 @@ const IncidentTrendsDashboard = () => {
                 setIsLoading(false);
             })
             .catch((err) => {
+                setIsLoading(false);
                 setError('Not all incidents and/or defects are available. Refresh the page to try again.');
                 // eslint-disable-next-line no-console
                 console.error(err);
             });
-    }, [startDate, endDate]);
+    }, [isApplyClicked]);
 
     useEffect(() => {
         applyFilters();
@@ -183,7 +185,9 @@ const IncidentTrendsDashboard = () => {
                     id="applyButton"
                     type="button"
                     className="btn btn-primary active"
-                    onClick={applyFilters}
+                    onClick={() => {
+                        setIsApplyClicked(!isApplyClicked);
+                    }}
                     disabled={!isDirtyForm}
                 >
                     {'Apply'}
