@@ -4,25 +4,35 @@ import {shallow} from 'enzyme';
 import Quality from '../Quality';
 import mockData from './filteredData.test.json';
 
-describe('<Quality/>', () => {
-    it('passes as props the defects data to the dataTable', () => {
-        const wrapper = shallow(
-            <Quality
-                filteredDefects={mockData}
-            />
+
+describe('Quality component testing', () => {
+    let wrapper;
+
+    beforeEach(() => {
+        wrapper = shallow(
+            <Quality filteredDefects={mockData}/>
         );
-        const props = wrapper.find('DataTable').props();
-        expect(props.data[0].Defect).to.be.eql(<a key="INC4419505link" href="https://jira.homeawaycorp.com/browse/RM-11051" target="_blank">INC4419505</a>);
-        expect(props.data[0].Priority).to.be.eql('1-Critical');
-        expect(props.data[0].Status).to.be.eql('Closed');
     });
+
+    afterEach(() => {
+        wrapper.unmount();
+    });
+
+    it('checks Quality component exists', () => {
+        expect(wrapper).to.have.length(1);
+    });
+
+    it('passes as props the defects data to the dataTable', () => {
+        const props = wrapper.find('DataTableWrapper').props();
+
+        expect(props.filteredIncidents[0].defectSummary).to.be.eql('Tick box on cancellation LP fails to render on iOS');
+        expect(props.filteredIncidents[0].defectNumber).to.be.eql('LASER-358');
+        expect(props.filteredIncidents[0].openDate).to.be.eql('2020-03-21 12:38:57-05');
+        expect(props.filteredIncidents[0].resolvedDate).to.be.eql('2020-03-22 09:02:00-05');
+    });
+
     it('renders No Result message when no data available', () => {
-        const data = [];
-        const wrapper = shallow(
-            <Quality
-                filteredDefects={data}
-            />
-        );
+        wrapper.setProps({filteredDefects: []});
         expect(wrapper.find('div').text()).to.eql('No Results Found');
     });
 });

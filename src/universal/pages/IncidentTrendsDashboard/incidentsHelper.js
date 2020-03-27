@@ -128,6 +128,7 @@ export const getQualityData = (filteredDefects = []) => filteredDefects
         Summary: t.ticket_summary || '-',
         Project: t.project || '-',
         Duration: t.duration && t.resolvedDate ? h.formatDurationForTable(t.duration) : '-',
+        rawDuration: t.duration,
         'Impacted Brand': t.impactedBrand || '-',
         Status: t.Status || '-',
         Tag: t.tag || '-',
