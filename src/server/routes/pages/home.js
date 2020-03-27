@@ -30,6 +30,9 @@ module.exports = {
             const template = request.pre.template;
             // eslint-disable-next-line new-cap
 
+            if (process.env.NODE_ENV === 'development') {
+                return h.view(template, {body, ...context});
+            }
             if ('code' in request.query) {
                 return request.oauthClient.login(request).then((id) => {
                     const ttl = id.exp - id.iat;
