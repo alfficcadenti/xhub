@@ -6,7 +6,7 @@ import FilterDropDown from '../../components/FilterDropDown';
 import {Navigation} from '@homeaway/react-navigation';
 import DatePicker from '../../components/DatePicker/index';
 import {Checkbox} from '@homeaway/react-form-components';
-import {getUniqueTickets, adjustTicketProperties} from './incidentsHelper';
+import {getUniqueTickets, adjustTicketProperties, getListOfUniqueProperties} from './incidentsHelper';
 import {DATE_FORMAT, PRIORITIES, BRANDS, ALL_STATUSES} from './constants';
 import {Incidents, Overview, Top5, Quality, FinancialImpact} from './tabs/index';
 import './styles.less';
@@ -48,7 +48,7 @@ const navLinks = [
 
 
 const IncidentTrendsDashboard = () => {
-    const [activeIndex, setActiveIndex] = useState(1);
+    const [activeIndex, setActiveIndex] = useState(0);
     const [selectedStatus, setSelectedStatus] = useState(statusDefaultValue);
     const [selectedBrand, setSelectedBrand] = useState(brandDefaultValue);
     const [selectedCovidTag, setSelectedCovidTag] = useState(covidTagDefaultValue);
@@ -69,6 +69,15 @@ const IncidentTrendsDashboard = () => {
     const [allDefects, setAllDefects] = useState([]);
     const [isApplyClicked, setIsApplyClicked] = useState(false);
 
+    const [incidentsPriorities, setIncidentsPriorities] = useState([]);
+    const [defectsPriorities, setDefectsPriorities] = useState([]);
+
+    const [incidentsStatuses, setIncidentsStatuses] = useState([]);
+    const [defectsStatuses, setDefectsStatuses] = useState([]);
+
+    const [currentPriorities, seCurrentPriorities] = useState([]);
+    const [currentStatuses, seCurrentStatuses] = useState([]);
+
     const applyFilters = () => {
         const matchesPriority = (t) => selectedPriority === priorityDefaultValue || t.priority === selectedPriority;
         const matchesBrand = (t) => selectedBrand === brandDefaultValue || t.Brand === selectedBrand;
@@ -87,16 +96,32 @@ const IncidentTrendsDashboard = () => {
         setIsLoading(true);
         const query = new URLSearchParams(window.location.search);
         setSelectedCovidTag(query.get('covidFilter') === 'true');
-        Promise.all([fetch(`/api/v1/incidents?startDate=${startDate}&endDate=${endDate}`), fetch(`/api/v1/defects?startDate=${startDate}&endDate=${endDate}`)])
+        Promise.all([fetch(`https://opxhub-service.us-west-2.int.expedia.com/api/v1/incidents?startDate=${startDate}&endDate=${endDate}`), fetch(`https://opxhub-service.us-west-2.int.expedia.com/api/v1/defects?startDate=${startDate}&endDate=${endDate}`)])
             .then((responses) => Promise.all(responses.map((r) => r.json())))
             .then(([incidents, defects]) => {
                 // incidents
                 const uniqueIncidents = getUniqueTickets(incidents, 'incidentNumber');
-                setAllUniqueIncidents(adjustTicketProperties(uniqueIncidents, 'incident'));
+
+                const adjustedUniqueIncidents = adjustTicketProperties(uniqueIncidents, 'incident');
+                const incPriorities = getListOfUniqueProperties(adjustedUniqueIncidents, 'priority');
+                const incStatuses = getListOfUniqueProperties(adjustedUniqueIncidents, 'Status');
+
+                setIncidentsPriorities(incPriorities);
+                setIncidentsStatuses(incStatuses);
+
+                setAllUniqueIncidents(adjustedUniqueIncidents);
                 setAllIncidents(incidents);
                 // defects
                 const uniqueDefects = getUniqueTickets(defects, 'defectNumber');
-                setAllUniqueDefects(adjustTicketProperties(uniqueDefects, 'defect'));
+
+                const adjustedUniqueDefects = adjustTicketProperties(uniqueDefects, 'defect');
+                const defPriorities = getListOfUniqueProperties(adjustedUniqueDefects, 'priority');
+                const defStatuses = getListOfUniqueProperties(adjustedUniqueDefects, 'Status');
+
+                setDefectsPriorities(defPriorities);
+                setDefectsStatuses(defStatuses);
+
+                setAllUniqueDefects(adjustedUniqueDefects);
                 setAllDefects(defects);
                 setIsLoading(false);
             })
@@ -112,7 +137,23 @@ const IncidentTrendsDashboard = () => {
         applyFilters();
     }, [allUniqueIncidents, allIncidents, allUniqueDefects, allDefects]);
 
-    const handleNavigationClick = (e, activeLinkIndex) => setActiveIndex(activeLinkIndex);
+    const handleNavigationClick = (e, activeLinkIndex) => {
+        setActiveIndex(activeLinkIndex);
+
+        switch (activeLinkIndex) {
+            case 1:
+                seCurrentPriorities(incidentsPriorities);
+                seCurrentStatuses(incidentsStatuses);
+                break;
+            case 3:
+                seCurrentPriorities(defectsPriorities);
+                seCurrentStatuses(defectsStatuses);
+                break;
+            default:
+                seCurrentPriorities(incidentsPriorities);
+                seCurrentStatuses(incidentsStatuses);
+        }
+    };
 
     const handleDateRangeChange = (start, end) => {
         setStartDate(start || startDate);
@@ -177,9 +218,9 @@ const IncidentTrendsDashboard = () => {
                     handleDateRangeChange={handleDateRangeChange}
                     handleClearDates={handleClearDates}
                 />
-                <FilterDropDown id="priority-dropdown" list={PRIORITIES} selectedValue={selectedPriority} onClickHandler={handlePriorityChange}/>
+                <FilterDropDown id="priority-dropdown" list={currentPriorities} selectedValue={selectedPriority} onClickHandler={handlePriorityChange}/>
                 <FilterDropDown id="brand-dropdown" list={BRANDS} selectedValue={selectedBrand} onClickHandler={handleBrandChange}/>
-                <FilterDropDown id="status-dropdown" list={ALL_STATUSES} selectedValue={selectedStatus} onClickHandler={handleStatusChange}/>
+                <FilterDropDown id="status-dropdown" list={currentStatuses} selectedValue={selectedStatus} onClickHandler={handleStatusChange}/>
                 <Checkbox name="covid-19" label="covid-19" checked={selectedCovidTag} onChange={handleCovidTagChange}/>
                 <button
                     id="applyButton"

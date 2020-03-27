@@ -138,7 +138,7 @@ export const getQualityData = (filteredDefects = []) => filteredDefects
 const distinct = (value, index, self) => self.indexOf(value) === index;
 const removeEmptyStringsFromArray = (item) => item;
 
-const getListOfUniqueProperties = (incidents = [], prop) => incidents
+export const getListOfUniqueProperties = (incidents = [], prop) => incidents
     .map((incident) => incident[prop])
     .filter(distinct)
     .filter(removeEmptyStringsFromArray);
