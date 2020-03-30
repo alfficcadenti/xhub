@@ -6,9 +6,9 @@ import FilterDropDown from '../../components/FilterDropDown';
 import {Navigation} from '@homeaway/react-navigation';
 import DatePicker from '../../components/DatePicker/index';
 import {Checkbox} from '@homeaway/react-form-components';
-import {getUniqueTickets, adjustTicketProperties} from './incidentsHelper';
 import {DATE_FORMAT, PRIORITIES, BRANDS, ALL_STATUSES} from './constants';
 import {Incidents, Overview, Top5, Quality, FinancialImpact} from './tabs/index';
+import {useFetchTickets, useSetCovidTag} from './hooks';
 import './styles.less';
 
 const statusDefaultValue = 'All Statuses';
@@ -52,63 +52,35 @@ const IncidentTrendsDashboard = () => {
     const [selectedStatus, setSelectedStatus] = useState(statusDefaultValue);
     const [selectedBrand, setSelectedBrand] = useState(brandDefaultValue);
     const [selectedCovidTag, setSelectedCovidTag] = useState(covidTagDefaultValue);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState('');
     const [startDate, setStartDate] = useState(startDateDefaultValue);
     const [endDate, setEndDate] = useState(endDateDefaultValue);
     const [selectedPriority, setSelectedPriority] = useState(priorityDefaultValue);
     const [isDirtyForm, setIsDirtyForm] = useState(false);
     // incidents
-    const [allUniqueIncidents, setAllUniqueIncidents] = useState([]);
     const [filteredUniqueIncidents, setFilteredUniqueIncidents] = useState([]);
-    const [allIncidents, setAllIncidents] = useState([]);
     const [filteredAllIncidents, setFilteredAllIncidents] = useState([]);
     // defects
-    const [allUniqueDefects, setAllUniqueDefects] = useState([]);
     const [filteredUniqueDefects, setFilteredUniqueDefects] = useState([]);
-    const [allDefects, setAllDefects] = useState([]);
+
     const [isApplyClicked, setIsApplyClicked] = useState(false);
-
-    const applyFilters = () => {
-        const matchesPriority = (t) => selectedPriority === priorityDefaultValue || t.priority === selectedPriority;
-        const matchesBrand = (t) => selectedBrand === brandDefaultValue || t.Brand === selectedBrand;
-        const matchesStatus = (t) => selectedStatus === statusDefaultValue || t.status === selectedStatus;
-        const matchesTag = (t) => !selectedCovidTag || t.tag.includes('covid-19');
-        const filterTickets = (t) => matchesPriority(t) && matchesBrand(t) && matchesStatus(t) && matchesTag(t);
-        // incidents
-        setFilteredUniqueIncidents([...allUniqueIncidents].filter(filterTickets));
-        setFilteredAllIncidents([...allIncidents].filter(filterTickets));
-        // defects
-        setFilteredUniqueDefects([...allUniqueDefects].filter(filterTickets));
-        setIsDirtyForm(false);
-    };
+    const [isLoading, error, allUniqueIncidents, allIncidents, allUniqueDefects, allDefects] = useFetchTickets(isApplyClicked, startDate, endDate);
+    useSetCovidTag(setSelectedCovidTag);
 
     useEffect(() => {
-        setIsLoading(true);
-        const query = new URLSearchParams(window.location.search);
-        setSelectedCovidTag(query.get('covidFilter') === 'true');
-        Promise.all([fetch(`/api/v1/incidents?startDate=${startDate}&endDate=${endDate}`), fetch(`/api/v1/defects?startDate=${startDate}&endDate=${endDate}`)])
-            .then((responses) => Promise.all(responses.map((r) => r.json())))
-            .then(([incidents, defects]) => {
-                // incidents
-                const uniqueIncidents = getUniqueTickets(incidents, 'incidentNumber');
-                setAllUniqueIncidents(adjustTicketProperties(uniqueIncidents, 'incident'));
-                setAllIncidents(incidents);
-                // defects
-                const uniqueDefects = getUniqueTickets(defects, 'defectNumber');
-                setAllUniqueDefects(adjustTicketProperties(uniqueDefects, 'defect'));
-                setAllDefects(defects);
-                setIsLoading(false);
-            })
-            .catch((err) => {
-                setIsLoading(false);
-                setError('Not all incidents and/or defects are available. Refresh the page to try again.');
-                // eslint-disable-next-line no-console
-                console.error(err);
-            });
-    }, [isApplyClicked]);
+        const applyFilters = () => {
+            const matchesPriority = (t) => selectedPriority === priorityDefaultValue || t.priority === selectedPriority;
+            const matchesBrand = (t) => selectedBrand === brandDefaultValue || t.Brand === selectedBrand;
+            const matchesStatus = (t) => selectedStatus === statusDefaultValue || t.status === selectedStatus;
+            const matchesTag = (t) => !selectedCovidTag || t.tag.includes('covid-19');
+            const filterTickets = (t) => matchesPriority(t) && matchesBrand(t) && matchesStatus(t) && matchesTag(t);
+            // incidents
+            setFilteredUniqueIncidents([...allUniqueIncidents].filter(filterTickets));
+            setFilteredAllIncidents([...allIncidents].filter(filterTickets));
+            // defects
+            setFilteredUniqueDefects([...allUniqueDefects].filter(filterTickets));
+            setIsDirtyForm(false);
+        };
 
-    useEffect(() => {
         applyFilters();
     }, [allUniqueIncidents, allIncidents, allUniqueDefects, allDefects]);
 
