@@ -78,9 +78,16 @@ class DataTableWrapper extends Component {
                 const sortLogic = (aItem, bItem) => {
                     const aValue = typeof aItem === 'string' ? aItem.toLowerCase() : aItem;
                     const bValue = typeof bItem === 'string' ? bItem.toLowerCase() : bItem;
-                    return sortDirection === 'DESC'
-                        ? aValue - bValue
-                        : bValue - aValue;
+
+                    if (aValue > bValue) {
+                        return sortDirection === 'DESC' ? -1 : 1;
+                    }
+
+                    if (aValue < bValue) {
+                        return sortDirection === 'DESC' ? 1 : -1;
+                    }
+
+                    return 0;
                 };
 
                 if (isTimeDurationColumn(sortName)) {
