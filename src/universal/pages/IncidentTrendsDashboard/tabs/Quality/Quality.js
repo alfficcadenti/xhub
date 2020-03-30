@@ -31,7 +31,16 @@ const getPieData = (filteredDefects, property) => {
     return Object.entries(counts).map(([name, value]) => ({name, value}));
 };
 
-const renderContent = (startDate, endDate, filteredDefects, selectedCovidTag) => {
+const renderContent = (
+    startDate,
+    endDate,
+    filteredDefects,
+    selectedCovidTag,
+    setIsApplyClicked,
+    handleBrandChange,
+    handleStatusChange,
+    handlePriorityChange
+) => {
     const {axisData, data} = getLineData(startDate, endDate, filteredDefects, 'openDate');
     const lineChartTitle = selectedCovidTag
         ? 'Defect Trends [covid-19]'
@@ -42,9 +51,30 @@ const renderContent = (startDate, endDate, filteredDefects, selectedCovidTag) =>
                 <LineChart title={lineChartTitle} info="Defects are bucketed by Opened date." data={data} xAxis={axisData} />
             </div>
             <div data-wdio="defects-pie-charts">
-                <PieChart data={getPieData(filteredDefects, 'Brand')} title="Brand" />
-                <PieChart data={getPieData(filteredDefects, 'Status')} title="Status" />
-                <PieChart data={getPieData(filteredDefects, 'priority')} title="Priority" />
+                <PieChart
+                    data={getPieData(filteredDefects, 'Brand')}
+                    title="Brand"
+                    setIsApplyClicked={setIsApplyClicked}
+                    handleBrandChange={handleBrandChange}
+                    handleStatusChange={handleStatusChange}
+                    handlePriorityChange={handlePriorityChange}
+                />
+                <PieChart
+                    data={getPieData(filteredDefects, 'Status')}
+                    title="Status"
+                    setIsApplyClicked={setIsApplyClicked}
+                    handleBrandChange={handleBrandChange}
+                    handleStatusChange={handleStatusChange}
+                    handlePriorityChange={handlePriorityChange}
+                />
+                <PieChart
+                    data={getPieData(filteredDefects, 'priority')}
+                    title="Priority"
+                    setIsApplyClicked={setIsApplyClicked}
+                    handleBrandChange={handleBrandChange}
+                    handleStatusChange={handleStatusChange}
+                    handlePriorityChange={handlePriorityChange}
+                />
             </div>
             {renderTable(filteredDefects)}
         </div>
@@ -55,11 +85,29 @@ const renderNoResults = () => (
     <p>{'No Results Found'}</p>
 );
 
-const Quality = ({startDate, endDate, filteredDefects, selectedCovidTag}) => (
+const Quality = ({
+    startDate,
+    endDate,
+    filteredDefects,
+    selectedCovidTag,
+    setIsApplyClicked,
+    handleBrandChange,
+    handleStatusChange,
+    handlePriorityChange
+}) => (
     <div data-wdio="quality-content">
         {
             filteredDefects.length
-                ? renderContent(startDate, endDate, filteredDefects, selectedCovidTag)
+                ? renderContent(
+                    startDate,
+                    endDate,
+                    filteredDefects,
+                    selectedCovidTag,
+                    setIsApplyClicked,
+                    handleBrandChange,
+                    handleStatusChange,
+                    handlePriorityChange
+                )
                 : renderNoResults()
         }
     </div>

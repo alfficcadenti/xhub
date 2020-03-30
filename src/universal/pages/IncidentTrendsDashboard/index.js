@@ -63,24 +63,25 @@ const IncidentTrendsDashboard = () => {
     const [filteredUniqueDefects, setFilteredUniqueDefects] = useState([]);
 
     const [isApplyClicked, setIsApplyClicked] = useState(false);
-    const [isLoading, error, allUniqueIncidents, allIncidents, allUniqueDefects, allDefects] = useFetchTickets(isApplyClicked, startDate, endDate);
+    // eslint-disable-next-line no-use-before-define
+    const [isLoading, error, allUniqueIncidents, allIncidents, allUniqueDefects, allDefects] = useFetchTickets(isApplyClicked, startDate, endDate, applyFilters, setIsApplyClicked);
     useSetCovidTag(setSelectedCovidTag);
 
-    useEffect(() => {
-        const applyFilters = () => {
-            const matchesPriority = (t) => selectedPriority === priorityDefaultValue || t.priority === selectedPriority;
-            const matchesBrand = (t) => selectedBrand === brandDefaultValue || t.Brand === selectedBrand;
-            const matchesStatus = (t) => selectedStatus === statusDefaultValue || t.status === selectedStatus;
-            const matchesTag = (t) => !selectedCovidTag || t.tag.includes('covid-19');
-            const filterTickets = (t) => matchesPriority(t) && matchesBrand(t) && matchesStatus(t) && matchesTag(t);
-            // incidents
-            setFilteredUniqueIncidents([...allUniqueIncidents].filter(filterTickets));
-            setFilteredAllIncidents([...allIncidents].filter(filterTickets));
-            // defects
-            setFilteredUniqueDefects([...allUniqueDefects].filter(filterTickets));
-            setIsDirtyForm(false);
-        };
+    function applyFilters() {
+        const matchesPriority = (t) => selectedPriority === priorityDefaultValue || t.priority === selectedPriority;
+        const matchesBrand = (t) => selectedBrand === brandDefaultValue || t.Brand === selectedBrand;
+        const matchesStatus = (t) => selectedStatus === statusDefaultValue || t.status === selectedStatus;
+        const matchesTag = (t) => !selectedCovidTag || t.tag.includes('covid-19');
+        const filterTickets = (t) => matchesPriority(t) && matchesBrand(t) && matchesStatus(t) && matchesTag(t);
+        // incidents
+        setFilteredUniqueIncidents([...allUniqueIncidents].filter(filterTickets));
+        setFilteredAllIncidents([...allIncidents].filter(filterTickets));
+        // defects
+        setFilteredUniqueDefects([...allUniqueDefects].filter(filterTickets));
+        setIsDirtyForm(false);
+    }
 
+    useEffect(() => {
         applyFilters();
     }, [allUniqueIncidents, allIncidents, allUniqueDefects, allDefects]);
 
@@ -130,7 +131,17 @@ const IncidentTrendsDashboard = () => {
             case 2:
                 return <Top5 filteredIncidents={filteredUniqueIncidents} />;
             case 3:
-                return <Quality startDate={startDate} endDate={endDate} filteredDefects={filteredUniqueDefects} selectedCovidTag={selectedCovidTag}/>;
+                return (
+                    <Quality
+                        startDate={startDate}
+                        endDate={endDate}
+                        filteredDefects={filteredUniqueDefects}
+                        selectedCovidTag={selectedCovidTag}
+                        setIsApplyClicked={setIsApplyClicked}
+                        handleBrandChange={handleBrandChange}
+                        handleStatusChange={handleStatusChange}
+                        handlePriorityChange={handlePriorityChange}
+                    />);
             case 4:
                 return <FinancialImpact filteredIncidents={filteredAllIncidents} />;
             default:
@@ -158,7 +169,7 @@ const IncidentTrendsDashboard = () => {
                     type="button"
                     className="btn btn-primary active"
                     onClick={() => {
-                        setIsApplyClicked(!isApplyClicked);
+                        setIsApplyClicked(true);
                     }}
                     disabled={!isDirtyForm}
                 >
