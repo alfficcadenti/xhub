@@ -65,7 +65,7 @@ const IncidentTrendsDashboard = () => {
 
     const [isApplyClicked, setIsApplyClicked] = useState(false);
     const [currentPriorities, seCurrentPriorities] = useState([]);
-    const [currentStatuses, seCurrentStatuses] = useState([]);
+    // const [currentStatuses, seCurrentStatuses] = useState([]);
     const [
         isLoading,
         error,
@@ -75,16 +75,13 @@ const IncidentTrendsDashboard = () => {
         allDefects,
         incidentsPriorities,
         defectsPriorities,
-        incidentsStatuses,
-        defectsStatuses,
     ] = useFetchTickets(
         isApplyClicked,
         startDate,
         endDate,
         applyFilters,
         setIsApplyClicked,
-        seCurrentPriorities,
-        seCurrentStatuses
+        seCurrentPriorities
     );
     useSetCovidTag(setSelectedCovidTag);
 
@@ -112,15 +109,15 @@ const IncidentTrendsDashboard = () => {
         switch (activeLinkIndex) {
             case 1:
                 seCurrentPriorities(incidentsPriorities);
-                seCurrentStatuses(incidentsStatuses);
+                // seCurrentStatuses(incidentsStatuses);
                 break;
             case 3:
                 seCurrentPriorities(defectsPriorities);
-                seCurrentStatuses(defectsStatuses);
+                // seCurrentStatuses(defectsStatuses);
                 break;
             default:
                 seCurrentPriorities(incidentsPriorities);
-                seCurrentStatuses(incidentsStatuses);
+                // seCurrentStatuses(incidentsStatuses);
         }
     };
 
