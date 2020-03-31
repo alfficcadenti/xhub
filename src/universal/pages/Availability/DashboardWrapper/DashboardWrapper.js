@@ -32,9 +32,9 @@ const renderThreshold = (threshold) => {
     if (typeof threshold === 'object') {
         return (
             <span className="threshold-values">
-                {threshold.Green && <div><span>{'Green:'}</span><span>{threshold.Green}</span></div>}
-                {threshold.Yellow && <div><span>{'Yellow:'}</span><span>{threshold.Yellow}</span></div>}
-                {threshold.Red && <div><span>{'Red:'}</span><span>{threshold.Red}</span></div>}
+                {threshold.Green && <div><span>{'Green:'}</span><span className="span-values">{threshold.Green}</span></div>}
+                {threshold.Yellow && <div><span>{'Yellow:'}</span><span className="span-values">{threshold.Yellow}</span></div>}
+                {threshold.Red && <div><span>{'Red:'}</span><span className="span-values">{threshold.Red}</span></div>}
             </span>
         );
     }
