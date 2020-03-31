@@ -7,14 +7,14 @@ import FilterDropDown from '../../components/FilterDropDown';
 import {Navigation} from '@homeaway/react-navigation';
 import DatePicker from '../../components/DatePicker/index';
 import {Checkbox} from '@homeaway/react-form-components';
-import {DATE_FORMAT, BRANDS, ALL_STATUSES} from './constants';
+import {DATE_FORMAT, BRANDS, ALL_STATUSES, ALL_PRIORITIES_OPTION} from './constants';
 import {Incidents, Overview, Top5, Quality, FinancialImpact} from './tabs/index';
 import {useFetchTickets, useSetCovidTag} from './hooks';
 import './styles.less';
 
 const statusDefaultValue = 'All Statuses';
 const brandDefaultValue = 'All Brands';
-const priorityDefaultValue = 'All - P1, P2 & P3';
+const priorityDefaultValue = ALL_PRIORITIES_OPTION;
 const covidTagDefaultValue = true;
 const startDateDefaultValue = moment().subtract(90, 'days').format(DATE_FORMAT);
 const endDateDefaultValue = moment().format(DATE_FORMAT);
