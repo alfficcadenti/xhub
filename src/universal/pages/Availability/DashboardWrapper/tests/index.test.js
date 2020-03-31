@@ -33,6 +33,6 @@ describe('<DashboardWrapper />', () => {
                 threshold={props.threshold}
                 monitoring={'Splunk'}
             />);
-        expect(wrapper.find('div#splunk-instructions')).to.have.length(1);
+        expect(wrapper.find('div.instructions')).to.have.length(1);
     });
 });
