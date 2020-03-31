@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 import React, {Fragment, useState, useEffect} from 'react';
 import moment from 'moment';
 import 'moment-timezone';
@@ -6,14 +7,14 @@ import FilterDropDown from '../../components/FilterDropDown';
 import {Navigation} from '@homeaway/react-navigation';
 import DatePicker from '../../components/DatePicker/index';
 import {Checkbox} from '@homeaway/react-form-components';
-import {DATE_FORMAT, PRIORITIES, BRANDS, ALL_STATUSES} from './constants';
+import {DATE_FORMAT, BRANDS, ALL_STATUSES, ALL_PRIORITIES_OPTION} from './constants';
 import {Incidents, Overview, Top5, Quality, FinancialImpact} from './tabs/index';
 import {useFetchTickets, useSetCovidTag} from './hooks';
 import './styles.less';
 
 const statusDefaultValue = 'All Statuses';
 const brandDefaultValue = 'All Brands';
-const priorityDefaultValue = 'All - P1, P2 & P3';
+const priorityDefaultValue = ALL_PRIORITIES_OPTION;
 const covidTagDefaultValue = true;
 const startDateDefaultValue = moment().subtract(90, 'days').format(DATE_FORMAT);
 const endDateDefaultValue = moment().format(DATE_FORMAT);
@@ -63,8 +64,24 @@ const IncidentTrendsDashboard = () => {
     const [filteredUniqueDefects, setFilteredUniqueDefects] = useState([]);
 
     const [isApplyClicked, setIsApplyClicked] = useState(false);
-    // eslint-disable-next-line no-use-before-define
-    const [isLoading, error, allUniqueIncidents, allIncidents, allUniqueDefects, allDefects] = useFetchTickets(isApplyClicked, startDate, endDate, applyFilters, setIsApplyClicked);
+    const [currentPriorities, seCurrentPriorities] = useState([]);
+    const [
+        isLoading,
+        error,
+        allUniqueIncidents,
+        allIncidents,
+        allUniqueDefects,
+        allDefects,
+        incidentsPriorities,
+        defectsPriorities,
+    ] = useFetchTickets(
+        isApplyClicked,
+        startDate,
+        endDate,
+        applyFilters,
+        setIsApplyClicked,
+        seCurrentPriorities
+    );
     useSetCovidTag(setSelectedCovidTag);
 
     function applyFilters() {
@@ -85,7 +102,20 @@ const IncidentTrendsDashboard = () => {
         applyFilters();
     }, [allUniqueIncidents, allIncidents, allUniqueDefects, allDefects]);
 
-    const handleNavigationClick = (e, activeLinkIndex) => setActiveIndex(activeLinkIndex);
+    const handleNavigationClick = (e, activeLinkIndex) => {
+        setActiveIndex(activeLinkIndex);
+
+        switch (activeLinkIndex) {
+            case 1:
+                seCurrentPriorities(incidentsPriorities);
+                break;
+            case 3:
+                seCurrentPriorities(defectsPriorities);
+                break;
+            default:
+                seCurrentPriorities(incidentsPriorities);
+        }
+    };
 
     const handleDateRangeChange = (start, end) => {
         setStartDate(start || startDate);
@@ -160,7 +190,7 @@ const IncidentTrendsDashboard = () => {
                     handleDateRangeChange={handleDateRangeChange}
                     handleClearDates={handleClearDates}
                 />
-                <FilterDropDown id="priority-dropdown" list={PRIORITIES} selectedValue={selectedPriority} onClickHandler={handlePriorityChange}/>
+                <FilterDropDown id="priority-dropdown" list={currentPriorities} selectedValue={selectedPriority} onClickHandler={handlePriorityChange}/>
                 <FilterDropDown id="brand-dropdown" list={BRANDS} selectedValue={selectedBrand} onClickHandler={handleBrandChange}/>
                 <FilterDropDown id="status-dropdown" list={ALL_STATUSES} selectedValue={selectedStatus} onClickHandler={handleStatusChange}/>
                 <Checkbox name="covid-19" label="covid-19" checked={selectedCovidTag} onChange={handleCovidTagChange}/>

@@ -1,5 +1,6 @@
 import {useState, useEffect, useRef} from 'react';
-import {adjustTicketProperties, getUniqueTickets} from './incidentsHelper';
+import {adjustTicketProperties, getListOfUniqueProperties, getUniqueTickets} from './incidentsHelper';
+import {ALL_PRIORITIES_OPTION} from './constants';
 
 
 export const useSetCovidTag = (setSelectedCovidTag) => {
@@ -19,7 +20,14 @@ export const useIsMount = () => {
     return isMountRef.current;
 };
 
-export const useFetchTickets = (isApplyClicked, startDate, endDate, applyFilters, setIsApplyClicked) => {
+export const useFetchTickets = (
+    isApplyClicked,
+    startDate,
+    endDate,
+    applyFilters,
+    setIsApplyClicked,
+    seCurrentPriorities
+) => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
     const [allUniqueIncidents, setAllUniqueIncidents] = useState([]);
@@ -28,6 +36,13 @@ export const useFetchTickets = (isApplyClicked, startDate, endDate, applyFilters
     const [allDefects, setAllDefects] = useState([]);
     const [lastStartDate, setLastStartDate] = useState('');
     const [lastEndDate, setLastEndDate] = useState('');
+
+    const [incidentsPriorities, setIncidentsPriorities] = useState([]);
+    const [defectsPriorities, setDefectsPriorities] = useState([]);
+
+    const [incidentsStatuses, setIncidentsStatuses] = useState([]);
+    const [defectsStatuses, setDefectsStatuses] = useState([]);
+
     const isMount = useIsMount();
 
     useEffect(() => {
@@ -41,11 +56,30 @@ export const useFetchTickets = (isApplyClicked, startDate, endDate, applyFilters
                 .then(([incidents, defects]) => {
                     // incidents
                     const uniqueIncidents = getUniqueTickets(incidents, 'incidentNumber');
-                    setAllUniqueIncidents(adjustTicketProperties(uniqueIncidents, 'incident'));
+
+                    const adjustedUniqueIncidents = adjustTicketProperties(uniqueIncidents, 'incident');
+                    const incPriorities = getListOfUniqueProperties(adjustedUniqueIncidents, 'priority').sort();
+                    const incStatuses = getListOfUniqueProperties(adjustedUniqueIncidents, 'Status');
+
+                    setIncidentsPriorities([ALL_PRIORITIES_OPTION, ...incPriorities]);
+                    setIncidentsStatuses(incStatuses);
+
+                    setAllUniqueIncidents(adjustedUniqueIncidents);
                     setAllIncidents(incidents);
+
+                    // set priorities for default tab (currently it's an incidents tab (index 1))
+                    seCurrentPriorities([ALL_PRIORITIES_OPTION, ...incPriorities]);
                     // defects
                     const uniqueDefects = getUniqueTickets(defects, 'defectNumber');
-                    setAllUniqueDefects(adjustTicketProperties(uniqueDefects, 'defect'));
+
+                    const adjustedUniqueDefects = adjustTicketProperties(uniqueDefects, 'defect');
+                    const defPriorities = getListOfUniqueProperties(adjustedUniqueDefects, 'priority').sort();
+                    const defStatuses = getListOfUniqueProperties(adjustedUniqueDefects, 'Status');
+
+                    setDefectsPriorities([ALL_PRIORITIES_OPTION, ...defPriorities]);
+                    setDefectsStatuses(defStatuses);
+
+                    setAllUniqueDefects(adjustedUniqueDefects);
                     setAllDefects(defects);
                     setIsLoading(false);
                 })
@@ -72,5 +106,16 @@ export const useFetchTickets = (isApplyClicked, startDate, endDate, applyFilters
         };
     }, [isApplyClicked, startDate, endDate]);
 
-    return [isLoading, error, allUniqueIncidents, allIncidents, allUniqueDefects, allDefects];
+    return [
+        isLoading,
+        error,
+        allUniqueIncidents,
+        allIncidents,
+        allUniqueDefects,
+        allDefects,
+        incidentsPriorities,
+        defectsPriorities,
+        incidentsStatuses,
+        defectsStatuses,
+    ];
 };
