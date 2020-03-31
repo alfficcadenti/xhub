@@ -38,7 +38,7 @@ const renderThreshold = (threshold) => {
             </span>
         );
     }
-    return threshold;
+    return (<span className="threshold-values">{threshold}</span>);
 };
 
 const renderIframes = (urls) => (
