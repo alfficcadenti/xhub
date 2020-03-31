@@ -65,7 +65,6 @@ const IncidentTrendsDashboard = () => {
 
     const [isApplyClicked, setIsApplyClicked] = useState(false);
     const [currentPriorities, seCurrentPriorities] = useState([]);
-    // const [currentStatuses, seCurrentStatuses] = useState([]);
     const [
         isLoading,
         error,
@@ -109,15 +108,12 @@ const IncidentTrendsDashboard = () => {
         switch (activeLinkIndex) {
             case 1:
                 seCurrentPriorities(incidentsPriorities);
-                // seCurrentStatuses(incidentsStatuses);
                 break;
             case 3:
                 seCurrentPriorities(defectsPriorities);
-                // seCurrentStatuses(defectsStatuses);
                 break;
             default:
                 seCurrentPriorities(incidentsPriorities);
-                // seCurrentStatuses(incidentsStatuses);
         }
     };
 

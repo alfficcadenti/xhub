@@ -25,8 +25,7 @@ export const useFetchTickets = (
     endDate,
     applyFilters,
     setIsApplyClicked,
-    seCurrentPriorities,
-    seCurrentStatuses
+    seCurrentPriorities
 ) => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
@@ -69,7 +68,6 @@ export const useFetchTickets = (
 
                     // set priorities and statuses for default tab (currently it's an incidents tab (index 1))
                     seCurrentPriorities(incPriorities);
-                    seCurrentStatuses(incStatuses);
                     // defects
                     const uniqueDefects = getUniqueTickets(defects, 'defectNumber');
 
