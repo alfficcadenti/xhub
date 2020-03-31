@@ -58,7 +58,7 @@ export const useFetchTickets = (
                     const uniqueIncidents = getUniqueTickets(incidents, 'incidentNumber');
 
                     const adjustedUniqueIncidents = adjustTicketProperties(uniqueIncidents, 'incident');
-                    const incPriorities = getListOfUniqueProperties(adjustedUniqueIncidents, 'priority');
+                    const incPriorities = getListOfUniqueProperties(adjustedUniqueIncidents, 'priority').sort();
                     const incStatuses = getListOfUniqueProperties(adjustedUniqueIncidents, 'Status');
 
                     setIncidentsPriorities([...incPriorities, ALL_PRIORITIES_OPTION]);
@@ -73,7 +73,7 @@ export const useFetchTickets = (
                     const uniqueDefects = getUniqueTickets(defects, 'defectNumber');
 
                     const adjustedUniqueDefects = adjustTicketProperties(uniqueDefects, 'defect');
-                    const defPriorities = getListOfUniqueProperties(adjustedUniqueDefects, 'priority');
+                    const defPriorities = getListOfUniqueProperties(adjustedUniqueDefects, 'priority').sort();
                     const defStatuses = getListOfUniqueProperties(adjustedUniqueDefects, 'Status');
 
                     setDefectsPriorities([...defPriorities, ALL_PRIORITIES_OPTION]);
