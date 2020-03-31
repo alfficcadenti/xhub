@@ -24,14 +24,14 @@ const props = [
 ];
 
 describe('<DashboardWrapper />', () => {
-    it('renders successfully a div with id #home-buttons-container', () => {
+    it('renders successfully a div with className .availability-buttons-container', () => {
         const wrapper = shallow(
             <AvailabilityHome links={props} />
         );
-        expect(wrapper.find('div#home-buttons-container')).to.have.length(1);
+        expect(wrapper.find('div.availability-buttons-container')).to.have.length(1);
     });
 
-    it('renders successfully a div with id #home-buttons-container', () => {
+    it('renders successfully a div with className .dashboard-button', () => {
         const wrapper = shallow(
             <AvailabilityHome links={props} />);
         expect(wrapper.find('.dashboard-button')).to.have.length(2);
