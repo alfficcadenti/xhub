@@ -6,15 +6,22 @@ import './styles.less';
 
 const Availability = () => {
     const [currentDashboard, setCurrentDashboard] = useState();
-
-    const useSetCurrentDashboard = () => {
-        const query = new URLSearchParams(window.location.search);
-        setCurrentDashboard(query.get('dashboard'));
-    };
+    const [linkChanged, setLinkChanged] = useState(false);
 
     useEffect(() => {
-        useSetCurrentDashboard();
-    }, []);
+        const setDashboardValue = () => {
+            const query = new URLSearchParams(window.location.search);
+            setCurrentDashboard(query.get('dashboard'));
+        };
+
+        if (linkChanged) {
+            setDashboardValue();
+        }
+
+        return () => {
+            setLinkChanged(false);
+        };
+    }, [linkChanged]);
 
     const links = [
         {
@@ -157,7 +164,7 @@ const Availability = () => {
     return (
         <div className="availability-container">
             <nav className="availability-nav-bar">
-                <SideBarComponent links={links} onClick={useSetCurrentDashboard} />
+                <SideBarComponent links={links} onClick={() => setLinkChanged(true)} />
             </nav>
             <section className="availability-section">
                 <DashboardWrapper
