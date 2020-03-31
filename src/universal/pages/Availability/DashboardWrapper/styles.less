@@ -1,0 +1,51 @@
+#dashboard-wrapper-component {
+  height: 100%;
+  margin-left: 25%;
+  width: 75%;
+  h1 {
+    margin: 20px;
+  }
+
+  #dashboard-wrapper-content {
+    width: 95%;
+    margin: 20px;
+    text-align: center;
+    display: inline-grid;
+  }
+
+  #dashboard-wrapper-details,
+  .instructions {
+    text-align: left;
+    margin: 20px 100px 10px 130px;
+  }
+
+  .threshold-details {
+    display: inline-flex;
+    .threshold-values {
+      margin: 0 5px 10px 5px;
+      display: table;
+      div {
+        display: table-row;
+        width: 100%;
+        justify-content: flex-end;
+        span {
+          display: table-cell;
+          min-width: 20px;
+        }
+        .span-values {
+          padding: 0 5px 0 10px;
+        }
+      }
+    }
+  }
+
+  #iframes {
+    width: 100%;
+    display: inline-block;
+    .iframe {
+      position: fixed;
+      min-height: 50%;
+      width: 100%;
+    }
+  }
+}

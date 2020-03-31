@@ -45,7 +45,7 @@ class ResiliencyQuestions extends Component {
     renderRegionQuestion = (id, question, values, defaultValue) => (
         <div id="region-question-div" className="form-control form-group">
             <label htmlFor="region-question-div" id="region-question-label" className="form-group floating-label label">
-                {question}:
+                {`${question}:`}
             </label>
             <form className="form-inline form-group" id={id}>
                 {
@@ -135,6 +135,7 @@ class ResiliencyQuestions extends Component {
 
     handleOptionClicked = (event) => this.props.saveRegions({[event.target.name]: event.target.checked})
 
+    // eslint-disable-next-line complexity
     renderQuestionType = (questionObj, lastQuestionnaire) => {
         const id = h.replaceSpaces(questionObj.question);
         const lastAnswer = lastQuestionnaire.find(({key}) => h.replaceSpaces(key) === id);
@@ -179,7 +180,7 @@ ResiliencyQuestions.propTypes = {
     questions: PropTypes.arrayOf(PropTypes.shape()),
     saveRegions: PropTypes.func,
     regions: PropTypes.shape(),
-    lastQuestionnaire: PropTypes.shape(PropTypes.shape())
+    lastQuestionnaire: PropTypes.arrayOf(PropTypes.shape())
 };
 
 export default ResiliencyQuestions;

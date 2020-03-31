@@ -10,7 +10,7 @@ describe('Quality component testing', () => {
 
     beforeEach(() => {
         wrapper = shallow(
-            <Quality filteredDefects={mockData}/>
+            <Quality filteredDefects={mockData} startDate={'2020-03-01'} endDate={'2020-03-30'} selectedCovidTag={false} />
         );
     });
 

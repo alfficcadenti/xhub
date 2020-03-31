@@ -5,7 +5,9 @@ module.exports = {
     options: {
         id: 'root',
         handler(request, h) {
-            return h.redirect('/login');
+            return (process.env.NODE_ENV === 'development')
+                ? h.redirect('/home')
+                : h.redirect('/login');
         }
     }
 };

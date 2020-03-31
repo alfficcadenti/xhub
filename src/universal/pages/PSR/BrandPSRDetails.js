@@ -76,6 +76,6 @@ class BrandPSRDetails extends PureComponent {
 }
 
 BrandPSRDetails.propTypes = {
-    data: PropTypes.array
+    data: PropTypes.arrayOf(PropTypes.shape())
 };
 export default BrandPSRDetails;

@@ -40,37 +40,21 @@ class InputNumber extends Component {
         return result;
     };
 
+    // eslint-disable-next-line complexity
     validation = (event) => {
-        const {
-            range,
-            type,
-        } = this.props;
-        if (type === 'integer') {
-            if (this.onlyInteger(event)) {
-                event.preventDefault();
-            }
-        } else if (this.decimals(event.target.value) && this.decimals(event.target.value).length >= 2) {
+        const {range, type} = this.props;
+        if (type === 'integer' && this.onlyInteger(event)
+            || this.decimals(event.target.value) && this.decimals(event.target.value).length >= 2
+            || range.min >= 0 && this.onlyPositives(event)) {
             event.preventDefault();
-        }
-        if (range.min >= 0) {
-            if (this.onlyPositives(event)) {
-                event.preventDefault();
-            }
         }
     };
 
     checkValue = (event) => {
         const {range} = this.props;
-
-        (this.outsideRange(event.target.value, Number(range.min), Number(range.max))) ?
-            this.setState({
-                error: 'Error: value is not valid',
-                value: event.target.value
-            }) :
-            this.setState({
-                value: event.target.value,
-                error: ''
-            });
+        (this.outsideRange(event.target.value, Number(range.min), Number(range.max)))
+            ? this.setState({value: event.target.value, error: 'Error: value is not valid'})
+            : this.setState({value: event.target.value, error: ''});
     }
 
     render() {
@@ -108,14 +92,14 @@ InputNumber.defaultProps = {
 };
 
 InputNumber.propTypes = {
-    id: PropTypes.string,
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     question: PropTypes.string,
     type: PropTypes.string,
     range: PropTypes.shape({
-        min: PropTypes.string,
-        max: PropTypes.string,
+        min: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        max: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
     }),
-    value: PropTypes.number
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 export default InputNumber;

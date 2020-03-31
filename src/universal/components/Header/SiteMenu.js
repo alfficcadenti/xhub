@@ -10,12 +10,16 @@ class SiteMenu extends Component {
                 text: 'Incident Trends'
             },
             {
+                link: '/psr',
+                text: 'Purchase Success Rate'
+            },
+            {
                 link: '/resiliency-questionnaire',
                 text: 'Resiliency Questionnaire'
             },
             {
-                link: '/psr',
-                text: 'Purchase Success Rate'
+                link: '/availability',
+                text: 'Availability'
             }
         ]
     }

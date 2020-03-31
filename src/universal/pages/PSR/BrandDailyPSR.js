@@ -26,7 +26,7 @@ class BrandDailyPSR extends Component {
         const classValue = selected ? 'brandPsr selected' : 'brandPsr';
 
         return (
-            <div className={classValue} key={brand + date} onClick={this.openDetails}>
+            <div className={classValue} key={brand + date} onClick={this.openDetails} onKeyDown={this.openDetails} role="button" tabIndex="0">
                 {
                     h.brandLogoFile(brand) ?
                         <img className="brandLogoImg" alt={`${brand}-logo`} src={h.brandLogoFile(brand)} height="35"/> :

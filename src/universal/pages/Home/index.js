@@ -20,6 +20,11 @@ const Home = () => {
             id: 'resiliency-questionnaire',
             link: '/resiliency-questionnaire',
             text: 'Resiliency Questionnaire'
+        },
+        {
+            id: 'availability',
+            link: '/availability',
+            text: 'Availability'
         }
     ];
     const renderButton = (item) => (
@@ -37,16 +42,17 @@ const Home = () => {
         </Link>
     );
 
-    const covidLink = () => (<Link
-        to={{pathname: '/incident-trends', search: '?covidFilter=true'}}
-        key={'link-covid-incidents'}
-    >
-        {'Monitor the incidents related to the COVID-19'}
-    </Link>);
+    const covidLink = () => (
+        <Link
+            to={{pathname: '/incident-trends', search: '?covidFilter=true'}}
+            key={'link-covid-incidents'}
+        >
+            {'Monitor the incidents related to the COVID-19'}
+        </Link>
+    );
 
     return (
         <Fragment>
-            <h1 className="page-title">{'OpXHub'}</h1>
             <div id="home-buttons-container">
                 {dashboardsList.map((item) => renderButton(item))}
             </div>

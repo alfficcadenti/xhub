@@ -75,6 +75,7 @@ class DataTableWrapper extends Component {
         const rows = this.dataList
             .slice().sort((a, b) => {
                 const {sortName, sortDirection} = this.state;
+                // eslint-disable-next-line complexity
                 const sortLogic = (aItem, bItem) => {
                     const aValue = typeof aItem === 'string' ? aItem.toLowerCase() : aItem;
                     const bValue = typeof bItem === 'string' ? bItem.toLowerCase() : bItem;

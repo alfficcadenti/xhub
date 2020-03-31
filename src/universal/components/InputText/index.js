@@ -26,7 +26,7 @@ class InputText extends Component {
 
         return (
             <FormTextArea
-                key={id}
+                key={id || 0}
                 id={id}
                 name={id}
                 label={question}
@@ -39,12 +39,11 @@ class InputText extends Component {
 }
 
 InputText.defaultProps = {
-    id: null,
     question: ''
 };
 
 InputText.propTypes = {
-    id: PropTypes.string,
+    id: PropTypes.string.isRequired,
     question: PropTypes.string,
 };
 

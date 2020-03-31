@@ -104,7 +104,7 @@ SavedQuestionnaire.propTypes = {
         PropTypes.shape()
     ]),
     isLoading: PropTypes.bool,
-    history: PropTypes.array
+    history: PropTypes.arrayOf(PropTypes.shape())
 };
 
 export default SavedQuestionnaire;

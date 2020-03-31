@@ -6,6 +6,7 @@ import Home from '../../pages/Home';
 import IncidentTrendsDashboard from '../../pages/IncidentTrendsDashboard';
 import ResiliencyQuestionnaire from '../../pages/ResiliencyQuestionnaire';
 import PSR from '../../pages/PSR';
+import Availability from '../../pages/Availability';
 
 function App() {
     return (
@@ -17,6 +18,7 @@ function App() {
                     <Route path="/incident-trends" render={() => <IncidentTrendsDashboard/>}/>
                     <Route path="/resiliency-questionnaire" render={() => <ResiliencyQuestionnaire />}/>
                     <Route path="/psr" render={() => <PSR />}/>
+                    <Route path="/availability" render={() => <Availability />}/>
                 </Switch>
             </div>
         </Fragment>
