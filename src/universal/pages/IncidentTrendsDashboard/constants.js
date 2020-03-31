@@ -3,7 +3,7 @@ exports.RC_PORTFOLIO_GROUPS = 'All RootCause Portfolio Groups';
 exports.IMPACTED_PORTFOLIOS = 'All Impacted Portfolios';
 exports.IMPACTED_PORTFOLIO_GROUPS = 'All Impacted Portfolio Groups';
 exports.DATE_FORMAT = 'YYYY-MM-DD';
-exports.ALL_PRIORITIES_OPTION = 'All - P1, P2 & P3';
+exports.ALL_PRIORITIES_OPTION = 'All priorities';
 exports.FETCH_OPTION = {Accept: 'application/json', 'Content-Type': 'application/json'};
 exports.BRANDS = [
     'All Brands',
