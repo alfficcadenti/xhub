@@ -1,0 +1,41 @@
+@import "../../mixins.less";
+
+.availability-container {
+    margin-top: -@spacing-6x;
+}
+
+.availability-nav-bar {
+    height: 100%; /* 100% Full-height */
+    overflow-y: scroll;
+    width: 25%; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Stay on top */
+    top: @spacing-5x; /* Stay at the top */
+    left: 0;
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 60px; /* Place content 60px from the top */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+    text-align: left;
+    padding: 10px;
+    padding-bottom: 80px;
+
+    a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+    }
+
+    .Navigation--vertical .Navigation__a {
+        font-size: 80%;
+    }
+}
+
+.availability-section {
+    width: 100%; /* 0 width - change this with JavaScript */
+    z-index: 1; /* Stay on top */
+    right: 0;
+    transition: .5s;
+    text-align: center;
+}

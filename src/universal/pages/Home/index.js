@@ -20,6 +20,11 @@ const Home = () => {
             id: 'resiliency-questionnaire',
             link: '/resiliency-questionnaire',
             text: 'Resiliency Questionnaire'
+        },
+        {
+            id: 'availability',
+            link: '/availability',
+            text: 'Availability'
         }
     ];
     const renderButton = (item) => (
@@ -48,7 +53,6 @@ const Home = () => {
 
     return (
         <Fragment>
-            <h1 className="page-title">{'OpXHub'}</h1>
             <div id="home-buttons-container">
                 {dashboardsList.map((item) => renderButton(item))}
             </div>
