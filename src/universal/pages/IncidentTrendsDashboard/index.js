@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 import React, {Fragment, useState, useEffect} from 'react';
 import moment from 'moment';
 import 'moment-timezone';
@@ -6,7 +7,7 @@ import FilterDropDown from '../../components/FilterDropDown';
 import {Navigation} from '@homeaway/react-navigation';
 import DatePicker from '../../components/DatePicker/index';
 import {Checkbox} from '@homeaway/react-form-components';
-import {DATE_FORMAT, BRANDS} from './constants';
+import {DATE_FORMAT, BRANDS, ALL_STATUSES} from './constants';
 import {Incidents, Overview, Top5, Quality, FinancialImpact} from './tabs/index';
 import {useFetchTickets, useSetCovidTag} from './hooks';
 import './styles.less';
@@ -48,7 +49,7 @@ const navLinks = [
 
 
 const IncidentTrendsDashboard = () => {
-    const [activeIndex, setActiveIndex] = useState(0);
+    const [activeIndex, setActiveIndex] = useState(1);
     const [selectedStatus, setSelectedStatus] = useState(statusDefaultValue);
     const [selectedBrand, setSelectedBrand] = useState(brandDefaultValue);
     const [selectedCovidTag, setSelectedCovidTag] = useState(covidTagDefaultValue);
@@ -63,7 +64,8 @@ const IncidentTrendsDashboard = () => {
     const [filteredUniqueDefects, setFilteredUniqueDefects] = useState([]);
 
     const [isApplyClicked, setIsApplyClicked] = useState(false);
-    // eslint-disable-next-line no-use-before-define
+    const [currentPriorities, seCurrentPriorities] = useState([]);
+    const [currentStatuses, seCurrentStatuses] = useState([]);
     const [
         isLoading,
         error,
@@ -75,11 +77,16 @@ const IncidentTrendsDashboard = () => {
         defectsPriorities,
         incidentsStatuses,
         defectsStatuses,
-    ] = useFetchTickets(isApplyClicked, startDate, endDate, applyFilters, setIsApplyClicked);
+    ] = useFetchTickets(
+        isApplyClicked,
+        startDate,
+        endDate,
+        applyFilters,
+        setIsApplyClicked,
+        seCurrentPriorities,
+        seCurrentStatuses
+    );
     useSetCovidTag(setSelectedCovidTag);
-
-    const [currentPriorities, seCurrentPriorities] = useState([]);
-    const [currentStatuses, seCurrentStatuses] = useState([]);
 
     function applyFilters() {
         const matchesPriority = (t) => selectedPriority === priorityDefaultValue || t.priority === selectedPriority;
@@ -192,7 +199,7 @@ const IncidentTrendsDashboard = () => {
                 />
                 <FilterDropDown id="priority-dropdown" list={currentPriorities} selectedValue={selectedPriority} onClickHandler={handlePriorityChange}/>
                 <FilterDropDown id="brand-dropdown" list={BRANDS} selectedValue={selectedBrand} onClickHandler={handleBrandChange}/>
-                <FilterDropDown id="status-dropdown" list={currentStatuses} selectedValue={selectedStatus} onClickHandler={handleStatusChange}/>
+                <FilterDropDown id="status-dropdown" list={ALL_STATUSES} selectedValue={selectedStatus} onClickHandler={handleStatusChange}/>
                 <Checkbox name="covid-19" label="covid-19" checked={selectedCovidTag} onChange={handleCovidTagChange}/>
                 <button
                     id="applyButton"

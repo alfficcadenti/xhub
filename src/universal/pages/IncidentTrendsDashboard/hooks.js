@@ -19,7 +19,15 @@ export const useIsMount = () => {
     return isMountRef.current;
 };
 
-export const useFetchTickets = (isApplyClicked, startDate, endDate, applyFilters, setIsApplyClicked) => {
+export const useFetchTickets = (
+    isApplyClicked,
+    startDate,
+    endDate,
+    applyFilters,
+    setIsApplyClicked,
+    seCurrentPriorities,
+    seCurrentStatuses
+) => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
     const [allUniqueIncidents, setAllUniqueIncidents] = useState([]);
@@ -58,6 +66,10 @@ export const useFetchTickets = (isApplyClicked, startDate, endDate, applyFilters
 
                     setAllUniqueIncidents(adjustedUniqueIncidents);
                     setAllIncidents(incidents);
+
+                    // set priorities and statuses for default tab (currently it's an incidents tab (index 1))
+                    seCurrentPriorities(incPriorities);
+                    seCurrentStatuses(incStatuses);
                     // defects
                     const uniqueDefects = getUniqueTickets(defects, 'defectNumber');
 

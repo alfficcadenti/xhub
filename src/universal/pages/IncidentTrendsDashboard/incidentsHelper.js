@@ -14,7 +14,6 @@ export const adjustTicketProperties = (tickets = [], type = 'incident') => {
     return tickets.map((t) => {
         const result = {
             ...t,
-            'priority': convertPriorityFormat(t.priority),
             'Brand': divisionToBrand(t.brand),
             'Division': t.brand,
             'Status': t.status
@@ -33,19 +32,6 @@ export const adjustTicketProperties = (tickets = [], type = 'incident') => {
         }
         return (result);
     });
-};
-
-export const convertPriorityFormat = (priority = '') => {
-    switch (priority) {
-        case 'P1 - Blocker':
-            return '1-Critical';
-        case 'P2 - Major':
-            return '2-High';
-        case 'P3 - Normal':
-            return '3-Medium';
-        default:
-            return priority;
-    }
 };
 
 export const divisionToBrand = (division = '') => {
