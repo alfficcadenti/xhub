@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import React from 'react';
 import Iframe from 'react-iframe';
 import './styles.less';
@@ -18,13 +19,27 @@ const renderSplunkInfo = (urls) => (
     </div>
 );
 
+const renderThreshold = (threshold) => {
+    if (typeof threshold === 'object') {
+        return (
+            <span className="threshold-values">
+                {threshold.Green && <div>{`Green: ${threshold.Green}`}</div>}
+                {threshold.Yellow && <div>{`Yellow: ${threshold.Yellow}`}</div>}
+                { threshold.Red && <div>{`Red: ${threshold.Red}`}</div>}
+            </span>
+        );
+    }
+    return threshold;
+};
+
 const DashboardWrapper = ({label, frequency, threshold, urls, monitoring}) => {
     return (<div id="dashboard-wrapper-component">
         <h1>{label}</h1>
         <div id="dashboard-wrapper-content">
             <div id="dashboard-wrapper-details">
                 <div><b>{'Frequency:'}</b> {frequency}</div>
-                <div><b>{'Threshold:'}</b> {threshold}</div>
+                <div className="threshold-details">
+                    <span><b>{'Threshold:'}</b></span> {renderThreshold(threshold)}</div>
                 <span />
             </div>
             {
