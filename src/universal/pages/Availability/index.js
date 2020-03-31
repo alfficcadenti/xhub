@@ -30,7 +30,7 @@ const Availability = () => {
             label: 'Change Availability',
             urls: ['https://chsxsplsrc903/en-US/app/search/covid19_health'],
             frequency: '3 hr',
-            threshold: 'Green Status 500 <40/hr Yellow Status 500 40-50/hr Red Status 500 >50/hr',
+            threshold: {Green: 'Status 500 <40/hr', Yellow: 'Status 500 40-50/hr', Red: 'Status 500 >50/hr'},
             monitoring: 'Splunk'
         },
         {
@@ -39,7 +39,7 @@ const Availability = () => {
             label: 'Cancel Availability',
             urls: ['https://chsxsplsrc903/en-US/app/search/covid19_health'],
             frequency: '3 hr',
-            threshold: 'Green Status 500 <40/hr Yellow Status 500 40-50/hr Red Status 500 >50/hr',
+            threshold: {Green: 'Status 500 <40/hr', Yellow: 'Status 500 40-50/hr', Red: 'Status 500 >50/hr'},
             monitoring: 'Splunk'
         },
         {
@@ -48,7 +48,7 @@ const Availability = () => {
             label: 'Conversation Platform Downstream Service Health',
             urls: ['https://chsxsplsrc903/en-US/app/search/covid19_health'],
             frequency: '3 hr',
-            threshold: 'Service Success Green >99%  Yellow 95-99%  Red <95%',
+            threshold: {Green: '>99%', Yellow: '95-99%', Red: '<95%'},
             monitoring: 'Splunk'
         },
         {
@@ -69,7 +69,7 @@ const Availability = () => {
                 'https://netperf.tools.expedia.com/d/4SLdH6uZk/noc-covid-19-core-stability-metrics?orgId=1&from=now-3h&to=now'
             ],
             frequency: '3 hr',
-            threshold: 'Green <45% Yellow 45 - 50% Red >50%',
+            threshold: {Green: '<45%', Yellow: '45 - 50%', Red: '>50%'},
             monitoring: 'Netperf'
         },
         {
@@ -81,7 +81,7 @@ const Availability = () => {
                 'https://netperf.tools.expedia.com/d/4SLdH6uZk/noc-covid-19-core-stability-metrics?orgId=1&from=now-3h&to=now'
             ],
             frequency: '3 hr',
-            threshold: 'Green <45% Yellow 45 - 50% Red >50%',
+            threshold: {Green: '<45%', Yellow: '45 - 50%', Red: '>50%'},
             monitoring: 'Netperf'
         },
         {
@@ -93,7 +93,7 @@ const Availability = () => {
                 'https://netperf.tools.expedia.com/d/4SLdH6uZk/noc-covid-19-core-stability-metrics?orgId=1&from=now-3h&to=now'
             ],
             frequency: '3 hr',
-            threshold: 'Green <4k Yellow 4-5k Red >5k',
+            threshold: {Green: '<4k', Yellow: '4-5k', Red: '>5k'},
             monitoring: 'Netperf'
         },
         {
@@ -105,7 +105,7 @@ const Availability = () => {
                 'https://netperf.tools.expedia.com/d/4SLdH6uZk/noc-covid-19-core-stability-metrics?orgId=1&from=now-3h&to=now'
             ],
             frequency: '3 hr',
-            threshold: 'Green <4k Yellow 4-5k Red >5k',
+            threshold: {Green: '<4k', Yellow: '4-5k', Red: '>5k'},
             monitoring: 'Netperf'
         },
         {
@@ -116,7 +116,7 @@ const Availability = () => {
                 'https://splunk.prodp.egmonitoring.expedia.com/en-US/app/ecp-voice-dashboards/vap-voice-covid19?form.field1.earliest=-3d%40h&form.field1.latest=now'
             ],
             frequency: '3 hr',
-            threshold: 'Green <75/hr Yellow 75-100/h Red>100/hr',
+            threshold: {Green: '<75/hr', Yellow: '75-100/h', Red: '>100/hr'},
             monitoring: 'Splunk'
         },
         {
@@ -127,7 +127,7 @@ const Availability = () => {
                 'https://splunk.gco.expedia.com/en-US/app/Voyager/optimized_voyager_health?form.TimePicker.earliest=-60m%40m&form.TimePicker.latest=now'
             ],
             frequency: '3 hr',
-            threshold: 'Green <150/hr Yellow 150-200/h Red>200/hr',
+            threshold: {Green: '<150/hr', Yellow: '150-200/h', Red: '>200/hr'},
             monitoring: 'Splunk'
         },
         {
@@ -135,7 +135,7 @@ const Availability = () => {
             id: 'conversations-platform-health',
             label: 'Conversations Platform Health',
             urls: [
-                'https://grafana.sea.corp.expecn.com/d/3qE7RO9Wz/covid-19-health?orgId=1'
+                'http://grafana.sea.corp.expecn.com/d/3qE7RO9Wz/covid-19-health?orgId=1'
             ],
             frequency: '3 hr',
             threshold: 'Thresholds included in dashboard, reference availability percentage tiles',

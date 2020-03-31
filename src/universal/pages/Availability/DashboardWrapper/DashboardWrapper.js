@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import React from 'react';
 import Iframe from 'react-iframe';
 import './styles.less';
@@ -26,6 +27,19 @@ const renderCatchpointInfo = (urls) => (
         </ol>
     </div>
 );
+
+const renderThreshold = (threshold) => {
+    if (typeof threshold === 'object') {
+        return (
+            <span className="threshold-values">
+                {threshold.Green && <div><span>{'Green:'}</span><span className="span-values">{threshold.Green}</span></div>}
+                {threshold.Yellow && <div><span>{'Yellow:'}</span><span className="span-values">{threshold.Yellow}</span></div>}
+                {threshold.Red && <div><span>{'Red:'}</span><span className="span-values">{threshold.Red}</span></div>}
+            </span>
+        );
+    }
+    return (<span className="threshold-values">{threshold}</span>);
+};
 
 const renderIframes = (urls) => (
     <div id="iframes">
@@ -59,8 +73,8 @@ const DashboardWrapper = ({label, frequency, threshold, urls = [], monitoring}) 
         <div id="dashboard-wrapper-content">
             <div id="dashboard-wrapper-details">
                 <div><b>{'Frequency:'}</b> {frequency}</div>
-                <div><b>{'Threshold:'}</b> {threshold}</div>
-                <span />
+                <div className="threshold-details">
+                    <span><b>{'Threshold:'}</b></span> {renderThreshold(threshold)}</div>
             </div>
             {renderContent(monitoring, urls)}
         </div>
