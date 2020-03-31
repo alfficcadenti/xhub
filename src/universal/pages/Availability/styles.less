@@ -1,4 +1,4 @@
-@import "../../mixins.less";
+@import '../../mixins.less';
 
 .availability-container {
     margin-top: -@spacing-6x;
@@ -8,13 +8,14 @@
     height: 100%; /* 100% Full-height */
     overflow-y: scroll;
     width: 25%; /* 0 width - change this with JavaScript */
-    position: fixed; /* Stay in place */
+    border-right: @text-color 1px solid;
+    position: absolute; /* Stay in place */
     z-index: 1; /* Stay on top */
-    top: @spacing-5x; /* Stay at the top */
+    top: @spacing-6x; /* Stay at the top */
     left: 0;
     overflow-x: hidden; /* Disable horizontal scroll */
     padding-top: 60px; /* Place content 60px from the top */
-    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+    transition: .5s; /* 0.5 second transition effect to slide in the sidenav */
     text-align: left;
     padding: 10px;
     padding-bottom: 80px;
@@ -24,11 +25,16 @@
         text-decoration: none;
         color: #818181;
         display: block;
-        transition: 0.3s;
+        transition: .3s;
     }
 
     .Navigation--vertical .Navigation__a {
         font-size: 80%;
+    }
+
+    .Divider__title-text {
+        font-weight: 800;
+        color: @text-color;
     }
 }
 

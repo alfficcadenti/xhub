@@ -21,7 +21,6 @@ const SideBarComponent = ({links, onClick}) => {
                     ))}
                 </Divider>
             ))}
-
         </div>
     );
 };

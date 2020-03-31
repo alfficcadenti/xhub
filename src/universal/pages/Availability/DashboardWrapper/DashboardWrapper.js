@@ -4,18 +4,27 @@ import Iframe from 'react-iframe';
 import './styles.less';
 
 const renderSplunkInfo = (urls) => (
-    <div id="splunk-instructions">
-        <h4>{"Splunk instruction's"}</h4>
+    <div className="instructions">
+        <h4>{'Splunk instructions'}</h4>
         <ol>
-            <li>{'remote desktop to'} <a href={'https://chajump.expeso.com'} target="_blank">{'chajump.expeso.com'}</a></li>
-            <li>{'logon with an expeso domain account'}</li>
-            <li>{'use DUO as 2FA'}</li>
-            <li>{'open a browser'}</li>
-            <li>{'navigate to splunk'}</li>
-            <li>{'logon with expeso account (has to have access)'}</li>
-            <a href={urls[0]} target="_blank">{'Link to Splunk Dashboard'}</a>
+            <li>{'Remote desktop to'} <a href={'https://chajump.expeso.com'} target="_blank">{'chajump.expeso.com'}</a></li>
+            <li>{'Logon with an expeso domain account'}</li>
+            <li>{'Once logged into Remote Desktop. Open Browser and use below Splunk Link.'}</li>
+            <a href={urls[0]} target="_blank">{urls[0]}</a>
         </ol>
+    </div>
+);
 
+const renderCatchpointInfo = (urls) => (
+    <div className="instructions">
+        <h4>{'Catchpoint instructions'}</h4>
+        <ol>
+            <li>{'Go to'} <a href={'https://portal.catchpoint.com'} target="_blank">{'https://portal.catchpoint.com'}</a></li>
+            <li>{'Enter "BEX" for Company Credentials (SSO) and click Login'}</li>
+            <li>{'Enter your SEA credentials and click "Sign in"'}</li>
+            <li>{'Dashboard\'s 20 thru 25 will provide the Site Availability for Last 7 days.'}</li>
+            <a href={urls[0]} target="_blank">{urls[0]}</a>
+        </ol>
     </div>
 );
 
@@ -23,16 +32,42 @@ const renderThreshold = (threshold) => {
     if (typeof threshold === 'object') {
         return (
             <span className="threshold-values">
-                {threshold.Green && <div>{`Green: ${threshold.Green}`}</div>}
-                {threshold.Yellow && <div>{`Yellow: ${threshold.Yellow}`}</div>}
-                { threshold.Red && <div>{`Red: ${threshold.Red}`}</div>}
+                {threshold.Green && <div><span>{'Green:'}</span><span>{threshold.Green}</span></div>}
+                {threshold.Yellow && <div><span>{'Yellow:'}</span><span>{threshold.Yellow}</span></div>}
+                {threshold.Red && <div><span>{'Red:'}</span><span>{threshold.Red}</span></div>}
             </span>
         );
     }
     return threshold;
 };
 
-const DashboardWrapper = ({label, frequency, threshold, urls, monitoring}) => {
+const renderIframes = (urls) => (
+    <div id="iframes">
+        {
+            urls.map((url, idx) => (
+                <Iframe url={url}
+                    key={`iframe${idx}`}
+                    width="100%"
+                    height="800px"
+                    id={`iframe${idx}`}
+                    className="iframe"
+                    position="relative"
+                />))
+        }
+    </div>
+);
+
+const renderContent = (monitoring, urls) => {
+    if (monitoring === 'Splunk') {
+        return renderSplunkInfo(urls);
+    }
+    if (monitoring === 'Catchpoint') {
+        return renderCatchpointInfo(urls);
+    }
+    return renderIframes(urls);
+};
+
+const DashboardWrapper = ({label, frequency, threshold, urls = [], monitoring}) => {
     return (<div id="dashboard-wrapper-component">
         <h1>{label}</h1>
         <div id="dashboard-wrapper-content">
@@ -40,24 +75,8 @@ const DashboardWrapper = ({label, frequency, threshold, urls, monitoring}) => {
                 <div><b>{'Frequency:'}</b> {frequency}</div>
                 <div className="threshold-details">
                     <span><b>{'Threshold:'}</b></span> {renderThreshold(threshold)}</div>
-                <span />
             </div>
-            {
-                monitoring === 'Splunk' ? renderSplunkInfo(urls) :
-                    <div id="iframes">
-                        {
-                            urls.map((url, idx) => (
-                                <Iframe url={url}
-                                    key={`iframe${idx}`}
-                                    width="100%"
-                                    height="800px"
-                                    id={`iframe${idx}`}
-                                    className="iframe"
-                                    position="relative"
-                                />))
-                        }
-                    </div>
-            }
+            {renderContent(monitoring, urls)}
         </div>
     </div>
     );

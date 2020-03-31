@@ -1,21 +1,27 @@
 import React, {useState, useEffect} from 'react';
 import DashboardWrapper from './DashboardWrapper/DashboardWrapper';
-import AvailabilityHome from './AvailabilityHome/AvailabilityHome';
 import SideBarComponent from './SideBarComponent/SideBarComponent';
 
 import './styles.less';
 
 const Availability = () => {
     const [currentDashboard, setCurrentDashboard] = useState();
-
-    const useSetCurrentDashboard = () => {
-        const query = new URLSearchParams(window.location.search);
-        setCurrentDashboard(query.get('dashboard'));
-    };
+    const [linkChanged, setLinkChanged] = useState(false);
 
     useEffect(() => {
-        useSetCurrentDashboard();
-    }, []);
+        const setDashboardValue = () => {
+            const query = new URLSearchParams(window.location.search);
+            setCurrentDashboard(query.get('dashboard'));
+        };
+
+        if (linkChanged) {
+            setDashboardValue();
+        }
+
+        return () => {
+            setLinkChanged(false);
+        };
+    }, [linkChanged]);
 
     const links = [
         {
@@ -148,29 +154,26 @@ const Availability = () => {
         }
     ];
 
-    const getDashboardIndex = (id) => links.map((l) => l.id).indexOf(id);
+    const getDashboardIndex = (id) => {
+        const index = links.map((l) => l.id).indexOf(id);
+        return index < 0 ? 0 : index;
+    };
+
     const currentDashboardDetail = links[getDashboardIndex(currentDashboard)];
 
     return (
         <div className="availability-container">
-            {currentDashboard ?
-                <nav className="availability-nav-bar">
-                    <SideBarComponent links={links} onClick={useSetCurrentDashboard} />
-                </nav>
-                :
-                ''}
-
+            <nav className="availability-nav-bar">
+                <SideBarComponent links={links} onClick={() => setLinkChanged(true)} />
+            </nav>
             <section className="availability-section">
-                {!currentDashboard ?
-                    <AvailabilityHome links={links} onClick={useSetCurrentDashboard}/>
-                    :
-                    <DashboardWrapper
-                        urls={currentDashboardDetail.urls}
-                        frequency={currentDashboardDetail.frequency}
-                        threshold={currentDashboardDetail.threshold}
-                        label={currentDashboardDetail.label}
-                        monitoring={currentDashboardDetail.monitoring}
-                    /> }
+                <DashboardWrapper
+                    urls={currentDashboardDetail.urls}
+                    frequency={currentDashboardDetail.frequency}
+                    threshold={currentDashboardDetail.threshold}
+                    label={currentDashboardDetail.label}
+                    monitoring={currentDashboardDetail.monitoring}
+                />
             </section>
         </div>
     );
