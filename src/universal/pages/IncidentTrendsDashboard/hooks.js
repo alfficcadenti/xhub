@@ -61,14 +61,14 @@ export const useFetchTickets = (
                     const incPriorities = getListOfUniqueProperties(adjustedUniqueIncidents, 'priority').sort();
                     const incStatuses = getListOfUniqueProperties(adjustedUniqueIncidents, 'Status');
 
-                    setIncidentsPriorities([...incPriorities, ALL_PRIORITIES_OPTION]);
+                    setIncidentsPriorities([ALL_PRIORITIES_OPTION, ...incPriorities]);
                     setIncidentsStatuses(incStatuses);
 
                     setAllUniqueIncidents(adjustedUniqueIncidents);
                     setAllIncidents(incidents);
 
                     // set priorities for default tab (currently it's an incidents tab (index 1))
-                    seCurrentPriorities([...incPriorities, ALL_PRIORITIES_OPTION]);
+                    seCurrentPriorities([ALL_PRIORITIES_OPTION, ...incPriorities]);
                     // defects
                     const uniqueDefects = getUniqueTickets(defects, 'defectNumber');
 
@@ -76,7 +76,7 @@ export const useFetchTickets = (
                     const defPriorities = getListOfUniqueProperties(adjustedUniqueDefects, 'priority').sort();
                     const defStatuses = getListOfUniqueProperties(adjustedUniqueDefects, 'Status');
 
-                    setDefectsPriorities([...defPriorities, ALL_PRIORITIES_OPTION]);
+                    setDefectsPriorities([ALL_PRIORITIES_OPTION, ...defPriorities]);
                     setDefectsStatuses(defStatuses);
 
                     setAllUniqueDefects(adjustedUniqueDefects);
