@@ -37,6 +37,7 @@ export const adjustTicketProperties = (tickets = [], type = 'incident') => {
 export const divisionToBrand = (division = '') => {
     switch (division.toUpperCase()) {
         case 'EGENCIA - CONSOLIDATED':
+        case 'EGENCIA':
             return 'Egencia';
         case 'VRBO':
         case 'HOME AWAY':

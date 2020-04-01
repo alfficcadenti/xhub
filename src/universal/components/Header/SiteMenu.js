@@ -7,7 +7,7 @@ class SiteMenu extends Component {
         dashboardsList: [
             {
                 link: '/incident-trends',
-                text: 'Incident Trends'
+                text: 'Defect & Incident Trends'
             },
             {
                 link: '/psr',

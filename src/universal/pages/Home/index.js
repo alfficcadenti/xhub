@@ -1,32 +1,10 @@
 import React, {Fragment} from 'react';
 import {Link} from 'react-router-dom';
 import {Alert} from '@homeaway/react-alerts';
-
+import dashboardsList from '../index';
 import './styles.less';
 
 const Home = () => {
-    const dashboardsList = [
-        {
-            id: 'incident-trends',
-            link: '/incident-trends',
-            text: 'Incident Trends'
-        },
-        {
-            id: 'psr',
-            link: '/psr',
-            text: 'Purchase Success Rate'
-        },
-        {
-            id: 'resiliency-questionnaire',
-            link: '/resiliency-questionnaire',
-            text: 'Resiliency Questionnaire'
-        },
-        {
-            id: 'availability',
-            link: '/availability',
-            text: 'Availability'
-        }
-    ];
     const renderButton = (item) => (
         <Link
             to={{pathname: item.link}}
@@ -53,11 +31,11 @@ const Home = () => {
 
     return (
         <Fragment>
-            <div id="home-buttons-container">
-                {dashboardsList.map((item) => renderButton(item))}
+            <div className="home-buttons-container">
+                {dashboardsList.map(renderButton)}
             </div>
             <Alert
-                id="covid-message"
+                className="covid-message"
                 title="COVID-19 Updates"
                 type="danger"
                 msg={covidLink()}

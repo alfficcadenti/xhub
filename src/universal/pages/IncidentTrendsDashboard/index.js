@@ -64,7 +64,7 @@ const IncidentTrendsDashboard = () => {
     const [filteredUniqueDefects, setFilteredUniqueDefects] = useState([]);
 
     const [isApplyClicked, setIsApplyClicked] = useState(false);
-    const [currentPriorities, seCurrentPriorities] = useState([]);
+    const [currentPriorities, setCurrentPriorities] = useState([]);
     const [
         isLoading,
         error,
@@ -80,7 +80,7 @@ const IncidentTrendsDashboard = () => {
         endDate,
         applyFilters,
         setIsApplyClicked,
-        seCurrentPriorities
+        setCurrentPriorities
     );
     useSetCovidTag(setSelectedCovidTag);
 
@@ -104,16 +104,15 @@ const IncidentTrendsDashboard = () => {
 
     const handleNavigationClick = (e, activeLinkIndex) => {
         setActiveIndex(activeLinkIndex);
-
         switch (activeLinkIndex) {
             case 1:
-                seCurrentPriorities(incidentsPriorities);
+                setCurrentPriorities(incidentsPriorities);
                 break;
             case 3:
-                seCurrentPriorities(defectsPriorities);
+                setCurrentPriorities(defectsPriorities);
                 break;
             default:
-                seCurrentPriorities(incidentsPriorities);
+                setCurrentPriorities(incidentsPriorities);
         }
     };
 
