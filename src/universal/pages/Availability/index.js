@@ -137,9 +137,11 @@ const Availability = () => {
             urls: [
                 'http://grafana.sea.corp.expecn.com/d/3qE7RO9Wz/covid-19-health?orgId=1'
             ],
+            dashboardLink: 'http://grafana.sea.corp.expecn.com/d/3qE7RO9Wz/covid-19-health?orgId=1',
+            renderLink: 'https://grafana.sea.corp.expecn.com/render/d-solo/3qE7RO9Wz/covid-19-health?orgId=1&from=now-3h&to=now&panelId=6&width=1000&height=500&tz=America%2FChicago',
             frequency: '3 hr',
             threshold: 'Thresholds included in dashboard, reference availability percentage tiles',
-            monitoring: 'Grafana'
+            monitoring: 'GrafanaSEA'
         },
         {
             main: 'Front Door Site Health',
@@ -173,6 +175,8 @@ const Availability = () => {
                     threshold={currentDashboardDetail.threshold}
                     label={currentDashboardDetail.label}
                     monitoring={currentDashboardDetail.monitoring}
+                    renderLink={currentDashboardDetail.renderLink}
+                    dashboardLink={currentDashboardDetail.dashboardLink}
                 />
             </section>
         </div>
