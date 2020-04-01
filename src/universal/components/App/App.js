@@ -1,12 +1,15 @@
 import React, {Fragment} from 'react';
+import {withRouter} from 'react-router';
 import {Route, Switch} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Header from '../Header/Header';
 import Home from '../../pages/Home';
-import IncidentTrendsDashboard from '../../pages/IncidentTrendsDashboard';
-import ResiliencyQuestionnaire from '../../pages/ResiliencyQuestionnaire';
-import PSR from '../../pages/PSR';
-import Availability from '../../pages/Availability';
+import pages from '../../pages';
+
+function renderRoute(p) {
+    const Page = withRouter(p.component.default);
+    return <Route key={p.link} path={p.link} render={() => <Page />} />;
+}
 
 function App() {
     return (
@@ -15,10 +18,7 @@ function App() {
             <div className="main-container">
                 <Switch>
                     <Route path="/home" render={() => <Home />}/>
-                    <Route path="/incident-trends" render={() => <IncidentTrendsDashboard/>}/>
-                    <Route path="/resiliency-questionnaire" render={() => <ResiliencyQuestionnaire />}/>
-                    <Route path="/psr" render={() => <PSR />}/>
-                    <Route path="/availability" render={() => <Availability />}/>
+                    {pages.map(renderRoute)}
                 </Switch>
             </div>
         </Fragment>

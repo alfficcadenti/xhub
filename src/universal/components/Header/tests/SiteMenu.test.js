@@ -9,7 +9,7 @@ describe('<SiteMenu />', () => {
     const dashboardsList = [
         {
             link: '/incident-trends',
-            text: 'Incident Trends'
+            text: 'Defect & Incident Trends'
         },
         {
             link: '/resiliency-questionnaire',
