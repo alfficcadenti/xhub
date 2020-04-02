@@ -1,6 +1,6 @@
 import {useState, useEffect, useRef} from 'react';
 import {adjustTicketProperties, getListOfUniqueProperties, getUniqueTickets} from './incidentsHelper';
-import {ALL_PRIORITIES_OPTION} from './constants';
+import {ALL_PRIORITIES_OPTION, ALL_STATUSES_OPTION} from './constants';
 
 
 export const useSetCovidTag = (setSelectedCovidTag) => {
@@ -26,7 +26,8 @@ export const useFetchTickets = (
     endDate,
     applyFilters,
     setIsApplyClicked,
-    seCurrentPriorities
+    seCurrentPriorities,
+    seCurrentStatuses
 ) => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
@@ -62,13 +63,14 @@ export const useFetchTickets = (
                     const incStatuses = getListOfUniqueProperties(adjustedUniqueIncidents, 'Status');
 
                     setIncidentsPriorities([ALL_PRIORITIES_OPTION, ...incPriorities]);
-                    setIncidentsStatuses(incStatuses);
+                    setIncidentsStatuses([ALL_STATUSES_OPTION, ...incStatuses]);
 
                     setAllUniqueIncidents(adjustedUniqueIncidents);
                     setAllIncidents(incidents);
 
                     // set priorities for default tab (currently it's an incidents tab (index 1))
                     seCurrentPriorities([ALL_PRIORITIES_OPTION, ...incPriorities]);
+                    seCurrentStatuses([ALL_STATUSES_OPTION, ...incStatuses]);
                     // defects
                     const uniqueDefects = getUniqueTickets(defects, 'defectNumber');
 
@@ -77,7 +79,7 @@ export const useFetchTickets = (
                     const defStatuses = getListOfUniqueProperties(adjustedUniqueDefects, 'Status');
 
                     setDefectsPriorities([ALL_PRIORITIES_OPTION, ...defPriorities]);
-                    setDefectsStatuses(defStatuses);
+                    setDefectsStatuses([ALL_STATUSES_OPTION, ...defStatuses]);
 
                     setAllUniqueDefects(adjustedUniqueDefects);
                     setAllDefects(defects);

@@ -36,7 +36,7 @@ describe('<IncidentTrendsDashboard/>', () => {
 
     it('FilterDropDown render default priority value', async () => {
         const props = wrapper.find('FilterDropDown').first().props();
-        expect(props.selectedValue).toBe('All priorities');
+        expect(props.selectedValue).toBe('All Priorities');
     });
 
     it('LoadingContainer should have right props', async () => {
