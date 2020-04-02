@@ -41,6 +41,12 @@ const renderThreshold = (threshold) => {
     return (<span className="threshold-values">{threshold}</span>);
 };
 
+const renderGrafanaSEA = (dashboardLink, renderLink) => {
+    return (
+        <a href={dashboardLink} target="_blank" className="img-chart"><img alt="grafana-dashboard" src={renderLink} /></a>
+    );
+};
+
 const renderIframes = (urls) => (
     <div id="iframes">
         {
@@ -57,17 +63,20 @@ const renderIframes = (urls) => (
     </div>
 );
 
-const renderContent = (monitoring, urls) => {
+const renderContent = (monitoring, urls, dashboardLink, renderLink) => {
     if (monitoring === 'Splunk') {
         return renderSplunkInfo(urls);
     }
     if (monitoring === 'Catchpoint') {
         return renderCatchpointInfo(urls);
     }
+    if (monitoring === 'GrafanaSEA') {
+        return renderGrafanaSEA(dashboardLink, renderLink);
+    }
     return renderIframes(urls);
 };
 
-const DashboardWrapper = ({label, frequency, threshold, urls = [], monitoring}) => {
+const DashboardWrapper = ({label, frequency, threshold, urls = [], monitoring, dashboardLink = '', renderLink = ''}) => {
     return (<div id="dashboard-wrapper-component">
         <h1>{label}</h1>
         <div id="dashboard-wrapper-content">
@@ -76,7 +85,7 @@ const DashboardWrapper = ({label, frequency, threshold, urls = [], monitoring}) 
                 <div className="threshold-details">
                     <span><b>{'Threshold:'}</b></span> {renderThreshold(threshold)}</div>
             </div>
-            {renderContent(monitoring, urls)}
+            {renderContent(monitoring, urls, dashboardLink, renderLink)}
         </div>
     </div>
     );
