@@ -7,12 +7,12 @@ import FilterDropDown from '../../components/FilterDropDown';
 import {Navigation} from '@homeaway/react-navigation';
 import DatePicker from '../../components/DatePicker/index';
 import {Checkbox} from '@homeaway/react-form-components';
-import {DATE_FORMAT, BRANDS, ALL_STATUSES, ALL_PRIORITIES_OPTION} from './constants';
+import {DATE_FORMAT, BRANDS, ALL_STATUSES_OPTION, ALL_PRIORITIES_OPTION} from './constants';
 import {Incidents, Overview, Top5, Quality, FinancialImpact} from './tabs/index';
 import {useFetchTickets, useSetCovidTag} from './hooks';
 import './styles.less';
 
-const statusDefaultValue = 'All Statuses';
+const statusDefaultValue = ALL_STATUSES_OPTION;
 const brandDefaultValue = 'All Brands';
 const priorityDefaultValue = ALL_PRIORITIES_OPTION;
 const covidTagDefaultValue = true;
@@ -65,6 +65,7 @@ const IncidentTrendsDashboard = () => {
 
     const [isApplyClicked, setIsApplyClicked] = useState(false);
     const [currentPriorities, setCurrentPriorities] = useState([]);
+    const [currentStatuses, seCurrentStatuses] = useState([]);
     const [
         isLoading,
         error,
@@ -74,13 +75,16 @@ const IncidentTrendsDashboard = () => {
         allDefects,
         incidentsPriorities,
         defectsPriorities,
+        incidentsStatuses,
+        defectsStatuses
     ] = useFetchTickets(
         isApplyClicked,
         startDate,
         endDate,
         applyFilters,
         setIsApplyClicked,
-        setCurrentPriorities
+        setCurrentPriorities,
+        seCurrentStatuses
     );
     useSetCovidTag(setSelectedCovidTag);
 
@@ -107,12 +111,15 @@ const IncidentTrendsDashboard = () => {
         switch (activeLinkIndex) {
             case 1:
                 setCurrentPriorities(incidentsPriorities);
+                seCurrentStatuses(incidentsStatuses);
                 break;
             case 3:
                 setCurrentPriorities(defectsPriorities);
+                seCurrentStatuses(defectsStatuses);
                 break;
             default:
                 setCurrentPriorities(incidentsPriorities);
+                seCurrentStatuses(incidentsStatuses);
         }
     };
 
@@ -191,7 +198,7 @@ const IncidentTrendsDashboard = () => {
                 />
                 <FilterDropDown id="priority-dropdown" list={currentPriorities} selectedValue={selectedPriority} onClickHandler={handlePriorityChange}/>
                 <FilterDropDown id="brand-dropdown" list={BRANDS} selectedValue={selectedBrand} onClickHandler={handleBrandChange}/>
-                <FilterDropDown id="status-dropdown" list={ALL_STATUSES} selectedValue={selectedStatus} onClickHandler={handleStatusChange}/>
+                <FilterDropDown id="status-dropdown" list={currentStatuses} selectedValue={selectedStatus} onClickHandler={handleStatusChange}/>
                 <Checkbox name="covid-19" label="covid-19" checked={selectedCovidTag} onChange={handleCovidTagChange}/>
                 <button
                     id="applyButton"
