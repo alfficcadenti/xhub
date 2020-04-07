@@ -23,4 +23,10 @@ export default [
         text: 'Availability',
         component: require('./Availability')
     }
+    // {
+    //     id: 'prb',
+    //     link: '/prb',
+    //     text: 'Problem Management',
+    //     component: require('./PRB')
+    // }
 ];

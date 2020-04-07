@@ -34,7 +34,6 @@ const Overview = ({startDate, endDate, filteredIncidents}) => {
                     <DataTable
                         data={getIncMetricsByBrand(filteredIncidents)}
                         columns={overviewTableColumns}
-                        paginated={false}
                     />
                     <ChartWrapper
                         series={mttdVsMttrSeries}

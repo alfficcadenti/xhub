@@ -1,0 +1,55 @@
+@import '../../mixins.less';
+
+.pm-container {
+    text-align: left;
+
+    .page-title {
+        margin-bottom: 24px;
+        text-align: left;
+    }
+
+    #filters-wrapper {
+        justify-content: left;
+        margin-bottom: 24px;
+    }
+
+    .linked-issues__table .data-table {
+        .data-table-header {
+            background: #f5f5dc;
+        }
+
+        th {
+            border-top: 1px #908f8f solid;
+            border-bottom: 1px #908f8f solid;
+        }
+
+        td {
+            border-top: none;
+        }
+
+        .expandable-row,
+        b {
+            background: #a0a0a0;
+            color: @color-text-inverse;
+
+            .data-table-header {
+                background: #a0a0a0;
+                color: @color-text-inverse;
+
+                th {
+                    background: #a0a0a0;
+                    color: @color-text-inverse;
+                }
+            }
+        }
+    }
+
+    .filter-dropdown .Dropdown__toggle {
+        min-width: 220px;
+        font-weight: 400;
+        border-radius: 5px;
+        height: @filter-size;
+        color: @filter-color;
+        overflow: hidden;
+    }
+}
