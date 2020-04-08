@@ -3,7 +3,6 @@ import {getIncidentsData} from '../../../incidentsHelper';
 import ExpandableRow from '../ExpandableRow/ExpandableRow';
 import DataTable from '@homeaway/react-data-table';
 
-
 class DataTableWrapper extends Component {
     constructor(props) {
         super(props);
@@ -14,7 +13,7 @@ class DataTableWrapper extends Component {
             {id: 'Priority', name: 'Priority'},
             {id: 'Brand', name: 'Brand'},
             {id: 'Division', name: 'Division'},
-            {id: 'Opened', name: 'Opened'},
+            {id: 'Started', name: 'Started'},
             {id: 'Summary', name: 'Summary'},
             {id: 'Duration', name: 'Duration'},
             {id: 'TTD', name: 'TTD'},
@@ -133,7 +132,7 @@ class DataTableWrapper extends Component {
                 Priority,
                 Brand,
                 Division,
-                Opened,
+                Started,
                 Summary,
                 Duration,
                 TTD,
@@ -143,7 +142,7 @@ class DataTableWrapper extends Component {
                 executiveSummary
             }) => ({
                 id,
-                cols: [Incident, Priority, Brand, Division, Opened, Summary, Duration, TTD, TTR, Status],
+                cols: [Incident, Priority, Brand, Division, Started, Summary, Duration, TTD, TTR, Status],
                 expanded: this.state.expandedRows[id],
                 expansion: <ExpandableRow executiveSummary={executiveSummary} rootCause={rootCause} />
             }));
