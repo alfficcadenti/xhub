@@ -41,7 +41,7 @@ Array [
           onTouchEnd={undefined}
         >
           <label
-            className="CRB__label text-muted"
+            className="CRB__label text-muted CRB__label--right"
           >
             <input
               checked={true}
@@ -52,7 +52,7 @@ Array [
               type="checkbox"
             />
             <span
-              className="CRB__toggle"
+              className="CRB__toggle CRB__toggle--left"
             >
               <span
                 className="SVGIcon SVGIcon--16px SVGIcon--inline-flex CRB__svg"
@@ -76,7 +76,7 @@ Array [
           onTouchEnd={undefined}
         >
           <label
-            className="CRB__label text-muted"
+            className="CRB__label text-muted CRB__label--right"
           >
             <input
               checked={false}
@@ -87,7 +87,7 @@ Array [
               type="checkbox"
             />
             <span
-              className="CRB__toggle"
+              className="CRB__toggle CRB__toggle--left"
             />
             <span
               className="label-text"
@@ -102,7 +102,7 @@ Array [
           onTouchEnd={undefined}
         >
           <label
-            className="CRB__label text-muted"
+            className="CRB__label text-muted CRB__label--right"
           >
             <input
               checked={false}
@@ -113,7 +113,7 @@ Array [
               type="checkbox"
             />
             <span
-              className="CRB__toggle"
+              className="CRB__toggle CRB__toggle--left"
             />
             <span
               className="label-text"
@@ -128,7 +128,7 @@ Array [
           onTouchEnd={undefined}
         >
           <label
-            className="CRB__label text-muted"
+            className="CRB__label text-muted CRB__label--right"
           >
             <input
               checked={false}
@@ -139,7 +139,7 @@ Array [
               type="checkbox"
             />
             <span
-              className="CRB__toggle"
+              className="CRB__toggle CRB__toggle--left"
             />
             <span
               className="label-text"
@@ -154,7 +154,7 @@ Array [
           onTouchEnd={undefined}
         >
           <label
-            className="CRB__label text-muted"
+            className="CRB__label text-muted CRB__label--right"
           >
             <input
               checked={false}
@@ -165,7 +165,7 @@ Array [
               type="checkbox"
             />
             <span
-              className="CRB__toggle"
+              className="CRB__toggle CRB__toggle--left"
             />
             <span
               className="label-text"
@@ -180,7 +180,7 @@ Array [
           onTouchEnd={undefined}
         >
           <label
-            className="CRB__label text-muted"
+            className="CRB__label text-muted CRB__label--right"
           >
             <input
               checked={false}
@@ -191,7 +191,7 @@ Array [
               type="checkbox"
             />
             <span
-              className="CRB__toggle"
+              className="CRB__toggle CRB__toggle--left"
             />
             <span
               className="label-text"
@@ -206,7 +206,7 @@ Array [
           onTouchEnd={undefined}
         >
           <label
-            className="CRB__label text-muted"
+            className="CRB__label text-muted CRB__label--right"
           >
             <input
               checked={false}
@@ -217,7 +217,7 @@ Array [
               type="checkbox"
             />
             <span
-              className="CRB__toggle"
+              className="CRB__toggle CRB__toggle--left"
             />
             <span
               className="label-text"
@@ -858,7 +858,7 @@ Array [
           onTouchEnd={undefined}
         >
           <label
-            className="CRB__label text-muted"
+            className="CRB__label text-muted CRB__label--right"
           >
             <input
               checked={true}
@@ -869,7 +869,7 @@ Array [
               type="checkbox"
             />
             <span
-              className="CRB__toggle"
+              className="CRB__toggle CRB__toggle--left"
             >
               <span
                 className="SVGIcon SVGIcon--16px SVGIcon--inline-flex CRB__svg"
@@ -893,7 +893,7 @@ Array [
           onTouchEnd={undefined}
         >
           <label
-            className="CRB__label text-muted"
+            className="CRB__label text-muted CRB__label--right"
           >
             <input
               checked={false}
@@ -904,7 +904,7 @@ Array [
               type="checkbox"
             />
             <span
-              className="CRB__toggle"
+              className="CRB__toggle CRB__toggle--left"
             />
             <span
               className="label-text"
@@ -919,7 +919,7 @@ Array [
           onTouchEnd={undefined}
         >
           <label
-            className="CRB__label text-muted"
+            className="CRB__label text-muted CRB__label--right"
           >
             <input
               checked={false}
@@ -930,7 +930,7 @@ Array [
               type="checkbox"
             />
             <span
-              className="CRB__toggle"
+              className="CRB__toggle CRB__toggle--left"
             />
             <span
               className="label-text"
@@ -945,7 +945,7 @@ Array [
           onTouchEnd={undefined}
         >
           <label
-            className="CRB__label text-muted"
+            className="CRB__label text-muted CRB__label--right"
           >
             <input
               checked={false}
@@ -956,7 +956,7 @@ Array [
               type="checkbox"
             />
             <span
-              className="CRB__toggle"
+              className="CRB__toggle CRB__toggle--left"
             />
             <span
               className="label-text"
@@ -971,7 +971,7 @@ Array [
           onTouchEnd={undefined}
         >
           <label
-            className="CRB__label text-muted"
+            className="CRB__label text-muted CRB__label--right"
           >
             <input
               checked={false}
@@ -982,7 +982,7 @@ Array [
               type="checkbox"
             />
             <span
-              className="CRB__toggle"
+              className="CRB__toggle CRB__toggle--left"
             />
             <span
               className="label-text"
@@ -997,7 +997,7 @@ Array [
           onTouchEnd={undefined}
         >
           <label
-            className="CRB__label text-muted"
+            className="CRB__label text-muted CRB__label--right"
           >
             <input
               checked={false}
@@ -1008,7 +1008,7 @@ Array [
               type="checkbox"
             />
             <span
-              className="CRB__toggle"
+              className="CRB__toggle CRB__toggle--left"
             />
             <span
               className="label-text"
@@ -1023,7 +1023,7 @@ Array [
           onTouchEnd={undefined}
         >
           <label
-            className="CRB__label text-muted"
+            className="CRB__label text-muted CRB__label--right"
           >
             <input
               checked={false}
@@ -1034,7 +1034,7 @@ Array [
               type="checkbox"
             />
             <span
-              className="CRB__toggle"
+              className="CRB__toggle CRB__toggle--left"
             />
             <span
               className="label-text"
