@@ -1,78 +1,153 @@
-@import "../../mixins.less";
+@import '../../mixins.less';
 
-.data-table__download {
-  float: right;
-  font-weight: 400;
-  border-radius: 0;
-  box-shadow: none;
-  border: none;
-  padding: @spacing-1x;
-}
+.data-table__container {
+    .settings-btn {
+        float: right;
+        box-shadow: none;
+        border-radius: @spacing-1x @spacing-1x 0 0;
+        font-weight: 400;
+        padding: @spacing-1x;
 
-.pagination {
-  .btn-group {
-    margin-right: @spacing-2x;
-  }
+        &.active {
+            background: @color-bg-accent;
+        }
 
-  .pagesize-dropdown {
-    margin-left: @spacing-1x;
+        .btn-label {
+            float: right;
+            margin-top: 5px;
+            margin-left: 4px;
+            font-size: 14px;
+        }
 
-    .Dropdown__toggle {
-      height: @spacing-6x;
-      line-height: @small-font-line-height;
+        .SVGIcon {
+            margin-top: 4px;
+        }
     }
 
-    .Dropdown__menu {
-      min-width: @spacing-9x;
+    .settings-divider {
+        margin-top: @spacing-6x;
+
+        .CollapseBase {
+            width: 100%;
+        }
+
+        .Divider__heading {
+            display: none;
+        }
+
+        .Divider__body {
+            min-height: 160px;
+            padding: @spacing-2x;
+            background: @color-bg-accent;
+            border-radius: 0 0 @spacing-1x @spacing-1x;
+        }
     }
-  }
-}
 
-.data-table {
-  width: 100%;
-  border-collapse: separate;
-  font-size: @small-font-size;
-  line-height: @small-font-line-height;
-  margin: @spacing-2x 0;
-  word-break: break-word;
+    .data-table__download {
+        float: right;
+        font-weight: 400;
+        border-radius: 0;
+        box-shadow: none;
+        border: none;
+        padding: 0;
 
-  .pointer {
-    cursor: pointer;
-  }
-
-  th {
-    color: @color-text-default;
-    white-space: nowrap;
-  }
-
-  td:nth-child(1),
-  td:nth-child(2) {
-    white-space: nowrap;
-  }
-
-  th,
-  td {
-    border-top: 1px @color-border-contrast solid;
-    padding: @spacing-1x;
-
-    .column-info {
-      display: inline-block;
-      margin-left: 4px;
-      font-weight: 400;
-
-      .Tooltip b {
-        color: @color-text-inverse;
-      }
+        &:hover {
+            box-shadow: none;
+        }
     }
-  }
 
-  .data-table-header {
-    color: @text-color;
-    background: @table-header-bg;
-    font-weight: 400;
-  }
-}
+    .data-table__title {
+        margin-bottom: -@spacing-5x;
+    }
 
-.data-table__msg {
-  padding: @spacing-1x 0;
+    .pagination {
+        .btn-group {
+            margin-right: @spacing-2x;
+        }
+
+        .pagesize-dropdown {
+            margin-left: @spacing-1x;
+
+            .Dropdown__toggle {
+                height: @spacing-6x;
+                line-height: @small-font-line-height;
+            }
+
+            .Dropdown__menu {
+                min-width: @spacing-9x;
+            }
+        }
+    }
+
+    .toggle-btn {
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    .data-table {
+        width: 100%;
+        border-collapse: separate;
+        font-size: @small-font-size;
+        line-height: @small-font-line-height;
+        margin: @spacing-2x 0;
+        word-break: break-word;
+
+        .pointer {
+            cursor: pointer;
+        }
+
+        th {
+            color: @color-text-default;
+            white-space: nowrap;
+        }
+
+        th,
+        td {
+            border-top: 1px @color-border-contrast solid;
+            padding: @spacing-1x;
+
+            .column-info {
+                display: inline-block;
+                margin-left: 4px;
+                font-weight: 400;
+
+                .Tooltip b {
+                    color: @color-text-inverse;
+                }
+            }
+        }
+
+        .data-table-header {
+            color: @text-color;
+            background: @table-header-bg;
+            font-weight: 400;
+        }
+
+        .expandable-row {
+            background: @color-bg-accent;
+        }
+
+        .expandable-column {
+            border-top: none;
+        }
+
+        .expandable-group {
+            padding: 8px;
+
+            .group-label {
+                min-width: 200px;
+                display: inline-block;
+                font-weight: 800;
+            }
+
+            .group-value {
+                display: inline-block;
+            }
+        }
+    }
+
+    .data-table__msg {
+        padding: @spacing-1x 0;
+    }
 }

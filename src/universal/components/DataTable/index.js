@@ -1,12 +1,18 @@
-import React, {Fragment, Component, isValidElement} from 'react';
-import uuid from 'uuid/v1';
+import React, {Component, Fragment, isValidElement} from 'react';
+import PropTypes from 'prop-types';
+import {CSVLink} from 'react-csv';
+import {v1 as uuid} from 'uuid';
 import sanitizeHtml from 'sanitize-html';
 import Tooltip from '@homeaway/react-tooltip';
 import {SVGIcon} from '@homeaway/react-svg';
-import {INFO__16} from '@homeaway/svg-defs';
+import {
+    INFO__16, DOWNLOAD__16, GEAR__24, CHEVRON_DOWN__12, CHEVRON_UP__12
+} from '@homeaway/svg-defs';
+import {isEqual, isEmpty, xorWith} from 'lodash';
+import {Divider} from '@homeaway/react-collapse';
+import {Checkbox} from '@homeaway/react-form-components';
 import './DataTable.less';
 import {Dropdown, DropdownItem} from '@homeaway/react-dropdown';
-import PropTypes from 'prop-types';
 
 class DataTable extends Component {
     constructor(props) {
@@ -16,19 +22,44 @@ class DataTable extends Component {
             columns: [],
             rules: [],
             columnsInfo: {},
+            columnHeaders: {},
             sortByColumn: null,
             sortByDirection: 'desc',
             sortDisabled: false,
+            filename: 'hubble-table.csv',
             csvColumns: [],
-            paginated: props.paginated,
+            enableCSVDownload: false,
+            paginated: false,
             pageSize: 25,
-            currPageIndex: 0
+            currPageIndex: 0,
+            showSettings: false,
+            enableColumnDisplaySettings: false,
+            displayColumns: [],
+            expandableColumns: [],
+            expandedRows: {},
+            expandAllRows: false
         };
     }
 
     static getDerivedStateFromProps(props, currState) {
-        if (currState.data !== props.data) {
-            return {...props};
+        if (!isEmpty(xorWith(currState.data, props.data, isEqual))
+            || JSON.stringify(currState.columns) !== JSON.stringify(props.columns)) {
+            const {data} = props;
+            const mappedData = data.map((d) => {
+                const mapped = d;
+                mapped.rowId = uuid();
+                return mapped;
+            });
+            const obj = {
+                columnCheckboxes: props.columns.map((c) => ({
+                    text: c,
+                    checked: !props.hiddenColumns.includes(c)
+                })),
+                displayColumns: props.columns.filter((c) => !props.hiddenColumns.includes(c))
+            };
+            return {
+                ...props, ...obj, expandedRows: {}, data: mappedData
+            };
         } if (currState.data.length > 0) {
             return {...currState};
         }
@@ -39,13 +70,13 @@ class DataTable extends Component {
         const csvRow = [];
         const columns = this.state.csvColumns.length > 0
             ? this.state.csvColumns
-            : this.state.columns;
+            : this.state.displayColumns;
         columns.forEach((column) => {
             const value = row[column];
             csvRow.push(value ? String(value).replace(/<[^>]*>?/gm, '') : value);
         });
         return csvRow;
-    });
+    })
 
     onClickSort = (column) => {
         if (this.state.sortDisabled) {
@@ -74,12 +105,12 @@ class DataTable extends Component {
             data.sort((a, b) => -comparator(a, b)); // reverse
             this.setState({data, sortByColumn: column, sortByDirection: 'asc'});
         }
-    };
+    }
 
     applyRule = (item, col) => {
         const found = this.state.rules.find((rule) => rule.column === col);
         return found ? found.setClass(item[col]) : '';
-    };
+    }
 
     renderColumn = (item, col) => (
         isValidElement(item[col])
@@ -93,11 +124,39 @@ class DataTable extends Component {
             )
     );
 
-    renderRow = (item) => (
-        <tr key={uuid()}>
-            {this.state.columns.map((col) => this.renderColumn(item, col))}
-        </tr>
-    );
+    renderToggleCol = (rowId) => (
+        <td key={uuid()}>
+            <div role="button" tabIndex="0" onKeyDown={() => this.handleToggleExpand(rowId)} className="toggle-btn" onClick={() => this.handleToggleExpand(rowId)}>
+                {this.state.expandedRows[rowId]
+                    ? <SVGIcon inlineFlex markup={CHEVRON_DOWN__12} />
+                    : <SVGIcon inlineFlex markup={CHEVRON_UP__12} />}
+            </div>
+        </td>
+    )
+
+    renderRow = (item) => {
+        const isExpandableCol = this.state.expandableColumns.length > 0;
+        const hasExpandableContent = this.state.expandableColumns.reduce((acc, col) => !!item[col] && acc, true);
+        let toggleCol = null;
+        if (isExpandableCol) {
+            toggleCol = hasExpandableContent
+                ? this.renderToggleCol(item.rowId)
+                : <td />;
+        }
+        return (
+            <Fragment key={uuid()}>
+                <tr>
+                    {this.state.displayColumns.map((col) => this.renderColumn(item, col))}
+                    {toggleCol}
+                </tr>
+                <tr className={`expandable-row ${hasExpandableContent && this.state.expandedRows[item.rowId] ? '' : 'hidden'}`}>
+                    <td className="expandable-column" colSpan={this.state.displayColumns.length + 1}>
+                        {this.state.expandableColumns.map((col) => <Fragment key={uuid()}>{item[col]}</Fragment>)}
+                    </td>
+                </tr>
+            </Fragment>
+        );
+    };
 
     renderTableBody = () => {
         const {
@@ -108,59 +167,92 @@ class DataTable extends Component {
         }
         const start = currPageIndex * pageSize;
         return data.slice(start, start + pageSize).map(this.renderRow);
-    };
+    }
 
     renderColumnInfo = (content) => (
         <div className="column-info">
-            <Tooltip tooltipType="tooltip--lg" content={content}>
+            <Tooltip tooltipType="tooltip--lg" content={content} placement="bottom">
                 <SVGIcon inlineFlex markup={INFO__16} />
             </Tooltip>
         </div>
-    );
+    )
 
-    renderTableHeaderColumn = (column) => (
-        <th
-            onClick={() => this.onClickSort(column)}
-            key={column}
-            className={this.state.sortDisabled ? null : 'pointer'}
-        >
-            {column}
-            {
-                this.state.columnsInfo[column]
-                    ? this.renderColumnInfo(this.state.columnsInfo[column])
-                    : null
-            }
-        </th>
-    );
+    renderTableHeaderColumn = (column) => {
+        let headerColumnContent;
+        if (this.state.columnHeaders[column]) {
+            headerColumnContent = this.state.columnHeaders[column];
+        } else if (this.state.columnsInfo[column]) {
+            headerColumnContent = (
+                <>{column} {this.renderColumnInfo(this.state.columnsInfo[column])}</>
+            );
+        } else {
+            headerColumnContent = column;
+        }
+        return (
+            <th
+                onClick={() => this.onClickSort(column)}
+                key={column}
+                className={this.state.sortDisabled ? null : 'pointer'}
+            >
+                {headerColumnContent}
+            </th>
+        );
+    }
+
+    toggleExpandAll = () => {
+        this.setState((prevState) => {
+            const expandAllRows = !prevState.expandAllRows;
+            const expandedRows = {};
+            this.state.data.forEach((row) => {
+                expandedRows[row.rowId] = expandAllRows;
+            });
+            return {
+                expandedRows,
+                expandAllRows
+            };
+        });
+    }
+
+    renderToggleHeaderColumn = () => {
+        if (this.state.expandableColumns.length < 1) {
+            return null;
+        }
+        const toggleIcon = this.state.expandAllRows
+            ? <SVGIcon inlineFlex markup={CHEVRON_DOWN__12} />
+            : <SVGIcon inlineFlex markup={CHEVRON_UP__12} />;
+        return <th onClick={this.toggleExpandAll}>{toggleIcon}</th>;
+    }
 
     renderTableHeader = () => (
-        <tr>{this.state.columns.map(this.renderTableHeaderColumn)}</tr>
+        <tr>
+            {this.state.displayColumns.map(this.renderTableHeaderColumn)}
+            {this.renderToggleHeaderColumn()}
+        </tr>
     );
 
     getPrevPage = () => {
         this.setState((prevState) => ({
             currPageIndex: prevState.currPageIndex - 1
         }));
-    };
-
+    }
 
     getNextPage = () => {
         this.setState((prevState) => ({
             currPageIndex: prevState.currPageIndex + 1
         }));
-    };
+    }
 
     renderPrevButton = (show) => (
         <button type="button" className="btn btn-default" onClick={this.getPrevPage} disabled={!show}>{'Previous'}</button>
-    );
+    )
 
     renderNextButton = (show) => (
         <button type="button" className="btn btn-default" onClick={this.getNextPage} disabled={!show}>{'Next'}</button>
-    );
+    )
 
     getPage = (i) => {
         this.setState({currPageIndex: i});
-    };
+    }
 
     renderPageButtons = () => {
         const {
@@ -185,8 +277,8 @@ class DataTable extends Component {
                 <button key={uuid()} type="button" className="btn btn-default" onClick={() => this.getPage(currPageIndex + i)}>{currPageIndex + i + 1}</button>
             );
         }
-        return <Fragment>{result}</Fragment>;
-    };
+        return <>{result}</>;
+    }
 
     renderPagination = () => {
         const {
@@ -206,34 +298,118 @@ class DataTable extends Component {
                     {this.renderNextButton(showNext)}
                 </div>
                 {'Page Size:'}
-                <Dropdown id="pagesize-dropdown" label={this.state.pageSize} className="pagesize-dropdown">
-                    <DropdownItem link="#" text="25" onClick={() => this.setState({pageSize: 25})} />
-                    <DropdownItem link="#" text="50" onClick={() => this.setState({pageSize: 50})} />
-                    <DropdownItem link="#" text="75" onClick={() => this.setState({pageSize: 75})} />
-                    <DropdownItem link="#" text="100" onClick={() => this.setState({pageSize: 100})} />
+                <Dropdown id="pagesize-dropdown" label={this.state.pageSize} className="pagesize-dropdown" closeAfterContentClick>
+                    {[25, 50, 75, 100].map((n) => <DropdownItem key={`page-${n}`} link="#" text={n} onClick={() => this.setState({pageSize: n})} />)}
                 </Dropdown>
             </div>
         );
-    };
+    }
+
+    handleColumnCheckbox = (column) => {
+        this.setState((prevState) => {
+            const {columnCheckboxes} = prevState;
+            const idx = columnCheckboxes
+                .findIndex((c) => c.text === column.text);
+            columnCheckboxes[idx].checked = (
+                !columnCheckboxes[idx].checked);
+            return {
+                columnCheckboxes,
+                displayColumns: columnCheckboxes
+                    .filter((cbox) => cbox.checked)
+                    .map((cbox) => cbox.text)
+            };
+        });
+    }
+
+    renderColumnCheckbox = (c) => (
+        <Checkbox
+            key={`column-${c.text}`}
+            size="sm"
+            className="checkbox-column col-xs-3"
+            name={c.text}
+            label={c.text}
+            checked={c.checked}
+            onChange={() => this.handleColumnCheckbox(c)}
+        />
+    )
+
+    handleShowSettings = () => {
+        this.setState((prevState) => ({showSettings: !prevState.showSettings}));
+    }
+
+    handleToggleExpand(rowId) {
+        this.setState((prevState) => ({
+            expandedRows: {
+                ...prevState.expandedRows,
+                [rowId]: !prevState.expandedRows[rowId]
+            }
+        }));
+    }
+
+    renderDownloadLink = () => (
+        <CSVLink
+            className="btn btn-default data-table__download"
+            headers={this.state.displayColumns}
+            data={this.getCSVData()}
+            filename={this.state.filename}
+        >
+            <button type="button" className="btn btn-default settings-btn">
+                <SVGIcon markup={DOWNLOAD__16} /> <div className="btn-label">{'Download CSV'}</div>
+            </button>
+        </CSVLink>
+    )
+
+    renderColumnDisplaySettings = () => (
+        <button type="button" className={`btn btn-default settings-btn ${this.state.showSettings ? 'active' : ''}`} onClick={this.handleShowSettings}>
+            <SVGIcon markup={GEAR__24} /> <div className="btn-label">{'Manage Columns'}</div>
+        </button>
+    )
+
+    renderToolbar = (title) => (
+        <>
+            <h2 className="data-table__title">{title}</h2>
+            {this.state.enableColumnDisplaySettings && this.renderColumnDisplaySettings()}
+            {this.state.enableCSVDownload && this.renderDownloadLink()}
+            <Divider heading="Settings" id="settings-divider" className="settings-divider" expanded={this.state.showSettings}>
+                <form>
+                    {this.state.columnCheckboxes && this.state.columnCheckboxes.length > 1
+                        && this.state.columnCheckboxes.slice(1).map(this.renderColumnCheckbox)}
+                </form>
+            </Divider>
+        </>
+    )
+
+    renderTable = () => (
+        <>
+            {this.renderToolbar(this.state.title)}
+            <table className="data-table">
+                <thead className="data-table-header">{this.renderTableHeader()}</thead>
+                <tbody className="data-table-body">{this.renderTableBody()}</tbody>
+            </table>
+            {this.renderPagination()}
+            {this.props.renderFooter(this.state.data)}
+        </>
+    )
 
     render() {
         return (
-            this.state.data.length
-                ? (
-                    <div>
-                        <table className="data-table">
-                            <thead className="data-table-header">{this.renderTableHeader()}</thead>
-                            <tbody className="data-table-body">{this.renderTableBody()}</tbody>
-                        </table>
-                        {this.renderPagination()}
-                    </div>
-                )
-                : <p className="data-table__msg">{'No Results Found'}</p>
+            <div className={`data-table__container ${this.state.className}`}>
+                {this.state.data.length ? this.renderTable() : <p className="data-table__msg">{'No Results Found'}</p>}
+            </div>
         );
     }
 }
+
 DataTable.propTypes = {
     data: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-    paginated: PropTypes.bool
+    columns: PropTypes.arrayOf(PropTypes.string).isRequired,
+    hiddenColumns: PropTypes.arrayOf(PropTypes.string),
+    renderFooter: PropTypes.func
 };
+
+DataTable.defaultProps = {
+    hiddenColumns: [],
+    renderFooter: () => {}
+};
+
 export default DataTable;

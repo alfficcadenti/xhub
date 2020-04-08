@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import IncidentTrendsDashboard from '../index';
-import {DATE_FORMAT} from '../constants';
+import {DATE_FORMAT} from '../../constants';
 import moment from 'moment';
 
 describe('<IncidentTrendsDashboard/>', () => {

@@ -1,6 +1,6 @@
 import {useState, useEffect, useRef} from 'react';
 import {adjustTicketProperties, getListOfUniqueProperties, getUniqueTickets} from './incidentsHelper';
-import {ALL_PRIORITIES_OPTION, ALL_STATUSES_OPTION} from './constants';
+import {ALL_PRIORITIES_OPTION, ALL_STATUSES_OPTION} from '../constants';
 
 
 export const useSetCovidTag = (setSelectedCovidTag) => {

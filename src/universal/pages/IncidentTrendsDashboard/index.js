@@ -7,7 +7,7 @@ import FilterDropDown from '../../components/FilterDropDown';
 import {Navigation} from '@homeaway/react-navigation';
 import DatePicker from '../../components/DatePicker/index';
 import {Checkbox} from '@homeaway/react-form-components';
-import {DATE_FORMAT, BRANDS, ALL_STATUSES_OPTION, ALL_PRIORITIES_OPTION} from './constants';
+import {DATE_FORMAT, BRANDS, ALL_STATUSES_OPTION, ALL_PRIORITIES_OPTION} from '../constants';
 import {Incidents, Overview, Top5, Quality, FinancialImpact} from './tabs/index';
 import {useFetchTickets, useSetCovidTag} from './hooks';
 import './styles.less';

@@ -10,7 +10,7 @@ const Header = () => (
         <Link to="/home" className="Header--logo" >
             {'OpXHub'}
         </Link>
-        <Dropdown id="Header--menu" label="Dashboards" className="Header--menu">
+        <Dropdown id="header-dropdown" label="Dashboards" className="Header--menu">
             <SiteMenu />
         </Dropdown>
     </header>

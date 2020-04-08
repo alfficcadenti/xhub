@@ -6,7 +6,7 @@ import React from 'react';
 import {renderToString} from 'react-dom/server';
 import moment from 'moment';
 import * as h from '../../components/utils/formatDate';
-import {DATE_FORMAT} from './constants';
+import {DATE_FORMAT} from '../constants';
 import {isArray} from 'util';
 import uuid from 'uuid/v1';
 
