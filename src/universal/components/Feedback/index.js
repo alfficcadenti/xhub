@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, {useState} from 'react';
 import {FormTextArea, FormInput} from '@homeaway/react-form-components';
 import FilterDropDown from '../../components/FilterDropDown';
@@ -84,14 +85,14 @@ const FeedbackModal = ({isOpen, handleClose}) => {
                     <hr/>
                     <div className="ratings-wrapper">
                         <span className="ratings-label">{'Page rating'}</span>
-                        <div className="thumbs-wrapper thumbs-up" onClick={() => {
+                        <div className="thumbs-wrapper thumbs-up" tabIndex={0} role="button" onClick={() => {
                             setThumbsUp(true);
                             setThumbsDown(false);
                         }}
                         >
                             <SVGIcon markup={thumbsUp ? THUMB_SELECTED__24 : THUMB__24} />
                         </div>
-                        <div className="thumbs-wrapper thumbs-down" onClick={() => {
+                        <div className="thumbs-wrapper thumbs-down" tabIndex={0} role="button" onClick={() => {
                             setThumbsUp(false);
                             setThumbsDown(true);
                         }}
