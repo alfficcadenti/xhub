@@ -14,6 +14,7 @@ export const adjustTicketProperties = (tickets = [], type = 'incident') => {
     return tickets.map((t) => {
         const result = {
             ...t,
+            'startedAt': t.startedAt ? t.startedAt : t.openDate,
             'Brand': divisionToBrand(t.brand),
             'Division': t.brand,
             'Status': t.status
@@ -88,7 +89,7 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
         Priority: inc.priority || '-',
         Brand: inc.Brand || '-',
         Division: inc.Division || '-',
-        Opened: moment.utc(inc.openDate).local().isValid() ? moment.utc(inc.openDate).local().format('YYYY-MM-DD HH:mm') : '-',
+        Started: moment.utc(inc.startedAt).local().isValid() ? moment.utc(inc.startedAt).local().format('YYYY-MM-DD HH:mm') : '-',
         Summary: inc.ticket_summary || '-',
         Duration: inc.duration ? h.formatDurationForTable(inc.duration) : '-',
         rawDuration: inc.duration,
@@ -102,7 +103,7 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
         Tag: inc.tag || '-',
         executiveSummary: inc.executiveSummary || '-'
     }))
-    .sort((a, b) => moment(a.Opened).isBefore(b.Opened));
+    .sort((a, b) => moment(a.Started).isBefore(b.Started));
 
 export const getQualityData = (filteredDefects = []) => filteredDefects
     .map((t) => ({
