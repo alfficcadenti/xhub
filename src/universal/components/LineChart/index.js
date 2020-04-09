@@ -33,7 +33,7 @@ const LineChart = ({title, info, data, xAxis}) => {
                     <SVGIcon inlineFlex markup={INFO__16} />
                 </Tooltip>
             </div>
-            <ReactEcharts option={setChartOptions(data, xAxis)} key={Math.random()}/>
+            <ReactEcharts option={setChartOptions(data, xAxis)}/>
         </div>
     );
 };
