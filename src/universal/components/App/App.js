@@ -1,10 +1,13 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useState} from 'react';
 import {withRouter} from 'react-router';
 import {Route, Switch} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Header from '../Header/Header';
 import Home from '../../pages/Home';
 import pages from '../../pages';
+import FeedbackModal from '../Feedback';
+import {ButtonOverlay} from '@homeaway/react-buttons';
+import './styles.less';
 
 function renderRoute(p) {
     const Page = withRouter(p.component.default);
@@ -12,6 +15,8 @@ function renderRoute(p) {
 }
 
 function App() {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     return (
         <Fragment>
             <Header />
@@ -21,6 +26,13 @@ function App() {
                     {pages.map(renderRoute)}
                 </Switch>
             </div>
+            <ButtonOverlay
+                label="Feedback"
+                size="xs"
+                onClick={() => setIsModalOpen(true)}
+                className="feedback-button"
+            />
+            <FeedbackModal isOpen={isModalOpen} handleClose={() => setIsModalOpen(false)}/>
         </Fragment>
     );
 }
