@@ -31,4 +31,4 @@ Incidents.propTypes = {
     filteredIncidents: PropTypes.arrayOf(PropTypes.shape()).isRequired
 };
 
-export default Incidents;
+export default React.memo(Incidents);

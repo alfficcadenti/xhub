@@ -120,4 +120,4 @@ Quality.propTypes = {
     selectedCovidTag: PropTypes.bool.isRequired
 };
 
-export default Quality;
+export default React.memo(Quality);

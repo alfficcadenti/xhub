@@ -37,4 +37,4 @@ const FinancialImpact = ({filteredIncidents}) => {
     </div>);
 };
 
-export default FinancialImpact;
+export default React.memo(FinancialImpact);
