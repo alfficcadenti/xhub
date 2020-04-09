@@ -7,6 +7,7 @@ import Home from '../../pages/Home';
 import pages from '../../pages';
 import FeedbackModal from '../Feedback';
 import {ButtonOverlay} from '@homeaway/react-buttons';
+import './styles.less';
 
 function renderRoute(p) {
     const Page = withRouter(p.component.default);
@@ -29,7 +30,7 @@ function App() {
                 label="Feedback"
                 size="xs"
                 onClick={() => setIsModalOpen(true)}
-                style={{position: 'absolute', zIndex: 1, top: '18%', right: '4%'}}
+                className="feedback-button"
             />
             <FeedbackModal isOpen={isModalOpen} handleClose={() => setIsModalOpen(false)}/>
         </Fragment>

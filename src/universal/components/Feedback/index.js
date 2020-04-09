@@ -5,6 +5,7 @@ import {Button} from '@homeaway/react-buttons';
 import Modal from '@homeaway/react-modal';
 import {SVGIcon} from '@homeaway/react-svg';
 import {THUMB__24, THUMB_SELECTED__24} from '@homeaway/svg-defs';
+import Cookies from 'js-cookie';
 import './styles.less';
 
 
@@ -12,13 +13,11 @@ const commentTypes = [
     'Suggestion',
     'Technical Issue'
 ];
-const THUMBS_UP = 'thumbs-up';
-const THUMBS_DOWN = 'thumbs-down';
-const defaultOverallExperience = {[THUMBS_UP]: true};
 
 
 const FeedbackModal = ({isOpen, handleClose}) => {
-    const [overallExperience, setOverallExperience] = useState(defaultOverallExperience);
+    const [thumbsUp, setThumbsUp] = useState(true);
+    const [thumbsDown, setThumbsDown] = useState(false);
     const [feedbackComment, setFeedbackComment] = useState('');
     const [commentType, setCommentType] = useState(commentTypes[0]);
     const [email, setEmail] = useState('');
@@ -36,36 +35,41 @@ const FeedbackModal = ({isOpen, handleClose}) => {
     };
 
     const clearForm = () => {
-        setOverallExperience(defaultOverallExperience);
+        setThumbsUp(true);
+        setThumbsDown(false);
         setFeedbackComment('');
         setCommentType(commentTypes[0]);
         setEmail('');
     };
 
-    const sendFeedback = () => {
-        // TODO: replace with a POST request to slack (once webhook url is ready: ask Ranjith)
-        console.log('overallExperience: ', overallExperience);
-        console.log('commentSection: ', commentType);
-        console.log('feedbackComment: ', feedbackComment);
-        console.log('email: ', email);
+    const handleSendFeedback = () => {
+        const slackWebhookUrl = 'https://hooks.slack.com/services/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';
+
+        const sendFeedback = () => {
+            fetch(slackWebhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'text/plain; charset=UTF-8',
+                },
+                body: `{
+                "channel": "#opxhub-feedback",
+                "text": "Overall Experience: ${thumbsUp ? 'positive' : 'negative'}; Comment Type: ${commentType}; Feedback: ${feedbackComment}; Email: ${email || Cookies.get('email')}"
+            }`
+            }).then((resp) => {
+                if (!resp.ok) {
+                    throw new Error();
+                }
+            }).catch((error) => {
+                // eslint-disable-next-line no-console
+                console.log(error);
+            });
+        };
+
+        sendFeedback();
+
         clearForm();
-    };
-
-    const handleRatingChange = (event) => {
-        const newOverallExperience = {};
-
-        if (event === THUMBS_UP && !overallExperience[THUMBS_UP]) {
-            newOverallExperience[THUMBS_UP] = true;
-            newOverallExperience[THUMBS_DOWN] = false;
-        } else if (event === THUMBS_DOWN && !overallExperience[THUMBS_DOWN]) {
-            newOverallExperience[THUMBS_DOWN] = true;
-            newOverallExperience[THUMBS_UP] = false;
-        } else {
-            newOverallExperience[THUMBS_UP] = overallExperience[THUMBS_UP];
-            newOverallExperience[THUMBS_DOWN] = overallExperience[THUMBS_DOWN];
-        }
-
-        setOverallExperience(newOverallExperience);
+        handleClose();
     };
 
     return (
@@ -80,11 +84,19 @@ const FeedbackModal = ({isOpen, handleClose}) => {
                     <hr/>
                     <div className="ratings-wrapper">
                         <span className="ratings-label">{'Page rating'}</span>
-                        <div className="thumbs-wrapper thumbs-up" onClick={() => handleRatingChange(THUMBS_UP)}>
-                            <SVGIcon markup={overallExperience[THUMBS_UP] ? THUMB_SELECTED__24 : THUMB__24} />
+                        <div className="thumbs-wrapper thumbs-up" onClick={() => {
+                            setThumbsUp(true);
+                            setThumbsDown(false);
+                        }}
+                        >
+                            <SVGIcon markup={thumbsUp ? THUMB_SELECTED__24 : THUMB__24} />
                         </div>
-                        <div className="thumbs-wrapper thumbs-down" onClick={() => handleRatingChange(THUMBS_DOWN)}>
-                            <SVGIcon markup={overallExperience[THUMBS_DOWN] ? THUMB_SELECTED__24 : THUMB__24} />
+                        <div className="thumbs-wrapper thumbs-down" onClick={() => {
+                            setThumbsUp(false);
+                            setThumbsDown(true);
+                        }}
+                        >
+                            <SVGIcon markup={thumbsDown ? THUMB_SELECTED__24 : THUMB__24} />
                         </div>
                     </div>
                     <hr/>
@@ -118,7 +130,7 @@ const FeedbackModal = ({isOpen, handleClose}) => {
                     />
                 </div>
                 <div className="footer-section">
-                    <Button label="send feedback" onClick={sendFeedback} />
+                    <Button label="send feedback" onClick={handleSendFeedback} />
                 </div>
             </form>
         </Modal>
