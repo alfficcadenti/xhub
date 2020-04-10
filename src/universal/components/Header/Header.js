@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import {Dropdown} from '@homeaway/react-dropdown';
 import SiteMenu from './SiteMenu';
 import FeedbackModal from '../Feedback';
-import {ButtonOverlay} from '@homeaway/react-buttons';
 import './Header.less';
 
 const Header = () => {
@@ -18,12 +17,7 @@ const Header = () => {
             <Dropdown id="header-dropdown" label="Dashboards" className="header--menu">
                 <SiteMenu />
             </Dropdown>
-            <ButtonOverlay
-                label="Feedback"
-                size="xs"
-                onClick={() => setIsModalOpen(true)}
-                className="feedback-button"
-            />
+            <button onClick={() => setIsModalOpen(true)} className="feedback-button">{'Leave us feedback'}</button>
             <FeedbackModal isOpen={isModalOpen} handleClose={() => setIsModalOpen(false)}/>
         </header>
     );
