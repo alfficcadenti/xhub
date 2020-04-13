@@ -8,9 +8,68 @@
         text-align: left;
     }
 
+    .page-info .Tooltip {
+        font-weight: 400;
+    }
+
+    .overview-charts {
+        min-height: 70vh;
+        margin-bottom: @spacing-7x;
+    }
+
     #filters-wrapper {
         justify-content: left;
-        margin-bottom: 24px;
+        margin-bottom: 0;
+    }
+
+    .filter-dropdown {
+        margin: 5px;
+    }
+
+    .more-filters-btn {
+        margin-left: 5px;
+        margin-bottom: -1px;
+        min-height: @spacing-7x;
+        padding: 0 @spacing-2x;
+        font-size: .75rem;
+        line-height: 1rem;
+        box-shadow: none;
+        border-radius: @spacing-1x @spacing-1x 0 0;
+
+        &.active {
+            background: @color-bg-accent;
+        }
+    }
+
+    .more-filters-divider {
+        margin: -4px 0 4px 5px;
+
+        .Divider__heading {
+            display: none;
+        }
+
+        .Divider__body {
+            padding: @spacing-2x;
+            background: @color-bg-accent;
+            border-radius: 0 0 @spacing-1x @spacing-1x;
+        }
+    }
+
+    .details-container {
+        margin-top: -@spacing-2x;
+        padding: @spacing-2x;
+        min-height: @spacing-8x;
+
+        .details-label {
+            float: left;
+            font-weight: 800;
+            width: 33%;
+        }
+
+        .details-value {
+            float: left;
+            width: 66%;
+        }
     }
 
     .linked-issues__table .data-table {

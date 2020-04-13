@@ -128,8 +128,8 @@ class DataTable extends Component {
         <td key={uuid()}>
             <div role="button" tabIndex="0" onKeyDown={() => this.handleToggleExpand(rowId)} className="toggle-btn" onClick={() => this.handleToggleExpand(rowId)}>
                 {this.state.expandedRows[rowId]
-                    ? <SVGIcon inlineFlex markup={CHEVRON_DOWN__12} />
-                    : <SVGIcon inlineFlex markup={CHEVRON_UP__12} />}
+                    ? <SVGIcon inlineFlex markup={CHEVRON_UP__12} />
+                    : <SVGIcon inlineFlex markup={CHEVRON_DOWN__12} />}
             </div>
         </td>
     )
@@ -218,8 +218,8 @@ class DataTable extends Component {
             return null;
         }
         const toggleIcon = this.state.expandAllRows
-            ? <SVGIcon inlineFlex markup={CHEVRON_DOWN__12} />
-            : <SVGIcon inlineFlex markup={CHEVRON_UP__12} />;
+            ? <SVGIcon inlineFlex markup={CHEVRON_UP__12} />
+            : <SVGIcon inlineFlex markup={CHEVRON_DOWN__12} />;
         return <th onClick={this.toggleExpandAll}>{toggleIcon}</th>;
     }
 

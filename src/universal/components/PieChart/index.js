@@ -43,36 +43,25 @@ const setChartOptions = (data = []) => ({
     ]
 });
 
-const PieChart = ({
-    title,
-    data,
-    setIsApplyClicked,
-    handleBrandChange,
-    handleStatusChange,
-    handlePriorityChange
-}) => {
-    const onChartClick = (e) => {
-        const chartName = e.data.name;
-
-        if (title === 'Brand') {
-            handleBrandChange(chartName);
-        } else if (title === 'Status') {
-            handleStatusChange(chartName);
-        } else if (title === 'Priority') {
-            handlePriorityChange(chartName);
-        }
-
-        setIsApplyClicked(true);
-    };
+const renderChart = (data, onChartClick) => {
     const doughnutchartStyle = {height: '450px', width: '350px'};
     const onEvents = {
         'click': onChartClick
     };
+    return (
+        <ReactEcharts option={setChartOptions(data)} onEvents={onEvents} style={doughnutchartStyle} key={Math.random()}/>
+    );
+};
 
+const PieChart = ({
+    title,
+    data,
+    onChartClick
+}) => {
     return (
         <div className="pie-wrapper">
             <h3>{title}</h3>
-            <ReactEcharts option={setChartOptions(data)} onEvents={onEvents} style={doughnutchartStyle} key={Math.random()}/>
+            {data && data.length ? renderChart(data, onChartClick) : <p>{'No Results Found'}</p>}
         </div>
     );
 };

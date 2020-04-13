@@ -5,6 +5,7 @@ import LineChart from '../../../../components/LineChart/index';
 import PieChart from '../../../../components/PieChart/index';
 import HelpText from './../../../../components/HelpText/HelpText';
 import {getLineData} from '../../incidentsHelper';
+import {getPieData} from '../../../utils';
 import './Quality.less';
 
 
@@ -16,19 +17,6 @@ const renderTable = (filteredIncidents) => (
         <DataTableWrapper filteredIncidents={filteredIncidents} incidentType="defects" />
     </div>
 );
-
-const getPieData = (filteredDefects, property) => {
-    const counts = filteredDefects
-        .reduce((acc, curr) => {
-            const key = curr[property];
-            if (!acc[key]) {
-                acc[key] = 0;
-            }
-            acc[key]++;
-            return acc;
-        }, {});
-    return Object.entries(counts).map(([name, value]) => ({name, value}));
-};
 
 const renderContent = (
     startDate,
@@ -44,6 +32,11 @@ const renderContent = (
     const lineChartTitle = selectedCovidTag
         ? 'Defect Trends [covid-19]'
         : 'Defect Trends';
+    const generateChartClickHandler = (handler) => (e) => {
+        const chartName = e.data.name;
+        handler(chartName);
+        setIsApplyClicked(true);
+    };
     return (
         <div className="quality-tab__content">
             <div data-wdio="defects-line-chart">
@@ -53,26 +46,18 @@ const renderContent = (
                 <PieChart
                     data={getPieData(filteredDefects, 'Brand')}
                     title="Brand"
-                    setIsApplyClicked={setIsApplyClicked}
-                    handleBrandChange={handleBrandChange}
-                    handleStatusChange={handleStatusChange}
-                    handlePriorityChange={handlePriorityChange}
+                    onChartClick={generateChartClickHandler(handleBrandChange)}
                 />
                 <PieChart
                     data={getPieData(filteredDefects, 'Status')}
                     title="Status"
-                    setIsApplyClicked={setIsApplyClicked}
-                    handleBrandChange={handleBrandChange}
-                    handleStatusChange={handleStatusChange}
-                    handlePriorityChange={handlePriorityChange}
+                    onChartClick={generateChartClickHandler(handleStatusChange)}
                 />
                 <PieChart
                     data={getPieData(filteredDefects, 'priority')}
                     title="Priority"
-                    setIsApplyClicked={setIsApplyClicked}
-                    handleBrandChange={handleBrandChange}
-                    handleStatusChange={handleStatusChange}
                     handlePriorityChange={handlePriorityChange}
+                    onChartClick={generateChartClickHandler(handlePriorityChange)}
                 />
             </div>
             {renderTable(filteredDefects)}

@@ -15,3 +15,6 @@ exports.BRANDS = [
 ];
 exports.ALL_BRANDS_OPTION = 'All Brands';
 exports.ALL_TYPES_OPTION = 'All Types';
+exports.ALL_ORGS_OPTION = 'All Owning Orgs';
+exports.ALL_RC_OWNERS_OPTION = 'All Root Cause Owners';
+exports.ALL_RC_CATEGORIES_OPTION = 'All Root Cause Categories';

@@ -4,6 +4,7 @@ import {Route, Switch} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Header from '../Header/Header';
 import Home from '../../pages/Home';
+import PRB from '../../pages/PRB';
 import pages from '../../pages';
 
 function renderRoute(p) {
@@ -19,6 +20,8 @@ function App() {
                 <Switch>
                     <Route path="/home" render={() => <Home />}/>
                     {pages.map(renderRoute)}
+                    {/* TODO: Remove following once pages/index.js has prb route */}
+                    <Route path="/prb" render={() => <PRB />}/>
                 </Switch>
             </div>
         </Fragment>

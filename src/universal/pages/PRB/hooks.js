@@ -31,6 +31,7 @@ const mapLinkedIssues = (i) => {
     });
 };
 
+// eslint-disable-next-line complexity
 const mapTickets = (t) => {
     const linkedIssues = (t.linkedIssues || []).map(mapLinkedIssues);
     return ({
@@ -39,8 +40,15 @@ const mapTickets = (t) => {
         Brand: t.brand,
         Opened: !t.openDate ? '-' : moment(t.openDate).format('YYYY-MM-DD hh:mm'),
         Summary: t.summary,
+        'Owning Org': t.owningOrganization,
+        'RC Owner': t.rootCauseOwner,
+        'RC Category': t.rootCauseCategory && t.rootCauseCategory.length
+            ? t.rootCauseCategory[0]
+            : '-',
         Status: t.status,
         linkedIssues, // for filtering purposes
+        brandsAffected: t.brandsAffected,
+        linesOfBusinessImpacted: t.linesOfBusinessImpacted,
         'Linked Issues': !linkedIssues.length
             ? null
             : (
@@ -75,7 +83,10 @@ export const useFetchTickets = (
     setIsApplyClicked,
     setCurrentPriorities,
     setCurrentStatuses,
-    setCurrentTypes
+    setCurrentTypes,
+    setCurrentOrgs,
+    setCurrentRcOwners,
+    setCurrentRcCategories
 ) => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
@@ -121,6 +132,9 @@ export const useFetchTickets = (
             setCurrentPriorities(['0-Code Red', '1-Critical', '2-High', '3-Medium', '4-Low']); // TODO hardcoded
             setCurrentStatuses(['To Do', 'In Progress', 'Done', 'Resolved', 'Testing', 'Closed']); // TODO hardcoded
             setCurrentTypes(['Corrective Action', 'Incident', 'Post Mortum', 'Resiliency Validation']); // TODO hardcoded
+            setCurrentOrgs(['Egencia', 'Platform & Marketplaces']); // TODO hardcoded
+            setCurrentRcOwners(['EWE - Air Development', 'Egencia - Hotel Shopping']); // TODO hardcoded
+            setCurrentRcCategories(['Architectural']);
         };
     }, [isApplyClicked, startDate, endDate]);
 
