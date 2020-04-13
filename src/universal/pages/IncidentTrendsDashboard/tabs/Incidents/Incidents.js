@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import DataTableWrapper from './DataTableWrapper/DataTableWrapper';
+import DataTableWrapper from '../../../../components/DataTableWrapper/DataTableWrapper';
 import HelpText from './../../../../components/HelpText/HelpText';
 
 
@@ -9,7 +9,7 @@ const renderTable = (filteredIncidents) => (
         <h3 className="section-header__text">{`Incidents (${filteredIncidents.length} results)`}
             <HelpText text="Refresh every 15 minutes" />
         </h3>
-        <DataTableWrapper filteredIncidents={filteredIncidents}/>
+        <DataTableWrapper filteredIncidents={filteredIncidents} incidentType="incidents" />
     </>
 );
 
