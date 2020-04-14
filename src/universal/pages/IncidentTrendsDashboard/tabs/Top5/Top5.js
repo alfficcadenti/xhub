@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import DataTable from '../../../../components/DataTable/index';
+import NoResults from './../../../../components/NoResults/NoResults';
 import {getIncidentsData, sortInDescOrderAndGetTop5, sortInAscOrderAndGetTop5} from '../../incidentsHelper';
 
 const top5Tablecolumns = ['Incident', 'Priority', 'Summary', 'Root Cause Owner', 'Started', 'Duration'];
@@ -30,16 +31,12 @@ const renderResults = (filteredIncidents) => (
     </div>
 );
 
-const renderNoResults = () => (
-    <p>{'No Results Found'}</p>
-);
-
 const Top5 = (props) => {
     return (<div id="inc-top5-tables">
         {
             props.filteredIncidents.length
                 ? renderResults(props.filteredIncidents)
-                : renderNoResults()
+                : <NoResults />
         }
     </div>
     );

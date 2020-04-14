@@ -1,8 +1,9 @@
 import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
-import DataTable from '../../../../components/DataTable/index';
+import DataTable from '../../../../components/DataTable';
 import ChartWrapper from '../../../../components/ChartWrapper';
-import LineChart from '../../../../components/LineChart/index';
+import LineChart from '../../../../components/LineChart';
+import NoResults from './../../../../components/NoResults/NoResults';
 import {
     getMarginDateValues,
     getIncMetricsByBrand,
@@ -59,7 +60,7 @@ const Overview = ({startDate, endDate, filteredIncidents}) => {
                         yAxisName="Avg Duration (Hours)"
                     />
                 </Fragment> :
-                <p>{'No Results Found'}</p>
+                <NoResults />
         }
     </div>
     );

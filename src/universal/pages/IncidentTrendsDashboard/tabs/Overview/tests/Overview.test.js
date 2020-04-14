@@ -2,15 +2,27 @@ import React from 'react';
 import {expect} from 'chai';
 import {shallow} from 'enzyme';
 import Overview from '../Overview';
+import NoResults from '../../../../../components/NoResults/NoResults';
 import mockData from './filteredData.test.json';
 
 describe('<Overview />', () => {
-    it('passes as props the incidents data to the dataTable', () => {
-        const wrapper = shallow(
-            <Overview
-                filteredIncidents={mockData}
-            />
+    let wrapper;
+
+    beforeEach(() => {
+        wrapper = shallow(
+            <Overview filteredIncidents={mockData} />
         );
+    });
+
+    afterEach(() => {
+        wrapper.unmount();
+    });
+
+    it('checks Overview component exists', () => {
+        expect(wrapper).to.have.length(1);
+    });
+
+    it('passes as props the incidents data to the dataTable', () => {
         const props = wrapper.find('DataTable').props();
         expect(props.data[0].Brand).to.be.eql('Expedia Partner Solutions (EPS)');
         expect(props.data[0].P1).to.be.eql(1);
@@ -18,13 +30,8 @@ describe('<Overview />', () => {
         expect(props.data[0].Total).to.be.eql(3);
     });
 
-    it('renders No Result message when no data available', () => {
-        const data = [];
-        const wrapper = shallow(
-            <Overview
-                filteredIncidents={data}
-            />
-        );
-        expect(wrapper.find('div').text()).to.eql('No Results Found');
+    it('renders NoResults component when no data available', () => {
+        wrapper.setProps({filteredIncidents: []});
+        expect(wrapper.contains(<NoResults />)).to.equal(true);
     });
 });

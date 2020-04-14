@@ -4,6 +4,7 @@ import DataTableWrapper from '../../../../components/DataTableWrapper/DataTableW
 import LineChart from '../../../../components/LineChart/index';
 import PieChart from '../../../../components/PieChart/index';
 import HelpText from './../../../../components/HelpText/HelpText';
+import NoResults from './../../../../components/NoResults/NoResults';
 import {getLineData} from '../../incidentsHelper';
 import {getPieData} from '../../../utils';
 import './Quality.less';
@@ -65,10 +66,6 @@ const renderContent = (
     );
 };
 
-const renderNoResults = () => (
-    <p>{'No Results Found'}</p>
-);
-
 const Quality = ({
     startDate,
     endDate,
@@ -92,7 +89,7 @@ const Quality = ({
                     handleStatusChange,
                     handlePriorityChange
                 )
-                : renderNoResults()
+                : <NoResults />
         }
     </div>
 );

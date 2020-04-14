@@ -1,5 +1,6 @@
 import React, {Fragment} from 'react';
 import ChartWrapper from '../../../../components/ChartWrapper';
+import NoResults from '../../../../components/NoResults/NoResults';
 import {buildFinancialImpactData} from '../../incidentsHelper';
 
 
@@ -32,7 +33,7 @@ const FinancialImpact = ({filteredIncidents}) => {
                         title="Gross Booking Value Loss"
                     />
                 </Fragment> :
-                <p>{'No Results Found'}</p>
+                <NoResults />
         }
     </div>);
 };

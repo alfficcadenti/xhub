@@ -1,22 +1,30 @@
 import React from 'react';
+import {expect} from 'chai';
 import {shallow} from 'enzyme';
 import FinancialImpact from '../FinancialImpact';
+import NoResults from '../../../../../components/NoResults/NoResults';
 import mockData from './lostRevenueData.test.json';
 
 
-describe('<FinancialImpact />', () => {
-    it('renders successfully', () => {
-        const wrapper = shallow(<FinancialImpact filteredIncidents={mockData} />);
-        expect(wrapper).toHaveLength(1);
+describe('FinancialImpact component testing', () => {
+    let wrapper;
+
+    beforeEach(() => {
+        wrapper = shallow(
+            <FinancialImpact filteredIncidents={mockData} />
+        );
     });
 
-    it('renders No Result message when no data available', () => {
-        const data = [];
-        const wrapper = shallow(
-            <FinancialImpact
-                filteredIncidents={data}
-            />
-        );
-        expect(wrapper.find('div').text()).toEqual('No Results Found');
+    afterEach(() => {
+        wrapper.unmount();
+    });
+
+    it('renders successfully', () => {
+        expect(wrapper).to.have.length(1);
+    });
+
+    it('renders NoResults component when no data available', () => {
+        wrapper.setProps({filteredIncidents: []});
+        expect(wrapper.contains(<NoResults />)).to.equal(true);
     });
 });
