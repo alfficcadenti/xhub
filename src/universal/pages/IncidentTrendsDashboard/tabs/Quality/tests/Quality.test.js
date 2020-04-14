@@ -2,6 +2,7 @@ import React from 'react';
 import {expect} from 'chai';
 import {shallow} from 'enzyme';
 import Quality from '../Quality';
+import NoResults from '../../../../../components/NoResults/NoResults';
 import mockData from './filteredData.test.json';
 
 
@@ -31,8 +32,8 @@ describe('Quality component testing', () => {
         expect(props.filteredIncidents[0].resolvedDate).to.be.eql('2020-03-22 09:02:00-05');
     });
 
-    it('renders No Result message when no data available', () => {
+    it('renders NoResults component when no data available', () => {
         wrapper.setProps({filteredDefects: []});
-        expect(wrapper.find('div').text()).to.eql('No Results Found');
+        expect(wrapper.contains(<NoResults />)).to.equal(true);
     });
 });

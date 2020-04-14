@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactEcharts from 'echarts-for-react';
 import './styles.less';
+import NoResults from '../NoResults/NoResults';
 
 const setChartOptions = (data = []) => ({
     legend: {
@@ -61,7 +62,7 @@ const PieChart = ({
     return (
         <div className="pie-wrapper">
             <h3>{title}</h3>
-            {data && data.length ? renderChart(data, onChartClick) : <p>{'No Results Found'}</p>}
+            {data && data.length ? renderChart(data, onChartClick) : <NoResults />}
         </div>
     );
 };

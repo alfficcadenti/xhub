@@ -13,6 +13,7 @@ import {Divider} from '@homeaway/react-collapse';
 import {Checkbox} from '@homeaway/react-form-components';
 import './DataTable.less';
 import {Dropdown, DropdownItem} from '@homeaway/react-dropdown';
+import NoResults from '../NoResults/NoResults';
 
 class DataTable extends Component {
     constructor(props) {
@@ -394,7 +395,7 @@ class DataTable extends Component {
     render() {
         return (
             <div className={`data-table__container ${this.state.className}`}>
-                {this.state.data.length ? this.renderTable() : <p className="data-table__msg">{'No Results Found'}</p>}
+                {this.state.data.length ? this.renderTable() : <NoResults />}
             </div>
         );
     }

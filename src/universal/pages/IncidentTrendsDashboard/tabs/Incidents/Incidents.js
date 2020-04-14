@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import DataTableWrapper from '../../../../components/DataTableWrapper/DataTableWrapper';
 import HelpText from './../../../../components/HelpText/HelpText';
+import NoResults from './../../../../components/NoResults/NoResults';
 
 
 const renderTable = (filteredIncidents) => (
@@ -13,16 +14,12 @@ const renderTable = (filteredIncidents) => (
     </>
 );
 
-const renderNoResults = () => (
-    <p>{'No Results Found'}</p>
-);
-
 const Incidents = ({filteredIncidents}) => (
     <div data-wdio="incidents-table">
         {
             filteredIncidents.length
                 ? renderTable(filteredIncidents)
-                : renderNoResults()
+                : <NoResults />
         }
     </div>
 );

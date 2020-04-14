@@ -3,6 +3,7 @@ import {expect} from 'chai';
 import {shallow} from 'enzyme';
 import Incidents from '../Incidents';
 import mockData from './filteredData.test.json';
+import NoResults from '../../../../../components/NoResults/NoResults';
 
 
 describe('Incidents component testing', () => {
@@ -33,8 +34,8 @@ describe('Incidents component testing', () => {
         expect(props.filteredIncidents[0].rootCause).to.be.eql('CUCM Chandler response time was higher so Synapps request timed out. But CUCM continued processing the request partially and both the system became out of sync.CUCM PHX instance has better response time and now Synapps is pointing to same instance. After this, team cleaned up both CUCM and Synapps devices which were in bad state. Post cleanup, re-provisioning was successful. ');
     });
 
-    it('renders No Result message when no data available', () => {
+    it('renders NoResults component when no data available', () => {
         wrapper.setProps({filteredIncidents: []});
-        expect(wrapper.find('div').text()).to.eql('No Results Found');
+        expect(wrapper.contains(<NoResults />)).to.equal(true);
     });
 });
