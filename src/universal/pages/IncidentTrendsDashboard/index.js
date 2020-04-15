@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-import React, {Fragment, useState, useEffect} from 'react';
+import React, {Fragment, useState, useEffect, useCallback} from 'react';
 import moment from 'moment';
 import 'moment-timezone';
 import LoadingContainer from '../../components/LoadingContainer';
@@ -137,20 +137,20 @@ const IncidentTrendsDashboard = () => {
         setIsDirtyForm(true);
     };
 
-    const handlePriorityChange = (priority) => {
+    const handlePriorityChange = useCallback((priority) => {
         setSelectedPriority(priority);
         setIsDirtyForm(true);
-    };
+    }, []);
 
-    const handleBrandChange = (brand) => {
+    const handleBrandChange = useCallback((brand) => {
         setSelectedBrand(brand);
         setIsDirtyForm(true);
-    };
+    }, []);
 
-    const handleStatusChange = (status) => {
+    const handleStatusChange = useCallback((status) => {
         setSelectedStatus(status);
         setIsDirtyForm(true);
-    };
+    }, []);
 
     const handleCovidTagChange = () => {
         setSelectedCovidTag(!selectedCovidTag);

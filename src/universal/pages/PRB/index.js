@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {useHistory, useLocation} from 'react-router';
 import qs from 'query-string';
 import moment from 'moment';
@@ -206,20 +206,20 @@ const PRB = () => {
         setIsDirtyForm(true);
     };
 
-    const handlePriorityChange = (priority) => {
+    const handlePriorityChange = useCallback((priority) => {
         setSelectedPriority(priority);
         setIsDirtyForm(true);
-    };
+    }, []);
 
-    const handleBrandChange = (brand) => {
+    const handleBrandChange = useCallback((brand) => {
         setSelectedBrand(brand);
         setIsDirtyForm(true);
-    };
+    }, []);
 
-    const handleStatusChange = (status) => {
+    const handleStatusChange = useCallback((status) => {
         setSelectedStatus(status);
         setIsDirtyForm(true);
-    };
+    }, []);
 
     const handleTypeChange = (type) => {
         setSelectedType(type);
