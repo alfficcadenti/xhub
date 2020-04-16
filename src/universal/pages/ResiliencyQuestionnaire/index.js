@@ -101,7 +101,7 @@ class ResiliencyQuestionnaire extends Component {
             })
             .then((data) => {
                 this.setState({
-                    lobs: data.content
+                    lobs: data.content || []
                 });
             })
             .catch((error) => {
