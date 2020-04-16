@@ -93,16 +93,15 @@ class ResiliencyQuestionnaire extends Component {
     loadLoBList = () => {
         fetch('/api/v1/lob')
             .then((resp) => {
-                if (!resp.ok || resp.type !== 'ErrorResponse') {
+                if (!resp.ok) {
                     this.setState({lobError: 'Error: Lines of Business list not available. Try to refresh'});
                     throw new Error();
                 }
                 return resp.json();
             })
             .then((data) => {
-                console.log(data);
                 this.setState({
-                    lobs: data.content
+                    lobs: data.content || []
                 });
             })
             .catch((error) => {
