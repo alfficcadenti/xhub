@@ -37,9 +37,8 @@ const mapTickets = (t) => {
     return ({
         Ticket: `<a href="https://jira.expedia.biz/browse/${t.ticketNumber}" target="_blank">${t.ticketNumber}</a>`,
         Priority: t.priority,
-        Brand: t.brand,
         Opened: !t.openDate ? '-' : moment(t.openDate).format('YYYY-MM-DD hh:mm'),
-        Summary: t.summary,
+        'Epic Name': t.summary,
         'Owning Org': t.owningOrganization,
         'RC Owner': t.rootCauseOwner,
         'RC Category': t.rootCauseCategory && t.rootCauseCategory.length
@@ -131,7 +130,7 @@ export const useFetchTickets = (
             setIsApplyClicked(false);
             setCurrentPriorities(['0-Code Red', '1-Critical', '2-High', '3-Medium', '4-Low']); // TODO hardcoded
             setCurrentStatuses(['To Do', 'In Progress', 'Done', 'Resolved', 'Testing', 'Closed']); // TODO hardcoded
-            setCurrentTypes(['Corrective Action', 'Incident', 'Post Mortum', 'Resiliency Validation']); // TODO hardcoded
+            setCurrentTypes(['Corrective Action', 'Epic', 'Incident', 'Post Mortem', 'Resiliency Validation']); // TODO hardcoded
             setCurrentOrgs(['Egencia', 'Platform & Marketplaces']); // TODO hardcoded
             setCurrentRcOwners(['EWE - Air Development', 'Egencia - Hotel Shopping']); // TODO hardcoded
             setCurrentRcCategories(['Architectural']);

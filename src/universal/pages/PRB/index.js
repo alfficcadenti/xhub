@@ -15,17 +15,17 @@ import DatePicker from '../../components/DatePicker';
 import DataTable from '../../components/DataTable';
 import HelpText from '../../components/HelpText/HelpText';
 import {
-    DATE_FORMAT, BRANDS, ALL_STATUSES_OPTION,
-    ALL_PRIORITIES_OPTION, ALL_BRANDS_OPTION,
+    DATE_FORMAT, ALL_STATUSES_OPTION,
+    ALL_PRIORITIES_OPTION,
     ALL_TYPES_OPTION, ALL_ORGS_OPTION,
-    ALL_RC_OWNERS_OPTION, ALL_RC_CATEGORIES_OPTION
+    ALL_RC_OWNERS_OPTION, ALL_RC_CATEGORIES_OPTION,
+    EPIC_ISSUE_TYPE
 } from '../constants';
 import {getPieData} from '../utils';
 import {useFetchTickets} from './hooks';
 import './styles.less';
 
 const statusDefaultValue = ALL_STATUSES_OPTION;
-const brandDefaultValue = ALL_BRANDS_OPTION;
 const typeDefaultValue = ALL_TYPES_OPTION;
 const priorityDefaultValue = ALL_PRIORITIES_OPTION;
 const orgDefaultValue = ALL_ORGS_OPTION;
@@ -71,7 +71,6 @@ const PRB = () => {
     const [endDate, setEndDate] = useState(query.end || endDateDefaultValue);
     const [selectedType, setSelectedType] = useState(query.type || typeDefaultValue);
     const [selectedStatus, setSelectedStatus] = useState(query.status || statusDefaultValue);
-    const [selectedBrand, setSelectedBrand] = useState(query.brand || brandDefaultValue);
     const [selectedPriority, setSelectedPriority] = useState(query.priority || priorityDefaultValue);
     const [selectedOrg, setSelectedOrg] = useState(query.org || orgDefaultValue);
     const [selectedRcOwner, setSelectedRcOwner] = useState(query.rcowner || rcOwnerDefaultValue);
@@ -81,7 +80,7 @@ const PRB = () => {
     const [isApplyClicked, setIsApplyClicked] = useState(false);
     const [currentPriorities, setCurrentPriorities] = useState(['0-Code Red', '1-Critical', '2-High', '3-Medium', '4-Low']);
     const [currentStatuses, setCurrentStatuses] = useState(['To Do', 'In Progress', 'Done', 'Resolved', 'Testing', 'Closed']);
-    const [currentTypes, setCurrentTypes] = useState(['Corrective Action', 'Incident', 'Post Mortum', 'Resiliency Validation']);
+    const [currentTypes, setCurrentTypes] = useState(['Corrective Action', 'Epic', 'Incident', 'Post Mortem', 'Resiliency Validation']);
     const [currentOrgs, setCurrentOrgs] = useState(['Egencia', 'Platform & Marketplaces']);
     const [currentRcOwners, setCurrentRcOwners] = useState(['EWE - Air Development', 'Egencia - Hotel Shopping']);
     const [currentRcCategories, setCurrentRcCategories] = useState(['Architectural']);
@@ -115,20 +114,21 @@ const PRB = () => {
         );
     }
 
+    const matchesType = (i) => selectedType === typeDefaultValue || !i['Issue Type'].localeCompare(selectedType);
+
     function filterType(tickets) {
         let result = [];
-        const matchesType = (i) => selectedType === typeDefaultValue || !i['Issue Type'].localeCompare(selectedType);
         tickets.forEach((t) => {
-            const filteredT = t;
-            const linkedIssues = filteredT.linkedIssues || [];
+            const ticket = t;
+            const {linkedIssues = [], brandsAffected = [], linesOfBusinessImpacted} = ticket;
             const filteredLinkedIssues = linkedIssues.filter(matchesType);
-            if (filteredLinkedIssues.length > 0) {
-                filteredT['Linked Issues'] = (
+            if (selectedType !== EPIC_ISSUE_TYPE && filteredLinkedIssues.length > 0) {
+                ticket['Linked Issues'] = (
                     <>
                         <h3>{'Details'}</h3>
                         <div className="details-container">
-                            {renderDetail('Brands Affected:', (filteredT.brandsAffected || []).join(', '))}
-                            {renderDetail('Lines of Business Impacted:', filteredT.linesOfBusinessImpacted)}
+                            {renderDetail('Brands Affected:', brandsAffected.join(', '))}
+                            {renderDetail('Lines of Business Impacted:', linesOfBusinessImpacted)}
                         </div>
                         <h3>
                             {'Linked Issues'}
@@ -142,9 +142,10 @@ const PRB = () => {
                         />
                     </>
                 );
-                result.push(filteredT);
-            } else if (selectedType === typeDefaultValue) {
-                result.push(filteredT);
+                result.push(ticket);
+            } else if (selectedType === typeDefaultValue || selectedType === 'Epic') {
+                ticket['Linked Issues'] = null;
+                result.push(ticket);
             }
         });
         return result;
@@ -152,7 +153,6 @@ const PRB = () => {
 
     // Filters
     const matchesPriority = (t) => selectedPriority === priorityDefaultValue || t.Priority === selectedPriority;
-    const matchesBrand = (t) => selectedBrand === brandDefaultValue || t.Brand === selectedBrand;
     const matchesStatus = (t) => selectedStatus === statusDefaultValue || t.Status === selectedStatus;
     const matchesOrg = (t) => selectedOrg === orgDefaultValue || t['Owning Org'] === selectedOrg;
     const matchesRcOwner = (t) => selectedRcOwner === rcOwnerDefaultValue || t['RC Owner'] === selectedRcOwner;
@@ -160,7 +160,6 @@ const PRB = () => {
     // eslint-disable-next-line complexity
     const filterTickets = (t) => (
         matchesPriority(t)
-        && matchesBrand(t)
         && matchesStatus(t)
         && matchesOrg(t)
         && matchesRcOwner(t)
@@ -181,7 +180,6 @@ const PRB = () => {
             + `&end=${endDate}`
             + `${getUrlParm('type', selectedType, typeDefaultValue)}`
             + `${getUrlParm('status', selectedStatus, statusDefaultValue)}`
-            + `${getUrlParm('brand', selectedBrand, brandDefaultValue)}`
             + `${getUrlParm('priority', selectedPriority, priorityDefaultValue)}`
             + `${getUrlParm('org', selectedOrg, orgDefaultValue)}`
             + `${getUrlParm('rcowner', selectedRcOwner, rcOwnerDefaultValue)}`
@@ -208,11 +206,6 @@ const PRB = () => {
 
     const handlePriorityChange = useCallback((priority) => {
         setSelectedPriority(priority);
-        setIsDirtyForm(true);
-    }, []);
-
-    const handleBrandChange = useCallback((brand) => {
-        setSelectedBrand(brand);
         setIsDirtyForm(true);
     }, []);
 
@@ -258,9 +251,9 @@ const PRB = () => {
     const renderOverview = () => (
         <div className="overview-charts">
             <PieChart
-                data={getPieData(filteredTickets, 'Brand')}
-                title="Brand"
-                onChartClick={generateChartClickHandler(handleBrandChange)}
+                data={getPieData(filteredTickets, 'Owning Org')}
+                title="Owning Org"
+                onChartClick={generateChartClickHandler(handleOrgChange)}
             />
             <PieChart
                 data={getPieData(filteredTickets, 'Status')}
@@ -281,7 +274,7 @@ const PRB = () => {
         <DataTable
             title={`Tickets (${filteredTickets.length} ${filteredTickets.length === 1 ? 'result' : 'results'})`}
             data={filteredTickets || []}
-            columns={['Ticket', 'Priority', 'Brand', 'Opened', 'Summary', 'Owning Org', 'RC Owner', 'RC Category', 'Status']}
+            columns={['Ticket', 'Priority', 'Owning Org', 'Opened', 'Epic Name', 'RC Owner', 'RC Category', 'Status']}
             expandableColumns={['Linked Issues']}
             columnsInfo={{
                 Ticket: (
@@ -315,18 +308,18 @@ const PRB = () => {
                 handleClearDates={handleClearDates}
             />
             <FilterDropDown
+                id="org-dropdown"
+                className="filter-dropdown"
+                list={[orgDefaultValue, ...currentOrgs]}
+                selectedValue={selectedOrg}
+                onClickHandler={handleOrgChange}
+            />
+            <FilterDropDown
                 id="priority-dropdown"
                 className="filter-dropdown"
                 list={[priorityDefaultValue, ...currentPriorities]}
                 selectedValue={selectedPriority}
                 onClickHandler={handlePriorityChange}
-            />
-            <FilterDropDown
-                id="brand-dropdown"
-                className="filter-dropdown"
-                list={BRANDS}
-                selectedValue={selectedBrand}
-                onClickHandler={handleBrandChange}
             />
             <FilterDropDown
                 id="type-dropdown"
@@ -365,13 +358,6 @@ const PRB = () => {
                     list={[statusDefaultValue, ...currentStatuses]}
                     selectedValue={selectedStatus}
                     onClickHandler={handleStatusChange}
-                />
-                <FilterDropDown
-                    id="org-dropdown"
-                    className="filter-dropdown"
-                    list={[orgDefaultValue, ...currentOrgs]}
-                    selectedValue={selectedOrg}
-                    onClickHandler={handleOrgChange}
                 />
                 <FilterDropDown
                     id="rcOwner-dropdown"

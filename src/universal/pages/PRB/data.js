@@ -11,7 +11,6 @@ exports.data = [
         'brandsAffected': ['Egencia EU', 'Egencia NA'],
         'linesOfBusinessImpacted': 'Agency Hotels, Merchant Hotels',
         'owningOrganization': 'Egencia',
-        'brand': 'Egencia',
         'project': 'Egencia',
         'status': 'Closed',
         'linkedIssues': [
@@ -131,7 +130,6 @@ exports.data = [
         'brandsAffected': [],
         'linesOfBusinessImpacted': '',
         'owningOrganization': 'Egencia',
-        'brand': 'Vrbo',
         'project': 'Vrbo',
         'status': 'Closed',
         'linkedIssues': []
@@ -148,7 +146,6 @@ exports.data = [
         'brandsAffected': [],
         'linesOfBusinessImpacted': '',
         'owningOrganization': 'Platform & Marketplaces',
-        'brand': 'HCOM',
         'project': 'HCOM',
         'status': 'Closed',
         'linkedIssues': [
