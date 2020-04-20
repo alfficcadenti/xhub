@@ -8,13 +8,6 @@ const Availability = () => {
     const [currentDashboard, setCurrentDashboard] = useState();
     const [linkChanged, setLinkChanged] = useState(false);
 
-
-    useEffect(() => {
-        fetch('/api/grafana/alerts')
-            .then((data) => data.json())
-            .then((data) => console.log(data));
-    }, []);
-
     useEffect(() => {
         const setDashboardValue = () => {
             const query = new URLSearchParams(window.location.search);
