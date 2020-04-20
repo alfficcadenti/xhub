@@ -10,7 +10,7 @@ const Availability = () => {
 
 
     useEffect(() => {
-        fetch('/api/grafana/alerts')
+        fetch('/api/grafana/alerts?dashboardId=2399')
             .then((data) => data.json())
             .then((data) => console.log(data));
     }, []);

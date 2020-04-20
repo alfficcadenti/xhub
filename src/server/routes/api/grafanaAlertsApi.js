@@ -20,10 +20,13 @@ module.exports = {
             const {payload} = await client.request({
                 method: 'GET',
                 // path: '/api/alerts?dashboardId=2074',
-                path: '/api/alerts?dashboardId=2399',
+                path: '/api/alerts',
                 operation: 'GET_grafana_alerts_data',
-                connectTimeout: 30000
+                connectTimeout: 30000,
+                params: req.query.params
             });
+            const params = req.query;
+            console.log(params);
             req.log('Grafana alerts data fetched successfully...');
             req.log(payload);
             return payload;
