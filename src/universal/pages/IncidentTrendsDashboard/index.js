@@ -54,7 +54,9 @@ const IncidentTrendsDashboard = () => {
     const [selectedBrand, setSelectedBrand] = useState(brandDefaultValue);
     const [selectedCovidTag, setSelectedCovidTag] = useState(covidTagDefaultValue);
     const [startDate, setStartDate] = useState(startDateDefaultValue);
+    const [appliedStartDate, setAppliedStartDate] = useState(startDate);
     const [endDate, setEndDate] = useState(endDateDefaultValue);
+    const [appliedEndDate, setAppliedEndDate] = useState(endDate);
     const [selectedPriority, setSelectedPriority] = useState(priorityDefaultValue);
     const [isDirtyForm, setIsDirtyForm] = useState(false);
     // incidents
@@ -65,7 +67,7 @@ const IncidentTrendsDashboard = () => {
 
     const [isApplyClicked, setIsApplyClicked] = useState(false);
     const [currentPriorities, setCurrentPriorities] = useState([]);
-    const [currentStatuses, seCurrentStatuses] = useState([]);
+    const [currentStatuses, setCurrentStatuses] = useState([]);
     const [
         isLoading,
         error,
@@ -84,7 +86,7 @@ const IncidentTrendsDashboard = () => {
         applyFilters,
         setIsApplyClicked,
         setCurrentPriorities,
-        seCurrentStatuses
+        setCurrentStatuses
     );
     useSetCovidTag(setSelectedCovidTag);
 
@@ -99,6 +101,8 @@ const IncidentTrendsDashboard = () => {
         setFilteredAllIncidents([...allIncidents].filter(filterTickets));
         // defects
         setFilteredUniqueDefects([...allUniqueDefects].filter(filterTickets));
+        setAppliedStartDate(startDate);
+        setAppliedEndDate(endDate);
         setIsDirtyForm(false);
     }
 
@@ -111,15 +115,15 @@ const IncidentTrendsDashboard = () => {
         switch (activeLinkIndex) {
             case 1:
                 setCurrentPriorities(incidentsPriorities);
-                seCurrentStatuses(incidentsStatuses);
+                setCurrentStatuses(incidentsStatuses);
                 break;
             case 3:
                 setCurrentPriorities(defectsPriorities);
-                seCurrentStatuses(defectsStatuses);
+                setCurrentStatuses(defectsStatuses);
                 break;
             default:
                 setCurrentPriorities(incidentsPriorities);
-                seCurrentStatuses(incidentsStatuses);
+                setCurrentStatuses(incidentsStatuses);
         }
     };
 
@@ -161,7 +165,7 @@ const IncidentTrendsDashboard = () => {
     const renderTabs = () => {
         switch (activeIndex) {
             case 0:
-                return <Overview startDate={startDate} endDate={endDate} filteredIncidents={filteredUniqueIncidents} />;
+                return <Overview startDate={appliedStartDate} endDate={appliedEndDate} filteredIncidents={filteredUniqueIncidents} />;
             case 1:
                 return <Incidents filteredIncidents={filteredUniqueIncidents} />;
             case 2:
@@ -169,8 +173,8 @@ const IncidentTrendsDashboard = () => {
             case 3:
                 return (
                     <Quality
-                        startDate={startDate}
-                        endDate={endDate}
+                        startDate={appliedStartDate}
+                        endDate={appliedEndDate}
                         filteredDefects={filteredUniqueDefects}
                         selectedCovidTag={selectedCovidTag}
                         setIsApplyClicked={setIsApplyClicked}

@@ -349,27 +349,34 @@ export const buildFinancialImpactData = (incidents, propertyToSum) => {
     };
 };
 
-const getBucketCount = (filteredItems, date, bucketSize, key) => {
-    const lower = moment(date);
-    const upper = moment(date).add(1, bucketSize);
-    return filteredItems
-        .filter((defect) => (moment(defect[key]).isBetween(lower, upper, bucketSize, '[)')))
-        .length;
-};
-
 export const getLineData = (startDate, endDate, filteredItems, key) => {
-    const start = moment(startDate);
-    const end = moment(endDate);
-    const bucketSize = (start.diff(end, 'days') <= 14)
-        ? 'days'
-        : 'weeks';
+    const sortedItems = filteredItems.sort((a, b) => String(a[key]).localeCompare(String(b[key])));
+    const bucketSize = 'days';
     const axisData = [];
     const data = [];
-    while (start.isSameOrBefore(end)) {
-        axisData.push(start.format('YYYY-MM-DD'));
-        data.push(getBucketCount(filteredItems, start, bucketSize, key));
-        start.add(1, bucketSize);
+    let bucketTotal = 0;
+    const currBucket = moment(startDate);
+    const bucketEnd = moment(currBucket).add(1, bucketSize);
+    for (let i = 0; i <= sortedItems.length; i++) {
+        const item = sortedItems[i];
+        if (!item) {
+            continue;
+        }
+        if (moment(item[key]).isBetween(currBucket, bucketEnd, '[)')) {
+            bucketTotal++;
+        } else {
+            while (!moment(item[key]).isBetween(currBucket, bucketEnd, '[)')) {
+                data.push(bucketTotal);
+                bucketTotal = 0;
+                axisData.push(currBucket.format('YYYY-MM-DD'));
+                currBucket.add(1, bucketSize);
+                bucketEnd.add(1, bucketSize);
+            }
+            bucketTotal++;
+        }
     }
+    data.push(bucketTotal);
+    axisData.push(currBucket.format('YYYY-MM-DD'));
 
     return {axisData, data};
 };

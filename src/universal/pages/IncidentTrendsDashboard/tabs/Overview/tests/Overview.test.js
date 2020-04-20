@@ -10,7 +10,7 @@ describe('<Overview />', () => {
 
     beforeEach(() => {
         wrapper = shallow(
-            <Overview filteredIncidents={mockData} />
+            <Overview startDate={'2019-09-01'} endDate={'2019-09-31'} filteredIncidents={mockData} />
         );
     });
 
