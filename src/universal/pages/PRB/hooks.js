@@ -5,17 +5,17 @@ import DataTable from '../../components/DataTable';
 
 const mapLinkedIssues = (i) => {
     const linkedIssues = (i.linkedIssues || []).map((l) => ({
-        Ticket: `<a href="https://jira.expedia.biz/browse/${l.ticketNumber}" target="_blank">${l.ticketNumber}</a>`,
+        Ticket: `<a href="https://jira.expedia.biz/browse/${l.id}" target="_blank">${l.id}</a>`,
         Summary: l.summary,
         Status: l.status,
-        Assignee: l.assignee
+        Assignee: l.assignee || '-'
     }));
     return ({
-        Ticket: `<a href="https://jira.expedia.biz/browse/${i.ticketNumber}" target="_blank">${i.ticketNumber}</a>`,
+        Ticket: `<a href="https://jira.expedia.biz/browse/${i.id}" target="_blank">${i.id}</a>`,
         Summary: i.summary,
         'Issue Type': i.issueType,
         Status: i.status,
-        Assignee: i.assignee,
+        Assignee: i.assignee || '-',
         'Linked Issues': !linkedIssues.length
             ? null
             : (
