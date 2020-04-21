@@ -22,11 +22,11 @@ export default [
         link: '/availability',
         text: 'Availability',
         component: require('./Availability')
+    },
+    {
+        id: 'prb',
+        link: '/prb',
+        text: 'Problem Management',
+        component: require('./PRB')
     }
-    // {
-    //     id: 'prb',
-    //     link: '/prb',
-    //     text: 'Problem Management',
-    //     component: require('./PRB')
-    // }
 ];

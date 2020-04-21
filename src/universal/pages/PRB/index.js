@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-use-before-define */
 import React, {useState, useEffect, useCallback} from 'react';
 import {useHistory, useLocation} from 'react-router';
@@ -120,14 +121,14 @@ const PRB = () => {
         let result = [];
         tickets.forEach((t) => {
             const ticket = t;
-            const {linkedIssues = [], brandsAffected = [], linesOfBusinessImpacted} = ticket;
+            const {linkedIssues = [], brandsAffected = '', linesOfBusinessImpacted} = ticket;
             const filteredLinkedIssues = linkedIssues.filter(matchesType);
             if (selectedType !== EPIC_ISSUE_TYPE && filteredLinkedIssues.length > 0) {
                 ticket['Linked Issues'] = (
                     <>
                         <h3>{'Details'}</h3>
                         <div className="details-container">
-                            {renderDetail('Brands Affected:', brandsAffected.join(', '))}
+                            {renderDetail('Brands Affected:', brandsAffected)}
                             {renderDetail('Lines of Business Impacted:', linesOfBusinessImpacted)}
                         </div>
                         <h3>
@@ -152,6 +153,7 @@ const PRB = () => {
     }
 
     // Filters
+    const matchesDate = (t) => t.Opened >= (startDate || startDateDefaultValue) && t.Opened <= (endDate && endDateDefaultValue);
     const matchesPriority = (t) => selectedPriority === priorityDefaultValue || t.Priority === selectedPriority;
     const matchesStatus = (t) => selectedStatus === statusDefaultValue || t.Status === selectedStatus;
     const matchesOrg = (t) => selectedOrg === orgDefaultValue || t['Owning Org'] === selectedOrg;
@@ -159,7 +161,8 @@ const PRB = () => {
     const matchesRcCategory = (t) => selectedRcCategory === rcCategoryDefaultValue || t['RC Category'] === selectedRcCategory;
     // eslint-disable-next-line complexity
     const filterTickets = (t) => (
-        matchesPriority(t)
+        matchesDate(t)
+        && matchesPriority(t)
         && matchesStatus(t)
         && matchesOrg(t)
         && matchesRcOwner(t)

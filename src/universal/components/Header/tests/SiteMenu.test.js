@@ -28,6 +28,6 @@ describe('<SiteMenu />', () => {
 
     it('Renders a list with classname .dashboard-list and 5 elements', () => {
         expect(wrapper.find('.dashboard-list')).to.have.length(1);
-        expect(wrapper.find('.dashboard-list>li')).to.have.length(4);
+        expect(wrapper.find('.dashboard-list>li')).to.have.length(5);
     });
 });
