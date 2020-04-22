@@ -8,28 +8,6 @@ const Availability = () => {
     const [currentDashboard, setCurrentDashboard] = useState();
     const [linkChanged, setLinkChanged] = useState(false);
 
-
-    useEffect(() => {
-        fetch('/api/grafana/alerts?dashboardId=2399')
-            .then((data) => data.json())
-            .then((data) => console.log(data));
-    }, []);
-
-    useEffect(() => {
-        const setDashboardValue = () => {
-            const query = new URLSearchParams(window.location.search);
-            setCurrentDashboard(query.get('dashboard'));
-        };
-
-        if (linkChanged) {
-            setDashboardValue();
-        }
-
-        return () => {
-            setLinkChanged(false);
-        };
-    }, [linkChanged]);
-
     const links = [
         {
             main: 'Self Service Change/Cancel Health',
@@ -63,6 +41,7 @@ const Availability = () => {
             id: 'conversation-platform-app-health-CGP',
             label: 'Conversation Platform App Health CGP',
             urls: ['https://grafana.prod.expedia.com/d/7Xu-DCXWk/covid-19-health?orgId=1&from=now-6h&to=now'],
+            alertDashboardId: 4411,
             frequency: '3 hr',
             threshold: 'Red Sustained 5xx errors or increased/flat topping TP 95 on any app/region',
             monitoring: 'Grafana'
@@ -77,7 +56,8 @@ const Availability = () => {
             ],
             frequency: '3 hr',
             threshold: {Green: '<45%', Yellow: '45 - 50%', Red: '>50%'},
-            monitoring: 'Netperf'
+            monitoring: 'Netperf',
+            alertDashboardId: 2399
         },
         {
             main: 'Agent Tools/ICRS Health',
@@ -89,7 +69,8 @@ const Availability = () => {
             ],
             frequency: '3 hr',
             threshold: {Green: '<45%', Yellow: '45 - 50%', Red: '>50%'},
-            monitoring: 'Netperf'
+            monitoring: 'Netperf',
+            alertDashboardId: 2399
         },
         {
             main: 'Agent Tools/ICRS Health',
@@ -101,7 +82,8 @@ const Availability = () => {
             ],
             frequency: '3 hr',
             threshold: {Green: '<4k', Yellow: '4-5k', Red: '>5k'},
-            monitoring: 'Netperf'
+            monitoring: 'Netperf',
+            alertDashboardId: 2399
         },
         {
             main: 'Agent Tools/ICRS Health',
@@ -148,7 +130,8 @@ const Availability = () => {
             renderLink: 'https://grafana.sea.corp.expecn.com/render/d-solo/3qE7RO9Wz/covid-19-health?orgId=1&from=now-3h&to=now&panelId=6&width=1000&height=500&tz=America%2FChicago',
             frequency: '3 hr',
             threshold: 'Thresholds included in dashboard, reference availability percentage tiles',
-            monitoring: 'GrafanaSEA'
+            monitoring: 'GrafanaSEA',
+            alertDashboardId: 2074
         },
         {
             main: 'Front Door Site Health',
@@ -162,6 +145,39 @@ const Availability = () => {
             monitoring: 'Catchpoint'
         }
     ];
+
+    const checkStatus = () =>
+        links.forEach((link) => {
+            if (link.alertDashboardId && link.monitoring) {
+                console.log(link.alertDashboardId);
+                fetch(`/api/grafana/alerts?dashboardId=${link.alertDashboardId}&monitoring=${link.monitoring}`)
+                    .then((data) => data.json())
+                    .then((data) => console.log(data));
+            }
+        });
+
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            checkStatus();
+        }, 10000);
+        return () => clearInterval(interval);
+    }, []);
+
+    useEffect(() => {
+        const setDashboardValue = () => {
+            const query = new URLSearchParams(window.location.search);
+            setCurrentDashboard(query.get('dashboard'));
+        };
+
+        if (linkChanged) {
+            setDashboardValue();
+        }
+
+        return () => {
+            setLinkChanged(false);
+        };
+    }, [linkChanged]);
 
     const getDashboardIndex = (id) => {
         const index = links.map((l) => l.id).indexOf(id);

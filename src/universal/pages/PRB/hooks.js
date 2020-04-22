@@ -1,21 +1,21 @@
+/* eslint-disable no-unused-vars */
 import React, {useState, useEffect, useRef} from 'react';
 import moment from 'moment';
-import {data} from './data';
 import DataTable from '../../components/DataTable';
 
 const mapLinkedIssues = (i) => {
     const linkedIssues = (i.linkedIssues || []).map((l) => ({
-        Ticket: `<a href="https://jira.expedia.biz/browse/${l.ticketNumber}" target="_blank">${l.ticketNumber}</a>`,
+        Ticket: `<a href="https://jira.expedia.biz/browse/${l.id}" target="_blank">${l.id}</a>`,
         Summary: l.summary,
         Status: l.status,
-        Assignee: l.assignee
+        Assignee: l.assignee || '-'
     }));
     return ({
-        Ticket: `<a href="https://jira.expedia.biz/browse/${i.ticketNumber}" target="_blank">${i.ticketNumber}</a>`,
+        Ticket: `<a href="https://jira.expedia.biz/browse/${i.id}" target="_blank">${i.id}</a>`,
         Summary: i.summary,
         'Issue Type': i.issueType,
         Status: i.status,
-        Assignee: i.assignee,
+        Assignee: i.assignee || '-',
         'Linked Issues': !linkedIssues.length
             ? null
             : (
@@ -35,9 +35,9 @@ const mapLinkedIssues = (i) => {
 const mapTickets = (t) => {
     const linkedIssues = (t.linkedIssues || []).map(mapLinkedIssues);
     return ({
-        Ticket: `<a href="https://jira.expedia.biz/browse/${t.ticketNumber}" target="_blank">${t.ticketNumber}</a>`,
+        Ticket: `<a href="https://jira.expedia.biz/browse/${t.id}" target="_blank">${t.id}</a>`,
         Priority: t.priority,
-        Opened: !t.openDate ? '-' : moment(t.openDate).format('YYYY-MM-DD hh:mm'),
+        Opened: !t.createdDate ? '-' : moment(t.createdDate).format('YYYY-MM-DD hh:mm'),
         'Epic Name': t.summary,
         'Owning Org': t.owningOrganization,
         'RC Owner': t.rootCauseOwner,
@@ -46,7 +46,7 @@ const mapTickets = (t) => {
             : '-',
         Status: t.status,
         linkedIssues, // for filtering purposes
-        brandsAffected: t.brandsAffected,
+        brandsAffected: t.brandsAffected ? t.brandsAffected.split(',').join(', ') : '',
         linesOfBusinessImpacted: t.linesOfBusinessImpacted,
         'Linked Issues': !linkedIssues.length
             ? null
@@ -101,9 +101,15 @@ export const useFetchTickets = (
             setLastStartDate(startDate);
             setLastEndDate(endDate);
             // TODO: replace incidents API call with problem management tickets API call
-            Promise.all([fetch(`/api/v1/incidents?startDate=${startDate}&endDate=${endDate}`)])
-                .then((responses) => Promise.all(responses.map((r) => r.json())))
-                .then(() => {
+            fetch('/prbs')
+                .then((resp) => {
+                    if (resp.error) {
+                        throw new Error();
+                    }
+                    return resp.json()
+                    ;
+                })
+                .then((data) => {
                     // TODO: temporarily ignore data and replace with mockData
                     setAllTickets(data.map(mapTickets));
                     setIsLoading(false);
