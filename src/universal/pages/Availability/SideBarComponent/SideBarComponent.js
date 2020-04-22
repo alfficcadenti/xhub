@@ -11,13 +11,15 @@ const SideBarComponent = ({links, onClick}) => {
             {mainDashboards.map((mainCategory, idx) => (
                 <Divider heading={mainCategory} id={`divider-${idx}`} key={idx} expanded >
                     {links.filter((link) => link.main === mainCategory).map((link, index) => (
-                        <Link
+                        <div><Link
                             to={`/availability?dashboard=${link.id}`}
                             key={`sidebarLink${index}`}
                             onClick={onClick}
                         >
                             {link.label}
                         </Link>
+                        <span>{link.state}</span>
+                        </div>
                     ))}
                 </Divider>
             ))}

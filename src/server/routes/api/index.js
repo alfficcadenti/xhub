@@ -4,6 +4,7 @@ import {resiliencyQuestionnaire} from './resiliencyQuestionnaire';
 import questionnaireHistory from './questionnaireHistory';
 import resiliencyQuestions from './resiliencyQuestions';
 import grafanaAlertsApi from './grafanaAlertsApi';
+import grafanaAlerts from './grafanaAlerts';
 import {login, logout} from './oauth';
 
 const apiRoutes = [
@@ -14,7 +15,8 @@ const apiRoutes = [
     resiliencyQuestionnaire,
     resiliencyQuestions,
     questionnaireHistory,
-    grafanaAlertsApi
+    grafanaAlertsApi,
+    grafanaAlerts
 ];
 
 export default apiRoutes;

@@ -24,10 +24,8 @@ module.exports = {
         }
     },
     handler: async (req) => {
-        console.log('TEST', req.query);
         try {
             const client = ServiceClient.create('garafana-alerts-api', {
-                // hostname: 'grafana.sea.corp.expecn.com',
                 hostname: getHostName(req.query.monitoring),
                 port: '443',
                 protocol: 'https:',
@@ -41,7 +39,6 @@ module.exports = {
             });
 
             req.log('Grafana alerts data fetched successfully...');
-            // req.log(payload);
             return payload;
         } catch (e) {
             req.log('error occurred while fetching grafana alerts data [ERROR]', e);
