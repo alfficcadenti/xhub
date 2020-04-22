@@ -394,7 +394,7 @@ class DataTable extends Component {
 
     render() {
         return (
-            <div className={`data-table__container ${this.state.className}`}>
+            <div className={`data-table__container ${this.props.className}`}>
                 {this.state.data.length ? this.renderTable() : <NoResults />}
             </div>
         );

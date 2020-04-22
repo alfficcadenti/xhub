@@ -28,5 +28,11 @@ export default [
         link: '/prb',
         text: 'Problem Management',
         component: require('./PRB')
+    },
+    {
+        id: 'health-check-bot-results',
+        link: '/health-check-bot-results',
+        text: 'Health Check Bot Results',
+        component: require('./HealthCheckBotResults')
     }
 ];
