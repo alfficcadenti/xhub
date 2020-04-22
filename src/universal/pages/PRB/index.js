@@ -32,7 +32,7 @@ const priorityDefaultValue = ALL_PRIORITIES_OPTION;
 const orgDefaultValue = ALL_ORGS_OPTION;
 const rcOwnerDefaultValue = ALL_RC_OWNERS_OPTION;
 const rcCategoryDefaultValue = ALL_RC_CATEGORIES_OPTION;
-const startDateDefaultValue = moment().subtract(90, 'days').format(DATE_FORMAT);
+const startDateDefaultValue = moment().subtract(30, 'days').format(DATE_FORMAT);
 const endDateDefaultValue = moment().format(DATE_FORMAT);
 const minDate = moment('2019-01-01').toDate();
 const navLinks = [
@@ -153,7 +153,7 @@ const PRB = () => {
     }
 
     // Filters
-    const matchesDate = (t) => t.Opened >= (startDate || startDateDefaultValue) && t.Opened <= (endDate && endDateDefaultValue);
+    const matchesDate = (t) => t.Opened >= (startDate || startDateDefaultValue) && t.Opened <= (endDate || endDateDefaultValue);
     const matchesPriority = (t) => selectedPriority === priorityDefaultValue || t.Priority === selectedPriority;
     const matchesStatus = (t) => selectedStatus === statusDefaultValue || t.Status === selectedStatus;
     const matchesOrg = (t) => selectedOrg === orgDefaultValue || t['Owning Org'] === selectedOrg;
