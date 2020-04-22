@@ -12,42 +12,50 @@ const HealthCheckBotResults = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
 
-    useEffect(() => {
-        fetch('availability/s3bucket')
-            .then((response) => response.json())
-            .then((response) => {
-                const getTableData = (data) => {
-                    return data.map((item) => {
-                        const utcLocal = moment.utc(item.runDateTime).local();
-                        const isFailedStatus = (system) => system.status === 'failed';
+    const isFailedStatus = (system) => system.status === 'failed';
 
-                        return {
-                            'Date': utcLocal.isValid() ? utcLocal.format('YYYY-MM-DD HH:mm') : '-',
-                            ['Overall Results']: item.result.some(isFailedStatus) ? <CircleDot isSuccess={false} /> : <CircleDot />,
-                            'SubSystems': (
-                                <DataTable
-                                    className="linked-issues__table"
-                                    data={item.result.map((subSystem) => ({
-                                        Description: subSystem.description,
-                                        Status: isFailedStatus(subSystem) ? <CircleDot isSuccess={false} /> : <CircleDot />,
-                                        Comments: subSystem.comments ? subSystem.comments : '-'
-                                    }))}
-                                    columns={['Description', 'Status', 'Comments']}
-                                />
-                            )
-                        };
-                    });
-                };
-                const primaryTableData = getTableData(response);
-                setHealthCheckData(primaryTableData);
+    const mapSubSystem = (subSystem) => ({
+        Description: subSystem.description,
+        Status: <CircleDot isSuccess={!(isFailedStatus(subSystem))} />,
+        Comments: subSystem.comments ? subSystem.comments : '-'
+    });
+
+    const getUtcLocalDate = (date) => {
+        const utcLocal = moment.utc(date).local();
+        return utcLocal.isValid()
+            ? utcLocal.format('YYYY-MM-DD HH:mm')
+            : '-';
+    };
+
+    const sortByDate = (a, b) => String(b.Date).localeCompare(a.Date);
+
+    const mapData = (item) => ({
+        'Date': getUtcLocalDate(item.runDateTime),
+        ['Overall Results']: <CircleDot isSuccess={!item.result.some(isFailedStatus)} />,
+        'SubSystems': (
+            <DataTable
+                className="linked-issues__table"
+                data={item.result.map(mapSubSystem)}
+                columns={['Description', 'Status', 'Comments']}
+            />
+        )
+    });
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('availability/s3bucket');
+                const data = await response.json();
+                setHealthCheckData(data.map(mapData).sort(sortByDate));
                 setIsLoading(false);
-            })
-            .catch((err) => {
+            } catch (err) {
                 // eslint-disable-next-line no-console
                 console.error(err);
                 setError('Could not retrieve health check bot results data. Refresh the page to try again.');
                 setIsLoading(false);
-            });
+            }
+        };
+        fetchData();
     }, []);
 
     return (

@@ -21,7 +21,7 @@ describe('<DashboardWrapper />', () => {
                 frequency={props.labfrequency}
                 threshold={props.threshold}
             />);
-        expect(wrapper.find('div#dashboard-wrapper-component')).to.have.length(1);
+        expect(wrapper.find('.dashboard-wrapper-component')).to.have.length(1);
     });
     it('renders successfully a div with splunk instructions if monitoring=splunk', () => {
         const wrapper = shallow(

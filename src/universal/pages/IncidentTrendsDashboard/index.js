@@ -192,7 +192,7 @@ const IncidentTrendsDashboard = () => {
     return (
         <Fragment>
             <h1 className="page-title">{'Defect & Incident Trends'}</h1>
-            <div id="filters-wrapper">
+            <div className="filters-wrapper">
                 <DatePicker
                     startDate={startDate}
                     endDate={endDate}
@@ -200,14 +200,13 @@ const IncidentTrendsDashboard = () => {
                     handleDateRangeChange={handleDateRangeChange}
                     handleClearDates={handleClearDates}
                 />
-                <FilterDropDown id="priority-dropdown" list={currentPriorities} selectedValue={selectedPriority} onClickHandler={handlePriorityChange}/>
-                <FilterDropDown id="brand-dropdown" list={BRANDS} selectedValue={selectedBrand} onClickHandler={handleBrandChange}/>
-                <FilterDropDown id="status-dropdown" list={currentStatuses} selectedValue={selectedStatus} onClickHandler={handleStatusChange}/>
+                <FilterDropDown id="priority-dropdown" className="priority-dropdown" list={currentPriorities} selectedValue={selectedPriority} onClickHandler={handlePriorityChange}/>
+                <FilterDropDown id="brand-dropdown" className="brand-dropdown" list={BRANDS} selectedValue={selectedBrand} onClickHandler={handleBrandChange}/>
+                <FilterDropDown id="status-dropdown" className="status-dropdown" list={currentStatuses} selectedValue={selectedStatus} onClickHandler={handleStatusChange}/>
                 <Checkbox name="covid-19" label="covid-19" checked={selectedCovidTag} onChange={handleCovidTagChange}/>
                 <button
-                    id="applyButton"
                     type="button"
-                    className="btn btn-primary active"
+                    className="apply-button btn btn-primary active"
                     onClick={() => {
                         setIsApplyClicked(true);
                     }}
@@ -222,7 +221,7 @@ const IncidentTrendsDashboard = () => {
                 links={navLinks}
                 onLinkClick={handleNavigationClick}
             />
-            <LoadingContainer isLoading={isLoading} error={error} id={'incident-main'}>
+            <LoadingContainer isLoading={isLoading} error={error} className="incident-main">
                 {renderTabs()}
             </LoadingContainer>
         </Fragment>
