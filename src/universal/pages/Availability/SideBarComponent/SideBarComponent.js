@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import {Divider} from '@homeaway/react-collapse';
+import CircleDot from '../../../components/CircleDot';
 
 
 const SideBarComponent = ({links, onClick}) => {
@@ -11,14 +12,18 @@ const SideBarComponent = ({links, onClick}) => {
             {mainDashboards.map((mainCategory, idx) => (
                 <Divider heading={mainCategory} id={`divider-${idx}`} key={idx} expanded >
                     {links.filter((link) => link.main === mainCategory).map((link, index) => (
-                        <div><Link
-                            to={`/availability?dashboard=${link.id}`}
-                            key={`sidebarLink${index}`}
-                            onClick={onClick}
-                        >
-                            {link.label}
-                        </Link>
-                        <span>{link.state}</span>
+                        <div className="dashboard-li">
+                            <Link
+                                to={`/availability?dashboard=${link.id}`}
+                                key={`sidebarLink${index}`}
+                                onClick={onClick}
+                            >
+                                {link.label}
+                            </Link>
+                            {link.state ?
+                                <CircleDot isSuccess={link.state === 'ok' ? true : false}/>
+                                : ''
+                            }
                         </div>
                     ))}
                 </Divider>

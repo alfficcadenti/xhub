@@ -1,76 +1,76 @@
 @import "../../mixins.less";
 
-#filters-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  font-weight: normal;
-  vertical-align: middle;
-  width: 100%;
-  border-radius: 5px;
-
-  .date-range {
-    width: 350px;
-    height: @filter-size;
-    color: @filter-color;
-  }
-
-  div.date-range,
-  div.Dropdown,
-  div.CRB--checkbox,
-  button#applyButton {
-    margin: 5px;
-  }
-
-  div.CRB--checkbox {
-    align-items: center;
-    display: inline-flex;
-  }
-
-  #priority-dropdown {
-    min-width: 160px;
-    font-weight: normal;
+.filters-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    font-weight: 400;
+    vertical-align: middle;
+    width: 100%;
     border-radius: 5px;
-    height: @filter-size;
-    color: @filter-color;
-  }
 
-  #brand-dropdown,
-  #status-dropdown {
-    min-width: 220px;
-    font-weight: normal;
-    border-radius: 5px;
-    height: @filter-size;
-    color: @filter-color;
-    overflow: hidden;
-  }
+    .date-range {
+        width: 350px;
+        height: @filter-size;
+        color: @filter-color;
+    }
 
-  #status-dropdown {
-    min-width: 130px;
-  }
+    .date-range,
+    .Dropdown,
+    .CRB--checkbox,
+    .apply-button {
+        margin: 5px;
+    }
 
-  #applyButton {
-    height: fit-content;
-  }
+    .CRB--checkbox {
+        align-items: center;
+        display: inline-flex;
+    }
+
+    .priority-dropdown .Dropdown__toggle {
+        min-width: 160px;
+        font-weight: 400;
+        border-radius: 5px;
+        height: @filter-size;
+        color: @filter-color;
+    }
+
+    .brand-dropdown .Dropdown__toggle,
+    .status-dropdown .Dropdown__toggle {
+        min-width: 220px;
+        font-weight: 400;
+        border-radius: 5px;
+        height: @filter-size;
+        color: @filter-color;
+        overflow: hidden;
+    }
+
+    .status-dropdown .Dropdown__toggle {
+        min-width: 130px;
+    }
+
+    .apply-button {
+        height: fit-content;
+    }
 }
 
-#incident-main {
-  text-align: -webkit-center;
-  text-align: -moz-center;
+.incident-main {
+    text-align: -webkit-center;
+    text-align: -moz-center;
 
-  #inc-overview-table {
-    width: 50%;
-  }
+    .inc-overview-table {
+        width: 50%;
+    }
 
-  .financial-impact {
-    margin-top: 90px;
-  }
+    .financial-impact {
+        margin-top: 90px;
+    }
 }
 
 .Datatable__header {
-  background: #e3f4fc;
-  border-top: 1px #908f8f solid;
-  border-bottom: 1px #908f8f solid;
-  color: #292929;
-  font-size: 0.875rem;
+    background: #e3f4fc;
+    border-top: 1px #908f8f solid;
+    border-bottom: 1px #908f8f solid;
+    color: #292929;
+    font-size: .875rem;
 }

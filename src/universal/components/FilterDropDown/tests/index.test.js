@@ -4,7 +4,7 @@ import sinon from 'sinon';
 import FilterDropDown from '../index';
 
 const props = {
-    id: 'priority-dropdown',
+    className: 'priority-dropdown',
     selectedValue: 'All - P1 & P2',
     list: ['P1', 'P2'],
     onClickHandler: sinon.spy(),

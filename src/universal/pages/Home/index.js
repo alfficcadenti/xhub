@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import {Link} from 'react-router-dom';
 import {Alert} from '@homeaway/react-alerts';
 import dashboardsList from '../index';
@@ -30,7 +30,7 @@ const Home = () => {
     );
 
     return (
-        <Fragment>
+        <div className="home-container">
             <div className="home-buttons-container">
                 {dashboardsList.map(renderButton)}
             </div>
@@ -41,7 +41,7 @@ const Home = () => {
                 msg={covidLink()}
                 dismissible
             />
-        </Fragment>
+        </div>
     );
 };
 

@@ -32,7 +32,7 @@ const priorityDefaultValue = ALL_PRIORITIES_OPTION;
 const orgDefaultValue = ALL_ORGS_OPTION;
 const rcOwnerDefaultValue = ALL_RC_OWNERS_OPTION;
 const rcCategoryDefaultValue = ALL_RC_CATEGORIES_OPTION;
-const startDateDefaultValue = moment().subtract(90, 'days').format(DATE_FORMAT);
+const startDateDefaultValue = moment().subtract(30, 'days').format(DATE_FORMAT);
 const endDateDefaultValue = moment().format(DATE_FORMAT);
 const minDate = moment('2019-01-01').toDate();
 const navLinks = [
@@ -153,7 +153,7 @@ const PRB = () => {
     }
 
     // Filters
-    const matchesDate = (t) => t.Opened >= (startDate || startDateDefaultValue) && t.Opened <= (endDate && endDateDefaultValue);
+    const matchesDate = (t) => t.Opened >= (startDate || startDateDefaultValue) && t.Opened <= (endDate || endDateDefaultValue);
     const matchesPriority = (t) => selectedPriority === priorityDefaultValue || t.Priority === selectedPriority;
     const matchesStatus = (t) => selectedStatus === statusDefaultValue || t.Status === selectedStatus;
     const matchesOrg = (t) => selectedOrg === orgDefaultValue || t['Owning Org'] === selectedOrg;
@@ -302,7 +302,7 @@ const PRB = () => {
     };
 
     const renderFilters = () => (
-        <div id="filters-wrapper">
+        <div className="filters-wrapper">
             <DatePicker
                 startDate={startDate}
                 endDate={endDate}
@@ -311,30 +311,26 @@ const PRB = () => {
                 handleClearDates={handleClearDates}
             />
             <FilterDropDown
-                id="org-dropdown"
-                className="filter-dropdown"
+                className="filter-dropdown org-dropdown"
                 list={[orgDefaultValue, ...currentOrgs]}
                 selectedValue={selectedOrg}
                 onClickHandler={handleOrgChange}
             />
             <FilterDropDown
-                id="priority-dropdown"
-                className="filter-dropdown"
+                className="filter-dropdown priority-dropdown"
                 list={[priorityDefaultValue, ...currentPriorities]}
                 selectedValue={selectedPriority}
                 onClickHandler={handlePriorityChange}
             />
             <FilterDropDown
-                id="type-dropdown"
-                className="filter-dropdown"
+                className="filter-dropdown type-dropdown"
                 list={[typeDefaultValue, ...currentTypes]}
                 selectedValue={selectedType}
                 onClickHandler={handleTypeChange}
             />
             <button
-                id="applyButton"
                 type="button"
-                className="btn btn-primary active"
+                className="apply-button btn btn-primary active"
                 onClick={() => {
                     setIsApplyClicked(true);
                 }}
@@ -356,22 +352,19 @@ const PRB = () => {
         <Divider heading="More Filters" id="more-filters-divider" className="more-filters-divider" expanded={showMoreFilters}>
             <form className="search-form search-form__more">
                 <FilterDropDown
-                    id="status-dropdown"
-                    className="filter-dropdown"
+                    className="filter-dropdown status-dropdown"
                     list={[statusDefaultValue, ...currentStatuses]}
                     selectedValue={selectedStatus}
                     onClickHandler={handleStatusChange}
                 />
                 <FilterDropDown
-                    id="rcOwner-dropdown"
-                    className="filter-dropdown"
+                    className="filter-dropdown rcOwner-dropdown"
                     list={[rcOwnerDefaultValue, ...currentRcOwners]}
                     selectedValue={selectedRcOwner}
                     onClickHandler={handleRcOwnerChange}
                 />
                 <FilterDropDown
-                    id="rcCategory-dropdown"
-                    className="filter-dropdown"
+                    className="filter-dropdown rcCategory-dropdown"
                     list={[rcCategoryDefaultValue, ...currentRcCategories]}
                     selectedValue={selectedRcCategory}
                     onClickHandler={handleRcCategoryChange}

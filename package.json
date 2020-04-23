@@ -118,6 +118,7 @@
     "@vrbo/react-event-tracking": "^1.1.0",
     "@vrbo/service-client": "^1.3.0",
     "@vrbo/service-client-statsd": "^1.0.0",
+    "aws-sdk": "^2.656.0",
     "classnames": "^2.2.6",
     "core-js": "^2.6.11",
     "css-modules-require-hook": "^4.2.3",

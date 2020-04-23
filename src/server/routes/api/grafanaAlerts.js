@@ -29,10 +29,12 @@ module.exports = {
         return Promise.all([
             serviceCall('grafana.prod.expedia.com', '/api/alerts?dashboardId=4411'),
             serviceCall('netperf.tools.expedia.com', '/api/alerts?dashboardId=2399'),
-            serviceCall('grafana.sea.corp.expecn.com', '/api/alerts?dashboardId=2074')
+            serviceCall('grafana.sea.corp.expecn.com', '/api/alerts?dashboardId=2122')
         ])
             .then((r) => r.map((resp) => resp))
-            .then((results) => [].concat(...results))
+            .then((results) => {
+                console.log(results); return [].concat(...results);
+            })
             .catch((e) => {
                 req.log('[ERROR]', e);
                 return e;

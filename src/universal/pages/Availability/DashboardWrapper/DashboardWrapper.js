@@ -48,7 +48,7 @@ const renderGrafanaSEA = (dashboardLink, renderLink) => {
 };
 
 const renderIframes = (urls) => (
-    <div id="iframes">
+    <div className="iframes">
         {
             urls.map((url, idx) => (
                 <Iframe url={url}
@@ -77,17 +77,18 @@ const renderContent = (monitoring, urls, dashboardLink, renderLink) => {
 };
 
 const DashboardWrapper = ({label, frequency, threshold, urls = [], monitoring, dashboardLink = '', renderLink = ''}) => {
-    return (<div id="dashboard-wrapper-component">
-        <h1>{label}</h1>
-        <div id="dashboard-wrapper-content">
-            <div id="dashboard-wrapper-details">
-                <div><b>{'Frequency:'}</b> {frequency}</div>
-                <div className="threshold-details">
-                    <span><b>{'Threshold:'}</b></span> {renderThreshold(threshold)}</div>
+    return (
+        <div className="dashboard-wrapper-component">
+            <h1>{label}</h1>
+            <div className="dashboard-wrapper-content">
+                <div className="dashboard-wrapper-details">
+                    <div><b>{'Frequency:'}</b> {frequency}</div>
+                    <div className="threshold-details">
+                        <span><b>{'Threshold:'}</b></span> {renderThreshold(threshold)}</div>
+                </div>
+                {renderContent(monitoring, urls, dashboardLink, renderLink)}
             </div>
-            {renderContent(monitoring, urls, dashboardLink, renderLink)}
         </div>
-    </div>
     );
 };
 

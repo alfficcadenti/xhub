@@ -3,6 +3,14 @@ import React, {useState, useEffect, useRef} from 'react';
 import moment from 'moment';
 import DataTable from '../../components/DataTable';
 
+const distinct = (value, index, self) => self.indexOf(value) === index;
+const removeEmptyStringsFromArray = (item) => item;
+
+const getListOfUniqueProperties = (tickets = [], prop) => tickets
+    .map((ticket) => ticket[prop])
+    .filter(distinct)
+    .filter(removeEmptyStringsFromArray);
+
 const mapLinkedIssues = (i) => {
     const linkedIssues = (i.linkedIssues || []).map((l) => ({
         Ticket: `<a href="https://jira.expedia.biz/browse/${l.id}" target="_blank">${l.id}</a>`,
@@ -112,6 +120,11 @@ export const useFetchTickets = (
                 .then((data) => {
                     // TODO: temporarily ignore data and replace with mockData
                     setAllTickets(data.map(mapTickets));
+                    setCurrentOrgs(getListOfUniqueProperties(data, 'owningOrganization'));
+                    setCurrentRcOwners(getListOfUniqueProperties(data, 'rootCauseOwner'));
+                    setCurrentPriorities(getListOfUniqueProperties(data, 'priority'));
+                    setCurrentStatuses(getListOfUniqueProperties(data, 'status'));
+                    setCurrentRcCategories(getListOfUniqueProperties(data, 'rootCauseCategory'));
                     setIsLoading(false);
                 })
                 .catch((err) => {

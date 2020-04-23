@@ -6,6 +6,7 @@ import resiliencyQuestions from './resiliencyQuestions';
 import grafanaAlertsApi from './grafanaAlertsApi';
 import grafanaAlerts from './grafanaAlerts';
 import {login, logout} from './oauth';
+import {availabilityS3} from './availabilityS3';
 
 const apiRoutes = [
     login,
@@ -15,6 +16,7 @@ const apiRoutes = [
     resiliencyQuestionnaire,
     resiliencyQuestions,
     questionnaireHistory,
+    availabilityS3,
     grafanaAlertsApi,
     grafanaAlerts
 ];

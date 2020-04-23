@@ -28,9 +28,10 @@ const Availability = () => {
 
 
     useEffect(() => {
+        checkStatus();
         const interval = setInterval(() => {
             checkStatus();
-        }, 10000);
+        }, 5000);
         return () => clearInterval(interval);
     }, []);
 
