@@ -20,7 +20,7 @@ const SideBarComponent = ({links, onClick}) => {
                                 {link.label}
                             </Link>
                             {link.state ?
-                                <CircleDot isSuccess={link.state === 'ok' ? true : false}/>
+                                <CircleDot status={link.state === 'ok' ? 'success' : 'failed'}/>
                                 : ''
                             }
                         </div>

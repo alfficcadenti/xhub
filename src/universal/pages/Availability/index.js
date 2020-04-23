@@ -29,7 +29,7 @@ const Availability = () => {
         checkStatus();
         const interval = setInterval(() => {
             checkStatus();
-        }, 5000);
+        }, 10000);
         return () => clearInterval(interval);
     }, []);
 
