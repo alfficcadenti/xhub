@@ -42,7 +42,7 @@ module.exports = {
                 ConversationPlatformHealth.push({name: 'Conversations Platform Health', state: checkStateIsAlert(ConversationPlatformHealth)});
                 return [CGPHealth, ICRS, ConversationPlatformHealth];
             })
-            .then((results) => [].concat(...results))
+            .then((results) => [...results])
             .catch((e) => {
                 req.log('[ERROR]', e);
                 return e;
