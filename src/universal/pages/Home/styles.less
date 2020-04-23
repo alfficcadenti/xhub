@@ -1,27 +1,30 @@
 @import '../../mixins.less';
 
-.home-buttons-container {
+.home-container {
     text-align: center;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin: 5% 0;
 
-    .dashboard-button {
-        margin: 25px 50px 0;
-        background-color: #616161;
-        color: #fff;
-        border-radius: .266rem;
-        padding: 1.2rem 2%;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .2), 0 6px 20px 0 rgba(0, 0, 0, .19);
+    .home-buttons-container {
         display: flex;
-        align-items: center;
+        flex-wrap: wrap;
         justify-content: center;
-        width: 230px;
-    }
+        margin: 5% 0;
 
-    .dashboard-button:hover {
-        background-color: #00008d;
+        .dashboard-button {
+            margin: 25px 50px 0;
+            background-color: #616161;
+            color: #fff;
+            border-radius: .266rem;
+            padding: 1.2rem 2%;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .2), 0 6px 20px 0 rgba(0, 0, 0, .19);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 230px;
+        }
+
+        .dashboard-button:hover {
+            background-color: #00008d;
+        }
     }
 
     .covid-message {

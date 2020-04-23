@@ -30,8 +30,10 @@ const Home = () => {
     );
 
     return (
-        <div className="home-buttons-container">
-            {dashboardsList.map(renderButton)}
+        <div className="home-container">
+            <div className="home-buttons-container">
+                {dashboardsList.map(renderButton)}
+            </div>
             <Alert
                 className="covid-message"
                 title="COVID-19 Updates"
