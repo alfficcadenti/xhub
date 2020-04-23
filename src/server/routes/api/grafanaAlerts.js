@@ -1,6 +1,12 @@
 import ServiceClient from '@vrbo/service-client';
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 
+const dasboards = [
+    {name: '', details: []},
+    {},
+    {}
+];
+
 const serviceCall = async (hostname, path) => {
     const client = ServiceClient.create('grafana-alerts-api', {
         hostname,
@@ -14,6 +20,12 @@ const serviceCall = async (hostname, path) => {
         connectTimeout: 30000,
     });
     return payload;
+};
+
+const checkStateIsAlert = (array = []) => {
+    const CGPHealthAlert = array.some((elem) => elem.state && elem.state === 'alerting');
+    const state = CGPHealthAlert ? 'alerting' : 'ok';
+    return state;
 };
 
 module.exports = {
@@ -31,10 +43,12 @@ module.exports = {
             serviceCall('netperf.tools.expedia.com', '/api/alerts?dashboardId=2399'),
             serviceCall('grafana.sea.corp.expecn.com', '/api/alerts?dashboardId=2122')
         ])
-            .then((r) => r.map((resp) => resp))
-            .then((results) => {
-                console.log(results); return [].concat(...results);
+            .then(([CGPHealth, ICRS, ConversationPlatformHealth]) => {
+                CGPHealth.push({name: 'Conversation Platform App Health CGP', state: checkStateIsAlert(CGPHealth)});
+                ConversationPlatformHealth.push({name: 'Conversations Platform Health', state: checkStateIsAlert(ConversationPlatformHealth)});
+                return [CGPHealth, ICRS, ConversationPlatformHealth];
             })
+            .then((results) => [].concat(...results))
             .catch((e) => {
                 req.log('[ERROR]', e);
                 return e;
