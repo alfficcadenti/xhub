@@ -7,21 +7,19 @@ import './styles.less';
 const Availability = () => {
     const [currentDashboard, setCurrentDashboard] = useState();
     const [linkChanged, setLinkChanged] = useState(false);
-    const [linksState, setLinksStatus] = useState(links);
+    const [linksState, setLinksState] = useState(links);
 
     const checkStatus = () =>
         fetch('/grafana/alerts')
             .then((data) => data.json())
             .then((data) => {
                 const updatedLinks = links.map((link) => {
-                    let result = data.find((alertState) => alertState.name === link.label);
-                    if (result && result.state) {
-                        const state = result.state;
-                        return {...link, state};
-                    }
-                    return link;
+                    const result = data.find((alertState) => alertState.name === link.label);
+                    return (result && result.state)
+                        ? {...link, state: result.state}
+                        : link;
                 });
-                setLinksStatus(updatedLinks);
+                setLinksState(updatedLinks);
             });
 
 
