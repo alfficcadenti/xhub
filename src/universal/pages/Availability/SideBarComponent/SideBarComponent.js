@@ -3,7 +3,6 @@ import {Link} from 'react-router-dom';
 import {Divider} from '@homeaway/react-collapse';
 import CircleDot from '../../../components/CircleDot';
 
-
 const SideBarComponent = ({links, onClick}) => {
     const mainDashboardsSet = [...new Set(links.map((item) => item.main))];
     const mainDashboards = Array.from(mainDashboardsSet[0]);

@@ -9,7 +9,6 @@ const Availability = () => {
     const [linkChanged, setLinkChanged] = useState(false);
     const [linksState, setLinksStatus] = useState(links);
 
-
     const checkStatus = () =>
         fetch('/grafana/alerts')
             .then((data) => data.json())
@@ -22,7 +21,6 @@ const Availability = () => {
                     }
                     return link;
                 });
-                console.log(updatedLinks);
                 setLinksStatus(updatedLinks);
             });
 
