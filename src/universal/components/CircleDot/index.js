@@ -1,14 +1,27 @@
 /* eslint-disable no-use-before-define */
 import React from 'react';
 import {SVGIcon} from '@homeaway/react-svg';
-import {CHECK__12, CLOSE__12} from '@homeaway/svg-defs';
+import {CHECK__12, CLOSE__12, ALERT_WARNING__16} from '@homeaway/svg-defs';
 import './styles.less';
 
 
-const CircleDot = ({isSuccess = true}) => {
+const CircleDot = ({status}) => {
+    const renderIcon = (subSystemStatus) => {
+        switch (subSystemStatus) {
+            case 'success':
+                return CHECK__12;
+            case 'warning':
+                return ALERT_WARNING__16;
+            case 'failed':
+                return CLOSE__12;
+            default:
+                return CHECK__12;
+        }
+    };
+
     return (
-        <div className={`circle-dot ${isSuccess ? 'success' : 'fail'}`}>
-            <SVGIcon markup={isSuccess ? CHECK__12 : CLOSE__12} />
+        <div className={`circle-dot ${status}`}>
+            <SVGIcon markup={renderIcon(status)} />
         </div>
     );
 };
