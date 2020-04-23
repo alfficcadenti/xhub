@@ -13,10 +13,28 @@ const HealthCheckBotResults = () => {
     const [error, setError] = useState('');
 
     const isFailedStatus = (system) => system.status === 'failed';
+    const isWarningStatus = (system) => system.status === 'warning';
+
+    const getOverallResult = (result) => {
+        let overallResult;
+
+        switch (true) {
+            case (result.some(isFailedStatus)):
+                overallResult = 'failed';
+                break;
+            case (result.some(isWarningStatus)):
+                overallResult = 'warning';
+                break;
+            default:
+                overallResult = 'success';
+        }
+
+        return overallResult;
+    };
 
     const mapSubSystem = (subSystem) => ({
         Description: subSystem.description,
-        Status: <CircleDot isSuccess={!(isFailedStatus(subSystem))} />,
+        Status: subSystem.status === 'No Data' ? subSystem.status : <CircleDot status={subSystem.status} />,
         Comments: subSystem.comments ? subSystem.comments : '-'
     });
 
@@ -31,10 +49,9 @@ const HealthCheckBotResults = () => {
 
     const mapData = (item) => ({
         'Date': getUtcLocalDate(item.runDateTime),
-        ['Overall Results']: <CircleDot isSuccess={!item.result.some(isFailedStatus)} />,
+        ['Overall Results']: <CircleDot status={getOverallResult(item.result)} />,
         'SubSystems': (
             <DataTable
-                className="linked-issues__table"
                 data={item.result.map(mapSubSystem)}
                 columns={['Description', 'Status', 'Comments']}
             />
