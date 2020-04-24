@@ -1,5 +1,5 @@
 import ServiceClient from '@vrbo/service-client';
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
+// process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0; //to check first if not needed
 
 const serviceCall = async (hostname, path) => {
     const client = ServiceClient.create('grafana-alerts-api', {
@@ -42,7 +42,7 @@ module.exports = {
                 ConversationPlatformHealth.push({name: 'Conversations Platform Health', state: checkStateIsAlert(ConversationPlatformHealth)});
                 return [CGPHealth, ICRS, ConversationPlatformHealth];
             })
-            .then((results) => [...results])
+            .then((results) => [].concat(...results))
             .catch((e) => {
                 req.log('[ERROR]', e);
                 return e;
