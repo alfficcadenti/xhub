@@ -1,54 +1,47 @@
-@import "../../mixins.less";
+@import '../../mixins.less';
 
 .availability-container {
-  margin-top: -@spacing-6x;
+    margin-top: -@spacing-6x;
 }
 
 .availability-nav-bar {
-  height: 100%; /* 100% Full-height */
-  overflow-y: scroll;
-  width: 25%; /* 0 width - change this with JavaScript */
-  border-right: @text-color 1px solid;
-  position: absolute; /* Stay in place */
-  z-index: 1; /* Stay on top */
-  top: @spacing-6x; /* Stay at the top */
-  left: 0;
-  overflow-x: hidden; /* Disable horizontal scroll */
-  padding-top: 60px; /* Place content 60px from the top */
-  transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
-  text-align: left;
-  padding: 10px;
-  padding-bottom: 80px;
+    height: 100%; /* 100% Full-height */
+    overflow-y: scroll;
+    width: 25%; /* 0 width - change this with JavaScript */
+    border-right: @text-color 1px solid;
+    position: absolute; /* Stay in place */
+    z-index: 1; /* Stay on top */
+    top: @spacing-6x; /* Stay at the top */
+    left: 0;
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 60px; /* Place content 60px from the top */
+    transition: .5s; /* 0.5 second transition effect to slide in the sidenav */
+    text-align: left;
+    padding: 10px;
+    padding-bottom: 80px;
 
-  a {
-    padding: 0 10px 8px 10px;
-    text-decoration: none;
-    color: #818181;
-    display: block;
-    transition: 0.3s;
-    width: 90%;
-  }
+    a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        color: #818181;
+        display: block;
+        transition: .3s;
+    }
 
-  div.dashboard-li {
-    display: inline-flex;
-    width: 100%;
-    line-height: 1.125rem;
-  }
+    .Navigation--vertical .Navigation__a {
+        font-size: 80%;
+    }
 
-  .Navigation--vertical .Navigation__a {
-    font-size: 80%;
-  }
-
-  .Divider__title-text {
-    font-weight: 800;
-    color: @text-color;
-  }
+    .Divider__title-text {
+        font-weight: 800;
+        color: @text-color;
+    }
 }
 
 .availability-section {
-  width: 100%; /* 0 width - change this with JavaScript */
-  z-index: 1; /* Stay on top */
-  right: 0;
-  transition: 0.5s;
-  text-align: center;
+    width: 100%; /* 0 width - change this with JavaScript */
+    z-index: 1; /* Stay on top */
+    right: 0;
+    transition: .5s;
+    text-align: center;
 }
