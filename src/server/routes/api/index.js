@@ -3,7 +3,6 @@ import {prbs} from './prbs';
 import {resiliencyQuestionnaire} from './resiliencyQuestionnaire';
 import questionnaireHistory from './questionnaireHistory';
 import resiliencyQuestions from './resiliencyQuestions';
-import grafanaAlerts from './grafanaAlerts';
 import {login, logout} from './oauth';
 import {availabilityS3} from './availabilityS3';
 
@@ -15,8 +14,7 @@ const apiRoutes = [
     resiliencyQuestionnaire,
     resiliencyQuestions,
     questionnaireHistory,
-    availabilityS3,
-    grafanaAlerts
+    availabilityS3
 ];
 
 export default apiRoutes;
