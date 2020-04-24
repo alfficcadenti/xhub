@@ -22,7 +22,6 @@ const Availability = () => {
                 setLinksState(updatedLinks);
             });
 
-
     useEffect(() => {
         checkStatus();
         const interval = setInterval(() => {
