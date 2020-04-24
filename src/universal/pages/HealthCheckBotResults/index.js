@@ -77,15 +77,39 @@ const HealthCheckBotResults = () => {
 
     return (
         <Fragment>
-            <h1 className="page-title">{'Health Check Bot Results'}</h1>
-            <LoadingContainer isLoading={isLoading} error={error} id="health-check-bot">
-                <DataTable
-                    className="health-check-table-wrapper"
-                    data={healthCheckData || []}
-                    columns={['Date', 'Overall Results']}
-                    expandableColumns={['SubSystems']}
-                />
-            </LoadingContainer>
+            <div className="health-check-results-wrapper">
+                <h1 className="page-title">{'Health Check Bot Results'}</h1>
+                <LoadingContainer isLoading={isLoading} error={error} id="health-check-bot">
+                    <DataTable
+                        className="health-check-table-wrapper"
+                        data={healthCheckData || []}
+                        columns={['Date', 'Overall Results']}
+                        expandableColumns={['SubSystems']}
+                        paginated
+                        pageSize={15}
+                    />
+                    <div className="status-description-wrapper">
+                        <div className="status-description-label">
+                            <span>{'*results status description:'}</span>
+                        </div>
+                        <div className="status-description">
+                            <CircleDot status="success" />
+                            <span className="divider">{'-'}</span>
+                            <span>{'successful status'}</span>
+                        </div>
+                        <div className="status-description">
+                            <CircleDot status="warning" />
+                            <span className="divider">{'-'}</span>
+                            <span>{'have some warnings'}</span>
+                        </div>
+                        <div className="status-description">
+                            <CircleDot status="failed" />
+                            <span className="divider">{'-'}</span>
+                            <span>{'failed status'}</span>
+                        </div>
+                    </div>
+                </LoadingContainer>
+            </div>
         </Fragment>
     );
 };
