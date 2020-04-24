@@ -1,0 +1,46 @@
+{
+  "global": {
+    "instance": {
+      "iam_instance_profile": {
+        "inline_policies": [
+          {
+            "Action": [
+              "cloudwatch:GetMetricData",
+              "cloudwatch:PutMetricData"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+              "*"
+            ]
+          },
+          {
+            "Effect": "Allow",
+            "Action": [
+              "s3:GetObject"
+            ],
+            "Resource": [
+              "arn:aws:s3:::iota-dash/covid_19/*"
+            ]
+          }
+        ],
+        "managed_policies": [
+          "AmazonS3ReadOnlyAccess"
+        ],
+        "trust_policies": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": [
+                "ecs-tasks.amazonaws.com",
+                "rds.amazonaws.com",
+                "lambda.amazonaws.com",
+                "ec2.amazonaws.com"
+              ]
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      }
+    }
+  }
+}
