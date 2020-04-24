@@ -1,5 +1,5 @@
 import ServiceClient from '@vrbo/service-client';
-// process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0; //to check first if not needed
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 
 const serviceCall = async (hostname, path) => {
     const client = ServiceClient.create('grafana-alerts-api', {
