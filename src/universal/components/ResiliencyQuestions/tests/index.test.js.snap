@@ -362,7 +362,6 @@ Array [
             aria-invalid={false}
             aria-label="Deployed to Segment?"
             autoComplete="off"
-            autoFocus={undefined}
             className="form-control"
             id="Deployed-to-Segment?"
             onBlur={[Function]}
@@ -440,7 +439,6 @@ Array [
             aria-invalid={false}
             aria-label="Chaos Monkey Enabled?"
             autoComplete="off"
-            autoFocus={undefined}
             className="form-control"
             id="Chaos-Monkey-Enabled?"
             onBlur={[Function]}
@@ -518,7 +516,6 @@ Array [
             aria-invalid={false}
             aria-label="Auto-Scaling Verified By"
             autoComplete="off"
-            autoFocus={undefined}
             className="form-control"
             id="Auto-Scaling-Verified-By"
             onBlur={[Function]}
@@ -1182,7 +1179,6 @@ Array [
             aria-invalid={false}
             aria-label="Deployed to Segment?"
             autoComplete="off"
-            autoFocus={undefined}
             className="form-control"
             id="Deployed-to-Segment?"
             onBlur={[Function]}
@@ -1260,7 +1256,6 @@ Array [
             aria-invalid={false}
             aria-label="Chaos Monkey Enabled?"
             autoComplete="off"
-            autoFocus={undefined}
             className="form-control"
             id="Chaos-Monkey-Enabled?"
             onBlur={[Function]}
@@ -1338,7 +1333,6 @@ Array [
             aria-invalid={false}
             aria-label="Auto-Scaling Verified By"
             autoComplete="off"
-            autoFocus={undefined}
             className="form-control"
             id="Auto-Scaling-Verified-By"
             onBlur={[Function]}
