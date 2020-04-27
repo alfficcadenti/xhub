@@ -23,7 +23,7 @@ describe('<DataTable/>', () => {
                 setClass: (val) => val !== null
             }
         ];
-        wrapper = shallow(<DataTable data={data} columns={[columns]} rules={rules} />);
+        wrapper = shallow(<DataTable handleDateRangeChange={() => {}} handleClearDates={() => {}} data={data} columns={columns} rules={rules} />);
     });
 
     it('Renders successfully', () => {
@@ -68,7 +68,7 @@ describe('<DataTable/>', () => {
     });
 
     it('Does not sort when sort is disabled', () => {
-        wrapper = shallow(<DataTable data={data} columns={[columns]} rules={rules} sortDisabled />);
+        wrapper = shallow(<DataTable data={data} columns={columns} rules={rules} sortDisabled />);
         wrapper.instance().onClickSort(columns[0]);
         expect(wrapper.instance().state.data[0].name).to.equal('B');
         wrapper.instance().onClickSort(columns[0]);

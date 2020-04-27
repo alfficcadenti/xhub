@@ -7,7 +7,6 @@ import ResiliencyQuestionnaire from '../index';
 import QuestionForm from '../QuestionForm';
 import History from '../History';
 import mockLoBDetails from './mockLoBList.json';
-import mockProductData from './mockProductList.json';
 import mockAppDetails from './mockAppDetails.json';
 
 

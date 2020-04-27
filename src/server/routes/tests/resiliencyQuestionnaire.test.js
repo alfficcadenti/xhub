@@ -11,7 +11,7 @@ describe('/api/v1/resiliency/questionnaire', () => {
     });
 
     test('handler is called once', async () => {
-        route.resiliencyQuestionnaire.handler = jest.fn();
+        route.resiliencyQuestionnaire.handler = jest.fn(() => '');
         const server = new Hapi.Server();
         server.route(route.resiliencyQuestionnaire);
         await server.inject({

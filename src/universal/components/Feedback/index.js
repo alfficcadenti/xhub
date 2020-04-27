@@ -16,7 +16,7 @@ const commentTypes = [
 ];
 
 
-const FeedbackModal = ({isOpen, handleClose}) => {
+const FeedbackModal = ({isOpen, onClose}) => {
     const [thumbsUp, setThumbsUp] = useState(true);
     const [thumbsDown, setThumbsDown] = useState(false);
     const [feedbackComment, setFeedbackComment] = useState('');
@@ -70,14 +70,14 @@ const FeedbackModal = ({isOpen, handleClose}) => {
         sendFeedback();
 
         clearForm();
-        handleClose();
+        onClose();
     };
 
     return (
         <Modal
             id="feedback-modal"
             isOpen={isOpen}
-            onClose={handleClose}
+            onClose={onClose}
             title="Please tell us what do you think of our website"
         >
             <form action="" className="feedback-wrapper">

@@ -9,7 +9,9 @@ describe('DatePicker component testing', () => {
     let wrapper;
 
     beforeEach(() => {
-        wrapper = shallow(<DatePicker />);
+        wrapper = shallow(
+            <DatePicker handleDateRangeChange={() => {}} handleClearDates={() => {}} />
+        );
     });
 
     afterEach(() => {
@@ -29,13 +31,15 @@ describe('DatePicker component testing', () => {
     });
 
     it('passes correct props to the DateRangePicker', () => {
+        const startDate = (new Date('2020-03-21 12:38:57-05')).toISOString();
+        const endDate = (new Date('2020-03-22 09:02:00-05')).toISOString();
         wrapper.setProps({
-            startDate: '2020-03-21 12:38:57-05',
-            endDate: '2020-03-22 09:02:00-05'
+            startDate,
+            endDate
         });
         const props = wrapper.find(DateRangePicker).props();
 
-        expect(props.startDate).to.be.eql('2020-03-21 12:38:57-05');
-        expect(props.endDate).to.be.eql('2020-03-22 09:02:00-05');
+        expect(props.startDate).to.be.eql(startDate);
+        expect(props.endDate).to.be.eql(endDate);
     });
 });

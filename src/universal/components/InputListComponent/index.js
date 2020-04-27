@@ -49,7 +49,10 @@ InputListComponent.propTypes = {
     ]),
     isLoading: PropTypes.bool,
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    options: PropTypes.arrayOf(PropTypes.shape()),
+    options: PropTypes.arrayOf(PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.shape()
+    ])),
     inputProps: PropTypes.shape(),
     onChange: PropTypes.func
 };

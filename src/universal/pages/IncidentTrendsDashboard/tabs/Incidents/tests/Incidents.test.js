@@ -23,15 +23,22 @@ describe('Incidents component testing', () => {
         expect(wrapper).to.have.length(1);
     });
 
-    it('passes as props the incidents data to the dataTable', () => {
-        const props = wrapper.find('DataTableWrapper').props();
+    it('passes as props the incidents data to the DataTable', () => {
+        const props = wrapper.find('DataTable').props();
+        const firstRow = props.data[0];
 
-        expect(props.filteredIncidents[0].incidentSummary).to.be.eql('Multiple Contact Centers SynApps Degraded');
-        expect(props.filteredIncidents[0].incidentNumber).to.be.eql('INC4624976');
-        expect(props.filteredIncidents[0].startedAt).to.be.eql('2020-01-02 19:17:00.0000000');
-        expect(props.filteredIncidents[0].openDate).to.be.eql('2019-12-31 00:37:41.0000000');
-        expect(props.filteredIncidents[0].resolvedDate).to.be.eql('2020-01-06 03:47:50.0000000');
-        expect(props.filteredIncidents[0].rootCause).to.be.eql('CUCM Chandler response time was higher so Synapps request timed out. But CUCM continued processing the request partially and both the system became out of sync.CUCM PHX instance has better response time and now Synapps is pointing to same instance. After this, team cleaned up both CUCM and Synapps devices which were in bad state. Post cleanup, re-provisioning was successful. ');
+        expect(firstRow.Incident).to.be.eql('<a href=\"https://expedia.service-now.com/go.do?id=INC4624976\" target=\"_blank\">INC4624976</a>');
+        expect(firstRow.Priority).to.be.eql('2-High');
+        expect(firstRow.Brand).to.be.eql('BEX - Expedia Group');
+        expect(firstRow.Division).to.be.eql('Platform & Marketplaces');
+        // expect(firstRow.Started).to.be.eql('2020-01-02 13:17'); // local conversation prone to error local vs build env
+        expect(firstRow.Summary).to.be.eql('Multiple Contact Centers SynApps Degraded');
+        expect(firstRow.Duration).to.be.eql('3 days');
+        expect(firstRow.TTD).to.be.eql('20 minutes');
+        expect(firstRow.TTR).to.be.eql('3 days');
+        expect(firstRow.Status).to.be.eql('Closed');
+        expect(firstRow['Executive Summary']).to.be.eql('Multiple Contact Centers SynApps Degraded');
+        expect(firstRow['Resolution Notes']).to.be.eql('CUCM Chandler response time was higher so Synapps request timed out. But CUCM continued processing the request partially and both the system became out of sync.CUCM PHX instance has better response time and now Synapps is pointing to same instance. After this, team cleaned up both CUCM and Synapps devices which were in bad state. Post cleanup, re-provisioning was successful. ');
     });
 
     it('renders NoResults component when no data available', () => {

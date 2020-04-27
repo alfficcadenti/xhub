@@ -1,18 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import DataTableWrapper from '../../../../components/DataTableWrapper/DataTableWrapper';
-import HelpText from './../../../../components/HelpText/HelpText';
-import NoResults from './../../../../components/NoResults/NoResults';
+import DataTable from '../../../../components/DataTable';
+import NoResults from '../../../../components/NoResults/NoResults';
+import {getIncidentsData} from '../../incidentsHelper';
 
 
-const renderTable = (filteredIncidents) => (
-    <>
-        <h3 className="section-header__text">{`Incidents (${filteredIncidents.length} results)`}
-            <HelpText text="Refresh every 15 minutes" />
-        </h3>
-        <DataTableWrapper filteredIncidents={filteredIncidents} incidentType="incidents" />
-    </>
-);
+const renderTable = (filteredIncidents) => {
+    const columns = ['Incident', 'Priority', 'Brand', 'Division', 'Started', 'Summary', 'Duration', 'TTD', 'TTR', 'Status'];
+    const csvColumns = columns.concat(['Root Cause', 'Executive Summary']);
+    return (
+        <DataTable
+            title={`Incidents (${filteredIncidents.length} results)`}
+            info="Refreshes every 15 minutes"
+            data={getIncidentsData(filteredIncidents)}
+            columns={columns}
+            expandableColumns={['Details']}
+            csvColumns={csvColumns}
+            pageSize={25}
+            paginated
+            enableCSVDownload
+        />
+    );
+};
 
 const Incidents = ({filteredIncidents}) => (
     <div data-wdio="incidents-table">

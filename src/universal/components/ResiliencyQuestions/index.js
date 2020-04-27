@@ -114,11 +114,11 @@ class ResiliencyQuestions extends Component {
     renderCategoryQuestion = (id, question, values, defaultValue = []) => (
         <SearchableList
             key={id}
-            labelKey={id}
+            labelKey={`${id}`}
             options={values}
             inputProps={{
                 label: question,
-                id
+                id: `${id}`
             }}
             selected={defaultValue}
         />

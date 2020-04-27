@@ -85,6 +85,17 @@
         }
     }
 
+    .info-tooltip {
+        display: inline-block;
+        margin-left: 4px;
+        font-weight: 400;
+
+        .Tooltip b {
+            color: @color-text-inverse;
+            font-weight: 400;
+        }
+    }
+
     .data-table {
         width: 100%;
         border-collapse: separate;
@@ -106,16 +117,6 @@
         td {
             border-top: 1px @color-border-contrast solid;
             padding: @spacing-1x;
-
-            .column-info {
-                display: inline-block;
-                margin-left: 4px;
-                font-weight: 400;
-
-                .Tooltip b {
-                    color: @color-text-inverse;
-                }
-            }
         }
 
         .data-table-header {

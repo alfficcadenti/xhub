@@ -5,21 +5,21 @@ exports[`matches the snapshot 1`] = `
   className="form-group floating-label empty"
 >
   <textarea
-    aria-label=""
+    aria-label="# Availability Zones Deployed to"
     className="FormTextArea__textarea form-control FormTextArea__textarea--auto-expand"
-    id={undefined}
-    name={undefined}
+    id="0"
+    name="0"
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
-    placeholder=""
+    placeholder="# Availability Zones Deployed to"
     value={undefined}
   />
   <label
     className="FormTextArea__floating-label"
-    htmlFor={undefined}
+    htmlFor="0"
   >
-    
+    # Availability Zones Deployed to
   </label>
 </div>
 `;

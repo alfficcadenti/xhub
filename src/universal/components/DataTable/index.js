@@ -170,8 +170,8 @@ class DataTable extends Component {
         return data.slice(start, start + pageSize).map(this.renderRow);
     }
 
-    renderColumnInfo = (content) => (
-        <div className="column-info">
+    renderInfoTooltip = (content) => (
+        <div className="info-tooltip ">
             <Tooltip tooltipType="tooltip--lg" content={content} placement="bottom">
                 <SVGIcon inlineFlex markup={INFO__16} />
             </Tooltip>
@@ -184,7 +184,7 @@ class DataTable extends Component {
             headerColumnContent = this.state.columnHeaders[column];
         } else if (this.state.columnsInfo[column]) {
             headerColumnContent = (
-                <>{column} {this.renderColumnInfo(this.state.columnsInfo[column])}</>
+                <>{column} {this.renderInfoTooltip(this.state.columnsInfo[column])}</>
             );
         } else {
             headerColumnContent = column;
@@ -347,10 +347,21 @@ class DataTable extends Component {
         }));
     }
 
+    getCSVHeader = () => {
+        const {csvColumns, displayColumns, columns} = this.state;
+        if (csvColumns && csvColumns.length) {
+            return csvColumns;
+        }
+        if (displayColumns && displayColumns.length) {
+            return displayColumns;
+        }
+        return columns;
+    }
+
     renderDownloadLink = () => (
         <CSVLink
             className="btn btn-default data-table__download"
-            headers={this.state.displayColumns}
+            headers={this.getCSVHeader()}
             data={this.getCSVData()}
             filename={this.state.filename}
         >
@@ -366,9 +377,10 @@ class DataTable extends Component {
         </button>
     )
 
-    renderToolbar = (title) => (
+    // eslint-disable-next-line complexity
+    renderToolbar = (title, info) => (
         <>
-            <h2 className="data-table__title">{title}</h2>
+            <h3 className="data-table__title">{title}{info && this.renderInfoTooltip(info)}</h3>
             {this.state.enableColumnDisplaySettings && this.renderColumnDisplaySettings()}
             {this.state.enableCSVDownload && this.renderDownloadLink()}
             <Divider heading="Settings" id="settings-divider" className="settings-divider" expanded={this.state.showSettings}>
@@ -382,7 +394,7 @@ class DataTable extends Component {
 
     renderTable = () => (
         <>
-            {this.renderToolbar(this.state.title)}
+            {this.renderToolbar(this.state.title, this.state.info)}
             <table className="data-table">
                 <thead className="data-table-header">{this.renderTableHeader()}</thead>
                 <tbody className="data-table-body">{this.renderTableBody()}</tbody>

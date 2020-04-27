@@ -1,23 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import DataTableWrapper from '../../../../components/DataTableWrapper/DataTableWrapper';
+import DataTable from '../../../../components/DataTable';
 import LineChart from '../../../../components/LineChart/index';
 import PieChart from '../../../../components/PieChart/index';
-import HelpText from './../../../../components/HelpText/HelpText';
 import NoResults from './../../../../components/NoResults/NoResults';
-import {getLineData} from '../../incidentsHelper';
+import {getQualityData, getLineData} from '../../incidentsHelper';
 import {getPieData} from '../../../utils';
 import './Quality.less';
-
-
-const renderTable = (filteredIncidents) => (
-    <div className="defects-table">
-        <h3 className="section-header__text">{`Defects (${filteredIncidents.length} results)`}
-            <HelpText text="Refresh every 15 minutes" />
-        </h3>
-        <DataTableWrapper filteredIncidents={filteredIncidents} incidentType="defects" />
-    </div>
-);
 
 const renderContent = (
     startDate,
@@ -61,7 +50,16 @@ const renderContent = (
                     onChartClick={generateChartClickHandler(handlePriorityChange)}
                 />
             </div>
-            {renderTable(filteredDefects)}
+            <DataTable
+                className="defects-table"
+                title={`Defects (${filteredDefects.length} results)`}
+                info="Refreshes every 15 minutes"
+                data={getQualityData(filteredDefects)}
+                columns={['Defect', 'Priority', 'Brand', 'Opened', 'Resolved', 'Summary', 'Project', 'Duration', 'Impacted Brand', 'Status']}
+                pageSize={25}
+                paginated
+                enableCSVDownload
+            />
         </div>
     );
 };

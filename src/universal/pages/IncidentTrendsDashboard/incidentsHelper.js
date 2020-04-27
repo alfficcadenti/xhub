@@ -5,10 +5,10 @@
 import React from 'react';
 import {renderToString} from 'react-dom/server';
 import moment from 'moment';
-import * as h from '../../components/utils/formatDate';
-import {DATE_FORMAT} from '../constants';
 import {isArray} from 'util';
 import uuid from 'uuid/v1';
+import * as h from '../../components/utils/formatDate';
+import {DATE_FORMAT} from '../constants';
 
 export const adjustTicketProperties = (tickets = [], type = 'incident') => {
     return tickets.map((t) => {
@@ -76,10 +76,10 @@ export const getUniqueTickets = (tickets, property) => {
 
 const buildTicketLink = (id = '', brand = '', url = '') => {
     if (url) {
-        return (<a key={`${id}link`} href={url} target="_blank">{id}</a>);
+        return (`<a href="${url}" target="_blank">${id}</a>`);
     }
     const brandUrl = brand === 'Vrbo' ? url : `https://expedia.service-now.com/go.do?id=${id}`;
-    return (<a key={`${id}link`} href={brandUrl} target="_blank">{id}</a>);
+    return (`<a href="${brandUrl}" target="_blank">${id}</a>`);
 };
 
 export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
@@ -97,11 +97,29 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
         rawTTD: inc.ttd,
         TTR: inc.ttr ? h.formatDurationForTable(inc.ttr) : '-',
         rawTTR: inc.ttr,
+        'Resolution Notes': inc.rootCause || '-',
         'Root Cause': inc.rootCause || '-',
         'Root Cause Owner': inc.rootCauseOwner || '-',
         Status: inc.Status || '-',
         Tag: inc.tag || '-',
-        executiveSummary: inc.executiveSummary || '-'
+        'Executive Summary': inc.executiveSummary || '-',
+        executiveSummary: inc.executiveSummary || '-',
+        Details: (
+            <div className="expandable-row-wrapper">
+                <div className="expandable-row">
+                    <span className="expandable-row-header">{'Incident Executive Summary:'}</span>
+                    <div className="expandable-row-section">
+                        {inc.executiveSummary || '-'}
+                    </div>
+                </div>
+                <div className="expandable-row">
+                    <span className="expandable-row-header">{'Resolution Notes:'}</span>
+                    <div className="expandable-row-section">
+                        {inc.rootCause || '-'}
+                    </div>
+                </div>
+            </div>
+        )
     }))
     .sort((a, b) => moment(a.Started).isBefore(b.Started));
 

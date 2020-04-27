@@ -18,7 +18,7 @@ const Header = () => {
                 <SiteMenu />
             </Dropdown>
             <button onClick={() => setIsModalOpen(true)} className="feedback-button">{'Leave us feedback'}</button>
-            <FeedbackModal isOpen={isModalOpen} handleClose={() => setIsModalOpen(false)}/>
+            <FeedbackModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}/>
         </header>
     );
 };

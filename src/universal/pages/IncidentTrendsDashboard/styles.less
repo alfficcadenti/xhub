@@ -74,3 +74,24 @@
     color: #292929;
     font-size: .875rem;
 }
+
+.expandable-row-wrapper {
+    display: flex;
+    background: #f7f7f8;
+
+    .expandable-row {
+        display: flex;
+        justify-content: left;
+        align-items: left;
+
+        .expandable-row-header {
+            font-weight: 600;
+            padding-right: 24px;
+        }
+
+        .expandable-row-section {
+            max-width: 500px;
+            padding-right: 24px;
+        }
+    }
+}

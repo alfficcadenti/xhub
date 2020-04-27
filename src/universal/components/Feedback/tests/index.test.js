@@ -8,7 +8,7 @@ describe('FeedbackModal component testing', () => {
     let wrapper;
 
     beforeEach(() => {
-        wrapper = shallow(<FeedbackModal />);
+        wrapper = shallow(<FeedbackModal onClose={() => {}} />);
     });
 
     afterEach(() => {
