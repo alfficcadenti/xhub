@@ -100,6 +100,10 @@ class ResiliencyQuestionnaire extends Component {
                 return resp.json();
             })
             .then((data) => {
+                if (data.type === 'ErrorResponse') {
+                    this.setState({lobError: data.message || 'Error: Lines of Business list not available. Try to refresh'});
+                    throw new Error();
+                }
                 this.setState({
                     lobs: data.content || []
                 });
