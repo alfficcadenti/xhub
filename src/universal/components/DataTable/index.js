@@ -27,7 +27,6 @@ class DataTable extends Component {
             sortByColumn: null,
             sortByDirection: 'desc',
             sortDisabled: false,
-            filename: 'hubble-table.csv',
             csvColumns: [],
             enableCSVDownload: false,
             paginated: false,
@@ -363,7 +362,7 @@ class DataTable extends Component {
             className="btn btn-default data-table__download"
             headers={this.getCSVHeader()}
             data={this.getCSVData()}
-            filename={this.state.filename}
+            filename={`${this.state.csvFilename || 'opxhub-table.csv'}`}
         >
             <button type="button" className="btn btn-default settings-btn">
                 <SVGIcon markup={DOWNLOAD__16} /> <div className="btn-label">{'Download CSV'}</div>

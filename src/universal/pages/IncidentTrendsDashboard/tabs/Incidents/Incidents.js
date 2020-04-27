@@ -7,7 +7,7 @@ import {getIncidentsData} from '../../incidentsHelper';
 
 const renderTable = (filteredIncidents) => {
     const columns = ['Incident', 'Priority', 'Brand', 'Division', 'Started', 'Summary', 'Duration', 'TTD', 'TTR', 'Status'];
-    const csvColumns = columns.concat(['Root Cause', 'Executive Summary']);
+    const csvColumns = columns.concat(['Executive Summary', 'Resolution Notes']);
     return (
         <DataTable
             title={`Incidents (${filteredIncidents.length} results)`}
@@ -15,9 +15,10 @@ const renderTable = (filteredIncidents) => {
             data={getIncidentsData(filteredIncidents)}
             columns={columns}
             expandableColumns={['Details']}
-            csvColumns={csvColumns}
             pageSize={25}
             paginated
+            csvColumns={csvColumns}
+            csvFilename="IncidentsResults.csv"
             enableCSVDownload
         />
     );

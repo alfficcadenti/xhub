@@ -58,6 +58,7 @@ const renderContent = (
                 columns={['Defect', 'Priority', 'Brand', 'Opened', 'Resolved', 'Summary', 'Project', 'Duration', 'Impacted Brand', 'Status']}
                 pageSize={25}
                 paginated
+                csvFilename="DefectsResults.csv"
                 enableCSVDownload
             />
         </div>
