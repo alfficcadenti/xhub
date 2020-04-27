@@ -40,14 +40,12 @@ module.exports = {
     },
     handler: async (req) => {
         return Promise.all([
-            serviceCall('grafana.prod.expedia.com', '/api/alerts?dashboardId=4411'),
             serviceCall('netperf.tools.expedia.com', '/api/alerts?dashboardId=2399'),
             serviceCall('grafana.sea.corp.expecn.com', '/api/alerts?dashboardId=2122')
         ])
-            .then(([CGPHealth, ICRS, ConversationPlatformHealth]) => {
-                CGPHealth.push({name: 'Conversation Platform App Health CGP', state: checkConversationPlatformState(CGPHealth)});
+            .then(([ICRS, ConversationPlatformHealth]) => {
                 ConversationPlatformHealth.push({name: 'Conversations Platform Health', state: checkConversationPlatformState(ConversationPlatformHealth)});
-                return [CGPHealth, ICRS, ConversationPlatformHealth];
+                return [ICRS, ConversationPlatformHealth];
             })
             .then((results) => [].concat(...results))
             .catch((e) => {
