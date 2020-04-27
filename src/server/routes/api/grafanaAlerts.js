@@ -2,24 +2,31 @@ import ServiceClient from '@vrbo/service-client';
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 
 const serviceCall = async (hostname, path) => {
-    const client = ServiceClient.create('grafana-alerts-api', {
-        hostname,
-        port: '443',
-        protocol: 'https:',
-    });
-    const {payload} = await client.request({
-        method: 'GET',
-        path,
-        operation: 'GET_grafana_alerts_data',
-        connectTimeout: 30000,
-    });
-    return payload;
+    try {
+        const client = ServiceClient.create('grafana-alerts-api', {
+            hostname,
+            port: '443',
+            protocol: 'https:',
+        });
+        const {payload} = await client.request({
+            method: 'GET',
+            path,
+            operation: 'GET_grafana_alerts_data',
+            connectTimeout: 30000,
+        });
+        return payload || [];
+    } catch {
+        return [];
+    }
 };
 
-const checkStateIsAlert = (array = []) => {
-    const CGPHealthAlert = array.some((elem) => elem.state && elem.state === 'alerting');
-    const state = CGPHealthAlert ? 'alerting' : 'ok';
-    return state;
+const checkConversationPlatformState = (inputArray = []) => {
+    if (Array.isArray(inputArray) && inputArray.length) {
+        const stateAlert = inputArray.find((elem) => elem.state && elem.state === 'alerting');
+        const state = stateAlert ? 'alerting' : 'ok';
+        return state;
+    }
+    return '';
 };
 
 module.exports = {
@@ -38,8 +45,8 @@ module.exports = {
             serviceCall('grafana.sea.corp.expecn.com', '/api/alerts?dashboardId=2122')
         ])
             .then(([CGPHealth, ICRS, ConversationPlatformHealth]) => {
-                CGPHealth.push({name: 'Conversation Platform App Health CGP', state: checkStateIsAlert(CGPHealth)});
-                ConversationPlatformHealth.push({name: 'Conversations Platform Health', state: checkStateIsAlert(ConversationPlatformHealth)});
+                CGPHealth.push({name: 'Conversation Platform App Health CGP', state: checkConversationPlatformState(CGPHealth)});
+                ConversationPlatformHealth.push({name: 'Conversations Platform Health', state: checkConversationPlatformState(ConversationPlatformHealth)});
                 return [CGPHealth, ICRS, ConversationPlatformHealth];
             })
             .then((results) => [].concat(...results))
