@@ -16,7 +16,7 @@ import mockResult from './incByBrandResult.test.json';
 
 const dataResult = {
     'Brand': 'Expedia Partner Solutions (EPS)',
-    'Duration': 'a few seconds',
+    'Duration': '0m',
     'Incident': '<a href="https://expedia.service-now.com/go.do?id=INC4419505" target="_blank">INC4419505</a>',
     'Priority': '1-Critical',
     'Root Cause Owner': 'EAN Release - Deploy',
