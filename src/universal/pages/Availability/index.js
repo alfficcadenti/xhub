@@ -54,9 +54,7 @@ const Availability = () => {
 
     return (
         <div className="availability-container">
-            <nav className="availability-nav-bar">
-                <SideBarComponent links={linksState} onClick={() => setLinkChanged(true)} />
-            </nav>
+            <SideBarComponent links={linksState} onClick={() => setLinkChanged(true)} />
             <section className="availability-section">
                 <DashboardWrapper
                     urls={currentDashboardDetail.urls}

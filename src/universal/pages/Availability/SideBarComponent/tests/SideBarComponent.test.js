@@ -137,17 +137,9 @@ const links = [
 ];
 
 describe('SideBarComponent component testing', () => {
-    let wrapper;
-
-    beforeEach(() => {
-        wrapper = shallow(<SideBarComponent links={links}/>);
-    });
-
-    afterEach(() => {
-        wrapper.unmount();
-    });
-
     it('checks SideBarComponent component exists', () => {
+        const wrapper = shallow(<SideBarComponent links={links}/>);
+
         expect(wrapper).to.have.length(1);
     });
 });
