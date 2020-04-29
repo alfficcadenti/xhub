@@ -311,18 +311,21 @@ const PRB = () => {
                 handleClearDates={handleClearDates}
             />
             <FilterDropDown
+                id="org-dropdown"
                 className="filter-dropdown org-dropdown"
                 list={[orgDefaultValue, ...currentOrgs]}
                 selectedValue={selectedOrg}
                 onClickHandler={handleOrgChange}
             />
             <FilterDropDown
+                id="priority-dropdown"
                 className="filter-dropdown priority-dropdown"
                 list={[priorityDefaultValue, ...currentPriorities]}
                 selectedValue={selectedPriority}
                 onClickHandler={handlePriorityChange}
             />
             <FilterDropDown
+                id="type-dropdown"
                 className="filter-dropdown type-dropdown"
                 list={[typeDefaultValue, ...currentTypes]}
                 selectedValue={selectedType}
@@ -352,18 +355,21 @@ const PRB = () => {
         <Divider heading="More Filters" id="more-filters-divider" className="more-filters-divider" expanded={showMoreFilters}>
             <form className="search-form search-form__more">
                 <FilterDropDown
+                    id="status-dropdown"
                     className="filter-dropdown status-dropdown"
                     list={[statusDefaultValue, ...currentStatuses]}
                     selectedValue={selectedStatus}
                     onClickHandler={handleStatusChange}
                 />
                 <FilterDropDown
+                    id="rcOwner-dropdown"
                     className="filter-dropdown rcOwner-dropdown"
                     list={[rcOwnerDefaultValue, ...currentRcOwners]}
                     selectedValue={selectedRcOwner}
                     onClickHandler={handleRcOwnerChange}
                 />
                 <FilterDropDown
+                    id="rcCategory-dropdown"
                     className="filter-dropdown rcCategory-dropdown"
                     list={[rcCategoryDefaultValue, ...currentRcCategories]}
                     selectedValue={selectedRcCategory}

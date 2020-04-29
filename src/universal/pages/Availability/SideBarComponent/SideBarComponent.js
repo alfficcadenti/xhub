@@ -19,7 +19,7 @@ const renderDashboardLink = (link, onClick) => (
 );
 
 const headerElement = (header, id, links, onClick, status) => (
-    <Collapsible title={header} status={status} key={`header-${id}`}>
+    <Collapsible key={`header-${id}`} id={`header-${id}`} title={header} status={status}>
         {links.map((link) => (
             renderDashboardLink(link, onClick)
         ))}

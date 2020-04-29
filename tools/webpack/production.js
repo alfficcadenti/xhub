@@ -5,7 +5,7 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const {StatsWriterPlugin} = require('webpack-stats-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const CommonConfig = require('./common');
 const UploadAssetsPlugin = require('./upload-assets-plugin.js');
 
@@ -78,9 +78,7 @@ module.exports = merge(CommonConfig, {
     },
 
     plugins: [
-        new CleanWebpackPlugin([Path.join(path, '**/*.*')], {
-            root: path
-        }),
+        new CleanWebpackPlugin(),
         new ManifestPlugin({
             publicPath: ''
         }),

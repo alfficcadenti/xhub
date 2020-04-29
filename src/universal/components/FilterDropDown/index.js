@@ -6,7 +6,7 @@ class FilterDropDown extends PureComponent {
     render() {
         const {id, list, selectedValue, onClickHandler, className} = this.props;
         return (
-            <Dropdown id={id} label={selectedValue} className={className}>
+            <Dropdown id={id} label={selectedValue} className={className} closeAfterContentClick>
                 {
                     list.map((item) => (
                         <DropdownItem key={item} text={item} link="#" onClick={() => onClickHandler(item)} />

@@ -21,11 +21,11 @@ class Collapsible extends Component {
     }
 
     render() {
-        const {status, children, title, key} = this.props;
+        const {status, children, title, id} = this.props;
         const {open} = this.state;
         return (
             <div className="sidebar-header">
-                <div id={key} className="sidebar-title" onClick={this.togglePanel} onKeyDown={this.onKeyDown} role="button" tabIndex={0}>
+                <div id={id} className="sidebar-title" onClick={this.togglePanel} onKeyDown={this.onKeyDown} role="button" tabIndex={0}>
                     <SVGIcon markup={open ? CHEVRON_DOWN__12 : CHEVRON_UP__12}/>
                     <span className="sidebar-title-text">{title}</span>
                     <CircleDot status={status}/>

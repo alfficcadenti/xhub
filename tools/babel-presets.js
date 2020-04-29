@@ -19,6 +19,7 @@ const environments = {
                     modules: false,
                     loose: true,
                     useBuiltIns: 'entry',
+                    corejs: '3',
                     targets: {browsers}
                 }
             ]
@@ -35,6 +36,7 @@ const environments = {
                     modules: false,
                     loose: true,
                     useBuiltIns: 'entry',
+                    corejs: '3',
                     targets: {browsers}
                 }
             ]

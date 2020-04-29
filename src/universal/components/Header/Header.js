@@ -14,7 +14,7 @@ const Header = () => {
             <Link to="/home" className="header--logo" >
                 {'OpXHub'}
             </Link>
-            <Dropdown id="header-dropdown" label="Dashboards" className="header--menu">
+            <Dropdown id="header-dropdown" label="Dashboards" className="header--menu" closeAfterContentClick>
                 <SiteMenu />
             </Dropdown>
             <button onClick={() => setIsModalOpen(true)} className="feedback-button">{'Leave us feedback'}</button>

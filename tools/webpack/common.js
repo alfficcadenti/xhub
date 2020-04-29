@@ -1,7 +1,7 @@
 const Path = require('path');
 const ExtractCssChunks = require('extract-css-chunks-webpack-plugin');
 const autoprefixer = require('autoprefixer');
-const {browsers, vendors} = require('./lists');
+const {vendors} = require('./lists');
 
 const SRC_DIR = Path.join(__dirname, 'src', 'universal');
 
@@ -35,8 +35,8 @@ module.exports = {
                 test: /\.less$/,
                 use: [
                     ExtractCssChunks.loader,
-                    {loader: 'css-loader', options: {importLoaders: 2, modules: true, localIdentName: '[local]'}},
-                    {loader: 'postcss-loader', options: {plugins: [autoprefixer({browsers})]}},
+                    {loader: 'css-loader', options: {importLoaders: 2, modules: {localIdentName: '[local]'}}},
+                    {loader: 'postcss-loader', options: {plugins: [autoprefixer()]}},
                     'less-loader'
                 ]
             },
@@ -44,8 +44,8 @@ module.exports = {
                 test: /\.css$/,
                 use: [
                     ExtractCssChunks.loader,
-                    {loader: 'css-loader', options: {importLoaders: 1, modules: true, localIdentName: '[local]'}},
-                    {loader: 'postcss-loader', options: {plugins: [autoprefixer({browsers})]}}
+                    {loader: 'css-loader', options: {importLoaders: 1, modules: {localIdentName: '[local]'}}},
+                    {loader: 'postcss-loader', options: {plugins: [autoprefixer()]}}
                 ]
             },
             {
