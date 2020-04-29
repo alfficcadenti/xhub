@@ -1,7 +1,7 @@
 {
   "name": "opxhub-ui",
   "description": "",
-  "team": "Operational Excellence",
+  "team": "OpEx Platform",
   "applicationStack": "operational-excellence",
   "repoSource": "https://github.expedia.biz/EGPlatform/opxhub-ui",
   "serviceTier": "Tier 3",
