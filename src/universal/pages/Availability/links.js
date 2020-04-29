@@ -42,7 +42,7 @@ exports.links = [
         label: 'Chandler ICRS checkpoint firewall CPU Utilization',
         urls: [
             'https://netperf.tools.expedia.com/d/aHdk-buZz/z_stafford-checkpoint-multiproc-for-icrs-fw?orgId=1&fullscreen&panelId=2',
-            'https://netperf.tools.expedia.com/d/4SLdH6uZk/noc-covid-19-core-stability-metrics?orgId=1&from=now-3h&to=now'
+            'https://netperf.tools.expedia.com/d/4SLdH6uZk/noc-covid-19-core-stability-metrics?orgId=1&from=1588150659002&to=1588161459002&refresh=5m&var-Router=All&var-Time=2m&fullscreen&panelId=2'
         ],
         frequency: '3 hr',
         threshold: {Green: '<45%', Yellow: '45 - 50%', Red: '>50%'},
@@ -55,7 +55,7 @@ exports.links = [
         label: 'Phoenix ICRS ASA firewall CPU utilization',
         urls: [
             'https://netperf.tools.expedia.com/d/I5BwsfwZz/z_stafford-asa-sample-data?orgId=1&fullscreen&panelId=5',
-            'https://netperf.tools.expedia.com/d/4SLdH6uZk/noc-covid-19-core-stability-metrics?orgId=1&from=now-3h&to=now'
+            'https://netperf.tools.expedia.com/d/4SLdH6uZk/noc-covid-19-core-stability-metrics?orgId=1&from=1588150743094&to=1588161543095&refresh=5m&fullscreen&panelId=4&edit&var-Router=All&var-Time=2m'
         ],
         frequency: '3 hr',
         threshold: {Green: '<45%', Yellow: '45 - 50%', Red: '>50%'},
@@ -68,7 +68,7 @@ exports.links = [
         label: 'CH Checkpoint FW Dropped Packets',
         urls: [
             'https://netperf.tools.expedia.com/d/MpLljbuWz/icrs-checkpoint-21k-firewall?orgId=1&refresh=1m&fullscreen&panelId=5&from=now-12h&to=now',
-            'https://netperf.tools.expedia.com/d/4SLdH6uZk/noc-covid-19-core-stability-metrics?orgId=1&from=now-3h&to=now'
+            'https://netperf.tools.expedia.com/d/4SLdH6uZk/noc-covid-19-core-stability-metrics?orgId=1&from=1588150780134&to=1588161580134&refresh=5m&fullscreen&panelId=5&var-Router=All&var-Time=2m'
         ],
         frequency: '3 hr',
         threshold: {Green: '<4k', Yellow: '4-5k', Red: '>5k'},
@@ -80,8 +80,8 @@ exports.links = [
         id: 'icrs-call-center-circuit-packet-loss',
         label: 'ICRS Call Center Circuit Packet Loss',
         urls: [
-            'https://netperf.tools.expedia.com/d/MpLljbuWz/icrs-checkpoint-21k-firewall?orgId=1&refresh=1m&fullscreen&panelId=5&from=now-12h&to=now',
-            'https://netperf.tools.expedia.com/d/4SLdH6uZk/noc-covid-19-core-stability-metrics?orgId=1&from=now-3h&to=now'
+            'https://netperf.tools.expedia.com/d/000000632/z_stafford-icrs-testing?orgId=1&fullscreen=true&panelId=7&refresh=1m',
+            'https://netperf.tools.expedia.com/d/4SLdH6uZk/noc-covid-19-core-stability-metrics?orgId=1&from=1588150857954&to=1588161657954&refresh=5m&fullscreen&panelId=3&var-Router=All&var-Time=2m'
         ],
         frequency: '3 hr',
         threshold: {Green: '<4k', Yellow: '4-5k', Red: '>5k'},
