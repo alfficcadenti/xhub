@@ -1,10 +1,11 @@
 {
   "name": "opxhub-ui",
+  "description": "",
   "team": "Operational Excellence",
-  "applicationStack": "Metrics Place Holder",
+  "applicationStack": "operational-excellence",
   "repoSource": "https://github.expedia.biz/EGPlatform/opxhub-ui",
   "serviceTier": "Tier 3",
-  "extension": {},
+  "extensions": {},
   "segments": ["ewe"],
   "privacyData": {
     "complianceElements": [],
