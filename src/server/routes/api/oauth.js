@@ -13,8 +13,9 @@ function login(request, response) {
         });
     }
     if ('access_token' in request.state) {
+        const redirect = request.info.referrer.length === 0 ? '/home' : request.info.referrer;
         return request.oauthClient.verify(request.state.access_token)
-            .then(() => response.redirect('/home'))
+            .then(() => response.redirect(redirect))
             .catch(() => response.redirect(request.oauthClient.authorizeUrl(request)));
     }
     return response.redirect(request.oauthClient.authorizeUrl(request));
