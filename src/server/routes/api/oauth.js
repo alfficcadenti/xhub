@@ -4,7 +4,7 @@ function login(request, response) {
         return request.oauthClient.login(request).then((id) => {
             const ttl = id.exp - id.iat;
             return response
-                .redirect('/home')
+                .redirect('/incident-trends')
                 .header('Set-Cookie', `access_token=${id.tokenDecoded.token};Path=/;HttpOnly;Max-Age=${ttl};`)
                 .header('Set-Cookie', `email=${id.email};Path=/;Max-Age=${ttl};`, {'append': true});
         }).catch((e) => {
@@ -13,7 +13,7 @@ function login(request, response) {
         });
     }
     if ('access_token' in request.state) {
-        const redirect = request.info.referrer.length === 0 ? '/home' : request.info.referrer;
+        const redirect = request.info.referrer.length === 0 ? '/incident-trends' : request.info.referrer;
         return request.oauthClient.verify(request.state.access_token)
             .then(() => response.redirect(redirect))
             .catch(() => response.redirect(request.oauthClient.authorizeUrl(request)));
