@@ -146,8 +146,8 @@ class DataTable extends Component {
         return (
             <Fragment key={uuid()}>
                 <tr>
-                    {this.state.displayColumns.map((col) => this.renderColumn(item, col))}
                     {toggleCol}
+                    {this.state.displayColumns.map((col) => this.renderColumn(item, col))}
                 </tr>
                 <tr className={`expandable-row ${hasExpandableContent && this.state.expandedRows[item.rowId] ? '' : 'hidden'}`}>
                     <td className="expandable-column" colSpan={this.state.displayColumns.length + 1}>
@@ -220,13 +220,13 @@ class DataTable extends Component {
         const toggleIcon = this.state.expandAllRows
             ? <SVGIcon inlineFlex markup={CHEVRON_UP__12} />
             : <SVGIcon inlineFlex markup={CHEVRON_DOWN__12} />;
-        return <th onClick={this.toggleExpandAll}>{toggleIcon}</th>;
+        return <th className="pointer" onClick={this.toggleExpandAll}>{toggleIcon}</th>;
     }
 
     renderTableHeader = () => (
         <tr>
-            {this.state.displayColumns.map(this.renderTableHeaderColumn)}
             {this.renderToggleHeaderColumn()}
+            {this.state.displayColumns.map(this.renderTableHeaderColumn)}
         </tr>
     );
 
