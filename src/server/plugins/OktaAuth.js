@@ -9,7 +9,6 @@ class OktaAuth {
         this.clientId = (process.env.NODE_ENV === 'development') ?
             require('../../../devOkta.json').okta.oauthClientId :
             server.app.config.get('oauthApi.oauthClientId');
-        // this.clientId = server.app.config.get('secrets.oauthClientId');
         this.oauthUrl = server.app.config.get('oauthApi.baseUrl');
         this.oauthApiClient = new HttpClient('oauthClient', {
             timeout: server.app.config.get('oauthApi.timeout'),
@@ -88,7 +87,8 @@ class OktaAuth {
 
     redirectUri(request) {
         const protocol = (process.env.NODE_ENV === 'development') ? 'http' : 'https';
-        return `${protocol}%3A%2F%2F${request.info.host}%2Flogin`;
+        const url = request.info.path ? `${protocol}%3A%2F%2F${request.info.host}${request.info.path}` : `${protocol}%3A%2F%2F${request.info.host}%2Fhome`;
+        return url;
     }
 
     authorizeUrl(request) {
@@ -97,7 +97,7 @@ class OktaAuth {
             '&response_type=code' +
             '&state=S0M3St4t3' +
             `&redirect_uri=${this.redirectUri(request)}` +
-            '&scope=openid email';
+            '&scope=openid%20email';
     }
 
     login(request) {

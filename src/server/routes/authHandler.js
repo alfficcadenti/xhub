@@ -11,7 +11,7 @@ module.exports = function authHandler(request, h, template, body, context, requi
                 .header('Set-Cookie', `access_token=${id.tokenDecoded.token};Path=/;HttpOnly;Max-Age=${ttl};`)
                 .header('Set-Cookie', `email=${id.email};Path=/;Max-Age=${ttl};`, {'append': true});
         }).catch((e) => {
-            request.log('Login error', e); // eslint-disable-line no-console
+            request.log('Login error', e);
             return h.redirect(request.oauthClient.authorizeUrl(request));
         });
     }

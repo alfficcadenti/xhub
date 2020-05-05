@@ -12,25 +12,30 @@ module.exports = (id) => ({
     options: {
         id,
         async handler(request, h) {
-            const siteInfo = request.server.siteInfo();
-            const context = {...siteInfo, ...routeInfo};
+            try {
+                const siteInfo = request.server.siteInfo();
+                const context = {...siteInfo, ...routeInfo};
 
-            // render react component and monitor timing
-            const ServerApp = request.pre.component.default;
-            const startRender = Date.now();
-            const body = ReactDOMServer.renderToString(
-                <ServerApp path={request.path}
-                    location={request.url.pathname}
-                />
-            );
-            const renderTime = Date.now() - startRender;
+                // render react component and monitor timing
+                const ServerApp = request.pre.component.default;
+                const startRender = Date.now();
+                const body = ReactDOMServer.renderToString(
+                    <ServerApp path={request.path}
+                        location={request.url.pathname}
+                    />
+                );
+                const renderTime = Date.now() - startRender;
 
-            const statsd = request.plugins['@homeaway/catalyst-monitoring-statsd'];
-            statsd.timing('react_ssr_render_time', renderTime);
+                const statsd = request.plugins['@homeaway/catalyst-monitoring-statsd'];
+                statsd.timing('react_ssr_render_time', renderTime);
 
-            // render the output with context and handlebars.
-            const template = request.pre.template;
-            return authHandler(request, h, template, body, context, true);
+                // render the output with context and handlebars.
+                const template = request.pre.template;
+                return authHandler(request, h, template, body, context, true);
+            } catch (e) {
+                request.log('[ERROR]', e);
+                return e;
+            }
         }
     }
 });
