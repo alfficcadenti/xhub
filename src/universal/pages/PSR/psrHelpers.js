@@ -44,7 +44,7 @@ const formatDataForTable = (data = []) => (
 const brandLogoFile = (brand) => {
     if (brand === 'vrbo' || brand === 'egencia' || brand === 'hcom') {
         try {
-            return require(`../../img/logo-${brand}.png`);
+            return require(`../../img/logo-${brand}.png`).default;
         } catch {
             return null;
         }
