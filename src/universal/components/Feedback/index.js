@@ -14,6 +14,7 @@ const commentTypes = [
     'Suggestion',
     'Technical Issue'
 ];
+const useOktaEmail = Cookies.get('email');
 
 
 const FeedbackModal = ({isOpen, onClose}) => {
@@ -21,7 +22,7 @@ const FeedbackModal = ({isOpen, onClose}) => {
     const [thumbsDown, setThumbsDown] = useState(false);
     const [feedbackComment, setFeedbackComment] = useState('');
     const [commentType, setCommentType] = useState(commentTypes[0]);
-    const [email, setEmail] = useState('');
+    const [email, setEmail] = useState(useOktaEmail);
 
     const handleFeedbackTextChange = (event) => {
         setFeedbackComment(event.target.value);
@@ -44,7 +45,7 @@ const FeedbackModal = ({isOpen, onClose}) => {
     };
 
     const handleSendFeedback = () => {
-        const slackWebhookUrl = 'https://hooks.slack.com/services/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';
+        const slackWebhookUrl = 'https://hooks.slack.com/services/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';
 
         const sendFeedback = () => {
             fetch(slackWebhookUrl, {
@@ -55,7 +56,7 @@ const FeedbackModal = ({isOpen, onClose}) => {
                 },
                 body: `{
                 "channel": "#opxhub-feedback",
-                "text": "Overall Experience: ${thumbsUp ? 'positive' : 'negative'}; Comment Type: ${commentType}; Feedback: ${feedbackComment}; Email: ${email || Cookies.get('email')}"
+                "text": "Overall Experience: ${thumbsUp ? 'positive' : 'negative'}; Comment Type: ${commentType}; Feedback: ${feedbackComment}; Email: ${email}"
             }`
             }).then((resp) => {
                 if (!resp.ok) {
