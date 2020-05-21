@@ -13,11 +13,11 @@ class InputNumber extends Component {
         };
     }
 
-    onlyInteger = (event) => (event.key === '.' ? true : false)
+    onlyInteger = (event) => event.key === '.';
 
-    onlyPositives = (event) => (event.key === '-' ? true : false)
+    onlyPositives = (event) => event.key === '-';
 
-    outsideRange = (value, min, max) => ((!(max && value > max) && !(value < min)) ? false : true)
+    outsideRange = (value, min, max) => ((!(max && value > max) && !(value < min)) ? false : true);
 
     decimals = (value) => {
         if (Math.floor(value) === value) {
@@ -55,7 +55,7 @@ class InputNumber extends Component {
         (this.outsideRange(event.target.value, Number(range.min), Number(range.max)))
             ? this.setState({value: event.target.value, error: 'Error: value is not valid'})
             : this.setState({value: event.target.value, error: ''});
-    }
+    };
 
     render() {
         const {
