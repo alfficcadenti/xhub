@@ -1,43 +1,67 @@
-.feedback-wrapper {
-  .page-ratings {
-    text-align: left;
+@import '../../mixins.less';
 
-    .ratings-wrapper {
-      display: flex;
-      align-items: center;
+.feedback-container {
+    .feedback-button {
+        position: fixed;
+        z-index: 999;
+        top: 60%;
+        right: -@spacing-5x;
+        transform: rotate(90deg);
+        padding: @spacing-2x @spacing-1x @spacing-1x;
+        color: @color-link-default;
+        font-weight: 500;
+        border-bottom-right-radius: @spacing-1x;
+        border-bottom-left-radius: @spacing-1x;
+        background: @color-bg-default;
+        transition: right .3s ease-in-out;
+        border: 1px solid @color-bg-active;
 
-      .ratings-label {
-        margin-right: 230px;
-      }
-
-      .thumbs-wrapper {
-        cursor: pointer;
-
-        &.thumbs-up {
-          margin-right: 45px;
+        &:hover {
+            color: @color-link-hover;
+            right: -@spacing-4x;
+            border: 1px solid @color-link-hover;
         }
+    }
 
-        &.thumbs-down {
-          transform: rotate(180deg);
+    .page-ratings {
+        text-align: left;
+
+        .ratings-wrapper {
+            display: flex;
+            align-items: center;
+
+            .ratings-label {
+                margin-right: 230px;
+            }
+
+            .thumbs-wrapper {
+                cursor: pointer;
+
+                &.thumbs-up {
+                    margin-right: 45px;
+                }
+
+                &.thumbs-down {
+                    transform: rotate(180deg);
+                }
+            }
         }
-      }
     }
-  }
 
-  .page-comments-wrapper {
-    text-align: left;
+    .page-comments-wrapper {
+        text-align: left;
 
-    .comment-type-wrapper {
-      margin-bottom: 25px;
+        .comment-type-wrapper {
+            margin-bottom: 25px;
 
-      .comment-type-label {
-        margin-right: 50px;
-      }
+            .comment-type-label {
+                margin-right: 50px;
+            }
+        }
     }
-  }
 
-  .footer-section {
-    display: flex;
-    justify-content: flex-end;
-  }
+    .footer-section {
+        display: flex;
+        justify-content: flex-end;
+    }
 }

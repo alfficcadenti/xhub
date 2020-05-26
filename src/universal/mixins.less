@@ -6,7 +6,6 @@
 @opxhub-bg-success: #e8f5e9;
 @opxhub-bg-urgency: #fdffe0;
 @opxhub-bg-danger: #ffebee;
-@opxhub-eg-header-background: #00008d;
 @filter-size: 55px;
 @filter-color: #717171;
 @hover-background: #0066db28;
@@ -36,8 +35,8 @@ div.main-app-container {
 }
 
 .main-container {
-    margin: @spacing-5x;
-    padding: @spacing-1x;
+    margin: 0 @spacing-6x;
+    padding: 88px 0;
 }
 
 .container-full-width {
@@ -62,20 +61,6 @@ div.main-app-container {
     color: #717171;
 }
 
-// -- Responsive mixins --------------
-
-// We are "Mobile first" in this application and are primarily syling
-// differences at the tablet level (768) and above.
-//
-// Usage:
-//   .backdrop {
-//       opacity: .7;
-//
-//       .tablet-plus({
-//           opacity: .5;
-//       });
-//   }
-
 // Mixin to target tablet size (768) and greater
 .tablet-plus(@rules) {
     @media (min-width: @screen-sm-min) {
@@ -88,13 +73,4 @@ div.main-app-container {
     @media (min-width: @screen-md-min) {
         @rules();
     }
-}
-
-// -- Flexbox mixins --------------
-
-// Vertical and horizontally cetner contents of a flexbox
-.centered-flex() {
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }

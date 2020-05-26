@@ -1,70 +1,65 @@
-@import "../../mixins.less";
+@import '../../mixins.less';
 
 .availability-container {
-  margin-top: -@spacing-6x;
+    margin-top: -@spacing-6x;
 
-  .availability-nav-bar {
-    height: 100%; /* 100% Full-height */
-    overflow-y: scroll;
-    width: 25%; /* 0 width - change this with JavaScript */
-    border-right: @text-color 1px solid;
-    position: absolute; /* Stay in place */
-    z-index: 1; /* Stay on top */
-    top: @spacing-6x; /* Stay at the top */
-    left: 0;
-    overflow-x: hidden; /* Disable horizontal scroll */
-    text-align: left;
+    .availability-nav-bar {
+        height: 100%;
+        width: 25%;
+        overflow-y: scroll;
+        position: absolute;
+        z-index: 1;
+        top: @spacing-6x;
+        overflow-x: hidden;
+        text-align: left;
+        border-right: 1px solid @color-bg-active;
 
-    .sidebar-header {
-      display: block;
-      width: 100%;
-      margin: @spacing-1x;
-      padding: @spacing-1x;
-      border-top: #292929 1px solid;
+        .sidebar-header {
+            display: block;
+            width: 100%;
+            padding: @spacing-1x;
 
-      .sidebar-title {
-        display: flex;
-        font-weight: 800;
-        color: @text-color;
-        text-align: center;
-        width: 100%;
-        padding: @spacing-1x 0 @spacing-1x 0;
+            .sidebar-title {
+                display: flex;
+                font-weight: 800;
+                color: @text-color;
+                width: 100%;
+                padding: @spacing-1x 0 @spacing-1x 0;
 
-        .sidebar-title-text {
-          width: 90%;
+                .sidebar-title-text {
+                    margin-left: @spacing-2x;
+                    width: 90%;
+                }
+            }
+
+            .sidebar-title:focus {
+                outline: none;
+            }
+
+            .sidebar-item {
+                display: inline-flex;
+                width: 100%;
+                line-height: 1.125rem;
+                padding: @spacing-1x;
+
+                .sidebar-item-status {
+                    width: 10%;
+                }
+
+                a {
+                    color: #818181;
+                    text-decoration: none;
+                    width: 90%;
+                    padding: @spacing-1x;
+                }
+            }
         }
-      }
-
-      .sidebar-title:focus {
-        outline: none;
-      }
-
-      .sidebar-item {
-        display: inline-flex;
-        width: 100%;
-        line-height: 1.125rem;
-        padding: @spacing-1x;
-        width: 100%;
-        line-height: 1.125rem;
-
-        .sidebar-item-status {
-          width: 10%;
-        }
-
-        a {
-          color: #818181;
-          text-decoration: none;
-          width: 90%;
-          padding: @spacing-1x;
-        }
-      }
     }
-  }
 
-  .availability-section {
-    width: 100%;
-    z-index: 1;
-    right: 0;
-    text-align: center;
-  }
+    .availability-section {
+        width: 100%;
+        z-index: 1;
+        right: 0;
+        text-align: center;
+    }
 }
