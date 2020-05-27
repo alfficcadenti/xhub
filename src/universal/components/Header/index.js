@@ -1,4 +1,5 @@
 import React, {useState, useRef} from 'react';
+import {useLocation} from 'react-router';
 import {Link, withRouter} from 'react-router-dom';
 import {Redirect} from 'react-router';
 import sanitizeHtml from 'sanitize-html';
@@ -6,6 +7,7 @@ import Select from 'react-select';
 import {SVGIcon} from '@homeaway/react-svg';
 import {QUESTION__24, SEARCH__24} from '@homeaway/svg-defs';
 import {Dropdown} from '@homeaway/react-dropdown';
+import BrandSelector from './BrandSelector';
 import PAGES from '../../pages';
 import './styles.less';
 
@@ -19,11 +21,12 @@ const DEFAULT_PAGE_INFO = {
     description: ''
 };
 
-const Header = () => {
+const Header = (props) => {
     const [redirectLink, setRedirectLink] = useState(null);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [selectedPages, setSelectedPages] = useState([]);
     const searchInput = useRef(null);
+    const {pathname} = useLocation();
 
     const handleOnBlur = () => {
         setIsSearchOpen(false);
@@ -132,6 +135,13 @@ const Header = () => {
                 {'OpXHub'}
             </Link>
             {CATEGORIES.map(renderCategoryDropdown)}
+            {pathname.includes('landing-page') && (
+                <BrandSelector
+                    selectedAppBrand={props.selectedAppBrand}
+                    setSelectedAppBrand={props.setSelectedAppBrand}
+                    brands={props.brands}
+                />
+            )}
             {renderHelp(DEFAULT_PAGE_INFO)}
             <div role="button" className="btn btn-default search-toggle-btn" onClick={handleToggleSearch} tabIndex={0} onKeyDown={handleToggleSearch}>
                 <SVGIcon markup={SEARCH__24} />

@@ -16,7 +16,8 @@ export default [
         id: 'incident-trends',
         link: '/incident-trends',
         text: 'Defect & Incident Trends',
-        component: require('./IncidentTrendsDashboard')
+        component: require('./IncidentTrendsDashboard'),
+        main: 'Platform Health & Resiliency'
     },
     {
         category: PHAR,
@@ -37,7 +38,8 @@ export default [
         id: 'psr',
         link: '/psr',
         text: 'Purchase Success Rate',
-        component: require('./PSR')
+        component: require('./PSR'),
+        main: 'Platform Health & Resiliency'
     },
     {
         category: PHAR,

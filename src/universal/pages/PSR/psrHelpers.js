@@ -42,7 +42,7 @@ const formatDataForTable = (data = []) => (
 );
 
 const brandLogoFile = (brand) => {
-    if (brand === 'vrbo' || brand === 'egencia' || brand === 'hcom') {
+    if (brand === 'vrbo' || brand === 'egencia' || brand === 'hcom' || brand === 'expedia') {
         try {
             return require(`../../img/logo-${brand}.png`).default;
         } catch {

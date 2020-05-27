@@ -1,0 +1,21 @@
+@import '../../mixins.less';
+
+.header--brand-selector {
+    float: right;
+
+    .Dropdown__toggle {
+        padding: @spacing-1x @spacing-2x;
+        margin-top: 3px;
+        margin-right: @spacing-1x;
+        font-weight: 400;
+        border-radius: @spacing-1x;
+        background: @color-brand;
+        color: @color-text-inverse;
+        box-shadow: none;
+        min-height: @spacing-5x;
+    }
+
+    .Dropdown__menu {
+        min-width: 270px;
+    }
+}

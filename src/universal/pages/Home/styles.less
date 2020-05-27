@@ -1,40 +1,41 @@
-@import '../../mixins.less';
+@import "../../mixins.less";
 
 .home-container {
+  text-align: center;
+
+  .home-buttons-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 5% 0;
+
+    .dashboard-button {
+      margin: 25px 50px 0;
+      background-color: #616161;
+      color: #fff;
+      border-radius: 0.266rem;
+      padding: 1.2rem 2%;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+        0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 230px;
+    }
+
+    .dashboard-button:hover {
+      background-color: #00008d;
+    }
+  }
+
+  .covid-message {
+    margin: 2rem;
+    padding: 2rem;
     text-align: center;
-
-    .home-buttons-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        margin: 5% 0;
-
-        .dashboard-button {
-            margin: 25px 50px 0;
-            background-color: #616161;
-            color: #fff;
-            border-radius: .266rem;
-            padding: 1.2rem 2%;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .2), 0 6px 20px 0 rgba(0, 0, 0, .19);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 230px;
-        }
-
-        .dashboard-button:hover {
-            background-color: #00008d;
-        }
-    }
-
-    .covid-message {
-        margin: 2rem;
-        padding: 2rem;
-        text-align: center;
-        justify-content: center;
-        align-items: center;
-        background: #f0dcb4;
-        width: 50%;
-        display: inline-block;
-    }
+    justify-content: center;
+    align-items: center;
+    background: #f0dcb4;
+    width: 50%;
+    display: inline-block;
+  }
 }

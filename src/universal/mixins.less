@@ -1,6 +1,6 @@
-@import '~@homeaway/baseline/release/variables/_variables.less';
-@import '~@homeaway/baseline/release/stylesheets/baseline-gt.css';
-@import '~@homeaway/baseline/release/stylesheets/gt.css';
+@import "~@homeaway/baseline/release/variables/_variables.less";
+@import "~@homeaway/baseline/release/stylesheets/baseline-gt.css";
+@import "~@homeaway/baseline/release/stylesheets/gt.css";
 
 @table-header-bg: #e3f4fc;
 @opxhub-bg-success: #e8f5e9;
@@ -9,29 +9,32 @@
 @filter-size: 55px;
 @filter-color: #717171;
 @hover-background: #0066db28;
+@hover-background-color: #0066db;
+@hover-text: #ffffff;
+
 @selected-background: #0066db13;
 
 body {
-    margin: 0;
-    min-width: 300px;
+  margin: 0;
+  min-width: 300px;
 }
 
 div.main-app-container {
-    margin: 0;
-    max-width: 100%;
-    width: 100%;
+  margin: 0;
+  max-width: 100%;
+  width: 100%;
 }
 
 .table-cell-bg-success {
-    background: @opxhub-bg-success;
+  background: @opxhub-bg-success;
 }
 
 .table-cell-bg-urgency {
-    background: @opxhub-bg-urgency;
+  background: @opxhub-bg-urgency;
 }
 
 .table-cell-bg-danger {
-    background: @opxhub-bg-danger;
+  background: @opxhub-bg-danger;
 }
 
 .main-container {
@@ -40,37 +43,46 @@ div.main-app-container {
 }
 
 .container-full-width {
-    width: 100%;
-    text-align: -webkit-center;
+  width: 100%;
+  text-align: -webkit-center;
 }
 
 .page-title {
-    text-align: left;
-    margin-bottom: @spacing-2x;
+  text-align: left;
+  margin-bottom: @spacing-2x;
 }
 
 // Align dropdown with calendar picker for forms and unbold the text
 .search-form .Dropdown__toggle {
-    font-weight: 400;
-    color: @color-text-default;
-    height: @spacing-7x;
+  font-weight: 400;
+  color: @color-text-default;
+  height: @spacing-7x;
 }
 
 .calendar .day .date.past {
-    opacity: 1;
-    color: #717171;
+  opacity: 1;
+  color: #717171;
 }
 
 // Mixin to target tablet size (768) and greater
 .tablet-plus(@rules) {
-    @media (min-width: @screen-sm-min) {
-        @rules();
-    }
+  @media (min-width: @screen-sm-min) {
+    @rules();
+  }
 }
 
 // Mixin to target desktop size (992) and greater
 .desktop-plus(@rules) {
-    @media (min-width: @screen-md-min) {
-        @rules();
-    }
+  @media (min-width: @screen-md-min) {
+    @rules();
+  }
+}
+
+// -- Flexbox mixins --------------
+
+// Vertical and horizontally cetner contents of a flexbox
+.centered-flex() {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

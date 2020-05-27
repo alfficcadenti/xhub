@@ -22,7 +22,7 @@ class PSR extends Component {
     }
 
     loadPsr = () => {
-        fetch('/api/v1/psr')
+        fetch('https://opxhub-service.us-west-2.test.expedia.com/api/v1/psr')
             .then((resp) => {
                 if (!resp.ok) {
                     this.setState({error: 'Psr not available. Try to refresh'});
