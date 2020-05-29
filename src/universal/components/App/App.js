@@ -27,7 +27,7 @@ function App() {
     const [selectedBrands, setSelectedBrands] = useState(storedBrands);
     return (
         <Fragment>
-            <Header selectedBrands={selectedBrands} setSelectedBrands={setSelectedBrands} brands={BRANDS}/>
+            <Header selectedBrands={selectedBrands} setSelectedBrands={setSelectedBrands} brands={BRANDS.map((brand) => brand.label)}/>
             <Feedback />
             <div className="main-container">
                 <Switch>

@@ -10,11 +10,12 @@ import BrandCSRWidget from '../../components/BrandCSRWidget';
 import TotalChart from './TotalBookingsChart';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import {getBrand, BRANDS} from '../../components/App/constants';
 import './styles.less';
 
 const LandingPage = (props) => {
-    const {selectedBrands} = props;
-    const brands = ['Vrbo', 'Hotels.com', 'BEX'];
+    const selectedBrands = props.selectedBrands.map((brand) => getBrand(brand).landingBrand);
+    const brands = BRANDS.map((brand) => brand.landingBrand).filter((brand) => !!brand);
 
     const [bookingsData, setBookingsData] = useState([]);
     const [CSRData, setCSRData] = useState([]);

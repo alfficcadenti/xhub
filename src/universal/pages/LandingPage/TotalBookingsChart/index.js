@@ -3,6 +3,7 @@ import {
     AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
 import HelpText from '../../../components/HelpText/HelpText';
+import {BRANDS} from '../../../components/App/constants';
 
 export default class TotalChart extends PureComponent {
     brandColor = (brand) => {
@@ -40,12 +41,8 @@ export default class TotalChart extends PureComponent {
 
     render() {
         const {brands, data} = this.props;
-        const BRANDS = [
-            'BEX',
-            'Hotels.com',
-            'Vrbo'
-        ];
-        const selectedBrands = brands.includes('Expedia Group') ? BRANDS : brands;
+        const allBrands = BRANDS.map((brand) => brand.landingBrand).filter((brand) => !!brand);
+        const selectedBrands = brands.includes('Expedia Group') ? allBrands : brands;
         return (
             <Fragment>
                 <h3>
