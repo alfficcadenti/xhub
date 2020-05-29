@@ -16,6 +16,15 @@
     }
 
     .Dropdown__menu {
+        cursor: pointer;
         min-width: 270px;
+
+        li:first-child a {
+            border-bottom: 1px solid @color-border-default;
+        }
+
+        li a.selected {
+            border-left: @spacing-1x solid @color-link-default;
+        }
     }
 }

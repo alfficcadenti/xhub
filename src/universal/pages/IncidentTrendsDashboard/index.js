@@ -7,13 +7,13 @@ import FilterDropDown from '../../components/FilterDropDown';
 import {Navigation} from '@homeaway/react-navigation';
 import DatePicker from '../../components/DatePicker/index';
 import {Checkbox} from '@homeaway/react-form-components';
-import {DATE_FORMAT, BRANDS, ALL_STATUSES_OPTION, ALL_PRIORITIES_OPTION} from '../constants';
+import {DATE_FORMAT, ALL_STATUSES_OPTION, ALL_PRIORITIES_OPTION} from '../constants';
 import {Incidents, Overview, Top5, Quality, FinancialImpact} from './tabs/index';
 import {useFetchTickets, useSetCovidTag} from './hooks';
+import {EG_BRAND} from '../../components/App/constants';
 import './styles.less';
 
 const statusDefaultValue = ALL_STATUSES_OPTION;
-const brandDefaultValue = 'All Brands';
 const priorityDefaultValue = ALL_PRIORITIES_OPTION;
 const covidTagDefaultValue = true;
 const startDateDefaultValue = moment().subtract(90, 'days').format(DATE_FORMAT);
@@ -48,10 +48,9 @@ const navLinks = [
 ];
 
 
-const IncidentTrendsDashboard = () => {
+const IncidentTrendsDashboard = ({selectedBrands}) => {
     const [activeIndex, setActiveIndex] = useState(1);
     const [selectedStatus, setSelectedStatus] = useState(statusDefaultValue);
-    const [selectedBrand, setSelectedBrand] = useState(brandDefaultValue);
     const [selectedCovidTag, setSelectedCovidTag] = useState(covidTagDefaultValue);
     const [startDate, setStartDate] = useState(startDateDefaultValue);
     const [appliedStartDate, setAppliedStartDate] = useState(startDate);
@@ -92,7 +91,7 @@ const IncidentTrendsDashboard = () => {
 
     function applyFilters() {
         const matchesPriority = (t) => selectedPriority === priorityDefaultValue || t.priority === selectedPriority;
-        const matchesBrand = (t) => selectedBrand === brandDefaultValue || t.Brand === selectedBrand;
+        const matchesBrand = (t) => selectedBrands[0] === EG_BRAND || selectedBrands.includes(t.Brand);
         const matchesStatus = (t) => selectedStatus === statusDefaultValue || t.status === selectedStatus;
         const matchesTag = (t) => !selectedCovidTag || t.tag.includes('covid-19');
         const filterTickets = (t) => matchesPriority(t) && matchesBrand(t) && matchesStatus(t) && matchesTag(t);
@@ -146,11 +145,6 @@ const IncidentTrendsDashboard = () => {
         setIsDirtyForm(true);
     }, []);
 
-    const handleBrandChange = useCallback((brand) => {
-        setSelectedBrand(brand);
-        setIsDirtyForm(true);
-    }, []);
-
     const handleStatusChange = useCallback((status) => {
         setSelectedStatus(status);
         setIsDirtyForm(true);
@@ -178,7 +172,6 @@ const IncidentTrendsDashboard = () => {
                         filteredDefects={filteredUniqueDefects}
                         selectedCovidTag={selectedCovidTag}
                         setIsApplyClicked={setIsApplyClicked}
-                        handleBrandChange={handleBrandChange}
                         handleStatusChange={handleStatusChange}
                         handlePriorityChange={handlePriorityChange}
                     />);
@@ -201,7 +194,6 @@ const IncidentTrendsDashboard = () => {
                     handleClearDates={handleClearDates}
                 />
                 <FilterDropDown id="priority-dropdown" className="priority-dropdown" list={currentPriorities} selectedValue={selectedPriority} onClickHandler={handlePriorityChange}/>
-                <FilterDropDown id="brand-dropdown" className="brand-dropdown" list={BRANDS} selectedValue={selectedBrand} onClickHandler={handleBrandChange}/>
                 <FilterDropDown id="status-dropdown" className="status-dropdown" list={currentStatuses} selectedValue={selectedStatus} onClickHandler={handleStatusChange}/>
                 <Checkbox name="covid-19" label="covid-19" checked={selectedCovidTag} onChange={handleCovidTagChange}/>
                 <button

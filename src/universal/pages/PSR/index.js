@@ -6,6 +6,7 @@ import BrandDailyPSR from './BrandDailyPSR';
 import BrandPSRDetails from './BrandPSRDetails';
 import h from './psrHelpers';
 import './styles.less';
+import {EG_BRAND, BRANDS_MAP} from '../../components/App/constants';
 
 class PSR extends Component {
     constructor(props) {
@@ -44,13 +45,15 @@ class PSR extends Component {
 
     lastDailyPSRValuesToDisplayByBrand = (data = []) => {
         const psrDailyData = h.psrValuesByLOB((h.psrValuesByInterval(data, 'daily')), 'PSR');
+        const selectedPsrBrands = this.props.selectedBrands.map((brand) => BRANDS_MAP[brand].psrBrand);
         return h.listOfBrands(psrDailyData)
             .map(
                 (x) => {
                     const psrData = h.psrValuesByBrand(psrDailyData, x);
                     return h.getPSROnDate(psrData, h.lastPSRAvailableDate(psrData));
                 }
-            );
+            )
+            .filter((item) => this.props.selectedBrands[0] === EG_BRAND || selectedPsrBrands.includes(item.brand));
     };
 
     displayPSRDetails = (brand) => {
@@ -63,9 +66,10 @@ class PSR extends Component {
     render() {
         const {isLoading, data, openDetails, selectedBrand} = this.state;
         const lastDailyPSRValuesByBrand = !isLoading && this.lastDailyPSRValuesToDisplayByBrand(data);
-        const error = !isLoading && lastDailyPSRValuesByBrand.length === 0 ? 'Error: No Daily PSR to display' : '';
+        const error = !isLoading && lastDailyPSRValuesByBrand.length === 0
+            ? `No Daily PSR to display for selected brands: ${this.props.selectedBrands}`
+            : '';
         const brandData = selectedBrand && h.psrDetailsByBrand(data, selectedBrand);
-
         return (
             <Fragment>
                 <h1 className="page-title">{'Purchase Success Rates'}</h1>

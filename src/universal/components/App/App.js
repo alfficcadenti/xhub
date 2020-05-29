@@ -7,37 +7,33 @@ import Feedback from '../Feedback';
 import LandingPage from '../../pages/LandingPage';
 import Home from '../../pages/Home';
 import pages from '../../pages';
+import {EG_BRAND, BRANDS} from './constants';
 
-const BRANDS = [
-    'Expedia Group',
-    'BEX',
-    'Hotels.com',
-    'Vrbo'
-];
-
-function renderRoute(p) {
+function renderRoute(p, selectedBrands) {
     const Page = withRouter(p.component.default);
-    return <Route key={p.link} path={p.link} render={() => <Page />} />;
+    return <Route key={p.link} path={p.link} render={() => <Page selectedBrands={selectedBrands} />} />;
 }
 
 function App() {
-    let brand;
+    let storedBrands;
     try {
-        brand = localStorage.getItem('selectedBrand') || BRANDS[0];
+        storedBrands = localStorage.getItem('selectedBrands');
+        storedBrands = storedBrands
+            ? storedBrands.split(',')
+            : [EG_BRAND];
     } catch {
-        brand = BRANDS[0];
+        storedBrands = [EG_BRAND];
     }
-    const [selectedAppBrand, setSelectedAppBrand] = useState(brand);
-
+    const [selectedBrands, setSelectedBrands] = useState(storedBrands);
     return (
         <Fragment>
-            <Header setSelectedAppBrand={setSelectedAppBrand} selectedAppBrand={selectedAppBrand} brands={BRANDS}/>
+            <Header selectedBrands={selectedBrands} setSelectedBrands={setSelectedBrands} brands={BRANDS}/>
             <Feedback />
             <div className="main-container">
                 <Switch>
-                    <Route path="/landing-page" render={() => <LandingPage selectedBrand={selectedAppBrand}/>}/>
+                    <Route path="/landing-page" render={() => <LandingPage selectedBrands={selectedBrands}/>}/>
                     <Route path="/home" render={() => <Home />}/>
-                    {pages.map(renderRoute)}
+                    {pages.map((p) => renderRoute(p, selectedBrands))}
                 </Switch>
             </div>
         </Fragment>

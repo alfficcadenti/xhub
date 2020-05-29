@@ -11,10 +11,3 @@ exports.ALL_ORGS_OPTION = 'All Owning Orgs';
 exports.ALL_RC_OWNERS_OPTION = 'All Root Cause Owners';
 exports.ALL_RC_CATEGORIES_OPTION = 'All Root Cause Categories';
 exports.EPIC_ISSUE_TYPE = 'Epic';
-exports.BRANDS = [
-    'All Brands',
-    'BEX - Expedia Group',
-    'Egencia',
-    'Hotels.com',
-    'Vrbo'
-];

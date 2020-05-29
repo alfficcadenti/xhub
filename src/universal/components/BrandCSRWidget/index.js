@@ -24,7 +24,6 @@ const BrandCSRWidget = ({brandName = '', CSRTrend = [], CSRByDevice = {}}) => (
         {logo(brandName)}
         <h3>{'Checkout Success Rate'}</h3>
         <div className="success-rate-card">
-
             <div className="success-rates">
                 <span className="radial-success-rate">
                     <RadialProgress

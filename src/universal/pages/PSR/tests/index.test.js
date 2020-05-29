@@ -23,19 +23,19 @@ describe('<PSR/>', () => {
     sinon.stub(PSR.prototype, 'componentDidMount');
 
     it('renders successfully', () => {
-        const wrapper = shallow(<PSR />);
+        const wrapper = shallow(<PSR selectedBrands={['Expedia Group']} />);
         expect(wrapper).to.have.length(1);
     });
 
     it('renders a div per brand', () => {
-        const wrapper = mount(<PSR />);
+        const wrapper = mount(<PSR selectedBrands={['Expedia Group']} />);
         wrapper.setState({data: mockData, isLoading: false});
         expect(wrapper.find('div.brandPsr')).to.have.length(2);
     });
 
     it('matches the snapshot', () => {
         chaiJestSnapshot.setTestName('matches the snapshot');
-        const wrapper = renderer.create(<PSR />);
+        const wrapper = renderer.create(<PSR selectedBrands={['Expedia Group']} />);
         expect(wrapper).to.matchSnapshot();
     });
 });

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-use-before-define */
 import React, {useState, useEffect, useCallback} from 'react';
 import {useHistory, useLocation} from 'react-router';
@@ -22,6 +21,7 @@ import {
     ALL_RC_OWNERS_OPTION, ALL_RC_CATEGORIES_OPTION,
     EPIC_ISSUE_TYPE
 } from '../constants';
+import {EG_BRAND, BRANDS_MAP} from '../../components/App/constants';
 import {getPieData} from '../utils';
 import {useFetchTickets} from './hooks';
 import './styles.less';
@@ -60,7 +60,7 @@ const getActiveIndex = (pathname, history) => {
 };
 
 // eslint-disable-next-line complexity
-const PRB = () => {
+const PRB = ({selectedBrands}) => {
     const history = useHistory();
     const {pathname, search} = useLocation();
     const query = qs.parse(search); // query params from url
@@ -119,16 +119,17 @@ const PRB = () => {
 
     function filterType(tickets) {
         let result = [];
+        // eslint-disable-next-line complexity
         tickets.forEach((t) => {
             const ticket = t;
-            const {linkedIssues = [], brandsAffected = '', linesOfBusinessImpacted} = ticket;
+            const {linkedIssues = [], brandsAffected = [], linesOfBusinessImpacted} = ticket;
             const filteredLinkedIssues = linkedIssues.filter(matchesType);
             if (selectedType !== EPIC_ISSUE_TYPE && filteredLinkedIssues.length > 0) {
                 ticket['Linked Issues'] = (
                     <>
                         <h3>{'Details'}</h3>
                         <div className="details-container">
-                            {renderDetail('Brands Affected:', brandsAffected)}
+                            {renderDetail('Brands Affected:', brandsAffected.join(', '))}
                             {renderDetail('Lines of Business Impacted:', linesOfBusinessImpacted)}
                         </div>
                         <h3>
@@ -159,6 +160,10 @@ const PRB = () => {
     const matchesOrg = (t) => selectedOrg === orgDefaultValue || t['Owning Org'] === selectedOrg;
     const matchesRcOwner = (t) => selectedRcOwner === rcOwnerDefaultValue || t['RC Owner'] === selectedRcOwner;
     const matchesRcCategory = (t) => selectedRcCategory === rcCategoryDefaultValue || t['RC Category'] === selectedRcCategory;
+    const matchesBrand = (t) => selectedBrands[0] === EG_BRAND || t.brandsAffected.some(
+        (b) => selectedBrands.map((selectedBrand) => BRANDS_MAP[selectedBrand].affectedBrand).includes(b)
+    );
+
     // eslint-disable-next-line complexity
     const filterTickets = (t) => (
         matchesDate(t)
@@ -167,6 +172,7 @@ const PRB = () => {
         && matchesOrg(t)
         && matchesRcOwner(t)
         && matchesRcCategory(t)
+        && matchesBrand(t)
     );
 
     function getUrlParm(label, value, defaultValue) {

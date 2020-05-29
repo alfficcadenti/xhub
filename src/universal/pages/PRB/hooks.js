@@ -54,7 +54,7 @@ const mapTickets = (t) => {
             : '-',
         Status: t.status,
         linkedIssues, // for filtering purposes
-        brandsAffected: t.brandsAffected ? t.brandsAffected.split(',').join(', ') : '',
+        brandsAffected: t.brandsAffected ? t.brandsAffected.split(',') : [],
         linesOfBusinessImpacted: t.linesOfBusinessImpacted,
         'Linked Issues': !linkedIssues.length
             ? null

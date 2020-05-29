@@ -14,7 +14,6 @@ const renderContent = (
     filteredDefects,
     selectedCovidTag,
     setIsApplyClicked,
-    handleBrandChange,
     handleStatusChange,
     handlePriorityChange
 ) => {
@@ -36,7 +35,6 @@ const renderContent = (
                 <PieChart
                     data={getPieData(filteredDefects, 'Brand')}
                     title="Brand"
-                    onChartClick={generateChartClickHandler(handleBrandChange)}
                 />
                 <PieChart
                     data={getPieData(filteredDefects, 'Status')}
@@ -71,7 +69,6 @@ const Quality = ({
     filteredDefects,
     selectedCovidTag,
     setIsApplyClicked,
-    handleBrandChange,
     handleStatusChange,
     handlePriorityChange
 }) => (
@@ -84,7 +81,6 @@ const Quality = ({
                     filteredDefects,
                     selectedCovidTag,
                     setIsApplyClicked,
-                    handleBrandChange,
                     handleStatusChange,
                     handlePriorityChange
                 )

@@ -33,14 +33,19 @@ export default class TotalChart extends PureComponent {
         const color = this.brandColor(brand);
         const fill = `url(#color${brand})`;
         return (
-            <Area key= {`area${brand}`} type="monotone" dataKey={brand} stroke={color} fillOpacity={1} fill={fill} />
-
+            <Area type="monotone" dataKey={brand} stroke={color} fillOpacity={1} fill={fill} key={`area${brand}`}/>
         );
     }
 
 
     render() {
-        const {brands} = this.props;
+        const {brands, data} = this.props;
+        const BRANDS = [
+            'BEX',
+            'Hotels.com',
+            'Vrbo'
+        ];
+        const selectedBrands = brands.includes('Expedia Group') ? BRANDS : brands;
         return (
             <Fragment>
                 <h3>
@@ -48,17 +53,17 @@ export default class TotalChart extends PureComponent {
                     <HelpText className="chart-info" text="Total Bookings for the last 24 hours, refreshes every minutes and display in UTC time" placement="bottom"/>
                 </h3>
                 <ResponsiveContainer width="90%" height="80%">
-                    <AreaChart width={730} height={250} data={this.props.data}
+                    <AreaChart width={730} height={250} data={data}
                         margin={{top: 10, right: 30, left: 0, bottom: 0}}
                     >
                         <defs>
-                            {brands.map((brand) => this.renderGradient(brand))}
+                            {selectedBrands.map((brand) => this.renderGradient(brand))}
                         </defs>
                         <XAxis dataKey="time" />
                         <YAxis />
                         <CartesianGrid strokeDasharray="3 3" />
                         <Tooltip />
-                        {brands.map((brand) => this.renderArea(brand))}
+                        {selectedBrands.map((brand) => this.renderArea(brand))}
                         <Legend onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave} />
                     </AreaChart>
                 </ResponsiveContainer>

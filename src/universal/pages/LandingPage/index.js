@@ -13,7 +13,7 @@ import moment from 'moment';
 import './styles.less';
 
 const LandingPage = (props) => {
-    const {selectedBrand} = props;
+    const {selectedBrands} = props;
     const brands = ['Vrbo', 'Hotels.com', 'BEX'];
 
     const [bookingsData, setBookingsData] = useState([]);
@@ -81,14 +81,12 @@ const LandingPage = (props) => {
         </Link>
     );
 
-    const selectAll = selectedBrand === 'Expedia Group';
-    const chartData = selectAll ? bookingsData : bookingsData.map((x) => ({time: x.time, [selectedBrand]: x[selectedBrand]}));
-
+    const chartData = bookingsData;
     return (
         <div className="home-container">
             <div className="row" key="top-row">
                 <div id="total-bookings" className="card">
-                    <TotalChart data={chartData} brands={selectAll ? brands : [selectedBrand]}/>
+                    <TotalChart data={chartData} brands={selectedBrands}/>
                 </div>
                 <div className="card ongoing-incidents-wrapper">
                     <a target="_blank" rel="noopener noreferrer" href="https://expedia.service-now.com/triage/Triage.do" className="ongoing-incidents-tile-link">
@@ -99,7 +97,10 @@ const LandingPage = (props) => {
             </div>
 
             <div className="row" key="bottom-row">
-                {CSRData.filter((b) => selectAll || b.brandName === selectedBrand).map((brand) => <BrandCSRWidget brandName={brand.brandName} CSRTrend={brand.CSRTrend} key={brand.brandName}/>)}
+                {CSRData
+                    .filter((b) => selectedBrands.includes(b.brandName) || selectedBrands.includes('Expedia Group'))
+                    .map((brand) => <BrandCSRWidget brandName={brand.brandName} CSRTrend={brand.CSRTrend} key={brand.brandName}/>)
+                }
             </div>
 
             <Alert
