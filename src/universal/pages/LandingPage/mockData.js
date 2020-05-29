@@ -33,63 +33,63 @@ export const bookingsData = [
         'time': '2020-05-21T10:30:00.000Z', BEX: 4000, Vrbo: 2400, 'Hotels.com': 2400,
     },
     {
-        'time': '2020-05-21T10:31:00.000Z', BEX: 3000, Vrbo: 1398, 'Hotels.com': 2210,
+        'time': '2020-05-21T11:30:00.000Z', BEX: 3000, Vrbo: 1398, 'Hotels.com': 2210,
     },
     {
-        'time': '2020-05-21T10:32:00.000Z', BEX: 2000, Vrbo: 9800, 'Hotels.com': 2290,
+        'time': '2020-05-21T12:30:00.000Z', BEX: 2000, Vrbo: 9800, 'Hotels.com': 2290,
     },
     {
-        'time': '2020-05-21T10:33:00.000Z', BEX: 2780, Vrbo: 3908, 'Hotels.com': 2000,
+        'time': '2020-05-21T13:30:00.000Z', BEX: 2780, Vrbo: 3908, 'Hotels.com': 2000,
     },
     {
-        'time': '2020-05-21T10:34:00.000Z', BEX: 1890, Vrbo: 4800, 'Hotels.com': 2181,
+        'time': '2020-05-21T14:30:00.000Z', BEX: 1890, Vrbo: 4800, 'Hotels.com': 2181,
     },
     {
-        'time': '2020-05-21T10:35:00.000Z', BEX: 2390, Vrbo: 3800, 'Hotels.com': 2500,
+        'time': '2020-05-21T15:30:00.000Z', BEX: 2390, Vrbo: 3800, 'Hotels.com': 2500,
     },
     {
-        'time': '2020-05-21T10:36:00.000Z', BEX: 3490, Vrbo: 4300, 'Hotels.com': 2100,
+        'time': '2020-05-21T16:30:00.000Z', BEX: 3490, Vrbo: 4300, 'Hotels.com': 2100,
     },
     {
-        'time': '2020-05-21T10:37:00.000Z', BEX: 4000, Vrbo: 2400, 'Hotels.com': 2400,
+        'time': '2020-05-21T17:30:00.000Z', BEX: 4000, Vrbo: 2400, 'Hotels.com': 2400,
     },
     {
-        'time': '2020-05-21T10:38:00.000Z', BEX: 3000, Vrbo: 1398, 'Hotels.com': 2210,
+        'time': '2020-05-21T18:30:00.000Z', BEX: 3000, Vrbo: 1398, 'Hotels.com': 2210,
     },
     {
-        'time': '2020-05-21T10:39:00.000Z', BEX: 2000, Vrbo: 9800, 'Hotels.com': 2290,
+        'time': '2020-05-21T19:30:00.000Z', BEX: 2000, Vrbo: 9800, 'Hotels.com': 2290,
     },
     {
-        'time': '2020-05-21T10:40:00.000Z', BEX: 2780, Vrbo: 3908, 'Hotels.com': 2000,
+        'time': '2020-05-21T20:30:00.000Z', BEX: 2780, Vrbo: 3908, 'Hotels.com': 2000,
     },
     {
-        'time': '2020-05-21T10:41:00.000Z', BEX: 1890, Vrbo: 4800, 'Hotels.com': 2181,
+        'time': '2020-05-21T21:30:00.000Z', BEX: 1890, Vrbo: 4800, 'Hotels.com': 2181,
     },
     {
-        'time': '2020-05-21T10:42:00.000Z', BEX: 2390, Vrbo: 3800, 'Hotels.com': 2500,
+        'time': '2020-05-21T22:30:00.000Z', BEX: 2390, Vrbo: 3800, 'Hotels.com': 2500,
     },
     {
-        'time': '2020-05-21T10:43:00.000Z', BEX: 3490, Vrbo: 4300, 'Hotels.com': 2100,
+        'time': '2020-05-21T23:30:00.000Z', BEX: 3490, Vrbo: 4300, 'Hotels.com': 2100,
     },
     {
-        'time': '2020-05-21T10:44:00.000Z', BEX: 4000, Vrbo: 2400, 'Hotels.com': 2400,
+        'time': '2020-05-22T00:30:00.000Z', BEX: 4000, Vrbo: 2400, 'Hotels.com': 2400,
     },
     {
-        'time': '2020-05-21T10:45:00.000Z', BEX: 3000, Vrbo: 1398, 'Hotels.com': 2210,
+        'time': '2020-05-22T01:30:00.000Z', BEX: 3000, Vrbo: 1398, 'Hotels.com': 2210,
     },
     {
-        'time': '2020-05-21T10:46:00.000Z', BEX: 2000, Vrbo: 9800, 'Hotels.com': 2290,
+        'time': '2020-05-22T02:30:00.000Z', BEX: 2000, Vrbo: 9800, 'Hotels.com': 2290,
     },
     {
-        'time': '2020-05-21T10:47:00.000Z', BEX: 2780, Vrbo: 3908, 'Hotels.com': 2000,
+        'time': '2020-05-22T03:30:00.000Z', BEX: 2780, Vrbo: 3908, 'Hotels.com': 2000,
     },
     {
-        'time': '2020-05-21T10:48:00.000Z', BEX: 1890, Vrbo: 4800, 'Hotels.com': 2181,
+        'time': '2020-05-22T04:30:00.000Z', BEX: 1890, Vrbo: 4800, 'Hotels.com': 2181,
     },
     {
-        'time': '2020-05-21T10:49:00.000Z', BEX: 2390, Vrbo: 3800, 'Hotels.com': 2500,
+        'time': '2020-05-22T05:30:00.000Z', BEX: 2390, Vrbo: 3800, 'Hotels.com': 2500,
     },
     {
-        'time': '2020-05-21T10:50:00.000Z', BEX: 3490, Vrbo: 4300, 'Hotels.com': 2100,
+        'time': '2020-05-22T06:30:00.000Z', BEX: 3490, Vrbo: 4300, 'Hotels.com': 2100,
     },
 ];

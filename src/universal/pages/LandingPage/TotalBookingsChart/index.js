@@ -2,6 +2,7 @@ import React, {PureComponent, Fragment} from 'react';
 import {
     AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
+import HelpText from '../../../components/HelpText/HelpText';
 
 export default class TotalChart extends PureComponent {
     brandColor = (brand) => {
@@ -32,7 +33,7 @@ export default class TotalChart extends PureComponent {
         const color = this.brandColor(brand);
         const fill = `url(#color${brand})`;
         return (
-            <Area type="monotone" dataKey={brand} stroke={color} fillOpacity={1} fill={fill} />
+            <Area key= {`area${brand}`} type="monotone" dataKey={brand} stroke={color} fillOpacity={1} fill={fill} />
 
         );
     }
@@ -42,7 +43,10 @@ export default class TotalChart extends PureComponent {
         const {brands} = this.props;
         return (
             <Fragment>
-                <h3>{'Total bookings'}</h3>
+                <h3>
+                    {'Total bookings'}
+                    <HelpText className="chart-info" text="Total Bookings for the last 24 hours, refreshes every minutes and display in UTC time" placement="bottom"/>
+                </h3>
                 <ResponsiveContainer width="90%" height="80%">
                     <AreaChart width={730} height={250} data={this.props.data}
                         margin={{top: 10, right: 30, left: 0, bottom: 0}}

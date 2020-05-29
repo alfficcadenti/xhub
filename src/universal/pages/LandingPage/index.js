@@ -7,6 +7,7 @@ import {bookingsData as fetchedBookingsData} from './mockData';
 import BrandCSRWidget from '../../components/BrandCSRWidget';
 import TotalChart from './TotalBookingsChart';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import './styles.less';
 
 const LandingPage = (props) => {
@@ -22,7 +23,11 @@ const LandingPage = (props) => {
             // fetch('')
             //     .then((responses) => responses.json())
             //     .then((fetchedBookingsData) => {
-            setBookingsData(fetchedBookingsData);
+            const data = fetchedBookingsData.map((x) => {
+                x.time = moment.utc(x.time).format('HH:mm');
+                return x;
+            });
+            setBookingsData(data);
             // })
             // .catch((err) => {
             //     // eslint-disable-next-line no-console
@@ -55,7 +60,7 @@ const LandingPage = (props) => {
         fetchData();
         const interval = setInterval(() => {
             fetchData();
-        }, 10000);
+        }, 60000);
         return () => clearInterval(interval);
     }, []);
 
