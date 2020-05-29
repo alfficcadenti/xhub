@@ -21,7 +21,6 @@ import {
     ALL_RC_OWNERS_OPTION, ALL_RC_CATEGORIES_OPTION,
     EPIC_ISSUE_TYPE
 } from '../constants';
-import {EG_BRAND, BRANDS_MAP} from '../../components/App/constants';
 import {getPieData} from '../utils';
 import {useFetchTickets} from './hooks';
 import './styles.less';
@@ -60,7 +59,7 @@ const getActiveIndex = (pathname, history) => {
 };
 
 // eslint-disable-next-line complexity
-const PRB = ({selectedBrands}) => {
+const PRB = () => {
     const history = useHistory();
     const {pathname, search} = useLocation();
     const query = qs.parse(search); // query params from url
@@ -160,9 +159,6 @@ const PRB = ({selectedBrands}) => {
     const matchesOrg = (t) => selectedOrg === orgDefaultValue || t['Owning Org'] === selectedOrg;
     const matchesRcOwner = (t) => selectedRcOwner === rcOwnerDefaultValue || t['RC Owner'] === selectedRcOwner;
     const matchesRcCategory = (t) => selectedRcCategory === rcCategoryDefaultValue || t['RC Category'] === selectedRcCategory;
-    const matchesBrand = (t) => selectedBrands[0] === EG_BRAND || t.brandsAffected.some(
-        (b) => selectedBrands.map((selectedBrand) => BRANDS_MAP[selectedBrand].affectedBrand).includes(b)
-    );
 
     // eslint-disable-next-line complexity
     const filterTickets = (t) => (
@@ -172,7 +168,6 @@ const PRB = ({selectedBrands}) => {
         && matchesOrg(t)
         && matchesRcOwner(t)
         && matchesRcCategory(t)
-        && matchesBrand(t)
     );
 
     function getUrlParm(label, value, defaultValue) {
