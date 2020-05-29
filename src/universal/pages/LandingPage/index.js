@@ -3,7 +3,9 @@ import {Link} from 'react-router-dom';
 import {Alert} from '@homeaway/react-alerts';
 import OngoingIncidents from '../../components/OngoingIncidents';
 import {CSRData as fetchedCSRData} from './mockData';
-import {bookingsData as fetchedBookingsData} from './mockData';
+// import {bookingsData as fetchedBookingsData} from './mockData';
+import {newBookingData as fetchedBookingsData} from './mockData';
+
 import BrandCSRWidget from '../../components/BrandCSRWidget';
 import TotalChart from './TotalBookingsChart';
 import PropTypes from 'prop-types';
@@ -23,11 +25,16 @@ const LandingPage = (props) => {
             // fetch('')
             //     .then((responses) => responses.json())
             //     .then((fetchedBookingsData) => {
-            const data = fetchedBookingsData.map((x) => {
-                x.time = moment.utc(x.time).format('HH:mm');
-                return x;
+            const data = fetchedBookingsData && fetchedBookingsData.data;
+            const dataMapped = data.map((x) => {
+                return {
+                    time: moment.utc(x.time).format('HH:mm'),
+                    BEX: x.bookingsData.find((branddata) => branddata.brandGroupName === 'Brand Expedia Group').count || '',
+                    Vrbo: x.bookingsData.find((branddata) => branddata.brandGroupName === 'VRBO').count || '',
+                    'Hotels.com': x.bookingsData.find((branddata) => branddata.brandGroupName === 'Hotels.com').count || ''
+                };
             });
-            setBookingsData(data);
+            setBookingsData(dataMapped);
             // })
             // .catch((err) => {
             //     // eslint-disable-next-line no-console
