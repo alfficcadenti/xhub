@@ -2,13 +2,14 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import IncidentTrendsDashboard from '../index';
 import {DATE_FORMAT} from '../../constants';
+import {EG_BRAND} from '../../../components/App/constants';
 import moment from 'moment';
 
 describe('<IncidentTrendsDashboard/>', () => {
-    const wrapper = shallow(<IncidentTrendsDashboard />);
+    const wrapper = shallow(<IncidentTrendsDashboard selectedBrands={[EG_BRAND]} />);
 
     it('renders successfully', () => {
-        shallow(<IncidentTrendsDashboard/>);
+        shallow(<IncidentTrendsDashboard selectedBrands={[EG_BRAND]}/>);
     });
 
     it('sets correctly default start and end dates', async () => {

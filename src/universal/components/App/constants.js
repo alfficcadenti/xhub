@@ -1,31 +1,34 @@
 const EG_BRAND = 'Expedia Group';
 const BRANDS = [
     {
-        label: EG_BRAND
+        label: EG_BRAND,
+        psrBrand: EG_BRAND,
+        landingBrand: '',
+        incidentBrand: EG_BRAND
     },
     {
         label: 'Brand Expedia',
-        affectedBrand: 'Expedia',
         psrBrand: 'expedia',
-        landingBrand: 'BEX'
+        landingBrand: 'BEX',
+        incidentBrand: 'BEX - Expedia Group'
     },
     {
         label: 'Egencia',
-        affectedBrand: 'Egencia',
         psrBrand: 'egencia',
-        landingBrand: ''
+        landingBrand: '',
+        incidentBrand: 'Egencia'
     },
     {
         label: 'Hotels.com',
-        affectedBrand: 'Hotels',
         psrBrand: 'hcom',
-        landingBrand: 'Hotels.com'
+        landingBrand: 'Hotels.com',
+        incidentBrand: 'Hotels.com'
     },
     {
         label: 'Vrbo',
-        affectedBrand: 'Vrbo',
         psrBrand: 'vrbo',
-        landingBrand: 'Vrbo'
+        landingBrand: 'Vrbo',
+        incidentBrand: 'Vrbo'
     }
 ];
 

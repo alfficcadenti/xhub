@@ -10,7 +10,7 @@ import {Checkbox} from '@homeaway/react-form-components';
 import {DATE_FORMAT, ALL_STATUSES_OPTION, ALL_PRIORITIES_OPTION} from '../constants';
 import {Incidents, Overview, Top5, Quality, FinancialImpact} from './tabs/index';
 import {useFetchTickets, useSetCovidTag} from './hooks';
-import {EG_BRAND} from '../../components/App/constants';
+import {EG_BRAND, getBrand} from '../../components/App/constants';
 import './styles.less';
 
 const statusDefaultValue = ALL_STATUSES_OPTION;
@@ -48,7 +48,9 @@ const navLinks = [
 ];
 
 
-const IncidentTrendsDashboard = ({selectedBrands}) => {
+const IncidentTrendsDashboard = (props) => {
+    const selectedBrands = props.selectedBrands.map((brand) => getBrand(brand).incidentBrand);
+
     const [activeIndex, setActiveIndex] = useState(1);
     const [selectedStatus, setSelectedStatus] = useState(statusDefaultValue);
     const [selectedCovidTag, setSelectedCovidTag] = useState(covidTagDefaultValue);

@@ -10,12 +10,13 @@ import BrandCSRWidget from '../../components/BrandCSRWidget';
 import TotalChart from './TotalBookingsChart';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import {getBrand, BRANDS} from '../../components/App/constants';
+import {EG_BRAND, BRANDS, getBrand} from '../../components/App/constants';
 import './styles.less';
 
 const LandingPage = (props) => {
-    const selectedBrands = props.selectedBrands.map((brand) => getBrand(brand).landingBrand);
-    const brands = BRANDS.map((brand) => brand.landingBrand).filter((brand) => !!brand);
+    const selectedBrands = props.selectedBrands[0] === EG_BRAND
+        ? BRANDS.map((brand) => brand.landingBrand).filter((brand) => !!brand)
+        : props.selectedBrands.map((brand) => getBrand(brand).landingBrand).filter((brand) => !!brand);
 
     const [bookingsData, setBookingsData] = useState([]);
     const [CSRData, setCSRData] = useState([]);
@@ -49,7 +50,7 @@ const LandingPage = (props) => {
             // fetch('')
             //     .then((responses) => responses.json())
             //     .then((fetchedBookingsData) => {
-            const CSRDataFormatted = brands.map((brand) => {
+            const CSRDataFormatted = selectedBrands.map((brand) => {
                 return {brandName: brand, CSRTrend: fetchedCSRData.map((x) => x[brand] * 100)};
             });
 

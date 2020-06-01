@@ -53,7 +53,7 @@ class PSR extends Component {
                     return h.getPSROnDate(psrData, h.lastPSRAvailableDate(psrData));
                 }
             )
-            .filter((item) => this.props.selectedBrands[0] === EG_BRAND || selectedPsrBrands.includes(item.brand));
+            .filter((item) => selectedPsrBrands[0] === EG_BRAND || selectedPsrBrands.includes(item.brand));
     };
 
     displayPSRDetails = (brand) => {

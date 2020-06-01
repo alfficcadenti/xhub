@@ -15,19 +15,25 @@ function renderRoute(p, selectedBrands) {
 }
 
 function App() {
+    const validBrands = BRANDS.map((brand) => brand.label);
     let storedBrands;
     try {
-        storedBrands = localStorage.getItem('selectedBrands');
-        storedBrands = storedBrands
-            ? storedBrands.split(',')
-            : [EG_BRAND];
+        // Validate selected brands
+        storedBrands = String(localStorage.getItem('selectedBrands') || '')
+            .split(',')
+            .filter((brand) => validBrands.includes(brand));
+        // Default to EG_BRAND if none selected
+        if (!storedBrands.length) {
+            localStorage.setItem('selectedBrands', [EG_BRAND]);
+            storedBrands = [EG_BRAND];
+        }
     } catch {
         storedBrands = [EG_BRAND];
     }
-    const [selectedBrands, setSelectedBrands] = useState(storedBrands);
+    const [selectedBrands, setSelectedBrands] = useState(storedBrands || [EG_BRAND]);
     return (
         <Fragment>
-            <Header selectedBrands={selectedBrands} setSelectedBrands={setSelectedBrands} brands={BRANDS.map((brand) => brand.label)}/>
+            <Header selectedBrands={selectedBrands} setSelectedBrands={setSelectedBrands} brands={validBrands}/>
             <Feedback />
             <div className="main-container">
                 <Switch>
