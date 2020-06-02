@@ -14,6 +14,9 @@ const renderTable = (filteredIncidents) => {
             info="Refreshes every 15 minutes"
             data={getIncidentsData(filteredIncidents)}
             columns={columns}
+            columnsInfo={{
+                Brand: <div>{'Displaying brand(s) selected by'}<br/>{'dropdown [top right in site header]'}</div>
+            }}
             expandableColumns={['Details']}
             pageSize={25}
             paginated

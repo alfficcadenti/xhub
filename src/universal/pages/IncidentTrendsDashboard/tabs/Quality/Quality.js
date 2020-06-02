@@ -54,6 +54,9 @@ const renderContent = (
                 info="Refreshes every 15 minutes"
                 data={getQualityData(filteredDefects)}
                 columns={['Defect', 'Priority', 'Brand', 'Opened', 'Resolved', 'Summary', 'Project', 'Duration', 'Impacted Brand', 'Status']}
+                columnsInfo={{
+                    Brand: <div>{'Displaying brand(s) selected by'}<br/>{'dropdown [top right in site header]'}</div>
+                }}
                 pageSize={25}
                 paginated
                 csvFilename="DefectsResults.csv"
