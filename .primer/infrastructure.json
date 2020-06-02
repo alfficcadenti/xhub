@@ -1,0 +1,5 @@
+{
+  "global": {
+    "elb_scheme": "internet-expedia-only"
+  }
+}
