@@ -91,6 +91,7 @@
         },
         "token": "ewetestReleaseDockerEcs"
       },
+      "successChildren": ["Deploy_To_Prod"],
       "triggerType": "manual"
     },
     {
@@ -111,7 +112,7 @@
       "successChildren": [
         "Release_To_Prod"
       ],
-      "triggerType": "manual"
+      "triggerType": "automatic"
     },
     {
       "action": {
