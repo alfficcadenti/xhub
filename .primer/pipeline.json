@@ -97,7 +97,7 @@
       "action": {
         "name": "ewedeployJenkins"
       },
-      "actionId": "eweprod_deploy-docker-ecs",
+      "actionId": "eweprod-ee_deploy-docker-ecs",
       "description": null,
       "disabled": false,
       "ignoreResult": false,
@@ -106,7 +106,7 @@
         "jobParameters": {
           "ROLE_NAME": "opxhub-ui"
         },
-        "token": "eweprodEcsDeploy"
+        "token": "eweprodeeEcsDeploy"
       },
       "successChildren": [
         "Release_To_Prod"
@@ -117,7 +117,7 @@
       "action": {
         "name": "ewedeployJenkins"
       },
-      "actionId": "eweprod_release-docker-ecs",
+      "actionId": "eweprod-ee_release-docker-ecs",
       "description": null,
       "disabled": false,
       "ignoreResult": false,
@@ -126,7 +126,7 @@
         "jobParameters": {
           "ROLE_NAME": "opxhub-ui"
         },
-        "token": "eweprodEcsRelease"
+        "token": "eweprodeeEcsRelease"
       },
       "successChildren": [],
       "triggerType": "manual"
