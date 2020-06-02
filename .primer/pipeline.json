@@ -91,6 +91,45 @@
         },
         "token": "ewetestReleaseDockerEcs"
       },
+      "successChildren": ["Deploy_To_Prod"],
+      "triggerType": "manual"
+    },
+    {
+      "action": {
+        "name": "ewedeployJenkins"
+      },
+      "actionId": "eweprod-ee_deploy-docker-ecs",
+      "description": null,
+      "disabled": false,
+      "ignoreResult": false,
+      "name": "Deploy_To_Prod",
+      "params": {
+        "jobParameters": {
+          "ROLE_NAME": "opxhub-ui"
+        },
+        "token": "eweprodeeEcsDeploy"
+      },
+      "successChildren": [
+        "Release_To_Prod"
+      ],
+      "triggerType": "automatic"
+    },
+    {
+      "action": {
+        "name": "ewedeployJenkins"
+      },
+      "actionId": "eweprod-ee_release-docker-ecs",
+      "description": null,
+      "disabled": false,
+      "ignoreResult": false,
+      "name": "Release_To_Prod",
+      "params": {
+        "jobParameters": {
+          "ROLE_NAME": "opxhub-ui"
+        },
+        "token": "eweprodeeEcsRelease"
+      },
+      "successChildren": [],
       "triggerType": "manual"
     }
   ],
