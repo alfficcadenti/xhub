@@ -92,6 +92,44 @@
         "token": "ewetestReleaseDockerEcs"
       },
       "triggerType": "manual"
+    },
+    {
+      "action": {
+        "name": "ewedeployJenkins"
+      },
+      "actionId": "eweprod_deploy-docker-ecs",
+      "description": null,
+      "disabled": false,
+      "ignoreResult": false,
+      "name": "Deploy_To_Prod",
+      "params": {
+        "jobParameters": {
+          "ROLE_NAME": "opxhub-ui"
+        },
+        "token": "eweprodEcsDeploy"
+      },
+      "successChildren": [
+        "Release_To_Prod"
+      ],
+      "triggerType": "manual"
+    },
+    {
+      "action": {
+        "name": "ewedeployJenkins"
+      },
+      "actionId": "eweprod_release-docker-ecs",
+      "description": null,
+      "disabled": false,
+      "ignoreResult": false,
+      "name": "Release_To_Prod",
+      "params": {
+        "jobParameters": {
+          "ROLE_NAME": "opxhub-ui"
+        },
+        "token": "eweprodEcsRelease"
+      },
+      "successChildren": [],
+      "triggerType": "manual"
     }
   ],
   "team": "Operational Excellence"
