@@ -1,4 +1,5 @@
 import {apiService} from './apiService';
+import {userEventsApiService} from './userEventsApiService';
 import {prbs} from './prbs';
 import {resiliencyQuestionnaire} from './resiliencyQuestionnaire';
 import questionnaireHistory from './questionnaireHistory';
@@ -11,6 +12,7 @@ const apiRoutes = [
     login,
     logout,
     apiService,
+    userEventsApiService,
     prbs,
     resiliencyQuestionnaire,
     resiliencyQuestions,
