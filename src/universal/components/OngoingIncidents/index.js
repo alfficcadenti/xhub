@@ -17,7 +17,7 @@ const OngoingIncidents = () => {
         const fetchTickets = () => {
             setIsLoading(true);
 
-            fetch(`https://opxhub-service.us-west-2.int.expedia.com/api/v1/incidents?startDate=${startDate}&endDate=${endDate}`)
+            fetch(`/api/v1/incidents?startDate=${startDate}&endDate=${endDate}`)
                 .then((responses) => responses.json())
                 .then((fetchedIncidents) => {
                     const filteredIncidents = fetchedIncidents.filter((incident) => {
