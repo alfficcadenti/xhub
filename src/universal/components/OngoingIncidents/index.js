@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, {Fragment, useEffect, useState} from 'react';
+import LoadingContainer from '../LoadingContainer';
 import {DATE_FORMAT} from '../../pages/constants';
 import moment from 'moment';
 import './styles.less';
@@ -10,9 +11,12 @@ const endDate = moment().format(DATE_FORMAT);
 
 const OngoingIncidents = () => {
     const [incidents, setIncidents] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchTickets = () => {
+            setIsLoading(true);
+
             fetch(`https://opxhub-service.us-west-2.int.expedia.com/api/v1/incidents?startDate=${startDate}&endDate=${endDate}`)
                 .then((responses) => responses.json())
                 .then((fetchedIncidents) => {
@@ -21,8 +25,10 @@ const OngoingIncidents = () => {
                     });
 
                     setIncidents(filteredIncidents);
+                    setIsLoading(false);
                 })
                 .catch((err) => {
+                    setIsLoading(false);
                     // eslint-disable-next-line no-console
                     console.error(err);
                 });
@@ -35,16 +41,18 @@ const OngoingIncidents = () => {
         <Fragment>
             <h2 className="ongoing-incidents-label">{'Ongoing Incidents'}</h2>
             <div className="ongoing-incidents">
-                {
-                    incidents.map((item) => {
-                        return (
-                            <div key={item.incidentSummary} className="ongoing-incident">
-                                <span>{`${item.priority} - `}</span>
-                                <span>{item.incidentSummary}</span>
-                            </div>
-                        );
-                    })
-                }
+                <LoadingContainer isLoading={isLoading}>
+                    {
+                        incidents.map((item) => {
+                            return (
+                                <div key={item.incidentSummary} className="ongoing-incident">
+                                    <span>{`${item.priority} - `}</span>
+                                    <span>{item.incidentSummary}</span>
+                                </div>
+                            );
+                        })
+                    }
+                </LoadingContainer>
             </div>
         </Fragment>
     );
