@@ -64,34 +64,10 @@
           }
         },
         "int": {
-          "hostname": "opxhub-service.us-west-2.int.expedia.com",
-          "protocol": "https:",
-          "routes": {
-            "resiliencyQuestionnaire": {
-              "path": "/api/v1/resiliency/questionnaire",
-              "operation": "POST_api_v1_resiliency_questionnaire",
-              "method": "POST"
-            },
-            "apiService": {
-              "method": "GET",
-              "operation": "GET_api_v1"
-            }
-          }
+          "hostname": "opxhub-service.us-west-2.int.expedia.com"
         },
         "test": {
-          "hostname": "opxhub-service.us-west-2.test.expedia.com",
-          "protocol": "https:",
-          "routes": {
-            "resiliencyQuestionnaire": {
-              "path": "/api/v1/resiliency/questionnaire",
-              "operation": "POST_api_v1_resiliency_questionnaire",
-              "method": "POST"
-            },
-            "apiService": {
-              "method": "GET",
-              "operation": "GET_api_v1"
-            }
-          }
+          "hostname": "opxhub-service.us-west-2.test.expedia.com"
         },
         "production": {
           "hostname": "opxhub-service.us-west-2.test.expedia.com"
