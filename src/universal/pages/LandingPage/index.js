@@ -2,8 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 import {Alert} from '@homeaway/react-alerts';
 import OngoingIncidents from '../../components/OngoingIncidents';
-import {CSRData as fetchedCSRData} from './mockData';
-import BrandCSRWidget from '../../components/BrandCSRWidget';
+// import {CSRData as fetchedCSRData} from './mockData';
+// import BrandCSRWidget from '../../components/BrandCSRWidget';
 import TotalChart from './TotalBookingsChart';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -16,7 +16,7 @@ const LandingPage = (props) => {
         : props.selectedBrands.map((brand) => getBrand(brand).landingBrand).filter((brand) => !!brand);
 
     const [bookingsData, setBookingsData] = useState([]);
-    const [CSRData, setCSRData] = useState([]);
+    // const [CSRData, setCSRData] = useState([]);
 
     const fetchData = () => {
         const fetchBookingsData = () => {
@@ -26,9 +26,10 @@ const LandingPage = (props) => {
                     const dataMapped = data && data.reverse().map((x) => {
                         return {
                             time: moment.utc(x.time).format('HH:mm'),
-                            BEX: x.bookingsData.find((branddata) => branddata.brandGroupName === 'Brand Expedia Group').count || '',
-                            Vrbo: x.bookingsData.find((branddata) => branddata.brandGroupName === 'VRBO').count || '',
-                            'Hotels.com': x.bookingsData.find((branddata) => branddata.brandGroupName === 'Hotels.com').count || ''
+                            'BEX': x.bookingsData.find((branddata) => branddata.brandGroupName === 'Brand Expedia Group').count || '',
+                            'Vrbo': x.bookingsData.find((branddata) => branddata.brandGroupName === 'VRBO').count || '',
+                            'Hotels.com': x.bookingsData.find((branddata) => branddata.brandGroupName === 'Hotels.com').count || '',
+                            'Expedia Business Services': x.bookingsData.find((branddata) => branddata.brandGroupName === 'Expedia Business Services').count || ''
                         };
                     });
                     setBookingsData(dataMapped);
@@ -40,23 +41,24 @@ const LandingPage = (props) => {
         };
         fetchBookingsData();
 
-        const fetchCSRData = () => {
-            // TO BE CHANGED ONCE DATA ARE READY
-            // fetch('')
-            //     .then((responses) => responses.json())
-            //     .then((fetchedBookingsData) => {
-            const CSRDataFormatted = selectedBrands.map((brand) => {
-                return {brandName: brand, CSRTrend: fetchedCSRData.map((x) => x[brand] * 100)};
-            });
+        // const fetchCSRData = () => {
+        //     // TO BE CHANGED ONCE DATA ARE READY
+        //     // fetch('')
+        //     //     .then((responses) => responses.json())
+        //     //     .then((fetchedBookingsData) => {
+        //     const CSRDataFormatted = selectedBrands.map((brand) => {
+        //         const csrData = fetchedCSRData && fetchedCSRData.map((x) => x[brand] * 100);
+        //         return {brandName: brand, CSRTrend: csrData};
+        //     });
 
-            setCSRData(CSRDataFormatted);
-            // })
-            // .catch((err) => {
-            //     // eslint-disable-next-line no-console
-            //     console.error(err);
-            // });
-        };
-        fetchCSRData();
+        //     setCSRData(CSRDataFormatted);
+        //     // })
+        //     // .catch((err) => {
+        //     //     // eslint-disable-next-line no-console
+        //     //     console.error(err);
+        //     // });
+        // };
+        // fetchCSRData();
     };
 
 
@@ -93,12 +95,12 @@ const LandingPage = (props) => {
                 </div>
             </div>
 
-            <div className="row" key="bottom-row">
+            {/* <div className="row" key="bottom-row">
                 {CSRData
                     .filter((b) => selectedBrands.includes(b.brandName) || selectedBrands.includes('Expedia Group'))
                     .map((brand) => <BrandCSRWidget brandName={brand.brandName} CSRTrend={brand.CSRTrend} key={brand.brandName}/>)
                 }
-            </div>
+            </div> */}
 
             <Alert
                 className="covid-message"

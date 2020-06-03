@@ -29,6 +29,12 @@ const BRANDS = [
         psrBrand: 'vrbo',
         landingBrand: 'Vrbo',
         incidentBrand: 'Vrbo'
+    },
+    {
+        label: 'Expedia Business Services',
+        psrBrand: '',
+        landingBrand: 'Expedia Business Services',
+        incidentBrand: ''
     }
 ];
 

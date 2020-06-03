@@ -14,14 +14,17 @@ export default class TotalChart extends PureComponent {
                 return '#1478F7';
             case 'Hotels.com':
                 return '#F71414';
+            case 'Expedia Business Services':
+                return '#FFC72C';
             default:
                 return '#1B5CAF';
         }
     }
 
     renderGradient = (brand) => {
+        const brandLabel = brand.replace(/\s/g, '');
         const brandColor = this.brandColor(brand);
-        const id = `color${brand}`;
+        const id = `color${brandLabel}`;
         return (
             <linearGradient key={`${brand}Gradient`} id={id} x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor={brandColor} stopOpacity={0.8}/>
@@ -31,8 +34,9 @@ export default class TotalChart extends PureComponent {
     }
 
     renderArea = (brand) => {
+        const brandLabel = brand.replace(/\s/g, '');
         const color = this.brandColor(brand);
-        const fill = `url(#color${brand})`;
+        const fill = `url(#color${brandLabel})`;
         return (
             <Area type="monotone" dataKey={brand} stroke={color} fillOpacity={1} fill={fill} key={`area${brand}`}/>
         );
