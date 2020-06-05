@@ -40,8 +40,7 @@ const OngoingIncidents = () => {
     return (
         <Fragment>
             <h2 className="ongoing-incidents-label">{'Ongoing Incidents'}</h2>
-            <div className="ongoing-incidents">
-                <LoadingContainer isLoading={isLoading}>
+                <LoadingContainer isLoading={isLoading} className="ongoing-incidents">
                     {
                         incidents.map((item) => {
                             return (
@@ -53,7 +52,6 @@ const OngoingIncidents = () => {
                         })
                     }
                 </LoadingContainer>
-            </div>
         </Fragment>
     );
 };
