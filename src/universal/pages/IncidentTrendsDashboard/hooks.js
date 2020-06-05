@@ -52,7 +52,7 @@ export const useFetchTickets = (
             setLastStartDate(startDate);
             setLastEndDate(endDate);
 
-            Promise.all([fetch(`/api/v1/incidents?startDate=${startDate}&endDate=${endDate}`), fetch(`/api/v1/defects?startDate=${startDate}&endDate=${endDate}`)])
+            Promise.all([fetch(`https://opxhub-service.us-west-2.test.expedia.com/api/v1/incidents?startDate=${startDate}&endDate=${endDate}`), fetch(`https://opxhub-service.us-west-2.test.expedia.com/api/v1/defects?startDate=${startDate}&endDate=${endDate}`)])
                 .then((responses) => Promise.all(responses.map((r) => r.json())))
                 .then(([incidents, defects]) => {
                     // incidents
