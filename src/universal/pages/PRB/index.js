@@ -394,7 +394,7 @@ const PRB = () => {
                 links={navLinks}
                 onLinkClick={handleNavigationClick}
             />
-            <LoadingContainer isLoading={isLoading} error={error} className="pm-table">
+            <LoadingContainer isLoading={isLoading} error={error}>
                 {renderTabs()}
             </LoadingContainer>
         </div>
