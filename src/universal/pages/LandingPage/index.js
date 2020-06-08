@@ -2,8 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 import {Alert} from '@homeaway/react-alerts';
 import OngoingIncidents from '../../components/OngoingIncidents';
-// import {CSRData as fetchedCSRData} from './mockData';
-// import BrandCSRWidget from '../../components/BrandCSRWidget';
+import BrandCSRWidget from '../../components/BrandCSRWidget';
 import TotalChart from './TotalBookingsChart';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -16,7 +15,7 @@ const LandingPage = (props) => {
         : props.selectedBrands.map((brand) => getBrand(brand).landingBrand).filter((brand) => !!brand);
 
     const [bookingsData, setBookingsData] = useState([]);
-    // const [CSRData, setCSRData] = useState([]);
+    const [CSRData, setCSRData] = useState([]);
 
     const fetchData = () => {
         const fetchBookingsData = () => {
@@ -41,24 +40,38 @@ const LandingPage = (props) => {
         };
         fetchBookingsData();
 
-        // const fetchCSRData = () => {
-        //     // TO BE CHANGED ONCE DATA ARE READY
-        //     // fetch('')
-        //     //     .then((responses) => responses.json())
-        //     //     .then((fetchedBookingsData) => {
-        //     const CSRDataFormatted = selectedBrands.map((brand) => {
-        //         const csrData = fetchedCSRData && fetchedCSRData.map((x) => x[brand] * 100);
-        //         return {brandName: brand, CSRTrend: csrData};
-        //     });
+        const fetchCSRData = () => {
+            fetch('https://opxhub-user-events-data-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black/v1/checkoutSuccessRate')
+                .then((responses) => responses.json())
+                .then((fetchedCSRData) => {
+                    const mapBrandNames = (brandName) => {
+                        switch (brandName) {
+                            case 'expedia':
+                                return 'BEX';
+                            case 'vrbo':
+                                return 'Vrbo';
+                            case 'hotels':
+                                return 'Hotels.com';
+                            default:
+                                return brandName;
+                        }
+                    };
+                    const CSRDataFormatted = selectedBrands.map((brand) => {
+                        const csrData = fetchedCSRData && fetchedCSRData.map(
+                            (x) => {
+                                return x.checkoutSuccessPercentagesData.find((item) => mapBrandNames(item.brand) === brand) ? x.checkoutSuccessPercentagesData.find((item) => mapBrandNames(item.brand) === brand).rate : 0;
+                            });
+                        return {brandName: brand, CSRTrend: csrData};
+                    });
 
-        //     setCSRData(CSRDataFormatted);
-        //     // })
-        //     // .catch((err) => {
-        //     //     // eslint-disable-next-line no-console
-        //     //     console.error(err);
-        //     // });
-        // };
-        // fetchCSRData();
+                    setCSRData(CSRDataFormatted);
+                })
+                .catch((err) => {
+                    // eslint-disable-next-line no-console
+                    console.error(err);
+                });
+        };
+        fetchCSRData();
     };
 
 
@@ -95,12 +108,12 @@ const LandingPage = (props) => {
                 </div>
             </div>
 
-            {/* <div className="row" key="bottom-row">
+            <div className="row" key="bottom-row">
                 {CSRData
                     .filter((b) => selectedBrands.includes(b.brandName) || selectedBrands.includes('Expedia Group'))
                     .map((brand) => <BrandCSRWidget brandName={brand.brandName} CSRTrend={brand.CSRTrend} key={brand.brandName}/>)
                 }
-            </div> */}
+            </div>
 
             <Alert
                 className="covid-message"
