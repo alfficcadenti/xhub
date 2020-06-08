@@ -39,6 +39,7 @@
     "ssl_negotiation_policy": "ELBSecurityPolicy-TLS-1-2-2017-01"
   },
   "ewetest": {
+    "no-auto-delete": true,
     "instances": {
       "initial_count": 2
     }
