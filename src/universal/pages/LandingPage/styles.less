@@ -1,22 +1,15 @@
 @import "../../mixins.less";
 
-.home-container {
+.grid-wrapper {
   text-align: center;
-  width: 100%;
-  display: inline-table;
+  display: grid;
+  grid-gap: 45px;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin: 50px;
 
-  .row {
-    display: table-row;
-    position: relative;
-  }
-
-  #total-bookings,
-  .brand-data-card {
-    margin: 1.8%;
+  #total-bookings {
     height: 100%;
     min-height: 300px;
-    width: 28.33%;
-    float: left;
     justify-content: center;
     justify-items: center;
     display: grid;
@@ -32,11 +25,27 @@
     }
   }
 
+  .brand-data-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 350px;
+    padding: 25px;
+
+    .brandLogoImg {
+      margin-bottom: 20px;
+    }
+
+    svg {
+      height: 100%;
+      width: 60%;
+    }
+  }
+
   #total-bookings {
-    width: 60%;
-    margin: 2.5%;
     justify-content: stretch;
     min-height: 458px;
+    grid-column: span 2;
 
     .recharts-responsive-container {
       width: 100%;
@@ -50,9 +59,7 @@
   .ongoing-incidents-wrapper {
     display: flex;
     flex-direction: column;
-    width: 30%;
-    margin: 2.5%;
-    height: 458px;
+    height: 100%;
 
     .ongoing-incidents-tile-link {
       .ongoing-incidents-tile-overlay {
@@ -66,17 +73,14 @@
 
   .success-rates {
     display: flex;
+
     .success-rate-card {
       display: grid;
+
       .radial-success-rate {
         justify-self: center;
       }
     }
-  }
-
-  .brand-data-card.card > svg {
-    height: 100%;
-    width: 100%;
   }
 
   .covid-message {
