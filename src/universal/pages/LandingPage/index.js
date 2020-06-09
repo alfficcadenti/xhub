@@ -96,25 +96,21 @@ const LandingPage = (props) => {
     const chartData = bookingsData;
     return (
         <div className="home-container">
-            <div className="row" key="top-row">
+            <div className="grid-wrapper">
                 <div id="total-bookings" className="card">
                     <TotalChart data={chartData} brands={selectedBrands}/>
                 </div>
-                <div className="card ongoing-incidents-wrapper">
+                <div className="ongoing-incidents-wrapper card">
                     <a target="_blank" rel="noopener noreferrer" href="https://expedia.service-now.com/triage/Triage.do" className="ongoing-incidents-tile-link">
                         <div className="ongoing-incidents-tile-overlay" />
                     </a>
                     <OngoingIncidents />
                 </div>
-            </div>
-
-            <div className="row" key="bottom-row">
                 {CSRData
                     .filter((b) => selectedBrands.includes(b.brandName) || selectedBrands.includes('Expedia Group'))
                     .map((brand) => <BrandCSRWidget brandName={brand.brandName} CSRTrend={brand.CSRTrend} key={brand.brandName}/>)
                 }
             </div>
-
             <Alert
                 className="covid-message"
                 title="COVID-19 Updates"
