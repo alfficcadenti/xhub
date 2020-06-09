@@ -107,12 +107,8 @@ const LandingPage = (props) => {
                     <OngoingIncidents />
                 </div>
                 {CSRData
-                    .filter((b) => {
-                        return selectedBrands.includes(b.brandName) || selectedBrands.includes('Expedia Group');
-                    })
-                    .map((brand) => {
-                        return <BrandCSRWidget brandName={brand.brandName} CSRTrend={brand.CSRTrend} key={brand.brandName}/>;
-                    })
+                    .filter((b) => selectedBrands.includes(b.brandName) || selectedBrands.includes('Expedia Group'))
+                    .map((brand) => <BrandCSRWidget brandName={brand.brandName} CSRTrend={brand.CSRTrend} key={brand.brandName}/>)
                 }
             </div>
             <Alert
