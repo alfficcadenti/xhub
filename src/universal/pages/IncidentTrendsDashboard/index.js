@@ -6,7 +6,7 @@ import LoadingContainer from '../../components/LoadingContainer';
 import FilterDropDown from '../../components/FilterDropDown';
 import {Navigation} from '@homeaway/react-navigation';
 import DatePicker from '../../components/DatePicker/index';
-import {Checkbox} from '@homeaway/react-form-components';
+// import {Checkbox} from '@homeaway/react-form-components';
 import {DATE_FORMAT, ALL_STATUSES_OPTION, ALL_PRIORITIES_OPTION} from '../constants';
 import {Incidents, Overview, Top5, Quality, FinancialImpact} from './tabs/index';
 import {useFetchTickets, useSetCovidTag} from './hooks';
@@ -152,10 +152,10 @@ const IncidentTrendsDashboard = (props) => {
         setIsDirtyForm(true);
     }, []);
 
-    const handleCovidTagChange = () => {
-        setSelectedCovidTag(!selectedCovidTag);
-        setIsDirtyForm(true);
-    };
+    // const handleCovidTagChange = () => {
+    //     setSelectedCovidTag(!selectedCovidTag);
+    //     setIsDirtyForm(true);
+    // };
 
     // eslint-disable-next-line complexity
     const renderTabs = () => {
@@ -197,7 +197,7 @@ const IncidentTrendsDashboard = (props) => {
                 />
                 <FilterDropDown id="priority-dropdown" className="priority-dropdown" list={currentPriorities} selectedValue={selectedPriority} onClickHandler={handlePriorityChange}/>
                 <FilterDropDown id="status-dropdown" className="status-dropdown" list={currentStatuses} selectedValue={selectedStatus} onClickHandler={handleStatusChange}/>
-                <Checkbox name="covid-19" label="covid-19" checked={selectedCovidTag} onChange={handleCovidTagChange}/>
+                {/* <Checkbox name="covid-19" label="covid-19" checked={selectedCovidTag} onChange={handleCovidTagChange}/> */}
                 <button
                     type="button"
                     className="apply-button btn btn-primary active"
