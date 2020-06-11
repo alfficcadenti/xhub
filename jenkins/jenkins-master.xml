@@ -73,7 +73,7 @@
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
-        <url>git@github.expedia.biz:EGPlatform/opxhub-ui.git</url>
+        <url>git@github.expedia.biz:eg-reo-opex/opxhub-ui.git</url>
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
     <branches>

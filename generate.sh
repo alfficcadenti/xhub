@@ -5,7 +5,7 @@
 
 npm init @homeaway/catalyst-eg \
     --appName="opxhub-ui" \
-    --sourceRepo="https://github.expedia.biz/EGPlatform/opxhub-ui" \
+    --sourceRepo="https://github.expedia.biz/eg-reo-opex/opxhub-ui" \
     --team="Operational Excellence" \
     --user="aficcadenti" \
     --roleName="opxhub-ui" \

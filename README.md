@@ -34,7 +34,7 @@ Kumo: https://console.kumo.expedia.biz/apps/opxhub-ui
 1. To start developing locally, clone the project:
 
    ```bash
-   git clone git@github.expedia.biz:EGPlatform/opxhub-ui.git
+   git clone git@github.expedia.biz:eg-reo-opex/opxhub-ui.git
    ```
 
 2. Install the dependencies:

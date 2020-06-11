@@ -8,7 +8,7 @@
     "gitHost": "github.expedia.biz",
     "gitOrg": "HomeAway",
     "gitName": "opxhub-ui",
-    "sourceRepo": "https://github.expedia.biz/EGPlatform/opxhub-ui",
+    "sourceRepo": "https://github.expedia.biz/eg-reo-opex/opxhub-ui",
     "initLocalGitRepo": false,
     "commitGeneratedCode": false,
     "generatorLog": [

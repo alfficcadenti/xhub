@@ -24,7 +24,7 @@
     "app_ssl_port": 8080,
     "app_ssl_protocol": "HTTP",
     "app_name": "opxhub-ui",
-    "source_repo": "git@github.expedia.biz:EGPlatform/opxhub-ui.git",
+    "source_repo": "git@github.expedia.biz:eg-reo-opex/opxhub-ui.git",
     "team": "Operational Excellence",
     "portfolio": "EWE Primer",
     "product_area": "HomeAway",

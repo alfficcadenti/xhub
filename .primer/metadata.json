@@ -3,7 +3,7 @@
   "description": "",
   "team": "OpEx Platform",
   "applicationStack": "operational-excellence",
-  "repoSource": "https://github.expedia.biz/EGPlatform/opxhub-ui",
+  "repoSource": "https://github.expedia.biz/eg-reo-opex/opxhub-ui",
   "serviceTier": "Tier 3",
   "extensions": {},
   "segments": ["ewe"],
