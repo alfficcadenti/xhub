@@ -7,10 +7,10 @@
   "contributors": [],
   "repository": {
     "type": "git",
-    "url": "https://github.expedia.biz/EGPlatform/opxhub-ui"
+    "url": "https://github.expedia.biz/eg-reo-opex/opxhub-ui"
   },
   "bugs": {
-    "url": "https://github.expedia.biz/EGPlatform/opxhub-ui/issues"
+    "url": "https://github.expedia.biz/eg-reo-opex/opxhub-ui/issues"
   },
   "engines": {
     "node": ">=10.19.0",
