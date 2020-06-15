@@ -94,10 +94,13 @@ const LandingPage = (props) => {
     );
 
     const chartData = bookingsData;
+    // const iFrameGrafanaUrl = 'https://opexhub-grafana.expedia.biz/render/d-solo/e8VefQgMz/booking-events?orgId=1&from=1592225354661&to=1592227154662&panelId=2&width=1000&height=500&tz=Europe%2FLondon';
+    const iFrameGrafanaUrl = 'https://grafana-egdp.expedia.biz/d/Z2DDWdgMk/sbe-covid19-dashboard?orgId=1&from=1592211360641&to=1592232960641';
     return (
         <div className="home-container">
             <div className="grid-wrapper">
                 <div id="total-bookings" className="card">
+                    <iframe src={iFrameGrafanaUrl} width="650" height="300" frameBorder="0" />
                     <TotalChart data={chartData} brands={selectedBrands}/>
                 </div>
                 <div className="ongoing-incidents-wrapper card">
