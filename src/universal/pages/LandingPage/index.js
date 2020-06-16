@@ -99,7 +99,7 @@ const LandingPage = () => {
     // const iFrameGrafanaUrl = 'https://opexhub-grafana.expedia.biz/render/d-solo/e8VefQgMz/booking-events?orgId=1&from=1592225354661&to=1592227154662&panelId=2&width=1000&height=500&tz=Europe%2FLondon';
     const iFrameBookingGrafanaUrl = 'https://opexhub-grafana.expedia.biz/d/e8VefQgMz/booking-events?orgId=1&from=1592308001977&to=1592309801978';
     const iFrameFCIGrafanaUrl = 'https://opexhub-grafana.expedia.biz/d/cWAVVRZMz/checkout-fci?orgId=1&from=1592269805450&to=1592282329325&var-brand=All&var-serviceName=ODS&var-errorCategory=ExternalError&var-isfci=no';
-    const iFrameCSRGrafanaUrl = 'https://opexhub-grafana.expedia.biz/d/TN6dcbiGk/checkout-success-rate?orgId=1&from=1592313190852&to=1592314090852';
+    const iFrameCSRGrafanaUrl = 'https://opexhub-grafana.expedia.biz/d/cUW56MmGk/checkoutsuccessrate?orgId=1&refresh=10s&from=1592296731432&to=1592318331432&var-brand=All';
     return (
         <div className="home-container">
             <div className="grid-wrapper">
@@ -127,20 +127,20 @@ const LandingPage = () => {
                 {/*    .map((brand) => <BrandCSRWidget brandName={brand.brandName} CSRTrend={brand.CSRTrend} key={brand.brandName}/>)*/}
                 {/* }*/}
                 <h1>{'Checkout Success Rate Dashboard'}</h1>
-                <Iframe url={iFrameFCIGrafanaUrl}
-                    key={`iframe${iFrameFCIGrafanaUrl}`}
-                    width="100%"
-                    height="800px"
-                    id={`iframe${iFrameFCIGrafanaUrl}`}
-                    className="iframe"
-                    position="relative"
-                />
-                <h1>{'FCI Dashboard'}</h1>
                 <Iframe url={iFrameCSRGrafanaUrl}
                     key={`iframe${iFrameCSRGrafanaUrl}`}
                     width="100%"
                     height="800px"
                     id={`iframe${iFrameCSRGrafanaUrl}`}
+                    className="iframe"
+                    position="relative"
+                />
+                <h1>{'FCI Dashboard'}</h1>
+                <Iframe url={iFrameFCIGrafanaUrl}
+                    key={`iframe${iFrameFCIGrafanaUrl}`}
+                    width="100%"
+                    height="800px"
+                    id={`iframe${iFrameFCIGrafanaUrl}`}
                     className="iframe"
                     position="relative"
                 />
