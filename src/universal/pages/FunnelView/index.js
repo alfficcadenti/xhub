@@ -197,16 +197,16 @@ const FunnelView = (props) => {
 
             <div className="grid-wrapper">
                 <div className="page-view-chart card">
-                    <PageView data={bookingsData} brands={selectedBrands} title="Home and Search Page (SERP)" />
+                    <PageView data={bookingsData} brands={selectedBrands} title="Home To Search Page (SERP)" />
                 </div>
                 <div className="page-view-chart card">
-                    <PageView data={bookingsData} brands={selectedBrands} title="Search (SERP) and Property Page (PDP)" />
+                    <PageView data={bookingsData} brands={selectedBrands} title="Search (SERP) To Property Page (PDP)" />
                 </div>
                 <div className="page-view-chart card">
-                    <PageView data={bookingsData} brands={selectedBrands} title="Property (PDP) and Checkout Page (CKO)" />
+                    <PageView data={bookingsData} brands={selectedBrands} title="Property (PDP) To Checkout Page (CKO)" />
                 </div>
                 <div className="page-view-chart card">
-                    <PageView data={bookingsData} brands={selectedBrands} title="Checkout (CKO) and Checkout Confirmation Page" />
+                    <PageView data={bookingsData} brands={selectedBrands} title="Checkout (CKO) To Checkout Confirmation Page" />
                 </div>
             </div>
 
