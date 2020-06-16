@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import {Alert} from '@homeaway/react-alerts';
 import OngoingIncidents from '../../components/OngoingIncidents';
 import BrandCSRWidget from '../../components/BrandCSRWidget';
-import TotalChart from './TotalBookingsChart';
+// import TotalChart from './TotalBookingsChart';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import {EG_BRAND, BRANDS, getBrand} from '../../components/App/constants';
@@ -14,31 +14,31 @@ const LandingPage = (props) => {
         ? BRANDS.map((brand) => brand.landingBrand).filter((brand) => !!brand)
         : props.selectedBrands.map((brand) => getBrand(brand).landingBrand).filter((brand) => !!brand);
 
-    const [bookingsData, setBookingsData] = useState([]);
+    // const [bookingsData, setBookingsData] = useState([]);
     const [CSRData, setCSRData] = useState([]);
 
     const fetchData = () => {
-        const fetchBookingsData = () => {
-            fetch('https://opxhub-user-events-data-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black/v1/bookings')
-                .then((responses) => responses.json())
-                .then((data) => {
-                    const dataMapped = data && data.map((x) => {
-                        return {
-                            time: moment.utc(x.time).format('HH:mm'),
-                            'BEX': x.bookingsData.find((branddata) => branddata.brandGroupName === 'Brand Expedia Group').count || '',
-                            'Vrbo': x.bookingsData.find((branddata) => branddata.brandGroupName === 'VRBO').count || '',
-                            'Hotels.com': x.bookingsData.find((branddata) => branddata.brandGroupName === 'Hotels.com').count || '',
-                            'Expedia Business Services': x.bookingsData.find((branddata) => branddata.brandGroupName === 'Expedia Business Services').count || ''
-                        };
-                    });
-                    setBookingsData(dataMapped);
-                })
-                .catch((err) => {
-                    // eslint-disable-next-line no-console
-                    console.error(err);
-                });
-        };
-        fetchBookingsData();
+        // const fetchBookingsData = () => {
+        //     fetch('https://opxhub-user-events-data-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black/v1/bookings')
+        //         .then((responses) => responses.json())
+        //         .then((data) => {
+        //             const dataMapped = data && data.map((x) => {
+        //                 return {
+        //                     time: moment.utc(x.time).format('HH:mm'),
+        //                     'BEX': x.bookingsData.find((branddata) => branddata.brandGroupName === 'Brand Expedia Group').count || '',
+        //                     'Vrbo': x.bookingsData.find((branddata) => branddata.brandGroupName === 'VRBO').count || '',
+        //                     'Hotels.com': x.bookingsData.find((branddata) => branddata.brandGroupName === 'Hotels.com').count || '',
+        //                     'Expedia Business Services': x.bookingsData.find((branddata) => branddata.brandGroupName === 'Expedia Business Services').count || ''
+        //                 };
+        //             });
+        //             setBookingsData(dataMapped);
+        //         })
+        //         .catch((err) => {
+        //             // eslint-disable-next-line no-console
+        //             console.error(err);
+        //         });
+        // };
+        // fetchBookingsData();
 
         const fetchCSRData = () => {
             fetch('https://opxhub-user-events-data-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black/v1/checkoutSuccessRate')
@@ -93,15 +93,14 @@ const LandingPage = (props) => {
         </Link>
     );
 
-    const chartData = bookingsData;
-    // const iFrameGrafanaUrl = 'https://opexhub-grafana.expedia.biz/render/d-solo/e8VefQgMz/booking-events?orgId=1&from=1592225354661&to=1592227154662&panelId=2&width=1000&height=500&tz=Europe%2FLondon';
-    const iFrameGrafanaUrl = 'https://grafana-egdp.expedia.biz/d/Z2DDWdgMk/sbe-covid19-dashboard?orgId=1&from=1592211360641&to=1592232960641';
+    // const chartData = bookingsData;
+    const iFrameGrafanaUrl = 'https://opexhub-grafana.expedia.biz/render/d-solo/e8VefQgMz/booking-events?orgId=1&from=1592225354661&to=1592227154662&panelId=2&width=1000&height=500&tz=Europe%2FLondon';
     return (
         <div className="home-container">
             <div className="grid-wrapper">
                 <div id="total-bookings" className="card">
                     <iframe src={iFrameGrafanaUrl} width="650" height="300" frameBorder="0" />
-                    <TotalChart data={chartData} brands={selectedBrands}/>
+                    {/* <TotalChart data={chartData} brands={selectedBrands}/> */}
                 </div>
                 <div className="ongoing-incidents-wrapper card">
                     <a target="_blank" rel="noopener noreferrer" href="https://expedia.service-now.com/triage/Triage.do" className="ongoing-incidents-tile-link">
