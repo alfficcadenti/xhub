@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Header from '../Header';
 import Feedback from '../Feedback';
 import LandingPage from '../../pages/LandingPage';
+import FunnelView from '../../pages/FunnelView';
 import Home from '../../pages/Home';
 import pages from '../../pages';
 import {EG_BRAND, BRANDS} from './constants';
@@ -38,6 +39,7 @@ function App() {
             <div className="main-container">
                 <Switch>
                     <Route path="/landing-page" render={() => <LandingPage selectedBrands={selectedBrands}/>}/>
+                    <Route path="/funnel-view" render={() => <FunnelView selectedBrands={selectedBrands} />}/>
                     <Route path="/home" render={() => <Home />}/>
                     {pages.map((p) => renderRoute(p, selectedBrands))}
                 </Switch>

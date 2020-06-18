@@ -40,18 +40,18 @@ const OngoingIncidents = () => {
     return (
         <Fragment>
             <h2 className="ongoing-incidents-label">{'Ongoing Incidents'}</h2>
-                <LoadingContainer isLoading={isLoading} className="ongoing-incidents">
-                    {
-                        incidents.map((item) => {
-                            return (
-                                <div key={item.incidentSummary} className="ongoing-incident">
-                                    <span>{`${item.priority} - `}</span>
-                                    <span>{item.incidentSummary}</span>
-                                </div>
-                            );
-                        })
-                    }
-                </LoadingContainer>
+            <LoadingContainer isLoading={isLoading} className="ongoing-incidents">
+                {
+                    incidents.map((item) => {
+                        return (
+                            <div key={item.incidentSummary} className="ongoing-incident">
+                                <span>{`${item.priority} - `}</span>
+                                <span>{item.incidentSummary}</span>
+                            </div>
+                        );
+                    })
+                }
+            </LoadingContainer>
         </Fragment>
     );
 };
