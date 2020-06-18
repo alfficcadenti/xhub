@@ -1,7 +1,7 @@
 // import React, {useEffect, useState} from 'react';
 import React from 'react';
-import {Link} from 'react-router-dom';
-import {Alert} from '@homeaway/react-alerts';
+// import {Link} from 'react-router-dom';
+// import {Alert} from '@homeaway/react-alerts';
 // import OngoingIncidents from '../../components/OngoingIncidents';
 // import BrandCSRWidget from '../../components/BrandCSRWidget';
 // import TotalChart from './TotalBookingsChart';
@@ -86,19 +86,19 @@ const LandingPage = () => {
     // }, []);
 
 
-    const covidLink = () => (
-        <Link
-            to={{pathname: '/incident-trends', search: '?covidFilter=true'}}
-            key={'link-covid-incidents'}
-        >
-            {'Monitor the incidents related to the COVID-19'}
-        </Link>
-    );
+    // const covidLink = () => (
+    //     <Link
+    //         to={{pathname: '/incident-trends', search: '?covidFilter=true'}}
+    //         key={'link-covid-incidents'}
+    //     >
+    //         {'Monitor the incidents related to the COVID-19'}
+    //     </Link>
+    // );
 
     // const chartData = bookingsData;
     // const iFrameGrafanaUrl = 'https://opexhub-grafana.expedia.biz/render/d-solo/e8VefQgMz/booking-events?orgId=1&from=1592225354661&to=1592227154662&panelId=2&width=1000&height=500&tz=Europe%2FLondon';
     const iFrameBookingGrafanaUrl = 'https://opexhub-grafana.expedia.biz/d/e8VefQgMz/booking-events?orgId=1&from=1592308001977&to=1592309801978';
-    const iFrameFCIGrafanaUrl = 'https://opexhub-grafana.expedia.biz/d/cWAVVRZMz/checkout-fci?orgId=1&from=1592269805450&to=1592282329325&var-brand=All&var-serviceName=ODS&var-errorCategory=ExternalError&var-isfci=no';
+    // const iFrameFCIGrafanaUrl = 'https://opexhub-grafana.expedia.biz/d/cWAVVRZMz/checkout-fci?orgId=1&from=1592269805450&to=1592282329325&var-brand=All&var-serviceName=ODS&var-errorCategory=ExternalError&var-isfci=no';
     const iFrameCSRGrafanaUrl = 'https://opexhub-grafana.expedia.biz/d/cUW56MmGk/checkoutsuccessrate?orgId=1&refresh=10s&from=1592296731432&to=1592318331432&var-brand=All';
     return (
         <div className="home-container">
@@ -135,23 +135,23 @@ const LandingPage = () => {
                     className="iframe"
                     position="relative"
                 />
-                <h1>{'FCI Dashboard'}</h1>
-                <Iframe url={iFrameFCIGrafanaUrl}
-                    key={`iframe${iFrameFCIGrafanaUrl}`}
-                    width="100%"
-                    height="800px"
-                    id={`iframe${iFrameFCIGrafanaUrl}`}
-                    className="iframe"
-                    position="relative"
-                />
+                {/* <h1>{'FCI Dashboard'}</h1>*/}
+                {/* <Iframe url={iFrameFCIGrafanaUrl}*/}
+                {/*    key={`iframe${iFrameFCIGrafanaUrl}`}*/}
+                {/*    width="100%"*/}
+                {/*    height="800px"*/}
+                {/*    id={`iframe${iFrameFCIGrafanaUrl}`}*/}
+                {/*    className="iframe"*/}
+                {/*    position="relative"*/}
+                {/* />*/}
             </div>
-            <Alert
-                className="covid-message"
-                title="COVID-19 Updates"
-                type="danger"
-                msg={covidLink()}
-                dismissible
-            />
+            {/* <Alert*/}
+            {/*    className="covid-message"*/}
+            {/*    title="COVID-19 Updates"*/}
+            {/*    type="danger"*/}
+            {/*    msg={covidLink()}*/}
+            {/*    dismissible*/}
+            {/* />*/}
         </div>
     );
 };
