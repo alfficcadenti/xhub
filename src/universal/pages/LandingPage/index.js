@@ -13,6 +13,8 @@ const LandingPage = (props) => {
     const selectedBrands = props.selectedBrands[0] === EG_BRAND
         ? BRANDS.map((brand) => brand.landingBrand).filter((brand) => !!brand)
         : props.selectedBrands.map((brand) => getBrand(brand).landingBrand).filter((brand) => !!brand);
+    const csrWidgetToExclude = 'Expedia Business Services';
+    const csrSelectedBrands = selectedBrands.filter((selectedBrand) => selectedBrand !== csrWidgetToExclude);
 
     const [bookingsData, setBookingsData] = useState([]);
     const [CSRData, setCSRData] = useState([]);
@@ -56,7 +58,7 @@ const LandingPage = (props) => {
                                 return brandName;
                         }
                     };
-                    const CSRDataFormatted = selectedBrands.map((brand) => {
+                    const CSRDataFormatted = csrSelectedBrands.map((brand) => {
                         const csrData = fetchedCSRData && fetchedCSRData.map(
                             (x) => {
                                 return x.checkoutSuccessPercentagesData.find((item) => mapBrandNames(item.brand) === brand) ? x.checkoutSuccessPercentagesData.find((item) => mapBrandNames(item.brand) === brand).rate : 0;
@@ -107,7 +109,7 @@ const LandingPage = (props) => {
                     <OngoingIncidents />
                 </div>
                 {CSRData
-                    .filter((b) => selectedBrands.includes(b.brandName) || selectedBrands.includes('Expedia Group'))
+                    .filter((b) => csrSelectedBrands.includes(b.brandName) || csrSelectedBrands.includes('Expedia Group'))
                     .map((brand) => <BrandCSRWidget brandName={brand.brandName} CSRTrend={brand.CSRTrend} key={brand.brandName}/>)
                 }
             </div>
