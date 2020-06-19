@@ -41,7 +41,7 @@ const LandingPage = (props) => {
         fetchBookingsData();
 
         const fetchCSRData = () => {
-            fetch('https://opxhub-user-events-data-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black/v1/checkoutSuccessRate')
+            fetch('https://opxhub-user-events-data-service.us-east-1.prod.expedia.com/v1/checkoutSuccessRate')
                 .then((responses) => responses.json())
                 .then((fetchedCSRData) => {
                     const mapBrandNames = (brandName) => {
