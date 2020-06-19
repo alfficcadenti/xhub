@@ -129,7 +129,7 @@
         },
         "int": {
           "hostname": "opxhub-user-events-data-service.us-east-1.prod.expedia.com",
-          "protocol": "http:",
+          "protocol": "https:",
           "routes": {
             "bookings": {
               "path": "/v1/bookings",
@@ -145,7 +145,7 @@
         },
         "test": {
           "hostname": "opxhub-user-events-data-service.us-east-1.prod.expedia.com",
-          "protocol": "http:",
+          "protocol": "https:",
           "routes": {
             "bookings": {
               "path": "/v1/bookings",
