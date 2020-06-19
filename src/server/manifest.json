@@ -112,46 +112,66 @@
       "userEventsApiServiceConfig": {
         "$filter": "env.EXPEDIA_ENVIRONMENT",
         "$default": {
-          "hostname": "opxhub-user-events-data-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black",
+          "hostname": "opxhub-user-events-data-service.us-east-1.prod.expedia.com",
           "protocol": "https:",
           "routes": {
             "bookings": {
               "path": "/v1/bookings",
               "method": "GET",
-              "operation": "GET_user_events_api_v1"
+              "operation": "GET_user_events_bookings_api_v1"
+            },
+            "checkoutSuccessRate": {
+              "path": "/v1/checkoutSuccessRate",
+              "method": "GET",
+              "operation": "GET_user_events_csr_api_v1"
             }
           }
         },
         "int": {
-          "hostname": "opxhub-user-events-data-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black",
+          "hostname": "opxhub-user-events-data-service.us-east-1.prod.expedia.com",
           "protocol": "http:",
           "routes": {
             "bookings": {
               "path": "/v1/bookings",
               "method": "GET",
-              "operation": "GET_user_events_api_v1"
+              "operation": "GET_user_events_bookings_api_v1"
+            },
+            "checkoutSuccessRate": {
+              "path": "/v1/checkoutSuccessRate",
+              "method": "GET",
+              "operation": "GET_user_events_csr_api_v1"
             }
           }
         },
         "test": {
-          "hostname": "opxhub-user-events-data-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black",
+          "hostname": "opxhub-user-events-data-service.us-east-1.prod.expedia.com",
           "protocol": "http:",
           "routes": {
             "bookings": {
               "path": "/v1/bookings",
               "method": "GET",
-              "operation": "GET_user_events_api_v1"
+              "operation": "GET_user_events_bookings_api_v1"
+            },
+            "checkoutSuccessRate": {
+              "path": "/v1/checkoutSuccessRate",
+              "method": "GET",
+              "operation": "GET_user_events_csr_api_v1"
             }
           }
         },
         "prod": {
-          "hostname": "opxhub-user-events-data-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black",
+          "hostname": "opxhub-user-events-data-service.us-east-1.prod.expedia.com",
           "protocol": "https:",
           "routes": {
             "bookings": {
               "path": "/v1/bookings",
               "method": "GET",
-              "operation": "GET_user_events_api_v1"
+              "operation": "GET_user_events_bookings_api_v1"
+            },
+            "checkoutSuccessRate": {
+              "path": "/v1/checkoutSuccessRate",
+              "method": "GET",
+              "operation": "GET_user_events_csr_api_v1"
             }
           }
         }

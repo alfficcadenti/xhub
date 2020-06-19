@@ -19,7 +19,7 @@ const LandingPage = (props) => {
 
     const fetchData = () => {
         const fetchBookingsData = () => {
-            fetch('https://opxhub-user-events-data-service.us-east-1.prod.expedia.com/v1/bookings')
+            fetch('/user-events-api/v1/bookings')
                 .then((responses) => responses.json())
                 .then((data) => {
                     const dataMapped = data && data.map((x) => {
@@ -41,7 +41,7 @@ const LandingPage = (props) => {
         fetchBookingsData();
 
         const fetchCSRData = () => {
-            fetch('https://opxhub-user-events-data-service.us-east-1.prod.expedia.com/v1/checkoutSuccessRate')
+            fetch('/user-events-api/v1/checkoutSuccessRate')
                 .then((responses) => responses.json())
                 .then((fetchedCSRData) => {
                     const mapBrandNames = (brandName) => {
