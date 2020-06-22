@@ -14,25 +14,6 @@
         }
       },
       // Service-client configuration
-      "services": {
-        "plugins": ["require:@vrbo/service-client-statsd"],
-        "base": {
-          "plugins": {
-            "statsd": {
-              "hostname": {
-                "$filter": "env.NODE_ENV",
-                "$default": "localhost",
-                "production": "statsd"
-              },
-              "transmit": {
-                "$filter": "env.NODE_ENV",
-                "$default": false,
-                "production": true
-              }
-            }
-          }
-        }
-      },
       "apiDataServiceConfig": {
         "hostname": "opxhub-data-service.us-west-2.test.expedia.com",
         "protocol": "https:",
@@ -240,7 +221,7 @@
         },
         "transmit": {
           "$filter": "env.EXPEDIA_ENVIRONMENT",
-          "$default": false,
+          "$default": true,
           "production": true,
           "test": true
         },
