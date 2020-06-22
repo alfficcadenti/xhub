@@ -216,13 +216,13 @@
         "host": {
           "$filter": "env.EXPEDIA_ENVIRONMENT",
           "$default": "localhost",
-          "production": "statsd",
+          "prod": "statsd",
           "test": "statsd"
         },
         "transmit": {
           "$filter": "env.EXPEDIA_ENVIRONMENT",
           "$default": true,
-          "production": true,
+          "prod": true,
           "test": true
         },
         "normalizePathParameters": false,
