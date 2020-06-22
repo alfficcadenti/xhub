@@ -1,0 +1,46 @@
+[
+  {
+    "Brand": "Expedia Partner Solutions (EPS)",
+    "Status": "Closed",
+    "duration": "100000",
+    "ticket_number": "INC4419505",
+    "priority": "1-Critical",
+    "startedAt": "2019-09-25T14:58:24.000Z",
+    "ticket_summary": "EAN Degraded",
+    "ttd": "50000",
+    "ttr": "50000"
+  },
+  {
+    "Brand": "Expedia Partner Solutions (EPS)",
+    "Status": "Closed",
+    "duration": "100000",
+    "ticket_number": "INC4419505",
+    "priority": "2-High",
+    "startedAt": "2019-09-21T14:58:24.000Z",
+    "ticket_summary": "EAN Degraded",
+    "ttd": "50000",
+    "ttr": "50000"
+  },
+  {
+    "Brand": "eCommerce Platform (eCP)",
+    "Status": "Closed",
+    "duration": "100000",
+    "ticket_number": "INC4419505",
+    "priority": "2-High",
+    "startedAt": "2019-09-20T14:58:24.000Z",
+    "ticket_summary": "EAN Degraded",
+    "ttd": "50000",
+    "ttr": "50000"
+  },
+  {
+    "Brand": "eCommerce Platform (eCP)",
+    "Status": "Closed",
+    "duration": "500000",
+    "ticket_number": "INC4419505",
+    "priority": "2-High",
+    "startedAt": "2019-09-20T14:58:24.000Z",
+    "ticket_summary": "EAN Degraded",
+    "ttd": "250000",
+    "ttr": "250000"
+  }
+]

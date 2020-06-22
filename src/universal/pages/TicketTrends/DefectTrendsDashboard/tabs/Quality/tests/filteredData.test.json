@@ -1,0 +1,23 @@
+[
+    {
+        "ticket_summary": "Tick box on cancellation LP fails to render on iOS",
+        "ticket_number": "LASER-358",
+        "startedAt": "",
+        "openDate": "2020-03-21 12:38",
+        "resolvedDate": "2020-03-22 09:02",
+        "rootCause": "",
+        "priority": "3-Medium",
+        "rootCauseOwner": "",
+        "duration": "",
+        "ttd": "",
+        "ttr": "",
+        "Brand": "BEX - Expedia Group",
+        "project": "LASER",
+        "status": "In Production",
+        "estimatedRevenueLoss": "",
+        "estimatedGrossLoss": "",
+        "impactedBrand": "BEX",
+        "tag": "covid-19",
+        "url": "https://jira.expedia.biz/browse/LASER-358"
+    }
+]

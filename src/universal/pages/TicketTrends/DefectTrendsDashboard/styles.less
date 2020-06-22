@@ -1,0 +1,96 @@
+@import "../../../mixins.less";
+
+.filters-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left;
+  font-weight: 400;
+  vertical-align: middle;
+  width: 100%;
+  border-radius: 5px;
+
+  .date-range {
+    width: 350px;
+    height: @filter-size;
+    color: @filter-color;
+  }
+
+  .date-range,
+  .Dropdown,
+  .CRB--checkbox,
+  .apply-button {
+    margin: 5px;
+  }
+
+  .CRB--checkbox {
+    align-items: center;
+    display: inline-flex;
+  }
+
+  .priority-dropdown .Dropdown__toggle {
+    min-width: 160px;
+    font-weight: 400;
+    border-radius: 5px;
+    height: @filter-size;
+    color: @filter-color;
+  }
+
+  .brand-dropdown .Dropdown__toggle,
+  .status-dropdown .Dropdown__toggle {
+    min-width: 220px;
+    font-weight: 400;
+    border-radius: 5px;
+    height: @filter-size;
+    color: @filter-color;
+    overflow: hidden;
+  }
+
+  .status-dropdown .Dropdown__toggle {
+    min-width: 130px;
+  }
+
+  .apply-button {
+    height: fit-content;
+  }
+}
+
+.incident-main {
+  text-align: center;
+
+  .inc-overview-table {
+    width: 50%;
+  }
+
+  .financial-impact {
+    margin-top: 90px;
+  }
+}
+
+.Datatable__header {
+  background: #e3f4fc;
+  border-top: 1px #908f8f solid;
+  border-bottom: 1px #908f8f solid;
+  color: #292929;
+  font-size: .875rem;
+}
+
+.expandable-row-wrapper {
+  display: flex;
+  background: #f7f7f8;
+
+  .expandable-row {
+    display: flex;
+    justify-content: left;
+    align-items: left;
+
+    .expandable-row-header {
+      font-weight: 600;
+      padding-right: 24px;
+    }
+
+    .expandable-row-section {
+      max-width: 500px;
+      padding-right: 24px;
+    }
+  }
+}
