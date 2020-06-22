@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {Link} from 'react-router-dom';
-import {Alert} from '@homeaway/react-alerts';
+// import {Link} from 'react-router-dom';
+// import {Alert} from '@homeaway/react-alerts';
 import OngoingIncidents from '../../components/OngoingIncidents';
 import BrandCSRWidget from '../../components/BrandCSRWidget';
 import TotalChart from './TotalBookingsChart';
@@ -13,13 +13,15 @@ const LandingPage = (props) => {
     const selectedBrands = props.selectedBrands[0] === EG_BRAND
         ? BRANDS.map((brand) => brand.landingBrand).filter((brand) => !!brand)
         : props.selectedBrands.map((brand) => getBrand(brand).landingBrand).filter((brand) => !!brand);
+    const csrWidgetToExclude = 'Expedia Business Services';
+    const csrSelectedBrands = selectedBrands.filter((selectedBrand) => selectedBrand !== csrWidgetToExclude);
 
     const [bookingsData, setBookingsData] = useState([]);
     const [CSRData, setCSRData] = useState([]);
 
     const fetchData = () => {
         const fetchBookingsData = () => {
-            fetch('https://opxhub-user-events-data-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black/v1/bookings')
+            fetch('/user-events-api/v1/bookings')
                 .then((responses) => responses.json())
                 .then((data) => {
                     const dataMapped = data && data.map((x) => {
@@ -41,7 +43,7 @@ const LandingPage = (props) => {
         fetchBookingsData();
 
         const fetchCSRData = () => {
-            fetch('https://opxhub-user-events-data-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black/v1/checkoutSuccessRate')
+            fetch('/user-events-api/v1/checkoutSuccessRate')
                 .then((responses) => responses.json())
                 .then((fetchedCSRData) => {
                     const mapBrandNames = (brandName) => {
@@ -56,7 +58,7 @@ const LandingPage = (props) => {
                                 return brandName;
                         }
                     };
-                    const CSRDataFormatted = selectedBrands.map((brand) => {
+                    const CSRDataFormatted = csrSelectedBrands.map((brand) => {
                         const csrData = fetchedCSRData && fetchedCSRData.map(
                             (x) => {
                                 return x.checkoutSuccessPercentagesData.find((item) => mapBrandNames(item.brand) === brand) ? x.checkoutSuccessPercentagesData.find((item) => mapBrandNames(item.brand) === brand).rate : 0;
@@ -84,14 +86,14 @@ const LandingPage = (props) => {
     }, []);
 
 
-    const covidLink = () => (
-        <Link
-            to={{pathname: '/incident-trends', search: '?covidFilter=true'}}
-            key={'link-covid-incidents'}
-        >
-            {'Monitor the incidents related to the COVID-19'}
-        </Link>
-    );
+    // const covidLink = () => (
+    //     <Link
+    //         to={{pathname: '/incident-trends', search: '?covidFilter=true'}}
+    //         key={'link-covid-incidents'}
+    //     >
+    //         {'Monitor the incidents related to the COVID-19'}
+    //     </Link>
+    // );
 
     const chartData = bookingsData;
     return (
@@ -107,17 +109,17 @@ const LandingPage = (props) => {
                     <OngoingIncidents />
                 </div>
                 {CSRData
-                    .filter((b) => selectedBrands.includes(b.brandName) || selectedBrands.includes('Expedia Group'))
+                    .filter((b) => csrSelectedBrands.includes(b.brandName) || csrSelectedBrands.includes('Expedia Group'))
                     .map((brand) => <BrandCSRWidget brandName={brand.brandName} CSRTrend={brand.CSRTrend} key={brand.brandName}/>)
                 }
             </div>
-            <Alert
-                className="covid-message"
-                title="COVID-19 Updates"
-                type="danger"
-                msg={covidLink()}
-                dismissible
-            />
+            {/* <Alert*/}
+            {/*    className="covid-message"*/}
+            {/*    title="COVID-19 Updates"*/}
+            {/*    type="danger"*/}
+            {/*    msg={covidLink()}*/}
+            {/*    dismissible*/}
+            {/* />*/}
         </div>
     );
 };
