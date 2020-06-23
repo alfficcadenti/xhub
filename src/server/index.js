@@ -16,7 +16,7 @@ const SecretHandler = require('@homeaway/shortstop-secret-expedia-vault');
 ExpediaCACerts.load(); // necessary to establish secure communication with Vault
 
 async function start(options = {}) {
-    const env = process.env.EXPEDIA_DEPLOYED_ENVIRONMENT || process.env.EXPEDIA_ENVIRONMENT || process.env.NODE_ENV;
+    const env = process.env.EXPEDIA_ENVIRONMENT || process.env.NODE_ENV;
 
     function getSecret() {
         if (!env || env === 'dev' || env === 'development') {
@@ -45,7 +45,7 @@ async function start(options = {}) {
     server.route(routes);
 
     // set up production route for static assets
-    const isProd = (process.env.NODE_ENV || 'development') === 'production';
+    const isProd = (process.env.EXPEDIA_ENVIRONMENT || 'development') === 'production';
     const hasCDN = !!process.env.CDN_URL;
     if (isProd && !hasCDN) {
         server.route({

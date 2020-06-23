@@ -1,7 +1,7 @@
 const {browsers} = require('./webpack/lists');
 const debug = require('debug')('catalyst-app:babel-presets');
 
-const isProd = process.env.NODE_ENV === 'production';
+const isProd = process.env.EXPEDIA_ENVIRONMENT === 'prod';
 const cdnUrl = process.env.CDN_URL;
 let prefix = '/';
 if (isProd && cdnUrl) {

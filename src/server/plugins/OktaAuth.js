@@ -6,7 +6,7 @@ const jwkToPem = require('jwk-to-pem');
 
 class OktaAuth {
     constructor(server) {
-        this.clientId = (process.env.NODE_ENV === 'development') ?
+        this.clientId = (process.env.EXPEDIA_ENVIRONMENT === 'development') ?
             require('../../../devOkta.json').okta.oauthClientId :
             server.app.config.get('oauthApi.oauthClientId');
         this.oauthUrl = server.app.config.get('oauthApi.baseUrl');
@@ -72,7 +72,7 @@ class OktaAuth {
     }
 
     getSecrets(server) {
-        if (process.env.NODE_ENV === 'development') {
+        if (process.env.EXPEDIA_ENVIRONMENT === 'development') {
             // eslint-disable-next-line no-undef
             return Promise.resolve({'oauthClientSecret': require('../../../devOkta.json').okta.oauthClientSecret});
         }
@@ -86,7 +86,7 @@ class OktaAuth {
     }
 
     redirectUri(request) {
-        const protocol = (process.env.NODE_ENV === 'development') ? 'http' : 'https';
+        const protocol = (process.env.EXPEDIA_ENVIRONMENT === 'development') ? 'http' : 'https';
         const url = request.info.path ? `${protocol}%3A%2F%2F${request.info.host}${request.info.path}` : `${protocol}%3A%2F%2F${request.info.host}%2Fhome`;
         return url;
     }

@@ -5,7 +5,7 @@ const {vendors, browsers} = require('./lists');
 
 const SRC_DIR = Path.join(__dirname, 'src', 'universal');
 
-const isProd = process.env.NODE_ENV === 'production';
+const isProd = process.env.EXPEDIA_ENVIRONMENT === 'prod';
 const cdnUrl = process.env.CDN_URL;
 let imagesPublicPath = '/';
 if (isProd && cdnUrl) {
