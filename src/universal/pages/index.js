@@ -15,8 +15,16 @@ export default [
         category: PHAR,
         id: 'incident-trends',
         link: '/incident-trends',
-        text: 'Defect & Incident Trends',
-        component: require('./IncidentTrendsDashboard'),
+        text: 'Incident Trends',
+        component: require('./TicketTrends/IncidentTrendsDashboard'),
+        main: 'Platform Health & Resiliency'
+    },
+    {
+        category: PHAR,
+        id: 'defect-trends',
+        link: '/defect-trends',
+        text: 'Quality Trends',
+        component: require('./TicketTrends/DefectTrendsDashboard'),
         main: 'Platform Health & Resiliency'
     },
     {
