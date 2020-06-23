@@ -1,6 +1,6 @@
 const debug = require('debug')('catalyst-app:resolve-asset');
 
-const isProd = process.env.NODE_ENV === 'production';
+const isProd = process.env.EXPEDIA_ENVIRONMENT === 'prod';
 const hasCdn = !!process.env.CDN_URL;
 let prefix = '/';
 if (hasCdn) {
