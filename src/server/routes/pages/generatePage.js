@@ -31,8 +31,7 @@ module.exports = (id) => ({
 
                 // render the output with context and handlebars.
                 const template = request.pre.template;
-                const requireDevAuth = (process.env.EXPEDIA_ENVIRONMENT === 'test' || process.env.EXPEDIA_ENVIRONMENT === 'int' || process.env.EXPEDIA_ENVIRONMENT === 'prod');
-                return authHandler(request, h, template, body, context, requireDevAuth);
+                return authHandler(request, h, template, body, context, true);
             } catch (e) {
                 request.log('[ERROR]', e);
                 return e;

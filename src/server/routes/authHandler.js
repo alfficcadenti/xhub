@@ -1,6 +1,6 @@
 
 module.exports = function authHandler(request, h, template, body, context, requireDevAuth = false) {
-    if (!requireDevAuth || process.env.EXPEDIA_ENVIRONMENT === 'development') {
+    if (!requireDevAuth || process.env.NODE_ENV === 'development') {
         return h.view(template, {body, ...context});
     }
     if ('code' in request.query) {
