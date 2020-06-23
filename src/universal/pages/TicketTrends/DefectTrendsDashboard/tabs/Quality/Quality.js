@@ -12,15 +12,12 @@ const renderContent = (
     startDate,
     endDate,
     filteredDefects,
-    selectedCovidTag,
     setIsApplyClicked,
     handleStatusChange,
     handlePriorityChange
 ) => {
     const {axisData, data} = getLineData(startDate, endDate, filteredDefects, 'openDate');
-    const lineChartTitle = selectedCovidTag
-        ? 'Defect Trends [covid-19]'
-        : 'Defect Trends';
+    const lineChartTitle = 'Quality Trends';
     const generateChartClickHandler = (handler) => (e) => {
         const chartName = e.data.name;
         handler(chartName);
@@ -70,19 +67,17 @@ const Quality = ({
     startDate,
     endDate,
     filteredDefects,
-    selectedCovidTag,
     setIsApplyClicked,
     handleStatusChange,
     handlePriorityChange
 }) => (
-    <div data-wdio="quality-content">
+    <div className="quality-content">
         {
             filteredDefects.length
                 ? renderContent(
                     startDate,
                     endDate,
                     filteredDefects,
-                    selectedCovidTag,
                     setIsApplyClicked,
                     handleStatusChange,
                     handlePriorityChange
@@ -95,8 +90,7 @@ const Quality = ({
 Quality.propTypes = {
     startDate: PropTypes.string.isRequired,
     endDate: PropTypes.string.isRequired,
-    filteredDefects: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-    selectedCovidTag: PropTypes.bool.isRequired
+    filteredDefects: PropTypes.arrayOf(PropTypes.shape()).isRequired
 };
 
 export default React.memo(Quality);

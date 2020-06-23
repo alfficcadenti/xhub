@@ -23,7 +23,7 @@ export default [
         category: PHAR,
         id: 'defect-trends',
         link: '/defect-trends',
-        text: 'Defect Trends',
+        text: 'Quality Trends',
         component: require('./TicketTrends/DefectTrendsDashboard'),
         main: 'Platform Health & Resiliency'
     },
