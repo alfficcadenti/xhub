@@ -7,7 +7,11 @@ const formatToUSDollarCurrency = (number) => number.
     toLocaleString('en-US', {style: 'currency', currency: 'USD'});
 const setChartOptions = (series = [], xAxisValues = [], tooltipData, yAxisName) => ({
     legend: {
+        left: 0,
         data: series.map((item) => item.name)
+    },
+    grid: {
+        left: 0
     },
     tooltip: tooltipData ? {
         trigger: 'item',

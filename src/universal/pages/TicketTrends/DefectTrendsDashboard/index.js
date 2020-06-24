@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-import React, {Fragment, useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import moment from 'moment/moment';
 import 'moment-timezone';
 import LoadingContainer from '../../../components/LoadingContainer';
@@ -90,7 +90,7 @@ const IncidentTrendsDashboard = (props) => {
     }, []);
 
     return (
-        <Fragment>
+        <div className="defect-trends-dashboard">
             <h1 className="page-title">{'Quality Trends'}</h1>
             <div className="filters-wrapper">
                 <DatePicker
@@ -123,7 +123,7 @@ const IncidentTrendsDashboard = (props) => {
                     handlePriorityChange={handlePriorityChange}
                 />
             </LoadingContainer>
-        </Fragment>
+        </div>
     );
 };
 

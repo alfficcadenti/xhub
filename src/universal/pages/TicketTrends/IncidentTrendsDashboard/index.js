@@ -1,12 +1,12 @@
 /* eslint-disable no-use-before-define */
-import React, {Fragment, useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import moment from 'moment';
 import 'moment-timezone';
+import {Navigation} from '@homeaway/react-navigation';
 import LoadingContainer from '../../../components/LoadingContainer';
 import FilterDropDown from '../../../components/FilterDropDown';
-import {Navigation} from '@homeaway/react-navigation';
 import DatePicker from '../../../components/DatePicker/index';
-import {DATE_FORMAT, ALL_STATUSES_OPTION, ALL_PRIORITIES_OPTION} from '../../constants';
+import {DATE_FORMAT, ALL_STATUSES_OPTION, ALL_PRIORITIES_OPTION, ALL_TAGS_OPTION} from '../../constants';
 import {Incidents, Overview, Top5, FinancialImpact} from './tabs/index';
 import {useFetchTickets} from '../hooks';
 import {EG_BRAND, getBrand} from '../../../components/App/constants';
@@ -14,6 +14,7 @@ import './styles.less';
 
 const statusDefaultValue = ALL_STATUSES_OPTION;
 const priorityDefaultValue = ALL_PRIORITIES_OPTION;
+const tagDefaultValue = ALL_TAGS_OPTION;
 const startDateDefaultValue = moment().subtract(90, 'days').format(DATE_FORMAT);
 const endDateDefaultValue = moment().format(DATE_FORMAT);
 const minDate = moment('2019-01-01').toDate();
@@ -51,6 +52,7 @@ const IncidentTrendsDashboard = (props) => {
     const [endDate, setEndDate] = useState(endDateDefaultValue);
     const [appliedEndDate, setAppliedEndDate] = useState(endDate);
     const [selectedPriority, setSelectedPriority] = useState(priorityDefaultValue);
+    const [selectedTag, setSelectedTag] = useState(tagDefaultValue);
     const [isDirtyForm, setIsDirtyForm] = useState(false);
     // incidents
     const [filteredUniqueIncidents, setFilteredUniqueIncidents] = useState([]);
@@ -63,7 +65,8 @@ const IncidentTrendsDashboard = (props) => {
         allUniqueIncidents,
         allIncidents,
         incidentsPriorities,
-        incidentsStatuses
+        incidentsStatuses,
+        incidentsTags,
     ] = useFetchTickets(
         isApplyClicked,
         startDate,
@@ -77,7 +80,8 @@ const IncidentTrendsDashboard = (props) => {
         const matchesPriority = (t) => selectedPriority === priorityDefaultValue || t.priority === selectedPriority;
         const matchesBrand = (t) => selectedBrands[0] === EG_BRAND || selectedBrands.includes(t.Brand);
         const matchesStatus = (t) => selectedStatus === statusDefaultValue || t.status === selectedStatus;
-        const filterTickets = (t) => matchesPriority(t) && matchesBrand(t) && matchesStatus(t);
+        const matchesTag = (t) => selectedTag === tagDefaultValue || t.tag === selectedTag || (Array.isArray(t.tag) && t.tag.includes(selectedTag));
+        const filterTickets = (t) => matchesPriority(t) && matchesBrand(t) && matchesStatus(t) && matchesTag(t);
 
         setFilteredUniqueIncidents([...allUniqueIncidents].filter(filterTickets));
         setFilteredAllIncidents([...allIncidents].filter(filterTickets));
@@ -118,6 +122,11 @@ const IncidentTrendsDashboard = (props) => {
         setIsDirtyForm(true);
     }, []);
 
+    const handleTagChange = useCallback((tag) => {
+        setSelectedTag(tag);
+        setIsDirtyForm(true);
+    }, []);
+
     // eslint-disable-next-line complexity
     const renderTabs = () => {
         switch (activeIndex) {
@@ -135,7 +144,7 @@ const IncidentTrendsDashboard = (props) => {
     };
 
     return (
-        <Fragment>
+        <div className="incident-trends-container">
             <h1 className="page-title">{'Incident Trends'}</h1>
             <div className="filters-wrapper">
                 <DatePicker
@@ -147,6 +156,7 @@ const IncidentTrendsDashboard = (props) => {
                 />
                 <FilterDropDown id="priority-dropdown" className="priority-dropdown" list={incidentsPriorities} selectedValue={selectedPriority} onClickHandler={handlePriorityChange} />
                 <FilterDropDown id="status-dropdown" className="status-dropdown" list={incidentsStatuses} selectedValue={selectedStatus} onClickHandler={handleStatusChange} />
+                <FilterDropDown id="tag-dropdown" className="tag-dropdown" list={incidentsTags} selectedValue={selectedTag} onClickHandler={handleTagChange} />
                 <button
                     type="button"
                     className="apply-button btn btn-primary active"
@@ -167,7 +177,7 @@ const IncidentTrendsDashboard = (props) => {
             <LoadingContainer isLoading={isLoading} error={error} className="incident-main">
                 {renderTabs()}
             </LoadingContainer>
-        </Fragment>
+        </div>
     );
 };
 

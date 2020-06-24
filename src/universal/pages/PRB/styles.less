@@ -3,6 +3,60 @@
 .pm-container {
     text-align: left;
 
+    .filters-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: left;
+        font-weight: 400;
+        vertical-align: middle;
+        width: 100%;
+        border-radius: 5px;
+
+        .date-range {
+            width: 350px;
+            height: @filter-size;
+            color: @filter-color;
+        }
+
+        .date-range,
+        .Dropdown,
+        .CRB--checkbox,
+        .apply-button {
+            margin: 5px;
+        }
+
+        .CRB--checkbox {
+            align-items: center;
+            display: inline-flex;
+        }
+
+        .priority-dropdown .Dropdown__toggle {
+            min-width: 160px;
+            font-weight: 400;
+            border-radius: 5px;
+            height: @filter-size;
+            color: @filter-color;
+        }
+
+        .brand-dropdown .Dropdown__toggle,
+        .status-dropdown .Dropdown__toggle {
+            min-width: 220px;
+            font-weight: 400;
+            border-radius: 5px;
+            height: @filter-size;
+            color: @filter-color;
+            overflow: hidden;
+        }
+
+        .status-dropdown .Dropdown__toggle {
+            min-width: 130px;
+        }
+
+        .apply-button {
+            height: fit-content;
+        }
+    }
+
     .page-title {
         margin-bottom: 24px;
         text-align: left;
@@ -15,11 +69,6 @@
     .overview-charts {
         min-height: 70vh;
         margin-bottom: @spacing-7x;
-    }
-
-    #filters-wrapper {
-        justify-content: left;
-        margin-bottom: 0;
     }
 
     .filter-dropdown {

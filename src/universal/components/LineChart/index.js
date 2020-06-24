@@ -8,6 +8,7 @@ import './styles.less';
 const setChartOptions = (data = [], xAxis = []) => ({
     tooltip: {},
     grid: {
+        left: 24,
         top: 24
     },
     xAxis: {

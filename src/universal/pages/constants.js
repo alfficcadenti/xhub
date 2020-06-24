@@ -5,6 +5,7 @@ exports.IMPACTED_PORTFOLIO_GROUPS = 'All Impacted Portfolio Groups';
 exports.DATE_FORMAT = 'YYYY-MM-DD';
 exports.ALL_PRIORITIES_OPTION = 'All Priorities';
 exports.ALL_STATUSES_OPTION = 'All Statuses';
+exports.ALL_TAGS_OPTION = 'All Tags';
 exports.FETCH_OPTION = {Accept: 'application/json', 'Content-Type': 'application/json'};
 exports.ALL_TYPES_OPTION = 'All Types';
 exports.ALL_ORGS_OPTION = 'All Owning Orgs';
