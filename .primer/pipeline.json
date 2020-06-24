@@ -93,10 +93,9 @@
       },
       "successChildren":
       [
-        "Deploy-To-USE1-Prod",
-        "Deploy-To-USW2-Prod"
+        "Deploy-To-USE1-Prod"
       ],
-      "triggerType": "manual"
+      "triggerType": "automatic"
     },
     {
       "action": {
@@ -117,7 +116,7 @@
       "successChildren": [
         "Release-To-USE1-Prod"
       ],
-      "triggerType": "automatic"
+      "triggerType": "manual"
     },
     {
       "action": {
@@ -137,43 +136,6 @@
           "REGION": "us-east-1"
         },
         "token": "eweprodaEcsRelease"
-      },
-      "triggerType": "manual"
-    },
-    {
-      "action": {
-        "name": "ewedeployJenkins"
-      },
-      "actionId": "eweprod-ee_deploy-docker-ecs",
-      "description": null,
-      "disabled": false,
-      "ignoreResult": false,
-      "name": "Deploy-To-USW2-Prod",
-      "params": {
-        "jobParameters": {
-          "ROLE_NAME": "opxhub-ui"
-        },
-        "token": "eweprodeeEcsDeploy"
-      },
-      "successChildren": [
-        "Release_To_USW2_Prod"
-      ],
-      "triggerType": "automatic"
-    },
-    {
-      "action": {
-        "name": "ewedeployJenkins"
-      },
-      "actionId": "eweprod-ee_release-docker-ecs",
-      "description": null,
-      "disabled": false,
-      "ignoreResult": false,
-      "name": "Release_To_USW2_Prod",
-      "params": {
-        "jobParameters": {
-          "ROLE_NAME": "opxhub-ui"
-        },
-        "token": "eweprodeeEcsRelease"
       },
       "triggerType": "manual"
     }
