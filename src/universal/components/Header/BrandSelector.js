@@ -25,7 +25,7 @@ const BrandSelector = ({selectedBrands, setSelectedBrands, brands}) => {
                     nextSelectedBrands = [EG];
                 }
             } else {
-                nextSelectedBrands.push(brand);
+                nextSelectedBrands = [brand];
             }
         }
         setSelectedBrands(nextSelectedBrands);
