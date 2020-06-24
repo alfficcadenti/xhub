@@ -141,13 +141,32 @@ export const getQualityData = (filteredDefects = []) => filteredDefects
     }))
     .sort((a, b) => moment(a.Opened).isBefore(b.Opened));
 
-const distinct = (value, index, self) => self.indexOf(value) === index;
-const removeEmptyStringsFromArray = (item) => item;
-
-export const getListOfUniqueProperties = (incidents = [], prop) => incidents
-    .map((incident) => incident[prop])
-    .filter(distinct)
-    .filter(removeEmptyStringsFromArray);
+export const getListOfUniqueProperties = (incidents = [], prop) => {
+    let isArray = false;
+    // extract property value from tickets & determine if it's of type array
+    const values = incidents.map((incident) => {
+        const value = incident[prop];
+        isArray = isArray || Array.isArray(value);
+        return value;
+    });
+    if (!isArray) {
+        // filter empty strings and duplicates
+        return values.filter((value, index, self) => value && self.indexOf(value) === index);
+    }
+    // create a set of values and convert to array
+    const list = Array.from(values
+        .reduce((acc, value) => {
+            if (Array.isArray(value)) {
+                value.forEach((tag) => tag && acc.add(tag));
+            } else if (value) {
+                acc.add(value);
+            }
+            return acc;
+        }, new Set()));
+    // sort array ignoring case
+    list.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+    return list;
+};
 
 const max = (accumulator, currentValue) => (currentValue > accumulator ? currentValue : accumulator);
 const min = (accumulator, currentValue) => (currentValue < accumulator ? currentValue : accumulator);

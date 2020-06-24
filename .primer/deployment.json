@@ -10,7 +10,7 @@
       "scale_in_adjustment": -1,
       "scale_out_adjustment": 2,
       "cpu_scale_in_threshold": 40,
-      "cpu_scale_out_threshold": 100
+      "cpu_scale_out_threshold": 80
     },
     "no-auto-delete": true,
     "isactive_support": {
@@ -30,10 +30,7 @@
     "product_area": "HomeAway",
     "notify": {
       "email": {
-        "addresses": ["vrbo_opex@expedia.com"]
-      },
-      "hipchat": {
-        "room": "Primer Notifications"
+        "addresses": ["dpi-reo-opex-team@expedia.com"]
       }
     },
     "ssl_negotiation_policy": "ELBSecurityPolicy-TLS-1-2-2017-01"

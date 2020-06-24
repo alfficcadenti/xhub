@@ -1,6 +1,7 @@
 import {expect} from 'chai';
 import {
     getUniqueTickets,
+    getListOfUniqueProperties,
     getIncidentsData,
     sumPropertyInArrayOfObjects,
     getMarginDateValues,
@@ -207,6 +208,22 @@ describe('incidentsHelper', () => {
 
             const result = getUniqueTickets(mockRawIncidents, 'incidentNumber');
             expect(result).to.be.eql(expectedResult);
+        });
+    });
+
+    describe('getListOfUniqueProperties', () => {
+        it('returns list of unique properties', () => {
+            const mockRawIncidents = [
+                {tag: 't0', priority: 'p0'},
+                {tag: ['t0', 't1'], priority: 'p1'},
+                {tag: ['t2'], priority: 'p1'},
+                {tag: [], priority: 'p2'},
+                {tag: '', priority: ''}
+            ];
+            const expectedTags = ['t0', 't1', 't2'];
+            const expectedPriorities = ['p0', 'p1', 'p2'];
+            expect(getListOfUniqueProperties(mockRawIncidents, 'tag')).to.be.eql(expectedTags);
+            expect(getListOfUniqueProperties(mockRawIncidents, 'priority')).to.be.eql(expectedPriorities);
         });
     });
 });

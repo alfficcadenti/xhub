@@ -91,7 +91,53 @@
         },
         "token": "ewetestReleaseDockerEcs"
       },
-      "successChildren": ["Deploy_To_Prod"],
+      "successChildren":
+      [
+        "Deploy-To-USE1-Prod",
+        "Deploy-To-USW2-Prod"
+      ],
+      "triggerType": "manual"
+    },
+    {
+      "action": {
+        "name": "ewedeployJenkins"
+      },
+      "actionId": "eweprod-a_deploy-docker-ecs",
+      "description": null,
+      "disabled": false,
+      "ignoreResult": false,
+      "name": "Deploy-To-USE1-Prod",
+      "params": {
+        "jobParameters": {
+          "PERFORM_RELEASE": false,
+          "ROLE_NAME": "opxhub-ui"
+        },
+        "token": "eweprodaEcsDeploy"
+      },
+      "successChildren": [
+        "Release-To-USE1-Prod"
+      ],
+      "triggerType": "automatic"
+    },
+    {
+      "action": {
+        "name": "ewedeployJenkins"
+      },
+      "actionId": "eweprod-a_release-docker-ecs",
+      "description": null,
+      "disabled": false,
+      "ignoreResult": false,
+      "name": "Release-To-USE1-Prod",
+      "params": {
+        "jobParameters": {
+          "ROLE_NAME": "opxhub-ui"
+        },
+        "jobParameters": {
+          "ROLE_NAME": "opxhub-ui",
+          "REGION": "us-east-1"
+        },
+        "token": "eweprodaEcsRelease"
+      },
       "triggerType": "manual"
     },
     {
@@ -102,7 +148,7 @@
       "description": null,
       "disabled": false,
       "ignoreResult": false,
-      "name": "Deploy_To_Prod",
+      "name": "Deploy-To-USW2-Prod",
       "params": {
         "jobParameters": {
           "ROLE_NAME": "opxhub-ui"
@@ -110,7 +156,7 @@
         "token": "eweprodeeEcsDeploy"
       },
       "successChildren": [
-        "Release_To_Prod"
+        "Release_To_USW2_Prod"
       ],
       "triggerType": "automatic"
     },
@@ -122,14 +168,13 @@
       "description": null,
       "disabled": false,
       "ignoreResult": false,
-      "name": "Release_To_Prod",
+      "name": "Release_To_USW2_Prod",
       "params": {
         "jobParameters": {
           "ROLE_NAME": "opxhub-ui"
         },
         "token": "eweprodeeEcsRelease"
       },
-      "successChildren": [],
       "triggerType": "manual"
     }
   ],
