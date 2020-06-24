@@ -110,7 +110,7 @@
       "params": {
         "jobParameters": {
           "PERFORM_RELEASE": false,
-          "ROLE_NAME": "opxhub-data-service"
+          "ROLE_NAME": "opxhub-ui"
         },
         "token": "eweprodaEcsDeploy"
       },
@@ -130,10 +130,10 @@
       "name": "Release-To-USE1-Prod",
       "params": {
         "jobParameters": {
-          "ROLE_NAME": "opxhub-data-service"
+          "ROLE_NAME": "opxhub-ui"
         },
         "jobParameters": {
-          "ROLE_NAME": "opxhub-data-service",
+          "ROLE_NAME": "opxhub-ui",
           "REGION": "us-east-1"
         },
         "token": "eweprodaEcsRelease"
