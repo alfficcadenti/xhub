@@ -32,15 +32,20 @@ function App() {
         storedBrands = [EG_BRAND];
     }
     const [selectedBrands, setSelectedBrands] = useState(storedBrands || [EG_BRAND]);
+    const handleBrandChange = (brand) => {
+        localStorage.setItem('selectedBrands', brand);
+        setSelectedBrands(brand);
+    };
+
     return (
         <Fragment>
-            <Header selectedBrands={selectedBrands} setSelectedBrands={setSelectedBrands} brands={validBrands}/>
+            <Header selectedBrands={selectedBrands} onBrandChange={handleBrandChange} brands={validBrands} />
             <Feedback />
             <div className="main-container">
                 <Switch>
-                    <Route path="/landing-page" render={() => <LandingPage selectedBrands={selectedBrands} setSelectedBrands={setSelectedBrands} />}/>
-                    <Route path="/funnel-view" render={() => <FunnelView selectedBrands={selectedBrands} />}/>
-                    <Route path="/home" render={() => <Home />}/>
+                    <Route path="/landing-page" render={() => <LandingPage selectedBrands={selectedBrands} onBrandChange={handleBrandChange} />} />
+                    <Route path="/funnel-view" render={() => <FunnelView selectedBrands={selectedBrands} />} />
+                    <Route path="/home" render={() => <Home />} />
                     {pages.map((p) => renderRoute(p, selectedBrands))}
                 </Switch>
             </div>

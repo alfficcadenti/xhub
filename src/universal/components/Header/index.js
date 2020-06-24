@@ -71,7 +71,7 @@ const Header = (props) => {
             {CATEGORIES.map(renderCategoryDropdown)}
             <BrandSelector
                 selectedBrands={props.selectedBrands}
-                setSelectedBrands={props.setSelectedBrands}
+                onBrandChange={props.onBrandChange}
                 brands={props.brands}
             />
             <Help info={DEFAULT_PAGE_INFO} />

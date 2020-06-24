@@ -19,16 +19,10 @@ const logo = (brandName) => (brandLogoFile(brandName) ?
     <h2 className="brandName">{brandName}</h2>
 );
 
-const handleWidgetClick = (brandName, setSelectedBrands) => {
-    const nextSelectedBrand = [brandName];
-    localStorage.setItem('selectedBrands', nextSelectedBrand);
-    setSelectedBrands(nextSelectedBrand);
-};
-
-const BrandCSRWidget = ({brandName = '', CSRTrend = [], CSRByDevice = {}, setSelectedBrands}) => (
+const BrandCSRWidget = ({brandName = '', CSRTrend = [], CSRByDevice = {}, onBrandChange}) => (
     <div className="brand-data-card card" key={brandName} >
         {logo(brandName)}
-        <a rel="noopener noreferrer" href="/funnel-view" onClick={() => handleWidgetClick(brandName, setSelectedBrands)}>
+        <a rel="noopener noreferrer" href="/funnel-view" onClick={() => onBrandChange([brandName])} >
             <div className="csr-widget-overlay" />
         </a>
         <h3>{'Checkout Success Rate'}</h3>

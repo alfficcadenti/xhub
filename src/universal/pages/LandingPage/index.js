@@ -115,7 +115,7 @@ const LandingPage = (props) => {
                             brandName={brand.brandName}
                             CSRTrend={brand.CSRTrend}
                             key={brand.brandName}
-                            setSelectedBrands={props.setSelectedBrands}
+                            onBrandChange={props.onBrandChange}
                         />
                     ))
                 }
