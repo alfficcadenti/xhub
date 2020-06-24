@@ -109,12 +109,12 @@ const LandingPage = (props) => {
                     <OngoingIncidents />
                 </div>
                 {CSRData
-                    .filter((b) => csrSelectedBrands.includes(b.brandName) || csrSelectedBrands.includes('Expedia Group'))
-                    .map((brand) => (
+                    .filter(({brandName}) => csrSelectedBrands.includes(brandName) || csrSelectedBrands.includes('Expedia Group'))
+                    .map(({brandName, CSRTrend}) => (
                         <BrandCSRWidget
-                            brandName={brand.brandName}
-                            CSRTrend={brand.CSRTrend}
-                            key={brand.brandName}
+                            brandName={brandName}
+                            CSRTrend={CSRTrend}
+                            key={brandName}
                             onBrandChange={props.onBrandChange}
                         />
                     ))
