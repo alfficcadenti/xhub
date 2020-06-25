@@ -4,7 +4,7 @@ import './BrandSelector.less';
 
 const EG = 'Expedia Group';
 
-const BrandSelector = ({selectedBrands, setSelectedBrands, brands}) => {
+const BrandSelector = ({selectedBrands, onBrandChange, brands}) => {
     const handleOnClick = (brand) => {
         let nextSelectedBrands;
         if (brand === EG) {
@@ -25,11 +25,11 @@ const BrandSelector = ({selectedBrands, setSelectedBrands, brands}) => {
                     nextSelectedBrands = [EG];
                 }
             } else {
-                nextSelectedBrands.push(brand);
+                nextSelectedBrands = [brand];
             }
         }
-        setSelectedBrands(nextSelectedBrands);
-        localStorage.setItem('selectedBrands', nextSelectedBrands);
+
+        onBrandChange(nextSelectedBrands);
     };
 
     const renderBrandItem = (brand) => (
