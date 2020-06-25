@@ -6,6 +6,7 @@ exports.DATE_FORMAT = 'YYYY-MM-DD';
 exports.ALL_PRIORITIES_OPTION = 'All Priorities';
 exports.ALL_STATUSES_OPTION = 'All Statuses';
 exports.ALL_TAGS_OPTION = 'All Tags';
+exports.ALL_TAGS = ['cost-optimization', 'covid-19'];
 exports.FETCH_OPTION = {Accept: 'application/json', 'Content-Type': 'application/json'};
 exports.ALL_TYPES_OPTION = 'All Types';
 exports.ALL_ORGS_OPTION = 'All Owning Orgs';

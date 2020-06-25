@@ -1,14 +1,6 @@
 import {useState, useEffect, useRef} from 'react';
 import {adjustTicketProperties, getListOfUniqueProperties, getUniqueTickets} from './incidentsHelper';
-import {ALL_PRIORITIES_OPTION, ALL_STATUSES_OPTION, ALL_TAGS_OPTION} from '../constants';
-
-
-export const useSetCovidTag = (setSelectedCovidTag) => {
-    useEffect(() => {
-        const query = new URLSearchParams(window.location.search);
-        setSelectedCovidTag(query.get('covidFilter') === 'true');
-    }, []);
-};
+import {ALL_PRIORITIES_OPTION, ALL_STATUSES_OPTION, ALL_TAGS_OPTION, ALL_TAGS} from '../constants';
 
 export const useIsMount = () => {
     const isMountRef = useRef(true);
@@ -59,11 +51,10 @@ export const useFetchTickets = (
                     const adjustedUniqueTickets = adjustTicketProperties(uniqueTickets, isIncidents ? 'incident' : 'defect');
                     const ticketPriorities = getListOfUniqueProperties(adjustedUniqueTickets, 'priority').sort();
                     const ticketStatuses = getListOfUniqueProperties(adjustedUniqueTickets, 'Status');
-                    const ticketTags = getListOfUniqueProperties(adjustedUniqueTickets, 'tag');
 
                     setPriorities([ALL_PRIORITIES_OPTION, ...ticketPriorities]);
                     setStatuses([ALL_STATUSES_OPTION, ...ticketStatuses]);
-                    setTags([ALL_TAGS_OPTION, ...ticketTags]);
+                    setTags([ALL_TAGS_OPTION, ...ALL_TAGS]);
 
                     setAllUniqueTickets(adjustedUniqueTickets);
                     setAllTickets(tickets);

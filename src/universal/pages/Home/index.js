@@ -1,6 +1,5 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-// import {Alert} from '@homeaway/react-alerts';
 import dashboardsList from '../index';
 import './styles.less';
 
@@ -20,27 +19,11 @@ const Home = () => {
         </Link>
     );
 
-    // const covidLink = () => (
-    //     <Link
-    //         to={{pathname: '/incident-trends', search: '?covidFilter=true'}}
-    //         key={'link-covid-incidents'}
-    //     >
-    //         {'Monitor the incidents related to the COVID-19'}
-    //     </Link>
-    // );
-
     return (
         <div className="home-container">
             <div className="home-buttons-container">
                 {dashboardsList.map(renderButton)}
             </div>
-            {/* <Alert
-                className="covid-message"
-                title="COVID-19 Updates"
-                type="danger"
-                msg={covidLink()}
-                dismissible
-            /> */}
         </div>
     );
 };

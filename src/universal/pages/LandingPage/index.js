@@ -85,16 +85,6 @@ const LandingPage = (props) => {
         return () => clearInterval(interval);
     }, []);
 
-
-    // const covidLink = () => (
-    //     <Link
-    //         to={{pathname: '/incident-trends', search: '?covidFilter=true'}}
-    //         key={'link-covid-incidents'}
-    //     >
-    //         {'Monitor the incidents related to the COVID-19'}
-    //     </Link>
-    // );
-
     const chartData = bookingsData;
     return (
         <div className="home-container">
@@ -120,13 +110,6 @@ const LandingPage = (props) => {
                     ))
                 }
             </div>
-            {/* <Alert*/}
-            {/*    className="covid-message"*/}
-            {/*    title="COVID-19 Updates"*/}
-            {/*    type="danger"*/}
-            {/*    msg={covidLink()}*/}
-            {/*    dismissible*/}
-            {/* />*/}
         </div>
     );
 };
