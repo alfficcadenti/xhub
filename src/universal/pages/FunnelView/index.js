@@ -3,9 +3,10 @@ import {Sankey, Rectangle, Layer, Tooltip, ResponsiveContainer} from 'recharts';
 import {Dropdown} from '@homeaway/react-dropdown';
 import './styles.less';
 import PageView from '../../components/PageView';
+import SimplifiedWidget from '../../components/SimplifiedWidget';
 import moment from 'moment';
 import {BRANDS, EG_BRAND, getBrand} from '../../components/App/constants';
-import {funnelViewsData} from './mockData';
+import {funnelViewsData, pageViewData} from './mockData';
 
 
 const dropdownConfig = [
@@ -209,7 +210,10 @@ const FunnelView = (props) => {
                     <PageView data={bookingsData} brands={selectedBrands} title="Checkout (CKO) To Checkout Confirmation Page" />
                 </div>
             </div>
-
+            <div className="page-views-widget-container">
+                <SimplifiedWidget title={'Home Page Views'} data={pageViewData} />
+                <SimplifiedWidget title={'Landing Views'} data={[]} />
+            </div>
         </div>
     );
 };

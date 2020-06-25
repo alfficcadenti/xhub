@@ -1,0 +1,35 @@
+@import '../../mixins.less';
+
+.widget-card {
+  width: 300px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  vertical-align: middle;
+  margin-left: @spacing-5x;
+  text-align: center;
+  padding: @spacing-1x;
+
+  .last-value {
+    color: #1b5caf;
+    font-size: 25px;
+    font-weight: 800;
+  }
+
+  .custom-tooltip {
+    background-color: rgba(150, 150, 151, 0.9);
+    border-radius: 15px;
+    vertical-align: middle;
+    text-align: center;
+
+    .label {
+      color: black;
+    }
+  }
+
+  div.recharts-empty-container {
+    height: 80%;
+    width: 100%;
+  }
+}
