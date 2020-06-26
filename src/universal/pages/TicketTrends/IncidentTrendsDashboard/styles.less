@@ -54,6 +54,21 @@
         .apply-button {
             height: fit-content;
         }
+
+        .more-filters-btn {
+            margin-left: 5px;
+            margin-bottom: -1px;
+            min-height: @spacing-7x;
+            padding: 0 @spacing-2x;
+            font-size: .75rem;
+            line-height: 1rem;
+            box-shadow: none;
+            border-radius: @spacing-1x @spacing-1x 0 0;
+
+            &.active {
+                background: @color-bg-accent;
+            }
+        }
     }
 
     .Datatable__header {
@@ -62,6 +77,20 @@
         border-bottom: 1px #908f8f solid;
         color: #292929;
         font-size: .875rem;
+    }
+
+    .more-filters-divider {
+        margin: -4px 0 4px 5px;
+
+        .Divider__heading {
+            display: none;
+        }
+
+        .Divider__body {
+            padding: @spacing-2x;
+            background: @color-bg-accent;
+            border-radius: 0 0 @spacing-1x @spacing-1x;
+        }
     }
 
     .expandable-row-wrapper {

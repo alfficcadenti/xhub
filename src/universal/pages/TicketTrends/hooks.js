@@ -1,6 +1,12 @@
 import {useState, useEffect, useRef} from 'react';
 import {adjustTicketProperties, getListOfUniqueProperties, getUniqueTickets} from './incidentsHelper';
-import {ALL_PRIORITIES_OPTION, ALL_STATUSES_OPTION, ALL_TAGS_OPTION, ALL_TAGS} from '../constants';
+import {
+    ALL_PRIORITIES_OPTION,
+    ALL_STATUSES_OPTION,
+    ALL_TAGS_OPTION,
+    ALL_RC_OWNERS_OPTION,
+    ALL_TAGS
+} from '../constants';
 
 export const useIsMount = () => {
     const isMountRef = useRef(true);
@@ -32,6 +38,7 @@ export const useFetchTickets = (
     const [priorities, setPriorities] = useState([]);
     const [statuses, setStatuses] = useState([]);
     const [tags, setTags] = useState([]);
+    const [rootCauseOwners, setRootCauseOwners] = useState([]);
 
     const isMount = useIsMount();
 
@@ -51,10 +58,12 @@ export const useFetchTickets = (
                     const adjustedUniqueTickets = adjustTicketProperties(uniqueTickets, isIncidents ? 'incident' : 'defect');
                     const ticketPriorities = getListOfUniqueProperties(adjustedUniqueTickets, 'priority').sort();
                     const ticketStatuses = getListOfUniqueProperties(adjustedUniqueTickets, 'Status');
+                    const rcOwners = getListOfUniqueProperties(adjustedUniqueTickets, 'rootCauseOwner');
 
                     setPriorities([ALL_PRIORITIES_OPTION, ...ticketPriorities]);
                     setStatuses([ALL_STATUSES_OPTION, ...ticketStatuses]);
                     setTags([ALL_TAGS_OPTION, ...ALL_TAGS]);
+                    setRootCauseOwners([ALL_RC_OWNERS_OPTION, ...rcOwners]);
 
                     setAllUniqueTickets(adjustedUniqueTickets);
                     setAllTickets(tickets);
@@ -91,6 +100,7 @@ export const useFetchTickets = (
         allTickets,
         priorities,
         statuses,
-        tags
+        tags,
+        rootCauseOwners
     ];
 };

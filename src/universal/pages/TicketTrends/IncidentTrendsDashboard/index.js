@@ -6,15 +6,25 @@ import {Navigation} from '@homeaway/react-navigation';
 import LoadingContainer from '../../../components/LoadingContainer';
 import FilterDropDown from '../../../components/FilterDropDown';
 import DatePicker from '../../../components/DatePicker/index';
-import {DATE_FORMAT, ALL_STATUSES_OPTION, ALL_PRIORITIES_OPTION, ALL_TAGS_OPTION} from '../../constants';
+import {
+    DATE_FORMAT,
+    ALL_STATUSES_OPTION,
+    ALL_PRIORITIES_OPTION,
+    ALL_TAGS_OPTION,
+    ALL_RC_OWNERS_OPTION
+} from '../../constants';
 import {Incidents, Overview, Top5, FinancialImpact} from './tabs/index';
 import {useFetchTickets} from '../hooks';
 import {EG_BRAND, getBrand} from '../../../components/App/constants';
 import './styles.less';
+import {SVGIcon} from '@homeaway/react-svg';
+import {FILTER__16} from '@homeaway/svg-defs';
+import {Divider} from '@homeaway/react-collapse';
 
 const statusDefaultValue = ALL_STATUSES_OPTION;
 const priorityDefaultValue = ALL_PRIORITIES_OPTION;
 const tagDefaultValue = ALL_TAGS_OPTION;
+const rcOwnerDefaultValue = ALL_RC_OWNERS_OPTION;
 const startDateDefaultValue = moment().subtract(90, 'days').format(DATE_FORMAT);
 const endDateDefaultValue = moment().format(DATE_FORMAT);
 const minDate = moment('2019-01-01').toDate();
@@ -53,7 +63,9 @@ const IncidentTrendsDashboard = (props) => {
     const [appliedEndDate, setAppliedEndDate] = useState(endDate);
     const [selectedPriority, setSelectedPriority] = useState(priorityDefaultValue);
     const [selectedTag, setSelectedTag] = useState(tagDefaultValue);
+    const [selectedRcOwner, setSelectedRcOwner] = useState(rcOwnerDefaultValue);
     const [isDirtyForm, setIsDirtyForm] = useState(false);
+    const [showMoreFilters, setShowMoreFilters] = useState(false);
     // incidents
     const [filteredUniqueIncidents, setFilteredUniqueIncidents] = useState([]);
     const [filteredAllIncidents, setFilteredAllIncidents] = useState([]);
@@ -67,6 +79,7 @@ const IncidentTrendsDashboard = (props) => {
         incidentsPriorities,
         incidentsStatuses,
         incidentsTags,
+        rootCauseOwners
     ] = useFetchTickets(
         isApplyClicked,
         startDate,
@@ -81,7 +94,8 @@ const IncidentTrendsDashboard = (props) => {
         const matchesBrand = (t) => selectedBrands[0] === EG_BRAND || selectedBrands.includes(t.Brand);
         const matchesStatus = (t) => selectedStatus === statusDefaultValue || t.status === selectedStatus;
         const matchesTag = (t) => selectedTag === tagDefaultValue || t.tag === selectedTag || (Array.isArray(t.tag) && t.tag.includes(selectedTag));
-        const filterTickets = (t) => matchesPriority(t) && matchesBrand(t) && matchesStatus(t) && matchesTag(t);
+        const matchesRcOwner = (t) => selectedRcOwner === rcOwnerDefaultValue || t['RC Owner'] === selectedRcOwner;
+        const filterTickets = (t) => matchesPriority(t) && matchesBrand(t) && matchesStatus(t) && matchesTag(t) && matchesRcOwner(t);
 
         setFilteredUniqueIncidents([...allUniqueIncidents].filter(filterTickets));
         setFilteredAllIncidents([...allIncidents].filter(filterTickets));
@@ -127,6 +141,15 @@ const IncidentTrendsDashboard = (props) => {
         setIsDirtyForm(true);
     }, []);
 
+    const handleRcOwnerChange = useCallback((owner) => {
+        setSelectedRcOwner(owner);
+        setIsDirtyForm(true);
+    });
+
+    const handleShowMoreFilters = () => {
+        setShowMoreFilters(!showMoreFilters);
+    };
+
     // eslint-disable-next-line complexity
     const renderTabs = () => {
         switch (activeIndex) {
@@ -143,6 +166,20 @@ const IncidentTrendsDashboard = (props) => {
         }
     };
 
+    const renderMoreFilters = () => (
+        <Divider heading="More Filters" id="more-filters-divider" className="more-filters-divider" expanded={showMoreFilters}>
+            <form className="search-form search-form__more">
+                <FilterDropDown
+                    id="rcOwner-dropdown"
+                    className="filter-dropdown rcOwner-dropdown"
+                    list={rootCauseOwners}
+                    selectedValue={selectedRcOwner}
+                    onClickHandler={handleRcOwnerChange}
+                />
+            </form>
+        </Divider>
+    );
+
     return (
         <div className="incident-trends-container">
             <h1 className="page-title">{'Incident Trends'}</h1>
@@ -154,9 +191,27 @@ const IncidentTrendsDashboard = (props) => {
                     handleDateRangeChange={handleDateRangeChange}
                     handleClearDates={handleClearDates}
                 />
-                <FilterDropDown id="priority-dropdown" className="priority-dropdown" list={incidentsPriorities} selectedValue={selectedPriority} onClickHandler={handlePriorityChange} />
-                <FilterDropDown id="status-dropdown" className="status-dropdown" list={incidentsStatuses} selectedValue={selectedStatus} onClickHandler={handleStatusChange} />
-                <FilterDropDown id="tag-dropdown" className="tag-dropdown" list={incidentsTags} selectedValue={selectedTag} onClickHandler={handleTagChange} />
+                <FilterDropDown
+                    id="priority-dropdown"
+                    className="priority-dropdown"
+                    list={incidentsPriorities}
+                    selectedValue={selectedPriority}
+                    onClickHandler={handlePriorityChange}
+                />
+                <FilterDropDown
+                    id="status-dropdown"
+                    className="status-dropdown"
+                    list={incidentsStatuses}
+                    selectedValue={selectedStatus}
+                    onClickHandler={handleStatusChange}
+                />
+                <FilterDropDown
+                    id="tag-dropdown"
+                    className="tag-dropdown"
+                    list={incidentsTags}
+                    selectedValue={selectedTag}
+                    onClickHandler={handleTagChange}
+                />
                 <button
                     type="button"
                     className="apply-button btn btn-primary active"
@@ -167,7 +222,15 @@ const IncidentTrendsDashboard = (props) => {
                 >
                     {'Apply'}
                 </button>
+                <button
+                    type="button"
+                    className={`btn btn-default more-filters-btn ${showMoreFilters ? 'active' : ''}`}
+                    onClick={handleShowMoreFilters}
+                >
+                    <SVGIcon usefill markup={FILTER__16} />{' More Filters'}
+                </button>
             </div>
+            {renderMoreFilters()}
             <Navigation
                 noMobileSelect
                 activeIndex={activeIndex}
