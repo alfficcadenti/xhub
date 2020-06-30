@@ -61,8 +61,8 @@ const LandingPage = (props) => {
                     const CSRDataFormatted = csrSelectedBrands.map((brand) => {
                         const csrData = fetchedCSRData && fetchedCSRData.map(
                             (x) => {
-                                return x.checkoutSuccessPercentagesData.find((item) => mapBrandNames(item.brand) === brand) ? x.checkoutSuccessPercentagesData.find((item) => mapBrandNames(item.brand) === brand).rate : 0;
-                            });
+                                return x.checkoutSuccessPercentagesData.find((item) => mapBrandNames(item.brand) === brand) ? x.checkoutSuccessPercentagesData.find((item) => mapBrandNames(item.brand) === brand).rate : '';
+                            }).filter((n) => n);
                         return {brandName: brand, CSRTrend: csrData};
                     });
 
