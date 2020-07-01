@@ -8,7 +8,7 @@ import {BRANDS} from '../../components/App/constants';
 export default class PageView extends PureComponent {
     brandColor = (brand) => {
         switch (brand) {
-            case 'BEX':
+            case 'Expedia':
                 return '#1B5CAF';
             case 'Vrbo':
                 return '#1478F7';

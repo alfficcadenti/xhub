@@ -27,7 +27,7 @@ const LandingPage = (props) => {
                     const dataMapped = data && data.map((x) => {
                         return {
                             time: moment.utc(x.time).format('HH:mm'),
-                            'BEX': x.bookingsData.find((branddata) => branddata.brandGroupName === 'Brand Expedia Group').count || '',
+                            'Expedia': x.bookingsData.find((branddata) => branddata.brandGroupName === 'Brand Expedia Group').count || '',
                             'Vrbo': x.bookingsData.find((branddata) => branddata.brandGroupName === 'VRBO').count || '',
                             'Hotels.com': x.bookingsData.find((branddata) => branddata.brandGroupName === 'Hotels.com').count || '',
                             'Expedia Business Services': x.bookingsData.find((branddata) => branddata.brandGroupName === 'Expedia Business Services').count || ''
@@ -49,7 +49,7 @@ const LandingPage = (props) => {
                     const mapBrandNames = (brandName) => {
                         switch (brandName) {
                             case 'expedia':
-                                return 'BEX';
+                                return 'Expdeia';
                             case 'vrbo':
                                 return 'Vrbo';
                             case 'hotels':
