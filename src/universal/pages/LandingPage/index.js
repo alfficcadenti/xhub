@@ -49,7 +49,7 @@ const LandingPage = (props) => {
                     const mapBrandNames = (brandName) => {
                         switch (brandName) {
                             case 'expedia':
-                                return 'Expdeia';
+                                return 'Expedia';
                             case 'vrbo':
                                 return 'Vrbo';
                             case 'hotels':
