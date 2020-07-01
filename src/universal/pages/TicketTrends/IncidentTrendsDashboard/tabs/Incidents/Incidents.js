@@ -6,7 +6,7 @@ import {getIncidentsData} from '../../../incidentsHelper';
 
 
 const renderTable = (filteredIncidents) => {
-    const columns = ['Incident', 'Priority', 'Brand', 'Division', 'Started', 'Summary', 'Duration', 'TTD', 'TTR', 'Status'];
+    const columns = ['Incident', 'Priority', 'Brand', 'Division', 'Started', 'Summary', 'RC Owner', 'Duration', 'TTD', 'TTR', 'Status'];
     const csvColumns = columns.concat(['Executive Summary', 'Resolution Notes']);
     return (
         <DataTable

@@ -11,9 +11,7 @@
         border-radius: 5px;
 
         .date-range {
-            width: 350px;
-            height: @filter-size;
-            color: @filter-color;
+            .date-range-filter;
         }
 
         .date-range,
@@ -29,22 +27,13 @@
         }
 
         .priority-dropdown .Dropdown__toggle {
-            min-width: 160px;
-            font-weight: 400;
-            border-radius: 5px;
-            height: @filter-size;
-            color: @filter-color;
+            .dropdown-button(160px);
         }
 
         .brand-dropdown .Dropdown__toggle,
         .status-dropdown .Dropdown__toggle,
         .tag-dropdown .Dropdown__toggle {
-            min-width: 220px;
-            font-weight: 400;
-            border-radius: 5px;
-            height: @filter-size;
-            color: @filter-color;
-            overflow: hidden;
+            .dropdown-button;
         }
 
         .status-dropdown .Dropdown__toggle {
@@ -54,6 +43,20 @@
         .apply-button {
             height: fit-content;
         }
+
+        .more-filters-btn {
+            margin-left: @spacing-1x;
+            min-height: @spacing-7x;
+            padding: 0 @spacing-2x;
+            font-size: .75rem;
+            line-height: 1rem;
+            box-shadow: none;
+            border-radius: @spacing-1x @spacing-1x 0 0;
+
+            &.active {
+                background: @color-bg-accent;
+            }
+        }
     }
 
     .Datatable__header {
@@ -62,6 +65,24 @@
         border-bottom: 1px #908f8f solid;
         color: #292929;
         font-size: .875rem;
+    }
+
+    .more-filters-divider {
+        margin: -4px 0 4px 5px;
+
+        .Divider__heading {
+            display: none;
+        }
+
+        .Divider__body {
+            padding: @spacing-2x;
+            background: @color-bg-accent;
+            border-radius: 0 0 @spacing-1x @spacing-1x;
+
+            .rcOwner-dropdown .Dropdown__toggle {
+                .dropdown-button;
+            }
+        }
     }
 
     .expandable-row-wrapper {

@@ -17,7 +17,8 @@ export const adjustTicketProperties = (tickets = [], type = 'incident') => {
             'startedAt': t.startedAt ? t.startedAt : t.openDate,
             'Brand': divisionToBrand(t.brand),
             'Division': t.brand,
-            'Status': t.status
+            'Status': t.status,
+            'RC Owner': t.rootCauseOwner
         };
         if (type === 'incident') {
             result.ticket_summary = t.incidentSummary;
@@ -104,6 +105,7 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
         Tag: inc.tag || '-',
         'Executive Summary': inc.executiveSummary || '-',
         executiveSummary: inc.executiveSummary || '-',
+        'RC Owner': inc.rootCauseOwner || '-',
         Details: (
             <div className="expandable-row-wrapper">
                 <div className="expandable-row">
