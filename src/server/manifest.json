@@ -30,7 +30,7 @@
       "apiServiceConfig": {
         "$filter": "env.EXPEDIA_ENVIRONMENT",
         "$default": {
-          "hostname": "opxhub-service.us-west-2.int.expedia.com",
+          "hostname": "opxhub-service.us-east-2.int.expedia.com",
           "protocol": "https:",
           "routes": {
             "resiliencyQuestionnaire": {
@@ -45,7 +45,7 @@
           }
         },
         "int": {
-          "hostname": "opxhub-service.us-west-2.int.expedia.com",
+          "hostname": "opxhub-service.us-east-2.int.expedia.com",
           "protocol": "https:",
           "routes": {
             "resiliencyQuestionnaire": {
@@ -60,7 +60,7 @@
           }
         },
         "test": {
-          "hostname": "opxhub-service.us-west-2.test.expedia.com",
+          "hostname": "opxhub-service.us-east-2.test.expedia.com",
           "protocol": "https:",
           "routes": {
             "resiliencyQuestionnaire": {
@@ -75,7 +75,7 @@
           }
         },
         "production": {
-          "hostname": "opxhub-service.us-west-2.test.expedia.com",
+          "hostname": "opxhub-service.us-east-2.test.expedia.com",
           "protocol": "https:",
           "routes": {
             "resiliencyQuestionnaire": {
