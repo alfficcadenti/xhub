@@ -23,6 +23,7 @@ module.exports.csrUserEvents = {
                 queryParams: req.url.query ? req.url.query : {}
             });
             req.log('[API-REQUEST-DETAILS]', serverConfig.routes.checkoutSuccessRate.method, serverConfig.routes.checkoutSuccessRate.operation);
+            req.log('[CHECKOUT-SUCCESS-RATE-DATA]', payload);
             return payload;
         } catch (e) {
             req.log('[ERROR]', e);

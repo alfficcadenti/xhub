@@ -41,7 +41,7 @@ describe('<DataTable/>', () => {
     });
 
     it('Sorts numbers correctly', () => {
-        wrapper.setProps({data: [{name: '99'}, {name: '2010'}, {name: '1009'}], columns, rules});
+        wrapper.setProps({data: [{name: '99'}, {name: '2010'}, {name: '1009'}, {name: '99'}], columns, rules});
         expect(wrapper.instance().state.data[0].name).to.equal('99');
         wrapper.instance().onClickSort(columns[0]);
         expect(wrapper.instance().state.data[0].name).to.equal('2010');

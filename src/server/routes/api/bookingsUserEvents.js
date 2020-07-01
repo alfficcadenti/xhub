@@ -23,6 +23,7 @@ module.exports.bookingsUserEvents = {
                 queryParams: req.url.query ? req.url.query : {}
             });
             req.log('[API-REQUEST-DETAILS]', serverConfig.routes.bookings.method, serverConfig.routes.bookings.operation);
+            req.log('[BOOKING-DATA]', payload);
             return payload;
         } catch (e) {
             req.log('[ERROR]', e);
