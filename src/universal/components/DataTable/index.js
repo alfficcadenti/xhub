@@ -8,7 +8,6 @@ import {SVGIcon} from '@homeaway/react-svg';
 import {
     INFO__16, DOWNLOAD__16, GEAR__24, CHEVRON_DOWN__12, CHEVRON_UP__12
 } from '@homeaway/svg-defs';
-import {isEqual, isEmpty, xorWith} from 'lodash';
 import {Divider} from '@homeaway/react-collapse';
 import {Checkbox} from '@homeaway/react-form-components';
 import './DataTable.less';
@@ -37,13 +36,31 @@ class DataTable extends Component {
             displayColumns: [],
             expandableColumns: [],
             expandedRows: {},
-            expandAllRows: false
+            expandAllRows: false,
+            isSorting: false
         };
     }
 
     static getDerivedStateFromProps(props, currState) {
-        if (!isEmpty(xorWith(currState.data, props.data, isEqual))
-            || JSON.stringify(currState.columns) !== JSON.stringify(props.columns)) {
+        const dataIsNotEqual = (a, b) => {
+            if (a.length !== b.length) {
+                return true;
+            }
+            for (let idx = 0; idx < a.length; idx++) {
+                const itemA = a[idx];
+                const itemB = b[idx];
+                const keys = Object.keys(itemA);
+                for (let keyIdx = 0; keyIdx < keys.length; keyIdx++) {
+                    const propertyName = keys[keyIdx];
+                    if (itemA[propertyName] !== itemB[propertyName]) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        };
+        if (JSON.stringify(currState.columns) !== JSON.stringify(props.columns)
+            || (!currState.isSorting && dataIsNotEqual(currState.data, props.data))) {
             const {data} = props;
             const mappedData = data.map((d) => {
                 const mapped = d;
@@ -58,7 +75,7 @@ class DataTable extends Component {
                 displayColumns: props.columns.filter((c) => !props.hiddenColumns.includes(c))
             };
             return {
-                ...props, ...obj, expandedRows: {}, data: mappedData
+                ...props, ...obj, expandedRows: {}, data: mappedData, isSorting: false
             };
         } if (currState.data.length > 0) {
             return {...currState};
@@ -67,15 +84,15 @@ class DataTable extends Component {
     }
 
     getCSVData = () => this.state.data.map((row) => {
-        const csvRow = [];
+        const csvRows = [];
         const columns = this.state.csvColumns.length > 0
             ? this.state.csvColumns
             : this.state.displayColumns;
         columns.forEach((column) => {
             const value = row[column];
-            csvRow.push(value ? String(value).replace(/<[^>]*>?/gm, '') : value);
+            csvRows.push(value ? String(value).replace(/<[^>]*>?/gm, '') : value);
         });
-        return csvRow;
+        return csvRows;
     })
 
     onClickSort = (column) => {
@@ -100,10 +117,14 @@ class DataTable extends Component {
         const {data, sortByColumn, sortByDirection} = this.state;
         if (column === sortByColumn && sortByDirection === 'asc') {
             data.sort(comparator);
-            this.setState({data, sortByColumn: column, sortByDirection: 'desc'});
+            this.setState({
+                data, sortByColumn: column, sortByDirection: 'desc', isSorting: true
+            });
         } else {
             data.sort((a, b) => -comparator(a, b)); // reverse
-            this.setState({data, sortByColumn: column, sortByDirection: 'asc'});
+            this.setState({
+                data, sortByColumn: column, sortByDirection: 'asc', isSorting: true
+            });
         }
     }
 
