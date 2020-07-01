@@ -9,6 +9,7 @@ import {isArray} from 'util';
 import uuid from 'uuid/v1';
 import * as h from '../../components/utils/formatDate';
 import {DATE_FORMAT} from '../constants';
+import {VRBO_BRAND, HOTELS_COM_BRAND} from '../../pages/constants';
 
 export const adjustTicketProperties = (tickets = [], type = 'incident') => {
     return tickets.map((t) => {
@@ -43,10 +44,10 @@ export const divisionToBrand = (division = '') => {
             return 'Egencia';
         case 'VRBO':
         case 'HOME AWAY':
-            return 'Vrbo';
+            return VRBO_BRAND;
         case 'HOTELS WORLDWIDE (HWW)':
         case 'HCOM':
-            return 'Hotels.com';
+            return HOTELS_COM_BRAND;
         default:
             return 'BEX - Expedia Group';
     }
@@ -79,7 +80,7 @@ const buildTicketLink = (id = '', brand = '', url = '') => {
     if (url) {
         return (`<a href="${url}" target="_blank">${id}</a>`);
     }
-    const brandUrl = brand === 'Vrbo' ? url : `https://expedia.service-now.com/go.do?id=${id}`;
+    const brandUrl = brand === VRBO_BRAND ? url : `https://expedia.service-now.com/go.do?id=${id}`;
     return (`<a href="${brandUrl}" target="_blank">${id}</a>`);
 };
 

@@ -7,7 +7,7 @@ const BRANDS = [
         incidentBrand: EG_BRAND
     },
     {
-        label: 'Brand Expedia',
+        label: 'Expedia',
         psrBrand: 'expedia',
         landingBrand: 'Expedia',
         incidentBrand: 'BEX - Expedia Group'

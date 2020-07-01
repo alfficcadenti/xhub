@@ -4,22 +4,23 @@ import {
 } from 'recharts';
 import HelpText from '../../../components/HelpText/HelpText';
 import {BRANDS} from '../../../components/App/constants';
+import {EXPEDIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_BUSINESS_SERVICES_BRAND} from '../../constants';
 
 export default class TotalChart extends PureComponent {
     brandColor = (brand) => {
         switch (brand) {
-            case 'Expedia':
+            case EXPEDIA_BRAND:
                 return '#1B5CAF';
-            case 'Vrbo':
+            case VRBO_BRAND:
                 return '#1478F7';
-            case 'Hotels.com':
+            case HOTELS_COM_BRAND:
                 return '#F71414';
-            case 'Expedia Business Services':
+            case EXPEDIA_BUSINESS_SERVICES_BRAND:
                 return '#FFC72C';
             default:
                 return '#1B5CAF';
         }
-    }
+    };
 
     renderGradient = (brand) => {
         const brandLabel = brand.replace(/\s/g, '');
@@ -40,7 +41,7 @@ export default class TotalChart extends PureComponent {
         return (
             <Area type="monotone" dataKey={brand} stroke={color} fillOpacity={1} fill={fill} key={`area${brand}`}/>
         );
-    }
+    };
 
 
     render() {
