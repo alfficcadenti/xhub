@@ -3,8 +3,7 @@ import {
     AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
 import HelpText from '../../../components/HelpText/HelpText';
-import {BRANDS} from '../../../components/App/constants';
-import {EXPEDIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_BUSINESS_SERVICES_BRAND} from '../../constants';
+import {EXPEDIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_BUSINESS_SERVICES_BRAND, BRANDS} from '../../../constants';
 
 export default class TotalChart extends PureComponent {
     brandColor = (brand) => {

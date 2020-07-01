@@ -5,10 +5,10 @@ import 'moment-timezone';
 import LoadingContainer from '../../../components/LoadingContainer';
 import FilterDropDown from '../../../components/FilterDropDown';
 import DatePicker from '../../../components/DatePicker/index';
-import {DATE_FORMAT, ALL_STATUSES_OPTION, ALL_PRIORITIES_OPTION} from '../../constants';
+import {DATE_FORMAT, ALL_STATUSES_OPTION, ALL_PRIORITIES_OPTION} from '../../../constants';
 import {Quality} from './tabs/index';
 import {useFetchTickets} from '../hooks';
-import {EG_BRAND, getBrand} from '../../../components/App/constants';
+import {EG_BRAND, getBrand} from '../../../constants';
 import './styles.less';
 
 const statusDefaultValue = ALL_STATUSES_OPTION;

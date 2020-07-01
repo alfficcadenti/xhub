@@ -6,7 +6,7 @@ import {
     ALL_TAGS_OPTION,
     ALL_RC_OWNERS_OPTION,
     ALL_TAGS
-} from '../constants';
+} from '../../constants';
 
 export const useIsMount = () => {
     const isMountRef = useRef(true);

@@ -1,4 +1,4 @@
-import {EXPEDIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND, EGENCIA_BRAND} from '../../pages/constants';
+import {EXPEDIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND, EGENCIA_BRAND} from '../../constants';
 
 // eslint-disable-next-line consistent-return
 export default function brandLogoFile(brand) {

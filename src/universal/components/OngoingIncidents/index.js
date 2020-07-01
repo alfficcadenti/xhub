@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, {Fragment, useEffect, useState} from 'react';
 import LoadingContainer from '../LoadingContainer';
-import {DATE_FORMAT} from '../../pages/constants';
+import {DATE_FORMAT} from '../../constants';
 import moment from 'moment';
 import './styles.less';
 

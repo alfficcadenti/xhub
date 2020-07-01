@@ -6,8 +6,7 @@ import BrandCSRWidget from '../../components/BrandCSRWidget';
 import TotalChart from './TotalBookingsChart';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import {EG_BRAND, BRANDS, getBrand} from '../../components/App/constants';
-import {EXPEDIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_BUSINESS_SERVICES_BRAND} from '../constants';
+import {EXPEDIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_BUSINESS_SERVICES_BRAND, EG_BRAND, BRANDS, getBrand} from '../../constants';
 import './styles.less';
 
 const LandingPage = (props) => {

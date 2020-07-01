@@ -8,8 +8,8 @@ import moment from 'moment/moment';
 import {isArray} from 'util';
 import uuid from 'uuid/v1';
 import * as h from '../../components/utils/formatDate';
-import {DATE_FORMAT} from '../constants';
-import {VRBO_BRAND, HOTELS_COM_BRAND} from '../../pages/constants';
+import {DATE_FORMAT} from '../../constants';
+import {VRBO_BRAND, HOTELS_COM_BRAND} from '../../constants';
 
 export const adjustTicketProperties = (tickets = [], type = 'incident') => {
     return tickets.map((t) => {

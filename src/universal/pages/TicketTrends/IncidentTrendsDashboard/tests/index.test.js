@@ -1,8 +1,8 @@
 import React from 'react';
 import {shallow} from 'enzyme/build';
 import IncidentTrendsDashboard from '../index';
-import {DATE_FORMAT} from '../../../constants';
-import {EG_BRAND} from '../../../../components/App/constants';
+import {DATE_FORMAT} from '../../../../constants';
+import {EG_BRAND} from '../../../../constants';
 import moment from 'moment/moment';
 
 describe('<IncidentTrendsDashboard/>', () => {
