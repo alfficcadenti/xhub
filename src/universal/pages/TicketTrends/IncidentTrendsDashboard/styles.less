@@ -11,9 +11,7 @@
         border-radius: 5px;
 
         .date-range {
-            width: 350px;
-            height: @filter-size;
-            color: @filter-color;
+            .date-range-filter;
         }
 
         .date-range,
@@ -29,22 +27,13 @@
         }
 
         .priority-dropdown .Dropdown__toggle {
-            min-width: 160px;
-            font-weight: 400;
-            border-radius: 5px;
-            height: @filter-size;
-            color: @filter-color;
+            .dropdown-button(160px);
         }
 
         .brand-dropdown .Dropdown__toggle,
         .status-dropdown .Dropdown__toggle,
         .tag-dropdown .Dropdown__toggle {
-            min-width: 220px;
-            font-weight: 400;
-            border-radius: 5px;
-            height: @filter-size;
-            color: @filter-color;
-            overflow: hidden;
+            .dropdown-button;
         }
 
         .status-dropdown .Dropdown__toggle {
@@ -56,8 +45,7 @@
         }
 
         .more-filters-btn {
-            margin-left: 5px;
-            margin-bottom: -1px;
+            margin-left: @spacing-1x;
             min-height: @spacing-7x;
             padding: 0 @spacing-2x;
             font-size: .75rem;
@@ -90,6 +78,10 @@
             padding: @spacing-2x;
             background: @color-bg-accent;
             border-radius: 0 0 @spacing-1x @spacing-1x;
+
+            .rcOwner-dropdown .Dropdown__toggle {
+                .dropdown-button;
+            }
         }
     }
 

@@ -12,9 +12,7 @@
         margin-bottom: @spacing-3x;
 
         .date-range {
-            width: 350px;
-            height: @filter-size;
-            color: @filter-color;
+            .date-range-filter;
         }
 
         .date-range,
@@ -30,21 +28,12 @@
         }
 
         .priority-dropdown .Dropdown__toggle {
-            min-width: 160px;
-            font-weight: 400;
-            border-radius: 5px;
-            height: @filter-size;
-            color: @filter-color;
+            .dropdown-button(160px);
         }
 
         .brand-dropdown .Dropdown__toggle,
         .status-dropdown .Dropdown__toggle {
-            min-width: 220px;
-            font-weight: 400;
-            border-radius: 5px;
-            height: @filter-size;
-            color: @filter-color;
-            overflow: hidden;
+            .dropdown-button;
         }
 
         .status-dropdown .Dropdown__toggle {
