@@ -51,7 +51,7 @@ export default class PageView extends PureComponent {
             <Fragment>
                 <h3>
                     {title}
-                    <HelpText className="chart-info" text="Traveler funnel page views" placement="bottom" />
+                    <HelpText className="chart-info" text="Traveler page views" placement="bottom" />
                 </h3>
                 <ResponsiveContainer width="90%" height="80%">
                     <AreaChart width={730} height={250} data={data}

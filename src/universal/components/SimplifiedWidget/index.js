@@ -1,6 +1,5 @@
 import React from 'react';
-// import Trend from 'react-trend';
-import {LineChart, Line, Tooltip, ResponsiveContainer} from 'recharts';
+import {AreaChart, Area, Tooltip, ResponsiveContainer} from 'recharts';
 import './styles.less';
 
 // eslint-disable-next-line complexity
@@ -24,10 +23,10 @@ const SimplifiedWidget = ({title = '', data = []}) => {
             {
                 data.length ?
                     <ResponsiveContainer width="100%" height="80%">
-                        <LineChart width={100} height={100} data={data}>
-                            <Line type="monotone" dataKey="value" stroke="#1B5CAF" strokeWidth={2} />
+                        <AreaChart width={100} height={100} data={data}>
                             <Tooltip content={<CustomTooltip />} />
-                        </LineChart>
+                            <Area type="monotone" dataKey="value" stroke="#8884d8" fill="#8884d8" />
+                        </AreaChart>
                     </ResponsiveContainer> :
                     <div className="recharts-empty-container" />
             }

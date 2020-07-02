@@ -7,18 +7,31 @@ import moment from 'moment';
 
 const FunnelView = ({selectedBrands}) => {
     const [pageViews, setPageViews] = useState([]);
-    const pageList = ['home', 'searchresults', 'property', 'bookingform', 'bookingconfirmation'];
+    const pageList = [
+        {name: 'home', label: 'Home'},
+        {name: 'searchresults', label: 'Search'},
+        {name: 'property', label: 'Property'},
+        {name: 'bookingform', label: 'Booking Form'},
+        {name: 'bookingconfirmation', label: 'Booking Confirmation'},
+    ];
 
     const fetchData = () => {
-        fetch(`/v1/pageViews?brand=${selectedBrands[0]}`)
+        const selectedBrand = selectedBrands[0].toLowerCase();
+
+        fetch(`/v1/pageViews?brand=${selectedBrand}`)
             .then((responses) => responses.json())
             .then((fetchedPageviews) => {
                 const pageViewPerPage = pageList.map((page) => {
                     const pageViewData = fetchedPageviews && fetchedPageviews.map(
                         (x) => {
-                            return x.pageViewsData.find((item) => item.page === page) ? {label: moment.utc(x.time).format('HH:mm'), value: x.pageViewsData.find((item) => item.page === page).views} : 0;
+                            const currentPageViews = x.pageViewsData.find((item) => item.page === page.name);
+
+                            return currentPageViews ? {
+                                label: moment.utc(x.time).format('HH:mm'),
+                                value: currentPageViews.views
+                            } : 0;
                         });
-                    return {pageName: page, pageViews: pageViewData};
+                    return {pageName: page.label, pageViews: pageViewData};
                 });
 
                 setPageViews(pageViewPerPage);
@@ -36,7 +49,7 @@ const FunnelView = ({selectedBrands}) => {
 
     return (
         <div className="funnel-views-container">
-            <h1>{'Traveler Funnel Page Views'}</h1>
+            <h1>{'Traveler Page Views'}</h1>
             <div className="page-views-widget-container">
                 {pageViews.map((page) =>
                     <SimplifiedWidget title={page.pageName} data={page.pageViews} key={page.pageName}/>
