@@ -42,6 +42,7 @@ const FunnelView = ({selectedBrands}) => {
                 });
                 setPageViews(pageViewPerPage);
                 setIsLoading(false);
+                setError('');
             })
             .catch((err) => {
                 setIsLoading(false);
