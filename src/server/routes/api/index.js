@@ -8,6 +8,7 @@ import {login, logout} from './oauth';
 import {availabilityS3} from './availabilityS3';
 import {bookingsUserEvents} from './bookingsUserEvents';
 import {csrUserEvents} from './csrUserEvents';
+import {pageViewsUserEvents} from './pageViews';
 
 const apiRoutes = [
     login,
@@ -20,7 +21,8 @@ const apiRoutes = [
     availabilityS3,
     grafanaAlerts,
     bookingsUserEvents,
-    csrUserEvents
+    csrUserEvents,
+    pageViewsUserEvents
 ];
 
 export default apiRoutes;

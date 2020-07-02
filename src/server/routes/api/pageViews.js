@@ -1,6 +1,6 @@
 import ServiceClient from '@vrbo/service-client';
 
-module.exports.bookingsUserEvents = {
+module.exports.pageViewsUserEvents = {
     method: 'GET',
     path: '/v1/pageViews/{param*}',
     config: {
