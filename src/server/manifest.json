@@ -105,6 +105,11 @@
               "path": "/v1/checkoutSuccessRate",
               "method": "GET",
               "operation": "GET_user_events_csr_api_v1"
+            },
+            "pageViews": {
+              "path": "/v1/pageViews",
+              "method": "GET",
+              "operation": "GET_user_events_pageviews_api_v1"
             }
           }
         },
@@ -121,6 +126,11 @@
               "path": "/v1/checkoutSuccessRate",
               "method": "GET",
               "operation": "GET_user_events_csr_api_v1"
+            },
+            "pageViews": {
+              "path": "/v1/pageViews",
+              "method": "GET",
+              "operation": "GET_user_events_pageviews_api_v1"
             }
           }
         },
@@ -137,6 +147,11 @@
               "path": "/v1/checkoutSuccessRate",
               "method": "GET",
               "operation": "GET_user_events_csr_api_v1"
+            },
+            "pageViews": {
+              "path": "/v1/pageViews",
+              "method": "GET",
+              "operation": "GET_user_events_pageviews_api_v1"
             }
           }
         },
@@ -153,6 +168,11 @@
               "path": "/v1/checkoutSuccessRate",
               "method": "GET",
               "operation": "GET_user_events_csr_api_v1"
+            },
+            "pageViews": {
+              "path": "/v1/pageViews",
+              "method": "GET",
+              "operation": "GET_user_events_pageviews_api_v1"
             }
           }
         }
