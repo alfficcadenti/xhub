@@ -22,8 +22,7 @@ const FunnelView = ({selectedBrands}) => {
     const fetchData = ([selectedBrand]) => {
         fetch(`/v1/pageViews?brand=${selectedBrand.toLowerCase()}`)
             .then((resp) => {
-                if (!resp.ok || !resp.json()) {
-                    setError('Page Views data not available. Try to refresh');
+                if (!resp.ok) {
                     throw new Error();
                 }
                 return resp.json();
@@ -41,11 +40,12 @@ const FunnelView = ({selectedBrands}) => {
                         });
                     return {pageName: page.label, pageViews: pageViewData};
                 });
-
                 setPageViews(pageViewPerPage);
                 setIsLoading(false);
             })
             .catch((err) => {
+                setIsLoading(false);
+                setError('Page Views data not available. Try to refresh');
                 // eslint-disable-next-line no-console
                 console.error(err);
             });
