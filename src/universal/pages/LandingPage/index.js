@@ -13,8 +13,8 @@ const LandingPage = (props) => {
     const selectedBrands = props.selectedBrands[0] === EG_BRAND
         ? BRANDS.map((brand) => brand.landingBrand).filter((brand) => !!brand)
         : props.selectedBrands.map((brand) => getBrand(brand).landingBrand).filter((brand) => !!brand);
-    const csrWidgetToExclude = EXPEDIA_BUSINESS_SERVICES_BRAND;
-    const csrSelectedBrands = selectedBrands.filter((selectedBrand) => selectedBrand !== csrWidgetToExclude);
+    const csrWidgetToExclude = [EXPEDIA_BUSINESS_SERVICES_BRAND, HOTELS_COM_BRAND];
+    const csrSelectedBrands = selectedBrands.filter((selectedBrand) => !csrWidgetToExclude.includes(selectedBrand));
 
     const [bookingsData, setBookingsData] = useState([]);
     const [CSRData, setCSRData] = useState([]);
@@ -99,7 +99,7 @@ const LandingPage = (props) => {
                     <OngoingIncidents />
                 </div>
                 {CSRData
-                    .filter(({brandName}) => csrSelectedBrands.includes(brandName) || csrSelectedBrands.includes('Expedia Group'))
+                    .filter(({brandName}) => csrSelectedBrands.includes(brandName) || selectedBrands.includes(EG_BRAND))
                     .map(({brandName, CSRTrend}) => (
                         <BrandCSRWidget
                             brandName={brandName}
