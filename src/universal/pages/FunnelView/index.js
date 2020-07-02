@@ -3,25 +3,30 @@ import './styles.less';
 import SimplifiedWidget from '../../components/SimplifiedWidget';
 import moment from 'moment';
 // import {BRANDS, EG_BRAND, getBrand} from '../../components/App/constants';
-import {pageViewEndpoint} from './mockData';
+// import {pageViewEndpoint} from './mockData';
 
-const FunnelView = () => {
+const FunnelView = ({selectedBrands}) => {
     const [pageViews, setPageViews] = useState([]);
-
-    const pageList = ['home', 'searchResult', 'property', 'bookingForm', 'bookingConfirmation'];
-    // const selectedBrands = props.selectedBrands[0] === EG_BRAND
-    //     ? BRANDS.map((brand) => brand.landingBrand).filter((brand) => !!brand)
-    //     : props.selectedBrands.map((brand) => getBrand(brand).landingBrand).filter((brand) => !!brand);
+    const pageList = ['home', 'searchresults', 'property', 'bookingform', 'bookingconfirmation'];
 
     const fetchData = () => {
-        const pageViewPerPage = pageList.map((page) => {
-            const pageViewData = pageViewEndpoint && pageViewEndpoint.map(
-                (x) => {
-                    return x.pageViews.find((item) => item.page === page) ? {label: moment.utc(x.time).format('HH:mm'), value: x.pageViews.find((item) => item.page === page).count} : 0;
+        fetch(`/v1/pageViews?brand=${selectedBrands[0]}`)
+            .then((responses) => responses.json())
+            .then((fetchedPageviews) => {
+                const pageViewPerPage = pageList.map((page) => {
+                    const pageViewData = fetchedPageviews && fetchedPageviews.map(
+                        (x) => {
+                            return x.pageViewsData.find((item) => item.page === page) ? {label: moment.utc(x.time).format('HH:mm'), value: x.pageViewsData.find((item) => item.page === page).views} : 0;
+                        });
+                    return {pageName: page, pageViews: pageViewData};
                 });
-            return {pageName: page, pageViews: pageViewData};
-        });
-        setPageViews(pageViewPerPage);
+
+                setPageViews(pageViewPerPage);
+            })
+            .catch((err) => {
+                // eslint-disable-next-line no-console
+                console.error(err);
+            });
     };
 
 
