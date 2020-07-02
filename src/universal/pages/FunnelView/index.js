@@ -3,11 +3,14 @@ import './styles.less';
 import SimplifiedWidget from '../../components/SimplifiedWidget';
 import moment from 'moment';
 import HelpText from '../../components/HelpText/HelpText';
+import LoadingContainer from '../../components/LoadingContainer';
 // import {BRANDS, EG_BRAND, getBrand} from '../../components/App/constants';
 // import {pageViewEndpoint} from './mockData';
 
 const FunnelView = ({selectedBrands}) => {
     const [pageViews, setPageViews] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState('');
     const pageList = [
         {name: 'home', label: 'Home'},
         {name: 'searchresults', label: 'Search'},
@@ -18,7 +21,13 @@ const FunnelView = ({selectedBrands}) => {
 
     const fetchData = ([selectedBrand]) => {
         fetch(`/v1/pageViews?brand=${selectedBrand.toLowerCase()}`)
-            .then((responses) => responses.json())
+            .then((resp) => {
+                if (!resp.ok || !resp.json()) {
+                    setError('Page Views data not available. Try to refresh');
+                    throw new Error();
+                }
+                return resp.json();
+            })
             .then((fetchedPageviews) => {
                 const pageViewPerPage = pageList.map((page) => {
                     const pageViewData = fetchedPageviews && fetchedPageviews.map(
@@ -34,13 +43,13 @@ const FunnelView = ({selectedBrands}) => {
                 });
 
                 setPageViews(pageViewPerPage);
+                setIsLoading(false);
             })
             .catch((err) => {
                 // eslint-disable-next-line no-console
                 console.error(err);
             });
     };
-
 
     useEffect(() => {
         fetchData(selectedBrands);
@@ -51,11 +60,14 @@ const FunnelView = ({selectedBrands}) => {
             <h1>{'Traveler Page Views'}
                 <HelpText className="page-info" text="The charts show the views for each page in the last 24h, display in UTC time" placement="bottom"/>
             </h1>
-            <div className="page-views-widget-container">
-                {pageViews.map((page) =>
-                    <SimplifiedWidget title={page.pageName} data={page.pageViews} key={page.pageName}/>
-                )}
-            </div>
+            <LoadingContainer isLoading={isLoading} error={error} className="incident-main">
+                <div className="page-views-widget-container">
+                    {pageViews.map((page) =>
+                        <SimplifiedWidget title={page.pageName} data={page.pageViews} key={page.pageName}/>
+                    )}
+                </div>
+            </LoadingContainer>
+
         </div>
     );
 };
