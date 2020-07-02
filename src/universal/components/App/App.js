@@ -8,7 +8,7 @@ import LandingPage from '../../pages/LandingPage';
 import FunnelView from '../../pages/FunnelView';
 import Home from '../../pages/Home';
 import pages from '../../pages';
-import {EG_BRAND, BRANDS} from './constants';
+import {EG_BRAND, BRANDS} from '../../constants';
 
 function renderRoute(p, selectedBrands) {
     const Page = withRouter(p.component.default);
