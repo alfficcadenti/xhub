@@ -20,7 +20,7 @@ import {
     ALL_TYPES_OPTION, ALL_ORGS_OPTION,
     ALL_RC_OWNERS_OPTION, ALL_RC_CATEGORIES_OPTION,
     EPIC_ISSUE_TYPE
-} from '../constants';
+} from '../../constants';
 import {getPieData} from '../utils';
 import {useFetchTickets} from './hooks';
 import './styles.less';

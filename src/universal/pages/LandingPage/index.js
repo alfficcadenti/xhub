@@ -6,14 +6,14 @@ import BrandCSRWidget from '../../components/BrandCSRWidget';
 import TotalChart from './TotalBookingsChart';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import {EG_BRAND, BRANDS, getBrand} from '../../components/App/constants';
+import {EXPEDIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_BUSINESS_SERVICES_BRAND, EG_BRAND, BRANDS, getBrand} from '../../constants';
 import './styles.less';
 
 const LandingPage = (props) => {
     const selectedBrands = props.selectedBrands[0] === EG_BRAND
         ? BRANDS.map((brand) => brand.landingBrand).filter((brand) => !!brand)
         : props.selectedBrands.map((brand) => getBrand(brand).landingBrand).filter((brand) => !!brand);
-    const csrWidgetToExclude = 'Expedia Business Services';
+    const csrWidgetToExclude = EXPEDIA_BUSINESS_SERVICES_BRAND;
     const csrSelectedBrands = selectedBrands.filter((selectedBrand) => selectedBrand !== csrWidgetToExclude);
 
     const [bookingsData, setBookingsData] = useState([]);
@@ -27,10 +27,10 @@ const LandingPage = (props) => {
                     const dataMapped = data && data.map((x) => {
                         return {
                             time: moment.utc(x.time).format('HH:mm'),
-                            'BEX': x.bookingsData.find((branddata) => branddata.brandGroupName === 'Brand Expedia Group').count || '',
-                            'Vrbo': x.bookingsData.find((branddata) => branddata.brandGroupName === 'VRBO').count || '',
-                            'Hotels.com': x.bookingsData.find((branddata) => branddata.brandGroupName === 'Hotels.com').count || '',
-                            'Expedia Business Services': x.bookingsData.find((branddata) => branddata.brandGroupName === 'Expedia Business Services').count || ''
+                            [EXPEDIA_BRAND]: x.bookingsData.find((branddata) => branddata.brandGroupName === 'Brand Expedia Group').count || '',
+                            [VRBO_BRAND]: x.bookingsData.find((branddata) => branddata.brandGroupName === 'VRBO').count || '',
+                            [HOTELS_COM_BRAND]: x.bookingsData.find((branddata) => branddata.brandGroupName === 'Hotels.com').count || '',
+                            [EXPEDIA_BUSINESS_SERVICES_BRAND]: x.bookingsData.find((branddata) => branddata.brandGroupName === 'Expedia Business Services').count || ''
                         };
                     });
                     setBookingsData(dataMapped);
@@ -49,11 +49,11 @@ const LandingPage = (props) => {
                     const mapBrandNames = (brandName) => {
                         switch (brandName) {
                             case 'expedia':
-                                return 'BEX';
+                                return EXPEDIA_BRAND;
                             case 'vrbo':
-                                return 'Vrbo';
+                                return VRBO_BRAND;
                             case 'hotels':
-                                return 'Hotels.com';
+                                return HOTELS_COM_BRAND;
                             default:
                                 return brandName;
                         }

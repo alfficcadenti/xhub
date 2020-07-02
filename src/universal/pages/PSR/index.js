@@ -6,7 +6,7 @@ import BrandDailyPSR from './BrandDailyPSR';
 import BrandPSRDetails from './BrandPSRDetails';
 import h from './psrHelpers';
 import './styles.less';
-import {EG_BRAND, getBrand} from '../../components/App/constants';
+import {EG_BRAND, getBrand} from '../../constants';
 
 class PSR extends Component {
     constructor(props) {

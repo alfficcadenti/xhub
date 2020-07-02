@@ -12,10 +12,10 @@ import {
     ALL_PRIORITIES_OPTION,
     ALL_TAGS_OPTION,
     ALL_RC_OWNERS_OPTION
-} from '../../constants';
+} from '../../../constants';
 import {Incidents, Overview, Top5, FinancialImpact} from './tabs/index';
 import {useFetchTickets} from '../hooks';
-import {EG_BRAND, getBrand} from '../../../components/App/constants';
+import {EG_BRAND, getBrand} from '../../../constants';
 import './styles.less';
 import {SVGIcon} from '@homeaway/react-svg';
 import {FILTER__16} from '@homeaway/svg-defs';
