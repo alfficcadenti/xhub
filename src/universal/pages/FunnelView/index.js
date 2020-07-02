@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import './styles.less';
 import SimplifiedWidget from '../../components/SimplifiedWidget';
 import moment from 'moment';
+import HelpText from '../../components/HelpText/HelpText';
 // import {BRANDS, EG_BRAND, getBrand} from '../../components/App/constants';
 // import {pageViewEndpoint} from './mockData';
 
@@ -25,7 +26,7 @@ const FunnelView = ({selectedBrands}) => {
                             const currentPageViews = x.pageViewsData.find((item) => item.page === page.name);
 
                             return currentPageViews ? {
-                                label: moment.utc(x.time).format('HH:mm'),
+                                label: moment.utc(x.time).format('HH:mm UTC'),
                                 value: currentPageViews.views
                             } : 0;
                         });
@@ -47,7 +48,9 @@ const FunnelView = ({selectedBrands}) => {
 
     return (
         <div className="funnel-views-container">
-            <h1>{'Traveler Page Views'}</h1>
+            <h1>{'Traveler Page Views'}
+                <HelpText className="page-info" text="The charts show the views for each page in the last 24h, display in UTC time" placement="bottom"/>
+            </h1>
             <div className="page-views-widget-container">
                 {pageViews.map((page) =>
                     <SimplifiedWidget title={page.pageName} data={page.pageViews} key={page.pageName}/>
