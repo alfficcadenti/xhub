@@ -15,10 +15,8 @@ const FunnelView = ({selectedBrands}) => {
         {name: 'bookingconfirmation', label: 'Booking Confirmation'},
     ];
 
-    const fetchData = () => {
-        const selectedBrand = selectedBrands[0].toLowerCase();
-
-        fetch(`/v1/pageViews?brand=${selectedBrand}`)
+    const fetchData = ([selectedBrand]) => {
+        fetch(`/v1/pageViews?brand=${selectedBrand.toLowerCase()}`)
             .then((responses) => responses.json())
             .then((fetchedPageviews) => {
                 const pageViewPerPage = pageList.map((page) => {
@@ -44,8 +42,8 @@ const FunnelView = ({selectedBrands}) => {
 
 
     useEffect(() => {
-        fetchData();
-    }, []);
+        fetchData(selectedBrands);
+    }, [selectedBrands]);
 
     return (
         <div className="funnel-views-container">
