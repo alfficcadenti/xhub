@@ -4,7 +4,7 @@ import SimplifiedWidget from '../../components/SimplifiedWidget';
 import moment from 'moment';
 import HelpText from '../../components/HelpText/HelpText';
 import LoadingContainer from '../../components/LoadingContainer';
-// import {BRANDS, EG_BRAND, getBrand} from '../../components/App/constants';
+import {getBrand} from '../../constants';
 // import {pageViewEndpoint} from './mockData';
 
 const FunnelView = ({selectedBrands}) => {
@@ -20,7 +20,10 @@ const FunnelView = ({selectedBrands}) => {
     ];
 
     const fetchData = ([selectedBrand]) => {
-        fetch(`/v1/pageViews?brand=${selectedBrand.toLowerCase()}`)
+        const brand = getBrand(selectedBrand).psrBrand;
+        setIsLoading(true);
+
+        fetch(`/v1/pageViews?brand=${brand}`)
             .then((resp) => {
                 if (!resp.ok) {
                     throw new Error();
@@ -61,7 +64,7 @@ const FunnelView = ({selectedBrands}) => {
             <h1>{'Traveler Page Views'}
                 <HelpText className="page-info" text="The charts show the views for each page in the last 24h, display in UTC time" placement="bottom"/>
             </h1>
-            <LoadingContainer isLoading={isLoading} error={error} className="incident-main">
+            <LoadingContainer isLoading={isLoading} error={error}>
                 <div className="page-views-widget-container">
                     {pageViews.map((page) =>
                         <SimplifiedWidget title={page.pageName} data={page.pageViews} key={page.pageName}/>
