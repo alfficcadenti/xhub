@@ -42,10 +42,11 @@ const FunnelView = ({selectedBrands}) => {
                 });
                 setPageViews(pageViewPerPage);
                 setIsLoading(false);
+                setError('');
             })
             .catch((err) => {
                 setIsLoading(false);
-                setError('Page Views data not available. Try to refresh');
+                setError('Page Views data not available. Try to refresh or select another brand');
                 // eslint-disable-next-line no-console
                 console.error(err);
             });
