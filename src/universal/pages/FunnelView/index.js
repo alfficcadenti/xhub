@@ -22,6 +22,7 @@ const FunnelView = ({selectedBrands}) => {
     const fetchData = ([selectedBrand]) => {
         const brand = getBrand(selectedBrand).psrBrand;
         setIsLoading(true);
+        setError('');
 
         fetch(`/v1/pageViews?brand=${brand}`)
             .then((resp) => {
@@ -44,15 +45,13 @@ const FunnelView = ({selectedBrands}) => {
                     return {pageName: page.label, pageViews: pageViewData};
                 });
                 setPageViews(pageViewPerPage);
-                setIsLoading(false);
-                setError('');
             })
             .catch((err) => {
-                setIsLoading(false);
                 setError('Page Views data not available. Try to refresh or select another brand');
                 // eslint-disable-next-line no-console
                 console.error(err);
-            });
+            })
+            .finally(() => setIsLoading(false));
     };
 
     useEffect(() => {
