@@ -2,13 +2,14 @@ import React from 'react';
 import {expect} from 'chai';
 import {shallow} from 'enzyme';
 import OngoingIncidents from '../index';
+import {EG_BRAND} from '../../../constants';
 
 
 describe('OngoingIncidents component testing', () => {
     let wrapper;
 
     beforeEach(() => {
-        wrapper = shallow(<OngoingIncidents incidents={[]} onClose={() => {}} />);
+        wrapper = shallow(<OngoingIncidents selectedBrands={[EG_BRAND]} />);
     });
 
     afterEach(() => {

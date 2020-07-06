@@ -14,6 +14,7 @@ import {
 import mockData from './filteredData.test.json';
 import mockData2 from './incData.test.json';
 import mockResult from './incByBrandResult.test.json';
+import {VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_BRAND, EGENCIA_BRAND} from '../../../constants';
 
 const dataResult = {
     'Brand': 'Expedia Partner Solutions (EPS)',
@@ -154,26 +155,26 @@ describe('incidentsHelper', () => {
     describe('divisionToBrand', () => {
         it('returns Egencia when the input value is EGENCIA - CONSOLIDATED', () => {
             const result = divisionToBrand('EGENCIA - CONSOLIDATED');
-            expect(result).to.be.eql('Egencia');
+            expect(result).to.be.eql(EGENCIA_BRAND);
         });
 
         it('returns Vrbo when the input value is VRBO or HOME AWAY', () => {
             const result = divisionToBrand('VRBO');
-            expect(result).to.be.eql('Vrbo');
+            expect(result).to.be.eql(VRBO_BRAND);
             const result2 = divisionToBrand('HOME AWAY');
-            expect(result2).to.be.eql('Vrbo');
+            expect(result2).to.be.eql(VRBO_BRAND);
         });
 
         it('returns Hotels.com when the input value is HOTELS WORLDWIDE (HWW)', () => {
             const result = divisionToBrand('HOTELS WORLDWIDE (HWW)');
-            expect(result).to.be.eql('Hotels.com');
+            expect(result).to.be.eql(HOTELS_COM_BRAND);
             const result2 = divisionToBrand('HCOM');
-            expect(result2).to.be.eql('Hotels.com');
+            expect(result2).to.be.eql(HOTELS_COM_BRAND);
         });
 
         it('returns BEX - Expedia Group as default when the input value doesn t match', () => {
             const result = divisionToBrand('random text');
-            expect(result).to.be.eql('BEX - Expedia Group');
+            expect(result).to.be.eql(EXPEDIA_BRAND);
         });
     });
 

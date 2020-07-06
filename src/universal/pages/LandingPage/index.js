@@ -96,7 +96,7 @@ const LandingPage = (props) => {
                     <a target="_blank" rel="noopener noreferrer" href="https://expedia.service-now.com/triage/Triage.do" className="ongoing-incidents-tile-link">
                         <div className="ongoing-incidents-tile-overlay" />
                     </a>
-                    <OngoingIncidents />
+                    <OngoingIncidents selectedBrands={props.selectedBrands} />
                 </div>
                 {CSRData
                     .filter(({brandName}) => csrSelectedBrands.includes(brandName) || selectedBrands.includes(EG_BRAND))
