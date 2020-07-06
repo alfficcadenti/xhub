@@ -17,7 +17,7 @@ export const EXPEDIA_BRAND = 'Expedia';
 export const VRBO_BRAND = 'Vrbo';
 export const HOTELS_COM_BRAND = 'Hotels.com';
 export const EXPEDIA_BUSINESS_SERVICES_BRAND = 'Expedia Business Services';
-export const EGENCIA_BRAND = 'egencia';
+export const EGENCIA_BRAND = 'Egencia';
 
 export const EG_BRAND = 'Expedia Group';
 export const BRANDS = [

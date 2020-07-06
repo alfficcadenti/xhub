@@ -4,14 +4,23 @@ import LoadingContainer from '../LoadingContainer';
 import {DATE_FORMAT} from '../../constants';
 import moment from 'moment';
 import './styles.less';
+import {adjustTicketProperties} from '../../pages/TicketTrends/incidentsHelper';
+import {EG_BRAND} from '../../constants';
 
 const startDate = moment().subtract(90, 'days').format(DATE_FORMAT);
 const endDate = moment().format(DATE_FORMAT);
 
 
-const OngoingIncidents = () => {
-    const [incidents, setIncidents] = useState([]);
+const OngoingIncidents = ({selectedBrands}) => {
+    const selectedBrand = selectedBrands[0];
+    const [ongoingIncidents, setOngoingIncidents] = useState([]);
+    const [allIncidents, setAllIncidents] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+
+    const isOngoingIncident = (incident) => incident.status === 'In Progress' && (incident.priority === '1-Critical' || incident.priority === '0-Code Red');
+    const filterOngoingIncidents = (incidents) =>
+        (selectedBrand === EG_BRAND ? incidents : incidents.filter(incident => incident.Brand === selectedBrand))
+        .filter(isOngoingIncident);
 
     useEffect(() => {
         const fetchTickets = () => {
@@ -20,11 +29,14 @@ const OngoingIncidents = () => {
             fetch(`https://opxhub-service.us-west-2.test.expedia.com/api/v1/incidents?startDate=${startDate}&endDate=${endDate}`)
                 .then((responses) => responses.json())
                 .then((fetchedIncidents) => {
-                    const filteredIncidents = fetchedIncidents.filter((incident) => {
-                        return incident.status === 'In Progress' && (incident.priority === '1-Critical' || incident.priority === '0-Code Red');
-                    });
+                    const adjustedIncidents = adjustTicketProperties(fetchedIncidents, 'incident');
 
-                    setIncidents(filteredIncidents);
+                    setAllIncidents(adjustedIncidents);
+
+                    const res = filterOngoingIncidents(adjustedIncidents);
+                    console.log(res);
+
+                    setOngoingIncidents(res);
                     setIsLoading(false);
                 })
                 .catch((err) => {
@@ -37,19 +49,23 @@ const OngoingIncidents = () => {
         fetchTickets();
     }, []);
 
+    useEffect(() => {
+        setOngoingIncidents(filterOngoingIncidents(allIncidents));
+    }, [selectedBrand]);
+
     return (
         <Fragment>
             <h2 className="ongoing-incidents-label">{'Ongoing Incidents'}</h2>
             <LoadingContainer isLoading={isLoading} className="ongoing-incidents">
                 {
-                    incidents.map((item) => {
+                    ongoingIncidents.length ? ongoingIncidents.map((item) => {
                         return (
                             <div key={item.incidentSummary} className="ongoing-incident">
                                 <span>{`${item.priority} - `}</span>
                                 <span>{item.incidentSummary}</span>
                             </div>
                         );
-                    })
+                    }) : <div className="no-incidents">{'No ongoing incidents at the moment'}</div>
                 }
             </LoadingContainer>
         </Fragment>
