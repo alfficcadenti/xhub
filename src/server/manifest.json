@@ -15,7 +15,7 @@
       },
       // Service-client configuration
       "apiDataServiceConfig": {
-        "hostname": "opxhub-data-service.us-west-2.test.expedia.com",
+        "hostname": "opxhub-data-service.us-east-1.prod.expedia.com",
         "protocol": "https:",
         "connectionTimeout": 30000,
         "timeout": 30000,
@@ -217,10 +217,12 @@
     "catalyst-status": {
       "plugin": "require:@homeaway/catalyst-status",
       "options": {
-        "routes": [
-          {
+        "routes": [{
             "path": "/isActive",
-            "response": { "status": 200, "payload": "ACTIVE" }
+            "response": {
+              "status": 200,
+              "payload": "ACTIVE"
+            }
           },
           {
             "path": "/buildInfo",
@@ -257,8 +259,7 @@
           "name": "resolveAsset",
           "helper": "require:./templates/helpers/resolveAsset.js"
         },
-        "routes": [
-          {
+        "routes": [{
             "route": "require:./routes/pages/home",
             "component": "require:../universal/components/App/ServerApp.js",
             "template": "templates/welcome.hbs"
