@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import moment from 'moment';
 import PageviewWidget from '../../components/PageviewWidget';
 import LoadingContainer from '../../components/LoadingContainer';
-import {DatetimeRangePicker} from '../../components/DateTimeRangePicker';
+import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import {getBrand} from '../../constants';
 import './styles.less';
 
