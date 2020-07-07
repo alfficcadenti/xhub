@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, {Fragment, useEffect, useState} from 'react';
+import {Divider} from '@homeaway/react-collapse';
 import LoadingContainer from '../LoadingContainer';
 import {DATE_FORMAT} from '../../constants';
 import moment from 'moment';
@@ -53,19 +54,25 @@ const OngoingIncidents = ({selectedBrands}) => {
         setOngoingIncidents(filterOngoingIncidents(allIncidents));
     }, [selectedBrand]);
 
+    const getDateDetails = (date) => moment(date).format('dddd, MMMM Do YYYY, h:mm a [GMT]Z');
+
     return (
         <Fragment>
             <h2 className="ongoing-incidents-label">{'Ongoing Incidents'}</h2>
             <LoadingContainer isLoading={isLoading} className="ongoing-incidents">
                 {
-                    ongoingIncidents.length ? ongoingIncidents.map((item) => {
+                    ongoingIncidents.length ? ongoingIncidents.map(({incidentSummary, priority, startedAt, incidentNumber}) => {
                         return (
-                            <div key={item.incidentSummary} className="ongoing-incident">
-                                <span>{`${item.priority} - `}</span>
-                                <span>{item.incidentSummary}</span>
-                            </div>
+                            <Divider heading={incidentSummary} id="ongoing-incident">
+                                <div key={incidentSummary} className="ongoing-incident">
+                                    <div><strong>{'Summary:'}</strong><span className="ongoing-incident-info">{incidentSummary}</span></div>
+                                    <div><strong>{'Incident Ticket:'}</strong><a target="_blank" href={`https://jira.homeawaycorp.com/browse/${incidentNumber}`}><span className="ongoing-incident-info">{incidentNumber}</span></a></div>
+                                    <div><strong>{'Priority:'}</strong><span className="ongoing-incident-info">{priority}</span></div>
+                                    <div><strong>{'Started at:'}</strong><span className="ongoing-incident-info">{getDateDetails(startedAt)}</span></div>
+                                </div>
+                            </Divider>
                         );
-                    }) : <div className="no-incidents">{'No ongoing incidents at the moment'}</div>
+                    }) : <div className="no-incidents">{'No ongoing incidents for the selected brand'}</div>
                 }
             </LoadingContainer>
         </Fragment>

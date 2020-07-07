@@ -1,3 +1,5 @@
+@import '../../mixins.less';
+
 .ongoing-incidents-label {
   margin-top: 25px;
 }
@@ -8,17 +10,63 @@
   overflow-y: scroll;
   z-index: 2;
 
+  .Divider {
+    margin-bottom: 5px;
+
+    .Divider__heading {
+      background: rgba(0, 0, 0, .02);
+      padding-bottom: 13px;
+      padding-top: 13px;
+      padding-right: 10px;
+
+      &:hover {
+        background: rgba(0, 0, 0, .04);
+      }
+    }
+
+    .Divider__body {
+      padding-top: 0;
+    }
+
+    .Divider__title-left,
+    .Divider__title-row {
+      display: none;
+    }
+
+    .Divider__title-text {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .Divider__title-right {
+      justify-content: flex-end;
+    }
+  }
+
   .ongoing-incident {
-    background: rgba(0, 0, 0, .07);
+    background: rgba(0, 0, 0, .04);
     margin-bottom: 10px;
-    padding-left: 5px;
-    color: black;
+    font-size: 14px;
+    color: #717171;
+    text-align: left;
+    padding: 10px 15px;
+    border-top: 1px solid lightslategrey;
+
+    strong {
+      margin-right: 10px;
+    }
+
+    .ongoing-incident-info {
+      font-size: 13px;
+    }
   }
 
   .no-incidents {
     font-size: 20px;
-    color: rgba(0,0,0,.4);
+    color: rgba(0, 0, 0, .4);
     padding: 25px;
-    border-bottom: 1px solid rgba(0,0,0,.1);
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
+    line-height: 45px;
   }
 }
