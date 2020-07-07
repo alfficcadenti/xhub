@@ -115,7 +115,7 @@ const FunnelView = ({selectedBrands}) => {
             >
                 {'Apply'}
             </button>
-            <LoadingContainer isLoading={isLoading} error={error} className={error ? 'page-views-loading-container' : ''}>
+            <LoadingContainer isLoading={isLoading} error={error} className="page-views-loading-container">
                 <div className="page-views-widget-container">
                     {widgets.map(renderWidget)}
                 </div>
