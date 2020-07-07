@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, {Fragment, useEffect, useState} from 'react';
+import {Divider} from '@homeaway/react-collapse';
 import LoadingContainer from '../LoadingContainer';
 import {DATE_FORMAT} from '../../constants';
 import moment from 'moment';
@@ -53,6 +54,8 @@ const OngoingIncidents = ({selectedBrands}) => {
         setOngoingIncidents(filterOngoingIncidents(allIncidents));
     }, [selectedBrand]);
 
+    const getDateDetails = (date) => moment(date).format('dddd, MMMM Do YYYY, h:mm a [GMT]Z');
+
     return (
         <Fragment>
             <h2 className="ongoing-incidents-label">{'Ongoing Incidents'}</h2>
@@ -60,12 +63,16 @@ const OngoingIncidents = ({selectedBrands}) => {
                 {
                     ongoingIncidents.length ? ongoingIncidents.map((item) => {
                         return (
-                            <div key={item.incidentSummary} className="ongoing-incident">
-                                <span>{`${item.priority} - `}</span>
-                                <span>{item.incidentSummary}</span>
-                            </div>
+                            <Divider heading={item.incidentSummary} id="ongoing-incident">
+                                <div key={item.incidentSummary} className="ongoing-incident">
+                                    <div><strong>{'Summary:'}</strong>{item.incidentSummary}</div>
+                                    <div><strong>{'Incident Ticket:'}</strong><a target="_blank" href={`https://jira.homeawaycorp.com/browse/${item.incidentNumber}`}>{item.incidentNumber}</a></div>
+                                    <div><strong>{'Priority:'}</strong>{item.priority}</div>
+                                    <div><strong>{'Started at:'}</strong>{getDateDetails(item.startedAt)}</div>
+                                </div>
+                            </Divider>
                         );
-                    }) : <div className="no-incidents">{'No ongoing incidents at the moment'}</div>
+                    }) : <div className="no-incidents">{'No ongoing incidents for the selected brand at the moment'}</div>
                 }
             </LoadingContainer>
         </Fragment>
