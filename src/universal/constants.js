@@ -25,37 +25,43 @@ export const BRANDS = [
         label: EG_BRAND,
         psrBrand: EG_BRAND,
         landingBrand: '',
-        incidentBrand: EG_BRAND
+        incidentBrand: EG_BRAND,
+        color: '#1B5CAF'
     },
     {
-        label: 'Expedia',
+        label: EXPEDIA_BRAND,
         psrBrand: 'expedia',
         landingBrand: 'Expedia',
-        incidentBrand: 'BEX - Expedia Group'
+        incidentBrand: 'BEX - Expedia Group',
+        color: '#1B5CAF'
     },
     {
-        label: 'Egencia',
+        label: EGENCIA_BRAND,
         psrBrand: 'egencia',
         landingBrand: '',
-        incidentBrand: 'Egencia'
+        incidentBrand: 'Egencia',
+        color: '#1B5CAF'
     },
     {
-        label: 'Hotels.com',
+        label: HOTELS_COM_BRAND,
         psrBrand: 'hcom',
         landingBrand: 'Hotels.com',
-        incidentBrand: 'Hotels.com'
+        incidentBrand: 'Hotels.com',
+        color: '#F71414'
     },
     {
-        label: 'Vrbo',
+        label: VRBO_BRAND,
         psrBrand: 'vrbo',
         landingBrand: 'Vrbo',
-        incidentBrand: 'Vrbo'
+        incidentBrand: 'Vrbo',
+        color: '#1478F7'
     },
     {
-        label: 'Expedia Business Services',
+        label: EXPEDIA_BUSINESS_SERVICES_BRAND,
         psrBrand: '',
         landingBrand: 'Expedia Business Services',
-        incidentBrand: ''
+        incidentBrand: '',
+        color: '#FFC72C'
     }
 ];
 

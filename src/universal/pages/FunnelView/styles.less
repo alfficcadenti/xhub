@@ -1,17 +1,34 @@
 @import '../../mixins.less';
 
 .funnel-views-container {
-  width: 100%;
-  height: 500px;
+    width: 100%;
+    height: 500px;
 
-  h1 {
-    text-align: center;
-    margin-bottom: @spacing-7x;
-  }
+    h1 {
+        margin-bottom: @spacing-3x;
+    }
 
-  .page-views-widget-container {
-    display: grid;
-    grid-gap: 45px;
-    grid-template-columns: 1fr 1fr;
-  }
+    .page-views-loading-container {
+        margin-top: @spacing-6x;
+    }
+
+    .page-views-widget-container {
+        margin-top: @spacing-6x;
+        display: grid;
+        grid-gap: 45px;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .page-info .Tooltip .Tooltip__inner {
+        font-weight: 400;
+    }
+
+    .preset-dropdown {
+        float: right;
+        margin-top: -@spacing-9x;
+
+        .Dropdown__toggle {
+            .dropdown-button;
+        }
+    }
 }

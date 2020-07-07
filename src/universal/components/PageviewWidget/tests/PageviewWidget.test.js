@@ -1,7 +1,7 @@
 import React from 'react';
 import {expect} from 'chai';
 import {shallow} from 'enzyme';
-import SimplifiedWidget from '../';
+import PageviewWidget from '..';
 
 const data = [
     {label: '1:00 AM', value: 240},
@@ -14,18 +14,17 @@ const data = [
 
 
 describe('LineChart component testing', () => {
-    it('checks SimplifiedWidget component exists', () => {
+    it('checks PageviewWidget component exists', () => {
         const wrapper = shallow(
-            <SimplifiedWidget title={'test'} data={data}/>
+            <PageviewWidget title={'test'} data={data} brand={'Expedia'} />
         );
         expect(wrapper).to.have.length(1);
     });
 
-    it('checks SimplifiedWidget create a widget with title and 0 last value if data is empty', () => {
+    it('checks PageviewWidget create a widget with title if data is empty', () => {
         const wrapper = shallow(
-            <SimplifiedWidget title={'test'} data={[]}/>
+            <PageviewWidget title={'test'} data={[]} brand={'Expedia'} />
         );
         expect(wrapper.find('h3').text()).to.be.eql('test');
-        expect(wrapper.find('.last-value').text()).to.be.eql('0');
     });
 });

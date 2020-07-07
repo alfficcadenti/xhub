@@ -1,0 +1,230 @@
+/* stylelint-disable selector-class-pattern */
+.rdt-container {
+    .rdt {
+        position: relative;
+    }
+
+    .rdtOpen .rdtPicker {
+        display: block;
+    }
+
+    .rdtStatic .rdtPicker {
+        box-shadow: none;
+        position: static;
+    }
+
+    .rdtPicker {
+        display: none;
+        position: absolute;
+        width: 250px;
+        padding: 4px;
+        margin-top: 1px;
+        z-index: 99999;
+        background: #fff;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
+        border: 1px solid #f9f9f9;
+
+        .rdtTimeToggle {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            margin: 0;
+        }
+
+        td,
+        th {
+            text-align: center;
+            height: 28px;
+        }
+
+        td {
+            cursor: pointer;
+
+            &.rdtDay:hover,
+            &.rdtHour:hover,
+            &.rdtMinute:hover,
+            &.rdtSecond:hover,
+            .rdtTimeToggle:hover {
+                background: #eee;
+                cursor: pointer;
+            }
+
+            &.rdtOld,
+            &.rdtNew {
+                color: #999;
+            }
+
+            &.rdtToday {
+                position: relative;
+            }
+
+            &.rdtToday::before {
+                content: '';
+                display: inline-block;
+                border-left: 7px solid transparent;
+                border-bottom: 7px solid #428bca;
+                border-top-color: rgba(0, 0, 0, .2);
+                position: absolute;
+                bottom: 4px;
+                right: 4px;
+            }
+
+            &.rdtActive,
+            &.rdtActive:hover {
+                background-color: #428bca;
+                color: #fff;
+                text-shadow: 0 -1px 0 rgba(0, 0, 0, .25);
+            }
+
+            &.rdtActive.rdtToday::before {
+                border-bottom-color: #fff;
+            }
+
+            &.rdtDisabled,
+            &.rdtDisabled:hover {
+                background: none;
+                color: #999;
+                cursor: not-allowed;
+            }
+
+            &.rdtMonth,
+            &.rdtYear {
+                height: 50px;
+                width: 25%;
+                cursor: pointer;
+            }
+
+            &.rdtMonth:hover,
+            &.rdtYear:hover {
+                background: #eee;
+            }
+
+            span.rdtOld {
+                color: #999;
+            }
+
+            span.rdtDisabled,
+            span.rdtDisabled:hover {
+                background: none;
+                color: #999;
+                cursor: not-allowed;
+            }
+        }
+
+        th {
+            border-bottom: 1px solid #f9f9f9;
+
+            &.rdtSwitch {
+                width: 100px;
+            }
+
+            &.rdtNext,
+            &.rdtPrev {
+                font-size: 21px;
+                vertical-align: top;
+            }
+
+            &.rdtDisabled,
+            &.rdtDisabled:hover {
+                background: none;
+                color: #999;
+                cursor: not-allowed;
+            }
+        }
+
+        thead {
+            tr:first-child th {
+                cursor: pointer;
+            }
+
+            tr:first-child th:hover {
+                background: #eee;
+            }
+
+            button {
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        tfoot {
+            border-top: 1px solid #f9f9f9;
+        }
+
+        button {
+            border: none;
+            background: none;
+            cursor: pointer;
+
+            &:hover {
+                background-color: #eee;
+            }
+        }
+    }
+
+    .dow {
+        width: 14.2857%;
+        border-bottom: none;
+    }
+
+    .rdtPrev span,
+    .rdtNext span {
+        display: block;
+        -webkit-touch-callout: none; /* iOS Safari */
+        user-select: none;
+    }
+
+    .rdtCounters {
+        display: inline-block;
+
+        & > div {
+            float: left;
+        }
+    }
+
+    .rdtCounter {
+        height: 100px;
+        width: 40px;
+
+        .rdtBtn {
+            height: 40%;
+            line-height: 40px;
+            cursor: pointer;
+            display: block;
+
+            -webkit-touch-callout: none; /* iOS Safari */
+            user-select: none;
+
+            &:hover {
+                background: #eee;
+            }
+        }
+
+        .rdtCount {
+            height: 20%;
+            font-size: 1.2em;
+        }
+    }
+
+    .rdtCounterSeparator {
+        line-height: 100px;
+    }
+
+    .rdtMilli {
+        vertical-align: middle;
+        padding-left: 8px;
+        width: 48px;
+
+        input {
+            width: 100%;
+            font-size: 1.2em;
+            margin-top: 37px;
+        }
+    }
+
+    .rdtDay.in-selecting-range {
+        background-color: rgba(66, 139, 202, .4);
+    }
+}
