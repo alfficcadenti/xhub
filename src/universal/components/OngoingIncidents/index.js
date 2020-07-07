@@ -19,8 +19,8 @@ const OngoingIncidents = ({selectedBrands}) => {
 
     const isOngoingIncident = (incident) => incident.status === 'In Progress' && (incident.priority === '1-Critical' || incident.priority === '0-Code Red');
     const filterOngoingIncidents = (incidents) =>
-        (selectedBrand === EG_BRAND ? incidents : incidents.filter(incident => incident.Brand === selectedBrand))
-        .filter(isOngoingIncident);
+        (selectedBrand === EG_BRAND ? incidents : incidents.filter((incident) => incident.Brand === selectedBrand))
+            .filter(isOngoingIncident);
 
     useEffect(() => {
         const fetchTickets = () => {
