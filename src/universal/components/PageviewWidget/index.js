@@ -15,7 +15,7 @@ const CustomTooltip = ({active, payload}) => {
     return null;
 };
 
-const PageviewWidget = ({title = '', data = [], brand}) => {
+const PageviewWidget = ({title = '', data = [], brand, tickGap = 5}) => {
     const brandLabel = brand.replace(/\s/g, '');
     const fill = `url(#${brandLabel})`;
     const {color} = getBrand(brand);
@@ -32,7 +32,7 @@ const PageviewWidget = ({title = '', data = [], brand}) => {
                                     <stop offset="95%" stopColor={color} stopOpacity={0} />
                                 </linearGradient>
                             </defs>
-                            <XAxis dataKey="time" />
+                            <XAxis dataKey="time" minTickGap={tickGap} />
                             <YAxis />
                             <CartesianGrid strokeDasharray="3 3" />
                             <Tooltip content={<CustomTooltip />} />

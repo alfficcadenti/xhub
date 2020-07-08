@@ -3,7 +3,7 @@ import moment from 'moment';
 import PageviewWidget from '../../components/PageviewWidget';
 import LoadingContainer from '../../components/LoadingContainer';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
-import {getBrand} from '../../constants';
+import {getBrand, EG_BRAND} from '../../constants';
 import './styles.less';
 
 const FunnelView = ({selectedBrands}) => {
@@ -15,6 +15,8 @@ const FunnelView = ({selectedBrands}) => {
     const [start, setStart] = useState(moment().subtract(24, 'hours').startOf('minute'));
     const [end, setEnd] = useState(moment().endOf('minute'));
     const [isDirtyForm, setIsDirtyForm] = useState(false);
+    const [currentTimeRange, setCurrentTimeRange] = useState('Last 24 hours');
+    const [pendingTimeRange, setPendingTimeRange] = useState('Last 24 hours');
 
     const PAGES_LIST = [
         {name: 'home', label: 'Home'},
@@ -71,7 +73,10 @@ const FunnelView = ({selectedBrands}) => {
                 setWidgets(widgetObjects);
             })
             .catch((err) => {
-                setError('Page Views data not available. Try to refresh or select another brand');
+                const errorMessage = pageBrand === EG_BRAND ?
+                    'Aggregated view is not supported. Please select individual brand' :
+                    'Page Views data not available. Try to refresh or select another brand';
+                setError(errorMessage);
                 // eslint-disable-next-line no-console
                 console.error(err);
             })
@@ -82,20 +87,30 @@ const FunnelView = ({selectedBrands}) => {
         fetchData(selectedBrands);
     }, [selectedBrands, start, end]);
 
-    const handleDatetimeChange = ({start: startDateTimeStr, end: endDateTimeStr}) => {
+    const handleDatetimeChange = ({start: startDateTimeStr, end: endDateTimeStr}, text) => {
+        setPendingTimeRange(text || pendingTimeRange);
         setPendingStart(moment(startDateTimeStr));
         setPendingEnd(moment(endDateTimeStr));
         setIsDirtyForm(true);
     };
 
     const handleApplyFilters = () => {
+        setCurrentTimeRange(pendingTimeRange);
         setStart(pendingStart);
         setEnd(pendingEnd);
         setIsDirtyForm(false);
     };
 
+    const getWidgetXAxisTickGap = (timeRange) => [
+        'Last 1 hour',
+        'Last 3 hours',
+        'Last 6 hours',
+        'Last 12 hours',
+        'Last 24 hours'
+    ].includes(timeRange) ? 20 : 5;
+
     const renderWidget = ({pageName, pageViews, pageBrand}) => (
-        <PageviewWidget title={pageName} data={pageViews} key={pageName} brand={pageBrand} />
+        <PageviewWidget title={pageName} data={pageViews} key={pageName} brand={pageBrand} tickGap={getWidgetXAxisTickGap(currentTimeRange)} />
     );
 
     return (

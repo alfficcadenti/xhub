@@ -73,7 +73,7 @@ const renderPresets = (presets, onChange) => (
             key={d.text}
             link="#"
             text={d.text}
-            onClick={() => onChange(d.value)}
+            onClick={() => onChange(d.value, d.text)}
         />
     ))
 );
