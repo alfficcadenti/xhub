@@ -18,8 +18,8 @@ const deviceBars = (CSRByDevice) => (
 );
 
 const logo = (brandName) => (brandLogoFile(brandName) ?
-    <img className="brandLogoImg" alt={`${brandName}-logo`} src={brandLogoFile(brandName)} height={brandName === 'expedia' ? 35 : 35}/> :
-    <h2 className="brandName">{brandName}</h2>
+    <img className="brand-logo-img" alt={`${brandName}-logo`} src={brandLogoFile(brandName)} /> :
+    <h2 className="brand-name">{brandName}</h2>
 );
 
 const BrandCSRWidget = ({brandName = '', CSRTrend = [], CSRByDevice = {}, onBrandChange}) => {

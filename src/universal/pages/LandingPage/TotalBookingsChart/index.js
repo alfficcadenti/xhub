@@ -1,9 +1,15 @@
-import React, {PureComponent, Fragment} from 'react';
+import React, {PureComponent} from 'react';
+import moment from 'moment';
+import 'moment-timezone';
 import {
     AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
 import HelpText from '../../../components/HelpText/HelpText';
 import {BRANDS, getBrand} from '../../../constants';
+import './styles.less';
+
+const TIMEZONE_OFFSET = (new Date()).getTimezoneOffset();
+const TIMEZONE_ABBR = moment.tz.zone(moment.tz.guess()).abbr(TIMEZONE_OFFSET);
 
 export default class TotalChart extends PureComponent {
     renderGradient = (brand) => {
@@ -33,12 +39,12 @@ export default class TotalChart extends PureComponent {
         const allBrands = BRANDS.map((brand) => brand.landingBrand).filter((brand) => !!brand);
         const selectedBrands = brands.includes('Expedia Group') ? allBrands : brands;
         return (
-            <Fragment>
-                <h3>
-                    {'Total bookings'}
-                    <HelpText className="chart-info" text="Total Bookings for the last 24 hours, refreshes every minutes and display in UTC time" placement="bottom"/>
-                </h3>
-                <ResponsiveContainer width="90%" height="80%">
+            <div className="total-bookings-container">
+                <h2 className="total-bookings-title">
+                    {'Total Bookings'}
+                    <HelpText className="chart-info" text={`Total Bookings for the last 24 hours in ${TIMEZONE_ABBR} time. Data refreshes every minute.`} placement="bottom"/>
+                </h2>
+                <ResponsiveContainer width="100%" height="80%">
                     <AreaChart width={730} height={250} data={data}
                         margin={{top: 10, right: 30, left: 0, bottom: 0}}
                     >
@@ -53,7 +59,7 @@ export default class TotalChart extends PureComponent {
                         <Legend onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave} />
                     </AreaChart>
                 </ResponsiveContainer>
-            </Fragment>
+            </div>
         );
     }
 }

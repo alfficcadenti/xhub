@@ -63,10 +63,10 @@ const OngoingIncidents = ({selectedBrands}) => {
                 {
                     ongoingIncidents.length ? ongoingIncidents.map(({incidentSummary, priority, startedAt, incidentNumber}) => {
                         return (
-                            <Divider heading={incidentSummary} id="ongoing-incident">
+                            <Divider key={incidentNumber} heading={incidentSummary} id="ongoing-incident">
                                 <div key={incidentSummary} className="ongoing-incident">
                                     <div><strong>{'Summary:'}</strong><span className="ongoing-incident-info">{incidentSummary}</span></div>
-                                    <div><strong>{'Incident Ticket:'}</strong><a target="_blank" href={`https://jira.homeawaycorp.com/browse/${incidentNumber}`}><span className="ongoing-incident-info">{incidentNumber}</span></a></div>
+                                    <div><strong>{'Ticket:'}</strong><a target="_blank" href={`https://jira.homeawaycorp.com/browse/${incidentNumber}`}><span className="ongoing-incident-info">{incidentNumber}</span></a></div>
                                     <div><strong>{'Priority:'}</strong><span className="ongoing-incident-info">{priority}</span></div>
                                     <div><strong>{'Started at:'}</strong><span className="ongoing-incident-info">{getDateDetails(startedAt)}</span></div>
                                 </div>

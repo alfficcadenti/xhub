@@ -1,10 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import moment from 'moment';
+import 'moment-timezone';
 import PageviewWidget from '../../components/PageviewWidget';
 import LoadingContainer from '../../components/LoadingContainer';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import {getBrand, EG_BRAND} from '../../constants';
 import './styles.less';
+
+const TIMEZONE_OFFSET = (new Date()).getTimezoneOffset();
+const TIMEZONE_ABBR = moment.tz.zone(moment.tz.guess()).abbr(TIMEZONE_OFFSET);
 
 const FunnelView = ({selectedBrands}) => {
     const [widgets, setWidgets] = useState([]);
@@ -42,10 +46,10 @@ const FunnelView = ({selectedBrands}) => {
         const {label: pageBrand, psrBrand} = getBrand(selectedBrand);
         setIsLoading(true);
         setError('');
-        const url = start && end
-            ? `/v1/pageViews?brand=${psrBrand}&timeInterval=1&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
-            : `/v1/pageViews?brand=${psrBrand}&timeInterval=1`;
-        fetch(url)
+        const dateQuery = start && end
+            ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
+            : '';
+        fetch(`/v1/pageViews?brand=${psrBrand}&timeInterval=1${dateQuery}`)
             .then((resp) => {
                 if (!resp.ok) {
                     throw new Error();
@@ -57,10 +61,10 @@ const FunnelView = ({selectedBrands}) => {
                     const pageViews = fetchedPageviews && fetchedPageviews
                         .map(({time, pageViewsData}) => {
                             const currentPageViews = pageViewsData.find((item) => item.page === name);
-                            const momentTime = moment.utc(time);
+                            const momentTime = moment(time);
                             return currentPageViews
                                 ? {
-                                    label: momentTime.format('HH:mm UTC'),
+                                    label: `${momentTime.format('HH:mm')} ${TIMEZONE_ABBR}`,
                                     time: momentTime.format('HH:mm'),
                                     momentTime,
                                     value: currentPageViews.views
@@ -73,9 +77,9 @@ const FunnelView = ({selectedBrands}) => {
                 setWidgets(widgetObjects);
             })
             .catch((err) => {
-                const errorMessage = pageBrand === EG_BRAND ?
-                    'Aggregated view is not supported. Please select individual brand' :
-                    'Page Views data not available. Try to refresh or select another brand';
+                const errorMessage = pageBrand === EG_BRAND
+                    ? 'Aggregated view is not supported. Please select an individual brand.'
+                    : 'No data found. Try refreshing the page or select another brand.';
                 setError(errorMessage);
                 // eslint-disable-next-line no-console
                 console.error(err);
@@ -135,7 +139,6 @@ const FunnelView = ({selectedBrands}) => {
                     {widgets.map(renderWidget)}
                 </div>
             </LoadingContainer>
-
         </div>
     );
 };

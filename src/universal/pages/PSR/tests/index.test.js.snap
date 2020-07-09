@@ -46,7 +46,7 @@ exports[`matches the snapshot 2`] = `
   tabIndex="0"
 >
   <h3
-    className="brandName"
+    className="brand-name"
   >
     vrbo
   </h3>
