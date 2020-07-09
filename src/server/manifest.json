@@ -15,15 +15,40 @@
       },
       // Service-client configuration
       "apiDataServiceConfig": {
-        "hostname": "opxhub-data-service.us-east-1.prod.expedia.com",
-        "protocol": "https:",
-        "connectionTimeout": 30000,
-        "timeout": 30000,
-        "routes": {
-          "prbs": {
-            "path": "/prbs",
-            "operation": "GET_prbs",
-            "method": "GET"
+        "$filter": "env.EXPEDIA_ENVIRONMENT",
+        "$default": {
+          "hostname": "opxhub-data-service.us-east-1.prod.expedia.com",
+          "protocol": "https:",
+          "connectionTimeout": 30000,
+          "timeout": 30000,
+          "routes": {
+            "prbs": {
+              "path": "/prbs",
+              "operation": "GET_prbs",
+              "method": "GET"
+            }
+          }
+        },
+        "test": {
+          "hostname": "opxhub-data-service.us-west-2.test.expedia.com",
+          "protocol": "https:",
+          "routes": {
+            "prbs": {
+              "path": "/prbs",
+              "operation": "GET_prbs",
+              "method": "GET"
+            }
+          }
+        },
+        "prod": {
+          "hostname": "opxhub-data-service.us-east-1.prod.expedia.com",
+          "protocol": "https:",
+          "routes": {
+            "prbs": {
+              "path": "/prbs",
+              "operation": "GET_prbs",
+              "method": "GET"
+            }
           }
         }
       },
