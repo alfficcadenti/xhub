@@ -34,10 +34,7 @@ const OngoingIncidents = ({selectedBrands}) => {
 
                     setAllIncidents(adjustedIncidents);
 
-                    const res = filterOngoingIncidents(adjustedIncidents);
-                    console.log(res);
-
-                    setOngoingIncidents(res);
+                    setOngoingIncidents(filterOngoingIncidents(adjustedIncidents));
                     setIsLoading(false);
                 })
                 .catch((err) => {

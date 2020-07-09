@@ -23,17 +23,6 @@ describe('Incident Trends Dashboard custom hooks', () => {
         expect(wrapper.exists()).to.be.ok;
     });
 
-    describe('test useIsMount hook', () => {
-        it('useIsMount is correct', () => {
-            const wrapper = shallow(<HookWrapper hook={() => useIsMount()} />);
-
-            let {hook} = wrapper.find('div').props();
-            let isMount = hook;
-
-            expect(isMount).eql(true);
-        });
-    });
-
     describe('test useFetchTickets hook', () => {
         it('fetch tickets successfully', () => {
             const wrapper = shallow(<HookWrapper hook={() => useFetchTickets()} />);

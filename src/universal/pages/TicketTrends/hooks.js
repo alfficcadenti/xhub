@@ -1,4 +1,4 @@
-import {useState, useEffect, useRef} from 'react';
+import {useState, useEffect} from 'react';
 import {adjustTicketProperties, getListOfUniqueProperties, getUniqueTickets} from './incidentsHelper';
 import {
     ALL_PRIORITIES_OPTION,
@@ -7,16 +7,8 @@ import {
     ALL_RC_OWNERS_OPTION,
     ALL_TAGS
 } from '../../constants';
+import {useIsMount} from '../hooks';
 
-export const useIsMount = () => {
-    const isMountRef = useRef(true);
-
-    useEffect(() => {
-        isMountRef.current = false;
-    }, []);
-
-    return isMountRef.current;
-};
 
 export const useFetchTickets = (
     isApplyClicked,

@@ -1,7 +1,6 @@
 /* eslint-disable complexity */
-const distinct = (value, index, self) => {
-    return self.indexOf(value) === index;
-};
+import {distinct} from '../utils';
+
 
 const listOfBrands = (data = []) => (data.map((x) => x.brand).filter(distinct));
 

@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import moment from 'moment';
 import DataTable from '../../components/DataTable';
+import {useIsMount} from '../hooks';
+import {removeEmptyStringsFromArray, distinct} from '../utils';
 
-const distinct = (value, index, self) => self.indexOf(value) === index;
-const removeEmptyStringsFromArray = (item) => item;
 
 const getListOfUniqueProperties = (tickets = [], prop) => tickets
     .map((ticket) => ticket[prop])
@@ -70,16 +70,6 @@ const mapTickets = (t) => {
                 </>
             )
     });
-};
-
-export const useIsMount = () => {
-    const isMountRef = useRef(true);
-
-    useEffect(() => {
-        isMountRef.current = false;
-    }, []);
-
-    return isMountRef.current;
 };
 
 export const useFetchTickets = (

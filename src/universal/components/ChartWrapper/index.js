@@ -5,6 +5,11 @@ import './styles.less';
 const tooltipBgColor = 'gainsboro';
 const formatToUSDollarCurrency = (number) => number.
     toLocaleString('en-US', {style: 'currency', currency: 'USD'});
+const htmlDecode = (input) => {
+    const doc = new DOMParser().parseFromString(input, 'text/html');
+
+    return doc.documentElement.textContent;
+};
 const setChartOptions = (series = [], xAxisValues = [], tooltipData, yAxisName) => ({
     legend: {
         left: 0,
@@ -19,7 +24,7 @@ const setChartOptions = (series = [], xAxisValues = [], tooltipData, yAxisName) 
             const incidents = tooltipData[name][seriesName];
             const incidentsString = incidents.map((item) => {
                 return `<div class="incident-wrapper">
-                        <span class="incident-number">${item.incidentNumberLink}</span>
+                        <span class="incident-number">${htmlDecode(item.incidentNumberLink)}</span>
                         <span class="incident-financial-impact">${formatToUSDollarCurrency(item.lostRevenue)}</span>
                         </div>`;
             }).join('');
