@@ -29,8 +29,8 @@ class BrandDailyPSR extends Component {
             <div className={classValue} key={brand + date} onClick={this.openDetails} onKeyDown={this.openDetails} role="button" tabIndex="0">
                 {
                     h.brandLogoFile(brand) ?
-                        <img className="brandLogoImg" alt={`${brand}-logo`} src={h.brandLogoFile(brand)} height="35"/> :
-                        <h3 className="brandName">{brand}</h3>
+                        <img className="brand-logo-img" alt={`${brand}-logo`} src={h.brandLogoFile(brand)} height="35"/> :
+                        <h3 className="brand-name">{brand}</h3>
                 }
                 <div className="lastUpdate">{date ? `Last update ${date}` : ''}</div>
                 <GaugeChart title={brand} value={dailyPSRValue} />

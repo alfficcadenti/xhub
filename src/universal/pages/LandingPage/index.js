@@ -80,7 +80,7 @@ const LandingPage = (props) => {
     return (
         <div className="home-container">
             <div className="grid-wrapper">
-                <div id="total-bookings" className="card">
+                <div className="total-bookings card">
                     <TotalChart data={chartData} brands={selectedBrands}/>
                 </div>
                 <div className="ongoing-incidents-wrapper card">
