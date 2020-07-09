@@ -18,7 +18,7 @@ const deviceBars = (CSRByDevice) => (
 );
 
 const logo = (brandName) => (brandLogoFile(brandName) ?
-    <img className="brand-logo-img" alt={`${brandName}-logo`} src={brandLogoFile(brandName)} height={brandName === 'expedia' ? 35 : 35}/> :
+    <img className="brand-logo-img" alt={`${brandName}-logo`} src={brandLogoFile(brandName)} /> :
     <h2 className="brand-name">{brandName}</h2>
 );
 
