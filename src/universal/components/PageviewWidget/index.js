@@ -1,5 +1,6 @@
 import React from 'react';
-import {AreaChart, XAxis, YAxis, Area, Tooltip, ResponsiveContainer, CartesianGrid} from 'recharts';
+import moment from 'moment';
+import {AreaChart, XAxis, YAxis, Area, Tooltip, ResponsiveContainer, CartesianGrid, ReferenceArea} from 'recharts';
 import {getBrand} from '../../constants';
 import './styles.less';
 
@@ -15,28 +16,64 @@ const CustomTooltip = ({active, payload}) => {
     return null;
 };
 
-const PageviewWidget = ({title = '', data = [], brand, tickGap = 5}) => {
+const formatXAxis = (date) => moment(date).format('MMM-DD hh:mm');
+
+const PageviewWidget = ({
+    title = '',
+    data = [],
+    brand,
+    tickGap = 5,
+    onMouseDown,
+    onMouseMove,
+    onMouseUp,
+    chartLeft,
+    chartRight,
+    refAreaLeft,
+    refAreaRight
+}) => {
     const brandLabel = brand.replace(/\s/g, '');
     const fill = `url(#${brandLabel})`;
     const {color} = getBrand(brand);
+
+    const yAxisId = `yAxis-${title}`;
+
     return (
         <div className="widget-card card" key={title}>
             <h3>{title}</h3>
             {
                 data.length ?
                     <ResponsiveContainer width="100%" height="80%">
-                        <AreaChart width={100} height={100} data={data}>
+                        <AreaChart
+                            width={100}
+                            height={100}
+                            data={data}
+                            syncId="pageview-widget"
+                            onMouseDown={onMouseDown}
+                            onMouseMove={onMouseMove}
+                            onMouseUp={onMouseUp}
+                        >
                             <defs>
                                 <linearGradient key={`${title}Gradient`} id={brandLabel} x1="0" y1="0" x2="0" y2="1">
                                     <stop offset="5%" stopColor={color} stopOpacity={0.8} />
                                     <stop offset="95%" stopColor={color} stopOpacity={0} />
                                 </linearGradient>
                             </defs>
-                            <XAxis dataKey="time" minTickGap={tickGap} />
-                            <YAxis />
+                            <XAxis
+                                allowDataOverflow
+                                dataKey="time"
+                                minTickGap={tickGap}
+                                tickFormatter={formatXAxis}
+                                domain={[chartLeft, chartRight]}
+                            />
+                            <YAxis allowDataOverflow type="number" yAxisId={yAxisId} />
                             <CartesianGrid strokeDasharray="3 3" />
                             <Tooltip content={<CustomTooltip />} />
-                            <Area type="monotone" dataKey="value" stroke={color} fillOpacity={1} fill={fill} key={`area${brand}`}/>
+                            <Area type="monotone" dataKey="value" stroke={color} fillOpacity={1} fill={fill} key={`area${brand}`} yAxisId={yAxisId} />
+                            {
+                                (refAreaLeft && refAreaRight)
+                                    ? <ReferenceArea yAxisId={yAxisId} x1={refAreaLeft} x2={refAreaRight} strokeOpacity={0.3} />
+                                    : null
+                            }
                         </AreaChart>
                     </ResponsiveContainer> :
                     <div className="recharts-empty-container" />
