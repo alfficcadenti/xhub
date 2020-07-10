@@ -4,7 +4,7 @@ import React from 'react';
 import {expect} from 'chai';
 import {shallow} from 'enzyme/build';
 import {func} from 'prop-types';
-import {useIsMount, useFetchTickets} from '../hooks';
+import {useFetchTickets} from '../hooks';
 
 function HookWrapper(props) {
     const hook = props.hook ? props.hook() : undefined;
