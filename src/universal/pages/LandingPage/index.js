@@ -7,11 +7,12 @@ import moment from 'moment';
 import {EXPEDIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_BUSINESS_SERVICES_BRAND, EG_BRAND, BRANDS, getBrand} from '../../constants';
 import './styles.less';
 import {formatCSRData} from './utils';
+import {removeEmptyStringsFromArray} from '../utils';
 
 const LandingPage = (props) => {
     const selectedBrands = props.selectedBrands[0] === EG_BRAND
-        ? BRANDS.map((brand) => brand.landingBrand).filter((brand) => !!brand)
-        : props.selectedBrands.map((brand) => getBrand(brand).landingBrand).filter((brand) => !!brand);
+        ? BRANDS.map((brand) => brand.landingBrand).filter(removeEmptyStringsFromArray)
+        : props.selectedBrands.map((brand) => getBrand(brand).landingBrand).filter(removeEmptyStringsFromArray);
     const csrWidgetToExclude = [EXPEDIA_BUSINESS_SERVICES_BRAND, HOTELS_COM_BRAND];
     const csrSelectedBrands = selectedBrands.filter((selectedBrand) => !csrWidgetToExclude.includes(selectedBrand));
 

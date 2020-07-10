@@ -4,6 +4,7 @@ import {
 } from 'recharts';
 import HelpText from '../../components/HelpText/HelpText';
 import {EXPEDIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_BUSINESS_SERVICES_BRAND, BRANDS} from '../../constants';
+import {removeEmptyStringsFromArray} from '../../pages/utils';
 
 export default class PageView extends PureComponent {
     brandColor = (brand) => {
@@ -45,7 +46,7 @@ export default class PageView extends PureComponent {
 
     render() {
         const {brands, data, title} = this.props;
-        const allBrands = BRANDS.map((brand) => brand.landingBrand).filter((brand) => !!brand);
+        const allBrands = BRANDS.map((brand) => brand.landingBrand).filter(removeEmptyStringsFromArray);
         const selectedBrands = brands.includes('Expedia Group') ? allBrands : brands;
         return (
             <Fragment>

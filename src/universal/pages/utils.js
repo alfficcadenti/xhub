@@ -10,3 +10,7 @@ export const getPieData = (filteredDefects, property) => {
         }, {});
     return Object.entries(counts).map(([name, value]) => ({name, value}));
 };
+
+export const removeEmptyStringsFromArray = (item) => !!item;
+
+export const distinct = (value, index, self) => self.indexOf(value) === index;
