@@ -16,7 +16,7 @@ const CustomTooltip = ({active, payload}) => {
     return null;
 };
 
-const formatXAxis = (date) => moment(date).format('MMM-DD hh:mm');
+const formatXAxis = (date) => moment(date).format('MM/DD hh:mm');
 
 const PageviewWidget = ({
     title = '',
@@ -51,6 +51,7 @@ const PageviewWidget = ({
                             onMouseDown={onMouseDown}
                             onMouseMove={onMouseMove}
                             onMouseUp={onMouseUp}
+                            cursor="crosshair"
                         >
                             <defs>
                                 <linearGradient key={`${title}Gradient`} id={brandLabel} x1="0" y1="0" x2="0" y2="1">
@@ -64,8 +65,9 @@ const PageviewWidget = ({
                                 minTickGap={tickGap}
                                 tickFormatter={formatXAxis}
                                 domain={[chartLeft, chartRight]}
+                                tick={{fontSize: 10}}
                             />
-                            <YAxis allowDataOverflow type="number" yAxisId={yAxisId} />
+                            <YAxis allowDataOverflow type="number" yAxisId={yAxisId} tick={{fontSize: 10}} />
                             <CartesianGrid strokeDasharray="3 3" />
                             <Tooltip content={<CustomTooltip />} />
                             <Area type="monotone" dataKey="value" stroke={color} fillOpacity={1} fill={fill} key={`area${brand}`} yAxisId={yAxisId} />

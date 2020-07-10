@@ -49,13 +49,13 @@ const FunnelView = ({selectedBrands}) => {
     ];
 
     const fetchData = ([selectedBrand]) => {
-        const {label: pageBrand, psrBrand} = getBrand(selectedBrand);
+        const {label: pageBrand, funnelBrand} = getBrand(selectedBrand);
         setIsLoading(true);
         setError('');
         const dateQuery = start && end
             ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
             : '';
-        fetch(`/v1/pageViews?brand=${psrBrand}&timeInterval=1${dateQuery}`)
+        fetch(`/v1/pageViews?brand=${funnelBrand}&timeInterval=1${dateQuery}`)
             .then((resp) => {
                 if (!resp.ok) {
                     throw new Error();

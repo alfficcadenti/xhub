@@ -52,8 +52,8 @@ export default class TotalChart extends PureComponent {
                         <defs>
                             {selectedBrands.map((brand) => this.renderGradient(brand))}
                         </defs>
-                        <XAxis dataKey="time" />
-                        <YAxis />
+                        <XAxis dataKey="time" tick={{fontSize: 10}} />
+                        <YAxis tick={{fontSize: 10}} />
                         <CartesianGrid strokeDasharray="3 3" />
                         <Tooltip />
                         {selectedBrands.map((brand) => this.renderArea(brand))}
