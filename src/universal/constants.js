@@ -32,7 +32,7 @@ export const BRANDS = [
     {
         label: EXPEDIA_BRAND,
         psrBrand: 'expedia',
-        funnelBrand: 'bexg',
+        funnelBrand: 'expedia',
         landingBrand: 'Expedia',
         incidentBrand: 'BEX - Expedia Group',
         color: '#1B5CAF'
