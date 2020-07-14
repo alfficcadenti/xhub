@@ -64,8 +64,9 @@ const FunnelView = ({selectedBrands}) => {
         const {funnelBrand} = getBrand(selectedBrand);
         setIsRttLoading(true);
         setRttError('');
-        const rttStart = moment().subtract(60, 'minute');
-        const rttEnd = moment().subtract(1, 'minute');
+        const now = moment();
+        const rttStart = moment(now).subtract(1, 'minute').startOf('minute');
+        const rttEnd = moment(now).subtract(1, 'minute').endOf('minute');
         const dateQuery = `&startDate=${rttStart.utc().format()}&endDate=${rttEnd.utc().format()}`;
         fetch(`/v1/pageViews?brand=${funnelBrand}&timeInterval=1${dateQuery}`)
             .then((resp) => {
