@@ -96,10 +96,11 @@ const DatetimeRangePicker = (props) => (
             onChange={props.onChange}
             startDate={props.startDate}
             endDate={props.endDate}
+            disabled={props.disabled}
         />
         <div className="rdt-start-label">{'Start'}</div>
         <div className="rdt-end-label">{'End'}</div>
-        {!props.hidePresets && (
+        {!props.hidePresets && !props.disabled && (
             <Dropdown
                 id="rdt-preset-dropdown"
                 label={getPresetLabel(props.startDate, props.endDate, props.presets)}
@@ -115,7 +116,8 @@ const DatetimeRangePicker = (props) => (
 
 DatetimeRangePicker.defaultProps = {
     hidePresets: false,
-    presets: getPresets()
+    presets: getPresets(),
+    disabled: false
 };
 
 DatetimeRangePicker.propTypes = {
@@ -123,7 +125,8 @@ DatetimeRangePicker.propTypes = {
     endDate: PropTypes.instanceOf(Date).isRequired,
     onChange: PropTypes.func.isRequired,
     presets: PropTypes.arrayOf(PropTypes.shape()),
-    hidePresets: PropTypes.bool
+    hidePresets: PropTypes.bool,
+    disabled: PropTypes.bool
 };
 
 export {

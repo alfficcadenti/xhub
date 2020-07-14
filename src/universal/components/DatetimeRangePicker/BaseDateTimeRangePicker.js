@@ -172,6 +172,7 @@ class BaseDateTimeRangePicker extends Component {
                     isValidDate={this.props.isValidStartDate}
                     onChange={this.onStartDateChange}
                     renderDay={this.renderDay}
+                    inputProps={{disabled: this.props.disabled}}
                 />
 
                 <Datetime
@@ -179,6 +180,7 @@ class BaseDateTimeRangePicker extends Component {
                     isValidDate={this.isValidEndDate}
                     onChange={this.onEndDateChange}
                     renderDay={this.renderDay}
+                    inputProps={{disabled: this.props.disabled}}
                 />
             </div>
         );
@@ -214,7 +216,8 @@ BaseDateTimeRangePicker.defaultProps = {
     onEndDateChange: () => {}, // This is called after onChange
     onStartDateFocus: () => {},
     startTimeConstraints: {},
-    onStartDateChange: () => {} // This is called after onChange
+    onStartDateChange: () => {}, // This is called after onChange
+    disabled: false
 };
 
 
@@ -251,7 +254,8 @@ BaseDateTimeRangePicker.propTypes = {
         PropTypes.instanceOf(moment), PropTypes.instanceOf(Date), PropTypes.string]),
     startTimeConstraints: PropTypes.object,   // eslint-disable-line
     dateFormat: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-    timeFormat: PropTypes.oneOfType([PropTypes.bool, PropTypes.string])
+    timeFormat: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
+    disabled: PropTypes.bool
 };
 
 export default BaseDateTimeRangePicker;
