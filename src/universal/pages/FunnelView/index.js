@@ -1,32 +1,44 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import moment from 'moment';
 import 'moment-timezone';
+import HelpText from '../../components/HelpText/HelpText';
 import PageviewWidget from '../../components/PageviewWidget';
 import LoadingContainer from '../../components/LoadingContainer';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
-import {getBrand, EG_BRAND} from '../../constants';
+import {getBrand, EG_BRAND, EGENCIA_BRAND, EXPEDIA_BUSINESS_SERVICES_BRAND} from '../../constants';
 import './styles.less';
 
 const TIMEZONE_OFFSET = (new Date()).getTimezoneOffset();
 const TIMEZONE_ABBR = moment.tz.zone(moment.tz.guess()).abbr(TIMEZONE_OFFSET);
 
 const FunnelView = ({selectedBrands}) => {
+    const initialStart = moment().subtract(6, 'hours').startOf('minute');
+    const initialEnd = moment().endOf('minute');
+    const initialTimeRange = 'Last 6 hours';
+
+    const [realTimeTotals, setRealTimeTotals] = useState({});
+    const [isRttLoading, setIsRttLoading] = useState(true);
+    const [rttError, setRttError] = useState('');
+
     const [widgets, setWidgets] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
-    const [pendingStart, setPendingStart] = useState(moment().subtract(24, 'hours').startOf('minute'));
-    const [pendingEnd, setPendingEnd] = useState(moment().endOf('minute'));
-    const [start, setStart] = useState(moment().subtract(24, 'hours').startOf('minute'));
-    const [end, setEnd] = useState(moment().endOf('minute'));
+    const [pendingStart, setPendingStart] = useState(initialStart);
+    const [pendingEnd, setPendingEnd] = useState(initialEnd);
+    const [start, setStart] = useState(initialStart);
+    const [end, setEnd] = useState(initialEnd);
     const [isDirtyForm, setIsDirtyForm] = useState(false);
-    const [currentTimeRange, setCurrentTimeRange] = useState('Last 24 hours');
-    const [pendingTimeRange, setPendingTimeRange] = useState('Last 24 hours');
+    const [currentTimeRange, setCurrentTimeRange] = useState(initialTimeRange);
+    const [pendingTimeRange, setPendingTimeRange] = useState(initialTimeRange);
+    const [isFormDisabled, setIsFormDisabled] = useState(false);
 
     // Shared chart states
     const [refAreaLeft, setRefAreaLeft] = useState('');
     const [refAreaRight, setRefAreaRight] = useState('');
     const [chartLeft, setChartLeft] = useState('dataMin');
     const [chartRight, setChartRight] = useState('dataMax');
+
+    const rttRef = useRef();
 
     const PAGES_LIST = [
         {name: 'home', label: 'Home'},
@@ -48,7 +60,50 @@ const FunnelView = ({selectedBrands}) => {
         {text: 'Last 24 hours', value: getValue(24, 'hours')}
     ];
 
-    const fetchData = ([selectedBrand]) => {
+    const fetchRealTimeData = ([selectedBrand]) => {
+        const {funnelBrand} = getBrand(selectedBrand);
+        setIsRttLoading(true);
+        setRttError('');
+        const rttStart = moment().subtract(60, 'minute');
+        const rttEnd = moment().subtract(1, 'minute');
+        const dateQuery = `&startDate=${rttStart.utc().format()}&endDate=${rttEnd.utc().format()}`;
+        fetch(`/v1/pageViews?brand=${funnelBrand}&timeInterval=1${dateQuery}`)
+            .then((resp) => {
+                if (!resp.ok || resp.error) {
+                    throw new Error(resp.message);
+                }
+                return resp.json();
+            })
+            .then((fetchedPageviews) => {
+                const nextRealTimeTotals = PAGES_LIST.reduce((acc, {label}) => {
+                    acc[label] = 0;
+                    return acc;
+                }, {});
+                PAGES_LIST.forEach(({name, label}) => {
+                    fetchedPageviews.forEach(({time, pageViewsData}) => {
+                        const currentPageViews = pageViewsData.find((item) => item.page === name);
+                        if (currentPageViews) {
+                            const momentTime = moment(time);
+                            if (momentTime.isBetween(rttStart, rttEnd, 'seconds', '[]')) {
+                                nextRealTimeTotals[label] += currentPageViews.views;
+                            }
+                        }
+                    });
+                });
+                setRealTimeTotals(nextRealTimeTotals);
+            })
+            .catch((err) => {
+                let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
+                    ? 'Query has timed out. Try refreshing the page. If the problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.'
+                    : 'An unexpected error has occurred. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.';
+                setRttError(errorMessage);
+                // eslint-disable-next-line no-console
+                console.error(err);
+            })
+            .finally(() => setIsRttLoading(false));
+    };
+
+    const fetchPageViewsData = ([selectedBrand]) => {
         const {label: pageBrand, funnelBrand} = getBrand(selectedBrand);
         setIsLoading(true);
         setError('');
@@ -57,35 +112,40 @@ const FunnelView = ({selectedBrands}) => {
             : '';
         fetch(`/v1/pageViews?brand=${funnelBrand}&timeInterval=1${dateQuery}`)
             .then((resp) => {
-                if (!resp.ok) {
-                    throw new Error();
+                if (!resp.ok || resp.error) {
+                    throw new Error(resp.message);
                 }
                 return resp.json();
             })
             .then((fetchedPageviews) => {
+                if (!fetchedPageviews || !fetchedPageviews.length) {
+                    setError('No data found. Try refreshing the page or select another brand.');
+                    return;
+                }
                 const widgetObjects = PAGES_LIST.map(({name, label}) => {
-                    const pageViews = fetchedPageviews && fetchedPageviews
-                        .map(({time, pageViewsData}) => {
-                            const currentPageViews = pageViewsData.find((item) => item.page === name);
+                    const pageViews = [];
+                    fetchedPageviews.forEach(({time, pageViewsData}) => {
+                        const currentPageViews = pageViewsData.find((item) => item.page === name);
+                        if (currentPageViews) {
                             const momentTime = moment(time);
-                            return currentPageViews
-                                ? {
+                            if (momentTime.isBetween(start, end, 'minutes', '[]')) {
+                                pageViews.push({
                                     label: `${momentTime.format('YYYY-MM-DD HH:mm')} ${TIMEZONE_ABBR}`,
                                     time: momentTime.format('YYYY-MM-DD HH:mm'),
                                     momentTime,
                                     value: currentPageViews.views
-                                }
-                                : {};
-                        })
-                        .filter(({momentTime}) => momentTime.isBetween(start, end, 'minutes', '[]'));
+                                });
+                            }
+                        }
+                    });
                     return {pageName: label, pageViews, pageBrand};
                 });
                 setWidgets(widgetObjects);
             })
             .catch((err) => {
-                const errorMessage = pageBrand === EG_BRAND
-                    ? 'Aggregated view is not supported. Please select an individual brand.'
-                    : 'No data found. Try refreshing the page or select another brand.';
+                let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
+                    ? 'Query has timed out. Try refreshing the page. If the problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.'
+                    : 'An unexpected error has occurred. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.';
                 setError(errorMessage);
                 // eslint-disable-next-line no-console
                 console.error(err);
@@ -94,7 +154,21 @@ const FunnelView = ({selectedBrands}) => {
     };
 
     useEffect(() => {
-        fetchData(selectedBrands);
+        clearInterval(rttRef.current);
+        if ([EG_BRAND, EGENCIA_BRAND, EXPEDIA_BUSINESS_SERVICES_BRAND].includes(selectedBrands[0])) {
+            setError(`Page views for ${selectedBrands} is not yet available.
+                The following brands are supported at this time: "Expedia", "Hotels.com", and "Vrbo".
+                If you have any questions, please ping #dpi-reo-opex-all or leave a comment via our Feedback form.`);
+            setIsFormDisabled(true);
+        } else {
+            setIsFormDisabled(false);
+            fetchRealTimeData(selectedBrands);
+            rttRef.current = setInterval(fetchRealTimeData, 60000); // refresh every minute
+            fetchPageViewsData(selectedBrands);
+        }
+        return function cleanup() {
+            clearInterval(rttRef.current);
+        };
     }, [selectedBrands, start, end]);
 
     const handleDatetimeChange = ({start: startDateTimeStr, end: endDateTimeStr}, text) => {
@@ -152,6 +226,13 @@ const FunnelView = ({selectedBrands}) => {
     const handleMouseDown = (e) => setRefAreaLeft(e.activeLabel);
     const handleMouseMove = (e) => refAreaLeft && setRefAreaRight(e.activeLabel);
 
+    const renderRealTimeTotal = ([label, value]) => (
+        <div key={`rtt-${label}`} className="card real-time-card">
+            <div className="rtt-label">{label}</div>
+            <div className="rtt-value">{value}</div>
+        </div>
+    );
+
     const renderWidget = ({pageName, pageViews, pageBrand}) => (
         <PageviewWidget
             title={pageName}
@@ -177,6 +258,7 @@ const FunnelView = ({selectedBrands}) => {
                 startDate={pendingStart.toDate()}
                 endDate={pendingEnd.toDate()}
                 presets={getPresets()}
+                disabled={isFormDisabled}
             />
             <button
                 className="btn btn-primary apply-btn"
@@ -186,6 +268,17 @@ const FunnelView = ({selectedBrands}) => {
             >
                 {'Apply'}
             </button>
+            <div className="summary-container">
+                <h3>
+                    {'Real Time Pageviews'}
+                    <HelpText className="rtt-info" text="Real time pageview totals within the last minute. Refreshes every minute." />
+                </h3>
+                <LoadingContainer isLoading={isRttLoading} error={rttError} className="rtt-loading-container">
+                    <div className="real-time-card-ontainer">
+                        {Object.entries(realTimeTotals).map(renderRealTimeTotal)}
+                    </div>
+                </LoadingContainer>
+            </div>
             <LoadingContainer isLoading={isLoading} error={error} className="page-views-loading-container">
                 <div className="page-views-widget-container">
                     {widgets.map(renderWidget)}
