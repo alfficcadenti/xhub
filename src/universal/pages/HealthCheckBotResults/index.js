@@ -4,13 +4,15 @@ import moment from 'moment';
 import LoadingContainer from '../../components/LoadingContainer';
 import DataTable from '../../components/DataTable';
 import CircleDot from '../../components/CircleDot';
+import {useSelectedBrand} from '../hooks';
 import './styles.less';
 
 
-const HealthCheckBotResults = () => {
+const HealthCheckBotResults = ({selectedBrands}) => {
     const [healthCheckData, setHealthCheckData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
+    useSelectedBrand(selectedBrands[0]);
 
     const isFailedStatus = (system) => system.status === 'failed';
     const isWarningStatus = (system) => system.status === 'warning';

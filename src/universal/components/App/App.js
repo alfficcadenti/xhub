@@ -45,7 +45,7 @@ function App() {
                 <Switch>
                     <Route path="/landing-page" render={() => <LandingPage selectedBrands={selectedBrands} onBrandChange={handleBrandChange} />} />
                     <Route path="/funnel-view" render={() => <FunnelView selectedBrands={selectedBrands} />} />
-                    <Route path="/home" render={() => <Home />} />
+                    <Route path="/home" render={() => <Home selectedBrands={selectedBrands} />} />
                     {pages.map((p) => renderRoute(p, selectedBrands))}
                 </Switch>
             </div>

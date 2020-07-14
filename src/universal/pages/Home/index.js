@@ -2,8 +2,11 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import dashboardsList from '../index';
 import './styles.less';
+import {useSelectedBrand} from '../hooks';
 
-const Home = () => {
+const Home = ({selectedBrands}) => {
+    useSelectedBrand(selectedBrands[0]);
+
     const renderButton = (item) => (
         <Link
             to={{pathname: item.link}}

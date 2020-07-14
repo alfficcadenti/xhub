@@ -5,6 +5,22 @@ import {DATE_FORMAT} from '../../../../constants';
 import {EG_BRAND} from '../../../../constants';
 import moment from 'moment/moment';
 
+
+jest.mock('react-router-dom', () => {
+    const originalModule = jest.requireActual('react-router-dom');
+
+    return {
+        ...originalModule,
+        useHistory: jest.fn(),
+        useLocation: () => ({
+            pathname: '/test',
+            hash: '',
+            search: '',
+            state: ''
+        }),
+    };
+});
+
 describe('<IncidentTrendsDashboard/>', () => {
     const wrapper = shallow(<IncidentTrendsDashboard selectedBrands={[EG_BRAND]} />);
 

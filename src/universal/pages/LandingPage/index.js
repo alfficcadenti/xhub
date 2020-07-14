@@ -8,6 +8,7 @@ import {EXPEDIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_BUSINESS_SERVICES_B
 import './styles.less';
 import {formatCSRData} from './utils';
 import {removeEmptyStringsFromArray} from '../utils';
+import {useSelectedBrand} from '../hooks';
 
 const LandingPage = (props) => {
     const selectedBrands = props.selectedBrands[0] === EG_BRAND
@@ -18,6 +19,7 @@ const LandingPage = (props) => {
 
     const [bookingsData, setBookingsData] = useState([]);
     const [CSRData, setCSRData] = useState([]);
+    useSelectedBrand(props.selectedBrands[0]);
 
     const fetchData = () => {
         const fetchBookingsData = () => {

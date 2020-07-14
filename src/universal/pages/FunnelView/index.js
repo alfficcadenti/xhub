@@ -5,6 +5,7 @@ import PageviewWidget from '../../components/PageviewWidget';
 import LoadingContainer from '../../components/LoadingContainer';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import {getBrand, EG_BRAND} from '../../constants';
+import {useSelectedBrand} from '../hooks';
 import './styles.less';
 
 const TIMEZONE_OFFSET = (new Date()).getTimezoneOffset();
@@ -21,6 +22,7 @@ const FunnelView = ({selectedBrands}) => {
     const [isDirtyForm, setIsDirtyForm] = useState(false);
     const [currentTimeRange, setCurrentTimeRange] = useState('Last 24 hours');
     const [pendingTimeRange, setPendingTimeRange] = useState('Last 24 hours');
+    useSelectedBrand(selectedBrands[0]);
 
     // Shared chart states
     const [refAreaLeft, setRefAreaLeft] = useState('');

@@ -23,6 +23,7 @@ import {
 } from '../../constants';
 import {getPieData} from '../utils';
 import {useFetchTickets} from './hooks';
+import {useSelectedBrand} from '../hooks';
 import './styles.less';
 
 const statusDefaultValue = ALL_STATUSES_OPTION;
@@ -59,7 +60,7 @@ const getActiveIndex = (pathname, history) => {
 };
 
 // eslint-disable-next-line complexity
-const PRB = () => {
+const PRB = ({selectedBrands}) => {
     const history = useHistory();
     const {pathname, search} = useLocation();
     const query = qs.parse(search); // query params from url
@@ -104,6 +105,7 @@ const PRB = () => {
         setCurrentRcOwners,
         setCurrentRcCategories
     );
+    useSelectedBrand(selectedBrands[0]);
 
     function renderDetail(label, value) {
         return (
