@@ -3,12 +3,19 @@ const PHAR = 'Platform Health & Resiliency';
 
 export default [
     // AAT Dashboards
+    // {
+    //     category: AAT,
+    //     id: 'availability',
+    //     link: '/availability',
+    //     text: 'Availability',
+    //     component: require('./Availability')
+    // },
     {
         category: AAT,
-        id: 'availability',
-        link: '/availability',
-        text: 'Availability',
-        component: require('./Availability')
+        id: 'funnel-view',
+        link: '/funnel-view',
+        text: 'Page Views',
+        component: require('./FunnelView')
     },
     // PHAR Dashboards
     {
