@@ -6,7 +6,12 @@ import {getIncidentsData} from '../../../incidentsHelper';
 
 
 const renderTable = (filteredIncidents) => {
-    const columns = ['Incident', 'Priority', 'Brand', 'Division', 'Started', 'Summary', 'RC Owner', 'Duration', 'TTD', 'TTR', 'Status'];
+    const columns = ['Incident', 'Priority', 'Brand', 'Division', 'Started', 'Summary', 'RC Owner', 'TTD', 'TTR', 'Status'];
+    const columnsInfo = {
+        Brand: <div>{'Displaying brand(s) selected by'}<br/>{'dropdown [top right in site header]'}</div>,
+        TTD: <div>{'Time to Detect'}</div>,
+        TTR: <div>{'Time to Resolve (Duration)'}</div>
+    };
     const csvColumns = columns.concat(['Executive Summary', 'Resolution Notes']);
     return (
         <DataTable
@@ -14,9 +19,7 @@ const renderTable = (filteredIncidents) => {
             info="Refreshes every 15 minutes"
             data={getIncidentsData(filteredIncidents)}
             columns={columns}
-            columnsInfo={{
-                Brand: <div>{'Displaying brand(s) selected by'}<br/>{'dropdown [top right in site header]'}</div>
-            }}
+            columnsInfo={columnsInfo}
             expandableColumns={['Details']}
             pageSize={25}
             paginated
