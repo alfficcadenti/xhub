@@ -65,8 +65,8 @@ const FunnelView = ({selectedBrands}) => {
         setIsRttLoading(true);
         setRttError('');
         const now = moment();
-        const rttStart = moment(now).subtract(1, 'minute').startOf('minute');
-        const rttEnd = moment(now).subtract(1, 'minute').endOf('minute');
+        const rttStart = moment(now).subtract(2, 'minute').startOf('minute');
+        const rttEnd = moment(now).subtract(1, 'minute').startOf('minute');
         const dateQuery = `&startDate=${rttStart.utc().format()}&endDate=${rttEnd.utc().format()}`;
         fetch(`/v1/pageViews?brand=${funnelBrand}&timeInterval=1${dateQuery}`)
             .then((resp) => {
@@ -85,7 +85,7 @@ const FunnelView = ({selectedBrands}) => {
                         const currentPageViews = pageViewsData.find((item) => item.page === name);
                         if (currentPageViews) {
                             const momentTime = moment(time);
-                            if (momentTime.isBetween(rttStart, rttEnd, 'seconds', '[]')) {
+                            if (momentTime.isBetween(rttStart, rttEnd, 'minute', '(]')) {
                                 nextRealTimeTotals[label] += currentPageViews.views;
                             }
                         }
@@ -222,6 +222,10 @@ const FunnelView = ({selectedBrands}) => {
         setChartRight(nextRefAreaRight);
         setPendingStart(moment(nextRefAreaLeft));
         setPendingEnd(moment(nextRefAreaRight));
+        setCurrentTimeRange(pendingTimeRange);
+        setStart(moment(nextRefAreaLeft));
+        setEnd(moment(nextRefAreaRight));
+        setIsDirtyForm(false);
     };
 
     const handleMouseDown = (e) => setRefAreaLeft(e.activeLabel);
