@@ -9,7 +9,7 @@ import {DATE_FORMAT, ALL_STATUSES_OPTION, ALL_PRIORITIES_OPTION} from '../../../
 import {Quality} from './tabs/index';
 import {useFetchTickets} from '../hooks';
 import {EG_BRAND, getBrand} from '../../../constants';
-import {useSelectedBrand} from '../../hooks';
+import {useQueryParamChange, useSelectedBrand} from '../../hooks';
 import './styles.less';
 
 const statusDefaultValue = ALL_STATUSES_OPTION;
@@ -48,7 +48,9 @@ const IncidentTrendsDashboard = (props) => {
         setIsApplyClicked,
         'defects'
     );
-    useSelectedBrand(props.selectedBrands[0]);
+    const selectedBrand = props.selectedBrands[0];
+    useQueryParamChange(selectedBrand, props.onBrandChange);
+    useSelectedBrand(selectedBrand, props.onBrandChange, props.prevSelectedBrand);
 
     function applyFilters() {
         const matchesPriority = (t) => selectedPriority === priorityDefaultValue || t.priority === selectedPriority;

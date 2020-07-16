@@ -16,7 +16,7 @@ import {
 import {Incidents, Overview, Top5, FinancialImpact} from './tabs/index';
 import {useFetchTickets} from '../hooks';
 import {EG_BRAND, getBrand} from '../../../constants';
-import {useSelectedBrand} from '../../hooks';
+import {useSelectedBrand, useQueryParamChange} from '../../hooks';
 import './styles.less';
 import {SVGIcon} from '@homeaway/react-svg';
 import {FILTER__16} from '@homeaway/svg-defs';
@@ -89,7 +89,9 @@ const IncidentTrendsDashboard = (props) => {
         setIsApplyClicked,
         'incidents'
     );
-    useSelectedBrand(props.selectedBrands[0]);
+    const selectedBrand = props.selectedBrands[0];
+    useQueryParamChange(selectedBrand, props.onBrandChange);
+    useSelectedBrand(selectedBrand, props.onBrandChange, props.prevSelectedBrand);
 
     function applyFilters() {
         const matchesPriority = (t) => selectedPriority === priorityDefaultValue || t.priority === selectedPriority;

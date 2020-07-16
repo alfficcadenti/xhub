@@ -4,15 +4,17 @@ import moment from 'moment';
 import LoadingContainer from '../../components/LoadingContainer';
 import DataTable from '../../components/DataTable';
 import CircleDot from '../../components/CircleDot';
-import {useSelectedBrand} from '../hooks';
+import {useQueryParamChange, useSelectedBrand} from '../hooks';
 import './styles.less';
 
 
-const HealthCheckBotResults = ({selectedBrands}) => {
+const HealthCheckBotResults = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [healthCheckData, setHealthCheckData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
-    useSelectedBrand(selectedBrands[0]);
+
+    useQueryParamChange(selectedBrands[0], onBrandChange);
+    useSelectedBrand(selectedBrands[0], onBrandChange, prevSelectedBrand);
 
     const isFailedStatus = (system) => system.status === 'failed';
     const isWarningStatus = (system) => system.status === 'warning';

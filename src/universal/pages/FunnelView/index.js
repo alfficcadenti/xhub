@@ -5,15 +5,14 @@ import HelpText from '../../components/HelpText/HelpText';
 import PageviewWidget from '../../components/PageviewWidget';
 import LoadingContainer from '../../components/LoadingContainer';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
-import {getBrand, EG_BRAND} from '../../constants';
-import {useSelectedBrand} from '../hooks';
+import {useQueryParamChange, useSelectedBrand} from '../hooks';
 import {getBrand, EG_BRAND, EGENCIA_BRAND, EXPEDIA_BUSINESS_SERVICES_BRAND} from '../../constants';
 import './styles.less';
 
 const TIMEZONE_OFFSET = (new Date()).getTimezoneOffset();
 const TIMEZONE_ABBR = moment.tz.zone(moment.tz.guess()).abbr(TIMEZONE_OFFSET);
 
-const FunnelView = ({selectedBrands}) => {
+const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const initialStart = moment().subtract(6, 'hours').startOf('minute');
     const initialEnd = moment().endOf('minute');
     const initialTimeRange = 'Last 6 hours';
@@ -33,6 +32,9 @@ const FunnelView = ({selectedBrands}) => {
     const [currentTimeRange, setCurrentTimeRange] = useState(initialTimeRange);
     const [pendingTimeRange, setPendingTimeRange] = useState(initialTimeRange);
     const [isFormDisabled, setIsFormDisabled] = useState(false);
+
+    useQueryParamChange(selectedBrands[0], onBrandChange);
+    useSelectedBrand(selectedBrands[0], onBrandChange, prevSelectedBrand);
 
     // Shared chart states
     const [refAreaLeft, setRefAreaLeft] = useState('');
