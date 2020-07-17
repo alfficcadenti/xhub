@@ -280,7 +280,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             <div className="summary-container">
                 <h3>
                     {'Real Time Pageviews'}
-                    <HelpText className="rtt-info" text="Real time pageview totals within the last minute. Refreshes every minute." />
+                    <HelpText className="rtt-info" text="Real time pageview totals within the last minute. Refreshes every minute." placement="top"/>
                 </h3>
                 <LoadingContainer isLoading={isRttLoading} error={rttError} className="rtt-loading-container">
                     <div className="real-time-card-ontainer">
