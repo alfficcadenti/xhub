@@ -23,6 +23,7 @@ import {
 } from '../../constants';
 import {getPieData} from '../utils';
 import {useFetchTickets} from './hooks';
+import {useQueryParamChange, useSelectedBrand} from '../hooks';
 import './styles.less';
 
 const statusDefaultValue = ALL_STATUSES_OPTION;
@@ -59,7 +60,7 @@ const getActiveIndex = (pathname, history) => {
 };
 
 // eslint-disable-next-line complexity
-const PRB = () => {
+const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const history = useHistory();
     const {pathname, search} = useLocation();
     const query = qs.parse(search); // query params from url
@@ -104,6 +105,8 @@ const PRB = () => {
         setCurrentRcOwners,
         setCurrentRcCategories
     );
+    useQueryParamChange(selectedBrands[0], onBrandChange);
+    useSelectedBrand(selectedBrands[0], onBrandChange, prevSelectedBrand);
 
     function renderDetail(label, value) {
         return (
@@ -180,6 +183,7 @@ const PRB = () => {
         const result = filterType(allTickets).filter(filterTickets);
         setFilteredTickets(result);
         history.push(`${pathname}`
+            + `?selectedBrand=${selectedBrands[0]}`
             + `?start=${startDate}`
             + `&end=${endDate}`
             + `${getUrlParm('type', selectedType, typeDefaultValue)}`

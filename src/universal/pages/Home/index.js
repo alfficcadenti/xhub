@@ -2,8 +2,12 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import dashboardsList from '../index';
 import './styles.less';
+import {useSelectedBrand, useQueryParamChange} from '../hooks';
 
-const Home = () => {
+const Home = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
+    useQueryParamChange(selectedBrands[0], onBrandChange);
+    useSelectedBrand(selectedBrands[0], onBrandChange, prevSelectedBrand);
+
     const renderButton = (item) => (
         <Link
             to={{pathname: item.link}}

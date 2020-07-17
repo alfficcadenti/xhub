@@ -3,11 +3,15 @@ import DashboardWrapper from './DashboardWrapper/DashboardWrapper';
 import SideBarComponent from './SideBarComponent/SideBarComponent';
 import {links} from './links';
 import './styles.less';
+import {useQueryParamChange, useSelectedBrand} from '../hooks';
 
-const Availability = () => {
+const Availability = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [currentDashboard, setCurrentDashboard] = useState();
     const [linkChanged, setLinkChanged] = useState(false);
     const [linksState, setLinksState] = useState(links);
+
+    useQueryParamChange(selectedBrands[0], onBrandChange);
+    useSelectedBrand(selectedBrands[0], onBrandChange, prevSelectedBrand);
 
     const checkStatus = () =>
         fetch('/grafana/alerts')

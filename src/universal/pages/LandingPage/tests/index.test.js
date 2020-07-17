@@ -6,6 +6,20 @@ import {expect} from 'chai';
 import {mockData, expectedVrboFormattedData, garbageData} from './mockData';
 
 const selectedBrands = ['Expedia Group'];
+jest.mock('react-router-dom', () => {
+    const originalModule = jest.requireActual('react-router-dom');
+
+    return {
+        ...originalModule,
+        useHistory: jest.fn(),
+        useLocation: () => ({
+            pathname: '/test',
+            hash: '',
+            search: '',
+            state: ''
+        }),
+    };
+});
 
 describe('<LandingPage />', () => {
     it('renders successfully', () => {

@@ -8,6 +8,7 @@ import {EXPEDIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_BUSINESS_SERVICES_B
 import './styles.less';
 import {formatCSRData} from './utils';
 import {removeEmptyStringsFromArray} from '../utils';
+import {useQueryParamChange, useSelectedBrand} from '../hooks';
 
 const LandingPage = (props) => {
     const selectedBrands = props.selectedBrands[0] === EG_BRAND
@@ -18,6 +19,9 @@ const LandingPage = (props) => {
 
     const [bookingsData, setBookingsData] = useState([]);
     const [CSRData, setCSRData] = useState([]);
+
+    useQueryParamChange(props.selectedBrands[0], props.onBrandChange);
+    useSelectedBrand(props.selectedBrands[0], props.onBrandChange, props.prevSelectedBrand);
 
     const fetchData = () => {
         const fetchBookingsData = () => {
@@ -101,7 +105,8 @@ const LandingPage = (props) => {
 
 LandingPage.propTypes = {
     selectedBrands: PropTypes.arrayOf(PropTypes.string),
-    onBrandChange: PropTypes.func
+    onBrandChange: PropTypes.func,
+    prevSelectedBrand: PropTypes.string
 };
 
 LandingPage.defaultProps = {
