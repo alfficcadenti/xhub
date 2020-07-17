@@ -8,7 +8,7 @@ import './styles.less';
 import {adjustTicketProperties} from '../../pages/TicketTrends/incidentsHelper';
 import {EG_BRAND} from '../../constants';
 
-const startDate = moment().subtract(90, 'days').format(DATE_FORMAT);
+const startDate = moment().subtract(2, 'months').format(DATE_FORMAT);
 const endDate = moment().format(DATE_FORMAT);
 
 
