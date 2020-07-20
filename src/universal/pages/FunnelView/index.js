@@ -32,6 +32,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [currentTimeRange, setCurrentTimeRange] = useState(initialTimeRange);
     const [pendingTimeRange, setPendingTimeRange] = useState(initialTimeRange);
     const [isFormDisabled, setIsFormDisabled] = useState(false);
+    const [isSupportedBrand, setIsSupportedBrand] = useState(false);
 
     useQueryParamChange(selectedBrands[0], onBrandChange);
     useSelectedBrand(selectedBrands[0], onBrandChange, prevSelectedBrand);
@@ -161,11 +162,14 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     useEffect(() => {
         clearInterval(rttRef.current);
         if ([EG_BRAND, EGENCIA_BRAND, EXPEDIA_BUSINESS_SERVICES_BRAND].includes(selectedBrands[0])) {
+            setIsSupportedBrand(false);
             setError(`Page views for ${selectedBrands} is not yet available.
                 The following brands are supported at this time: "Expedia", "Hotels.com", and "Vrbo".
                 If you have any questions, please ping #dpi-reo-opex-all or leave a comment via our Feedback form.`);
             setIsFormDisabled(true);
         } else {
+            setIsSupportedBrand(true);
+            setError(null);
             setIsFormDisabled(false);
             fetchRealTimeData(selectedBrands);
             rttRef.current = setInterval(fetchRealTimeData, 60000); // refresh every minute
@@ -242,6 +246,20 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         </div>
     );
 
+    const renderRealTimeSummary = () => (
+        <div className="summary-container">
+            <h3>
+                {'Real Time Pageviews'}
+                <HelpText className="rtt-info" text="Real time pageview totals within the last minute. Refreshes every minute." placement="top"/>
+            </h3>
+            <LoadingContainer isLoading={isRttLoading} error={rttError} className="rtt-loading-container">
+                <div className="real-time-card-container">
+                    {Object.entries(realTimeTotals).map(renderRealTimeTotal)}
+                </div>
+            </LoadingContainer>
+        </div>
+    );
+
     const renderWidget = ({pageName, pageViews, pageBrand}) => (
         <PageviewWidget
             title={pageName}
@@ -262,32 +280,24 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     return (
         <div className="funnel-views-container">
             <h1>{'Traveler Page Views'}</h1>
-            <DatetimeRangePicker
-                onChange={handleDatetimeChange}
-                startDate={pendingStart.toDate()}
-                endDate={pendingEnd.toDate()}
-                presets={getPresets()}
-                disabled={isFormDisabled}
-            />
-            <button
-                className="btn btn-primary apply-btn"
-                type="button"
-                onClick={handleApplyFilters}
-                disabled={!isDirtyForm}
-            >
-                {'Apply'}
-            </button>
-            <div className="summary-container">
-                <h3>
-                    {'Real Time Pageviews'}
-                    <HelpText className="rtt-info" text="Real time pageview totals within the last minute. Refreshes every minute." placement="top"/>
-                </h3>
-                <LoadingContainer isLoading={isRttLoading} error={rttError} className="rtt-loading-container">
-                    <div className="real-time-card-ontainer">
-                        {Object.entries(realTimeTotals).map(renderRealTimeTotal)}
-                    </div>
-                </LoadingContainer>
+            <div className="form-container">
+                <DatetimeRangePicker
+                    onChange={handleDatetimeChange}
+                    startDate={pendingStart.toDate()}
+                    endDate={pendingEnd.toDate()}
+                    presets={getPresets()}
+                    disabled={isFormDisabled}
+                />
+                <button
+                    className="btn btn-primary apply-btn"
+                    type="button"
+                    onClick={handleApplyFilters}
+                    disabled={!isDirtyForm}
+                >
+                    {'Apply'}
+                </button>
             </div>
+            {isSupportedBrand && renderRealTimeSummary()}
             <LoadingContainer isLoading={isLoading} error={error} className="page-views-loading-container">
                 <div className="page-views-widget-container">
                     {widgets.map(renderWidget)}

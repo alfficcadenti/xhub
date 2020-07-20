@@ -16,7 +16,6 @@
     }
 
     .summary-container {
-        margin-top: @spacing-3x;
         text-align: center;
         background: @color-bg-contrast;
         border-radius: @spacing-1x;
@@ -30,7 +29,7 @@
             background: none;
         }
 
-        .real-time-card-ontainer {
+        .real-time-card-container {
             display: grid;
             grid-gap: @spacing-2x;
             grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
@@ -73,16 +72,20 @@
         font-weight: 400;
     }
 
-    .preset-dropdown {
-        float: right;
-        margin-top: -@spacing-9x;
+    .form-container {
+        margin-bottom: @spacing-3x;
 
-        .Dropdown__toggle {
-            .dropdown-button;
+        .preset-dropdown {
+            float: right;
+            margin-top: -@spacing-9x;
+
+            .Dropdown__toggle {
+                .dropdown-button;
+            }
         }
-    }
 
-    .apply-btn {
-        margin-left: @spacing-1x;
+        .apply-btn {
+            margin-left: @spacing-1x;
+        }
     }
 }
