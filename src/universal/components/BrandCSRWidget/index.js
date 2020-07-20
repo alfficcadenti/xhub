@@ -2,6 +2,7 @@ import React from 'react';
 import brandLogoFile from '../utils/brandLogoFile';
 import {RadialProgress} from 'react-radial-progress-indicator';
 import Trend from 'react-trend';
+import {Link} from 'react-router-dom';
 import './styles.less';
 
 const alertThreshold = 95;
@@ -27,9 +28,9 @@ const BrandCSRWidget = ({brandName = '', CSRTrend = [], CSRByDevice = {}, onBran
     return (
         <div className="brand-data-card card" key={brandName} >
             {logo(brandName)}
-            <a rel="noopener noreferrer" href="/funnel-view" onClick={() => onBrandChange([brandName])} >
+            <Link to="/funnel-view" onClick={() => onBrandChange([brandName])} >
                 <div className="csr-widget-overlay" />
-            </a>
+            </Link>
             <h3>{'Checkout Success Rate'}</h3>
             <div className="success-rate-card">
                 <div className="success-rates">
