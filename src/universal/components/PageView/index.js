@@ -3,7 +3,7 @@ import {
     AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
 import HelpText from '../../components/HelpText/HelpText';
-import {EXPEDIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_BUSINESS_SERVICES_BRAND, BRANDS} from '../../constants';
+import {EXPEDIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, BRANDS} from '../../constants';
 import {removeEmptyStringsFromArray} from '../../pages/utils';
 
 export default class PageView extends PureComponent {
@@ -15,7 +15,7 @@ export default class PageView extends PureComponent {
                 return '#1478F7';
             case HOTELS_COM_BRAND:
                 return '#F71414';
-            case EXPEDIA_BUSINESS_SERVICES_BRAND:
+            case EXPEDIA_PARTNER_SERVICES_BRAND:
                 return '#FFC72C';
             default:
                 return '#1B5CAF';

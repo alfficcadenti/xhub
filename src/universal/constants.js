@@ -16,7 +16,7 @@ export const EPIC_ISSUE_TYPE = 'Epic';
 export const EXPEDIA_BRAND = 'Expedia';
 export const VRBO_BRAND = 'Vrbo';
 export const HOTELS_COM_BRAND = 'Hotels.com';
-export const EXPEDIA_BUSINESS_SERVICES_BRAND = 'Expedia Business Services';
+export const EXPEDIA_PARTNER_SERVICES_BRAND = 'Expedia Partner Services';
 export const EGENCIA_BRAND = 'Egencia';
 
 export const EG_BRAND = 'Expedia Group';
@@ -33,7 +33,7 @@ export const BRANDS = [
         label: EXPEDIA_BRAND,
         psrBrand: 'expedia',
         funnelBrand: 'expedia',
-        landingBrand: 'Expedia',
+        landingBrand: EXPEDIA_BRAND,
         incidentBrand: 'BEX - Expedia Group',
         color: '#1B5CAF'
     },
@@ -42,30 +42,30 @@ export const BRANDS = [
         psrBrand: 'egencia',
         funnelBrand: 'egencia',
         landingBrand: '',
-        incidentBrand: 'Egencia',
+        incidentBrand: EGENCIA_BRAND,
         color: '#1B5CAF'
     },
     {
         label: HOTELS_COM_BRAND,
         psrBrand: 'hcom',
         funnelBrand: 'hcom',
-        landingBrand: 'Hotels.com',
-        incidentBrand: 'Hotels.com',
+        landingBrand: HOTELS_COM_BRAND,
+        incidentBrand: HOTELS_COM_BRAND,
         color: '#F71414'
     },
     {
         label: VRBO_BRAND,
         psrBrand: 'vrbo',
         funnelBrand: 'vrbo',
-        landingBrand: 'Vrbo',
-        incidentBrand: 'Vrbo',
+        landingBrand: VRBO_BRAND,
+        incidentBrand: VRBO_BRAND,
         color: '#1478F7'
     },
     {
-        label: EXPEDIA_BUSINESS_SERVICES_BRAND,
+        label: EXPEDIA_PARTNER_SERVICES_BRAND,
         psrBrand: '',
         funnelBrand: '',
-        landingBrand: 'Expedia Business Services',
+        landingBrand: EXPEDIA_PARTNER_SERVICES_BRAND,
         incidentBrand: '',
         color: '#FFC72C'
     }
