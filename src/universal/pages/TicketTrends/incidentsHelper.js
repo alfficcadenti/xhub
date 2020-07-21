@@ -33,7 +33,7 @@ export const adjustTicketProperties = (tickets = [], type = 'incident') => {
                 ? moment(t.resolvedDate).diff(t.openDate, 'milliseconds')
                 : '';
         }
-        return (result);
+        return result;
     });
 };
 

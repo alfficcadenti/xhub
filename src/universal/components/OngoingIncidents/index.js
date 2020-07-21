@@ -5,7 +5,7 @@ import LoadingContainer from '../LoadingContainer';
 import {DATE_FORMAT} from '../../constants';
 import moment from 'moment';
 import './styles.less';
-import {adjustTicketProperties} from '../../pages/TicketTrends/incidentsHelper';
+import {divisionToBrand} from '../../pages/TicketTrends/incidentsHelper';
 import {EG_BRAND} from '../../constants';
 
 const startDate = moment().subtract(2, 'months').format(DATE_FORMAT);
@@ -19,8 +19,10 @@ const OngoingIncidents = ({selectedBrands}) => {
     const [isLoading, setIsLoading] = useState(true);
 
     const isOngoingIncident = (incident) => (incident.status === 'In Progress' || incident.status === 'Escalated') && (incident.priority === '1-Critical' || incident.priority === '0-Code Red' || incident.priority === '2-High');
+    const filterByBrand = (incident) => divisionToBrand(incident.brand) === selectedBrand;
     const filterOngoingIncidents = (incidents) =>
-        (selectedBrand === EG_BRAND ? incidents : incidents.filter((incident) => incident.Brand === selectedBrand))
+        selectedBrand === EG_BRAND ? incidents : incidents
+            .filter(filterByBrand)
             .filter(isOngoingIncident);
 
     useEffect(() => {
@@ -30,11 +32,8 @@ const OngoingIncidents = ({selectedBrands}) => {
             fetch(`https://opxhub-service.us-west-2.test.expedia.com/api/v1/incidents?startDate=${startDate}&endDate=${endDate}`)
                 .then((responses) => responses.json())
                 .then((fetchedIncidents) => {
-                    const adjustedIncidents = adjustTicketProperties(fetchedIncidents, 'incident');
-
-                    setAllIncidents(adjustedIncidents);
-
-                    setOngoingIncidents(filterOngoingIncidents(adjustedIncidents));
+                    setAllIncidents(fetchedIncidents);
+                    setOngoingIncidents(filterOngoingIncidents(fetchedIncidents));
                     setIsLoading(false);
                 })
                 .catch((err) => {
