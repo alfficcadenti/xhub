@@ -4,7 +4,7 @@ import BrandCSRWidget from '../../components/BrandCSRWidget';
 import TotalChart from './TotalBookingsChart';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import {EXPEDIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_BUSINESS_SERVICES_BRAND, EG_BRAND, BRANDS, getBrand} from '../../constants';
+import {EXPEDIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, EG_BRAND, BRANDS, getBrand} from '../../constants';
 import './styles.less';
 import {formatCSRData} from './utils';
 import {removeEmptyStringsFromArray} from '../utils';
@@ -14,7 +14,7 @@ const LandingPage = (props) => {
     const selectedBrands = props.selectedBrands[0] === EG_BRAND
         ? BRANDS.map((brand) => brand.landingBrand).filter(removeEmptyStringsFromArray)
         : props.selectedBrands.map((brand) => getBrand(brand).landingBrand).filter(removeEmptyStringsFromArray);
-    const csrWidgetToExclude = [EXPEDIA_BUSINESS_SERVICES_BRAND, HOTELS_COM_BRAND];
+    const csrWidgetToExclude = [EXPEDIA_PARTNER_SERVICES_BRAND, HOTELS_COM_BRAND];
     const csrSelectedBrands = selectedBrands.filter((selectedBrand) => !csrWidgetToExclude.includes(selectedBrand));
 
     const [bookingsData, setBookingsData] = useState([]);
@@ -33,8 +33,8 @@ const LandingPage = (props) => {
                             time: moment.utc(x.time).format('HH:mm'),
                             [EXPEDIA_BRAND]: x.bookingsData.find((branddata) => branddata.brandGroupName === 'Brand Expedia Group').count || '',
                             [VRBO_BRAND]: x.bookingsData.find((branddata) => branddata.brandGroupName === 'VRBO').count || '',
-                            [HOTELS_COM_BRAND]: x.bookingsData.find((branddata) => branddata.brandGroupName === 'Hotels.com').count || '',
-                            [EXPEDIA_BUSINESS_SERVICES_BRAND]: x.bookingsData.find((branddata) => branddata.brandGroupName === 'Expedia Business Services').count || ''
+                            [HOTELS_COM_BRAND]: x.bookingsData.find((branddata) => branddata.brandGroupName === HOTELS_COM_BRAND).count || '',
+                            [EXPEDIA_PARTNER_SERVICES_BRAND]: x.bookingsData.find((branddata) => branddata.brandGroupName === EXPEDIA_PARTNER_SERVICES_BRAND).count || ''
                         };
                     });
                     setBookingsData(dataMapped);

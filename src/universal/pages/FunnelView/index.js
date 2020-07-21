@@ -6,7 +6,7 @@ import PageviewWidget from '../../components/PageviewWidget';
 import LoadingContainer from '../../components/LoadingContainer';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import {useQueryParamChange, useSelectedBrand} from '../hooks';
-import {getBrand, EG_BRAND, EGENCIA_BRAND, EXPEDIA_BUSINESS_SERVICES_BRAND} from '../../constants';
+import {getBrand, EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../../constants';
 import './styles.less';
 
 const TIMEZONE_OFFSET = (new Date()).getTimezoneOffset();
@@ -161,7 +161,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
     useEffect(() => {
         clearInterval(rttRef.current);
-        if ([EG_BRAND, EGENCIA_BRAND, EXPEDIA_BUSINESS_SERVICES_BRAND].includes(selectedBrands[0])) {
+        if ([EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND].includes(selectedBrands[0])) {
             setIsSupportedBrand(false);
             setError(`Page views for ${selectedBrands} is not yet available.
                 The following brands are supported at this time: "Expedia", "Hotels.com", and "Vrbo".
