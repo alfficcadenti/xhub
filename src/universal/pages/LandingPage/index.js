@@ -34,7 +34,7 @@ const LandingPage = (props) => {
                             [EXPEDIA_BRAND]: x.bookingsData.find((branddata) => branddata.brandGroupName === 'Brand Expedia Group').count || '',
                             [VRBO_BRAND]: x.bookingsData.find((branddata) => branddata.brandGroupName === 'VRBO').count || '',
                             [HOTELS_COM_BRAND]: x.bookingsData.find((branddata) => branddata.brandGroupName === HOTELS_COM_BRAND).count || '',
-                            [EXPEDIA_PARTNER_SERVICES_BRAND]: x.bookingsData.find((branddata) => branddata.brandGroupName === EXPEDIA_PARTNER_SERVICES_BRAND).count || ''
+                            [EXPEDIA_PARTNER_SERVICES_BRAND]: x.bookingsData.find((branddata) => branddata.brandGroupName === 'Expedia Business Services').count || ''
                         };
                     });
                     setBookingsData(dataMapped);
