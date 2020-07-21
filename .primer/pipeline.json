@@ -64,7 +64,7 @@
         "jobParameters": {
           "NAME": "opxhub-ui",
           "URL": "https://opxhub-ui.us-west-2.test.expedia.com/landing-page",
-          "PerformanceGoal": "50",
+          "PerformanceGoal": "30",
           "BestPracticesGoal": "70",
           "AccessibilityGoal": "70"
         },
