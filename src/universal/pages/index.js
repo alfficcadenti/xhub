@@ -62,5 +62,12 @@ export default [
         link: '/resiliency-questionnaire',
         text: 'Resiliency Questionnaire',
         component: require('./ResiliencyQuestionnaire')
+    },
+    {
+        category: AAT,
+        id: 'impulse',
+        link: '/impulsetool',
+        text: 'Impulse Tool',
+        component: require('./MockupImpulse')
     }
 ];

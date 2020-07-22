@@ -7,6 +7,9 @@ export const ALL_PRIORITIES_OPTION = 'All Priorities';
 export const ALL_STATUSES_OPTION = 'All Statuses';
 export const ALL_TAGS_OPTION = 'All Tags';
 export const ALL_TAGS = ['cost-optimization', 'covid-19'];
+export const ALL_LOB = 'All LOBs';
+export const ALL_BRANDS = 'All Brands';
+export const ALL_BRAND_GROUP = 'All Brand Group';
 export const FETCH_OPTION = {Accept: 'application/json', 'Content-Type': 'application/json'};
 export const ALL_TYPES_OPTION = 'All Types';
 export const ALL_ORGS_OPTION = 'All Owning Orgs';
@@ -18,8 +21,12 @@ export const VRBO_BRAND = 'Vrbo';
 export const HOTELS_COM_BRAND = 'Hotels.com';
 export const EXPEDIA_PARTNER_SERVICES_BRAND = 'Expedia Partner Services';
 export const EGENCIA_BRAND = 'Egencia';
-
+export const LOBS = ['Air', 'Activity', 'Car', 'Insurance', 'Lodging'];
+export const BRAND_GROUPS = ['Brand Expedia Group', 'Expedia Business Services', 'Hotels.com', 'VRBO', 'Unknown'];
 export const EG_BRAND = 'Expedia Group';
+export const BRANDS_LIST = ['Brand Expedia', 'CheapTickets', 'Egencia', 'Expedia Partner Solutions', 'HomeAway', 'Hotels.com', 'Hotwire', 'Orbitz', 'Travelocity', 'Wotif', 'eBookers'];
+export const TIME_INTERVAL = '15Min Interval';
+export const TIME_INTERVALS_IMPULSE = ['15Min Interval', '30Min Interval', '60Min Interval'];
 export const BRANDS = [
     {
         label: EG_BRAND,
