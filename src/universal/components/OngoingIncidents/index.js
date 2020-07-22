@@ -21,8 +21,7 @@ const OngoingIncidents = ({selectedBrands}) => {
     const isOngoingIncident = (incident) => (incident.status === 'In Progress' || incident.status === 'Escalated') && (incident.priority === '1-Critical' || incident.priority === '0-Code Red' || incident.priority === '2-High');
     const filterByBrand = (incident) => divisionToBrand(incident.brand) === selectedBrand;
     const filterOngoingIncidents = (incidents) =>
-        selectedBrand === EG_BRAND ? incidents : incidents
-            .filter(filterByBrand)
+        (selectedBrand === EG_BRAND ? incidents : incidents.filter(filterByBrand))
             .filter(isOngoingIncident);
 
     useEffect(() => {
