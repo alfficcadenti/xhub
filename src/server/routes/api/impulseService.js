@@ -23,8 +23,6 @@ module.exports.impulseBookingDataService = {
                     operation: serverConfig.routes.bookings.operation,
                     queryParams: req.url.query ? req.url.query : {}
                 });
-                console.log('payload', payload);
-
                 req.log('[API-REQUEST-DETAILS]', serverConfig.routes.bookings.method, serverConfig.routes.bookings.operation);
                 req.log('[BOOKING-DATA]', payload);
                 return payload;
@@ -35,4 +33,4 @@ module.exports.impulseBookingDataService = {
         }
     }
 
-}
+};

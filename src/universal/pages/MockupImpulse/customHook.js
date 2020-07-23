@@ -1,18 +1,12 @@
-import {useEffect, useState, useRef} from 'react';
+import {useEffect, useState} from 'react';
 import {
     ALL_LOB,
     ALL_BRANDS,
     ALL_BRAND_GROUP,
 } from '../../constants';
-export const useIsMount = () => {
-    const isMountRef = useRef(true);
 
-    useEffect(() => {
-        isMountRef.current = false;
-    }, []);
+import {useIsMount} from '../hooks';
 
-    return isMountRef.current;
-};
 
 export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, endDate, selectedLob, selectedBrand, selectedInterval, selectedBrandGroup) => {
     const [res, setRes] = useState([]);
@@ -21,8 +15,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
     const [lastStartDate, setLastStartDate] = useState('');
     const [lastEndDate, setLastEndDate] = useState('');
     const isMount = useIsMount();
-    const returnFilterString = (...queryPrams) => {
-        const [lob, timeInterval, brand, brandGroup] = queryPrams;
+    const returnFilterString = (lob, timeInterval, brand, brandGroup) => {
         let query = '';
         if (lob !== ALL_LOB) {
             query = query += `lob=${lob}&`;
@@ -44,7 +37,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
             setIsLoading(true);
             setLastStartDate(startDate);
             setLastEndDate(endDate);
-            fetch(`/impulse-api/v1/bookings${returnFilterString(selectedLob, selectedInterval, selectedBrand, selectedBrandGroup)}`)
+            fetch(`http://localhost:8082/v1/bookings/count${returnFilterString(selectedLob, selectedInterval, selectedBrand, selectedBrandGroup)}`)
                 .then((result) => {
                     return result.json();
                 }
@@ -57,7 +50,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
                 .catch((err) => {
                     setIsLoading(false);
                     setError('No data found for this selection.');
-                    console.error('in Error', err);
+                    console.error(err);
                 });
         };
 

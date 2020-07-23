@@ -1,4 +1,4 @@
-import React, {Fragment, useState, useCallback, useEffect} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import {useFetchBlipData} from './customHook';
 import {Navigation} from '@homeaway/react-navigation';
 import LoadingContainer from '../../components/LoadingContainer';
@@ -75,8 +75,6 @@ const BlipDashBoard = () => {
         switch (activeIndex) {
             case 0:
                 return <BookingTrends data={allData}/>;
-            // case 1:
-            //     return <BookingTrends data={allData}/>;
             default:
                 return <BookingTrends data={allData}/>;
         }
@@ -140,11 +138,8 @@ const BlipDashBoard = () => {
             />
             <LoadingContainer isLoading={isLoading} error={error} className="incident-main">
                 <div>
-                    <Fragment>
-                        {renderTabs()}
-                    </Fragment>
+                    {renderTabs()}
                 </div>
-
             </LoadingContainer>
         </div>
     );

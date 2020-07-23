@@ -1,11 +1,9 @@
 import moment from 'moment';
+import {distinct} from '../utils';
 
 
-const unique = (value, index, self) => {
-    return self.indexOf(value) === index;
-};
-const getUniqueLob = (data = []) => (data.map((item) => item.tags.lob).filter(unique));
-const getUniqueBrands = (data = []) => (data.map((item) => item.tags.brand).filter(unique));
+const getUniqueLob = (data = []) => (data.map((item) => item.tags.lob).filter(distinct));
+const getUniqueBrands = (data = []) => (data.map((item) => item.tags.brand).filter(distinct));
 export const xAxisData = (data = []) => (data.map((item) => moment(item.time).format('MM/DD hh:mm')));
 export const bookingData = (data = []) => (data.map((item) => item.fields.actualCount));
 export const predictionData = (data = []) => (data.map((item) => item.fields.predictedCount));
