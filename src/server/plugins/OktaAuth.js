@@ -1,4 +1,4 @@
-const _ = require('lodash');
+const _ = require('lodash-chain');
 const HttpClient = require('@homeaway/http-client');
 const jws = require('jws');
 const jwt = require('jsonwebtoken');
