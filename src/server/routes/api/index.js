@@ -9,6 +9,7 @@ import {availabilityS3} from './availabilityS3';
 import {bookingsUserEvents} from './bookingsUserEvents';
 import {csrUserEvents} from './csrUserEvents';
 import {pageViewsUserEvents} from './pageViews';
+import {impulseBookingDataService} from './impulseService';
 
 const apiRoutes = [
     login,
@@ -22,7 +23,8 @@ const apiRoutes = [
     grafanaAlerts,
     bookingsUserEvents,
     csrUserEvents,
-    pageViewsUserEvents
+    pageViewsUserEvents,
+    impulseBookingDataService
 ];
 
 export default apiRoutes;

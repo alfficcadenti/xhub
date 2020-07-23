@@ -202,6 +202,53 @@
           }
         }
       },
+      "impulseBookingCount": {
+        "$filter": "env.EXPEDIA_ENVIRONMENT",
+        "$default": {
+          "hostname": "opxhub-user-events-data-service.us-east-1.prod.expedia.com",
+          "protocol": "https:",
+          "routes": {
+            "bookings": {
+              "path": "/v1/bookings/count",
+              "method": "GET",
+              "operation": "GET_booking_data"
+            }
+          }
+        },
+        "int": {
+          "hostname": "opxhub-user-events-data-service.us-east-1.prod.expedia.com",
+          "protocol": "https:",
+          "routes": {
+            "bookings": {
+              "path": "/v1/bookings/count",
+              "method": "GET",
+              "operation": "GET_booking_data"
+            }
+          }
+        },
+        "test": {
+          "hostname": "opxhub-user-events-data-service.us-east-1.prod.expedia.com",
+          "protocol": "https:",
+          "routes": {
+            "bookings": {
+              "path": "/v1/bookings/count",
+              "method": "GET",
+              "operation": "GET_booking_data"
+            }
+          }
+        },
+        "prod": {
+          "hostname": "opxhub-user-events-data-service.us-east-1.prod.expedia.com",
+          "protocol": "https:",
+          "routes": {
+            "bookings": {
+              "path": "/v1/bookings/count",
+              "method": "GET",
+              "operation": "GET_booking_data"
+            }
+          }
+        }
+      },
       "oauthApi": {
         "$filter": "env.NODE_ENV",
         "$default": {

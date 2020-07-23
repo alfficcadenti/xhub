@@ -44,7 +44,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
             setIsLoading(true);
             setLastStartDate(startDate);
             setLastEndDate(endDate);
-            fetch(`https://opxhub-user-events-data-service.us-east-1.prod.expedia.com/v1/bookings/count${returnFilterString(selectedLob, selectedInterval, selectedBrand, selectedBrandGroup)}`)
+            fetch(`/impulse-api/v1/bookings${returnFilterString(selectedLob, selectedInterval, selectedBrand, selectedBrandGroup)}`)
                 .then((result) => {
                     return result.json();
                 }
