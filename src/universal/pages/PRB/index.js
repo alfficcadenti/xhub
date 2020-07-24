@@ -8,7 +8,7 @@ import {Navigation} from '@homeaway/react-navigation';
 import {SVGIcon} from '@homeaway/react-svg';
 import {FILTER__16} from '@homeaway/svg-defs';
 import {Divider} from '@homeaway/react-collapse';
-import PieChart from '../../components/PieChart/index';
+import PieChart from '../../components/PieChart';
 import LoadingContainer from '../../components/LoadingContainer';
 import FilterDropDown from '../../components/FilterDropDown';
 import DatePicker from '../../components/DatePicker';
@@ -184,7 +184,7 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         setFilteredTickets(result);
         history.push(`${pathname}`
             + `?selectedBrand=${selectedBrands[0]}`
-            + `?start=${startDate}`
+            + `&start=${startDate}`
             + `&end=${endDate}`
             + `${getUrlParm('type', selectedType, typeDefaultValue)}`
             + `${getUrlParm('status', selectedStatus, statusDefaultValue)}`

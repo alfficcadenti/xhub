@@ -2,6 +2,7 @@ const Path = require('path');
 const ExtractCssChunks = require('extract-css-chunks-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const {vendors, browsers} = require('./lists');
+const webpack = require('webpack');
 
 const SRC_DIR = Path.join(__dirname, 'src', 'universal');
 
@@ -65,6 +66,7 @@ module.exports = {
     },
 
     optimization: {
+        usedExports: true,
         splitChunks: {
             cacheGroups: {
                 vendor: {
@@ -77,7 +79,8 @@ module.exports = {
     },
 
     plugins: [
-        new ExtractCssChunks({filename: isProd ? '[name].[hash:12].css' : '[name].css', modules: true, hot: true})
+        new ExtractCssChunks({filename: isProd ? '[name].[hash:12].css' : '[name].css', modules: true, hot: true}),
+        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     ],
 
     stats: {
