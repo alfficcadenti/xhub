@@ -25,7 +25,7 @@ const LandingPage = (props) => {
 
     const fetchData = () => {
         const fetchBookingsData = () => {
-            fetch('http://localhost:8082/v1/bookings')
+            fetch('/user-events-api/v1/bookings')
                 .then((responses) => responses.json())
                 .then((data) => {
                     const dataMapped = data && data.map((x) => {
