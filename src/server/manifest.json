@@ -135,6 +135,11 @@
               "path": "/v1/pageViews",
               "method": "GET",
               "operation": "GET_user_events_pageviews_api_v1"
+            },
+            "bookingsImpulse": {
+              "path": "/v1/bookings/count",
+              "method": "GET",
+              "operation": "GET_booking_data"
             }
           }
         },
@@ -156,6 +161,11 @@
               "path": "/v1/pageViews",
               "method": "GET",
               "operation": "GET_user_events_pageviews_api_v1"
+            },
+            "bookingsImpulse": {
+              "path": "/v1/bookings/count",
+              "method": "GET",
+              "operation": "GET_booking_data"
             }
           }
         },
@@ -177,6 +187,11 @@
               "path": "/v1/pageViews",
               "method": "GET",
               "operation": "GET_user_events_pageviews_api_v1"
+            },
+            "bookingsImpulse": {
+              "path": "/v1/bookings/count",
+              "method": "GET",
+              "operation": "GET_booking_data"
             }
           }
         },
@@ -198,6 +213,11 @@
               "path": "/v1/pageViews",
               "method": "GET",
               "operation": "GET_user_events_pageviews_api_v1"
+            },
+            "bookingsImpulse": {
+              "path": "/v1/bookings/count",
+              "method": "GET",
+              "operation": "GET_booking_data"
             }
           }
         }
@@ -221,7 +241,6 @@
       }
     }
   },
-
   // register hapi plugins
   "register": {
     "crumb": {
@@ -242,7 +261,8 @@
     "catalyst-status": {
       "plugin": "require:@homeaway/catalyst-status",
       "options": {
-        "routes": [{
+        "routes": [
+          {
             "path": "/isActive",
             "response": {
               "status": 200,
@@ -284,7 +304,8 @@
           "name": "resolveAsset",
           "helper": "require:./templates/helpers/resolveAsset.js"
         },
-        "routes": [{
+        "routes": [
+          {
             "route": "require:./routes/pages/home",
             "component": "require:../universal/components/App/ServerApp.js",
             "template": "templates/welcome.hbs"
@@ -331,6 +352,11 @@
           },
           {
             "route": "require:./routes/pages/health-check-bot-results",
+            "component": "require:../universal/components/App/ServerApp.js",
+            "template": "templates/welcome.hbs"
+          },
+          {
+            "route": "require:./routes/pages/impulse",
             "component": "require:../universal/components/App/ServerApp.js",
             "template": "templates/welcome.hbs"
           }
