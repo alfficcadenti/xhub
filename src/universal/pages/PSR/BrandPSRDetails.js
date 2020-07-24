@@ -1,63 +1,42 @@
 import React, {PureComponent} from 'react';
-import h from './psrHelpers';
 import PropTypes from 'prop-types';
-import DataTable from '../../components/DataTable/index';
-import ReactEcharts from 'echarts-for-react';
+import h from './psrHelpers';
+import DataTable from '../../components/DataTable';
+import LineChartWrapper from '../../components/LineChartWrapper';
 import moment from 'moment';
 import './styles.less';
 
 class BrandPSRDetails extends PureComponent {
-    chartOptions = (series = []) => {
-        let dates = [];
+    getDates = () => {
+        const dates = [];
         for (let i = 0; i < 7; i++) {
             dates.push(moment().subtract(i, 'day').format('YYYY-MM-DD'));
         }
-        dates = dates.reverse();
+        return dates.reverse();
+    }
 
-        const data = h.listOfLOB(series).map((lob) => {
-            let last7daysValue = [];
-            dates.forEach((date) => {
+    getLineData = (series = []) => {
+        const dates = this.getDates();
+        const keys = new Set();
+        const data = dates.map((date) => {
+            const result = {name: date};
+            const lobs = h.listOfLOB(series);
+            lobs.forEach((lob) => {
+                keys.add(lob);
                 const dayValue = h.findValuesByDate(h.psrValuesByLOB(series, lob), date);
                 // eslint-disable-next-line no-undefined
-                last7daysValue.push((dayValue && dayValue.successPercentage) || undefined);
+                result[lob] = (dayValue && dayValue.successPercentage) || undefined;
             });
-
-            return {
-                name: lob,
-                type: 'line',
-                data: last7daysValue,
-                color: lob === 'PSR' ? '#00c' : '',
-                lineStyle: {width: lob === 'PSR' ? 3 : 2}
-
-            };
+            return result;
         });
-        const legend = h.listOfLOB(series);
-
-        return {
-            legend: {
-                data: legend
-            },
-            tooltip: {},
-            xAxis: {
-                type: 'category',
-                data: dates
-            },
-            yAxis: {
-                name: 'Brand Daily PSR',
-                nameLocation: 'middle',
-                nameGap: 50,
-                nameRotate: 90,
-                type: 'value',
-                min: (Math.min(...series.map((x) => x.successPercentage)) - 2).toFixed()
-            },
-            series: data
-        };
+        return {data, keys: Array.from(keys)};
     }
 
     render() {
         const {data} = this.props;
         const dataForTable = h.formatDataForTable(h.psrValuesByDate(data, h.lastPSRAvailableDate(data)));
         const last7DaysDailyPSR = h.psrValuesByInterval(data, 'daily');
+        const {data: lineData, keys: lineKeys} = this.getLineData(last7DaysDailyPSR);
 
         return (
             <div id="PSRDetails">
@@ -66,10 +45,7 @@ class BrandPSRDetails extends PureComponent {
                     columns={['Line Of Business', 'Last 24 hours', 'Last 7 days', 'Last 28 days']}
                     paginated={false}
                 />
-                <ReactEcharts
-                    option={this.chartOptions(last7DaysDailyPSR)}
-                    key={Math.random()}
-                />
+                <LineChartWrapper data={lineData} keys={lineKeys} />
             </div>
         );
     }

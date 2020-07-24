@@ -1,4 +1,19 @@
+@import '../../mixins.less';
+
 .pie-wrapper {
     float: left;
     width: 33%;
+
+    .tooltip-container {
+        padding: @spacing-1x;
+        border-radius: @spacing-1x;
+        background: @color-bg-inverse;
+        color: @color-text-inverse;
+        opacity: .8;
+    }
+
+    .recharts-legend-wrapper {
+        max-height: 124px;
+        overflow: scroll;
+    }
 }

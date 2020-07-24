@@ -33,7 +33,7 @@ const incMetricsByBrand = [
         'MTTD': '0h 0m ',
         'P1': 1,
         'P2': 1,
-        'Total': 2,
+        'All': 2,
         'Total Duration': '0h 3m '
     },
     {
@@ -42,7 +42,7 @@ const incMetricsByBrand = [
         'MTTD': '0h 2m ',
         'P1': 0,
         'P2': 2,
-        'Total': 2,
+        'All': 2,
         'Total Duration': '0h 10m '
     }
 ];

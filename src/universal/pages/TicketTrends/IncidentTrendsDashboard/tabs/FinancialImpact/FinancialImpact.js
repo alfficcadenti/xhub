@@ -1,41 +1,66 @@
-import React, {Fragment} from 'react';
-import ChartWrapper from '../../../../../components/ChartWrapper';
+import React from 'react';
 import NoResults from '../../../../../components/NoResults/NoResults';
 import {buildFinancialImpactData} from '../../../incidentsHelper';
-
+import LineChartWrapper from '../../../../../components/LineChartWrapper';
+import './styles.less';
 
 const FinancialImpact = ({filteredIncidents}) => {
     const {
-        tooltipData: tooltipRevenueLossData,
-        series: revenueLossSeries,
-        weekIntervals: revenueLossWeekIntervals
+        data: revenueData,
+        brands: revenueBrands,
+        tooltipData: revenueTooltipData
     } = buildFinancialImpactData(filteredIncidents, 'estimatedRevenueLoss');
     const {
-        tooltipData: tooltipGrossLossData,
-        series: revenueGrossSeries,
-        weekIntervals: revenueGrossWeekIntervals
+        data: grossData,
+        brands: grossBrands,
+        tooltipData: grossTooltipData
     } = buildFinancialImpactData(filteredIncidents, 'estimatedGrossLoss');
 
-    return (<div className="financial-impact">
-        {
-            filteredIncidents && filteredIncidents.length ?
-                <Fragment>
-                    <ChartWrapper
-                        tooltipData={tooltipRevenueLossData}
-                        series={revenueLossSeries}
-                        xAxisValues={revenueLossWeekIntervals}
-                        title="Lost Revenues by Impacted Brand"
-                    />
-                    <ChartWrapper
-                        tooltipData={tooltipGrossLossData}
-                        series={revenueGrossSeries}
-                        xAxisValues={revenueGrossWeekIntervals}
-                        title="Gross Booking Value Loss"
-                    />
-                </Fragment> :
-                <NoResults />
-        }
-    </div>);
+    const htmlDecode = (input) => {
+        const doc = new DOMParser().parseFromString(input, 'text/html');
+        return doc.documentElement.textContent;
+    };
+
+    const renderLinks = ({incidentNumberLink, lostRevenue}) => (
+        <div key={incidentNumberLink} className="incident-wrapper">
+            <div
+                className="incident-number"
+                dangerouslySetInnerHTML={{ //eslint-disable-line
+                    __html: htmlDecode(incidentNumberLink)
+                }}
+            />
+            <div className="incident-financial-impact">
+                {lostRevenue.toLocaleString('en-US', {style: 'currency', currency: 'USD'})}
+            </div>
+        </div>
+    );
+
+    return (
+        <div className="financial-impact">
+            {
+                !filteredIncidents || !filteredIncidents.length
+                    ? <NoResults />
+                    : (
+                        <>
+                            <LineChartWrapper
+                                title="Booking Revenue Loss"
+                                data={revenueData}
+                                keys={revenueBrands}
+                                tooltipData={revenueTooltipData}
+                                renderTooltipContent={renderLinks}
+                            />
+                            <LineChartWrapper
+                                title="Gross Booking Value Loss"
+                                data={grossData}
+                                keys={grossBrands}
+                                tooltipData={grossTooltipData}
+                                renderTooltipContent={renderLinks}
+                            />
+                        </>
+                    )
+            }
+        </div>
+    );
 };
 
 export default React.memo(FinancialImpact);

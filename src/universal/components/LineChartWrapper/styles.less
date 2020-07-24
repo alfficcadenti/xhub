@@ -1,0 +1,23 @@
+@import '../../mixins.less';
+
+.line-chart-wrapper {
+    .custom-tooltip-container {
+        color: @color-text-inverse;
+        background: @color-bg-inverse;
+        opacity: .8;
+        min-width: 260px;
+        padding: @spacing-1x;
+
+        .dot-date {
+            font-weight: 800;
+        }
+
+        .dot-title {
+            font-style: italic;
+        }
+    }
+
+    .help-text .Tooltip .Tooltip__inner {
+        font-weight: 400;
+    }
+}
