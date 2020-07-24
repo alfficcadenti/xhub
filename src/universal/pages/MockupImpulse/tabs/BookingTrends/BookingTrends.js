@@ -15,8 +15,7 @@ class BookingTrends extends PureComponent {
                     {'Impulse'}
                 </h2>
                 <ResponsiveContainer width="100%" height="70%">
-                    <AreaChart data={data.data} margin={{top: 10, right: 30, left: 0, bottom: 0}}
-                    >
+                    <AreaChart data={data.data} margin={{top: 10, right: 30, left: 0, bottom: 0}}>
                         <defs>
                             <linearGradient id="colorBooking" x1="0" y1="0" x2="0" y2="1">
                                 <stop offset="5%" stopColor={IMPULSE_CHART_COLOR} stopOpacity={0.8}/>
@@ -28,8 +27,7 @@ class BookingTrends extends PureComponent {
                         <CartesianGrid strokeDasharray="3 3"/>
                         <Tooltip/>
                         <Area type="monotone" dataKey="Booking Counts" stroke={IMPULSE_CHART_COLOR} fillOpacity={1} fill="url(#colorBooking)"/>
-                        <Legend onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}
-                        />
+                        <Legend onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}/>
                     </AreaChart>
                 </ResponsiveContainer>
             </div>
