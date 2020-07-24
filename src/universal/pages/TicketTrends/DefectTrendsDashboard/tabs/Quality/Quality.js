@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import DataTable from '../../../../../components/DataTable';
-import LineChart from '../../../../../components/LineChart';
+import LineChartWrapper from '../../../../../components/LineChartWrapper';
 import PieChart from '../../../../../components/PieChart';
 import NoResults from '../../../../../components/NoResults/NoResults';
-import {getQualityData, getLineData} from '../../../incidentsHelper';
+import {getQualityData, getWeeklyCounts} from '../../../incidentsHelper';
 import {getPieData} from '../../../../utils';
 import './Quality.less';
 
@@ -16,8 +16,7 @@ const renderContent = (
     handleStatusChange,
     handlePriorityChange
 ) => {
-    const {axisData, data} = getLineData(startDate, endDate, filteredDefects, 'openDate');
-    const lineChartTitle = 'Quality Trends';
+    const {data, keys} = getWeeklyCounts(startDate, endDate, filteredDefects, 'openDate');
     const generateChartClickHandler = (handler) => (e) => {
         const chartName = e.data.name;
         handler(chartName);
@@ -26,23 +25,26 @@ const renderContent = (
     return (
         <div className="quality-tab__content">
             <div data-wdio="defects-line-chart">
-                <LineChart title={lineChartTitle} info="Defects are bucketed by Opened date." data={data} xAxis={axisData} />
+                <LineChartWrapper title="Quality Trends" data={data} keys={keys} helpText="Defects are bucketed by Opened date" />
             </div>
             <div data-wdio="defects-pie-charts">
                 <PieChart
                     data={getPieData(filteredDefects, 'Brand')}
                     title="Brand"
+                    dataKey="value"
                 />
                 <PieChart
                     data={getPieData(filteredDefects, 'Status')}
                     title="Status"
                     onChartClick={generateChartClickHandler(handleStatusChange)}
+                    dataKey="value"
                 />
                 <PieChart
                     data={getPieData(filteredDefects, 'priority')}
                     title="Priority"
                     handlePriorityChange={handlePriorityChange}
                     onChartClick={generateChartClickHandler(handlePriorityChange)}
+                    dataKey="value"
                 />
             </div>
             <DataTable

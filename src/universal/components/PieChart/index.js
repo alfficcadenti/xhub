@@ -1,70 +1,62 @@
 import React from 'react';
-import ReactEcharts from 'echarts-for-react';
-import './styles.less';
+import {
+    PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend
+} from 'recharts';
+import {CHART_COLORS} from '../../constants';
 import NoResults from '../NoResults/NoResults';
+import './styles.less';
 
-const setChartOptions = (data = []) => ({
-    legend: {
-        type: 'scroll',
-        orient: '',
-        selectedMode: false,
-        x: 'center',
-        y: 'bottom',
-        height: 150,
-        padding: 10
-    },
-    series: [
-        {
-            name: 'Chart',
-            type: 'pie',
-            radius: ['80%', '35%'],
-            avoidLabelOverlap: true,
-            top: '-25%',
-            label: {
-                normal: {
-                    show: false,
-                    position: 'center'
-                },
-                emphasis: {
-                    show: true,
-                    formatter: '{d}% \n {b}',
-                    textStyle: {
-                        fontSize: '14',
-                        fontWeight: 'bold'
-                    }
-                }
-            },
-            labelLine: {
-                normal: {
-                    show: false
-                }
-            },
-            data
-        }
-    ]
-});
-
-const renderChart = (data, onChartClick) => {
-    const doughnutchartStyle = {height: '450px', width: '350px'};
-    const onEvents = {
-        'click': onChartClick
-    };
-    return (
-        <ReactEcharts option={setChartOptions(data)} onEvents={onEvents} style={doughnutchartStyle} key={Math.random()}/>
-    );
-};
-
-const PieChart = ({
+const PieChartWrapper = ({
     title,
     data,
+    dataKey = 'value',
     onChartClick
 }) => {
+    const total = data.reduce((acc, curr) => acc + curr[dataKey], 0);
+
+    const renderSlice = (entry, idx) => (
+        <Cell
+            key={`${entry}-${idx}`}
+            fill={CHART_COLORS[idx % CHART_COLORS.length]}
+            onClick={onChartClick}
+        />
+    );
+
+    const CustomTooltip = ({payload}) => {
+        if (payload && payload.length) {
+            const {name, value} = payload[0];
+            return <div className="tooltip-container">{`${name}: ${value}, ${((value / total) * 100).toFixed(0)}%`}</div>;
+        }
+        return '';
+    };
+
+    const renderChart = () => (
+        <ResponsiveContainer width="100%" height={400}>
+            <PieChart data={data} height={500}>
+                <Pie
+                    data={data}
+                    dataKey={dataKey}
+                    innerRadius={64}
+                    outerRadius={120}
+                    fill="#82ca9d"
+                    cy={136}
+                >
+                    {data.map(renderSlice)}
+                </Pie>
+                <Tooltip content={<CustomTooltip />} />
+                <Legend layout="vertical" />
+            </PieChart>
+        </ResponsiveContainer>
+    );
+
     return (
         <div className="pie-wrapper">
-            <h3>{title}</h3>
-            {data && data.length ? renderChart(data, onChartClick) : <NoResults />}
+            {title && <h3>{title}</h3>}
+            {data && data.length
+                ? renderChart()
+                : <NoResults />}
         </div>
     );
 };
 
-export default PieChart;
+export default PieChartWrapper;

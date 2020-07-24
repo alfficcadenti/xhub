@@ -1,68 +1,35 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import DataTable from '../../../../../components/DataTable';
-import ChartWrapper from '../../../../../components/ChartWrapper';
-import LineChart from '../../../../../components/LineChart';
+import LineChartWrapper from '../../../../../components/LineChartWrapper';
 import NoResults from '../../../../../components/NoResults/NoResults';
+import DataTable from '../../../../../components/DataTable';
 import {
-    getMarginDateValues,
     getIncMetricsByBrand,
     weeklyMTTRMTTD,
     weeklyMTTRbyBrand,
     weeklyMTTDbyBrand,
-    weeklyRange,
-    formatSeriesForChart,
-    getLineData
+    getWeeklyCounts
 } from '../../../incidentsHelper';
 
-const overviewTableColumns = ['Brand', 'P1', 'P2', 'Total', 'MTTD', 'MTTR', 'Total Duration'];
-
 const Overview = ({startDate, endDate, filteredIncidents}) => {
-    const mttdVsMttrSeries = formatSeriesForChart(weeklyMTTRMTTD(filteredIncidents));
-    const mttdByBrandSeries = formatSeriesForChart(weeklyMTTDbyBrand(filteredIncidents));
-    const mttrByBrandSeries = formatSeriesForChart(weeklyMTTRbyBrand(filteredIncidents));
-    const dates = getMarginDateValues(filteredIncidents);
-    const xAxisValues = weeklyRange(dates[0], dates[1]);
-    const {axisData, data} = getLineData(startDate, endDate, filteredIncidents, 'openDate');
-
-    return (<div data-wdio="incidents-byBrand-table" id="inc-overview-table">
-        {
-            filteredIncidents && filteredIncidents.length ?
-                <Fragment>
-                    <div data-wdio="incidents-line-chart">
-                        <LineChart
-                            title="Incidents Trend"
-                            info="Incidents are bucketed by Opened date."
-                            data={data}
-                            xAxis={axisData}
-                        />
-                    </div>
-                    <DataTable
-                        data={getIncMetricsByBrand(filteredIncidents)}
-                        columns={overviewTableColumns}
-                    />
-                    <ChartWrapper
-                        series={mttdVsMttrSeries}
-                        xAxisValues={xAxisValues}
-                        title="MTTD vs MTTR"
-                        yAxisName="Avg Duration (Hours)"
-                    />
-                    <ChartWrapper
-                        series={mttdByBrandSeries}
-                        xAxisValues={xAxisValues}
-                        title="MTTD by Brand"
-                        yAxisName="Avg Duration (Hours)"
-                    />
-                    <ChartWrapper
-                        series={mttrByBrandSeries}
-                        xAxisValues={xAxisValues}
-                        title="MTTR by Brand"
-                        yAxisName="Avg Duration (Hours)"
-                    />
-                </Fragment> :
-                <NoResults />
-        }
-    </div>
+    if (!filteredIncidents || !filteredIncidents.length) {
+        return <NoResults />;
+    }
+    const {data: countData, keys: countKeys, yMax: countYMax} = getWeeklyCounts(startDate, endDate, filteredIncidents, 'openDate');
+    const {data: mttdMttrData, keys: mttdMttrKeys, yMax: mttdMttrYMax} = weeklyMTTRMTTD(filteredIncidents);
+    const {data: mttdData, keys: mttdKeys, yMax: mttdYMax} = weeklyMTTDbyBrand(filteredIncidents);
+    const {data: mttrData, keys: mttrKeys, yMax: mttrYMax} = weeklyMTTRbyBrand(filteredIncidents);
+    return (
+        <div data-wdio="incidents-byBrand-table" id="inc-overview-table">
+            <LineChartWrapper title="Incident Trends" data={countData} keys={countKeys} yMax={countYMax} helpText="Incidents are bucketed by Opened date" />
+            <DataTable
+                data={getIncMetricsByBrand(filteredIncidents)}
+                columns={['Brand', 'P1', 'P2', 'All', 'MTTD', 'MTTR', 'Total Duration']}
+            />
+            <LineChartWrapper title="MTTD vs MTTR" data={mttdMttrData} keys={mttdMttrKeys} yMax={mttdMttrYMax} />
+            <LineChartWrapper title="MTTD by Brand" data={mttdData} keys={mttdKeys} yMax={mttdYMax} />
+            <LineChartWrapper title="MTTR by Brand" data={mttrData} keys={mttrKeys} yMax={mttrYMax} />
+        </div>
     );
 };
 

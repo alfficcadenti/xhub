@@ -187,7 +187,7 @@ export const getMarginDateValues = (incidents = []) => {
 
 const brandIncidents = (incidents, brand) => incidents.filter((incident) => incident.Brand === brand);
 
-export const incidentsOfTheWeek = (inc, week = '') => inc.filter((inc) => moment(inc.startedAt).week() === week);
+export const incidentsOfTheWeek = (incidents, week = '') => incidents.filter(({startedAt}) => moment(startedAt).week() === week);
 
 export const getIncMetricsByBrand = (inc = []) => getListOfUniqueProperties(inc, 'Brand')
     .map((brand) => {
@@ -196,14 +196,14 @@ export const getIncMetricsByBrand = (inc = []) => getListOfUniqueProperties(inc,
         const brandMTTD = h.formatDurationToHours(mttd(brandIncidentsList));
         const P1inc = brandIncidentsList.filter((incident) => incident.priority === '1-Critical').length;
         const P2inc = brandIncidentsList.filter((incident) => incident.priority === '2-High').length;
-        const total = brandIncidentsList.length;
+        const all = brandIncidentsList.length;
         const brandTotalDuration = h.formatDurationToHours(sumPropertyInArrayOfObjects(brandIncidentsList, 'duration'));
 
         return {
             'Brand': brand,
             'P1': P1inc,
             'P2': P2inc,
-            'Total': total,
+            'All': all,
             'MTTD': brandMTTD,
             'MTTR': brandMTTR,
             'Total Duration': brandTotalDuration
@@ -220,67 +220,63 @@ export const mttr = (incidents = []) => (sumPropertyInArrayOfObjects(incidents, 
 const mttd = (incidents = []) => (sumPropertyInArrayOfObjects(incidents, 'ttd') / incidents.length) || 0;
 
 export const weeklyMTTRMTTD = (incidents = []) => {
+    const data = [];
     const weeks = getMarginDateValues(incidents);
-    const weeksInterval = weeklyRange(weeks[0], weeks[1]);
-    const weeklyMTTR = [];
-    const weeklyMTTD = [];
-
+    const weeksInterval = getWeeks(weeks[0], weeks[1]);
     weeksInterval.forEach((date) => {
-        weeklyMTTR.push(h.formatDurationToH(mttr(incidentsOfTheWeek(incidents, moment(date).week()))));
-        weeklyMTTD.push(h.formatDurationToH(mttd(incidentsOfTheWeek(incidents, moment(date).week()))));
+        data.push({
+            name: date,
+            MTTR: Number.parseFloat(h.formatDurationToH(mttr(incidentsOfTheWeek(incidents, moment(date).week())))),
+            MTTD: Number.parseFloat(h.formatDurationToH(mttd(incidentsOfTheWeek(incidents, moment(date).week()))))
+        });
     });
-
-    return [{name: 'MTTR', data: weeklyMTTR}, {name: 'MTTD', data: weeklyMTTD}];
+    return {data, keys: ['MTTR', 'MTTD']};
 };
 
 export const weeklyMTTRbyBrand = (inc = []) => {
+    const data = [];
     const weeks = getMarginDateValues(inc);
-    const weeksInterval = weeklyRange(weeks[0], weeks[1]);
+    const weeksInterval = getWeeks(weeks[0], weeks[1]);
     const incsByBrand = listOfIncByBrands(inc);
-
-    return incsByBrand.map((incident) => {
-        const brandName = incident[0].Brand;
-        const weeklyMTTR = [];
-
-        weeksInterval.forEach((date) => {
-            weeklyMTTR.push(h.formatDurationToH(mttr(incidentsOfTheWeek(incident, moment(date).week()))));
+    const brands = new Set();
+    weeksInterval.forEach((date) => {
+        const result = {name: date};
+        incsByBrand.map((incident) => {
+            const brand = incident[0].Brand;
+            brands.add(brand);
+            result[brand] = Number.parseFloat(h.formatDurationToH(mttr(incidentsOfTheWeek(incident, moment(date).week()))));
         });
-
-        return {name: brandName, data: weeklyMTTR};
+        data.push(result);
     });
+    return {data, keys: Array.from(brands)};
 };
 
 export const weeklyMTTDbyBrand = (inc = []) => {
+    const data = [];
     const weeks = getMarginDateValues(inc);
-    const weeksInterval = weeklyRange(weeks[0], weeks[1]);
+    const weeksInterval = getWeeks(weeks[0], weeks[1]);
     const incsByBrand = listOfIncByBrands(inc);
-
-    return incsByBrand.map((incident) => {
-        const brandName = incident[0].Brand;
-        const weeklyMTTD = [];
-
-        weeksInterval.forEach((date) => {
-            weeklyMTTD.push(h.formatDurationToH(mttd(incidentsOfTheWeek(incident, moment(date).week()))));
+    const brands = new Set();
+    weeksInterval.forEach((date) => {
+        const result = {name: date};
+        incsByBrand.map((incident) => {
+            const brand = incident[0].Brand;
+            brands.add(brand);
+            result[brand] = Number.parseFloat(h.formatDurationToH(mttd(incidentsOfTheWeek(incident, moment(date).week()))));
         });
-
-        return {name: brandName, data: weeklyMTTD};
+        data.push(result);
     });
+    return {data, keys: Array.from(brands)};
 };
 
-export const weeklyRange = (start = '', end = '') => {
-    if (start >= end) {
-        return [start];
+export const getWeeks = (start = '', end = '') => {
+    const weeks = [];
+    const current = moment(start).startOf('week');
+    while (current.isSameOrBefore(end)) {
+        weeks.push(current.format(DATE_FORMAT));
+        current.add(7, 'days');
     }
-
-    return [
-        start,
-        ...weeklyRange(
-            moment(start)
-                .add(7, 'days')
-                .format(DATE_FORMAT),
-            end
-        )
-    ];
+    return weeks;
 };
 
 export const sortInAscOrderAndGetTop5 = (incidents, fieldToSort) => incidents
@@ -290,12 +286,6 @@ export const sortInAscOrderAndGetTop5 = (incidents, fieldToSort) => incidents
 export const sortInDescOrderAndGetTop5 = (incidents, fieldToSort) => incidents
     .sort((a, b) => Number(b[fieldToSort]) - Number(a[fieldToSort]))
     .slice(0, 5);
-
-export const formatSeriesForChart = (data = []) => data
-    .map((item) => ({
-        ...item,
-        type: 'line'
-    }));
 
 const filterByImpactedBrand = (incidents, brandName) => incidents
     .filter((incident) => incident.impactedBrand === brandName);
@@ -333,20 +323,13 @@ const filterIncidentsPerInterval = (data = [], brandName, propertyToSum) => {
 };
 
 const buildRawSeriesForFinancialImpact = (brandNames, weekIntervals, incidentsPerIntervalMap, propertyToSum) => {
-    return brandNames && brandNames.reduce((prev, brandName) => {
-        const data = weekIntervals.map((weekInterval) =>
-            sumBrandLossPerInterval(incidentsPerIntervalMap[weekInterval], brandName, propertyToSum));
-
-        const newMetricPoint = {
-            name: brandName,
-            data
-        };
-
-        return [
-            ...prev,
-            newMetricPoint
-        ];
-    }, []);
+    return weekIntervals.map((w) => {
+        const interval = {name: w};
+        brandNames.forEach((brandName) => {
+            interval[brandName] = sumBrandLossPerInterval(incidentsPerIntervalMap[w], brandName, propertyToSum);
+        });
+        return interval;
+    });
 };
 
 const buildFinancialImpactTooltipData = (brandNames, weekIntervals, incidentsPerIntervalMap, propertyToSum) => weekIntervals
@@ -365,58 +348,34 @@ const buildFinancialImpactTooltipData = (brandNames, weekIntervals, incidentsPer
 const buildIncidentsPerIntervalHash = (weekIntervals, incidents) => weekIntervals
     .reduce((prev, weekInterval) => {
         const week = moment(weekInterval).week();
-        const incidentsPerInterval = incidentsOfTheWeek(incidents, week);
-
         return {
             ...prev,
-            [weekInterval]: incidentsPerInterval
+            [weekInterval]: incidentsOfTheWeek(incidents, week)
         };
     }, {});
 
 export const buildFinancialImpactData = (incidents, propertyToSum) => {
     const [lowerMarginDateValue, maxMarginDateValue] = getMarginDateValues(incidents);
-    const weekIntervals = weeklyRange(lowerMarginDateValue, maxMarginDateValue);
-    const impactedBrands = getListOfUniqueProperties(incidents, 'impactedBrand');
+    const weekIntervals = getWeeks(lowerMarginDateValue, maxMarginDateValue);
+    const brands = getListOfUniqueProperties(incidents, 'impactedBrand');
     const incidentsPerIntervalHash = buildIncidentsPerIntervalHash(weekIntervals, incidents);
-    const rawSeries = buildRawSeriesForFinancialImpact(impactedBrands, weekIntervals, incidentsPerIntervalHash, propertyToSum);
-    const series = formatSeriesForChart(rawSeries);
-    const tooltipData = buildFinancialImpactTooltipData(impactedBrands, weekIntervals, incidentsPerIntervalHash, propertyToSum);
-
+    const tooltipData = buildFinancialImpactTooltipData(brands, weekIntervals, incidentsPerIntervalHash, propertyToSum);
     return {
-        series,
-        tooltipData,
-        weekIntervals
+        data: buildRawSeriesForFinancialImpact(brands, weekIntervals, incidentsPerIntervalHash, propertyToSum),
+        brands,
+        tooltipData
     };
 };
 
-export const getLineData = (startDate, endDate, filteredItems, key) => {
-    const sortedItems = filteredItems.sort((a, b) => String(a[key]).localeCompare(String(b[key])));
-    const bucketSize = 'days';
-    const axisData = [];
-    const data = [];
-    let bucketTotal = 0;
-    const currBucket = moment(startDate);
-    const bucketEnd = moment(currBucket).add(1, bucketSize);
-    for (let i = 0; i <= sortedItems.length; i++) {
-        const item = sortedItems[i];
-        if (!item) {
-            continue;
+export const getWeeklyCounts = (startDate, endDate, tickets, key) => {
+    const weeks = getWeeks(startDate, endDate);
+    const data = weeks.map((w) => ({name: w, count: 0}));
+    tickets.forEach((ticket) => {
+        const date = moment(ticket[key]).startOf('week').format(DATE_FORMAT);
+        const idx = data.findIndex(({name}) => name === date);
+        if (idx > 0) {
+            data[idx].count++;
         }
-        if (moment(item[key]).isBetween(currBucket, bucketEnd, '[)')) {
-            bucketTotal++;
-        } else {
-            while (!moment(item[key]).isBetween(currBucket, bucketEnd, '[)')) {
-                data.push(bucketTotal);
-                bucketTotal = 0;
-                axisData.push(currBucket.format('YYYY-MM-DD'));
-                currBucket.add(1, bucketSize);
-                bucketEnd.add(1, bucketSize);
-            }
-            bucketTotal++;
-        }
-    }
-    data.push(bucketTotal);
-    axisData.push(currBucket.format('YYYY-MM-DD'));
-
-    return {axisData, data};
+    });
+    return {data, keys: ['count']};
 };

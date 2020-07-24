@@ -39,3 +39,5 @@ Thumbs.db
 .env
 
 config/buildInfo.js
+
+reports
