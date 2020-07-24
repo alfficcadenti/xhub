@@ -39,7 +39,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
             setIsLoading(true);
             setLastStartDate(startDate);
             setLastEndDate(endDate);
-            fetch(`/impulse-api/v1/bookings${returnFilterString(selectedLob, selectedInterval, selectedBrand, selectedBrandGroup)}`)
+            fetch(`/user-events-api/v1/bookings/count${returnFilterString(selectedLob, selectedInterval, selectedBrand, selectedBrandGroup)}`)
                 .then((result) => {
                     return result.json();
                 }
