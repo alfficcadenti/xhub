@@ -137,8 +137,10 @@ const BlipDashBoard = () => {
                 links={navLinks}
             />
             <LoadingContainer isLoading={isLoading} error={error} className="incident-main">
-                <div>
-                    {renderTabs()}
+                <div className="chart-container">
+                    <div className="bookings-container">
+                        {renderTabs()}
+                    </div>
                 </div>
             </LoadingContainer>
         </div>

@@ -3,9 +3,11 @@ import {
     ALL_LOB,
     ALL_BRANDS,
     ALL_BRAND_GROUP,
+    BOOKING_COUNT
 } from '../../constants';
 
 import {useIsMount} from '../hooks';
+import moment from 'moment';
 
 
 export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, endDate, selectedLob, selectedBrand, selectedInterval, selectedBrandGroup) => {
@@ -42,9 +44,18 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
                     return result.json();
                 }
                 )
-                .then((resJson) => {
+                .then((respJson) => {
+                    const chartData = respJson.map((items) => {
+                        return {
+                            time: moment.utc(items.time).format('HH:mm'),
+                            [BOOKING_COUNT]: items.count
+                        };
+                    });
+                    return chartData;
+                })
+                .then((chartData) => {
                     setError('');
-                    setRes(resJson);
+                    setRes(chartData);
                     setIsLoading(false);
                 })
                 .catch((err) => {

@@ -19,6 +19,7 @@ export const EPIC_ISSUE_TYPE = 'Epic';
 export const EXPEDIA_BRAND = 'Expedia';
 export const VRBO_BRAND = 'Vrbo';
 export const HOTELS_COM_BRAND = 'Hotels.com';
+export const BOOKING_COUNT = 'Booking Counts';
 export const EXPEDIA_PARTNER_SERVICES_BRAND = 'Expedia Partner Services';
 export const EGENCIA_BRAND = 'Egencia';
 export const LOBS = ['Air', 'Activity', 'Car', 'Insurance', 'Lodging'];
@@ -27,6 +28,7 @@ export const EG_BRAND = 'Expedia Group';
 export const BRANDS_LIST = ['Brand Expedia', 'CheapTickets', 'Egencia', 'Expedia Partner Solutions', 'HomeAway', 'Hotels.com', 'Hotwire', 'Orbitz', 'Travelocity', 'Wotif', 'eBookers'];
 export const TIME_INTERVAL = '15Min Interval';
 export const TIME_INTERVALS_IMPULSE = ['15Min Interval', '30Min Interval', '60Min Interval'];
+export const IMPULSE_CHART_COLOR = '#1478F7';
 export const BRANDS = [
     {
         label: EG_BRAND,

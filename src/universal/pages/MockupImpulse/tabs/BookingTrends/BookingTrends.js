@@ -1,95 +1,37 @@
-import ReactEcharts from 'echarts-for-react';
-import echarts from 'echarts';
 import React, {PureComponent} from 'react';
-import all from '../../implusehandler';
-import NoResults from '../../../../components/NoResults/NoResults';
+import {
+    AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
+} from 'recharts';
+import './styles.less';
+import {IMPULSE_CHART_COLOR} from '../../../../constants';
+
 
 class BookingTrends extends PureComponent {
-    chartOptions = (data = []) => {
-        const xAxis = all.xAxisData(data.data);
-        const seriesData = all.seriesData(data.data);
-        const legends = ['Booking Counts'];
-        return {
-            title: {text: ' Booking Counts'},
-            tooltip: {
-                trigger: 'axis',
-                position(pt) {
-                    return [pt[0], '10%'];
-                },
-                axisPointer: {
-                    type: 'cross'
-                }
-            },
-
-            legend: {data: legends},
-            dataZoom: [{
-                type: 'inside',
-                start: 100,
-                end: 50
-            }, {
-                start: 100,
-                end: 50,
-                handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
-                handleSize: '80%',
-                handleStyle: {
-                    color: '#fff',
-                    shadowBlur: 3,
-                    shadowColor: 'rgba(0, 0, 0, 0.6)',
-                    shadowOffsetX: 2,
-                    shadowOffsetY: 2
-                },
-            }
-            ],
-            xAxis: {
-                type: 'category',
-                data: xAxis,
-            },
-            yAxis: {
-                type: 'value',
-                name: 'Booking Counts',
-                nameLocation: 'middle',
-                nameGap: 50,
-                nameRotate: 90,
-                splitLine: {
-                    lineStyle: {
-                        type: 'dashed'
-                    },
-                }
-
-            },
-            series: [{
-                data: seriesData,
-                type: 'line',
-                symbol: 'none',
-                name: 'Booking Counts',
-                itemStyle: {
-                    color: 'rgb(20, 120, 247)'
-                },
-                areaStyle: {
-                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                        offset: 0,
-                        color: 'rgb(20, 120, 247)'
-                    }, {
-                        offset: 1,
-                        color: 'rgb(255, 255, 255)'
-                    }]),
-
-                }
-            }],
-        };
-    };
-
-
     render() {
         const data = this.props;
         return (
-            <div>
-                {data.data.length ?
-                    <ReactEcharts
-                        option={this.chartOptions(data)}
-                        key={Math.random()}
-                    /> : <NoResults/>
-                }
+            <div className="bookings-container-box">
+                <h2 className="total-bookings-title">
+                    {'Impulse'}
+                </h2>
+                <ResponsiveContainer width="100%" height="70%">
+                    <AreaChart data={data.data} margin={{top: 10, right: 30, left: 0, bottom: 0}}
+                    >
+                        <defs>
+                            <linearGradient id="colorBooking" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor={IMPULSE_CHART_COLOR} stopOpacity={0.8}/>
+                                <stop offset="95%" stopColor={IMPULSE_CHART_COLOR} stopOpacity={0}/>
+                            </linearGradient>
+                        </defs>
+                        <XAxis dataKey="time" tick={{fontSize: 10}}/>
+                        <YAxis tick={{fontSize: 10}}/>
+                        <CartesianGrid strokeDasharray="3 3"/>
+                        <Tooltip/>
+                        <Area type="monotone" dataKey="Booking Counts" stroke={IMPULSE_CHART_COLOR} fillOpacity={1} fill="url(#colorBooking)"/>
+                        <Legend onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}
+                        />
+                    </AreaChart>
+                </ResponsiveContainer>
             </div>
         );
     }
