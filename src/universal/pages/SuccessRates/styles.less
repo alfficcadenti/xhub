@@ -1,0 +1,52 @@
+@import '../../mixins.less';
+
+.success-rates-container {
+    width: 100%;
+    height: 500px;
+
+    .card {
+        margin-bottom: 0;
+        box-shadow: none;
+        border: @color-border-default 1px solid;
+
+        &:hover {
+            box-shadow: 0 0 @spacing-1x 0 rgba(0, 0, 0, .1);
+            cursor: default;
+        }
+    }
+
+    h1 {
+        margin-bottom: @spacing-3x;
+    }
+
+    .success-rates-loading-container {
+        margin-top: @spacing-2x;
+    }
+
+    .success-rates-widget-container {
+        display: grid;
+        grid-gap: @spacing-2x;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .page-info .Tooltip .Tooltip__inner {
+        font-weight: 400;
+    }
+
+    .form-container {
+        margin-bottom: @spacing-3x;
+
+        .preset-dropdown {
+            float: right;
+            margin-top: -@spacing-9x;
+
+            .Dropdown__toggle {
+                .dropdown-button;
+            }
+        }
+
+        .apply-btn {
+            margin-left: @spacing-1x;
+        }
+    }
+}
