@@ -1,0 +1,12 @@
+import React from 'react';
+import {expect} from 'chai';
+import {shallow} from 'enzyme';
+import {DatetimeRangePicker} from '../index.js';
+
+
+describe('DatetimeRangePicker component testing', () => {
+    it('renders successfully', () => {
+        const wrapper = shallow(<DatetimeRangePicker />);
+        expect(wrapper).to.have.length(1);
+    });
+});
