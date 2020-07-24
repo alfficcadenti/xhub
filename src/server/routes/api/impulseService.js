@@ -2,7 +2,7 @@ import ServiceClient from '@vrbo/service-client';
 
 module.exports.impulseBookingDataService = {
     method: 'GET',
-    path: '/impulse-api/v1/bookings/{param*}',
+    path: '/impulse-api/v1/bookings/count{param*}',
     config: {
         id: 'impulse-booking-data-api-v1-get',
         log: {

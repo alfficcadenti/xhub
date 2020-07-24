@@ -5,19 +5,14 @@ import PieChart from '../';
 
 
 describe('PieChart component testing', () => {
-    let wrapper;
-
-    beforeEach(() => {
-        wrapper = shallow(
-            <PieChart />
-        );
-    });
-
-    afterEach(() => {
-        wrapper.unmount();
-    });
-
-    it('checks PieChart component exists', () => {
+    it('renders successfully', () => {
+        const wrapper = shallow(<PieChart data={[{name: 'name', value: 2}]} />);
         expect(wrapper).to.have.length(1);
+        expect(wrapper.find('h3').children()).to.have.length(0);
+    });
+
+    it('renders title successfully', () => {
+        const wrapper = shallow(<PieChart title="title" data={[{name: 'name', value: 2}]} />);
+        expect(wrapper.find('h3').children()).to.have.length(1);
     });
 });

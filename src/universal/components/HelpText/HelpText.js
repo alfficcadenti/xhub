@@ -5,7 +5,7 @@ import {SVGIcon} from '@homeaway/react-svg';
 import {INFO__16} from '@homeaway/svg-defs';
 import './HelpText.less';
 
-const HelpText = ({text = '', className = '', placement = ''}) => (
+const HelpText = ({text = '', className = '', placement = 'bottom'}) => (
     <span className="helptext">
         <Tooltip content={text} wrapperClassName={className} placement={placement}>
             <SVGIcon markup={INFO__16} />
