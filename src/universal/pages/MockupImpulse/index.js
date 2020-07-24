@@ -27,7 +27,7 @@ const navLinks = [
     {
         id: 'actualvsprediction',
         label: 'Booking Trends',
-        href: '/impulsetool'
+        href: '/impulse'
     }
 ];
 

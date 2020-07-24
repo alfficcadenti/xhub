@@ -382,7 +382,7 @@
             "template": "templates/welcome.hbs"
           },
           {
-            "route": "require:./routes/pages/impulsetool",
+            "route": "require:./routes/pages/impulse",
             "component": "require:../universal/components/App/ServerApp.js",
             "template": "templates/welcome.hbs"
           }

@@ -66,8 +66,8 @@ export default [
     {
         category: AAT,
         id: 'impulse',
-        link: '/impulsetool',
-        text: 'Impulse Tool',
+        link: '/impulse',
+        text: 'Impulse',
         component: require('./MockupImpulse')
     }
 ];
