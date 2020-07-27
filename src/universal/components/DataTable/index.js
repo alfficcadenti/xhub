@@ -14,6 +14,10 @@ import './DataTable.less';
 import {Dropdown, DropdownItem} from '@homeaway/react-dropdown';
 import NoResults from '../NoResults/NoResults';
 
+const sanitizeOption = {
+    allowedAttributes: Object.assign(sanitizeHtml.defaults.allowedAttributes, {div: ['value']})
+};
+
 class DataTable extends Component {
     constructor(props) {
         super(props);
@@ -140,7 +144,7 @@ class DataTable extends Component {
                 <td
                     key={uuid()}
                     className={this.applyRule(item, col)}
-                    dangerouslySetInnerHTML={{__html: sanitizeHtml(item[col])}} // eslint-disable-line
+                    dangerouslySetInnerHTML={{__html: sanitizeHtml(item[col], sanitizeOption)}} // eslint-disable-line
                 />
             )
     );
