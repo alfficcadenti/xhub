@@ -18,7 +18,7 @@ import {VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_BRAND, EGENCIA_BRAND} from '../../
 
 const dataResult = {
     'Brand': 'Expedia Partner Solutions (EPS)',
-    'Duration': '0m',
+    'Duration': '<divvalue=8000>0m</div>',
     'Incident': '<a href="https://expedia.service-now.com/go.do?id=INC4419505" target="_blank">INC4419505</a>',
     'Priority': '1-Critical',
     'Root Cause Owner': 'EAN Release - Deploy',
@@ -57,7 +57,7 @@ describe('incidentsHelper', () => {
         it('returns array populated if filteredIncidents are passed', () => {
             const result = getIncidentsData([mockData[0]]);
             expect(result[0].Brand).to.be.eql(dataResult.Brand);
-            expect(result[0].Duration).to.be.eql(dataResult.Duration);
+            expect(result[0].Duration.toString().replace(/\s/g, '')).to.be.eql(dataResult.Duration);
             expect(result[0].Incident).to.be.eql(dataResult.Incident);
             expect(result[0].Priority).to.be.eql(dataResult.Priority);
             expect(result[0].Status).to.be.eql(dataResult.Status);

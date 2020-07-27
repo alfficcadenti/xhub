@@ -8,7 +8,7 @@ import './styles.less';
 
 const PieChartWrapper = ({
     title,
-    data,
+    data = [],
     dataKey = 'value',
     onChartClick
 }) => {
