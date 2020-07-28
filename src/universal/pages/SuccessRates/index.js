@@ -5,9 +5,9 @@ import PageviewWidget from '../../components/PageviewWidget';
 import LoadingContainer from '../../components/LoadingContainer';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import {useQueryParamChange, useSelectedBrand} from '../hooks';
-import {getBrand, EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../../constants';
+import {getBrand, EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, HOTELS_COM_BRAND} from '../../constants';
+import {mapBrandNames} from '../utils';
 import './styles.less';
-import {successRateData} from './mockData';
 
 
 const TIMEZONE_OFFSET = (new Date()).getTimezoneOffset();
@@ -40,11 +40,10 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [chartRight, setChartRight] = useState('dataMax');
 
     const PAGES_LIST = [
-        {name: 'home', label: 'Home To Search Page (SERP)'},
-        {name: 'searchresults', label: 'Search (SERP) To Property Page (PDP)'},
-        {name: 'property', label: 'Property (PDP) To Checkout Page (CKO)'},
-        {name: 'bookingform', label: 'Checkout (CKO) To Checkout Confirmation Page'},
-        // {name: 'bookingconfirmation', label: 'Booking Confirmation'},
+        'Home To Search Page (SERP)',
+        'Search (SERP) To Property Page (PDP)',
+        'Property (PDP) To Checkout Page (CKO)',
+        'Checkout (CKO) To Checkout Confirmation Page'
     ];
     const getNowDate = () => moment().endOf('minute').toDate();
     const getLastDate = (value, unit) => moment().subtract(value, unit).startOf('minute').toDate();
@@ -59,93 +58,70 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         {text: 'Last 24 hours', value: getValue(24, 'hours')}
     ];
 
-    const fetchPageViewsData = ([selectedBrand]) => {
-        const {label: pageBrand, funnelBrand} = getBrand(selectedBrand);
+    const fetchSuccessRatesData = ([selectedBrand]) => {
+        const {label: pageBrand} = getBrand(selectedBrand);
         setIsLoading(true);
         setError('');
         const dateQuery = start && end
             ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
             : '';
+        const metricNames = ['SearchSuccessRate', 'SERPSuccessRate', 'PDPSuccessRate', 'checkoutSuccessRate'];
 
-        if (!successRateData || !successRateData.length) {
-            setError('No data found. Try refreshing the page or select another brand.');
-            return;
-        }
-        const widgetObjects = PAGES_LIST.map(({name, label}) => {
-            const pageViews = [];
-            successRateData.forEach(({time, pageViewsData}) => {
-                const currentPageViews = pageViewsData.find((item) => item.page === name);
-                if (currentPageViews) {
-                    const momentTime = moment(time);
-                    if (momentTime.isBetween(start, end, 'minutes', '[]')) {
-                        pageViews.push({
-                            label: `${momentTime.format('YYYY-MM-DD HH:mm')} ${TIMEZONE_ABBR}`,
-                            time: momentTime.format('YYYY-MM-DD HH:mm'),
-                            momentTime,
-                            value: currentPageViews.views
-                        });
-                    }
+        Promise.all(metricNames.map((metricName) => `/user-events-api/v1/funnelView?metricName=${metricName}${dateQuery}`))
+            .then((responses) => Promise.all(responses.map((response) => response.json())))
+            .then((fetchedSuccessRates) => {
+                if (!fetchedSuccessRates || !fetchedSuccessRates.length) {
+                    setError('No data found. Try refreshing the page or select another brand.');
+                    return;
                 }
-            });
-            return {pageName: label, pageViews, pageBrand};
-        });
-        setWidgets(widgetObjects);
-        setIsLoading(false);
 
-        // fetch(`/v1/pageViews?brand=${funnelBrand}&timeInterval=1${dateQuery}`)
-        //     .then((resp) => {
-        //         if (!resp.ok || resp.error) {
-        //             throw new Error(resp.message);
-        //         }
-        //         return resp.json();
-        //     })
-        //     .then((fetchedPageviews) => {
-        //         if (!fetchedPageviews || !fetchedPageviews.length) {
-        //             setError('No data found. Try refreshing the page or select another brand.');
-        //             return;
-        //         }
-        //         const widgetObjects = PAGES_LIST.map(({name, label}) => {
-        //             const pageViews = [];
-        //             fetchedPageviews.forEach(({time, pageViewsData}) => {
-        //                 const currentPageViews = pageViewsData.find((item) => item.page === name);
-        //                 if (currentPageViews) {
-        //                     const momentTime = moment(time);
-        //                     if (momentTime.isBetween(start, end, 'minutes', '[]')) {
-        //                         pageViews.push({
-        //                             label: `${momentTime.format('YYYY-MM-DD HH:mm')} ${TIMEZONE_ABBR}`,
-        //                             time: momentTime.format('YYYY-MM-DD HH:mm'),
-        //                             momentTime,
-        //                             value: currentPageViews.views
-        //                         });
-        //                     }
-        //                 }
-        //             });
-        //             return {pageName: label, pageViews, pageBrand};
-        //         });
-        //         setWidgets(widgetObjects);
-        //     })
-        //     .catch((err) => {
-        //         let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
-        //             ? 'Query has timed out. Try refreshing the page. If the problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.'
-        //             : 'An unexpected error has occurred. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.';
-        //         setError(errorMessage);
-        //         // eslint-disable-next-line no-console
-        //         console.error(err);
-        //     })
-        //     .finally(() => setIsLoading(false));
+                const widgetObjects = PAGES_LIST.map((pageName, i) => {
+                    const successRates = [];
+
+                    fetchedSuccessRates[i].forEach(({time, successRatePercentagesData}) => {
+                        const currentSuccessRates = successRatePercentagesData.find((item) => mapBrandNames(item.brand) === selectedBrands[0]);
+
+                        if (currentSuccessRates) {
+                            const momentTime = moment(time);
+                            if (momentTime.isBetween(start, end, 'minutes', '[]')) {
+                                successRates.push({
+                                    label: `${momentTime.format('YYYY-MM-DD HH:mm')} ${TIMEZONE_ABBR}`,
+                                    time: momentTime.format('YYYY-MM-DD HH:mm'),
+                                    momentTime,
+                                    value: currentSuccessRates.rate
+                                });
+                            }
+                        }
+                    });
+
+                    return {pageName, successRates, pageBrand};
+                });
+
+                setWidgets(widgetObjects);
+            })
+            .catch((err) => {
+                let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
+                    ? 'Query has timed out. Try refreshing the page. If the problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.'
+                    : 'An unexpected error has occurred. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.';
+                setError(errorMessage);
+                // eslint-disable-next-line no-console
+                console.error(err);
+            })
+            .finally(() => setIsLoading(false));
+
+        setIsLoading(false);
     };
 
     useEffect(() => {
-        if ([EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND].includes(selectedBrands[0])) {
-            setError(`Page views for ${selectedBrands} is not yet available.
-                The following brands are supported at this time: "Expedia", "Hotels.com", and "Vrbo".
+        if ([EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, HOTELS_COM_BRAND].includes(selectedBrands[0])) {
+            setError(`Success rates for ${selectedBrands} is not yet available.
                 If you have any questions, please ping #dpi-reo-opex-all or leave a comment via our Feedback form.`);
             setIsFormDisabled(true);
         } else {
             setError(null);
             setIsFormDisabled(false);
 
-            fetchPageViewsData(selectedBrands);
+            fetchSuccessRatesData(selectedBrands);
         }
     }, [selectedBrands, start, end]);
 
@@ -184,12 +160,12 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             // if refArea was dragged right to left
             [nextRefAreaLeft, nextRefAreaRight] = [refAreaRight, refAreaLeft];
         }
-        const fromIdx = widgets[0].pageViews.findIndex(({time}) => time === nextRefAreaLeft);
-        const toIdx = widgets[0].pageViews.findIndex(({time}) => time === nextRefAreaRight);
+        const fromIdx = widgets[0].successRates.findIndex(({time}) => time === nextRefAreaLeft);
+        const toIdx = widgets[0].successRates.findIndex(({time}) => time === nextRefAreaRight);
         // slice data based on new xAxis domain
         const nextWidgets = widgets.map((w) => {
             const nextWidget = w;
-            nextWidget.pageViews = w.pageViews.slice(fromIdx, toIdx);
+            nextWidget.successRates = w.successRates.slice(fromIdx, toIdx);
             return nextWidget;
         });
         setRefAreaLeft('');
@@ -208,10 +184,10 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const handleMouseDown = (e) => setRefAreaLeft(e.activeLabel);
     const handleMouseMove = (e) => refAreaLeft && setRefAreaRight(e.activeLabel);
 
-    const renderWidget = ({pageName, pageViews, pageBrand}) => (
+    const renderWidget = ({pageName, successRates, pageBrand}) => (
         <PageviewWidget
             title={pageName}
-            data={pageViews}
+            data={successRates}
             key={pageName}
             brand={pageBrand}
             tickGap={getWidgetXAxisTickGap(currentTimeRange)}
