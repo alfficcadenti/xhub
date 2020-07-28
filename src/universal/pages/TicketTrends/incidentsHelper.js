@@ -92,7 +92,7 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
         Brand: inc.Brand || '-',
         Division: inc.Division || '-',
         Started: moment.utc(inc.startedAt).local().isValid() ? moment.utc(inc.startedAt).local().format('YYYY-MM-DD HH:mm') : '-',
-        Summary: inc.ticket_summary || '-',
+        Summary: (inc.ticket_summary || '-').trim(),
         Duration: inc.duration ? h.formatDurationForTable(inc.duration) : '-',
         rawDuration: inc.duration,
         TTD: inc.ttd ? h.formatDurationForTable(inc.ttd) : '-',

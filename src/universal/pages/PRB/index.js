@@ -1,6 +1,6 @@
 /* eslint-disable no-use-before-define */
 import React, {useState, useEffect, useCallback} from 'react';
-import {useHistory, useLocation} from 'react-router';
+import {useHistory, useLocation} from 'react-router-dom';
 import qs from 'query-string';
 import moment from 'moment';
 import 'moment-timezone';

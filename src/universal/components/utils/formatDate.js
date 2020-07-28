@@ -15,16 +15,18 @@ export function formatDurationToH(duration) {
 }
 
 export function formatDurationForTable(m) {
-    const duration = moment.duration(Number(m), 'milliseconds');
+    const value = Number(m);
+    const paddedStrValue = String(value).padStart(12);
+    const duration = moment.duration(value, 'milliseconds');
     const dd = Math.floor(duration.asDays());
     const remainingDuration = duration.subtract(dd, 'days');
     const hh = remainingDuration.hours();
     const mm = remainingDuration.minutes();
     if (dd > 0) {
-        return `${dd}d ${hh}h ${mm}m`;
+        return `<div value=${paddedStrValue}>${dd}d ${hh}h ${mm}m</div>`;
     }
     if (hh > 0) {
-        return `${hh}h ${mm}m`;
+        return `<div value=${paddedStrValue}>${hh}h ${mm}m</div>`;
     }
-    return `${mm}m`;
+    return `<div value=${paddedStrValue}>${mm}m</div>`;
 }

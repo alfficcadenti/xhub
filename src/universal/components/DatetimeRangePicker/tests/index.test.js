@@ -6,7 +6,7 @@ import {DatetimeRangePicker} from '../index.js';
 
 describe('DatetimeRangePicker component testing', () => {
     it('renders successfully', () => {
-        const wrapper = shallow(<DatetimeRangePicker />);
+        const wrapper = shallow(<DatetimeRangePicker startDate={new Date()} endDate={new Date()} onChange={() => {}} />);
         expect(wrapper).to.have.length(1);
     });
 });
