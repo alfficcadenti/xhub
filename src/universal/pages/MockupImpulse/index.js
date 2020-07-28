@@ -31,7 +31,7 @@ const navLinks = [
     }
 ];
 
-const BlipDashBoard = () => {
+const Impulse = () => {
     const [startDate, setStartDate] = useState(startDateDefaultValue);
     const [endDate, setEndDate] = useState(endDateDefaultValue);
     const [isApplyClicked, setIsApplyClicked] = useState(false);
@@ -147,4 +147,4 @@ const BlipDashBoard = () => {
     );
 };
 
-export default BlipDashBoard;
+export default Impulse;
