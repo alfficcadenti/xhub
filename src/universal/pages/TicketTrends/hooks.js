@@ -43,6 +43,7 @@ export const useFetchTickets = (
             fetch(`https://opxhub-service.us-west-2.test.expedia.com/api/v1/${url}?startDate=${startDate}&endDate=${endDate}`)
                 .then((response) => response.json())
                 .then((tickets) => {
+                    tickets.sort((a, b) => new Date(b.startedAt) - new Date(a.startedAt));
                     // incidents
                     const isIncidents = url === 'incidents';
                     const uniqueTickets = getUniqueTickets(tickets, isIncidents ? 'incidentNumber' : 'defectNumber');
