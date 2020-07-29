@@ -8,6 +8,7 @@ import {
 
 import {useIsMount} from '../hooks';
 import moment from 'moment';
+import {checkResponse} from '../utils';
 
 
 export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, endDate, selectedLob, selectedBrand, selectedInterval, selectedBrandGroup) => {
@@ -40,10 +41,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
             setLastStartDate(startDate);
             setLastEndDate(endDate);
             fetch(`/user-events-api/v1/bookings/count${returnFilterString(selectedLob, selectedInterval, selectedBrand, selectedBrandGroup)}`)
-                .then((result) => {
-                    return result.json();
-                }
-                )
+                .then(checkResponse)
                 .then((respJson) => {
                     const chartData = respJson.map((items) => {
                         return {
