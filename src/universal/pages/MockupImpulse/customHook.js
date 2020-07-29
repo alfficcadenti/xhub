@@ -6,17 +6,20 @@ import {
     BOOKING_COUNT
 } from '../../constants';
 
-import {useIsMount} from '../hooks';
+import {useIsMount, useQueryParamChange, useSelectedBrand} from '../hooks';
 import moment from 'moment';
 
 
-export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, endDate, selectedLob, selectedBrand, selectedInterval, selectedBrandGroup) => {
+export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, endDate, selectedLob, selectedBrand, selectedInterval, selectedBrandGroup, newBrand, prevBrand, props) => {
+    console.log(newBrand, prevBrand);
     const [res, setRes] = useState([]);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [lastStartDate, setLastStartDate] = useState('');
     const [lastEndDate, setLastEndDate] = useState('');
     const isMount = useIsMount();
+    useQueryParamChange(newBrand, props.onBrandChange);
+    useSelectedBrand(newBrand, props.onBrandChange, props.prevSelectedBrand);
     const returnFilterString = (lob, timeInterval, brand, brandGroup) => {
         let query = '';
         if (lob !== ALL_LOB) {
@@ -35,14 +38,17 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
         return `?${query.substring(0, query.length - 1)}`;
     };
     useEffect(() => {
+        console.log('in use')
         const getData = () => {
             setIsLoading(true);
             setLastStartDate(startDate);
             setLastEndDate(endDate);
-            fetch(`/user-events-api/v1/bookings/count${returnFilterString(selectedLob, selectedInterval, selectedBrand, selectedBrandGroup)}`)
+
+            fetch(`http://localhost:8082/v1/bookings/count${returnFilterString(selectedLob, selectedInterval, selectedBrand, selectedBrandGroup)}`)
+                // fetch(`/user-events-api/v1/bookings/count${returnFilterString(selectedLob, selectedInterval, selectedBrand, selectedBrandGroup)}`)
                 .then((result) => {
-                    return result.json();
-                }
+                        return result.json();
+                    }
                 )
                 .then((respJson) => {
                     const chartData = respJson.map((items) => {
@@ -64,7 +70,10 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
                     console.error(err);
                 });
         };
-
+        console.log(isMount, isApplyClicked);
+        if (newBrand !== prevBrand) {
+            getData();
+        }
         if (isMount) {
             getData();
         } else if (isApplyClicked) {

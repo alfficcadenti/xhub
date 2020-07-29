@@ -4,13 +4,22 @@ import BrandCSRWidget from '../../components/BrandCSRWidget';
 import TotalChart from './TotalBookingsChart';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import {EXPEDIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, EG_BRAND, BRANDS, getBrand} from '../../constants';
+import {
+    EXPEDIA_BRAND,
+    VRBO_BRAND,
+    HOTELS_COM_BRAND,
+    EXPEDIA_PARTNER_SERVICES_BRAND,
+    EG_BRAND,
+    BRANDS,
+    getBrand
+} from '../../constants';
 import './styles.less';
 import {formatCSRData} from './utils';
 import {removeEmptyStringsFromArray} from '../utils';
 import {useQueryParamChange, useSelectedBrand} from '../hooks';
 
 const LandingPage = (props) => {
+    console.log(props.prevSelectedBrand);
     const selectedBrands = props.selectedBrands[0] === EG_BRAND
         ? BRANDS.map((brand) => brand.landingBrand).filter(removeEmptyStringsFromArray)
         : props.selectedBrands.map((brand) => getBrand(brand).landingBrand).filter(removeEmptyStringsFromArray);
@@ -25,7 +34,7 @@ const LandingPage = (props) => {
 
     const fetchData = () => {
         const fetchBookingsData = () => {
-            fetch('/user-events-api/v1/bookings')
+            fetch('http://localhost:8082/v1/bookings')
                 .then((responses) => responses.json())
                 .then((data) => {
                     const dataMapped = data && data.map((x) => {
@@ -90,9 +99,9 @@ const LandingPage = (props) => {
                 </div>
                 <div className="ongoing-incidents-wrapper card">
                     <a target="_blank" rel="noopener noreferrer" href="https://expedia.service-now.com/triage/Triage.do" className="ongoing-incidents-tile-link">
-                        <div className="ongoing-incidents-tile-overlay" />
+                        <div className="ongoing-incidents-tile-overlay"/>
                     </a>
-                    <OngoingIncidents selectedBrands={props.selectedBrands} />
+                    <OngoingIncidents selectedBrands={props.selectedBrands}/>
                 </div>
                 {Array.isArray(CSRData) && CSRData.length ?
                     renderCSR(formatCSRData(CSRData, csrSelectedBrands)) :
