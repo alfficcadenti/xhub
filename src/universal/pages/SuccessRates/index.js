@@ -281,6 +281,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 realTimeTotals={realTimeTotals}
                 isRttLoading={isRttLoading}
                 rttError={rttError}
+                label={'Real time success rates totals within the last 5 minutes. Refreshes every minute.'}
             />}
             <LoadingContainer isLoading={isLoading} error={error} className="success-rates-loading-container">
                 <div className="success-rates-widget-container">
