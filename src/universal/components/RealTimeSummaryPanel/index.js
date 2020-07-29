@@ -5,7 +5,7 @@ import HelpText from '../HelpText/HelpText';
 import './styles.less';
 
 
-const RealTimeSummaryPanel = ({realTimeTotals, isRttLoading, rttError, label}) => {
+const RealTimeSummaryPanel = ({realTimeTotals, isRttLoading, rttError, tooltipLabel, label}) => {
     const renderRealTimeTotal = ([label, value]) => (
         <div key={`rtt-${label}`} className="card real-time-card">
             <div className="rtt-label">{label}</div>
@@ -16,8 +16,8 @@ const RealTimeSummaryPanel = ({realTimeTotals, isRttLoading, rttError, label}) =
     return (
         <div className="summary-container">
             <h3>
-                {'Real Time Pageviews'}
-                <HelpText className="rtt-info" text={label} placement="top"/>
+                {label}
+                <HelpText className="rtt-info" text={tooltipLabel} placement="top"/>
             </h3>
             <LoadingContainer isLoading={isRttLoading} error={rttError} className="rtt-loading-container">
                 <div className="real-time-card-container">

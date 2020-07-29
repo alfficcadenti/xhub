@@ -271,7 +271,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 realTimeTotals={realTimeTotals}
                 isRttLoading={isRttLoading}
                 rttError={rttError}
-                label={'Real time pageview totals within the last minute. Refreshes every minute.'}
+                tooltipLabel={'Real time pageview totals within the last minute. Refreshes every minute.'}
+                label={'Real Time Pageviews'}
             />}
             <LoadingContainer isLoading={isLoading} error={error} className="page-views-loading-container">
                 <div className="page-views-widget-container">
