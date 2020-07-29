@@ -1,12 +1,13 @@
 import React, {useEffect, useState, useRef} from 'react';
 import moment from 'moment';
 import 'moment-timezone';
-import HelpText from '../../components/HelpText/HelpText';
 import PageviewWidget from '../../components/PageviewWidget';
 import LoadingContainer from '../../components/LoadingContainer';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
+import RealTimeSummaryPanel from '../../components/RealTimeSummaryPanel';
 import {useQueryParamChange, useSelectedBrand} from '../hooks';
 import {getBrand, EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../../constants';
+import {checkResponse} from '../utils';
 import './styles.less';
 
 const TIMEZONE_OFFSET = (new Date()).getTimezoneOffset();
@@ -74,12 +75,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         const rttEnd = moment(now).subtract(1, 'minute').startOf('minute');
         const dateQuery = `&startDate=${rttStart.utc().format()}&endDate=${rttEnd.utc().format()}`;
         fetch(`/v1/pageViews?brand=${funnelBrand}&timeInterval=1${dateQuery}`)
-            .then((resp) => {
-                if (!resp.ok || resp.error) {
-                    throw new Error(resp.message);
-                }
-                return resp.json();
-            })
+            .then(checkResponse)
             .then((fetchedPageviews) => {
                 const nextRealTimeTotals = PAGES_LIST.reduce((acc, {label}) => {
                     acc[label] = 0;
@@ -117,12 +113,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
             : '';
         fetch(`/v1/pageViews?brand=${funnelBrand}&timeInterval=1${dateQuery}`)
-            .then((resp) => {
-                if (!resp.ok || resp.error) {
-                    throw new Error(resp.message);
-                }
-                return resp.json();
-            })
+            .then(checkResponse)
             .then((fetchedPageviews) => {
                 if (!fetchedPageviews || !fetchedPageviews.length) {
                     setError('No data found. Try refreshing the page or select another brand.');
@@ -239,27 +230,6 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const handleMouseDown = (e) => setRefAreaLeft(e.activeLabel);
     const handleMouseMove = (e) => refAreaLeft && setRefAreaRight(e.activeLabel);
 
-    const renderRealTimeTotal = ([label, value]) => (
-        <div key={`rtt-${label}`} className="card real-time-card">
-            <div className="rtt-label">{label}</div>
-            <div className="rtt-value">{value}</div>
-        </div>
-    );
-
-    const renderRealTimeSummary = () => (
-        <div className="summary-container">
-            <h3>
-                {'Real Time Pageviews'}
-                <HelpText className="rtt-info" text="Real time pageview totals within the last minute. Refreshes every minute." placement="top"/>
-            </h3>
-            <LoadingContainer isLoading={isRttLoading} error={rttError} className="rtt-loading-container">
-                <div className="real-time-card-container">
-                    {Object.entries(realTimeTotals).map(renderRealTimeTotal)}
-                </div>
-            </LoadingContainer>
-        </div>
-    );
-
     const renderWidget = ({pageName, pageViews, pageBrand}) => (
         <PageviewWidget
             title={pageName}
@@ -297,7 +267,11 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     {'Apply'}
                 </button>
             </div>
-            {isSupportedBrand && renderRealTimeSummary()}
+            {isSupportedBrand && <RealTimeSummaryPanel
+                realTimeTotals={realTimeTotals}
+                isRttLoading={isRttLoading}
+                rttError={rttError}
+            />}
             <LoadingContainer isLoading={isLoading} error={error} className="page-views-loading-container">
                 <div className="page-views-widget-container">
                     {widgets.map(renderWidget)}

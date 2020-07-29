@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import moment from 'moment';
 import 'moment-timezone';
 import PageviewWidget from '../../components/PageviewWidget';
 import LoadingContainer from '../../components/LoadingContainer';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
+import RealTimeSummaryPanel from '../../components/RealTimeSummaryPanel';
 import {useQueryParamChange, useSelectedBrand} from '../hooks';
 import {getBrand, EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, HOTELS_COM_BRAND} from '../../constants';
 import {mapBrandNames, checkResponse} from '../utils';
@@ -18,6 +19,10 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const initialEnd = moment().endOf('minute');
     const initialTimeRange = 'Last 6 hours';
 
+    const [realTimeTotals, setRealTimeTotals] = useState({});
+    const [isRttLoading, setIsRttLoading] = useState(true);
+    const [rttError, setRttError] = useState('');
+
     const [widgets, setWidgets] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
@@ -29,6 +34,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [currentTimeRange, setCurrentTimeRange] = useState(initialTimeRange);
     const [pendingTimeRange, setPendingTimeRange] = useState(initialTimeRange);
     const [isFormDisabled, setIsFormDisabled] = useState(false);
+    const [isSupportedBrand, setIsSupportedBrand] = useState(false);
 
     useQueryParamChange(selectedBrands[0], onBrandChange);
     useSelectedBrand(selectedBrands[0], onBrandChange, prevSelectedBrand);
@@ -39,12 +45,16 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [chartLeft, setChartLeft] = useState('dataMin');
     const [chartRight, setChartRight] = useState('dataMax');
 
+    const rttRef = useRef();
+
     const PAGES_LIST = [
         'Home To Search Page (SERP)',
         'Search (SERP) To Property Page (PDP)',
         'Property (PDP) To Checkout Page (CKO)',
         'Checkout (CKO) To Checkout Confirmation Page'
     ];
+    const metricNames = ['SearchSuccessRate', 'SERPSuccessRate', 'PDPSuccessRate', 'checkoutSuccessRate'];
+
     const getNowDate = () => moment().endOf('minute').toDate();
     const getLastDate = (value, unit) => moment().subtract(value, unit).startOf('minute').toDate();
     const getValue = (value, unit) => ({start: getLastDate(value, unit), end: getNowDate()});
@@ -58,6 +68,48 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         {text: 'Last 24 hours', value: getValue(24, 'hours')}
     ];
 
+    const fetchRealTimeData = ([selectedBrand]) => {
+        setIsRttLoading(true);
+        setRttError('');
+        const now = moment();
+        const rttStart = moment(now).subtract(6, 'minute').startOf('minute');
+        const rttEnd = moment(now).subtract(1, 'minute').startOf('minute');
+        const dateQuery = `&startDate=${rttStart.utc().format()}&endDate=${rttEnd.utc().format()}`;
+
+        Promise.all(metricNames.map((metricName) => `/user-events-api/v1/funnelView?metricName=${metricName}&timeInterval=1${dateQuery}`))
+            .then((responses) => Promise.all(responses.map(checkResponse)))
+            .then((fetchedSuccessRates) => {
+                const nextRealTimeTotals = PAGES_LIST.reduce((acc, label) => {
+                    acc[label] = 0;
+                    return acc;
+                }, {});
+
+                PAGES_LIST.forEach((label, i) => {
+                    fetchedSuccessRates[i].forEach(({time, successRatePercentagesData}) => {
+                        const currentSuccessRates = successRatePercentagesData.find((item) => mapBrandNames(item.brand) === selectedBrand);
+
+                        if (currentSuccessRates) {
+                            const momentTime = moment(time);
+
+                            if (momentTime.isBetween(rttStart, rttEnd, 'minute', '(]')) {
+                                nextRealTimeTotals[label] += currentSuccessRates.rate;
+                            }
+                        }
+                    });
+                });
+                setRealTimeTotals(nextRealTimeTotals);
+            })
+            .catch((err) => {
+                let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
+                    ? 'Query has timed out. Try refreshing the page. If the problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.'
+                    : 'An unexpected error has occurred. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.';
+                setRttError(errorMessage);
+                // eslint-disable-next-line no-console
+                console.error(err);
+            })
+            .finally(() => setIsRttLoading(false));
+    };
+
     const fetchSuccessRatesData = ([selectedBrand]) => {
         const {label: pageBrand} = getBrand(selectedBrand);
         setIsLoading(true);
@@ -65,7 +117,6 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         const dateQuery = start && end
             ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
             : '';
-        const metricNames = ['SearchSuccessRate', 'SERPSuccessRate', 'PDPSuccessRate', 'checkoutSuccessRate'];
 
         Promise.all(metricNames.map((metricName) => `/user-events-api/v1/funnelView?metricName=${metricName}${dateQuery}`))
             .then((responses) => Promise.all(responses.map(checkResponse)))
@@ -79,10 +130,11 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     const successRates = [];
 
                     fetchedSuccessRates[i].forEach(({time, successRatePercentagesData}) => {
-                        const currentSuccessRates = successRatePercentagesData.find((item) => mapBrandNames(item.brand) === selectedBrands[0]);
+                        const currentSuccessRates = successRatePercentagesData.find((item) => mapBrandNames(item.brand) === selectedBrand);
 
                         if (currentSuccessRates) {
                             const momentTime = moment(time);
+
                             if (momentTime.isBetween(start, end, 'minutes', '[]')) {
                                 successRates.push({
                                     label: `${momentTime.format('YYYY-MM-DD HH:mm')} ${TIMEZONE_ABBR}`,
@@ -108,21 +160,25 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 console.error(err);
             })
             .finally(() => setIsLoading(false));
-
-        setIsLoading(false);
     };
 
     useEffect(() => {
         if ([EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, HOTELS_COM_BRAND].includes(selectedBrands[0])) {
+            setIsSupportedBrand(false);
             setError(`Success rates for ${selectedBrands} is not yet available.
                 If you have any questions, please ping #dpi-reo-opex-all or leave a comment via our Feedback form.`);
             setIsFormDisabled(true);
         } else {
+            setIsSupportedBrand(true);
             setError(null);
             setIsFormDisabled(false);
-
+            fetchRealTimeData(selectedBrands);
+            rttRef.current = setInterval(fetchRealTimeData, 60000); // refresh every minute
             fetchSuccessRatesData(selectedBrands);
         }
+        return function cleanup() {
+            clearInterval(rttRef.current);
+        };
     }, [selectedBrands, start, end]);
 
     const handleDatetimeChange = ({start: startDateTimeStr, end: endDateTimeStr}, text) => {
@@ -221,6 +277,11 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     {'Apply'}
                 </button>
             </div>
+            {isSupportedBrand && <RealTimeSummaryPanel
+                realTimeTotals={realTimeTotals}
+                isRttLoading={isRttLoading}
+                rttError={rttError}
+            />}
             <LoadingContainer isLoading={isLoading} error={error} className="success-rates-loading-container">
                 <div className="success-rates-widget-container">
                     {widgets.map(renderWidget)}
