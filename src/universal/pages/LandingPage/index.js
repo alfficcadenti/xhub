@@ -7,7 +7,7 @@ import moment from 'moment';
 import {EXPEDIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, EG_BRAND, BRANDS, getBrand} from '../../constants';
 import './styles.less';
 import {formatCSRData} from './utils';
-import {removeEmptyStringsFromArray} from '../utils';
+import {checkResponse, removeEmptyStringsFromArray} from '../utils';
 import {useQueryParamChange, useSelectedBrand} from '../hooks';
 
 const LandingPage = (props) => {
@@ -26,7 +26,7 @@ const LandingPage = (props) => {
     const fetchData = () => {
         const fetchBookingsData = () => {
             fetch('/user-events-api/v1/bookings')
-                .then((responses) => responses.json())
+                .then(checkResponse)
                 .then((data) => {
                     const dataMapped = data && data.map((x) => {
                         return {

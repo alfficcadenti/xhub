@@ -6,7 +6,7 @@ import LoadingContainer from '../../components/LoadingContainer';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import {useQueryParamChange, useSelectedBrand} from '../hooks';
 import {getBrand, EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, HOTELS_COM_BRAND} from '../../constants';
-import {mapBrandNames} from '../utils';
+import {mapBrandNames, checkResponse} from '../utils';
 import './styles.less';
 
 
@@ -68,7 +68,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         const metricNames = ['SearchSuccessRate', 'SERPSuccessRate', 'PDPSuccessRate', 'checkoutSuccessRate'];
 
         Promise.all(metricNames.map((metricName) => `/user-events-api/v1/funnelView?metricName=${metricName}${dateQuery}`))
-            .then((responses) => Promise.all(responses.map((response) => response.json())))
+            .then((responses) => Promise.all(responses.map(checkResponse)))
             .then((fetchedSuccessRates) => {
                 if (!fetchedSuccessRates || !fetchedSuccessRates.length) {
                     setError('No data found. Try refreshing the page or select another brand.');

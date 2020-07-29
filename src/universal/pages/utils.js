@@ -27,3 +27,11 @@ export const mapBrandNames = (brandName) => {
             return brandName;
     }
 };
+
+export const checkResponse = (response) => {
+    if (!response.ok || response.error) {
+        throw new Error(response);
+    }
+
+    return response.json();
+};

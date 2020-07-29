@@ -7,6 +7,7 @@ import moment from 'moment';
 import './styles.less';
 import {divisionToBrand} from '../../pages/TicketTrends/incidentsHelper';
 import {EG_BRAND} from '../../constants';
+import {checkResponse} from '../../pages/utils';
 
 const startDate = moment().subtract(2, 'months').format(DATE_FORMAT);
 const endDate = moment().format(DATE_FORMAT);
@@ -29,7 +30,7 @@ const OngoingIncidents = ({selectedBrands}) => {
             setIsLoading(true);
 
             fetch(`https://opxhub-service.us-west-2.test.expedia.com/api/v1/incidents?startDate=${startDate}&endDate=${endDate}`)
-                .then((responses) => responses.json())
+                .then(checkResponse)
                 .then((fetchedIncidents) => {
                     setAllIncidents(fetchedIncidents);
                     setOngoingIncidents(filterOngoingIncidents(fetchedIncidents));

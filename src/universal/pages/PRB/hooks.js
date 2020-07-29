@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react';
 import moment from 'moment';
 import DataTable from '../../components/DataTable';
 import {useIsMount} from '../hooks';
-import {removeEmptyStringsFromArray, distinct} from '../utils';
+import {removeEmptyStringsFromArray, distinct, checkResponse} from '../utils';
 
 
 const getListOfUniqueProperties = (tickets = [], prop) => tickets
@@ -100,13 +100,7 @@ export const useFetchTickets = (
             setLastEndDate(endDate);
             // TODO: replace incidents API call with problem management tickets API call
             fetch('/prbs')
-                .then((resp) => {
-                    if (resp.error) {
-                        throw new Error();
-                    }
-                    return resp.json()
-                    ;
-                })
+                .then(checkResponse)
                 .then((data) => {
                     // TODO: temporarily ignore data and replace with mockData
                     setAllTickets(data.map(mapTickets));
