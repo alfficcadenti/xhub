@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import Header from '../Header';
 import Feedback from '../Feedback';
 import LandingPage from '../../pages/LandingPage';
+import Impulse from '../../pages/MockupImpulse';
+
 import FunnelView from '../../pages/FunnelView';
 import SuccessRates from '../../pages/SuccessRates';
 import Home from '../../pages/Home';
@@ -63,6 +65,7 @@ function App() {
                     <Route path="/funnel-view" render={() => <FunnelView selectedBrands={selectedBrands} onBrandChange={handleBrandChange} />} />
                     <Route path="/success-rates" render={() => <SuccessRates selectedBrands={selectedBrands} onBrandChange={handleBrandChange} />} />
                     <Route path="/home" render={() => <Home selectedBrands={selectedBrands} onBrandChange={handleBrandChange} />} />
+                    <Route path="/impulse" render={() => <Impulse selectedBrands={selectedBrands} onBrandChange={handleBrandChange} />} />
                     {pages.map((p) => renderRoute(p, selectedBrands, handleBrandChange, prevSelectedBrand))}
                 </Switch>
             </div>
