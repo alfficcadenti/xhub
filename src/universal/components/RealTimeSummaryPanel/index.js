@@ -6,9 +6,9 @@ import './styles.less';
 
 
 const RealTimeSummaryPanel = ({realTimeTotals, isRttLoading, rttError, tooltipLabel, label}) => {
-    const renderRealTimeTotal = ([label, value]) => (
-        <div key={`rtt-${label}`} className="card real-time-card">
-            <div className="rtt-label">{label}</div>
+    const renderRealTimeTotal = ([rttLabel, value]) => (
+        <div key={`rtt-${rttLabel}`} className="card real-time-card">
+            <div className="rtt-label">{rttLabel}</div>
             <div className="rtt-value">{value}</div>
         </div>
     );
