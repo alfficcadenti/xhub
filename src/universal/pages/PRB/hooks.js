@@ -102,6 +102,7 @@ export const useFetchTickets = (
             fetch('/prbs')
                 .then(checkResponse)
                 .then((data) => {
+                    data.sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate));
                     // TODO: temporarily ignore data and replace with mockData
                     setAllTickets(data.map(mapTickets));
                     setCurrentOrgs(getListOfUniqueProperties(data, 'owningOrganization'));
