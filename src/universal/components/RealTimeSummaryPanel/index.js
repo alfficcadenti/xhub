@@ -5,11 +5,11 @@ import HelpText from '../HelpText/HelpText';
 import './styles.less';
 
 
-const RealTimeSummaryPanel = ({realTimeTotals, isRttLoading, rttError, tooltipLabel, label}) => {
+const RealTimeSummaryPanel = ({realTimeTotals, isRttLoading, rttError, tooltipLabel, label, showPercentageSign = false}) => {
     const renderRealTimeTotal = ([rttLabel, value]) => (
         <div key={`rtt-${rttLabel}`} className="card real-time-card">
             <div className="rtt-label">{rttLabel}</div>
-            <div className="rtt-value">{value}</div>
+            <div className="rtt-value">{`${value.toFixed()}${showPercentageSign && '$'}`}</div>
         </div>
     );
 

@@ -83,7 +83,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         const rttEnd = moment(now).subtract(1, 'minute').startOf('minute');
         const dateQuery = `&startDate=${rttStart.utc().format()}&endDate=${rttEnd.utc().format()}`;
 
-        Promise.all(metricNames.map((metricName) => fetch(`/user-events-api/v1/funnelView?metricName=${metricName}&timeInterval=1${dateQuery}`)))
+        Promise.all(metricNames.map((metricName) => fetch(`/user-events-api/v1/funnelView?metricName=${metricName}${dateQuery}`)))
             .then((responses) => Promise.all(responses.map(checkResponse)))
             .then((fetchedSuccessRates) => {
                 const nextRealTimeTotals = PAGES_LIST.reduce((acc, label) => {
@@ -296,6 +296,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 rttError={rttError}
                 tooltipLabel={'Real time success rates totals within the last 5 minutes. Refreshes every minute.'}
                 label={'Real Time Success Rates'}
+                showPercentageSign
             />}
             <LoadingContainer isLoading={isLoading} error={error} className="success-rates-loading-container">
                 <div className="success-rates-widget-container">
