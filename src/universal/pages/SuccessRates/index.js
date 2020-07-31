@@ -79,7 +79,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         setIsRttLoading(true);
         setRttError('');
         const now = moment();
-        const rttStart = moment(now).subtract(6, 'minute').startOf('minute');
+        const rttStart = moment(now).subtract(31, 'minute').startOf('minute');
         const rttEnd = moment(now).subtract(1, 'minute').startOf('minute');
         const dateQuery = `&startDate=${rttStart.utc().format()}&endDate=${rttEnd.utc().format()}`;
 
