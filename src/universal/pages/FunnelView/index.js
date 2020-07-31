@@ -6,8 +6,8 @@ import LoadingContainer from '../../components/LoadingContainer';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import RealTimeSummaryPanel from '../../components/RealTimeSummaryPanel';
 import {useQueryParamChange, useSelectedBrand} from '../hooks';
-import {getBrand, EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../../constants';
-import {checkResponse} from '../utils';
+import {EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../../constants';
+import {checkResponse, getBrand} from '../utils';
 import './styles.less';
 
 const TIMEZONE_OFFSET = (new Date()).getTimezoneOffset();
@@ -67,7 +67,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     ];
 
     const fetchRealTimeData = ([selectedBrand]) => {
-        const {funnelBrand} = getBrand(selectedBrand);
+        const {funnelBrand} = getBrand(selectedBrand, 'label');
         setIsRttLoading(true);
         setRttError('');
         const now = moment();
@@ -106,7 +106,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     };
 
     const fetchPageViewsData = ([selectedBrand]) => {
-        const {label: pageBrand, funnelBrand} = getBrand(selectedBrand);
+        const {label: pageBrand, funnelBrand} = getBrand(selectedBrand, 'label');
         setIsLoading(true);
         setError('');
         const dateQuery = start && end
@@ -163,7 +163,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             setError(null);
             setIsFormDisabled(false);
             fetchRealTimeData(selectedBrands);
-            rttRef.current = setInterval(fetchRealTimeData, 60000); // refresh every minute
+            rttRef.current = setInterval(fetchRealTimeData.bind(null, selectedBrands), 60000); // refresh every minute
             fetchPageViewsData(selectedBrands);
         }
         return function cleanup() {

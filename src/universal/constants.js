@@ -80,5 +80,3 @@ export const BRANDS = [
         color: '#FFC72C'
     }
 ];
-
-export const getBrand = (brand) => BRANDS.find((b) => brand === b.label);

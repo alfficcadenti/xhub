@@ -6,8 +6,15 @@ import LoadingContainer from '../../components/LoadingContainer';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import RealTimeSummaryPanel from '../../components/RealTimeSummaryPanel';
 import {useQueryParamChange, useSelectedBrand} from '../hooks';
-import {getBrand, EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, HOTELS_COM_BRAND} from '../../constants';
-import {mapBrandNames, checkResponse} from '../utils';
+import {
+    EG_BRAND,
+    EGENCIA_BRAND,
+    EXPEDIA_PARTNER_SERVICES_BRAND,
+    HOTELS_COM_BRAND,
+    EXPEDIA_BRAND
+} from '../../constants';
+import {mapBrandNames, checkResponse, getBrand} from '../utils';
+import HelpText from '../../components/HelpText/HelpText';
 import './styles.less';
 
 
@@ -76,7 +83,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         const rttEnd = moment(now).subtract(1, 'minute').startOf('minute');
         const dateQuery = `&startDate=${rttStart.utc().format()}&endDate=${rttEnd.utc().format()}`;
 
-        Promise.all(metricNames.map((metricName) => `/user-events-api/v1/funnelView?metricName=${metricName}&timeInterval=1${dateQuery}`))
+        Promise.all(metricNames.map((metricName) => fetch(`/user-events-api/v1/funnelView?metricName=${metricName}&timeInterval=1${dateQuery}`)))
             .then((responses) => Promise.all(responses.map(checkResponse)))
             .then((fetchedSuccessRates) => {
                 const nextRealTimeTotals = PAGES_LIST.reduce((acc, label) => {
@@ -111,14 +118,14 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     };
 
     const fetchSuccessRatesData = ([selectedBrand]) => {
-        const {label: pageBrand} = getBrand(selectedBrand);
+        const {label: pageBrand} = getBrand(selectedBrand, 'label');
         setIsLoading(true);
         setError('');
         const dateQuery = start && end
             ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
             : '';
 
-        Promise.all(metricNames.map((metricName) => `/user-events-api/v1/funnelView?metricName=${metricName}${dateQuery}`))
+        Promise.all(metricNames.map((metricName) => fetch(`/user-events-api/v1/funnelView?metricName=${metricName}${dateQuery}`)))
             .then((responses) => Promise.all(responses.map(checkResponse)))
             .then((fetchedSuccessRates) => {
                 if (!fetchedSuccessRates || !fetchedSuccessRates.length) {
@@ -173,7 +180,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             setError(null);
             setIsFormDisabled(false);
             fetchRealTimeData(selectedBrands);
-            rttRef.current = setInterval(fetchRealTimeData, 60000); // refresh every minute
+            rttRef.current = setInterval(fetchRealTimeData.bind(null, selectedBrands), 60000); // refresh every minute
             fetchSuccessRatesData(selectedBrands);
         }
         return function cleanup() {
@@ -240,6 +247,8 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const handleMouseDown = (e) => setRefAreaLeft(e.activeLabel);
     const handleMouseMove = (e) => refAreaLeft && setRefAreaRight(e.activeLabel);
 
+    const shouldShowTooltip = (pageName, pageBrand) => pageBrand === EXPEDIA_BRAND && pageName === PAGES_LIST[PAGES_LIST.length - 1];
+
     const renderWidget = ({pageName, successRates, pageBrand}) => (
         <PageviewWidget
             title={pageName}
@@ -254,12 +263,16 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             chartRight={chartRight}
             refAreaLeft={refAreaLeft}
             refAreaRight={refAreaRight}
+            helpText={shouldShowTooltip(pageName, pageBrand)}
         />
     );
 
     return (
         <div className="success-rates-container">
-            <h1>{'Success Rates from Computation Engine'}</h1>
+            <h1>
+                {'Success Rates'}
+                <HelpText text="Only for LOB Hotels" placement="top" />
+            </h1>
             <div className="form-container">
                 <DatetimeRangePicker
                     onChange={handleDatetimeChange}

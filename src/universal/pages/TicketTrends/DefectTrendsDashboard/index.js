@@ -8,9 +8,10 @@ import DatePicker from '../../../components/DatePicker/index';
 import {DATE_FORMAT, ALL_STATUSES_OPTION, ALL_PRIORITIES_OPTION} from '../../../constants';
 import {Quality} from './tabs/index';
 import {useFetchTickets} from '../hooks';
-import {EG_BRAND, getBrand} from '../../../constants';
+import {EG_BRAND} from '../../../constants';
 import {useQueryParamChange, useSelectedBrand} from '../../hooks';
 import './styles.less';
+import {getBrand} from '../../utils';
 
 const statusDefaultValue = ALL_STATUSES_OPTION;
 const priorityDefaultValue = ALL_PRIORITIES_OPTION;
@@ -20,7 +21,7 @@ const minDate = moment('2019-01-01').toDate();
 
 
 const IncidentTrendsDashboard = (props) => {
-    const selectedBrands = props.selectedBrands.map((brand) => getBrand(brand).incidentBrand);
+    const selectedBrands = props.selectedBrands.map((brand) => getBrand(brand, 'label').incidentBrand);
 
     const [selectedStatus, setSelectedStatus] = useState(statusDefaultValue);
     const [startDate, setStartDate] = useState(startDateDefaultValue);

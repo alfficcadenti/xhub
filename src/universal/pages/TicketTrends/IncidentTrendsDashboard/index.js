@@ -15,12 +15,13 @@ import {
 } from '../../../constants';
 import {Incidents, Overview, Top5, FinancialImpact} from './tabs/index';
 import {useFetchTickets} from '../hooks';
-import {EG_BRAND, getBrand} from '../../../constants';
+import {EG_BRAND} from '../../../constants';
 import {useSelectedBrand, useQueryParamChange} from '../../hooks';
 import './styles.less';
 import {SVGIcon} from '@homeaway/react-svg';
 import {FILTER__16} from '@homeaway/svg-defs';
 import {Divider} from '@homeaway/react-collapse';
+import {getBrand} from '../../utils';
 
 const statusDefaultValue = ALL_STATUSES_OPTION;
 const priorityDefaultValue = ALL_PRIORITIES_OPTION;
@@ -54,7 +55,7 @@ const navLinks = [
 
 
 const IncidentTrendsDashboard = (props) => {
-    const selectedBrands = props.selectedBrands.map((brand) => getBrand(brand).incidentBrand);
+    const selectedBrands = props.selectedBrands.map((brand) => getBrand(brand, 'label').incidentBrand);
 
     const [activeIndex, setActiveIndex] = useState(1);
     const [selectedStatus, setSelectedStatus] = useState(statusDefaultValue);

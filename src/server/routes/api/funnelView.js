@@ -1,6 +1,6 @@
 import ServiceClient from '@vrbo/service-client';
 
-module.exports.pageViewsUserEvents = {
+module.exports.funnelViewUserEvents = {
     method: 'GET',
     path: '/user-events-api/v1/funnelView/{param*}',
     config: {

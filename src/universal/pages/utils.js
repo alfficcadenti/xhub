@@ -1,4 +1,4 @@
-import {EXPEDIA_BRAND, VRBO_BRAND} from '../constants';
+import {BRANDS, EXPEDIA_BRAND, VRBO_BRAND} from '../constants';
 
 export const getPieData = (filteredDefects, property) => {
     const counts = filteredDefects
@@ -35,3 +35,5 @@ export const checkResponse = (response) => {
 
     return response.json();
 };
+
+export const getBrand = (brand, key) => BRANDS.find((b) => brand === b[key]);

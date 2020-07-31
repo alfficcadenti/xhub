@@ -6,7 +6,8 @@ import BrandDailyPSR from './BrandDailyPSR';
 import BrandPSRDetails from './BrandPSRDetails';
 import h from './psrHelpers';
 import './styles.less';
-import {EG_BRAND, getBrand} from '../../constants';
+import {EG_BRAND} from '../../constants';
+import {getBrand} from '../utils';
 
 class PSR extends Component {
     constructor(props) {
@@ -45,7 +46,7 @@ class PSR extends Component {
 
     lastDailyPSRValuesToDisplayByBrand = (data = []) => {
         const psrDailyData = h.psrValuesByLOB((h.psrValuesByInterval(data, 'daily')), 'PSR');
-        const selectedPsrBrands = this.props.selectedBrands.map((brand) => getBrand(brand).psrBrand);
+        const selectedPsrBrands = this.props.selectedBrands.map((brand) => getBrand(brand, 'label').psrBrand);
         return h.listOfBrands(psrDailyData)
             .map(
                 (x) => {
