@@ -147,7 +147,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                                     label: `${momentTime.format('YYYY-MM-DD HH:mm')} ${TIMEZONE_ABBR}`,
                                     time: momentTime.format('YYYY-MM-DD HH:mm'),
                                     momentTime,
-                                    value: currentSuccessRates.rate
+                                    value: currentSuccessRates.rate === null ? 0 : currentSuccessRates.rate
                                 });
                             }
                         }
