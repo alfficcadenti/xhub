@@ -5,7 +5,7 @@ import PageviewWidget from '../../components/PageviewWidget';
 import LoadingContainer from '../../components/LoadingContainer';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import RealTimeSummaryPanel from '../../components/RealTimeSummaryPanel';
-import {useQueryParamChange, useSelectedBrand} from '../hooks';
+import {useQueryParamChange, useSelectedBrand, useZoomAndSynced} from '../hooks';
 import {EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../../constants';
 import {checkResponse, getBrand} from '../utils';
 import './styles.less';
@@ -38,11 +38,25 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     useQueryParamChange(selectedBrands[0], onBrandChange);
     useSelectedBrand(selectedBrands[0], onBrandChange, prevSelectedBrand);
 
-    // Shared chart states
-    const [refAreaLeft, setRefAreaLeft] = useState('');
-    const [refAreaRight, setRefAreaRight] = useState('');
-    const [chartLeft, setChartLeft] = useState('dataMin');
-    const [chartRight, setChartRight] = useState('dataMax');
+    const {
+        handleMouseDown,
+        handleMouseMove,
+        handleMouseUp,
+        chartLeft,
+        chartRight,
+        refAreaLeft,
+        refAreaRight
+    } = useZoomAndSynced(
+        widgets,
+        setWidgets,
+        setPendingStart,
+        setPendingEnd,
+        setCurrentTimeRange,
+        setStart,
+        setEnd,
+        setIsDirtyForm,
+        pendingTimeRange
+    );
 
     const rttRef = useRef();
 
@@ -120,13 +134,13 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     return;
                 }
                 const widgetObjects = PAGES_LIST.map(({name, label}) => {
-                    const pageViews = [];
+                    const aggregatedData = [];
                     fetchedPageviews.forEach(({time, pageViewsData}) => {
                         const currentPageViews = pageViewsData.find((item) => item.page === name);
                         if (currentPageViews) {
                             const momentTime = moment(time);
                             if (momentTime.isBetween(start, end, 'minutes', '[]')) {
-                                pageViews.push({
+                                aggregatedData.push({
                                     label: `${momentTime.format('YYYY-MM-DD HH:mm')} ${TIMEZONE_ABBR}`,
                                     time: momentTime.format('YYYY-MM-DD HH:mm'),
                                     momentTime,
@@ -135,7 +149,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                             }
                         }
                     });
-                    return {pageName: label, pageViews, pageBrand};
+                    return {pageName: label, aggregatedData, pageBrand};
                 });
                 setWidgets(widgetObjects);
             })
@@ -193,47 +207,10 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         'Last 24 hours'
     ].includes(timeRange) ? 20 : 5;
 
-    const handleMouseUp = () => {
-        if (refAreaLeft === refAreaRight || refAreaRight === '') {
-            setRefAreaLeft('');
-            setRefAreaRight('');
-            return;
-        }
-        // xAxis domain
-        let nextRefAreaLeft = refAreaLeft;
-        let nextRefAreaRight = refAreaRight;
-        if (moment(refAreaLeft).isAfter(refAreaRight)) {
-            // if refArea was dragged right to left
-            [nextRefAreaLeft, nextRefAreaRight] = [refAreaRight, refAreaLeft];
-        }
-        const fromIdx = widgets[0].pageViews.findIndex(({time}) => time === nextRefAreaLeft);
-        const toIdx = widgets[0].pageViews.findIndex(({time}) => time === nextRefAreaRight);
-        // slice data based on new xAxis domain
-        const nextWidgets = widgets.map((w) => {
-            const nextWidget = w;
-            nextWidget.pageViews = w.pageViews.slice(fromIdx, toIdx);
-            return nextWidget;
-        });
-        setRefAreaLeft('');
-        setRefAreaRight('');
-        setWidgets(nextWidgets.slice());
-        setChartLeft(nextRefAreaLeft);
-        setChartRight(nextRefAreaRight);
-        setPendingStart(moment(nextRefAreaLeft));
-        setPendingEnd(moment(nextRefAreaRight));
-        setCurrentTimeRange(pendingTimeRange);
-        setStart(moment(nextRefAreaLeft));
-        setEnd(moment(nextRefAreaRight));
-        setIsDirtyForm(false);
-    };
-
-    const handleMouseDown = (e) => setRefAreaLeft(e.activeLabel);
-    const handleMouseMove = (e) => refAreaLeft && setRefAreaRight(e.activeLabel);
-
-    const renderWidget = ({pageName, pageViews, pageBrand}) => (
+    const renderWidget = ({pageName, aggregatedData, pageBrand}) => (
         <PageviewWidget
             title={pageName}
-            data={pageViews}
+            data={aggregatedData}
             key={pageName}
             brand={pageBrand}
             tickGap={getWidgetXAxisTickGap(currentTimeRange)}
