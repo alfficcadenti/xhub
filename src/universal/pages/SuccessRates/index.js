@@ -106,18 +106,20 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 }, {});
 
                 PAGES_LIST.forEach((label, i) => {
-                    fetchedSuccessRates[i].forEach(({time, successRatePercentagesData}) => {
+                    fetchedSuccessRates[i].forEach(({time, successRatePercentagesData}, index, arr) => {
                         const currentSuccessRates = successRatePercentagesData.find((item) => mapBrandNames(item.brand) === selectedBrand);
 
                         if (currentSuccessRates) {
-                            const momentTime = moment(time);
+                            nextRealTimeTotals[label] += currentSuccessRates.rate;
+                            const isLastItem = (arr.length - 1 === index);
 
-                            if (momentTime.isBetween(rttStart, rttEnd, 'minute', '(]')) {
-                                nextRealTimeTotals[label] += currentSuccessRates.rate;
+                            if (isLastItem) {
+                                nextRealTimeTotals[label] = nextRealTimeTotals[label] / arr.length;
                             }
                         }
                     });
                 });
+
                 setRealTimeTotals(nextRealTimeTotals);
             })
             .catch((err) => {
@@ -194,7 +196,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             setError(null);
             setIsFormDisabled(false);
             fetchRealTimeData(selectedBrands);
-            rttRef.current = setInterval(fetchRealTimeData.bind(null, selectedBrands), 60000); // refresh every minute
+            rttRef.current = setInterval(fetchRealTimeData.bind(null, selectedBrands), 60000 * 5); // refresh every minute
             fetchSuccessRatesData(selectedBrands);
         }
         return function cleanup() {
@@ -271,7 +273,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 realTimeTotals={realTimeTotals}
                 isRttLoading={isRttLoading}
                 rttError={rttError}
-                tooltipLabel={'Real time success rates totals within the last 5 minutes. Refreshes every minute.'}
+                tooltipLabel={'Real time success rates average within the last 30 minutes. Refreshes every 5 minutes.'}
                 label={'Real Time Success Rates'}
                 showPercentageSign
             />}
