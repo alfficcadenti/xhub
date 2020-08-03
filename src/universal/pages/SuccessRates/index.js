@@ -106,18 +106,14 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 }, {});
 
                 PAGES_LIST.forEach((label, i) => {
-                    fetchedSuccessRates[i].forEach(({time, successRatePercentagesData}, index, arr) => {
-                        const currentSuccessRates = successRatePercentagesData.find((item) => mapBrandNames(item.brand) === selectedBrand);
+                    const currentSuccessRatesData = fetchedSuccessRates[i];
+                    const {successRatePercentagesData} = currentSuccessRatesData[currentSuccessRatesData.length - 1];
 
-                        if (currentSuccessRates) {
-                            nextRealTimeTotals[label] += currentSuccessRates.rate;
-                            const isLastItem = (arr.length - 1 === index);
+                    const currentSuccessRates = successRatePercentagesData.find((item) => mapBrandNames(item.brand) === selectedBrand);
 
-                            if (isLastItem) {
-                                nextRealTimeTotals[label] = nextRealTimeTotals[label] / arr.length;
-                            }
-                        }
-                    });
+                    if (currentSuccessRates) {
+                        nextRealTimeTotals[label] = currentSuccessRates.rate === null ? 0 : currentSuccessRates.rate;
+                    }
                 });
 
                 setRealTimeTotals(nextRealTimeTotals);
@@ -196,7 +192,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             setError(null);
             setIsFormDisabled(false);
             fetchRealTimeData(selectedBrands);
-            rttRef.current = setInterval(fetchRealTimeData.bind(null, selectedBrands), 60000 * 5); // refresh every minute
+            rttRef.current = setInterval(fetchRealTimeData.bind(null, selectedBrands), 60000); // refresh every minute
             fetchSuccessRatesData(selectedBrands);
         }
         return function cleanup() {
@@ -273,7 +269,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 realTimeTotals={realTimeTotals}
                 isRttLoading={isRttLoading}
                 rttError={rttError}
-                tooltipLabel={'Real time success rates average within the last 30 minutes. Refreshes every 5 minutes.'}
+                tooltipLabel={'Latest real time success rate. Refreshes every minute.'}
                 label={'Real Time Success Rates'}
                 showPercentageSign
             />}
