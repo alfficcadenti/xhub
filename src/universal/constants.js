@@ -20,6 +20,7 @@ export const EXPEDIA_BRAND = 'Expedia';
 export const VRBO_BRAND = 'Vrbo';
 export const HOTELS_COM_BRAND = 'Hotels.com';
 export const BOOKING_COUNT = 'Booking Counts';
+export const PREDICTION_COUNT = 'Prediction Counts';
 export const EXPEDIA_PARTNER_SERVICES_BRAND = 'Expedia Partner Services';
 export const EGENCIA_BRAND = 'Egencia';
 export const LOBS = ['Air', 'Activity', 'Car', 'Insurance', 'Lodging'];
@@ -29,7 +30,46 @@ export const EG_BRAND = 'Expedia Group';
 export const BRANDS_LIST = ['Brand Expedia', 'CheapTickets', 'Egencia', 'Expedia Partner Solutions', 'HomeAway', 'Hotels.com', 'Hotwire', 'Orbitz', 'Travelocity', 'Wotif', 'eBookers'];
 export const TIME_INTERVAL = '15Min Interval';
 export const TIME_INTERVALS_IMPULSE = ['15Min Interval', '30Min Interval', '60Min Interval'];
-export const IMPULSE_CHART_COLOR = '#1478F7';
+export const ALL_DEVICE_TYPES = 'All Devices';
+export const ALL_BOOKING_TYPES = 'ALL Booking Types';
+export const DEVICE_TYPES = [
+    'API',
+    'Agent Tool',
+    ' Mobile App',
+    'Mobile Site',
+    'Traditional Browser',
+    'Unknown'];
+
+export const BOOKING_TYPES = [
+    'Online',
+    'Offline',
+    'Unknown'];
+export const BOOKING_CHART_COLOR = '#1478F7';
+export const PREDICTION_CHART_COLOR = '#c9405b';
+export const IMPULSE_MAPPING = [
+    {globalFilter: EG_BRAND, impulseFilter: ALL_BRAND_GROUP},
+    {globalFilter: EXPEDIA_BRAND, impulseFilter: 'Brand Expedia Group'},
+    {globalFilter: EXPEDIA_PARTNER_SERVICES_BRAND, impulseFilter: 'Expedia Business Services'},
+    {globalFilter: HOTELS_COM_BRAND, impulseFilter: HOTELS_COM_BRAND},
+    {globalFilter: EGENCIA_BRAND, impulseFilter: EGENCIA_BRAND},
+
+    {globalFilter: VRBO_BRAND, impulseFilter: 'VRBO'}
+];
+
+export const IMPULSE_CHART_TYPE = [
+    {
+        name: 'Booking Counts',
+        color: BOOKING_CHART_COLOR,
+        chartType: 'Area',
+        key: 'bookingChart'
+    },
+    {
+        name: 'Prediction Counts',
+        color: PREDICTION_CHART_COLOR,
+        chartType: 'Area',
+        key: 'predictionChart'
+    }
+];
 export const BRANDS = [
     {
         label: EG_BRAND,

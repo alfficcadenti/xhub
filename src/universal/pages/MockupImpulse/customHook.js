@@ -3,24 +3,25 @@ import {
     ALL_LOB,
     ALL_BRANDS,
     ALL_BRAND_GROUP,
-    BOOKING_COUNT
+    BOOKING_COUNT,
+    PREDICTION_COUNT,
+    ALL_DEVICE_TYPES,
+    ALL_BOOKING_TYPES,
+    IMPULSE_MAPPING
 } from '../../constants';
-
-import {useIsMount, useQueryParamChange, useSelectedBrand} from '../hooks';
+import {useIsMount} from '../hooks';
 import moment from 'moment';
 
-
-export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, endDate, selectedLob, selectedBrand, selectedInterval, selectedBrandGroup, newBrand, prevBrand, props) => {
-    console.log(newBrand, prevBrand);
+export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, endDate, selectedLob, selectedBrand, selectedDeviceType, selectedBookingType, globalBrandName, prevBrand) => {
     const [res, setRes] = useState([]);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [lastStartDate, setLastStartDate] = useState('');
     const [lastEndDate, setLastEndDate] = useState('');
     const isMount = useIsMount();
-    useQueryParamChange(newBrand, props.onBrandChange);
-    useSelectedBrand(newBrand, props.onBrandChange, props.prevSelectedBrand);
-    const returnFilterString = (lob, timeInterval, brand, brandGroup) => {
+    const brandChangeFound = globalBrandName !== prevBrand;
+    const returnFilterString = (lob, brand, deviceType, bookingType, newBrand, start, end) => {
+        const brandGroupName = IMPULSE_MAPPING.find((brandNames) => brandNames.globalFilter === newBrand);
         let query = '';
         if (lob !== ALL_LOB) {
             query = query += `lob=${lob}&`;
@@ -29,32 +30,34 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
         if (brand !== ALL_BRANDS) {
             query = query += `brand=${brand}&`;
         }
-        if (brandGroup !== ALL_BRAND_GROUP) {
-            query = query += `brandGroupName=${brandGroup}&`;
+        if (brandGroupName.impulseFilter !== ALL_BRAND_GROUP) {
+            query = query += brandGroupName.impulseFilter !== 'Egencia' ? `brandGroupName=${encodeURI(brandGroupName.impulseFilter)}&` : `brand=${encodeURI(brandGroupName.impulseFilter)}&`;
         }
-
-        query = query += `timeInterval=${timeInterval.match(/\d+/g)}&`;
-
+        if (deviceType !== ALL_DEVICE_TYPES) {
+            query = query += `deviceType=${deviceType}&`;
+        }
+        if (bookingType !== ALL_BOOKING_TYPES) {
+            query = query += `bookingType=${bookingType}&`;
+        }
+        query = query += `startDate=${start}T00:00:00Z&endDate=${end}T00:00:00Z&`;
         return `?${query.substring(0, query.length - 1)}`;
     };
     useEffect(() => {
-        console.log('in use')
         const getData = () => {
             setIsLoading(true);
             setLastStartDate(startDate);
             setLastEndDate(endDate);
-
-            fetch(`http://localhost:8082/v1/bookings/count${returnFilterString(selectedLob, selectedInterval, selectedBrand, selectedBrandGroup)}`)
-                // fetch(`/user-events-api/v1/bookings/count${returnFilterString(selectedLob, selectedInterval, selectedBrand, selectedBrandGroup)}`)
+            fetch(`/user-events-api/v1/bookings/count${returnFilterString(selectedLob, selectedBrand, selectedDeviceType, selectedBookingType, globalBrandName, startDate, endDate)}`)
                 .then((result) => {
-                        return result.json();
-                    }
+                    return result.json();
+                }
                 )
                 .then((respJson) => {
                     const chartData = respJson.map((items) => {
                         return {
                             time: moment.utc(items.time).format('HH:mm'),
-                            [BOOKING_COUNT]: items.count
+                            [BOOKING_COUNT]: items.count,
+                            [PREDICTION_COUNT]: items.prediction.weightedCount
                         };
                     });
                     return chartData;
@@ -70,13 +73,14 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
                     console.error(err);
                 });
         };
-        console.log(isMount, isApplyClicked);
-        if (newBrand !== prevBrand) {
-            getData();
-        }
+
         if (isMount) {
             getData();
-        } else if (isApplyClicked) {
+        }
+        if (isApplyClicked) {
+            if (brandChangeFound) {
+                getData();
+            }
             if (lastStartDate !== startDate || lastEndDate !== endDate) {
                 getData();
             } else {
@@ -86,7 +90,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
         return () => {
             setIsApplyClicked(false);
         };
-    }, [isApplyClicked, startDate, endDate]);
+    }, [isApplyClicked, startDate, endDate, globalBrandName]);
     return [
         isLoading,
         res,

@@ -19,7 +19,6 @@ import {removeEmptyStringsFromArray} from '../utils';
 import {useQueryParamChange, useSelectedBrand} from '../hooks';
 
 const LandingPage = (props) => {
-    console.log(props.prevSelectedBrand);
     const selectedBrands = props.selectedBrands[0] === EG_BRAND
         ? BRANDS.map((brand) => brand.landingBrand).filter(removeEmptyStringsFromArray)
         : props.selectedBrands.map((brand) => getBrand(brand).landingBrand).filter(removeEmptyStringsFromArray);
@@ -34,7 +33,7 @@ const LandingPage = (props) => {
 
     const fetchData = () => {
         const fetchBookingsData = () => {
-            fetch('http://localhost:8082/v1/bookings')
+            fetch('/user-events-api/v1/bookings')
                 .then((responses) => responses.json())
                 .then((data) => {
                     const dataMapped = data && data.map((x) => {
