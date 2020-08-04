@@ -47,9 +47,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
             setIsLoading(true);
             setLastStartDate(startDate);
             setLastEndDate(endDate);
-            fetch(`http://localhost:8082/v1/bookings/count${returnFilterString(selectedLob, selectedBrand, selectedDeviceType, selectedBookingType, globalBrandName, startDate, endDate)}`)
-
-            // fetch(`/user-events-api/v1/bookings/count${returnFilterString(selectedLob, selectedBrand, selectedDeviceType, selectedBookingType, globalBrandName, startDate, endDate)}`)
+            fetch(`/user-events-api/v1/bookings/count${returnFilterString(selectedLob, selectedBrand, selectedDeviceType, selectedBookingType, globalBrandName, startDate, endDate)}`)
                 .then((result) => {
                     return result.json();
                 }
