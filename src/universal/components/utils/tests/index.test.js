@@ -15,6 +15,6 @@ describe('formatDurationToH', () => {
 
 describe('formatDurationForTable', () => {
     it('returns the duration from milliseconds in HH:mm:ss format', async () => {
-        expect(h.formatDurationForTable(5000000)).to.be.eql('1h 23m');
+        expect(h.formatDurationForTable(5000000).toString().replace(/\s/g, '')).to.be.eql('<divvalue=5000000>1h23m</div>');
     });
 });

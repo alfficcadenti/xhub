@@ -53,6 +53,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
                 }
                 )
                 .then((respJson) => {
+                    console.log(respJson);
                     const chartData = respJson.map((items) => {
                         return {
                             time: moment.utc(items.time).format('HH:mm'),

@@ -30,6 +30,7 @@ export const EG_BRAND = 'Expedia Group';
 export const BRANDS_LIST = ['Brand Expedia', 'CheapTickets', 'Egencia', 'Expedia Partner Solutions', 'HomeAway', 'Hotels.com', 'Hotwire', 'Orbitz', 'Travelocity', 'Wotif', 'eBookers'];
 export const TIME_INTERVAL = '15Min Interval';
 export const TIME_INTERVALS_IMPULSE = ['15Min Interval', '30Min Interval', '60Min Interval'];
+
 export const ALL_DEVICE_TYPES = 'All Devices';
 export const ALL_BOOKING_TYPES = 'ALL Booking Types';
 export const DEVICE_TYPES = [
@@ -70,6 +71,7 @@ export const IMPULSE_CHART_TYPE = [
         key: 'predictionChart'
     }
 ];
+export const IMPULSE_CHART_COLOR = '#1478F7';
 export const BRANDS = [
     {
         label: EG_BRAND,
@@ -120,5 +122,3 @@ export const BRANDS = [
         color: '#FFC72C'
     }
 ];
-
-export const getBrand = (brand) => BRANDS.find((b) => brand === b.label);

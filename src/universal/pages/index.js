@@ -47,20 +47,20 @@ export default [
         link: '/prb',
         text: 'Problem Management',
         component: require('./PRB')
-    },
-    {
-        category: PHAR,
-        id: 'psr',
-        link: '/psr',
-        text: 'Purchase Success Rate',
-        component: require('./PSR'),
-        main: 'Platform Health & Resiliency'
-    },
-    {
-        category: PHAR,
-        id: 'resiliency-questionnaire',
-        link: '/resiliency-questionnaire',
-        text: 'Resiliency Questionnaire',
-        component: require('./ResiliencyQuestionnaire')
     }
+    // {
+    //     category: PHAR,
+    //     id: 'psr',
+    //     link: '/psr',
+    //     text: 'Purchase Success Rate',
+    //     component: require('./PSR'),
+    //     main: 'Platform Health & Resiliency'
+    // },
+    // {
+    //     category: PHAR,
+    //     id: 'resiliency-questionnaire',
+    //     link: '/resiliency-questionnaire',
+    //     text: 'Resiliency Questionnaire',
+    //     component: require('./ResiliencyQuestionnaire')
+    // }
 ];

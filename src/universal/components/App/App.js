@@ -6,7 +6,9 @@ import Header from '../Header';
 import Feedback from '../Feedback';
 import LandingPage from '../../pages/LandingPage';
 import Impulse from '../../pages/MockupImpulse';
+
 import FunnelView from '../../pages/FunnelView';
+import SuccessRates from '../../pages/SuccessRates';
 import Home from '../../pages/Home';
 import pages from '../../pages';
 import {EG_BRAND, BRANDS} from '../../constants';
@@ -61,6 +63,7 @@ function App() {
                 <Switch>
                     <Route path="/landing-page" render={() => <LandingPage selectedBrands={selectedBrands} onBrandChange={handleBrandChange} />} />
                     <Route path="/funnel-view" render={() => <FunnelView selectedBrands={selectedBrands} onBrandChange={handleBrandChange} />} />
+                    <Route path="/success-rates" render={() => <SuccessRates selectedBrands={selectedBrands} onBrandChange={handleBrandChange} />} />
                     <Route path="/home" render={() => <Home selectedBrands={selectedBrands} onBrandChange={handleBrandChange} />} />
                     <Route path="/impulse" render={() => <Impulse selectedBrands={selectedBrands} onBrandChange={handleBrandChange} prevSelectedBrand={prevSelectedBrand} />} />
                     {pages.map((p) => renderRoute(p, selectedBrands, handleBrandChange, prevSelectedBrand))}

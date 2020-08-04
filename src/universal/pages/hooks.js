@@ -1,6 +1,9 @@
-import {useEffect, useRef} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
 import qs from 'query-string';
+import moment from 'moment';
+import 'moment-timezone';
+
 
 export const useIsMount = () => {
     const isMountRef = useRef(true);
@@ -38,7 +41,6 @@ export const useQueryParamChange = (selectedBrand, setSelectedBrands) => {
     const {search} = useLocation();
     const query = qs.parse(search);
     useEffect(() => {
-
         if (query.selectedBrand && !JSON.parse(localStorage.getItem('isBrandFilterChanged'))) {
             setSelectedBrands([query.selectedBrand]);
 
@@ -46,4 +48,69 @@ export const useQueryParamChange = (selectedBrand, setSelectedBrands) => {
             localStorage.setItem('isBrandFilterChanged', JSON.stringify(true));
         }
     }, [query.selectedBrand]);
+};
+
+export const useZoomAndSynced = (
+    widgets,
+    setWidgets,
+    setPendingStart,
+    setPendingEnd,
+    setCurrentTimeRange,
+    setStart,
+    setEnd,
+    setIsDirtyForm,
+    pendingTimeRange
+) => {
+    const [refAreaLeft, setRefAreaLeft] = useState('');
+    const [refAreaRight, setRefAreaRight] = useState('');
+    const [chartLeft, setChartLeft] = useState('dataMin');
+    const [chartRight, setChartRight] = useState('dataMax');
+
+    const handleMouseUp = () => {
+        if (refAreaLeft === refAreaRight || refAreaRight === '') {
+            setRefAreaLeft('');
+            setRefAreaRight('');
+            return;
+        }
+        // xAxis domain
+        let nextRefAreaLeft = refAreaLeft;
+        let nextRefAreaRight = refAreaRight;
+        if (moment(refAreaLeft).isAfter(refAreaRight)) {
+            // if refArea was dragged right to left
+            [nextRefAreaLeft, nextRefAreaRight] = [refAreaRight, refAreaLeft];
+        }
+        const fromIdx = widgets[0].aggregatedData.findIndex(({time}) => time === nextRefAreaLeft);
+        const toIdx = widgets[0].aggregatedData.findIndex(({time}) => time === nextRefAreaRight);
+        // slice data based on new xAxis domain
+        const nextWidgets = widgets.map((w) => {
+            const nextWidget = w;
+            nextWidget.aggregatedData = w.aggregatedData.slice(fromIdx, toIdx);
+            return nextWidget;
+        });
+        setRefAreaLeft('');
+        setRefAreaRight('');
+        setWidgets(nextWidgets.slice());
+        setChartLeft(nextRefAreaLeft);
+        setChartRight(nextRefAreaRight);
+        setPendingStart(moment(nextRefAreaLeft));
+        setPendingEnd(moment(nextRefAreaRight));
+        setCurrentTimeRange(pendingTimeRange);
+        setStart(moment(nextRefAreaLeft));
+        setEnd(moment(nextRefAreaRight));
+        setIsDirtyForm(false);
+    };
+
+    const handleMouseDown = (e) => setRefAreaLeft(e.activeLabel);
+    const handleMouseMove = (e) => refAreaLeft && setRefAreaRight(e.activeLabel);
+
+
+    return {
+        handleMouseDown,
+        handleMouseMove,
+        handleMouseUp,
+        chartLeft,
+        chartRight,
+        refAreaLeft,
+        refAreaRight
+    };
 };

@@ -140,6 +140,11 @@
               "path": "/v1/bookings/count",
               "method": "GET",
               "operation": "GET_booking_data"
+            },
+            "funnelView": {
+              "path": "/v1/funnelView",
+              "method": "GET",
+              "operation": "GET_funnel_view_data"
             }
           }
         },
@@ -166,6 +171,12 @@
               "path": "/v1/bookings/count",
               "method": "GET",
               "operation": "GET_booking_data"
+
+            },
+            "funnelView": {
+              "path": "/v1/funnelView",
+              "method": "GET",
+              "operation": "GET_funnel_view_data"
             }
           }
         },
@@ -192,6 +203,11 @@
               "path": "/v1/bookings/count",
               "method": "GET",
               "operation": "GET_booking_data"
+            },
+            "funnelView": {
+              "path": "/v1/funnelView",
+              "method": "GET",
+              "operation": "GET_funnel_view_data"
             }
           }
         },
@@ -218,6 +234,11 @@
               "path": "/v1/bookings/count",
               "method": "GET",
               "operation": "GET_booking_data"
+            },
+            "funnelView": {
+              "path": "/v1/funnelView",
+              "method": "GET",
+              "operation": "GET_funnel_view_data"
             }
           }
         }
@@ -317,6 +338,11 @@
           },
           {
             "route": "require:./routes/pages/funnel-view",
+            "component": "require:../universal/components/App/ServerApp.js",
+            "template": "templates/welcome.hbs"
+          },
+          {
+            "route": "require:./routes/pages/success-rates",
             "component": "require:../universal/components/App/ServerApp.js",
             "template": "templates/welcome.hbs"
           },

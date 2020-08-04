@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import moment from 'moment';
 import 'moment-timezone';
 import PageviewWidget from '../../components/PageviewWidget';
@@ -6,14 +6,22 @@ import LoadingContainer from '../../components/LoadingContainer';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import RealTimeSummaryPanel from '../../components/RealTimeSummaryPanel';
 import {useQueryParamChange, useSelectedBrand, useZoomAndSynced} from '../hooks';
-import {EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../../constants';
-import {checkResponse, getBrand} from '../utils';
+import {
+    EG_BRAND,
+    EGENCIA_BRAND,
+    EXPEDIA_PARTNER_SERVICES_BRAND,
+    HOTELS_COM_BRAND,
+    EXPEDIA_BRAND
+} from '../../constants';
+import {mapBrandNames, checkResponse, getBrand} from '../utils';
+import HelpText from '../../components/HelpText/HelpText';
 import './styles.less';
+
 
 const TIMEZONE_OFFSET = (new Date()).getTimezoneOffset();
 const TIMEZONE_ABBR = moment.tz.zone(moment.tz.guess()).abbr(TIMEZONE_OFFSET);
 
-const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
+const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const initialStart = moment().subtract(6, 'hours').startOf('minute');
     const initialEnd = moment().endOf('minute');
     const initialTimeRange = 'Last 6 hours';
@@ -61,12 +69,13 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const rttRef = useRef();
 
     const PAGES_LIST = [
-        {name: 'home', label: 'Home'},
-        {name: 'searchresults', label: 'Search'},
-        {name: 'property', label: 'Property'},
-        {name: 'bookingform', label: 'Booking Form'},
-        {name: 'bookingconfirmation', label: 'Booking Confirmation'},
+        'Home To Search Page (SERP)',
+        'Search (SERP) To Property Page (PDP)',
+        'Property (PDP) To Checkout Page (CKO)',
+        'Checkout (CKO) To Checkout Confirmation Page'
     ];
+    const metricNames = ['SearchSuccessRate', 'SERPSuccessRate', 'PDPSuccessRate', 'checkoutSuccessRate'];
+
     const getNowDate = () => moment().endOf('minute').toDate();
     const getLastDate = (value, unit) => moment().subtract(value, unit).startOf('minute').toDate();
     const getValue = (value, unit) => ({start: getLastDate(value, unit), end: getNowDate()});
@@ -81,31 +90,32 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     ];
 
     const fetchRealTimeData = ([selectedBrand]) => {
-        const {funnelBrand} = getBrand(selectedBrand, 'label');
         setIsRttLoading(true);
         setRttError('');
         const now = moment();
-        const rttStart = moment(now).subtract(2, 'minute').startOf('minute');
+        const rttStart = moment(now).subtract(31, 'minute').startOf('minute');
         const rttEnd = moment(now).subtract(1, 'minute').startOf('minute');
         const dateQuery = `&startDate=${rttStart.utc().format()}&endDate=${rttEnd.utc().format()}`;
-        fetch(`/v1/pageViews?brand=${funnelBrand}&timeInterval=1${dateQuery}`)
-            .then(checkResponse)
-            .then((fetchedPageviews) => {
-                const nextRealTimeTotals = PAGES_LIST.reduce((acc, {label}) => {
+
+        Promise.all(metricNames.map((metricName) => fetch(`/user-events-api/v1/funnelView?metricName=${metricName}${dateQuery}`)))
+            .then((responses) => Promise.all(responses.map(checkResponse)))
+            .then((fetchedSuccessRates) => {
+                const nextRealTimeTotals = PAGES_LIST.reduce((acc, label) => {
                     acc[label] = 0;
                     return acc;
                 }, {});
-                PAGES_LIST.forEach(({name, label}) => {
-                    fetchedPageviews.forEach(({time, pageViewsData}) => {
-                        const currentPageViews = pageViewsData.find((item) => item.page === name);
-                        if (currentPageViews) {
-                            const momentTime = moment(time);
-                            if (momentTime.isBetween(rttStart, rttEnd, 'minute', '(]')) {
-                                nextRealTimeTotals[label] += currentPageViews.views;
-                            }
-                        }
-                    });
+
+                PAGES_LIST.forEach((label, i) => {
+                    const currentSuccessRatesData = fetchedSuccessRates[i];
+                    const {successRatePercentagesData} = currentSuccessRatesData[currentSuccessRatesData.length - 1];
+
+                    const currentSuccessRates = successRatePercentagesData.find((item) => mapBrandNames(item.brand) === selectedBrand);
+
+                    if (currentSuccessRates) {
+                        nextRealTimeTotals[label] = currentSuccessRates.rate === null ? 0 : currentSuccessRates.rate;
+                    }
                 });
+
                 setRealTimeTotals(nextRealTimeTotals);
             })
             .catch((err) => {
@@ -119,38 +129,45 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             .finally(() => setIsRttLoading(false));
     };
 
-    const fetchPageViewsData = ([selectedBrand]) => {
-        const {label: pageBrand, funnelBrand} = getBrand(selectedBrand, 'label');
+    const fetchSuccessRatesData = ([selectedBrand]) => {
+        const {label: pageBrand} = getBrand(selectedBrand, 'label');
         setIsLoading(true);
         setError('');
         const dateQuery = start && end
             ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
             : '';
-        fetch(`/v1/pageViews?brand=${funnelBrand}&timeInterval=1${dateQuery}`)
-            .then(checkResponse)
-            .then((fetchedPageviews) => {
-                if (!fetchedPageviews || !fetchedPageviews.length) {
+
+        Promise.all(metricNames.map((metricName) => fetch(`/user-events-api/v1/funnelView?metricName=${metricName}${dateQuery}`)))
+            .then((responses) => Promise.all(responses.map(checkResponse)))
+            .then((fetchedSuccessRates) => {
+                if (!fetchedSuccessRates || !fetchedSuccessRates.length) {
                     setError('No data found. Try refreshing the page or select another brand.');
                     return;
                 }
-                const widgetObjects = PAGES_LIST.map(({name, label}) => {
+
+                const widgetObjects = PAGES_LIST.map((pageName, i) => {
                     const aggregatedData = [];
-                    fetchedPageviews.forEach(({time, pageViewsData}) => {
-                        const currentPageViews = pageViewsData.find((item) => item.page === name);
-                        if (currentPageViews) {
+
+                    fetchedSuccessRates[i].forEach(({time, successRatePercentagesData}) => {
+                        const currentSuccessRates = successRatePercentagesData.find((item) => mapBrandNames(item.brand) === selectedBrand);
+
+                        if (currentSuccessRates) {
                             const momentTime = moment(time);
+
                             if (momentTime.isBetween(start, end, 'minutes', '[]')) {
                                 aggregatedData.push({
                                     label: `${momentTime.format('YYYY-MM-DD HH:mm')} ${TIMEZONE_ABBR}`,
                                     time: momentTime.format('YYYY-MM-DD HH:mm'),
                                     momentTime,
-                                    value: currentPageViews.views
+                                    value: currentSuccessRates.rate === null ? 0 : currentSuccessRates.rate
                                 });
                             }
                         }
                     });
-                    return {pageName: label, aggregatedData, pageBrand};
+
+                    return {pageName, aggregatedData, pageBrand};
                 });
+
                 setWidgets(widgetObjects);
             })
             .catch((err) => {
@@ -165,11 +182,9 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     };
 
     useEffect(() => {
-        clearInterval(rttRef.current);
-        if ([EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND].includes(selectedBrands[0])) {
+        if ([EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, HOTELS_COM_BRAND].includes(selectedBrands[0])) {
             setIsSupportedBrand(false);
-            setError(`Page views for ${selectedBrands} is not yet available.
-                The following brands are supported at this time: "Expedia", "Hotels.com", and "Vrbo".
+            setError(`Success rates for ${selectedBrands} is not yet available.
                 If you have any questions, please ping #dpi-reo-opex-all or leave a comment via our Feedback form.`);
             setIsFormDisabled(true);
         } else {
@@ -178,7 +193,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             setIsFormDisabled(false);
             fetchRealTimeData(selectedBrands);
             rttRef.current = setInterval(fetchRealTimeData.bind(null, selectedBrands), 60000); // refresh every minute
-            fetchPageViewsData(selectedBrands);
+            fetchSuccessRatesData(selectedBrands);
         }
         return function cleanup() {
             clearInterval(rttRef.current);
@@ -207,6 +222,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         'Last 24 hours'
     ].includes(timeRange) ? 20 : 5;
 
+    const shouldShowTooltip = (pageName, pageBrand) => pageBrand === EXPEDIA_BRAND && pageName === PAGES_LIST[PAGES_LIST.length - 1];
+
     const renderWidget = ({pageName, aggregatedData, pageBrand}) => (
         <PageviewWidget
             title={pageName}
@@ -221,12 +238,16 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             chartRight={chartRight}
             refAreaLeft={refAreaLeft}
             refAreaRight={refAreaRight}
+            helpText={shouldShowTooltip(pageName, pageBrand)}
         />
     );
 
     return (
-        <div className="funnel-views-container">
-            <h1>{'Traveler Page Views'}</h1>
+        <div className="success-rates-container">
+            <h1>
+                {'Success Rates'}
+                <HelpText text="Only for LOB Hotels" placement="top" />
+            </h1>
             <div className="form-container">
                 <DatetimeRangePicker
                     onChange={handleDatetimeChange}
@@ -248,11 +269,12 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 realTimeTotals={realTimeTotals}
                 isRttLoading={isRttLoading}
                 rttError={rttError}
-                tooltipLabel={'Real time pageview totals within the last minute. Refreshes every minute.'}
-                label={'Real Time Pageviews'}
+                tooltipLabel={'Latest real time success rate. Refreshes every minute.'}
+                label={'Real Time Success Rates'}
+                showPercentageSign
             />}
-            <LoadingContainer isLoading={isLoading} error={error} className="page-views-loading-container">
-                <div className="page-views-widget-container">
+            <LoadingContainer isLoading={isLoading} error={error} className="success-rates-loading-container">
+                <div className="success-rates-widget-container">
                     {widgets.map(renderWidget)}
                 </div>
             </LoadingContainer>
@@ -260,4 +282,4 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     );
 };
 
-export default FunnelView;
+export default SuccessRates;

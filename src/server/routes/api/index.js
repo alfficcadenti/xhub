@@ -10,6 +10,7 @@ import {bookingsUserEvents} from './bookingsUserEvents';
 import {csrUserEvents} from './csrUserEvents';
 import {pageViewsUserEvents} from './pageViews';
 import {impulseBookingDataService} from './impulseService';
+import {funnelViewUserEvents} from './funnelView';
 
 const apiRoutes = [
     login,
@@ -24,7 +25,8 @@ const apiRoutes = [
     bookingsUserEvents,
     csrUserEvents,
     pageViewsUserEvents,
-    impulseBookingDataService
+    impulseBookingDataService,
+    funnelViewUserEvents
 ];
 
 export default apiRoutes;
