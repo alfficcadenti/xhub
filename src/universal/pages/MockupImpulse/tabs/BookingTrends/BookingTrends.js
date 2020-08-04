@@ -7,22 +7,20 @@ import {IMPULSE_CHART_TYPE} from '../../../../constants';
 
 
 class BookingTrends extends PureComponent {
-    getGradient = (item) => {
-        const type = item.key;
-        // const id = `color${type}`;
+    getGradient = ({key, color}) => {
+        const type = key;
         const id = type === 'bookingChart' ? `color${type}` : '';
-
         return (<linearGradient key={`${type}Gradient`} id={id} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor={item.color} stopOpacity={0.8}/>
-            <stop offset="95%" stopColor={item.color} stopOpacity={0}/>
+            <stop offset="5%" stopColor={color} stopOpacity={0.8}/>
+            <stop offset="95%" stopColor={color} stopOpacity={0}/>
         </linearGradient>);
     };
-    renderChart = (item) => {
-        const type = item.key;
+    renderChart = ({key, color, name}) => {
+        const type = key;
 
         const fill = `url(#color${type})`;
 
-        return (<Area type="monotone" dataKey={item.name} stroke={item.color} fillOpacity={1} fill={fill}/>);
+        return (<Area type="monotone" dataKey={name} stroke={color} fillOpacity={1} fill={fill}/>);
     }
 
     render() {

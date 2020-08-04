@@ -7,7 +7,8 @@ import {
     PREDICTION_COUNT,
     ALL_DEVICE_TYPES,
     ALL_BOOKING_TYPES,
-    IMPULSE_MAPPING
+    IMPULSE_MAPPING,
+    EGENCIA_BRAND
 } from '../../constants';
 import {useIsMount} from '../hooks';
 import moment from 'moment';
@@ -28,18 +29,19 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
         }
 
         if (brand !== ALL_BRANDS) {
-            query = query += `brand=${brand}&`;
+            query += `brand=${brand}&`;
         }
         if (brandGroupName.impulseFilter !== ALL_BRAND_GROUP) {
-            query = query += brandGroupName.impulseFilter !== 'Egencia' ? `brandGroupName=${encodeURI(brandGroupName.impulseFilter)}&` : `brand=${encodeURI(brandGroupName.impulseFilter)}&`;
+            query += brandGroupName.impulseFilter !== EGENCIA_BRAND ? `brandGroupName=${encodeURI(brandGroupName.impulseFilter)}&` : `brand=${encodeURI(brandGroupName.impulseFilter)}&`;
         }
         if (deviceType !== ALL_DEVICE_TYPES) {
-            query = query += `deviceType=${deviceType}&`;
+            query += `deviceType=${deviceType}&`;
         }
         if (bookingType !== ALL_BOOKING_TYPES) {
-            query = query += `bookingType=${bookingType}&`;
+            query += `bookingType=${bookingType}&`;
         }
-        query = query += `startDate=${start}T00:00:00Z&endDate=${end}T00:00:00Z&`;
+        query += `startDate=${start}T00:00:00Z&endDate=${end}T00:00:00Z&`;
+        console.log(`?${query.substring(0, query.length - 1)}`);
         return `?${query.substring(0, query.length - 1)}`;
     };
     useEffect(() => {
@@ -53,7 +55,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
                 }
                 )
                 .then((respJson) => {
-                    console.log(respJson);
                     const chartData = respJson.map((items) => {
                         return {
                             time: moment.utc(items.time).format('HH:mm'),

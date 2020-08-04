@@ -11,6 +11,7 @@ export const useIsMount = () => {
     useEffect(() => {
         isMountRef.current = false;
     }, []);
+
     return isMountRef.current;
 };
 
@@ -40,6 +41,7 @@ export const useSelectedBrand = (selectedBrand, setSelectedBrands, prevSelectedB
 export const useQueryParamChange = (selectedBrand, setSelectedBrands) => {
     const {search} = useLocation();
     const query = qs.parse(search);
+
     useEffect(() => {
         if (query.selectedBrand && !JSON.parse(localStorage.getItem('isBrandFilterChanged'))) {
             setSelectedBrands([query.selectedBrand]);

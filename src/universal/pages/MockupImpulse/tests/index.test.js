@@ -2,7 +2,8 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import {expect} from 'chai';
 import Impulse from '../index';
-const selectedBrands = ['Expedia Group'];
+import {EG_BRAND} from '../../../constants';
+const selectedBrands = [EG_BRAND];
 jest.mock('react-router-dom', () => {
     const originalModule = jest.requireActual('react-router-dom');
 
