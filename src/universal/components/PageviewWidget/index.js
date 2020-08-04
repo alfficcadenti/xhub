@@ -1,8 +1,9 @@
 import React from 'react';
 import moment from 'moment';
 import {AreaChart, XAxis, YAxis, Area, Tooltip, ResponsiveContainer, CartesianGrid, ReferenceArea} from 'recharts';
-import {getBrand} from '../../constants';
 import './styles.less';
+import HelpText from '../HelpText/HelpText';
+import {getBrand} from '../../pages/utils';
 
 // eslint-disable-next-line complexity
 const CustomTooltip = ({active, payload}) => {
@@ -29,17 +30,21 @@ const PageviewWidget = ({
     chartLeft,
     chartRight,
     refAreaLeft,
-    refAreaRight
+    refAreaRight,
+    helpText
 }) => {
     const brandLabel = brand.replace(/\s/g, '');
     const fill = `url(#${brandLabel})`;
-    const {color} = getBrand(brand);
+    const {color} = getBrand(brand, 'label');
 
     const yAxisId = `yAxis-${title}`;
 
     return (
         <div className="widget-card card" key={title}>
-            <h3>{title}</h3>
+            <h3>
+                {title}
+                {helpText && <HelpText text="Only for nonNativeApps" />}
+            </h3>
             {
                 data.length ?
                     <ResponsiveContainer width="100%" height="80%">

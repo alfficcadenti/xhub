@@ -1,18 +1,18 @@
 import React from 'react';
 import {Dropdown} from '@homeaway/react-dropdown';
 import './BrandSelector.less';
+import {EG_BRAND} from '../../constants';
 
-const EG = 'Expedia Group';
 
 const BrandSelector = ({selectedBrands, onBrandChange, brands}) => {
     const handleOnClick = (brand) => {
         let nextSelectedBrands;
-        if (brand === EG) {
+        if (brand === EG_BRAND) {
             nextSelectedBrands = [brand];
         } else {
             nextSelectedBrands = [...selectedBrands];
             // Remove Expedia Group
-            const egIdx = selectedBrands.indexOf(EG);
+            const egIdx = selectedBrands.indexOf(EG_BRAND);
             if (egIdx > -1) {
                 nextSelectedBrands.splice(egIdx, 1);
             }
@@ -22,7 +22,7 @@ const BrandSelector = ({selectedBrands, onBrandChange, brands}) => {
                 nextSelectedBrands.splice(idx, 1);
                 // If no brand selected, default to Expedia Group
                 if (nextSelectedBrands.length < 1) {
-                    nextSelectedBrands = [EG];
+                    nextSelectedBrands = [EG_BRAND];
                 }
             } else {
                 nextSelectedBrands = [brand];

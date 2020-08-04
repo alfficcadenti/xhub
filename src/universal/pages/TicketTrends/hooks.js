@@ -8,6 +8,7 @@ import {
     ALL_TAGS
 } from '../../constants';
 import {useIsMount} from '../hooks';
+import {checkResponse} from '../utils';
 
 
 export const useFetchTickets = (
@@ -41,8 +42,9 @@ export const useFetchTickets = (
             setLastEndDate(endDate);
 
             fetch(`https://opxhub-service.us-west-2.test.expedia.com/api/v1/${url}?startDate=${startDate}&endDate=${endDate}`)
-                .then((response) => response.json())
+                .then(checkResponse)
                 .then((tickets) => {
+                    tickets.sort((a, b) => new Date(b.startedAt) - new Date(a.startedAt));
                     // incidents
                     const isIncidents = url === 'incidents';
                     const uniqueTickets = getUniqueTickets(tickets, isIncidents ? 'incidentNumber' : 'defectNumber');
