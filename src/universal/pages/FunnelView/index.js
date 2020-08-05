@@ -106,7 +106,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                         }
                     });
                 });
-                setRealTimeTotals(nextRealTimeTotals);
+                setRealTimeTotals(nextRealTimeTotals.toFixed());
             })
             .catch((err) => {
                 let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
