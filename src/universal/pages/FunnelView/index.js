@@ -244,13 +244,15 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     {'Apply'}
                 </button>
             </div>
-            {isSupportedBrand && <RealTimeSummaryPanel
-                realTimeTotals={realTimeTotals}
-                isRttLoading={isRttLoading}
-                rttError={rttError}
-                tooltipLabel={'Real time pageview totals within the last minute. Refreshes every minute.'}
-                label={'Real Time Pageviews'}
-                                 />}
+            {isSupportedBrand && (
+                <RealTimeSummaryPanel
+                    realTimeTotals={realTimeTotals}
+                    isRttLoading={isRttLoading}
+                    rttError={rttError}
+                    tooltipLabel={'Real time pageview totals within the last minute. Refreshes every minute.'}
+                    label={'Real Time Pageviews'}
+                />
+            )}
             <LoadingContainer isLoading={isLoading} error={error} className="page-views-loading-container">
                 <div className="page-views-widget-container">
                     {widgets.map(renderWidget)}
