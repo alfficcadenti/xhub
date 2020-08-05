@@ -28,7 +28,7 @@ const BrandCSRWidget = ({brandName = '', CSRTrend = [], CSRByDevice = {}, onBran
     return (
         <div className="brand-data-card card" key={brandName} >
             {logo(brandName)}
-            <Link to="/funnel-view" onClick={() => onBrandChange([brandName])} >
+            <Link to="/success-rates" onClick={() => onBrandChange([brandName])} >
                 <div className="csr-widget-overlay" />
             </Link>
             <h3>{'Checkout Success Rate'}</h3>

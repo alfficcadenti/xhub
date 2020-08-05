@@ -116,7 +116,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     }
                 });
 
-                setRealTimeTotals(nextRealTimeTotals);
+                setRealTimeTotals(nextRealTimeTotals.toFixed(2));
             })
             .catch((err) => {
                 let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
