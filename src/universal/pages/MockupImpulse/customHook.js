@@ -3,53 +3,50 @@ import {
     ALL_LOB,
     ALL_BRANDS,
     ALL_BRAND_GROUP,
-    BOOKING_COUNT,
-    PREDICTION_COUNT,
     ALL_DEVICE_TYPES,
     ALL_BOOKING_TYPES,
-    IMPULSE_MAPPING,
-    EGENCIA_BRAND
+    EGENCIA_BRAND, EG_BRAND, EXPEDIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, HOTELS_COM_BRAND, VRBO_BRAND
 } from '../../constants';
 import {useIsMount} from '../hooks';
 import moment from 'moment';
 
-export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, endDate, selectedLob, selectedBrand, selectedDeviceType, selectedBookingType, globalBrandName, prevBrand) => {
+const PREDICTION_COUNT = 'Prediction Counts';
+const BOOKING_COUNT = 'Booking Counts';
+const IMPULSE_MAPPING = [
+    {globalFilter: EG_BRAND, impulseFilter: ALL_BRAND_GROUP},
+    {globalFilter: EXPEDIA_BRAND, impulseFilter: 'Brand Expedia Group'},
+    {globalFilter: EXPEDIA_PARTNER_SERVICES_BRAND, impulseFilter: 'Expedia Business Services'},
+    {globalFilter: HOTELS_COM_BRAND, impulseFilter: HOTELS_COM_BRAND},
+    {globalFilter: EGENCIA_BRAND, impulseFilter: EGENCIA_BRAND},
+    {globalFilter: VRBO_BRAND, impulseFilter: 'VRBO'}
+];
+
+export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, endDate, selectedLob, selectedBrand, selectedDeviceType, selectedBookingType, globalBrandName) => {
     const [res, setRes] = useState([]);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [lastStartDate, setLastStartDate] = useState('');
     const [lastEndDate, setLastEndDate] = useState('');
     const isMount = useIsMount();
-    const brandChangeFound = globalBrandName !== prevBrand;
-    const returnFilterString = (lob, brand, deviceType, bookingType, newBrand, start, end) => {
+    const getQueryParam = (key, value, condition, defaultValue = '') => condition ? `&${key}=${value}` : defaultValue;
+    const getQueryString = (lob, brand, deviceType, bookingType, newBrand, start, end) => {
         const brandGroupName = IMPULSE_MAPPING.find((brandNames) => brandNames.globalFilter === newBrand);
-        let query = '';
-        if (lob !== ALL_LOB) {
-            query = query += `lob=${lob}&`;
-        }
-
-        if (brand !== ALL_BRANDS) {
-            query += `brand=${brand}&`;
-        }
+        let query = `?startDate=${start}T00:00:00Z&endDate=${end}T00:00:00Z`;
+        query += getQueryParam('lob', lob, lob !== ALL_LOB);
+        query += getQueryParam('brand', brand, brand !== ALL_BRANDS);
+        query += getQueryParam('deviceType', deviceType, deviceType !== ALL_DEVICE_TYPES);
+        query += getQueryParam('bookingType', bookingType, bookingType !== ALL_BOOKING_TYPES);
         if (brandGroupName.impulseFilter !== ALL_BRAND_GROUP) {
-            query += brandGroupName.impulseFilter !== EGENCIA_BRAND ? `brandGroupName=${encodeURI(brandGroupName.impulseFilter)}&` : `brand=${encodeURI(brandGroupName.impulseFilter)}&`;
+            query += brandGroupName.impulseFilter !== EGENCIA_BRAND ? `&brandGroupName=${encodeURI(brandGroupName.impulseFilter)}` : `&brand=${encodeURI(brandGroupName.impulseFilter)}`;
         }
-        if (deviceType !== ALL_DEVICE_TYPES) {
-            query += `deviceType=${deviceType}&`;
-        }
-        if (bookingType !== ALL_BOOKING_TYPES) {
-            query += `bookingType=${bookingType}&`;
-        }
-        query += `startDate=${start}T00:00:00Z&endDate=${end}T00:00:00Z&`;
-        console.log(`?${query.substring(0, query.length - 1)}`);
-        return `?${query.substring(0, query.length - 1)}`;
+        return query;
     };
     useEffect(() => {
         const getData = () => {
             setIsLoading(true);
             setLastStartDate(startDate);
             setLastEndDate(endDate);
-            fetch(`/user-events-api/v1/bookings/count${returnFilterString(selectedLob, selectedBrand, selectedDeviceType, selectedBookingType, globalBrandName, startDate, endDate)}`)
+            fetch(`/user-events-api/v1/bookings/count${getQueryString(selectedLob, selectedBrand, selectedDeviceType, selectedBookingType, globalBrandName, startDate, endDate)}`)
                 .then((result) => {
                     return result.json();
                 }
@@ -80,9 +77,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
             getData();
         }
         if (isApplyClicked) {
-            if (brandChangeFound) {
-                getData();
-            }
             if (lastStartDate !== startDate || lastEndDate !== endDate) {
                 getData();
             } else {

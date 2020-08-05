@@ -1,24 +1,37 @@
 import React, {PureComponent} from 'react';
-import {
-    AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
-} from 'recharts';
+import {Area, AreaChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
 import './styles.less';
-import {IMPULSE_CHART_TYPE} from '../../../../constants';
 
+const BOOKING_CHART_COLOR = '#1478F7';
+const PREDICTION_CHART_COLOR = '#c9405b';
+const PREDICTION_COUNT = 'Prediction Counts';
+const BOOKING_COUNT = 'Booking Counts';
+const AreaChartType = 'Area';
+const IMPULSE_CHART_TYPE = [
+    {
+        name: BOOKING_COUNT,
+        color: BOOKING_CHART_COLOR,
+        chartType: AreaChartType,
+        key: 'bookingChart'
+    },
+    {
+        name: PREDICTION_COUNT,
+        color: PREDICTION_CHART_COLOR,
+        chartType: AreaChartType,
+        key: 'predictionChart'
+    }
+];
 
 class BookingTrends extends PureComponent {
     getGradient = ({key, color}) => {
-        const type = key;
-        const id = type === 'bookingChart' ? `color${type}` : '';
-        return (<linearGradient key={`${type}Gradient`} id={id} x1="0" y1="0" x2="0" y2="1">
+        const id = key === 'bookingChart' ? `color${key}` : '';
+        return (<linearGradient key={`${key}Gradient`} id={id} x1="0" y1="0" x2="0" y2="1">
             <stop offset="5%" stopColor={color} stopOpacity={0.8}/>
             <stop offset="95%" stopColor={color} stopOpacity={0}/>
         </linearGradient>);
     };
     renderChart = ({key, color, name}) => {
-        const type = key;
-
-        const fill = `url(#color${type})`;
+        const fill = `url(#color${key})`;
 
         return (<Area type="monotone" dataKey={name} stroke={color} fillOpacity={1} fill={fill}/>);
     }
