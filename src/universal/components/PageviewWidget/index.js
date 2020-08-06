@@ -1,8 +1,20 @@
 import React from 'react';
 import moment from 'moment';
-import {AreaChart, XAxis, YAxis, Area, Tooltip, ResponsiveContainer, CartesianGrid, ReferenceArea} from 'recharts';
+import {
+    AreaChart,
+    XAxis,
+    YAxis,
+    Area,
+    Tooltip,
+    ResponsiveContainer,
+    CartesianGrid,
+    ReferenceArea,
+    ReferenceLine
+} from 'recharts';
+import {v1 as uuid} from 'uuid';
 import './styles.less';
 import HelpText from '../HelpText/HelpText';
+import ReferenceLabel from '../ReferenceLabel';
 import {getBrand} from '../../pages/utils';
 
 // eslint-disable-next-line complexity
@@ -31,7 +43,8 @@ const PageviewWidget = ({
     chartRight,
     refAreaLeft,
     refAreaRight,
-    helpText
+    helpText,
+    annotations = []
 }) => {
     const brandLabel = brand.replace(/\s/g, '');
     const fill = `url(#${brandLabel})`;
@@ -76,6 +89,19 @@ const PageviewWidget = ({
                             <CartesianGrid strokeDasharray="3 3" />
                             <Tooltip content={<CustomTooltip />} />
                             <Area type="monotone" dataKey="value" stroke={color} fillOpacity={1} fill={fill} key={`area${brand}`} yAxisId={yAxisId} />
+                            {
+                                annotations && annotations.map((annotation) => (
+                                    <ReferenceLine
+                                        key={uuid()}
+                                        yAxisId={yAxisId}
+                                        x={annotation.bucketTime}
+                                        label={<ReferenceLabel annotation={annotation} />}
+                                        stroke="red"
+                                        strokeDasharray="3 3"
+                                        isFront
+                                    />
+                                ))
+                            }
                             {
                                 (refAreaLeft && refAreaRight)
                                     ? <ReferenceArea yAxisId={yAxisId} x1={refAreaLeft} x2={refAreaRight} strokeOpacity={0.3} />
