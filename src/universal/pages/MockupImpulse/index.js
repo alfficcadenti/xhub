@@ -5,21 +5,23 @@ import LoadingContainer from '../../components/LoadingContainer';
 import DatePicker from '../../components/DatePicker/index';
 import FilterDropDown from '../../components/FilterDropDown';
 import {BookingTrends} from './tabs/index';
+import {useQueryParamChange, useSelectedBrand} from '../hooks';
+
 import moment from 'moment/moment';
 import {
     DATE_FORMAT,
     ALL_LOB,
-    TIME_INTERVALS_IMPULSE,
-    TIME_INTERVAL,
     ALL_BRANDS,
-    ALL_BRAND_GROUP,
-    BRAND_GROUPS,
     LOBS,
-    BRANDS_LIST
+    BRANDS_LIST,
+    DEVICE_TYPES,
+    ALL_DEVICE_TYPES,
+    ALL_BOOKING_TYPES,
+    BOOKING_TYPES
 } from '../../constants';
 import './styles.less';
 
-const startDateDefaultValue = moment().subtract(90, 'days').format(DATE_FORMAT);
+const startDateDefaultValue = moment().subtract(3, 'days').format(DATE_FORMAT);
 const endDateDefaultValue = moment().format(DATE_FORMAT);
 const minDate = moment('2019-01-01').toDate();
 const activeIndex = 0;
@@ -31,30 +33,31 @@ const navLinks = [
     }
 ];
 
-const Impulse = () => {
+const Impulse = (props) => {
+    const newBrand = props.selectedBrands[0];
     const [startDate, setStartDate] = useState(startDateDefaultValue);
     const [endDate, setEndDate] = useState(endDateDefaultValue);
     const [isApplyClicked, setIsApplyClicked] = useState(false);
     const [allData, setFilterAllData] = useState([]);
     const [selectedLob, setSelectedLob] = useState(ALL_LOB);
     const [selectedBrand, setSelectedBrand] = useState(ALL_BRANDS);
-
-    const [selectedInterval, setSelectedInterval] = useState(TIME_INTERVAL);
-    const [selectedBrandGroup, setSelectedBrandGroup] = useState(ALL_BRAND_GROUP);
-
-    const [isLoading, res, error] = useFetchBlipData(isApplyClicked, setIsApplyClicked, startDate, endDate, selectedLob, selectedBrand, selectedInterval, selectedBrandGroup);
-
+    const [selectedDeviceType, setSelectedDeviceType] = useState(ALL_DEVICE_TYPES);
+    const [selectedBookingType, setSelectedBookingType] = useState(ALL_BOOKING_TYPES);
+    useQueryParamChange(props.selectedBrands[0], props.onBrandChange);
+    useSelectedBrand(props.selectedBrands[0], props.onBrandChange, props.prevSelectedBrand);
+    const [isLoading, res, error] = useFetchBlipData(isApplyClicked, setIsApplyClicked, startDate, endDate, selectedLob, selectedBrand, selectedDeviceType, selectedBookingType, newBrand, props.prevSelectedBrand);
     const handleLobChange = useCallback((lob) => {
         setSelectedLob(lob);
     }, []);
     const handleBrandChange = useCallback((brand) => {
         setSelectedBrand(brand);
     }, []);
-    const handleIntervalChange = useCallback((interval) => {
-        setSelectedInterval(interval);
+
+    const handleDeviceTypeChange = useCallback((deviceType) => {
+        setSelectedDeviceType(deviceType);
     }, []);
-    const handleBrandGroupChange = useCallback((brandGroup) => {
-        setSelectedBrandGroup(brandGroup);
+    const handleBookingTypeChange = useCallback((bookingType) => {
+        setSelectedBookingType(bookingType);
     }, []);
 
     useEffect(() => {
@@ -107,18 +110,18 @@ const Impulse = () => {
                     onClickHandler={handleBrandChange}
                 />
                 <FilterDropDown
-                    id="timeinterval-dropdown"
+                    id="devicetype-dropdown"
                     className="priority-dropdown"
-                    selectedValue={selectedInterval}
-                    list={TIME_INTERVALS_IMPULSE}
-                    onClickHandler={handleIntervalChange}
+                    selectedValue={selectedDeviceType}
+                    list={[ALL_DEVICE_TYPES, ...DEVICE_TYPES]}
+                    onClickHandler={handleDeviceTypeChange}
                 />
                 <FilterDropDown
-                    id="brandgroup-dropdown"
+                    id="bookingtype-dropdown"
                     className="priority-dropdown"
-                    selectedValue={selectedBrandGroup}
-                    list={[ALL_BRAND_GROUP, ...BRAND_GROUPS]}
-                    onClickHandler={handleBrandGroupChange}
+                    selectedValue={selectedBookingType}
+                    list={[ALL_BOOKING_TYPES, ...BOOKING_TYPES]}
+                    onClickHandler={handleBookingTypeChange}
                 />
                 <button
                     type="button"

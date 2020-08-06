@@ -3,50 +3,60 @@ import {
     ALL_LOB,
     ALL_BRANDS,
     ALL_BRAND_GROUP,
-    BOOKING_COUNT
+    ALL_DEVICE_TYPES,
+    ALL_BOOKING_TYPES,
+    EGENCIA_BRAND, EG_BRAND, EXPEDIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, HOTELS_COM_BRAND, VRBO_BRAND
 } from '../../constants';
-
 import {useIsMount} from '../hooks';
 import moment from 'moment';
-import {checkResponse} from '../utils';
 
+const PREDICTION_COUNT = 'Prediction Counts';
+const BOOKING_COUNT = 'Booking Counts';
+const IMPULSE_MAPPING = [
+    {globalFilter: EG_BRAND, impulseFilter: ALL_BRAND_GROUP},
+    {globalFilter: EXPEDIA_BRAND, impulseFilter: 'Brand Expedia Group'},
+    {globalFilter: EXPEDIA_PARTNER_SERVICES_BRAND, impulseFilter: 'Expedia Business Services'},
+    {globalFilter: HOTELS_COM_BRAND, impulseFilter: HOTELS_COM_BRAND},
+    {globalFilter: EGENCIA_BRAND, impulseFilter: EGENCIA_BRAND},
+    {globalFilter: VRBO_BRAND, impulseFilter: 'VRBO'}
+];
 
-export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, endDate, selectedLob, selectedBrand, selectedInterval, selectedBrandGroup) => {
+export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, endDate, selectedLob, selectedBrand, selectedDeviceType, selectedBookingType, globalBrandName) => {
     const [res, setRes] = useState([]);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [lastStartDate, setLastStartDate] = useState('');
     const [lastEndDate, setLastEndDate] = useState('');
     const isMount = useIsMount();
-    const returnFilterString = (lob, timeInterval, brand, brandGroup) => {
-        let query = '';
-        if (lob !== ALL_LOB) {
-            query = query += `lob=${lob}&`;
+    const getQueryParam = (key, value, condition, defaultValue = '') => condition ? `&${key}=${value}` : defaultValue;
+    const getQueryString = (lob, brand, deviceType, bookingType, newBrand, start, end) => {
+        const brandGroupName = IMPULSE_MAPPING.find((brandNames) => brandNames.globalFilter === newBrand);
+        let query = `?startDate=${start}T00:00:00Z&endDate=${end}T00:00:00Z`;
+        query += getQueryParam('lob', lob, lob !== ALL_LOB);
+        query += getQueryParam('brand', brand, brand !== ALL_BRANDS);
+        query += getQueryParam('deviceType', deviceType, deviceType !== ALL_DEVICE_TYPES);
+        query += getQueryParam('bookingType', bookingType, bookingType !== ALL_BOOKING_TYPES);
+        if (brandGroupName.impulseFilter !== ALL_BRAND_GROUP) {
+            query += brandGroupName.impulseFilter !== EGENCIA_BRAND ? `&brandGroupName=${encodeURI(brandGroupName.impulseFilter)}` : `&brand=${encodeURI(brandGroupName.impulseFilter)}`;
         }
-
-        if (brand !== ALL_BRANDS) {
-            query = query += `brand=${brand}&`;
-        }
-        if (brandGroup !== ALL_BRAND_GROUP) {
-            query = query += `brandGroupName=${brandGroup}&`;
-        }
-
-        query = query += `timeInterval=${timeInterval.match(/\d+/g)}&`;
-
-        return `?${query.substring(0, query.length - 1)}`;
+        return query;
     };
     useEffect(() => {
         const getData = () => {
             setIsLoading(true);
             setLastStartDate(startDate);
             setLastEndDate(endDate);
-            fetch(`/user-events-api/v1/bookings/count${returnFilterString(selectedLob, selectedInterval, selectedBrand, selectedBrandGroup)}`)
-                .then(checkResponse)
+            fetch(`/user-events-api/v1/bookings/count${getQueryString(selectedLob, selectedBrand, selectedDeviceType, selectedBookingType, globalBrandName, startDate, endDate)}`)
+                .then((result) => {
+                    return result.json();
+                }
+                )
                 .then((respJson) => {
                     const chartData = respJson.map((items) => {
                         return {
                             time: moment.utc(items.time).format('HH:mm'),
-                            [BOOKING_COUNT]: items.count
+                            [BOOKING_COUNT]: items.count,
+                            [PREDICTION_COUNT]: items.prediction.weightedCount
                         };
                     });
                     return chartData;
@@ -65,7 +75,8 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
 
         if (isMount) {
             getData();
-        } else if (isApplyClicked) {
+        }
+        if (isApplyClicked) {
             if (lastStartDate !== startDate || lastEndDate !== endDate) {
                 getData();
             } else {
@@ -75,7 +86,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
         return () => {
             setIsApplyClicked(false);
         };
-    }, [isApplyClicked, startDate, endDate]);
+    }, [isApplyClicked, startDate, endDate, globalBrandName]);
     return [
         isLoading,
         res,

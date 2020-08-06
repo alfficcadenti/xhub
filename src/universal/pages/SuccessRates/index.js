@@ -112,7 +112,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     const currentSuccessRates = successRatePercentagesData.find((item) => mapBrandNames(item.brand) === selectedBrand);
 
                     if (currentSuccessRates) {
-                        nextRealTimeTotals[label] = currentSuccessRates.rate === null ? 0 : currentSuccessRates.rate;
+                        nextRealTimeTotals[label] = (currentSuccessRates.rate || 0).toFixed(2);
                     }
                 });
 
@@ -265,14 +265,16 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     {'Apply'}
                 </button>
             </div>
-            {isSupportedBrand && <RealTimeSummaryPanel
-                realTimeTotals={realTimeTotals}
-                isRttLoading={isRttLoading}
-                rttError={rttError}
-                tooltipLabel={'Latest real time success rate. Refreshes every minute.'}
-                label={'Real Time Success Rates'}
-                showPercentageSign
-            />}
+            {isSupportedBrand && (
+                <RealTimeSummaryPanel
+                    realTimeTotals={realTimeTotals}
+                    isRttLoading={isRttLoading}
+                    rttError={rttError}
+                    tooltipLabel={'Latest real time success rate. Refreshes every minute.'}
+                    label={'Real Time Success Rates'}
+                    showPercentageSign
+                />
+            )}
             <LoadingContainer isLoading={isLoading} error={error} className="success-rates-loading-container">
                 <div className="success-rates-widget-container">
                     {widgets.map(renderWidget)}

@@ -9,7 +9,7 @@ const RealTimeSummaryPanel = ({realTimeTotals, isRttLoading, rttError, tooltipLa
     const renderRealTimeTotal = ([rttLabel, value]) => (
         <div key={`rtt-${rttLabel}`} className="card real-time-card">
             <div className="rtt-label">{rttLabel}</div>
-            <div className="rtt-value">{`${value.toFixed()}${showPercentageSign ? '%' : ''}`}</div>
+            <div className="rtt-value">{`${value}${showPercentageSign ? '%' : ''}`}</div>
         </div>
     );
 

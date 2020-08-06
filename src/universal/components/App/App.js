@@ -65,7 +65,7 @@ function App() {
                     <Route path="/funnel-view" render={() => <FunnelView selectedBrands={selectedBrands} onBrandChange={handleBrandChange} />} />
                     <Route path="/success-rates" render={() => <SuccessRates selectedBrands={selectedBrands} onBrandChange={handleBrandChange} />} />
                     <Route path="/home" render={() => <Home selectedBrands={selectedBrands} onBrandChange={handleBrandChange} />} />
-                    <Route path="/impulse" render={() => <Impulse selectedBrands={selectedBrands} onBrandChange={handleBrandChange} />} />
+                    <Route path="/impulse" render={() => <Impulse selectedBrands={selectedBrands} onBrandChange={handleBrandChange} prevSelectedBrand={prevSelectedBrand} />} />
                     {pages.map((p) => renderRoute(p, selectedBrands, handleBrandChange, prevSelectedBrand))}
                 </Switch>
             </div>

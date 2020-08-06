@@ -19,7 +19,7 @@ import {getBrand} from '../../pages/utils';
 
 // eslint-disable-next-line complexity
 const CustomTooltip = ({active, payload}) => {
-    if (active && payload[0] && payload[0].payload && payload[0].payload.label && payload[0].value) {
+    if (active && payload && payload[0] && payload[0].payload && payload[0].payload.label && payload[0].value) {
         return (
             <div className="custom-tooltip">
                 <p className="label">{`${payload[0].payload.label} : ${payload[0].value}`}</p>

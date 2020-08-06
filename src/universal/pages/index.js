@@ -17,6 +17,13 @@ export default [
         text: 'Page Views',
         component: require('./FunnelView')
     },
+    {
+        category: AAT,
+        id: 'success-rates',
+        link: '/success-rates',
+        text: 'Success Rates',
+        component: require('./SuccessRates')
+    },
     // PHAR Dashboards
     {
         category: PHAR,
