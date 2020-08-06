@@ -101,12 +101,12 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                         if (currentPageViews) {
                             const momentTime = moment(time);
                             if (momentTime.isBetween(rttStart, rttEnd, 'minute', '(]')) {
-                                nextRealTimeTotals[label] += currentPageViews.views;
+                                nextRealTimeTotals[label] += (currentPageViews.views || 0).toFixed();
                             }
                         }
                     });
                 });
-                setRealTimeTotals(nextRealTimeTotals.toFixed());
+                setRealTimeTotals(nextRealTimeTotals);
             })
             .catch((err) => {
                 let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
@@ -244,13 +244,15 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     {'Apply'}
                 </button>
             </div>
-            {isSupportedBrand && <RealTimeSummaryPanel
-                realTimeTotals={realTimeTotals}
-                isRttLoading={isRttLoading}
-                rttError={rttError}
-                tooltipLabel={'Real time pageview totals within the last minute. Refreshes every minute.'}
-                label={'Real Time Pageviews'}
-            />}
+            {isSupportedBrand && (
+                <RealTimeSummaryPanel
+                    realTimeTotals={realTimeTotals}
+                    isRttLoading={isRttLoading}
+                    rttError={rttError}
+                    tooltipLabel={'Real time pageview totals within the last minute. Refreshes every minute.'}
+                    label={'Real Time Pageviews'}
+                />
+            )}
             <LoadingContainer isLoading={isLoading} error={error} className="page-views-loading-container">
                 <div className="page-views-widget-container">
                     {widgets.map(renderWidget)}
