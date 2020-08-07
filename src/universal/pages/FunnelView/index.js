@@ -1,34 +1,48 @@
 import React, {useEffect, useState, useRef} from 'react';
 import moment from 'moment';
 import 'moment-timezone';
-import {Checkbox} from '@homeaway/react-form-components';
-import Select from 'react-select';
-import PageviewWidget from '../../components/PageviewWidget';
+import TravelerMetricsWidget from '../../components/TravelerMetricsWidget';
 import LoadingContainer from '../../components/LoadingContainer';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import RealTimeSummaryPanel from '../../components/RealTimeSummaryPanel';
+import AnnotationsFilterPanel from '../../components/AnnotationsFilterPanel';
 import {useQueryParamChange, useSelectedBrand, useZoomAndSynced} from '../hooks';
 import {EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../../constants';
 import {checkResponse, getBrand} from '../utils';
 import {pageViewEndpoint} from './mockData';
 import './styles.less';
 
+
 const TIMEZONE_OFFSET = (new Date()).getTimezoneOffset();
 const TIMEZONE_ABBR = moment.tz.zone(moment.tz.guess()).abbr(TIMEZONE_OFFSET);
 
 const initialAnnotations = [{
-    title: null,
-    text: 'some service name',
-    tags: ['MOT'],
-    time: moment('2020-08-05T15:05:00Z').format('YYYY-MM-DD HH:mm'),
-    bucketTime: moment('2020-08-05T15:05:00Z').format('YYYY-MM-DD HH:mm'),
+    incidentNumber: 'INC283726',
+    serviceName: 'some service name',
+    tags: ['MOT', 'Production'],
+    time: moment('2020-08-07T03:30:00Z').format('YYYY-MM-DD HH:mm'),
+    bucketTime: moment('2020-08-07T03:30:00Z').format('YYYY-MM-DD HH:mm'),
     index: 0
 }, {
-    title: null,
-    text: 'some service name',
+    incidentNumber: 'INC283726',
+    serviceName: 'some service name',
+    tags: ['Production'],
+    time: moment('2020-08-07T04:35:00Z').format('YYYY-MM-DD HH:mm'),
+    bucketTime: moment('2020-08-07T04:35:00Z').format('YYYY-MM-DD HH:mm'),
+    index: 0
+}, {
+    incidentNumber: 'INC283726',
+    serviceName: 'some service name',
     tags: ['MOT'],
-    time: moment('2020-08-05T15:07:00Z').format('YYYY-MM-DD HH:mm'),
-    bucketTime: moment('2020-08-05T15:07:00Z').format('YYYY-MM-DD HH:mm'),
+    time: moment('2020-08-07T07:40:00Z').format('YYYY-MM-DD HH:mm'),
+    bucketTime: moment('2020-08-07T07:40:00Z').format('YYYY-MM-DD HH:mm'),
+    index: 1
+}, {
+    incidentNumber: 'INC283726',
+    serviceName: 'some service name',
+    tags: ['P1 Blocker'],
+    time: moment('2020-08-07T08:00:00Z').format('YYYY-MM-DD HH:mm'),
+    bucketTime: moment('2020-08-07T08:00:00Z').format('YYYY-MM-DD HH:mm'),
     index: 1
 }];
 
@@ -56,11 +70,6 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [isSupportedBrand, setIsSupportedBrand] = useState(false);
 
     // annotations state
-    const tags = ['NONE', 'AB_TEST', 'DEPLOYMENT', 'APP_STORE_RELEASES', 'HAMOC-P1 - Blocker',
-        'HAMOC-P2 - Major', 'HAMOC-Enterprise', 'HAMOC-Maintenance', 'HUMAN_EVENT', 'HOLIDAY',
-        'NATURAL_EVENT'].map((a) => ({value: a, label: a}));
-    const portfolios = [];
-
     const [enableAlerts, setEnableAlerts] = useState(true);
     const [selectedTags, setSelectedTags] = useState([]);
     const [selectedPortfolios, setSelectedPortfolios] = useState([]);
@@ -159,42 +168,42 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
             : '';
         fetch(`/v1/pageViews?brand=${funnelBrand}&timeInterval=1${dateQuery}`)
-            .then(checkResponse)
-            // .then((fetchedPageviews) => {
-            //     if (!fetchedPageviews || !fetchedPageviews.length) {
-            //         setError('No data found. Try refreshing the page or select another brand.');
-            //         return;
-            //     }
-                const widgetObjects = PAGES_LIST.map(({name, label}) => {
-                    const aggregatedData = [];
-                    pageViewEndpoint.forEach(({time, pageViewsData}) => {
-                        const currentPageViews = pageViewsData.find((item) => item.page === name);
-                        if (currentPageViews) {
-                            const momentTime = moment(time);
-                            if (momentTime.isBetween(start, end, 'minutes', '[]')) {
-                                aggregatedData.push({
-                                    label: `${momentTime.format('YYYY-MM-DD HH:mm')} ${TIMEZONE_ABBR}`,
-                                    time: momentTime.format('YYYY-MM-DD HH:mm'),
-                                    momentTime,
-                                    value: currentPageViews.views
-                                });
-                            }
-                        }
-                    });
-                    return {pageName: label, aggregatedData, pageBrand};
-                });
-                setWidgets(widgetObjects);
-            // })
-            // .catch((err) => {
-            //     let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
-            //         ? 'Query has timed out. Try refreshing the page. If the problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.'
-            //         : 'An unexpected error has occurred. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.';
-            //     setError(errorMessage);
-            //     // eslint-disable-next-line no-console
-            //     console.error(err);
-            // })
-            // .finally(() => setIsLoading(false));
-        setIsLoading(false)
+            .then(checkResponse);
+        // .then((fetchedPageviews) => {
+        //     if (!fetchedPageviews || !fetchedPageviews.length) {
+        //         setError('No data found. Try refreshing the page or select another brand.');
+        //         return;
+        //     }
+        const widgetObjects = PAGES_LIST.map(({name, label}) => {
+            const aggregatedData = [];
+            pageViewEndpoint.forEach(({time, pageViewsData}) => {
+                const currentPageViews = pageViewsData.find((item) => item.page === name);
+                if (currentPageViews) {
+                    const momentTime = moment(time);
+                    if (momentTime.isBetween(start, end, 'minutes', '[]')) {
+                        aggregatedData.push({
+                            label: `${momentTime.format('YYYY-MM-DD HH:mm')} ${TIMEZONE_ABBR}`,
+                            time: momentTime.format('YYYY-MM-DD HH:mm'),
+                            momentTime,
+                            value: currentPageViews.views
+                        });
+                    }
+                }
+            });
+            return {pageName: label, aggregatedData, pageBrand};
+        });
+        setWidgets(widgetObjects);
+        // })
+        // .catch((err) => {
+        //     let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
+        //         ? 'Query has timed out. Try refreshing the page. If the problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.'
+        //         : 'An unexpected error has occurred. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.';
+        //     setError(errorMessage);
+        //     // eslint-disable-next-line no-console
+        //     console.error(err);
+        // })
+        // .finally(() => setIsLoading(false));
+        setIsLoading(false);
     };
 
     useEffect(() => {
@@ -210,7 +219,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             setError(null);
             setIsFormDisabled(false);
             fetchRealTimeData(selectedBrands);
-            rttRef.current = setInterval(fetchRealTimeData.bind(null, selectedBrands), 60000); // refresh every minute
+            // rttRef.current = setInterval(fetchRealTimeData.bind(null, selectedBrands), 60000); // refresh every minute
             fetchPageViewsData(selectedBrands);
         }
         return function cleanup() {
@@ -221,20 +230,19 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     useEffect(() => {
         const fetchAnnotations = () => {
             const dateQuery = start && end
-                ? `startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
+                ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
                 : '';
             const categoryQuery = selectedTags.length ? `&category=${selectedTags}` : '';
             const portfolioQuery = selectedPortfolios.length ? `&portfolio=${selectedTags}` : '';
-            fetch(`/v1/pageViews?${dateQuery}${categoryQuery}${portfolioQuery}`)
+            fetch(`/v1/pageViews?brand=${selectedBrands}${dateQuery}${categoryQuery}${portfolioQuery}`)
                 .then(checkResponse)
                 .then((fetchedAnnotations) => {
-                    const adjustedAnnotations = fetchedAnnotations.map((annotation, index) => ({
-                        title: null,
-                        text: annotation.text,
-                        tags: ['Grafana Annotation/Alert'],
+                    const adjustedAnnotations = fetchedAnnotations.map((annotation) => ({
+                        incidentNumber: annotation.changeNumber,
+                        serviceName: annotation.serviceName,
+                        tags: [annotation.product, annotation.portfolio, annotation.platform],
                         time: annotation.openedAt,
-                        bucketTime: annotation.openedAt,
-                        index,
+                        bucketTime: annotation.openedAt
                     }));
 
                     setAnnotations(adjustedAnnotations);
@@ -271,7 +279,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     ].includes(timeRange) ? 20 : 5;
 
     const renderWidget = ({pageName, aggregatedData, pageBrand}) => (
-        <PageviewWidget
+        <TravelerMetricsWidget
             title={pageName}
             data={aggregatedData}
             key={pageName}
@@ -286,65 +294,6 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             refAreaRight={refAreaRight}
             annotations={enableAlerts ? annotations : []}
         />
-    );
-
-    const handlePortfoliosOnChange = (event) => {
-        const newSelectedPortfolios = (event || []).map((item) => item.value);
-        setSelectedPortfolios(newSelectedPortfolios);
-    };
-
-    const handleAlertsToggle = () => {
-        setEnableAlerts(!enableAlerts);
-    };
-
-    const handleTagsOnChange = (event) => {
-        const newSelectedTags = (event || []).map((item) => item.value);
-        setSelectedTags(newSelectedTags);
-    };
-
-    const renderFilterSection = () => (
-        <div className="filters-container">
-            <div className="filter-option">
-                <div className="filter-label-wrapper">
-                    <p className="filter-label">Annotations & Alerts</p>
-                </div>
-                <div className="filter-option-selection">
-                    <Checkbox
-                        name="alertsCheckbox"
-                        label="Show Grafana Annotations & Alerts"
-                        checked={enableAlerts}
-                        onChange={handleAlertsToggle}
-                        size="sm"
-                    />
-                </div>
-            </div>
-            <div className="filter-option">
-                <div className="filter-label-wrapper">
-                    <p className="filter-label">Annotations Category</p>
-                </div>
-                <div className="filter-option-selection">
-                    <Select
-                        isMulti
-                        value={selectedTags.map((v) => ({value: v, label: v}))}
-                        options={tags}
-                        onChange={handleTagsOnChange}
-                    />
-                </div>
-            </div>
-            <div className="filter-option">
-                <div className="filter-label-wrapper">
-                    <p className="filter-label">Portfolios</p>
-                </div>
-                <div className="filter-option-selection">
-                    <Select
-                        isMulti
-                        value={selectedPortfolios.map((v) => ({value: v, label: v}))}
-                        options={portfolios}
-                        onChange={handlePortfoliosOnChange}
-                    />
-                </div>
-            </div>
-        </div>
     );
 
     return (
@@ -366,7 +315,14 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 >
                     {'Apply'}
                 </button>
-                {renderFilterSection()}
+                <AnnotationsFilterPanel
+                    enableAlerts={enableAlerts}
+                    setEnableAlerts={setEnableAlerts}
+                    selectedTags={selectedTags}
+                    setSelectedTags={setSelectedTags}
+                    selectedPortfolios={selectedPortfolios}
+                    setSelectedPortfolios={setSelectedPortfolios}
+                />
             </div>
             {isSupportedBrand && (
                 <RealTimeSummaryPanel

@@ -27,51 +27,6 @@
         display: grid;
         grid-gap: @spacing-2x;
         grid-template-columns: 1fr 1fr;
-
-        .foreign-object {
-            // z-index: 1;
-            width: 144px;
-            height: 88px;
-            position: absolute;
-        }
-
-        .custom-tooltip {
-            width: 144px;
-            height: 88px;
-            max-height: 88px;
-            overflow-y: scroll;
-            font-size: 10px;
-            line-height: 10px;
-            border: 1px solid #e0e0e0;
-            background-color: #e0e0e0;
-            opacity: .8;
-            color: @text-color;
-            position: relative;
-            padding: 4px;
-
-            .timestamp {
-                font-weight: 800;
-            }
-
-            p {
-                line-height: 10px;
-                margin: 4px 0 0;
-            }
-
-            .tags {
-                margin-top: 4px;
-                color: @white;
-                font-weight: 800;
-
-                .tag {
-                    background: #58a0fe;
-                    padding: 0 2px;
-                    height: 12px;
-                    display: inline-block;
-                    margin: 2px 2px 0 0;
-                }
-            }
-        }
     }
 
     .page-info .Tooltip .Tooltip__inner {
@@ -92,28 +47,6 @@
 
         .apply-btn {
             margin-left: @spacing-1x;
-        }
-
-        .filters-container {
-            margin-top: @spacing-2x;
-            padding: @spacing-1x;
-            background: @color-bg-accent;
-            border-radius: @spacing-1x;
-            max-width: 1140px;
-
-            .filter-option {
-                display: flex;
-                margin-top: @spacing-1x;
-
-                .filter-label-wrapper {
-                    width: 250px;
-                }
-
-                .filter-option-selection {
-                    width: 550px;
-                    z-index: 100;
-                }
-            }
         }
     }
 }

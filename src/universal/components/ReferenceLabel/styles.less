@@ -1,0 +1,53 @@
+.foreign-object {
+    .annotation-tooltip {
+        cursor: help;
+        font-size: 10px;
+        font-weight: 800;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 7px 5.5px 0 5.5px;
+        border-color: #ff8281 transparent transparent transparent;
+
+        &:hover .tooltip-body {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .tooltip-body {
+            visibility: hidden;
+            opacity: 0;
+            background-color: #e0e0e0;
+            width: 160px;
+            padding: 0 10px 10px;
+            text-align: left;
+
+            .timestamp {
+              font-weight: 800;
+              margin-bottom: 0;
+            }
+
+            .tooltip-wrapper {
+                display: flex;
+                flex-direction: column;
+
+                .tags {
+                    display: flex;
+                    color: white;
+                    font-weight: 800;
+
+                    margin-top: 4px;
+
+                    .tag {
+                        background: #58a0fe;
+                        padding: 0 2px;
+                        height: 12px;
+                        display: flex;
+                        align-items: center;
+                        margin: 2px 2px 0 0;
+                    }
+                }
+            }
+        }
+  }
+}
