@@ -1,7 +1,7 @@
 import React from 'react';
 import {expect} from 'chai';
 import {shallow} from 'enzyme';
-import PageviewWidget from '..';
+import TravelerMetricsWidget from '..';
 
 const data = [
     {label: '1:00 AM', value: 240},
@@ -14,16 +14,16 @@ const data = [
 
 
 describe('LineChart component testing', () => {
-    it('checks PageviewWidget component exists', () => {
+    it('checks TravelerMetricsWidget component exists', () => {
         const wrapper = shallow(
-            <PageviewWidget title={'test'} data={data} brand={'Expedia'} />
+            <TravelerMetricsWidget title={'test'} data={data} brand={'Expedia'} />
         );
         expect(wrapper).to.have.length(1);
     });
 
-    it('checks PageviewWidget create a widget with title if data is empty', () => {
+    it('checks TravelerMetricsWidget create a widget with title if data is empty', () => {
         const wrapper = shallow(
-            <PageviewWidget title={'test'} data={[]} brand={'Expedia'} />
+            <TravelerMetricsWidget title={'test'} data={[]} brand={'Expedia'} />
         );
         expect(wrapper.find('h3').text()).to.be.eql('test');
     });

@@ -12,10 +12,10 @@ import {
     ReferenceLine
 } from 'recharts';
 import {v1 as uuid} from 'uuid';
-import './styles.less';
 import HelpText from '../HelpText/HelpText';
 import ReferenceLabel from '../ReferenceLabel';
 import {getBrand} from '../../pages/utils';
+import './styles.less';
 
 // eslint-disable-next-line complexity
 const CustomTooltip = ({active, payload}) => {
@@ -31,7 +31,7 @@ const CustomTooltip = ({active, payload}) => {
 
 const formatXAxis = (date) => moment(date).format('MM/DD hh:mm');
 
-const PageviewWidget = ({
+const TravelerMetricsWidget = ({
     title = '',
     data = [],
     brand,
@@ -115,4 +115,4 @@ const PageviewWidget = ({
     );
 };
 
-export default PageviewWidget;
+export default TravelerMetricsWidget;
