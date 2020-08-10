@@ -41,13 +41,13 @@ export const useFetchTickets = (
             setLastStartDate(startDate);
             setLastEndDate(endDate);
 
-            fetch(`https://opxhub-service.us-west-2.test.expedia.com/api/v1/${url}?startDate=${startDate}&endDate=${endDate}`)
+            fetch(`/v1/${url}?startDate=${startDate}&endDate=${endDate}`)
                 .then(checkResponse)
                 .then((tickets) => {
                     tickets.sort((a, b) => new Date(b.startedAt) - new Date(a.startedAt));
                     // incidents
                     const isIncidents = url === 'incidents';
-                    const uniqueTickets = getUniqueTickets(tickets, isIncidents ? 'incidentNumber' : 'defectNumber');
+                    const uniqueTickets = getUniqueTickets(tickets);
 
                     const adjustedUniqueTickets = adjustTicketProperties(uniqueTickets, isIncidents ? 'incident' : 'defect');
                     const ticketPriorities = getListOfUniqueProperties(adjustedUniqueTickets, 'priority').sort();

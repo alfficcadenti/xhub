@@ -181,33 +181,33 @@ describe('incidentsHelper', () => {
     describe('getUniqueTickets', () => {
         it('returns list of unique incidents with tag containing array of tags from multiple row same incident', () => {
             const mockRawIncidents = [{
-                'incidentSummary': 'test',
-                'incidentNumber': 'INC4801211',
-                'tag': 'covid-19'
+                summary: 'test',
+                id: 'INC4801211',
+                tag: 'covid-19'
             },
             {
-                'incidentSummary': 'test',
-                'incidentNumber': 'INC4801211',
-                'tag': 'jiraok'
+                summary: 'test',
+                id: 'INC4801211',
+                tag: 'jiraok'
             },
             {
-                'incidentSummary': 'Degraded',
-                'incidentNumber': 'INC4808989',
-                'tag': 'covid-19'
+                summary: 'Degraded',
+                id: 'INC4808989',
+                tag: 'covid-19'
             }];
 
             const expectedResult = [{
-                'incidentSummary': 'test',
-                'incidentNumber': 'INC4801211',
-                'tag': ['covid-19', 'jiraok']
+                summary: 'test',
+                id: 'INC4801211',
+                tag: ['covid-19', 'jiraok']
             },
             {
-                'incidentSummary': 'Degraded',
-                'incidentNumber': 'INC4808989',
-                'tag': ['covid-19']
+                summary: 'Degraded',
+                id: 'INC4808989',
+                tag: ['covid-19']
             }];
 
-            const result = getUniqueTickets(mockRawIncidents, 'incidentNumber');
+            const result = getUniqueTickets(mockRawIncidents, 'id');
             expect(result).to.be.eql(expectedResult);
         });
     });

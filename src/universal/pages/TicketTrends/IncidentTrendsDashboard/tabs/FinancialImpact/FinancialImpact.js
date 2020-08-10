@@ -21,12 +21,12 @@ const FinancialImpact = ({filteredIncidents}) => {
         return doc.documentElement.textContent;
     };
 
-    const renderLinks = ({incidentNumberLink, lostRevenue}) => (
-        <div key={incidentNumberLink} className="incident-wrapper">
+    const renderLinks = ({link, lostRevenue}) => (
+        <div key={link} className="incident-wrapper">
             <div
                 className="incident-number"
                 dangerouslySetInnerHTML={{ //eslint-disable-line
-                    __html: htmlDecode(incidentNumberLink)
+                    __html: htmlDecode(link)
                 }}
             />
             <div className="incident-financial-impact">

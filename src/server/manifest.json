@@ -23,8 +23,18 @@
           "timeout": 30000,
           "routes": {
             "prbs": {
-              "path": "/prbs",
+              "path": "/v1/prbs",
               "operation": "GET_prbs",
+              "method": "GET"
+            },
+            "incidents": {
+              "path": "/v1/incidents",
+              "operation": "GET_incidents",
+              "method": "GET"
+            },
+            "defects": {
+              "path": "/v1/defects",
+              "operation": "GET_defects",
               "method": "GET"
             }
           }
@@ -34,8 +44,18 @@
           "protocol": "https:",
           "routes": {
             "prbs": {
-              "path": "/prbs",
+              "path": "/v1/prbs",
               "operation": "GET_prbs",
+              "method": "GET"
+            },
+            "incidents": {
+              "path": "/v1/incidents",
+              "operation": "GET_incidents",
+              "method": "GET"
+            },
+            "defects": {
+              "path": "/v1/defects",
+              "operation": "GET_defects",
               "method": "GET"
             }
           }
@@ -45,8 +65,18 @@
           "protocol": "https:",
           "routes": {
             "prbs": {
-              "path": "/prbs",
+              "path": "/v1/prbs",
               "operation": "GET_prbs",
+              "method": "GET"
+            },
+            "incidents": {
+              "path": "/v1/incidents",
+              "operation": "GET_incidents",
+              "method": "GET"
+            },
+            "defects": {
+              "path": "/v1/defects",
+              "operation": "GET_defects",
               "method": "GET"
             }
           }
