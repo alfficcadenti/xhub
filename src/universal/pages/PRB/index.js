@@ -367,8 +367,8 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     onClickHandler={handleStatusChange}
                 />
                 <FilterDropDown
-                    id="rcOwner-dropdown"
-                    className="filter-dropdown rcOwner-dropdown"
+                    id="rc-owner-dropdown"
+                    className="filter-dropdown rc-owner-dropdown"
                     list={[rcOwnerDefaultValue, ...currentRcOwners]}
                     selectedValue={selectedRcOwner}
                     onClickHandler={handleRcOwnerChange}

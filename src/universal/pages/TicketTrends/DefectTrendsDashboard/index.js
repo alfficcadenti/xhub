@@ -11,7 +11,6 @@ import {useFetchTickets} from '../hooks';
 import {EG_BRAND} from '../../../constants';
 import {useQueryParamChange, useSelectedBrand} from '../../hooks';
 import './styles.less';
-import {getBrand} from '../../utils';
 
 const statusDefaultValue = ALL_STATUSES_OPTION;
 const priorityDefaultValue = ALL_PRIORITIES_OPTION;
@@ -21,7 +20,7 @@ const minDate = moment('2019-01-01').toDate();
 
 
 const IncidentTrendsDashboard = (props) => {
-    const selectedBrands = props.selectedBrands.map((brand) => getBrand(brand, 'label').incidentBrand);
+    const selectedBrand = props.selectedBrands[0];
 
     const [selectedStatus, setSelectedStatus] = useState(statusDefaultValue);
     const [startDate, setStartDate] = useState(startDateDefaultValue);
@@ -49,13 +48,12 @@ const IncidentTrendsDashboard = (props) => {
         setIsApplyClicked,
         'defects'
     );
-    const selectedBrand = props.selectedBrands[0];
     useQueryParamChange(selectedBrand, props.onBrandChange);
     useSelectedBrand(selectedBrand, props.onBrandChange, props.prevSelectedBrand);
 
     function applyFilters() {
         const matchesPriority = (t) => selectedPriority === priorityDefaultValue || t.priority === selectedPriority;
-        const matchesBrand = (t) => selectedBrands[0] === EG_BRAND || selectedBrands.includes(t.Brand);
+        const matchesBrand = (t) => selectedBrand === EG_BRAND || selectedBrand === t.Brand;
         const matchesStatus = (t) => selectedStatus === statusDefaultValue || t.status === selectedStatus;
         const filterTickets = (t) => matchesPriority(t) && matchesBrand(t) && matchesStatus(t);
 
