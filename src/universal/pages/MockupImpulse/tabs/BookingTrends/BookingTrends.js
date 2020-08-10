@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react';
+import React from 'react';
 import {Area, AreaChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
 import './styles.less';
 
@@ -22,48 +22,45 @@ const IMPULSE_CHART_TYPE = [
     }
 ];
 
-class BookingTrends extends PureComponent {
-    getGradient = ({key, color}) => {
+
+const BookingTrends = ({data = []}) => {
+    const getGradient = ({key, color}) => {
         const id = key === 'bookingChart' ? `color${key}` : '';
         return (<linearGradient key={`${key}Gradient`} id={id} x1="0" y1="0" x2="0" y2="1">
             <stop offset="5%" stopColor={color} stopOpacity={0.8}/>
             <stop offset="95%" stopColor={color} stopOpacity={0}/>
         </linearGradient>);
     };
-    renderChart = ({key, color, name}) => {
+
+    const renderChart = ({key, color, name}) => {
         const fill = `url(#color${key})`;
-
         return (<Area type="monotone" dataKey={name} stroke={color} fillOpacity={1} fill={fill}/>);
-    }
+    };
 
-    render() {
-        const data = this.props;
-        return (
-            <div className="bookings-container-box">
-                <h2 className="total-bookings-title">
-                    {'Impulse'}
-                </h2>
-                <ResponsiveContainer width="100%" height="70%">
-                    <AreaChart data={data.data} margin={{top: 10, right: 30, left: 0, bottom: 0}}>
-                        <defs>
-                            {IMPULSE_CHART_TYPE.map((item) =>
-                                this.getGradient(item)
-                            )}
-                        </defs>
-                        <XAxis dataKey="time" tick={{fontSize: 10}}/>
-                        <YAxis tick={{fontSize: 10}}/>
-                        <CartesianGrid strokeDasharray="3 3"/>
-                        <Tooltip/>
-
+    return (
+        <div className="bookings-container-box">
+            <h2 className="total-bookings-title">
+                {'Impulse'}
+            </h2>
+            <ResponsiveContainer width="100%" height="70%">
+                <AreaChart data={data} margin={{top: 10, right: 30, left: 0, bottom: 0}}>
+                    <defs>
                         {IMPULSE_CHART_TYPE.map((item) =>
-                            this.renderChart(item)
+                            getGradient(item)
                         )}
-                        <Legend onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}/>
-                    </AreaChart>
-                </ResponsiveContainer>
-            </div>
-        );
-    }
-}
+                    </defs>
+                    <XAxis dataKey="time" tick={{fontSize: 10}}/>
+                    <YAxis tick={{fontSize: 10}}/>
+                    <CartesianGrid strokeDasharray="3 3"/>
+                    <Tooltip/>
+                    {IMPULSE_CHART_TYPE.map((item) =>
+                        renderChart(item)
+                    )}
+                    <Legend/>
+                </AreaChart>
+            </ResponsiveContainer>
+        </div>
+    );
+};
 
-export default BookingTrends;
+export default React.memo(BookingTrends);

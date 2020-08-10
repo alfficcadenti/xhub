@@ -2,14 +2,12 @@ import React, {useState, useCallback, useEffect} from 'react';
 import {useFetchBlipData} from './customHook';
 import {Navigation} from '@homeaway/react-navigation';
 import LoadingContainer from '../../components/LoadingContainer';
-import DatePicker from '../../components/DatePicker/index';
 import FilterDropDown from '../../components/FilterDropDown';
 import {BookingTrends} from './tabs/index';
 import {useQueryParamChange, useSelectedBrand} from '../hooks';
-
+import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import moment from 'moment/moment';
 import {
-    DATE_FORMAT,
     ALL_LOB,
     ALL_BRANDS,
     LOBS,
@@ -21,9 +19,9 @@ import {
 } from '../../constants';
 import './styles.less';
 
-const startDateDefaultValue = moment().subtract(3, 'days').format(DATE_FORMAT);
-const endDateDefaultValue = moment().format(DATE_FORMAT);
-const minDate = moment('2019-01-01').toDate();
+const startDateDefaultValue = moment().utc().subtract(3, 'days').startOf('minute');
+const endDateDefaultValue = moment().utc().add(17, 'hours').endOf('minute');
+
 const activeIndex = 0;
 const navLinks = [
     {
@@ -35,8 +33,8 @@ const navLinks = [
 
 const Impulse = (props) => {
     const newBrand = props.selectedBrands[0];
-    const [startDate, setStartDate] = useState(startDateDefaultValue);
-    const [endDate, setEndDate] = useState(endDateDefaultValue);
+    const [startDateTime, setStartDateTime] = useState(startDateDefaultValue);
+    const [endDateTime, setEndDDateTime] = useState(endDateDefaultValue);
     const [isApplyClicked, setIsApplyClicked] = useState(false);
     const [allData, setFilterAllData] = useState([]);
     const [selectedLob, setSelectedLob] = useState(ALL_LOB);
@@ -45,7 +43,7 @@ const Impulse = (props) => {
     const [selectedBookingType, setSelectedBookingType] = useState(ALL_BOOKING_TYPES);
     useQueryParamChange(props.selectedBrands[0], props.onBrandChange);
     useSelectedBrand(props.selectedBrands[0], props.onBrandChange, props.prevSelectedBrand);
-    const [isLoading, res, error] = useFetchBlipData(isApplyClicked, setIsApplyClicked, startDate, endDate, selectedLob, selectedBrand, selectedDeviceType, selectedBookingType, newBrand, props.prevSelectedBrand);
+    const [isLoading, res, error] = useFetchBlipData(isApplyClicked, setIsApplyClicked, startDateTime, endDateTime, selectedLob, selectedBrand, selectedDeviceType, selectedBookingType, newBrand, props.prevSelectedBrand);
     const handleLobChange = useCallback((lob) => {
         setSelectedLob(lob);
     }, []);
@@ -63,15 +61,10 @@ const Impulse = (props) => {
     useEffect(() => {
         setFilterAllData([...res]);
     }, [res]);
-    const handleDateRangeChange = (start, end) => {
-        setStartDate(start || startDate);
-        setEndDate(end || endDate);
-    };
 
-    const handleClearDates = () => {
-        setStartDate('');
-        setEndDate('');
-        setFilterAllData([]);
+    const handleDatetimeChange = ({start: startDateTimeStr, end: endDateTimeStr}) => {
+        setStartDateTime(moment(startDateTimeStr));
+        setEndDDateTime(moment(endDateTimeStr));
     };
 
     const renderTabs = () => {
@@ -85,40 +78,38 @@ const Impulse = (props) => {
 
     return (
 
-        <div className="incident-trends-container">
+        <div className="impulse-container">
             <h1 className="page-title">{'Impulse Dashboard'}</h1>
-            <div className="filters-wrapper">
-                <DatePicker
-                    startDate={startDate}
-                    endDate={endDate}
-                    minDate={minDate}
-                    handleDateRangeChange={handleDateRangeChange}
-                    handleClearDates={handleClearDates}
+            <div className="impulse-filters-wrapper">
+                <DatetimeRangePicker
+                    onChange={handleDatetimeChange}
+                    startDate={startDateTime.toDate()}
+                    endDate={endDateTime.toDate()}
                 />
                 <FilterDropDown
                     id="lob-dropdown"
-                    className="priority-dropdown"
+                    className="impulse-dropdown first-filter-spacing"
                     selectedValue={selectedLob}
                     list={[ALL_LOB, ...LOBS]}
                     onClickHandler={handleLobChange}
                 />
                 <FilterDropDown
                     id="brand-dropdown"
-                    className="priority-dropdown"
+                    className="impulse-dropdown all-filters"
                     selectedValue={selectedBrand}
                     list={[ALL_BRANDS, ...BRANDS_LIST]}
                     onClickHandler={handleBrandChange}
                 />
                 <FilterDropDown
                     id="devicetype-dropdown"
-                    className="priority-dropdown"
+                    className="impulse-dropdown all-filters"
                     selectedValue={selectedDeviceType}
                     list={[ALL_DEVICE_TYPES, ...DEVICE_TYPES]}
                     onClickHandler={handleDeviceTypeChange}
                 />
                 <FilterDropDown
                     id="bookingtype-dropdown"
-                    className="priority-dropdown"
+                    className="impulse-dropdown all-filters"
                     selectedValue={selectedBookingType}
                     list={[ALL_BOOKING_TYPES, ...BOOKING_TYPES]}
                     onClickHandler={handleBookingTypeChange}
