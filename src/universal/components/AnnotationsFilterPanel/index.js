@@ -5,19 +5,27 @@ import {Checkbox} from '@homeaway/react-form-components';
 import Select from 'react-select';
 
 const tags = ['DEPLOYMENT'].map((a) => ({value: a, label: a}));
-const portfolios = [];
+const applications = [];
+const products = [];
 
 const AnnotationsFilterPanel = ({
     enableAlerts,
     setEnableAlerts,
     selectedTags,
     setSelectedTags,
-    selectedPortfolios,
-    setSelectedPortfolios
+    selectedProducts,
+    setSelectedProducts,
+    selectedApplications,
+    setSelectedApplications
 }) => {
-    const handlePortfoliosOnChange = (event) => {
-        const newSelectedPortfolios = (event || []).map((item) => item.value);
-        setSelectedPortfolios(newSelectedPortfolios);
+    const handleProductsOnChange = (event) => {
+        const newSelectedProducts = (event || []).map((item) => item.value);
+        setSelectedProducts(newSelectedProducts);
+    };
+
+    const handleApplicationsOnChange = (event) => {
+        const newSelectedApplications = (event || []).map((item) => item.value);
+        setSelectedApplications(newSelectedApplications);
     };
 
     const handleTagsOnChange = (event) => {
@@ -56,14 +64,27 @@ const AnnotationsFilterPanel = ({
             </div>
             <div className="filter-option">
                 <div className="filter-label-wrapper">
-                    <p className="filter-label">Portfolios</p>
+                    <p className="filter-label">Products</p>
                 </div>
                 <div className="filter-option-selection">
                     <Select
                         isMulti
-                        value={selectedPortfolios.map((v) => ({value: v, label: v}))}
-                        options={portfolios}
-                        onChange={handlePortfoliosOnChange}
+                        value={selectedProducts.map((v) => ({value: v, label: v}))}
+                        options={products}
+                        onChange={handleProductsOnChange}
+                    />
+                </div>
+            </div>
+            <div className="filter-option">
+                <div className="filter-label-wrapper">
+                    <p className="filter-label">Applications</p>
+                </div>
+                <div className="filter-option-selection">
+                    <Select
+                        isMulti
+                        value={selectedApplications.map((v) => ({value: v, label: v}))}
+                        options={applications}
+                        onChange={handleApplicationsOnChange}
                     />
                 </div>
             </div>

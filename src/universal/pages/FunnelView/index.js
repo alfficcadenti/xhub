@@ -20,29 +20,29 @@ const initialAnnotations = [{
     incidentNumber: 'INC283726',
     serviceName: 'some service name',
     tags: ['MOT', 'Production'],
-    time: moment('2020-08-07T03:30:00Z').format('YYYY-MM-DD HH:mm'),
-    bucketTime: moment('2020-08-07T03:30:00Z').format('YYYY-MM-DD HH:mm'),
+    time: moment('2020-08-10T03:30:00Z').format('YYYY-MM-DD HH:mm'),
+    bucketTime: moment('2020-08-10T03:30:00Z').format('YYYY-MM-DD HH:mm'),
     index: 0
 }, {
     incidentNumber: 'INC283726',
     serviceName: 'some service name',
     tags: ['Production'],
-    time: moment('2020-08-07T04:35:00Z').format('YYYY-MM-DD HH:mm'),
-    bucketTime: moment('2020-08-07T04:35:00Z').format('YYYY-MM-DD HH:mm'),
+    time: moment('2020-08-10T04:35:00Z').format('YYYY-MM-DD HH:mm'),
+    bucketTime: moment('2020-08-10T04:35:00Z').format('YYYY-MM-DD HH:mm'),
     index: 0
 }, {
     incidentNumber: 'INC283726',
     serviceName: 'some service name',
     tags: ['MOT'],
-    time: moment('2020-08-07T07:40:00Z').format('YYYY-MM-DD HH:mm'),
-    bucketTime: moment('2020-08-07T07:40:00Z').format('YYYY-MM-DD HH:mm'),
+    time: moment('2020-08-10T07:40:00Z').format('YYYY-MM-DD HH:mm'),
+    bucketTime: moment('2020-08-10T07:40:00Z').format('YYYY-MM-DD HH:mm'),
     index: 1
 }, {
     incidentNumber: 'INC283726',
     serviceName: 'some service name',
     tags: ['P1 Blocker'],
-    time: moment('2020-08-07T08:00:00Z').format('YYYY-MM-DD HH:mm'),
-    bucketTime: moment('2020-08-07T08:00:00Z').format('YYYY-MM-DD HH:mm'),
+    time: moment('2020-08-10T11:40:00Z').format('YYYY-MM-DD HH:mm'),
+    bucketTime: moment('2020-08-10T11:40:00Z').format('YYYY-MM-DD HH:mm'),
     index: 1
 }];
 
@@ -72,7 +72,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     // annotations state
     const [enableAlerts, setEnableAlerts] = useState(true);
     const [selectedTags, setSelectedTags] = useState([]);
-    const [selectedPortfolios, setSelectedPortfolios] = useState([]);
+    const [selectedProducts, setSelectedProducts] = useState([]);
+    const [selectedApplications, setSelectedApplications] = useState([]);
     // const [annotations, setAnnotations] = useState([]);
     const [annotations, setAnnotations] = useState(initialAnnotations);
 
@@ -233,8 +234,9 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
                 : '';
             const categoryQuery = selectedTags.length ? `&category=${selectedTags}` : '';
-            const portfolioQuery = selectedPortfolios.length ? `&portfolio=${selectedTags}` : '';
-            fetch(`/v1/pageViews?brand=${selectedBrands}${dateQuery}${categoryQuery}${portfolioQuery}`)
+            const productsQuery = selectedProducts.length ? `&product=${selectedProducts}` : '';
+            const applicationsQuery = selectedApplications.length ? `&applicationName=${selectedApplications}` : '';
+            fetch(`/v1/pageViews?brand=${selectedBrands}${dateQuery}${categoryQuery}${productsQuery}${applicationsQuery}`)
                 .then(checkResponse)
                 .then((fetchedAnnotations) => {
                     const adjustedAnnotations = fetchedAnnotations.map((annotation) => ({
@@ -254,7 +256,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         };
 
         // fetchAnnotations(selectedBrands);
-    }, [start, end, selectedTags, selectedPortfolios]);
+    }, [start, end, selectedTags, selectedProducts, selectedApplications]);
 
     const handleDatetimeChange = ({start: startDateTimeStr, end: endDateTimeStr}, text) => {
         setPendingTimeRange(text || pendingTimeRange);
@@ -320,8 +322,10 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     setEnableAlerts={setEnableAlerts}
                     selectedTags={selectedTags}
                     setSelectedTags={setSelectedTags}
-                    selectedPortfolios={selectedPortfolios}
-                    setSelectedPortfolios={setSelectedPortfolios}
+                    selectedProducts={selectedProducts}
+                    setSelectedProducts={setSelectedProducts}
+                    selectedApplications={selectedApplications}
+                    setSelectedApplications={setSelectedApplications}
                 />
             </div>
             {isSupportedBrand && (
