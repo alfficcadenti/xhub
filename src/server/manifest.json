@@ -82,69 +82,6 @@
           }
         }
       },
-      "apiServiceConfig": {
-        "$filter": "env.EXPEDIA_ENVIRONMENT",
-        "$default": {
-          "hostname": "opxhub-service.us-east-1.int.expedia.com",
-          "protocol": "https:",
-          "routes": {
-            "resiliencyQuestionnaire": {
-              "path": "/api/v1/resiliency/questionnaire",
-              "operation": "POST_api_v1_resiliency_questionnaire",
-              "method": "POST"
-            },
-            "apiService": {
-              "method": "GET",
-              "operation": "GET_api_v1"
-            }
-          }
-        },
-        "int": {
-          "hostname": "opxhub-service.us-east-1.int.expedia.com",
-          "protocol": "https:",
-          "routes": {
-            "resiliencyQuestionnaire": {
-              "path": "/api/v1/resiliency/questionnaire",
-              "operation": "POST_api_v1_resiliency_questionnaire",
-              "method": "POST"
-            },
-            "apiService": {
-              "method": "GET",
-              "operation": "GET_api_v1"
-            }
-          }
-        },
-        "test": {
-          "hostname": "opxhub-service.us-east-1.test.expedia.com",
-          "protocol": "https:",
-          "routes": {
-            "resiliencyQuestionnaire": {
-              "path": "/api/v1/resiliency/questionnaire",
-              "operation": "POST_api_v1_resiliency_questionnaire",
-              "method": "POST"
-            },
-            "apiService": {
-              "method": "GET",
-              "operation": "GET_api_v1"
-            }
-          }
-        },
-        "production": {
-          "hostname": "opxhub-service.us-east-1.test.expedia.com",
-          "protocol": "https:",
-          "routes": {
-            "resiliencyQuestionnaire": {
-              "path": "/api/v1/resiliency/questionnaire",
-              "operation": "POST_api_v1_resiliency_questionnaire",
-              "method": "POST"
-            },
-            "apiService": {
-              "method": "GET",
-              "operation": "GET_api_v1"
-            }
-          }
-        }
-      },
       "userEventsApiServiceConfig": {
         "$filter": "env.EXPEDIA_ENVIRONMENT",
         "$default": {

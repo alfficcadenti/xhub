@@ -21,7 +21,6 @@ import './styles.less';
 import {SVGIcon} from '@homeaway/react-svg';
 import {FILTER__16} from '@homeaway/svg-defs';
 import {Divider} from '@homeaway/react-collapse';
-import {getBrand} from '../../utils';
 
 const statusDefaultValue = ALL_STATUSES_OPTION;
 const priorityDefaultValue = ALL_PRIORITIES_OPTION;
@@ -55,7 +54,7 @@ const navLinks = [
 
 
 const IncidentTrendsDashboard = (props) => {
-    const selectedBrands = props.selectedBrands.map((brand) => getBrand(brand, 'label').incidentBrand);
+    const selectedBrand = props.selectedBrands[0];
 
     const [activeIndex, setActiveIndex] = useState(1);
     const [selectedStatus, setSelectedStatus] = useState(statusDefaultValue);
@@ -90,13 +89,12 @@ const IncidentTrendsDashboard = (props) => {
         setIsApplyClicked,
         'incidents'
     );
-    const selectedBrand = props.selectedBrands[0];
     useQueryParamChange(selectedBrand, props.onBrandChange);
     useSelectedBrand(selectedBrand, props.onBrandChange, props.prevSelectedBrand);
 
     function applyFilters() {
         const matchesPriority = (t) => selectedPriority === priorityDefaultValue || t.priority === selectedPriority;
-        const matchesBrand = (t) => selectedBrands[0] === EG_BRAND || selectedBrands.includes(t.Brand);
+        const matchesBrand = (t) => selectedBrand === EG_BRAND || selectedBrand === t.Brand;
         const matchesStatus = (t) => selectedStatus === statusDefaultValue || t.status === selectedStatus;
         const matchesTag = (t) => selectedTag === tagDefaultValue || t.tag === selectedTag || (Array.isArray(t.tag) && t.tag.includes(selectedTag));
         const matchesRcOwner = (t) => selectedRcOwner === rcOwnerDefaultValue || t['RC Owner'] === selectedRcOwner;
@@ -175,8 +173,8 @@ const IncidentTrendsDashboard = (props) => {
         <Divider heading="More Filters" id="more-filters-divider" className="more-filters-divider" expanded={showMoreFilters}>
             <form className="search-form search-form__more">
                 <FilterDropDown
-                    id="rcOwner-dropdown"
-                    className="filter-dropdown rcOwner-dropdown"
+                    id="rc-owner-dropdown"
+                    className="filter-dropdown rc-owner-dropdown"
                     list={rootCauseOwners}
                     selectedValue={selectedRcOwner}
                     onClickHandler={handleRcOwnerChange}

@@ -1,4 +1,3 @@
-import {apiService} from './apiService';
 import {defects, incidents, prbs} from './dataService';
 import {resiliencyQuestionnaire} from './resiliencyQuestionnaire';
 import questionnaireHistory from './questionnaireHistory';
@@ -15,7 +14,6 @@ import {funnelViewUserEvents} from './funnelView';
 const apiRoutes = [
     login,
     logout,
-    apiService,
     prbs,
     defects,
     incidents,

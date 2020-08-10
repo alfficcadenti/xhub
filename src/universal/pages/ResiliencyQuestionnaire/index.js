@@ -91,7 +91,7 @@ class ResiliencyQuestionnaire extends Component {
     }
 
     loadLoBList = () => {
-        fetch('/api/v1/lob')
+        fetch('https://opxhub-service.us-west-2.test.expedia.com/api/v1/lob')
             .then((resp) => {
                 if (!resp.ok) {
                     this.setState({lobError: 'Error: Lines of Business list not available. Try to refresh'});
@@ -115,7 +115,7 @@ class ResiliencyQuestionnaire extends Component {
     }
 
     loadProductList = (lobName = '') => {
-        const url = `/api/v1/products?lob=${lobName}`;
+        const url = `https://opxhub-service.us-west-2.test.expedia.com/api/v1/products?lob=${lobName}`;
         fetch(url)
             .then((resp) => {
                 if (!resp.ok) {
@@ -140,7 +140,7 @@ class ResiliencyQuestionnaire extends Component {
     };
 
     loadApplicationList = (productName = '') => {
-        const url = `/api/v1/applications?product=${productName}`;
+        const url = `https://opxhub-service.us-west-2.test.expedia.com/api/v1/applications?product=${productName}`;
         fetch(url)
             .then((resp) => {
                 if (!resp.ok) {
