@@ -242,6 +242,53 @@
           }
         }
       },
+      "changeRequestsApiServiceConfig": {
+        "$filter": "env.EXPEDIA_ENVIRONMENT",
+        "$default": {
+          "hostname": "opxhub-change-request-service.us-west-2.test.expedia.com",
+          "protocol": "https:",
+          "routes": {
+            "annotations": {
+              "path": "/annotations/v1.0",
+              "method": "GET",
+              "operation": "GET_annotations_api_v1"
+            }
+          }
+        },
+        "int": {
+          "hostname": "opxhub-change-request-service.us-west-2.test.expedia.com",
+          "protocol": "https:",
+          "routes": {
+            "annotations": {
+              "path": "/annotations/v1.0",
+              "method": "GET",
+              "operation": "GET_annotations_api_v1"
+            }
+          }
+        },
+        "test": {
+          "hostname": "opxhub-change-request-service.us-west-2.test.expedia.com",
+          "protocol": "https:",
+          "routes": {
+            "annotations": {
+              "path": "/annotations/v1.0",
+              "method": "GET",
+              "operation": "GET_annotations_api_v1"
+            }
+          }
+        },
+        "prod": {
+          "hostname": "opxhub-change-request-service.us-west-2.test.expedia.com",
+          "protocol": "https:",
+          "routes": {
+            "annotations": {
+              "path": "/annotations/v1.0",
+              "method": "GET",
+              "operation": "GET_annotations_api_v1"
+            }
+          }
+        }
+      },
       "oauthApi": {
         "$filter": "env.NODE_ENV",
         "$default": {

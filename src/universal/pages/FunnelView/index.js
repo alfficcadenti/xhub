@@ -17,32 +17,32 @@ const TIMEZONE_OFFSET = (new Date()).getTimezoneOffset();
 const TIMEZONE_ABBR = moment.tz.zone(moment.tz.guess()).abbr(TIMEZONE_OFFSET);
 
 const initialAnnotations = [{
-    incidentNumber: 'INC283726',
-    serviceName: 'some service name',
+    number: 'INC283726',
+    serviceName: 'eg-api-client-profile',
     tags: ['MOT', 'Production'],
-    time: moment('2020-08-10T03:30:00Z').format('YYYY-MM-DD HH:mm'),
-    bucketTime: moment('2020-08-10T03:30:00Z').format('YYYY-MM-DD HH:mm'),
+    time: moment('2020-08-11T08:00:00Z').format('YYYY-MM-DD HH:mm'),
+    bucketTime: moment('2020-08-11T08:00:00Z').format('YYYY-MM-DD HH:mm'),
     index: 0
 }, {
-    incidentNumber: 'INC283726',
-    serviceName: 'some service name',
+    number: 'INC283726',
+    serviceName: 'eg-api-client-profile',
     tags: ['Production'],
-    time: moment('2020-08-10T04:35:00Z').format('YYYY-MM-DD HH:mm'),
-    bucketTime: moment('2020-08-10T04:35:00Z').format('YYYY-MM-DD HH:mm'),
+    time: moment('2020-08-11T08:20:00Z').format('YYYY-MM-DD HH:mm'),
+    bucketTime: moment('2020-08-11T08:20:00Z').format('YYYY-MM-DD HH:mm'),
     index: 0
 }, {
-    incidentNumber: 'INC283726',
-    serviceName: 'some service name',
+    number: 'INC283726',
+    serviceName: 'eg-api-client-profile',
     tags: ['MOT'],
-    time: moment('2020-08-10T07:40:00Z').format('YYYY-MM-DD HH:mm'),
-    bucketTime: moment('2020-08-10T07:40:00Z').format('YYYY-MM-DD HH:mm'),
+    time: moment('2020-08-11T08:40:00Z').format('YYYY-MM-DD HH:mm'),
+    bucketTime: moment('2020-08-11T08:40:00Z').format('YYYY-MM-DD HH:mm'),
     index: 1
 }, {
-    incidentNumber: 'INC283726',
-    serviceName: 'some service name',
+    number: 'INC283726',
+    serviceName: 'eg-api-client-profile',
     tags: ['P1 Blocker'],
-    time: moment('2020-08-10T11:40:00Z').format('YYYY-MM-DD HH:mm'),
-    bucketTime: moment('2020-08-10T11:40:00Z').format('YYYY-MM-DD HH:mm'),
+    time: moment('2020-08-11T09:00:00Z').format('YYYY-MM-DD HH:mm'),
+    bucketTime: moment('2020-08-11T09:00:00Z').format('YYYY-MM-DD HH:mm'),
     index: 1
 }];
 
@@ -72,8 +72,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     // annotations state
     const [enableAlerts, setEnableAlerts] = useState(true);
     const [selectedTags, setSelectedTags] = useState([]);
-    const [selectedProducts, setSelectedProducts] = useState([]);
-    const [selectedApplications, setSelectedApplications] = useState([]);
+    const [selectedProducts, setSelectedProducts] = useState(['Lodging Partner Connectivity']);
+    const [selectedApplications, setSelectedApplications] = useState(['eg-api-client-profile']);
     // const [annotations, setAnnotations] = useState([]);
     const [annotations, setAnnotations] = useState(initialAnnotations);
 
@@ -230,21 +230,31 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
     useEffect(() => {
         const fetchAnnotations = () => {
+            // const dateQuery = start && end
+            //     ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
+            //     : '';
             const dateQuery = start && end
-                ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
+                ? `&startDate=2020-07-18T00:00:00Z&endDate=2020-07-21T00:00:00Z`
                 : '';
             const categoryQuery = selectedTags.length ? `&category=${selectedTags}` : '';
-            const productsQuery = selectedProducts.length ? `&product=${selectedProducts}` : '';
-            const applicationsQuery = selectedApplications.length ? `&applicationName=${selectedApplications}` : '';
-            fetch(`/v1/pageViews?brand=${selectedBrands}${dateQuery}${categoryQuery}${productsQuery}${applicationsQuery}`)
+            const productsQuery = selectedProducts.length ? `&product=${selectedProducts[0]}` : '';
+            const applicationsQuery = selectedApplications.length ? `&applicationName=${selectedApplications[0]}` : '';
+            // fetch(`https://opxhub-change-request-service.us-west-2.test.expedia.com/annotations/v1.0?${dateQuery}${categoryQuery}${productsQuery}${applicationsQuery}`)
+            fetch(`/annotations?${dateQuery}${productsQuery}${applicationsQuery}`)
                 .then(checkResponse)
                 .then((fetchedAnnotations) => {
-                    const adjustedAnnotations = fetchedAnnotations.map((annotation) => ({
-                        incidentNumber: annotation.changeNumber,
-                        serviceName: annotation.serviceName,
-                        tags: [annotation.product, annotation.portfolio, annotation.platform],
-                        time: annotation.openedAt,
-                        bucketTime: annotation.openedAt
+                    const adjustedAnnotations = fetchedAnnotations.map(({
+                        number,
+                        serviceName,
+                        productName,
+                        platform,
+                        openedAt
+                    }) => ({
+                        number,
+                        serviceName,
+                        tags: [productName, platform],
+                        time: openedAt,
+                        bucketTime: openedAt
                     }));
 
                     setAnnotations(adjustedAnnotations);
@@ -255,7 +265,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 });
         };
 
-        // fetchAnnotations(selectedBrands);
+        // fetchAnnotations();
     }, [start, end, selectedTags, selectedProducts, selectedApplications]);
 
     const handleDatetimeChange = ({start: startDateTimeStr, end: endDateTimeStr}, text) => {

@@ -4,7 +4,7 @@ import './styles.less';
 import {Checkbox} from '@homeaway/react-form-components';
 import Select from 'react-select';
 
-const tags = ['DEPLOYMENT'].map((a) => ({value: a, label: a}));
+const annotationCategories = ['DEPLOYMENT'].map((a) => ({value: a, label: a}));
 const applications = [];
 const products = [];
 
@@ -57,7 +57,7 @@ const AnnotationsFilterPanel = ({
                     <Select
                         isMulti
                         value={selectedTags.map((v) => ({value: v, label: v}))}
-                        options={tags}
+                        options={annotationCategories}
                         onChange={handleTagsOnChange}
                     />
                 </div>

@@ -6,7 +6,7 @@ import './styles.less';
 
 
 const ReferenceLabel = ({viewBox: {x}, annotation}) => {
-    const {time, incidentNumber, tags, serviceName} = annotation;
+    const {time, number, tags, serviceName} = annotation;
 
     return (
         <foreignObject
@@ -21,7 +21,7 @@ const ReferenceLabel = ({viewBox: {x}, annotation}) => {
                     <p className="timestamp">{moment(time).format('YYYY-MM-DD hh:mm')}</p>
                     <div className="tooltip-wrapper">
                         <span>{serviceName}</span>
-                        <a href={`https://expedia.service-now.com/go.do?id=${incidentNumber}`} target="_blank" className="incident-link">{incidentNumber}</a>
+                        <a href={`https://expedia.service-now.com/go.do?id=${number}`} target="_blank" className="incident-link">{number}</a>
                         <div className="tags">
                             {tags && tags.map((t) => <div key={uuid()} className="tag"><span>{t}</span></div>)}
                         </div>
