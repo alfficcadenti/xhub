@@ -80,7 +80,7 @@ class QuestionForm extends Component {
     }
 
     loadHistory = (applicationId = '') => {
-        const baseUrl = '/api/v1/resiliency/questionnaires?applicationId=';
+        const baseUrl = 'https://opxhub-service.us-west-2.test.expedia.com/api/v1/resiliency/questionnaires?applicationId=';
         fetch(baseUrl + applicationId)
             .then((resp) => {
                 if (!resp.ok) {

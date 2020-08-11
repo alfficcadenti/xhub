@@ -1,7 +1,7 @@
 [
   {
-      "ticket_summary": "Multiple Contact Centers SynApps Degraded",
-      "ticket_number": "INC4624976",
+      "summary": "Multiple Contact Centers SynApps Degraded",
+      "id": "INC4624976",
       "startedAt": "2020-01-02 19:17",
       "openDate": "2019-12-31 00:37",
       "resolvedDate": "2020-01-06 03:47",
@@ -10,8 +10,8 @@
       "priority": "2-High",
       "rootCauseOwner": "ECP-GCO-Proxy-Services",
       "duration": "279840000",
-      "ttd": "1200000",
-      "ttr": "278640000",
+      "timeToDetect": "1200000",
+      "timeToResolve": "278640000",
       "Brand": "BEX - Expedia Group",
       "Division": "Platform & Marketplaces",
       "Status": "Closed",

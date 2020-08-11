@@ -54,7 +54,14 @@ export default [
         link: '/prb',
         text: 'Problem Management',
         component: require('./PRB')
-    }
+    },
+    {
+        category: PHAR,
+        id: 'finder',
+        link: '/finder',
+        text: 'Change Finder',
+        component: require('./Finder')
+    },
     // {
     //     category: PHAR,
     //     id: 'psr',

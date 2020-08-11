@@ -99,7 +99,7 @@ export const useFetchTickets = (
             setLastStartDate(startDate);
             setLastEndDate(endDate);
             // TODO: replace incidents API call with problem management tickets API call
-            fetch('/prbs')
+            fetch('/v1/prbs')
                 .then(checkResponse)
                 .then((data) => {
                     data.sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate));

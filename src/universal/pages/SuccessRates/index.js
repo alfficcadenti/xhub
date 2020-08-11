@@ -93,7 +93,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         setIsRttLoading(true);
         setRttError('');
         const now = moment();
-        const rttStart = moment(now).subtract(31, 'minute').startOf('minute');
+        const rttStart = moment(now).subtract(11, 'minute').startOf('minute');
         const rttEnd = moment(now).subtract(1, 'minute').startOf('minute');
         const dateQuery = `&startDate=${rttStart.utc().format()}&endDate=${rttEnd.utc().format()}`;
 
@@ -107,12 +107,20 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
                 PAGES_LIST.forEach((label, i) => {
                     const currentSuccessRatesData = fetchedSuccessRates[i];
-                    const {successRatePercentagesData} = currentSuccessRatesData[currentSuccessRatesData.length - 1];
 
-                    const currentSuccessRates = successRatePercentagesData.find((item) => mapBrandNames(item.brand) === selectedBrand);
+                    for (let counter = 1; counter <= currentSuccessRatesData.length; counter++) {
+                        const {successRatePercentagesData} = currentSuccessRatesData[currentSuccessRatesData.length - counter];
+                        const currentSuccessRates = successRatePercentagesData.find((item) => mapBrandNames(item.brand) === selectedBrand);
 
-                    if (currentSuccessRates) {
-                        nextRealTimeTotals[label] = (currentSuccessRates.rate || 0).toFixed(2);
+                        if (currentSuccessRates.rate !== null) {
+                            nextRealTimeTotals[label] = currentSuccessRates.rate.toFixed(2);
+                            break;
+                        }
+
+                        if (counter === currentSuccessRatesData.length) {
+                            nextRealTimeTotals[label] = 0;
+                            break;
+                        }
                     }
                 });
 

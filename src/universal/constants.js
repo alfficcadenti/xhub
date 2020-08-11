@@ -25,7 +25,6 @@ export const LOBS = ['Air', 'Activity', 'Car', 'Insurance', 'Lodging'];
 export const CHART_COLORS = ['#3366cc', '#dc3912', '#ff9900', '#109618', '#990099', '#0099c6', '#dd4477', '#66aa00', '#b82e2e', '#316395', '#3366cc', '#994499', '#22aa99', '#aaaa11', '#6633cc', '#e67300', '#8b0707', '#651067', '#329262', '#5574a6', '#3b3eac', '#b77322', '#16d620', '#b91383', '#f4359e', '#9c5935', '#a9c413', '#2a778d', '#668d1c', '#bea413', '#0c5922', '#743411'];
 export const EG_BRAND = 'Expedia Group';
 export const BRANDS_LIST = ['Brand Expedia', 'CheapTickets', 'Egencia', 'Expedia Partner Solutions', 'HomeAway', 'Hotels.com', 'Hotwire', 'Orbitz', 'Travelocity', 'Wotif', 'eBookers'];
-
 export const ALL_DEVICE_TYPES = 'All Devices';
 export const ALL_BOOKING_TYPES = 'ALL Booking Types';
 export const DEVICE_TYPES = [
@@ -47,15 +46,15 @@ export const BRANDS = [
         psrBrand: EG_BRAND,
         funnelBrand: EG_BRAND,
         landingBrand: '',
-        incidentBrand: EG_BRAND,
+        changeRequests: '',
         color: '#1B5CAF'
     },
     {
         label: EXPEDIA_BRAND,
         psrBrand: 'expedia',
         funnelBrand: 'expedia',
+        changeRequests: '',
         landingBrand: EXPEDIA_BRAND,
-        incidentBrand: 'BEX - Expedia Group',
         color: '#1B5CAF'
     },
     {
@@ -63,7 +62,6 @@ export const BRANDS = [
         psrBrand: 'egencia',
         funnelBrand: 'egencia',
         landingBrand: '',
-        incidentBrand: EGENCIA_BRAND,
         color: '#1B5CAF'
     },
     {
@@ -71,7 +69,6 @@ export const BRANDS = [
         psrBrand: 'hcom',
         funnelBrand: 'hcom',
         landingBrand: HOTELS_COM_BRAND,
-        incidentBrand: HOTELS_COM_BRAND,
         color: '#F71414'
     },
     {
@@ -79,7 +76,6 @@ export const BRANDS = [
         psrBrand: 'vrbo',
         funnelBrand: 'vrbo',
         landingBrand: VRBO_BRAND,
-        incidentBrand: VRBO_BRAND,
         color: '#1478F7'
     },
     {
@@ -87,7 +83,6 @@ export const BRANDS = [
         psrBrand: '',
         funnelBrand: '',
         landingBrand: EXPEDIA_PARTNER_SERVICES_BRAND,
-        incidentBrand: '',
         color: '#FFC72C'
     }
 ];

@@ -9,71 +9,31 @@ import {isArray} from 'util';
 import uuid from 'uuid/v1';
 import * as h from '../../components/utils/formatDate';
 import {DATE_FORMAT} from '../../constants';
-import {VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_BRAND, EGENCIA_BRAND} from '../../constants';
+import {VRBO_BRAND} from '../../constants';
+import {divisionToBrand, getListOfUniqueProperties} from '../utils';
 
 export const adjustTicketProperties = (tickets = [], type = 'incident') => {
     return tickets.map((t) => {
         const result = {
             ...t,
+            summary: t.summary,
+            id: t.id,
             'startedAt': t.startedAt ? t.startedAt : t.openDate,
-            'Brand': divisionToBrand(t.brand),
+            'Brand': divisionToBrand(t.brand || ''),
             'Division': t.brand,
             'Status': t.status,
             'RC Owner': t.rootCauseOwner
         };
         if (type === 'incident') {
-            result.ticket_summary = t.incidentSummary;
-            result.ticket_number = t.incidentNumber;
             result.duration = t.duration && t.resolvedDate ? t.duration : null;
-            result.ttr = t.ttr && t.resolvedDate ? t.ttr : null;
+            result.timeToResolve = t.timeToResolve && t.resolvedDate ? t.timeToResolve : null;
         } else if (type === 'defect') {
-            result.ticket_summary = t.defectSummary;
-            result.ticket_number = t.defectNumber;
             result.duration = (t.openDate && t.resolvedDate)
                 ? moment(t.resolvedDate).diff(t.openDate, 'milliseconds')
                 : '';
         }
         return result;
     });
-};
-
-export const divisionToBrand = (division = '') => {
-    switch (division.toUpperCase()) {
-        case 'EGENCIA - CONSOLIDATED':
-        case 'EGENCIA':
-            return EGENCIA_BRAND;
-        case 'VRBO':
-        case 'HOME AWAY':
-            return VRBO_BRAND;
-        case 'HOTELS WORLDWIDE (HWW)':
-        case 'HCOM':
-            return HOTELS_COM_BRAND;
-        default:
-            return EXPEDIA_BRAND;
-    }
-};
-
-export const getUniqueTickets = (tickets, property) => {
-    const group = tickets.reduce((acc, item) => {
-        const id = item[property];
-        if (acc[id]) {
-            acc[id].push(item);
-        } else {
-            acc[id] = [item];
-        }
-        return acc;
-    }, {});
-    const output = [];
-    // eslint-disable-next-line no-unused-vars
-    for (let [key, val] of Object.entries(group)) {
-        const obj = {...val[0]};
-        obj.tag = [val[0].tag];
-        for (let i = 1; i < val.length; ++i) {
-            obj.tag.push(val[i].tag);
-        }
-        output.push(obj);
-    }
-    return output;
 };
 
 const buildTicketLink = (id = '', brand = '', url = '') => {
@@ -87,18 +47,18 @@ const buildTicketLink = (id = '', brand = '', url = '') => {
 export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
     .map((inc) => ({
         id: uuid(),
-        Incident: buildTicketLink(inc.ticket_number, inc.Brand, inc.url) || '-',
+        Incident: buildTicketLink(inc.id, inc.Brand, inc.url) || '-',
         Priority: inc.priority || '-',
         Brand: inc.Brand || '-',
         Division: inc.Division || '-',
         Started: moment.utc(inc.startedAt).local().isValid() ? moment.utc(inc.startedAt).local().format('YYYY-MM-DD HH:mm') : '-',
-        Summary: (inc.ticket_summary || '-').trim(),
+        Summary: (inc.summary || '-').trim(),
         Duration: inc.duration ? h.formatDurationForTable(inc.duration) : '-',
         rawDuration: inc.duration,
-        TTD: inc.ttd ? h.formatDurationForTable(inc.ttd) : '-',
-        rawTTD: inc.ttd,
-        TTR: inc.ttr ? h.formatDurationForTable(inc.ttr) : '-',
-        rawTTR: inc.ttr,
+        TTD: inc.timeToDetect ? h.formatDurationForTable(inc.timeToDetect) : '-',
+        rawTTD: inc.timeToDetect,
+        TTR: inc.timeToResolve ? h.formatDurationForTable(inc.timeToResolve) : '-',
+        rawTTR: inc.timeToResolve,
         'Resolution Notes': inc.rootCause || '-',
         'Root Cause': inc.rootCause || '-',
         'Root Cause Owner': inc.rootCauseOwner || '-',
@@ -128,13 +88,13 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
 
 export const getQualityData = (filteredDefects = []) => filteredDefects
     .map((t) => ({
-        Defect: buildTicketLink(t.ticket_number, t.Brand, t.url) || '-',
+        Defect: buildTicketLink(t.id, t.Brand, t.url) || '-',
         Priority: t.priority || '-',
         Brand: t.Brand || '-',
         Division: t.Division || '-',
         Opened: moment.utc(t.openDate).local().isValid() ? moment(t.openDate).local().format('YYYY-MM-DD HH:mm') : '-',
         Resolved: moment.utc(t.resolvedDate).local().isValid() ? moment(t.resolvedDate).local().format('YYYY-MM-DD HH:mm') : '-',
-        Summary: t.ticket_summary || '-',
+        Summary: t.summary || '-',
         Project: t.project || '-',
         Duration: t.duration && t.resolvedDate ? h.formatDurationForTable(t.duration) : '-',
         rawDuration: t.duration,
@@ -144,38 +104,11 @@ export const getQualityData = (filteredDefects = []) => filteredDefects
     }))
     .sort((a, b) => moment(a.Opened).isBefore(b.Opened));
 
-export const getListOfUniqueProperties = (incidents = [], prop) => {
-    let isArray = false;
-    // extract property value from tickets & determine if it's of type array
-    const values = incidents.map((incident) => {
-        const value = incident[prop];
-        isArray = isArray || Array.isArray(value);
-        return value;
-    });
-    if (!isArray) {
-        // filter empty strings and duplicates
-        return values.filter((value, index, self) => value && self.indexOf(value) === index);
-    }
-    // create a set of values and convert to array
-    const list = Array.from(values
-        .reduce((acc, value) => {
-            if (Array.isArray(value)) {
-                value.forEach((tag) => tag && acc.add(tag));
-            } else if (value) {
-                acc.add(value);
-            }
-            return acc;
-        }, new Set()));
-    // sort array ignoring case
-    list.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
-    return list;
-};
-
 const max = (accumulator, currentValue) => (currentValue > accumulator ? currentValue : accumulator);
 const min = (accumulator, currentValue) => (currentValue < accumulator ? currentValue : accumulator);
 
-export const getMarginDateValues = (incidents = []) => {
-    const dates = incidents.map((incident) => moment(incident.startedAt));
+export const getMarginDateValues = (tickets = []) => {
+    const dates = tickets.map((ticket) => moment(ticket.startedAt));
 
     return dates.length === 0 || !isArray(dates) ?
         [] :
@@ -216,8 +149,8 @@ export const listOfIncByBrands = (inc = []) => getListOfUniqueProperties(inc, 'B
 export const sumPropertyInArrayOfObjects = (incidents = [], propertyToSum) =>
     incidents.reduce((acc, curr) => (acc + Number(curr[propertyToSum])), 0);
 
-export const mttr = (incidents = []) => (sumPropertyInArrayOfObjects(incidents, 'ttr') / incidents.length) || 0;
-const mttd = (incidents = []) => (sumPropertyInArrayOfObjects(incidents, 'ttd') / incidents.length) || 0;
+export const mttr = (incidents = []) => (sumPropertyInArrayOfObjects(incidents, 'timeToResolve') / incidents.length) || 0;
+const mttd = (incidents = []) => (sumPropertyInArrayOfObjects(incidents, 'timeToDetect') / incidents.length) || 0;
 
 export const weeklyMTTRMTTD = (incidents = []) => {
     const data = [];
@@ -298,18 +231,17 @@ const sumBrandLossPerInterval = (data = [], brandName, propertyToSum) => {
 
 const filterIncidentsPerInterval = (data = [], brandName, propertyToSum) => {
     const propertyToSort = 'lostRevenue';
-    const propertyToGetUniqueValues = 'incidentNumber';
     const filteredByImpactedBrand = filterByImpactedBrand(data, brandName);
-    const uniqueIncidentNumbers = getListOfUniqueProperties(filteredByImpactedBrand, propertyToGetUniqueValues);
+    const uniqueIds = getListOfUniqueProperties(filteredByImpactedBrand, 'id');
 
-    const tooltipEntryData = uniqueIncidentNumbers.reduce((prev, incidentNumber) => {
-        const incidentNumberLink = buildTicketLink(incidentNumber);
+    const tooltipEntryData = uniqueIds.reduce((prev, incId) => {
+        const link = buildTicketLink(incId);
         const incidentsFilteredByUniqueNumber = filteredByImpactedBrand
-            .filter((item) => item.incidentNumber === incidentNumber);
+            .filter(({id}) => id === incId);
         const lostRevenue = sumPropertyInArrayOfObjects(incidentsFilteredByUniqueNumber, propertyToSum);
 
         const tooltipEntry = {
-            incidentNumberLink: renderToString(incidentNumberLink),
+            link: renderToString(link),
             lostRevenue
         };
 

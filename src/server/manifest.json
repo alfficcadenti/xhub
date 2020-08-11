@@ -23,8 +23,18 @@
           "timeout": 30000,
           "routes": {
             "prbs": {
-              "path": "/prbs",
+              "path": "/v1/prbs",
               "operation": "GET_prbs",
+              "method": "GET"
+            },
+            "incidents": {
+              "path": "/v1/incidents",
+              "operation": "GET_incidents",
+              "method": "GET"
+            },
+            "defects": {
+              "path": "/v1/defects",
+              "operation": "GET_defects",
               "method": "GET"
             }
           }
@@ -34,8 +44,18 @@
           "protocol": "https:",
           "routes": {
             "prbs": {
-              "path": "/prbs",
+              "path": "/v1/prbs",
               "operation": "GET_prbs",
+              "method": "GET"
+            },
+            "incidents": {
+              "path": "/v1/incidents",
+              "operation": "GET_incidents",
+              "method": "GET"
+            },
+            "defects": {
+              "path": "/v1/defects",
+              "operation": "GET_defects",
               "method": "GET"
             }
           }
@@ -45,72 +65,19 @@
           "protocol": "https:",
           "routes": {
             "prbs": {
-              "path": "/prbs",
+              "path": "/v1/prbs",
               "operation": "GET_prbs",
               "method": "GET"
-            }
-          }
-        }
-      },
-      "apiServiceConfig": {
-        "$filter": "env.EXPEDIA_ENVIRONMENT",
-        "$default": {
-          "hostname": "opxhub-service.us-east-1.int.expedia.com",
-          "protocol": "https:",
-          "routes": {
-            "resiliencyQuestionnaire": {
-              "path": "/api/v1/resiliency/questionnaire",
-              "operation": "POST_api_v1_resiliency_questionnaire",
-              "method": "POST"
             },
-            "apiService": {
-              "method": "GET",
-              "operation": "GET_api_v1"
-            }
-          }
-        },
-        "int": {
-          "hostname": "opxhub-service.us-east-1.int.expedia.com",
-          "protocol": "https:",
-          "routes": {
-            "resiliencyQuestionnaire": {
-              "path": "/api/v1/resiliency/questionnaire",
-              "operation": "POST_api_v1_resiliency_questionnaire",
-              "method": "POST"
+            "incidents": {
+              "path": "/v1/incidents",
+              "operation": "GET_incidents",
+              "method": "GET"
             },
-            "apiService": {
-              "method": "GET",
-              "operation": "GET_api_v1"
-            }
-          }
-        },
-        "test": {
-          "hostname": "opxhub-service.us-east-1.test.expedia.com",
-          "protocol": "https:",
-          "routes": {
-            "resiliencyQuestionnaire": {
-              "path": "/api/v1/resiliency/questionnaire",
-              "operation": "POST_api_v1_resiliency_questionnaire",
-              "method": "POST"
-            },
-            "apiService": {
-              "method": "GET",
-              "operation": "GET_api_v1"
-            }
-          }
-        },
-        "production": {
-          "hostname": "opxhub-service.us-east-1.test.expedia.com",
-          "protocol": "https:",
-          "routes": {
-            "resiliencyQuestionnaire": {
-              "path": "/api/v1/resiliency/questionnaire",
-              "operation": "POST_api_v1_resiliency_questionnaire",
-              "method": "POST"
-            },
-            "apiService": {
-              "method": "GET",
-              "operation": "GET_api_v1"
+            "defects": {
+              "path": "/v1/defects",
+              "operation": "GET_defects",
+              "method": "GET"
             }
           }
         }
@@ -252,6 +219,11 @@
               "path": "/annotations/v1.0",
               "method": "GET",
               "operation": "GET_annotations_api_v1"
+            },
+            "changeDetails": {
+              "path": "/changeDetails/v1.0",
+              "method": "GET",
+              "operation": "GET_change_details_api_v1"
             }
           }
         },
@@ -263,6 +235,11 @@
               "path": "/annotations/v1.0",
               "method": "GET",
               "operation": "GET_annotations_api_v1"
+            },
+            "changeDetails": {
+              "path": "/changeDetails/v1.0",
+              "method": "GET",
+              "operation": "GET_change_details_api_v1"
             }
           }
         },
@@ -274,6 +251,11 @@
               "path": "/annotations/v1.0",
               "method": "GET",
               "operation": "GET_annotations_api_v1"
+            },
+            "changeDetails": {
+              "path": "/changeDetails/v1.0",
+              "method": "GET",
+              "operation": "GET_change_details_api_v1"
             }
           }
         },
@@ -285,6 +267,11 @@
               "path": "/annotations/v1.0",
               "method": "GET",
               "operation": "GET_annotations_api_v1"
+            },
+            "changeDetails": {
+              "path": "/changeDetails/v1.0",
+              "method": "GET",
+              "operation": "GET_change_details_api_v1"
             }
           }
         }
@@ -328,8 +315,7 @@
     "catalyst-status": {
       "plugin": "require:@homeaway/catalyst-status",
       "options": {
-        "routes": [
-          {
+        "routes": [{
             "path": "/isActive",
             "response": {
               "status": 200,
@@ -371,8 +357,7 @@
           "name": "resolveAsset",
           "helper": "require:./templates/helpers/resolveAsset.js"
         },
-        "routes": [
-          {
+        "routes": [{
             "route": "require:./routes/pages/home",
             "component": "require:../universal/components/App/ServerApp.js",
             "template": "templates/welcome.hbs"
@@ -429,6 +414,11 @@
           },
           {
             "route": "require:./routes/pages/impulse",
+            "component": "require:../universal/components/App/ServerApp.js",
+            "template": "templates/welcome.hbs"
+          },
+          {
+            "route": "require:./routes/pages/finder",
             "component": "require:../universal/components/App/ServerApp.js",
             "template": "templates/welcome.hbs"
           }

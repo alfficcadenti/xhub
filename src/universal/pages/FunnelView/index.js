@@ -143,11 +143,17 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                         if (currentPageViews) {
                             const momentTime = moment(time);
                             if (momentTime.isBetween(rttStart, rttEnd, 'minute', '(]')) {
-                                nextRealTimeTotals[label] += (currentPageViews.views || 0).toFixed();
+                                nextRealTimeTotals[label] += currentPageViews.views || 0;
                             }
                         }
                     });
                 });
+
+                // apply toFixed to the final values here after the computation above is done because it returns a string and break the computation if applied above
+                Object.keys(nextRealTimeTotals).forEach((item) => {
+                    nextRealTimeTotals[item] = nextRealTimeTotals[item].toFixed();
+                });
+
                 setRealTimeTotals(nextRealTimeTotals);
             })
             .catch((err) => {

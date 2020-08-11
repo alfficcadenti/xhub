@@ -1,0 +1,109 @@
+@import '../../mixins.less';
+
+.change-requests-container {
+    .filters-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: left;
+        font-weight: 400;
+        vertical-align: middle;
+        width: 100%;
+        border-radius: 5px;
+
+        .date-range {
+            .date-range-filter;
+        }
+
+        .date-range,
+        .Dropdown,
+        .CRB--checkbox,
+        .apply-button {
+            margin: 5px;
+        }
+
+        .CRB--checkbox {
+            align-items: center;
+            display: inline-flex;
+        }
+
+        .priority-dropdown .Dropdown__toggle {
+            .dropdown-button(160px);
+        }
+
+        .brand-dropdown .Dropdown__toggle,
+        .platform-dropdown .Dropdown__toggle,
+        .team-dropdown .Dropdown__toggle {
+            .dropdown-button;
+        }
+
+        .platform-dropdown .Dropdown__toggle {
+            min-width: 130px;
+        }
+
+        .apply-button {
+            height: fit-content;
+        }
+
+        .more-filters-btn {
+            margin-left: @spacing-1x;
+            min-height: @spacing-7x;
+            padding: 0 @spacing-2x;
+            font-size: .75rem;
+            line-height: 1rem;
+            box-shadow: none;
+            border-radius: @spacing-1x @spacing-1x 0 0;
+
+            &.active {
+                background: @color-bg-accent;
+            }
+        }
+    }
+
+    .Datatable__header {
+        background: #e3f4fc;
+        border-top: 1px #908f8f solid;
+        border-bottom: 1px #908f8f solid;
+        color: #292929;
+        font-size: .875rem;
+    }
+
+    .more-filters-divider {
+        margin: -4px 0 4px 5px;
+
+        .Divider__heading {
+            display: none;
+        }
+
+        .Divider__body {
+            padding: @spacing-2x;
+            background: @color-bg-accent;
+            border-radius: 0 0 @spacing-1x @spacing-1x;
+
+            .teams-dropdown .Dropdown__toggle {
+                .dropdown-button;
+            }
+        }
+    }
+
+    .expandable-row-wrapper {
+        display: inline-block;
+        background: #f7f7f8;
+
+        .expandable-row {
+            display: flex;
+            justify-content: left;
+            align-items: left;
+            margin: @spacing-2x;
+
+            .expandable-row-header {
+                font-weight: 600;
+                padding-right: @spacing-3x;
+            }
+
+            .expandable-row-section {
+                max-width: 500px;
+                padding-right: @spacing-3x;
+            }
+        }
+    }
+}
