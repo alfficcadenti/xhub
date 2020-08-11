@@ -227,22 +227,6 @@
             }
           }
         },
-        "int": {
-          "hostname": "opxhub-change-request-service.us-west-2.test.expedia.com",
-          "protocol": "https:",
-          "routes": {
-            "annotations": {
-              "path": "/annotations/v1.0",
-              "method": "GET",
-              "operation": "GET_annotations_api_v1"
-            },
-            "changeDetails": {
-              "path": "/changeDetails/v1.0",
-              "method": "GET",
-              "operation": "GET_change_details_api_v1"
-            }
-          }
-        },
         "test": {
           "hostname": "opxhub-change-request-service.us-west-2.test.expedia.com",
           "protocol": "https:",
@@ -260,7 +244,7 @@
           }
         },
         "prod": {
-          "hostname": "opxhub-change-request-service.us-west-2.test.expedia.com",
+          "hostname": "opxhub-change-request-service.us-east-1.prod.expedia.com",
           "protocol": "https:",
           "routes": {
             "annotations": {
