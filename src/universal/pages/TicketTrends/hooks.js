@@ -44,10 +44,10 @@ export const useFetchTickets = (
             fetch(`/v1/${url}?startDate=${startDate}&endDate=${endDate}`)
                 .then(checkResponse)
                 .then((tickets) => {
-                    tickets.sort((a, b) => new Date(b.startedAt) - new Date(a.startedAt));
+                    tickets.sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
                     // incidents
                     const isIncidents = url === 'incidents';
-                    const uniqueTickets = getUniqueByProperty(tickets, isIncidents ? 'incidentNumber' : 'defectNumber');
+                    const uniqueTickets = getUniqueByProperty(tickets, 'id');
                     const adjustedUniqueTickets = adjustTicketProperties(uniqueTickets, isIncidents ? 'incident' : 'defect');
                     const ticketPriorities = getListOfUniqueProperties(adjustedUniqueTickets, 'priority').sort();
                     const ticketStatuses = getListOfUniqueProperties(adjustedUniqueTickets, 'Status');

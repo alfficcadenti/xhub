@@ -40,7 +40,7 @@ export const useFetchCRs = (
             fetch(`/change-requests-api/v1/changeDetails?startDate=${startDate}&endDate=${endDate}`)
                 .then(checkResponse)
                 .then((data) => {
-                    data.sort((a, b) => new Date(b.startedAt) - new Date(a.startedAt));
+                    data.sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
                     const uniqueCRs = getUniqueByProperty(data, 'number');
                     const adjustedUniqueCRs = adjustCRsProperties(uniqueCRs);
                     const dataPriorities = getListOfUniqueProperties(adjustedUniqueCRs, 'priority').sort();

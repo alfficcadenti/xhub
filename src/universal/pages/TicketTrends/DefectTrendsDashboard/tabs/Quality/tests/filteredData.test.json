@@ -2,7 +2,7 @@
     {
         "summary": "Tick box on cancellation LP fails to render on iOS",
         "id": "LASER-358",
-        "startedAt": "",
+        "startDate": "",
         "openDate": "2020-03-21 12:38",
         "resolvedDate": "2020-03-22 09:02",
         "rootCause": "",
