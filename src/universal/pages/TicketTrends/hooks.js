@@ -41,7 +41,7 @@ export const useFetchTickets = (
             setLastStartDate(startDate);
             setLastEndDate(endDate);
 
-            fetch(`/v1/${url}?startDate=${startDate}&endDate=${endDate}`)
+            fetch(`/v1/${url}?fromDate=${startDate}&toDate=${endDate}`)
                 .then(checkResponse)
                 .then((data) => {
                     const isIncidents = url === 'incidents';
