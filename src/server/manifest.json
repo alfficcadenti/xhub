@@ -209,6 +209,42 @@
           }
         }
       },
+      "changeRequestsApiServiceConfig": {
+        "$filter": "env.EXPEDIA_ENVIRONMENT",
+        "$default": {
+          "hostname": "opxhub-change-request-service.us-west-2.test.expedia.com",
+          "protocol": "https:",
+          "routes": {
+            "changeDetails": {
+              "path": "/changeDetails/v1.0",
+              "method": "GET",
+              "operation": "GET_change_details_api_v1"
+            }
+          }
+        },
+        "test": {
+          "hostname": "opxhub-change-request-service.us-west-2.test.expedia.com",
+          "protocol": "https:",
+          "routes": {
+            "changeDetails": {
+              "path": "/changeDetails/v1.0",
+              "method": "GET",
+              "operation": "GET_change_details_api_v1"
+            }
+          }
+        },
+        "prod": {
+          "hostname": "opxhub-change-request-service.us-east-1.prod.expedia.com",
+          "protocol": "https:",
+          "routes": {
+            "changeDetails": {
+              "path": "/changeDetails/v1.0",
+              "method": "GET",
+              "operation": "GET_change_details_api_v1"
+            }
+          }
+        }
+      },
       "oauthApi": {
         "$filter": "env.NODE_ENV",
         "$default": {
@@ -248,8 +284,7 @@
     "catalyst-status": {
       "plugin": "require:@homeaway/catalyst-status",
       "options": {
-        "routes": [
-          {
+        "routes": [{
             "path": "/isActive",
             "response": {
               "status": 200,
@@ -291,8 +326,7 @@
           "name": "resolveAsset",
           "helper": "require:./templates/helpers/resolveAsset.js"
         },
-        "routes": [
-          {
+        "routes": [{
             "route": "require:./routes/pages/home",
             "component": "require:../universal/components/App/ServerApp.js",
             "template": "templates/welcome.hbs"
@@ -349,6 +383,11 @@
           },
           {
             "route": "require:./routes/pages/impulse",
+            "component": "require:../universal/components/App/ServerApp.js",
+            "template": "templates/welcome.hbs"
+          },
+          {
+            "route": "require:./routes/pages/finder",
             "component": "require:../universal/components/App/ServerApp.js",
             "template": "templates/welcome.hbs"
           }

@@ -7,6 +7,7 @@ import {login, logout} from './oauth';
 import {availabilityS3} from './availabilityS3';
 import {bookingsUserEvents} from './bookingsUserEvents';
 import {csrUserEvents} from './csrUserEvents';
+import {changeRequests} from './changeRequests';
 import {pageViewsUserEvents} from './pageViews';
 import {impulseBookingDataService} from './impulseService';
 import {funnelViewUserEvents} from './funnelView';
@@ -24,6 +25,7 @@ const apiRoutes = [
     grafanaAlerts,
     bookingsUserEvents,
     csrUserEvents,
+    changeRequests,
     pageViewsUserEvents,
     impulseBookingDataService,
     funnelViewUserEvents

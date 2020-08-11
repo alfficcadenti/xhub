@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-import {adjustTicketProperties, getListOfUniqueProperties, getUniqueTickets} from './incidentsHelper';
+import {adjustTicketProperties} from './incidentsHelper';
 import {
     ALL_PRIORITIES_OPTION,
     ALL_STATUSES_OPTION,
@@ -8,7 +8,7 @@ import {
     ALL_TAGS
 } from '../../constants';
 import {useIsMount} from '../hooks';
-import {checkResponse} from '../utils';
+import {checkResponse, getListOfUniqueProperties, getUniqueByProperty} from '../utils';
 
 
 export const useFetchTickets = (
@@ -47,8 +47,7 @@ export const useFetchTickets = (
                     tickets.sort((a, b) => new Date(b.startedAt) - new Date(a.startedAt));
                     // incidents
                     const isIncidents = url === 'incidents';
-                    const uniqueTickets = getUniqueTickets(tickets);
-
+                    const uniqueTickets = getUniqueByProperty(tickets, isIncidents ? 'incidentNumber' : 'defectNumber');
                     const adjustedUniqueTickets = adjustTicketProperties(uniqueTickets, isIncidents ? 'incident' : 'defect');
                     const ticketPriorities = getListOfUniqueProperties(adjustedUniqueTickets, 'priority').sort();
                     const ticketStatuses = getListOfUniqueProperties(adjustedUniqueTickets, 'Status');

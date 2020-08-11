@@ -5,9 +5,8 @@ import LoadingContainer from '../LoadingContainer';
 import {DATE_FORMAT} from '../../constants';
 import moment from 'moment';
 import './styles.less';
-import {divisionToBrand} from '../../pages/TicketTrends/incidentsHelper';
 import {EG_BRAND} from '../../constants';
-import {checkResponse} from '../../pages/utils';
+import {checkResponse, divisionToBrand} from '../../pages/utils';
 
 const startDate = moment().subtract(2, 'months').format(DATE_FORMAT);
 const endDate = moment().format(DATE_FORMAT);
