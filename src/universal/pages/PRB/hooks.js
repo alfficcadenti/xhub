@@ -3,13 +3,13 @@ import React, {useState, useEffect} from 'react';
 import moment from 'moment';
 import DataTable from '../../components/DataTable';
 import {useIsMount} from '../hooks';
-import {removeEmptyStringsFromArray, distinct, checkResponse} from '../utils';
+import {isNotEmptyString, isNotDuplicate, checkResponse, sortArrayByMostRecentDate} from '../utils';
 
 
 const getListOfUniqueProperties = (tickets = [], prop) => tickets
     .map((ticket) => ticket[prop])
-    .filter(distinct)
-    .filter(removeEmptyStringsFromArray);
+    .filter(isNotDuplicate)
+    .filter(isNotEmptyString);
 
 const mapLinkedIssues = (i) => {
     const linkedIssues = (i.linkedIssues || []).map((l) => ({
@@ -102,14 +102,14 @@ export const useFetchTickets = (
             fetch('/v1/prbs')
                 .then(checkResponse)
                 .then((data) => {
-                    data.sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate));
+                    const tickets = sortArrayByMostRecentDate(data, 'createdDate');
                     // TODO: temporarily ignore data and replace with mockData
-                    setAllTickets(data.map(mapTickets));
-                    setCurrentOrgs(getListOfUniqueProperties(data, 'owningOrganization'));
-                    setCurrentRcOwners(getListOfUniqueProperties(data, 'rootCauseOwner'));
-                    setCurrentPriorities(getListOfUniqueProperties(data, 'priority'));
-                    setCurrentStatuses(getListOfUniqueProperties(data, 'status'));
-                    setCurrentRcCategories(getListOfUniqueProperties(data, 'rootCauseCategory'));
+                    setAllTickets(tickets.map(mapTickets));
+                    setCurrentOrgs(getListOfUniqueProperties(tickets, 'owningOrganization'));
+                    setCurrentRcOwners(getListOfUniqueProperties(tickets, 'rootCauseOwner'));
+                    setCurrentPriorities(getListOfUniqueProperties(tickets, 'priority'));
+                    setCurrentStatuses(getListOfUniqueProperties(tickets, 'status'));
+                    setCurrentRcCategories(getListOfUniqueProperties(tickets, 'rootCauseCategory'));
                     setIsLoading(false);
                 })
                 .catch((err) => {

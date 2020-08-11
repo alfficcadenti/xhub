@@ -1,10 +1,10 @@
 /* eslint-disable complexity */
-import {distinct} from '../utils';
+import {isNotDuplicate} from '../utils';
 
 
-const listOfBrands = (data = []) => (data.map((x) => x.brand).filter(distinct));
+const listOfBrands = (data = []) => (data.map((x) => x.brand).filter(isNotDuplicate));
 
-const listOfLOB = (data = []) => (data.map((x) => x.lineofbusiness).filter(distinct));
+const listOfLOB = (data = []) => (data.map((x) => x.lineofbusiness).filter(isNotDuplicate));
 
 const psrValuesByBrand = (data = [], brand) => (data.filter((x) => x.brand === brand));
 

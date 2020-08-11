@@ -8,7 +8,7 @@ import {
     ALL_TAGS
 } from '../../constants';
 import {useIsMount} from '../hooks';
-import {checkResponse, getListOfUniqueProperties, getUniqueByProperty} from '../utils';
+import {checkResponse, getListOfUniqueProperties, getUniqueByProperty, sortArrayByMostRecentDate} from '../utils';
 
 
 export const useFetchTickets = (
@@ -43,10 +43,11 @@ export const useFetchTickets = (
 
             fetch(`/v1/${url}?startDate=${startDate}&endDate=${endDate}`)
                 .then(checkResponse)
-                .then((tickets) => {
-                    tickets.sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
-                    // incidents
+                .then((data) => {
                     const isIncidents = url === 'incidents';
+                    const tickets = (isIncidents)
+                        ? sortArrayByMostRecentDate(data, 'startDate')
+                        : sortArrayByMostRecentDate(data, 'openDate');
                     const uniqueTickets = getUniqueByProperty(tickets, 'id');
                     const adjustedUniqueTickets = adjustTicketProperties(uniqueTickets, isIncidents ? 'incident' : 'defect');
                     const ticketPriorities = getListOfUniqueProperties(adjustedUniqueTickets, 'priority').sort();
