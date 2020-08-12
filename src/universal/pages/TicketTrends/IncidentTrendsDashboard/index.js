@@ -14,7 +14,7 @@ import {
     ALL_RC_OWNERS_OPTION
 } from '../../../constants';
 import {Incidents, Overview, Top5, FinancialImpact} from './tabs/index';
-import {useFetchTickets} from '../hooks';
+import {useFetchTickets, useRootCauseOwner} from '../hooks';
 import {EG_BRAND} from '../../../constants';
 import {useSelectedBrand, useQueryParamChange} from '../../hooks';
 import './styles.less';
@@ -79,8 +79,7 @@ const IncidentTrendsDashboard = (props) => {
         allIncidents,
         incidentsPriorities,
         incidentsStatuses,
-        incidentsTags,
-        rootCauseOwners
+        incidentsTags
     ] = useFetchTickets(
         isApplyClicked,
         startDate,
@@ -89,6 +88,7 @@ const IncidentTrendsDashboard = (props) => {
         setIsApplyClicked,
         'incidents'
     );
+    const rootCauseOwners = useRootCauseOwner(selectedBrand, allUniqueIncidents);
     useQueryParamChange(selectedBrand, props.onBrandChange);
     useSelectedBrand(selectedBrand, props.onBrandChange, props.prevSelectedBrand);
 

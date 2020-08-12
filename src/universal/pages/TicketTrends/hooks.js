@@ -4,8 +4,9 @@ import {
     ALL_PRIORITIES_OPTION,
     ALL_STATUSES_OPTION,
     ALL_TAGS_OPTION,
-    ALL_RC_OWNERS_OPTION,
-    ALL_TAGS
+    ALL_TAGS,
+    EG_BRAND,
+    ALL_RC_OWNERS_OPTION
 } from '../../constants';
 import {useIsMount} from '../hooks';
 import {checkResponse, getListOfUniqueProperties, getUniqueByProperty, sortArrayByMostRecentDate} from '../utils';
@@ -31,7 +32,6 @@ export const useFetchTickets = (
     const [priorities, setPriorities] = useState([]);
     const [statuses, setStatuses] = useState([]);
     const [tags, setTags] = useState([]);
-    const [rootCauseOwners, setRootCauseOwners] = useState([]);
 
     const isMount = useIsMount();
 
@@ -52,12 +52,10 @@ export const useFetchTickets = (
                     const adjustedUniqueTickets = adjustTicketProperties(uniqueTickets, isIncidents ? 'incident' : 'defect');
                     const ticketPriorities = getListOfUniqueProperties(adjustedUniqueTickets, 'priority').sort();
                     const ticketStatuses = getListOfUniqueProperties(adjustedUniqueTickets, 'Status');
-                    const rcOwners = getListOfUniqueProperties(adjustedUniqueTickets, 'rootCauseOwner');
 
                     setPriorities([ALL_PRIORITIES_OPTION, ...ticketPriorities]);
                     setStatuses([ALL_STATUSES_OPTION, ...ticketStatuses]);
                     setTags([ALL_TAGS_OPTION, ...ALL_TAGS]);
-                    setRootCauseOwners([ALL_RC_OWNERS_OPTION, ...rcOwners]);
 
                     setAllUniqueTickets(adjustedUniqueTickets);
                     setAllTickets(tickets);
@@ -94,7 +92,19 @@ export const useFetchTickets = (
         allTickets,
         priorities,
         statuses,
-        tags,
-        rootCauseOwners
+        tags
     ];
+};
+
+export const useRootCauseOwner = (selectedBrand, allUniqueIncidents) => {
+    const [rootCauseOwners, setRootCauseOwners] = useState([]);
+
+    useEffect(() => {
+        const filteredIncidents = allUniqueIncidents.filter((item) => selectedBrand === EG_BRAND || selectedBrand === item.Brand);
+        const rcOwners = getListOfUniqueProperties(filteredIncidents, 'rootCauseOwner');
+
+        setRootCauseOwners([ALL_RC_OWNERS_OPTION, ...rcOwners]);
+    }, [selectedBrand, allUniqueIncidents]);
+
+    return rootCauseOwners;
 };
