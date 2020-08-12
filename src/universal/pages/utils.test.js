@@ -29,6 +29,16 @@ describe('divisionToBrand', () => {
         const result = divisionToBrand('random text');
         expect(result).to.be.eql(EXPEDIA_BRAND);
     });
+
+    it('returns Expedia Group if division is empty', () => {
+        const result = divisionToBrand();
+        expect(result).to.be.eql(EXPEDIA_BRAND);
+    });
+
+    it('returns Expedia Group if division is null', () => {
+        const result = divisionToBrand(null);
+        expect(result).to.be.eql(EXPEDIA_BRAND);
+    });
 });
 
 describe('getListOfUniqueProperties', () => {

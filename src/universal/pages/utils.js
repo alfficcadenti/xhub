@@ -41,7 +41,7 @@ export const sortArrayByMostRecentDate = (arr, prop) => arr.sort((a, b) => new D
 
 // eslint-disable-next-line complexity
 export const divisionToBrand = (division = '') => {
-    switch (division.toUpperCase()) {
+    switch (division && division.toUpperCase()) {
         case 'EGENCIA - CONSOLIDATED':
         case 'EGENCIA':
             return EGENCIA_BRAND;
