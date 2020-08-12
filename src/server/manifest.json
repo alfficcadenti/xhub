@@ -224,6 +224,11 @@
               "path": "/changeDetails/v1.0",
               "method": "GET",
               "operation": "GET_change_details_api_v1"
+            },
+            "productMapping": {
+              "path": "/mappings/products/v1.0",
+              "method": "GET",
+              "operation": "GET_product_mapping_api_v1"
             }
           }
         },
@@ -240,6 +245,11 @@
               "path": "/changeDetails/v1.0",
               "method": "GET",
               "operation": "GET_change_details_api_v1"
+            },
+            "productMapping": {
+              "path": "/mappings/products/v1.0",
+              "method": "GET",
+              "operation": "GET_product_mapping_api_v1"
             }
           }
         },
@@ -256,6 +266,11 @@
               "path": "/changeDetails/v1.0",
               "method": "GET",
               "operation": "GET_change_details_api_v1"
+            },
+            "productMapping": {
+              "path": "/mappings/products/v1.0",
+              "method": "GET",
+              "operation": "GET_product_mapping_api_v1"
             }
           }
         }

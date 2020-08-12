@@ -9,42 +9,11 @@ import AnnotationsFilterPanel from '../../components/AnnotationsFilterPanel';
 import {useQueryParamChange, useSelectedBrand, useZoomAndSynced} from '../hooks';
 import {EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../../constants';
 import {checkResponse, getBrand} from '../utils';
-import {pageViewEndpoint} from './mockData';
 import './styles.less';
 
 
 const TIMEZONE_OFFSET = (new Date()).getTimezoneOffset();
 const TIMEZONE_ABBR = moment.tz.zone(moment.tz.guess()).abbr(TIMEZONE_OFFSET);
-
-const initialAnnotations = [{
-    number: 'INC283726',
-    serviceName: 'eg-api-client-profile',
-    tags: ['MOT', 'Production'],
-    time: moment('2020-08-11T08:00:00Z').format('YYYY-MM-DD HH:mm'),
-    bucketTime: moment('2020-08-11T08:00:00Z').format('YYYY-MM-DD HH:mm'),
-    index: 0
-}, {
-    number: 'INC283726',
-    serviceName: 'eg-api-client-profile',
-    tags: ['Production'],
-    time: moment('2020-08-11T08:20:00Z').format('YYYY-MM-DD HH:mm'),
-    bucketTime: moment('2020-08-11T08:20:00Z').format('YYYY-MM-DD HH:mm'),
-    index: 0
-}, {
-    number: 'INC283726',
-    serviceName: 'eg-api-client-profile',
-    tags: ['MOT'],
-    time: moment('2020-08-11T08:40:00Z').format('YYYY-MM-DD HH:mm'),
-    bucketTime: moment('2020-08-11T08:40:00Z').format('YYYY-MM-DD HH:mm'),
-    index: 1
-}, {
-    number: 'INC283726',
-    serviceName: 'eg-api-client-profile',
-    tags: ['P1 Blocker'],
-    time: moment('2020-08-11T09:00:00Z').format('YYYY-MM-DD HH:mm'),
-    bucketTime: moment('2020-08-11T09:00:00Z').format('YYYY-MM-DD HH:mm'),
-    index: 1
-}];
 
 
 const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
@@ -70,12 +39,11 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [isSupportedBrand, setIsSupportedBrand] = useState(false);
 
     // annotations state
-    const [enableAlerts, setEnableAlerts] = useState(true);
-    const [selectedTags, setSelectedTags] = useState([]);
-    const [selectedProducts, setSelectedProducts] = useState(['Lodging Partner Connectivity']);
-    const [selectedApplications, setSelectedApplications] = useState(['eg-api-client-profile']);
-    // const [annotations, setAnnotations] = useState([]);
-    const [annotations, setAnnotations] = useState(initialAnnotations);
+    const [enableAlerts, setEnableAlerts] = useState(false);
+    const [selectedCategories, setSelectedCategories] = useState([]);
+    const [selectedProducts, setSelectedProducts] = useState([]);
+    const [selectedApplications, setSelectedApplications] = useState([]);
+    const [annotations, setAnnotations] = useState([]);
 
     useQueryParamChange(selectedBrands[0], onBrandChange);
     useSelectedBrand(selectedBrands[0], onBrandChange, prevSelectedBrand);
@@ -175,42 +143,41 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
             : '';
         fetch(`/v1/pageViews?brand=${funnelBrand}&timeInterval=1${dateQuery}`)
-            .then(checkResponse);
-        // .then((fetchedPageviews) => {
-        //     if (!fetchedPageviews || !fetchedPageviews.length) {
-        //         setError('No data found. Try refreshing the page or select another brand.');
-        //         return;
-        //     }
-        const widgetObjects = PAGES_LIST.map(({name, label}) => {
-            const aggregatedData = [];
-            pageViewEndpoint.forEach(({time, pageViewsData}) => {
-                const currentPageViews = pageViewsData.find((item) => item.page === name);
-                if (currentPageViews) {
-                    const momentTime = moment(time);
-                    if (momentTime.isBetween(start, end, 'minutes', '[]')) {
-                        aggregatedData.push({
-                            label: `${momentTime.format('YYYY-MM-DD HH:mm')} ${TIMEZONE_ABBR}`,
-                            time: momentTime.format('YYYY-MM-DD HH:mm'),
-                            momentTime,
-                            value: currentPageViews.views
-                        });
-                    }
+            .then(checkResponse)
+            .then((fetchedPageviews) => {
+                if (!fetchedPageviews || !fetchedPageviews.length) {
+                    setError('No data found. Try refreshing the page or select another brand.');
+                    return;
                 }
-            });
-            return {pageName: label, aggregatedData, pageBrand};
-        });
-        setWidgets(widgetObjects);
-        // })
-        // .catch((err) => {
-        //     let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
-        //         ? 'Query has timed out. Try refreshing the page. If the problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.'
-        //         : 'An unexpected error has occurred. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.';
-        //     setError(errorMessage);
-        //     // eslint-disable-next-line no-console
-        //     console.error(err);
-        // })
-        // .finally(() => setIsLoading(false));
-        setIsLoading(false);
+                const widgetObjects = PAGES_LIST.map(({name, label}) => {
+                    const aggregatedData = [];
+                    fetchedPageviews.forEach(({time, pageViewsData}) => {
+                        const currentPageViews = pageViewsData.find((item) => item.page === name);
+                        if (currentPageViews) {
+                            const momentTime = moment(time);
+                            if (momentTime.isBetween(start, end, 'minutes', '[]')) {
+                                aggregatedData.push({
+                                    label: `${momentTime.format('YYYY-MM-DD HH:mm')} ${TIMEZONE_ABBR}`,
+                                    time: momentTime.format('YYYY-MM-DD HH:mm'),
+                                    momentTime,
+                                    value: currentPageViews.views
+                                });
+                            }
+                        }
+                    });
+                    return {pageName: label, aggregatedData, pageBrand};
+                });
+                setWidgets(widgetObjects);
+            })
+            .catch((err) => {
+                let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
+                    ? 'Query has timed out. Try refreshing the page. If the problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.'
+                    : 'An unexpected error has occurred. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.';
+                setError(errorMessage);
+                // eslint-disable-next-line no-console
+                console.error(err);
+            })
+            .finally(() => setIsLoading(false));
     };
 
     useEffect(() => {
@@ -226,7 +193,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             setError(null);
             setIsFormDisabled(false);
             fetchRealTimeData(selectedBrands);
-            // rttRef.current = setInterval(fetchRealTimeData.bind(null, selectedBrands), 60000); // refresh every minute
+            rttRef.current = setInterval(fetchRealTimeData.bind(null, selectedBrands), 60000); // refresh every minute
             fetchPageViewsData(selectedBrands);
         }
         return function cleanup() {
@@ -236,17 +203,14 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
     useEffect(() => {
         const fetchAnnotations = () => {
-            // const dateQuery = start && end
-            //     ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
-            //     : '';
             const dateQuery = start && end
-                ? `&startDate=2020-07-18T00:00:00Z&endDate=2020-07-21T00:00:00Z`
+                ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
                 : '';
-            const categoryQuery = selectedTags.length ? `&category=${selectedTags}` : '';
-            const productsQuery = selectedProducts.length ? `&product=${selectedProducts[0]}` : '';
-            const applicationsQuery = selectedApplications.length ? `&applicationName=${selectedApplications[0]}` : '';
-            // fetch(`https://opxhub-change-request-service.us-west-2.test.expedia.com/annotations/v1.0?${dateQuery}${categoryQuery}${productsQuery}${applicationsQuery}`)
-            fetch(`/annotations?${dateQuery}${productsQuery}${applicationsQuery}`)
+            const categoryQuery = selectedCategories.length ? `&category=${selectedCategories}` : '';
+            const productsQuery = selectedProducts.length ? `&product=${selectedProducts.join(',')}` : '';
+            const applicationsQuery = selectedApplications.length ? `&applicationName=${selectedApplications.join(',')}` : '';
+
+            fetch(`/annotations?${dateQuery}${productsQuery}${applicationsQuery}${categoryQuery}`)
                 .then(checkResponse)
                 .then((fetchedAnnotations) => {
                     const adjustedAnnotations = fetchedAnnotations.map(({
@@ -271,8 +235,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 });
         };
 
-        // fetchAnnotations();
-    }, [start, end, selectedTags, selectedProducts, selectedApplications]);
+        fetchAnnotations();
+    }, [start, end, selectedCategories, selectedProducts, selectedApplications]);
 
     const handleDatetimeChange = ({start: startDateTimeStr, end: endDateTimeStr}, text) => {
         setPendingTimeRange(text || pendingTimeRange);
@@ -336,8 +300,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 <AnnotationsFilterPanel
                     enableAlerts={enableAlerts}
                     setEnableAlerts={setEnableAlerts}
-                    selectedTags={selectedTags}
-                    setSelectedTags={setSelectedTags}
+                    selectedCategories={selectedCategories}
+                    setSelectedCategories={setSelectedCategories}
                     selectedProducts={selectedProducts}
                     setSelectedProducts={setSelectedProducts}
                     selectedApplications={selectedApplications}

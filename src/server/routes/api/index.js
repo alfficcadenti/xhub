@@ -12,6 +12,7 @@ import {pageViewsUserEvents} from './pageViews';
 import {impulseBookingDataService} from './impulseService';
 import {funnelViewUserEvents} from './funnelView';
 import {annotations} from './annotations';
+import {productMapping} from './productMapping';
 
 const apiRoutes = [
     login,
@@ -30,7 +31,8 @@ const apiRoutes = [
     pageViewsUserEvents,
     impulseBookingDataService,
     funnelViewUserEvents,
-    annotations
+    annotations,
+    productMapping
 ];
 
 export default apiRoutes;

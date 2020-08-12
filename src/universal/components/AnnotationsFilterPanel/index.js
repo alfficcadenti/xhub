@@ -1,26 +1,57 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import './styles.less';
 import {Checkbox} from '@homeaway/react-form-components';
 import Select from 'react-select';
+import {checkResponse} from '../../pages/utils';
 
-const annotationCategories = ['DEPLOYMENT'].map((a) => ({value: a, label: a}));
-const applications = [];
-const products = [];
+const annotationCategories = ['Application Software'].map((a) => ({value: a, label: a}));
 
 const AnnotationsFilterPanel = ({
     enableAlerts,
     setEnableAlerts,
-    selectedTags,
-    setSelectedTags,
+    selectedCategories,
+    setSelectedCategories,
     selectedProducts,
     setSelectedProducts,
     selectedApplications,
     setSelectedApplications
 }) => {
+    const [products, setProducts] = useState([]);
+    const [productMapping, setProductMapping] = useState([]);
+    const [applications, setApplications] = useState([]);
+
+    useEffect(() => {
+        const fetchProductMapping = () => {
+            fetch('/productMapping')
+                .then(checkResponse)
+                .then((mapping) => {
+                    setProductMapping(mapping);
+                    const adjustedProducts = mapping.map((item) => ({value: item.productName, label: item.productName}));
+                    setProducts(adjustedProducts);
+                })
+                .catch((err) => {
+                    // eslint-disable-next-line no-console
+                    console.error(err);
+                });
+        };
+
+        fetchProductMapping();
+    }, []);
+
     const handleProductsOnChange = (event) => {
         const newSelectedProducts = (event || []).map((item) => item.value);
         setSelectedProducts(newSelectedProducts);
+
+        const adjustedApplications = newSelectedProducts.reduce((acc, currrent) => {
+            const currentApplicationNames = productMapping.find((item) => item.productName === currrent).applicationNames;
+
+            return [
+                ...acc,
+                ...currentApplicationNames
+            ];
+        }, []);
+        setApplications(adjustedApplications.map((a) => ({value: a, label: a})));
     };
 
     const handleApplicationsOnChange = (event) => {
@@ -28,9 +59,9 @@ const AnnotationsFilterPanel = ({
         setSelectedApplications(newSelectedApplications);
     };
 
-    const handleTagsOnChange = (event) => {
-        const newSelectedTags = (event || []).map((item) => item.value);
-        setSelectedTags(newSelectedTags);
+    const handleCategoriesOnChange = (event) => {
+        const newSelectedAnnotationCategories = (event || []).map((item) => item.value);
+        setSelectedCategories(newSelectedAnnotationCategories);
     };
 
     return (
@@ -56,9 +87,9 @@ const AnnotationsFilterPanel = ({
                 <div className="filter-option-selection">
                     <Select
                         isMulti
-                        value={selectedTags.map((v) => ({value: v, label: v}))}
+                        value={selectedCategories.map((v) => ({value: v, label: v}))}
                         options={annotationCategories}
-                        onChange={handleTagsOnChange}
+                        onChange={handleCategoriesOnChange}
                     />
                 </div>
             </div>
