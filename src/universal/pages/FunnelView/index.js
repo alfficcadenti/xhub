@@ -12,6 +12,8 @@ import {checkResponse, getBrand} from '../utils';
 import './styles.less';
 
 
+const initialCategories = [{value: 'Application Software', label: 'Deployments'}];
+
 const TIMEZONE_OFFSET = (new Date()).getTimezoneOffset();
 const TIMEZONE_ABBR = moment.tz.zone(moment.tz.guess()).abbr(TIMEZONE_OFFSET);
 
@@ -40,7 +42,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
     // annotations state
     const [enableAlerts, setEnableAlerts] = useState(false);
-    const [selectedCategories, setSelectedCategories] = useState([]);
+    const [selectedCategories, setSelectedCategories] = useState(initialCategories);
     const [selectedProducts, setSelectedProducts] = useState([]);
     const [selectedApplications, setSelectedApplications] = useState([]);
     const [annotations, setAnnotations] = useState([]);
@@ -206,9 +208,9 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             const dateQuery = start && end
                 ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
                 : '';
-            const categoryQuery = selectedCategories.length ? `&category=${selectedCategories}` : '';
-            const productsQuery = selectedProducts.length ? `&product=${selectedProducts.join(',')}` : '';
-            const applicationsQuery = selectedApplications.length ? `&applicationName=${selectedApplications.join(',')}` : '';
+            const categoryQuery = selectedCategories.length ? `&category=${selectedCategories[0].value}` : '';
+            const productsQuery = selectedProducts.length ? `&product=${selectedProducts}` : '';
+            const applicationsQuery = selectedApplications.length ? `&applicationName=${selectedApplications}` : '';
 
             fetch(`/annotations?${dateQuery}${productsQuery}${applicationsQuery}${categoryQuery}`)
                 .then(checkResponse)
@@ -223,8 +225,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                         number,
                         serviceName,
                         tags: [productName, platform],
-                        time: openedAt,
-                        bucketTime: openedAt
+                        time: moment(openedAt).format('YYYY-MM-DD HH:mm'),
+                        bucketTime: moment(openedAt).format('YYYY-MM-DD HH:mm')
                     }));
 
                     setAnnotations(adjustedAnnotations);
