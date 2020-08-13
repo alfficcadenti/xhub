@@ -31,7 +31,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
     const getQueryParam = (key, value, condition, defaultValue = '') => condition ? `&${key}=${value}` : defaultValue;
     const getQueryString = (lob, brand, deviceType, bookingType, newBrand, start, end) => {
         const brandGroupName = IMPULSE_MAPPING.find((brandNames) => brandNames.globalFilter === newBrand);
-        let query = `?startDate=${start}T00:00:00Z&endDate=${end}T00:00:00Z`;
+        let query = `?startDate=${start.format('YYYY-MM-DDThh:mm:ss')}Z&endDate=${end.format('YYYY-MM-DDThh:mm:ss')}Z`;
         query += getQueryParam('lob', lob, lob !== ALL_LOB);
         query += getQueryParam('brand', brand, brand !== ALL_BRANDS);
         query += getQueryParam('deviceType', deviceType, deviceType !== ALL_DEVICE_TYPES);
@@ -54,7 +54,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
                 .then((respJson) => {
                     const chartData = respJson.map((items) => {
                         return {
-                            time: moment.utc(items.time).format('HH:mm'),
+                            time: moment(items.time).format('DD MM HH:mm'),
                             [BOOKING_COUNT]: items.count,
                             [PREDICTION_COUNT]: items.prediction.weightedCount
                         };
