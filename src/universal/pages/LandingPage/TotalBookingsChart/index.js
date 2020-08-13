@@ -6,7 +6,7 @@ import {
 } from 'recharts';
 import HelpText from '../../../components/HelpText/HelpText';
 import {BRANDS} from '../../../constants';
-import {getBrand, removeEmptyStringsFromArray} from '../../utils';
+import {getBrand, isNotEmptyString} from '../../utils';
 import './styles.less';
 
 const TIMEZONE_OFFSET = (new Date()).getTimezoneOffset();
@@ -37,7 +37,7 @@ export default class TotalChart extends PureComponent {
 
     render() {
         const {brands, data} = this.props;
-        const allBrands = BRANDS.map((brand) => brand.landingBrand).filter(removeEmptyStringsFromArray);
+        const allBrands = BRANDS.map((brand) => brand.landingBrand).filter(isNotEmptyString);
         const selectedBrands = brands.includes('Expedia Group') ? allBrands : brands;
         return (
             <div className="total-bookings-container">

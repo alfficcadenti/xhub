@@ -6,14 +6,14 @@
     "duration": "8000",
     "id": "INC4419505",
     "priority": "1-Critical",
-    "startedAt": "2019-09-25T14:58:24.000Z",
+    "startDate": "2019-09-25T14:58:24.000Z",
     "summary": "EAN Degraded",
     "rootCauseOwner": "EAN Release - Deploy"
   },
   {
     "rootCause": "rollback EAN Edge Service   Expedia-Partner-Solutions/DARK-2027-Integrate-with-PRS-handlers-in-Edge",
     "id": "INC4419505",
-    "startedAt": "2019-09-25T14:58:24.000Z"
+    "startDate": "2019-09-25T14:58:24.000Z"
   },
   {
     "Brand": "Expedia Partner Solutions (EPS)",
@@ -23,7 +23,7 @@
     "duration": "100000",
     "id": "INC4419505",
     "priority": "2-High",
-    "startedAt": "2019-09-21T14:58:24.000Z",
+    "startDate": "2019-09-21T14:58:24.000Z",
     "summary": "EAN Degraded"
   },
   {
@@ -34,12 +34,12 @@
     "duration": "200000",
     "id": "INC4419505",
     "priority": "2-High",
-    "startedAt": "2019-09-20T14:58:24.000Z",
+    "startDate": "2019-09-20T14:58:24.000Z",
     "summary": "EAN Degraded"
   },
   {
     "rootCause": "rollback EAN Edge Service   Expedia-Partner-Solutions/DARK-2027-Integrate-with-PRS-handlers-in-Edge",
     "id": "INC4419505",
-    "startedAt": "2019-09-25T14:58:24.000Z"
+    "startDate": "2019-09-25T14:58:24.000Z"
   }
 ]

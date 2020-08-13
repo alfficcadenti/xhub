@@ -8,7 +8,7 @@ import {
     ALL_TEAMS_OPTION,
 } from './constants';
 import {useIsMount} from '../hooks';
-import {checkResponse, getUniqueByProperty, getListOfUniqueProperties} from '../utils';
+import {checkResponse, getUniqueByProperty, getListOfUniqueProperties, sortArrayByMostRecentDate} from '../utils';
 
 export const useFetchCRs = (
     isApplyClicked,
@@ -40,8 +40,8 @@ export const useFetchCRs = (
             fetch(`/change-requests-api/v1/changeDetails?startDate=${startDate}&endDate=${endDate}`)
                 .then(checkResponse)
                 .then((data) => {
-                    data.sort((a, b) => new Date(b.startedAt) - new Date(a.startedAt));
-                    const uniqueCRs = getUniqueByProperty(data, 'number');
+                    const crs = sortArrayByMostRecentDate(data, 'startDate');
+                    const uniqueCRs = getUniqueByProperty(crs, 'number');
                     const adjustedUniqueCRs = adjustCRsProperties(uniqueCRs);
                     const dataPriorities = getListOfUniqueProperties(adjustedUniqueCRs, 'priority').sort();
                     const dataPlatforms = getListOfUniqueProperties(adjustedUniqueCRs, 'platform').sort();
@@ -52,7 +52,7 @@ export const useFetchCRs = (
                     setTeams([ALL_TEAMS_OPTION, ...dataTeam]);
 
                     setAllUniqueCRs(adjustedUniqueCRs);
-                    setAllCRs(data);
+                    setAllCRs(crs);
 
                     setIsLoading(false);
                 })

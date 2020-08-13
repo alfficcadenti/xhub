@@ -13,9 +13,9 @@ export const getPieData = (filteredDefects, property) => {
     return Object.entries(counts).map(([name, value]) => ({name, value}));
 };
 
-export const removeEmptyStringsFromArray = (item) => !!item;
+export const isNotEmptyString = (item) => !!item;
 
-export const distinct = (value, index, self) => self.indexOf(value) === index;
+export const isNotDuplicate = (value, index, self) => self.indexOf(value) === index;
 
 export const mapBrandNames = (brandName) => {
     switch (brandName) {
@@ -32,14 +32,16 @@ export const checkResponse = (response) => {
     if (!response.ok || response.error) {
         throw new Error(response);
     }
-
     return response.json();
 };
 
 export const getBrand = (brand, key) => BRANDS.find((b) => brand === b[key]);
 
+export const sortArrayByMostRecentDate = (arr, prop) => arr.sort((a, b) => new Date(b[prop]) - new Date(a[prop]));
+
+// eslint-disable-next-line complexity
 export const divisionToBrand = (division = '') => {
-    switch (division.toUpperCase()) {
+    switch (division && division.toUpperCase()) {
         case 'EGENCIA - CONSOLIDATED':
         case 'EGENCIA':
             return EGENCIA_BRAND;

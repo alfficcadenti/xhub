@@ -8,8 +8,8 @@ import './styles.less';
 import {EG_BRAND} from '../../constants';
 import {checkResponse, divisionToBrand} from '../../pages/utils';
 
-const startDate = moment().subtract(2, 'months').format(DATE_FORMAT);
-const endDate = moment().format(DATE_FORMAT);
+const fromDate = moment().subtract(2, 'months').format(DATE_FORMAT);
+const toDate = moment().format(DATE_FORMAT);
 
 
 const OngoingIncidents = ({selectedBrands}) => {
@@ -28,7 +28,7 @@ const OngoingIncidents = ({selectedBrands}) => {
         const fetchTickets = () => {
             setIsLoading(true);
 
-            fetch(`/v1/incidents?startDate=${startDate}&endDate=${endDate}`)
+            fetch(`/v1/incidents?startDate=${fromDate}&endDate=${toDate}`)
                 .then(checkResponse)
                 .then((fetchedIncidents) => {
                     setAllIncidents(fetchedIncidents);
@@ -56,14 +56,14 @@ const OngoingIncidents = ({selectedBrands}) => {
             <h2 className="ongoing-incidents-label">{'Ongoing Incidents'}</h2>
             <LoadingContainer isLoading={isLoading} className="ongoing-incidents">
                 {
-                    ongoingIncidents.length ? ongoingIncidents.map(({summary, priority, startedAt, id}) => {
+                    ongoingIncidents.length ? ongoingIncidents.map(({summary, priority, startDate, id}) => {
                         return (
                             <Divider key={id} heading={summary} id="ongoing-incident">
                                 <div key={summary} className="ongoing-incident">
                                     <div><strong>{'Summary:'}</strong><span className="ongoing-incident-info">{summary}</span></div>
                                     <div><strong>{'Ticket:'}</strong><a target="_blank" href={`https://jira.homeawaycorp.com/browse/${id}`}><span className="ongoing-incident-info">{id}</span></a></div>
                                     <div><strong>{'Priority:'}</strong><span className="ongoing-incident-info">{priority}</span></div>
-                                    <div><strong>{'Started at:'}</strong><span className="ongoing-incident-info">{getDateDetails(startedAt)}</span></div>
+                                    <div><strong>{'Started at:'}</strong><span className="ongoing-incident-info">{getDateDetails(startDate)}</span></div>
                                 </div>
                             </Divider>
                         );

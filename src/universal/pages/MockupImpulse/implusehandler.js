@@ -1,9 +1,9 @@
 import moment from 'moment';
-import {distinct} from '../utils';
+import {isNotDuplicate} from '../utils';
 
 
-const getUniqueLob = (data = []) => (data.map((item) => item.tags.lob).filter(distinct));
-const getUniqueBrands = (data = []) => (data.map((item) => item.tags.brand).filter(distinct));
+const getUniqueLob = (data = []) => (data.map((item) => item.tags.lob).filter(isNotDuplicate));
+const getUniqueBrands = (data = []) => (data.map((item) => item.tags.brand).filter(isNotDuplicate));
 export const xAxisData = (data = []) => (data.map((item) => moment(item.time).format('MM/DD hh:mm')));
 export const bookingData = (data = []) => (data.map((item) => item.fields.actualCount));
 export const predictionData = (data = []) => (data.map((item) => item.fields.predictedCount));

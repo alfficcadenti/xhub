@@ -18,7 +18,7 @@ export const adjustTicketProperties = (tickets = [], type = 'incident') => {
             ...t,
             summary: t.summary,
             id: t.id,
-            'startedAt': t.startedAt ? t.startedAt : t.openDate,
+            'startDate': t.startDate ? t.startDate : t.openDate,
             'Brand': divisionToBrand(t.brand || ''),
             'Division': t.brand,
             'Status': t.status,
@@ -51,7 +51,7 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
         Priority: inc.priority || '-',
         Brand: inc.Brand || '-',
         Division: inc.Division || '-',
-        Started: moment.utc(inc.startedAt).local().isValid() ? moment.utc(inc.startedAt).local().format('YYYY-MM-DD HH:mm') : '-',
+        Started: moment.utc(inc.startDate).local().isValid() ? moment.utc(inc.startDate).local().format('YYYY-MM-DD HH:mm') : '-',
         Summary: (inc.summary || '-').trim(),
         Duration: inc.duration ? h.formatDurationForTable(inc.duration) : '-',
         rawDuration: inc.duration,
@@ -108,7 +108,7 @@ const max = (accumulator, currentValue) => (currentValue > accumulator ? current
 const min = (accumulator, currentValue) => (currentValue < accumulator ? currentValue : accumulator);
 
 export const getMarginDateValues = (tickets = []) => {
-    const dates = tickets.map((ticket) => moment(ticket.startedAt));
+    const dates = tickets.map((ticket) => moment(ticket.startDate));
 
     return dates.length === 0 || !isArray(dates) ?
         [] :
@@ -120,7 +120,7 @@ export const getMarginDateValues = (tickets = []) => {
 
 const brandIncidents = (incidents, brand) => incidents.filter((incident) => incident.Brand === brand);
 
-export const incidentsOfTheWeek = (incidents, week = '') => incidents.filter(({startedAt}) => moment(startedAt).week() === week);
+export const incidentsOfTheWeek = (incidents, week = '') => incidents.filter(({startDate}) => moment(startDate).week() === week);
 
 export const getIncMetricsByBrand = (inc = []) => getListOfUniqueProperties(inc, 'Brand')
     .map((brand) => {
