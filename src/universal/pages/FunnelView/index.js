@@ -208,9 +208,9 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             const dateQuery = start && end
                 ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
                 : '';
-            const categoryQuery = selectedCategories.length ? `&category=${selectedCategories[0].value}` : '';
-            const productsQuery = selectedProducts.length ? `&product=${selectedProducts}` : '';
-            const applicationsQuery = selectedApplications.length ? `&applicationName=${selectedApplications}` : '';
+            const categoryQuery = selectedCategories && selectedCategories.length ? `&category=${selectedCategories[0].value}` : '';
+            const productsQuery = selectedProducts && selectedProducts.length ? `&product=${selectedProducts}` : '';
+            const applicationsQuery = selectedApplications && selectedApplications.length ? `&applicationName=${selectedApplications}` : '';
 
             fetch(`/annotations?${dateQuery}${productsQuery}${applicationsQuery}${categoryQuery}`)
                 .then(checkResponse)
