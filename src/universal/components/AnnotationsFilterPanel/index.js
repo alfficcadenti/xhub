@@ -5,7 +5,7 @@ import {Checkbox} from '@homeaway/react-form-components';
 import Select from 'react-select';
 import {checkResponse} from '../../pages/utils';
 
-const annotationCategories = ['Application Software'].map((a) => ({value: a, label: a}));
+const annotationCategories = [{value: 'Application Software', label: 'Deployments'}].map(({value, label}) => ({value, label}));
 
 const AnnotationsFilterPanel = ({
     enableAlerts,
@@ -60,7 +60,7 @@ const AnnotationsFilterPanel = ({
     };
 
     const handleCategoriesOnChange = (event) => {
-        const newSelectedAnnotationCategories = (event || []).map((item) => item.value);
+        const newSelectedAnnotationCategories = (event || []).map(({value, label}) => ({value, label}));
         setSelectedCategories(newSelectedAnnotationCategories);
     };
 
@@ -87,7 +87,7 @@ const AnnotationsFilterPanel = ({
                 <div className="filter-option-selection">
                     <Select
                         isMulti
-                        value={selectedCategories.map((v) => ({value: v, label: v}))}
+                        value={selectedCategories.map(({value, label}) => ({value, label}))}
                         options={annotationCategories}
                         onChange={handleCategoriesOnChange}
                     />
