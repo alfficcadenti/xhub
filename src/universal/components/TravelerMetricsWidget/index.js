@@ -1,9 +1,21 @@
 import React from 'react';
 import moment from 'moment';
-import {AreaChart, XAxis, YAxis, Area, Tooltip, ResponsiveContainer, CartesianGrid, ReferenceArea} from 'recharts';
-import './styles.less';
+import {
+    AreaChart,
+    XAxis,
+    YAxis,
+    Area,
+    Tooltip,
+    ResponsiveContainer,
+    CartesianGrid,
+    ReferenceArea,
+    ReferenceLine
+} from 'recharts';
+import {v1 as uuid} from 'uuid';
 import HelpText from '../HelpText/HelpText';
+import ReferenceLabel from '../ReferenceLabel';
 import {getBrand} from '../../pages/utils';
+import './styles.less';
 
 // eslint-disable-next-line complexity
 const CustomTooltip = ({active, payload}) => {
@@ -19,7 +31,7 @@ const CustomTooltip = ({active, payload}) => {
 
 const formatXAxis = (date) => moment(date).format('MM/DD hh:mm');
 
-const PageviewWidget = ({
+const TravelerMetricsWidget = ({
     title = '',
     data = [],
     brand,
@@ -31,7 +43,8 @@ const PageviewWidget = ({
     chartRight,
     refAreaLeft,
     refAreaRight,
-    helpText
+    helpText,
+    annotations = []
 }) => {
     const brandLabel = brand.replace(/\s/g, '');
     const fill = `url(#${brandLabel})`;
@@ -77,6 +90,19 @@ const PageviewWidget = ({
                             <Tooltip content={<CustomTooltip />} />
                             <Area type="monotone" dataKey="value" stroke={color} fillOpacity={1} fill={fill} key={`area${brand}`} yAxisId={yAxisId} />
                             {
+                                annotations && annotations.map((annotation) => (
+                                    <ReferenceLine
+                                        key={uuid()}
+                                        yAxisId={yAxisId}
+                                        x={annotation.bucketTime}
+                                        label={<ReferenceLabel annotation={annotation} />}
+                                        stroke="red"
+                                        strokeDasharray="3 3"
+                                        isFront
+                                    />
+                                ))
+                            }
+                            {
                                 (refAreaLeft && refAreaRight)
                                     ? <ReferenceArea yAxisId={yAxisId} x1={refAreaLeft} x2={refAreaRight} strokeOpacity={0.3} />
                                     : null
@@ -89,4 +115,4 @@ const PageviewWidget = ({
     );
 };
 
-export default PageviewWidget;
+export default TravelerMetricsWidget;

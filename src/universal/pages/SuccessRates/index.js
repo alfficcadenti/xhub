@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import moment from 'moment';
 import 'moment-timezone';
-import PageviewWidget from '../../components/PageviewWidget';
+import TravelerMetricsWidget from '../../components/TravelerMetricsWidget';
 import LoadingContainer from '../../components/LoadingContainer';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import RealTimeSummaryPanel from '../../components/RealTimeSummaryPanel';
@@ -233,7 +233,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const shouldShowTooltip = (pageName, pageBrand) => pageBrand === EXPEDIA_BRAND && pageName === PAGES_LIST[PAGES_LIST.length - 1];
 
     const renderWidget = ({pageName, aggregatedData, pageBrand}) => (
-        <PageviewWidget
+        <TravelerMetricsWidget
             title={pageName}
             data={aggregatedData}
             key={pageName}

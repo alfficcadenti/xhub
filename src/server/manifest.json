@@ -215,10 +215,20 @@
           "hostname": "opxhub-change-request-service.us-west-2.test.expedia.com",
           "protocol": "https:",
           "routes": {
+            "annotations": {
+              "path": "/annotations/v1.0",
+              "method": "GET",
+              "operation": "GET_annotations_api_v1"
+            },
             "changeDetails": {
               "path": "/changeDetails/v1.0",
               "method": "GET",
               "operation": "GET_change_details_api_v1"
+            },
+            "productMapping": {
+              "path": "/mappings/products/v1.0",
+              "method": "GET",
+              "operation": "GET_product_mapping_api_v1"
             }
           }
         },
@@ -226,10 +236,20 @@
           "hostname": "opxhub-change-request-service.us-west-2.test.expedia.com",
           "protocol": "https:",
           "routes": {
+            "annotations": {
+              "path": "/annotations/v1.0",
+              "method": "GET",
+              "operation": "GET_annotations_api_v1"
+            },
             "changeDetails": {
               "path": "/changeDetails/v1.0",
               "method": "GET",
               "operation": "GET_change_details_api_v1"
+            },
+            "productMapping": {
+              "path": "/mappings/products/v1.0",
+              "method": "GET",
+              "operation": "GET_product_mapping_api_v1"
             }
           }
         },
@@ -237,10 +257,20 @@
           "hostname": "opxhub-change-request-service.us-east-1.prod.expedia.com",
           "protocol": "https:",
           "routes": {
+            "annotations": {
+              "path": "/annotations/v1.0",
+              "method": "GET",
+              "operation": "GET_annotations_api_v1"
+            },
             "changeDetails": {
               "path": "/changeDetails/v1.0",
               "method": "GET",
               "operation": "GET_change_details_api_v1"
+            },
+            "productMapping": {
+              "path": "/mappings/products/v1.0",
+              "method": "GET",
+              "operation": "GET_product_mapping_api_v1"
             }
           }
         }

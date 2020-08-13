@@ -1,0 +1,23 @@
+@import '../../mixins.less';
+
+.filters-container {
+    margin-top: @spacing-2x;
+    padding: @spacing-1x;
+    background: @color-bg-accent;
+    border-radius: @spacing-1x;
+    max-width: 1140px;
+
+    .filter-option {
+        display: flex;
+        margin-top: @spacing-1x;
+
+        .filter-label-wrapper {
+            width: 250px;
+        }
+
+        .filter-option-selection {
+            width: 550px;
+            z-index: 15;
+        }
+    }
+}
