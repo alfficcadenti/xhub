@@ -8,7 +8,7 @@ import moment from 'moment/moment';
 import {isArray} from 'util';
 import uuid from 'uuid/v1';
 import * as h from '../../components/utils/formatDate';
-import {DATE_FORMAT} from '../../constants';
+import {DATE_FORMAT, EGENCIA_BRAND, EXPEDIA_BRAND, HOTELS_COM_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../../constants';
 import {VRBO_BRAND} from '../../constants';
 import {divisionToBrand, getListOfUniqueProperties} from '../utils';
 
@@ -18,11 +18,11 @@ export const adjustTicketProperties = (tickets = [], type = 'incident') => {
             ...t,
             summary: t.summary,
             id: t.id,
-            'startDate': t.startDate ? t.startDate : t.openDate,
-            'Brand': divisionToBrand(t.brand || ''),
-            'Division': t.brand,
-            'Status': t.status,
-            'RC Owner': t.rootCauseOwner
+            startDate: t.startDate ? t.startDate : t.openDate,
+            Division: t.brand,
+            Status: t.status,
+            'RC Owner': t.rootCauseOwner,
+            Brand: divisionToBrand(t.brand || '')
         };
         if (type === 'incident') {
             result.duration = t.duration && t.resolvedDate ? t.duration : null;
@@ -67,6 +67,8 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
         'Executive Summary': inc.executiveSummary || '-',
         executiveSummary: inc.executiveSummary || '-',
         'RC Owner': inc.rootCauseOwner || '-',
+        'Impacted Brand': inc.impactedBrand || '-',
+        'Owning Division': inc.Division || '-',
         Details: (
             <div className="expandable-row-wrapper">
                 <div className="expandable-row">
@@ -310,4 +312,24 @@ export const getWeeklyCounts = (startDate, endDate, tickets, key) => {
         }
     });
     return {data, keys: ['count']};
+};
+
+export const impactedBrandToDivision = (division = '') => {
+    switch (division && division.toUpperCase()) {
+        case 'EGENCIA NA':
+        case 'EGENCIA EU':
+        case 'EGENCIA EU, EGENCIA NA':
+            return EGENCIA_BRAND;
+        case 'VRBO':
+            return VRBO_BRAND;
+        case 'EXPEDIA':
+            return EXPEDIA_BRAND;
+        case 'HOTELS':
+            return HOTELS_COM_BRAND;
+        case 'EXPEDIA PARTNER SOLUTIONS':
+        case 'EAN':
+            return EXPEDIA_PARTNER_SERVICES_BRAND;
+        default:
+            return '';
+    }
 };

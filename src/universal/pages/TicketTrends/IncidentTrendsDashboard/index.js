@@ -17,6 +17,7 @@ import {Incidents, Overview, Top5, FinancialImpact} from './tabs/index';
 import {useFetchTickets, useRootCauseOwner} from '../hooks';
 import {EG_BRAND} from '../../../constants';
 import {useSelectedBrand, useQueryParamChange} from '../../hooks';
+import {impactedBrandToDivision} from '../incidentsHelper';
 import './styles.less';
 import {SVGIcon} from '@homeaway/react-svg';
 import {FILTER__16} from '@homeaway/svg-defs';
@@ -94,7 +95,7 @@ const IncidentTrendsDashboard = (props) => {
 
     function applyFilters() {
         const matchesPriority = (t) => selectedPriority === priorityDefaultValue || t.priority === selectedPriority;
-        const matchesBrand = (t) => selectedBrand === EG_BRAND || selectedBrand === t.Brand;
+        const matchesBrand = (t) => selectedBrand === EG_BRAND || selectedBrand === impactedBrandToDivision(t.impactedBrand);
         const matchesStatus = (t) => selectedStatus === statusDefaultValue || t.status === selectedStatus;
         const matchesTag = (t) => selectedTag === tagDefaultValue || t.tag === selectedTag || (Array.isArray(t.tag) && t.tag.includes(selectedTag));
         const matchesRcOwner = (t) => selectedRcOwner === rcOwnerDefaultValue || t['RC Owner'] === selectedRcOwner;

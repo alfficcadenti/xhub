@@ -6,9 +6,8 @@ import {getIncidentsData} from '../../../incidentsHelper';
 
 
 const renderTable = (filteredIncidents) => {
-    const columns = ['Incident', 'Priority', 'Brand', 'Division', 'Started', 'Summary', 'RC Owner', 'TTD', 'TTR', 'Status'];
+    const columns = ['Incident', 'Priority', 'Impacted Brand', 'Owning Division', 'Started', 'Summary', 'RC Owner', 'TTD', 'TTR', 'Status'];
     const columnsInfo = {
-        Brand: <div>{'Displaying brand(s) selected by'}<br/>{'dropdown [top right in site header]'}</div>,
         TTD: <div>{'Time to Detect'}</div>,
         TTR: <div>{'Time to Resolve (Duration)'}</div>
     };
