@@ -13,8 +13,6 @@ const ReferenceLabel = ({viewBox: {x}, annotation}) => {
             className="foreign-object"
             x={x - 5.5}
             y={-1}
-            width={170}
-            height={120}
         >
             <div className="annotation-tooltip">
                 <div className="tooltip-body">
