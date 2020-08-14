@@ -23,7 +23,6 @@ module.exports.changeRequests = {
                 queryParams: req.url.query ? req.url.query : {}
             });
             req.log('[API-REQUEST-DETAILS]', serverConfig.routes.changeDetails.method, serverConfig.routes.changeDetails.operation);
-            req.log('[CHANGE-REQUEST-DETAILS-DATA]', payload);
             return payload;
         } catch (e) {
             req.log('[ERROR]', e);

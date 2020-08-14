@@ -2,11 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import DataTable from '../../../../components/DataTable';
 import NoResults from '../../../../components/NoResults/NoResults';
+import {EG_BRAND} from '../../../../constants';
 import {formatCRData} from '../../crUtils';
 
 
-const renderTable = (filteredCR) => {
-    const columns = ['CR Number', 'Service Name', 'Product', 'Business Reason', 'Platform', 'Opened', 'Version', 'Team', 'Priority', 'Brand', 'Division'];
+const renderTable = (filteredCR = [], selectedBrand = '') => {
+    const columns = ['CR Number', 'Description', 'Application', 'Product', 'Business Reason', 'Started', 'Team'];
+    /* eslint-disable no-unused-expressions */
+    selectedBrand === EG_BRAND ? columns.push('Platform') : '';
     const columnsInfo = {
         Brand: <div>{'Displaying brand(s) selected by'}<br/>{'dropdown [top right in site header]'}</div>,
     };
@@ -14,7 +17,6 @@ const renderTable = (filteredCR) => {
     return (
         <DataTable
             title={`Change Requests (${filteredCR.length} results)`}
-            info="Refreshes every 15 minutes"
             data={formatCRData(filteredCR)}
             columns={columns}
             columnsInfo={columnsInfo}
@@ -28,18 +30,19 @@ const renderTable = (filteredCR) => {
     );
 };
 
-const ChangeRequests = ({filteredCR}) => (
+const ChangeRequests = ({filteredCR, selectedBrand}) => (
     <div data-wdio="cr-table">
         {
             filteredCR.length
-                ? renderTable(filteredCR)
+                ? renderTable(filteredCR, selectedBrand)
                 : <NoResults />
         }
     </div>
 );
 
 ChangeRequests.propTypes = {
-    filteredCR: PropTypes.arrayOf(PropTypes.shape()).isRequired
+    filteredCR: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+    selectedBrand: PropTypes.string
 };
 
 export default React.memo(ChangeRequests);

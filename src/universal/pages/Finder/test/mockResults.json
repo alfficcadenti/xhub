@@ -1,6 +1,5 @@
 [{
-    "Brand": "Vrbo",
-    "Division": "vrbo",
+    "Brand": "Expedia Group",
     "brand": "vrbo",
     "businessJustification": "Automated Deployment (for Kumo deployment changes)",
     "businessReason": "New Functionality",
@@ -20,8 +19,7 @@
     "team": "REO",
     "version": "1.0.0"
 }, {
-    "Brand": "Vrbo",
-    "Division": "vrbo",
+    "Brand": "Expedia Group",
     "brand": "vrbo",
     "businessJustification": "Automated Deployment (for Kumo deployment changes)",
     "businessReason": "Content change",

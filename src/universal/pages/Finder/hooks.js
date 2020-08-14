@@ -1,11 +1,9 @@
 import {useState, useEffect} from 'react';
 import {adjustCRsProperties} from './crUtils';
 import {
-    ALL_PRIORITIES_OPTION,
-} from '../../constants';
-import {
     ALL_PLATFORMS_OPTION,
-    ALL_TEAMS_OPTION,
+    ALL_BUSINESS_REASONS_OPTION,
+    ALL_STATUSES_OPTION
 } from './constants';
 import {useIsMount} from '../hooks';
 import {checkResponse, getUniqueByProperty, getListOfUniqueProperties, sortArrayByMostRecentDate} from '../utils';
@@ -26,9 +24,10 @@ export const useFetchCRs = (
     const [lastStartDate, setLastStartDate] = useState('');
     const [lastEndDate, setLastEndDate] = useState('');
 
-    const [priorities, setPriorities] = useState([]);
+    const [indexedData, setIndexedData] = useState([]);
     const [platforms, setPlatforms] = useState([]);
-    const [teams, setTeams] = useState([]);
+    const [businessReasons, setBusinessReason] = useState([]);
+    const [statuses, setStatuses] = useState([]);
 
     const isMount = useIsMount();
 
@@ -40,16 +39,21 @@ export const useFetchCRs = (
             fetch(`/change-requests-api/v1/changeDetails?startDate=${startDate}&endDate=${endDate}`)
                 .then(checkResponse)
                 .then((data) => {
-                    const crs = sortArrayByMostRecentDate(data, 'startDate');
+                    const crs = sortArrayByMostRecentDate(data, 'openedAt');
                     const uniqueCRs = getUniqueByProperty(crs, 'number');
                     const adjustedUniqueCRs = adjustCRsProperties(uniqueCRs);
-                    const dataPriorities = getListOfUniqueProperties(adjustedUniqueCRs, 'priority').sort();
+                    const dataProducts = getListOfUniqueProperties(adjustedUniqueCRs, 'productName').sort();
+                    const dataApplications = getListOfUniqueProperties(adjustedUniqueCRs, 'applicationName').sort();
+                    const dataCRnumbers = getListOfUniqueProperties(adjustedUniqueCRs, 'number').sort();
                     const dataPlatforms = getListOfUniqueProperties(adjustedUniqueCRs, 'platform').sort();
-                    const dataTeam = getListOfUniqueProperties(adjustedUniqueCRs, 'team').sort();
+                    const dataTeams = getListOfUniqueProperties(adjustedUniqueCRs, 'team').sort();
+                    const dataBusinessReasons = getListOfUniqueProperties(adjustedUniqueCRs, 'businessReason').sort();
+                    const dataStatuses = getListOfUniqueProperties(adjustedUniqueCRs, 'status').sort();
 
-                    setPriorities([ALL_PRIORITIES_OPTION, ...dataPriorities]);
                     setPlatforms([ALL_PLATFORMS_OPTION, ...dataPlatforms]);
-                    setTeams([ALL_TEAMS_OPTION, ...dataTeam]);
+                    setBusinessReason([ALL_BUSINESS_REASONS_OPTION, ...dataBusinessReasons]);
+                    setStatuses([ALL_STATUSES_OPTION, ...dataStatuses]);
+                    setIndexedData([...dataProducts, ...dataApplications, ...dataCRnumbers, ...dataTeams]);
 
                     setAllUniqueCRs(adjustedUniqueCRs);
                     setAllCRs(crs);
@@ -84,8 +88,9 @@ export const useFetchCRs = (
         error,
         allUniqueCRs,
         allCRs,
-        priorities,
+        indexedData,
         platforms,
-        teams
+        businessReasons,
+        statuses
     ];
 };

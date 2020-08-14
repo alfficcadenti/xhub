@@ -8,17 +8,25 @@
         font-weight: 400;
         vertical-align: middle;
         width: 100%;
-        border-radius: 5px;
+        border-radius: @spacing-1x;
 
         .date-range {
             .date-range-filter;
         }
 
+        #indexed-list-filter {
+            width: 500px;
+        }
+
         .date-range,
-        .Dropdown,
-        .CRB--checkbox,
-        .apply-button {
-            margin: 5px;
+        #indexed-list-filter,
+        .SearchListInput>input {
+            margin-left: @spacing-1x;
+            margin-right: @spacing-1x;
+        }
+
+        #indexed-list-filter+label {
+            font-size: small;
         }
 
         .CRB--checkbox {
@@ -26,18 +34,8 @@
             display: inline-flex;
         }
 
-        .priority-dropdown .Dropdown__toggle {
+        .product-dropdown .Dropdown__toggle {
             .dropdown-button(160px);
-        }
-
-        .brand-dropdown .Dropdown__toggle,
-        .platform-dropdown .Dropdown__toggle,
-        .team-dropdown .Dropdown__toggle {
-            .dropdown-button;
-        }
-
-        .platform-dropdown .Dropdown__toggle {
-            min-width: 130px;
         }
 
         .apply-button {
@@ -51,7 +49,8 @@
             font-size: .75rem;
             line-height: 1rem;
             box-shadow: none;
-            border-radius: @spacing-1x @spacing-1x 0 0;
+            border-radius: @spacing-1x;
+            border-radius: 4px;
 
             &.active {
                 background: @color-bg-accent;
@@ -78,10 +77,14 @@
             padding: @spacing-2x;
             background: @color-bg-accent;
             border-radius: 0 0 @spacing-1x @spacing-1x;
+        }
 
-            .teams-dropdown .Dropdown__toggle {
-                .dropdown-button;
-            }
+        #platform-dropdown,
+        #status-dropdown,
+        #business-reasons-dropdown {
+            border-radius: 4px;
+            margin-left: @spacing-1x;
+            margin-right: @spacing-1x;
         }
     }
 

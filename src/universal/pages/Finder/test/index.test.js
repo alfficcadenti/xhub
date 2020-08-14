@@ -27,11 +27,6 @@ describe('<Finder/>', () => {
         expect(wrapper).to.have.length(1);
     });
 
-    it('FilterDropDown render default priority value', async () => {
-        const props = wrapper.find('FilterDropDown').first().props();
-        expect(props.selectedValue).to.be.eql('All Priorities');
-    });
-
     it('LoadingContainer should have right props', async () => {
         const props = wrapper.find('LoadingContainer').props();
         expect(props.isLoading).to.be.eql(true);
