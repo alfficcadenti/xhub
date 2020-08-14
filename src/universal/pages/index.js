@@ -3,13 +3,6 @@ const PHAR = 'Platform Health & Resiliency';
 
 export default [
     // AAT Dashboards
-    // {
-    //     category: AAT,
-    //     id: 'availability',
-    //     link: '/availability',
-    //     text: 'Availability',
-    //     component: require('./Availability')
-    // },
     {
         category: AAT,
         id: 'funnel-view',
@@ -43,13 +36,6 @@ export default [
     },
     {
         category: PHAR,
-        id: 'health-check-bot-results',
-        link: '/health-check-bot-results',
-        text: 'Health Check Bot Results',
-        component: require('./HealthCheckBotResults')
-    },
-    {
-        category: PHAR,
         id: 'prb',
         link: '/prb',
         text: 'Problem Management',
@@ -61,20 +47,5 @@ export default [
         link: '/finder',
         text: 'Change Finder',
         component: require('./Finder')
-    },
-    // {
-    //     category: PHAR,
-    //     id: 'psr',
-    //     link: '/psr',
-    //     text: 'Purchase Success Rate',
-    //     component: require('./PSR'),
-    //     main: 'Platform Health & Resiliency'
-    // },
-    // {
-    //     category: PHAR,
-    //     id: 'resiliency-questionnaire',
-    //     link: '/resiliency-questionnaire',
-    //     text: 'Resiliency Questionnaire',
-    //     component: require('./ResiliencyQuestionnaire')
-    // }
+    }
 ];
