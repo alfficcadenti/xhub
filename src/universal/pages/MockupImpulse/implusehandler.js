@@ -4,35 +4,18 @@ import {isNotDuplicate} from '../utils';
 
 const getUniqueLob = (data = []) => (data.map((item) => item.tags.lob).filter(isNotDuplicate));
 const getUniqueBrands = (data = []) => (data.map((item) => item.tags.brand).filter(isNotDuplicate));
+const getFilters = (data = [], typeOfFilter) => data.filter((item) => item.tag === typeOfFilter).map((item) => item.values);
 export const xAxisData = (data = []) => (data.map((item) => moment(item.time).format('MM/DD hh:mm')));
-export const bookingData = (data = []) => (data.map((item) => item.fields.actualCount));
-export const predictionData = (data = []) => (data.map((item) => item.fields.predictedCount));
-export const upperBandData = (data = []) => (data.map((item) => item.fields.upperBand));
-export const lowerBandData = (data = []) => (data.map((item) => item.fields.lowerBand));
 const seriesData = (data = []) => data.map((item) => item.count);
-
-const seriesArray = (data = []) => {
-    const actualRevenue = [];
-    const predictedRevenue = [];
-
-    for (let i = 0; i < data.length; i++) {
-        let obj = data[i];
-
-        actualRevenue.push(obj.fields.actualRevenue);
-        predictedRevenue.push(obj.fields.predictedRevenue);
-    }
-    return [actualRevenue, predictedRevenue];
-};
+const getBrandFromImpulseMapping = (IMPULSE_MAPPING, globalBrand) =>
+    IMPULSE_MAPPING.find((brandNames) => brandNames.globalFilter === globalBrand);
 
 export default {
     xAxisData,
-    seriesArray,
     seriesData,
     getUniqueLob,
     getUniqueBrands,
-    bookingData,
-    predictionData,
-    upperBandData,
-    lowerBandData
+    getFilters,
+    getBrandFromImpulseMapping
 };
 
