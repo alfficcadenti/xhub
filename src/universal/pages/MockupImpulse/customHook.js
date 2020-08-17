@@ -66,7 +66,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
                 setBrands([ALL_BRANDS, ...getFilters(respJson, 'brand')[0]]);
                 setLobs([ALL_LOB, ...getFilters(respJson, 'lob')[0]]);
             }).catch((err) => {
-                setError('No data found for this selection.');
                 console.error(err);
             });
     };
