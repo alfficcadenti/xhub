@@ -1,0 +1,57 @@
+@import '../../../mixins.less';
+
+.quality-panel {
+    padding: 0;
+    width: 50%;
+    float: left;
+
+    &.full-width {
+        width: 100%;
+    }
+
+    &.fixed-height .chart-container,
+    &.fixed-height .table-container {
+        height: 400px;
+        max-height: 400px;
+        overflow-y: scroll;
+    }
+
+    .tooltip-container {
+        float: right;
+    }
+
+    .chart-container,
+    .table-container {
+        padding: @spacing-1x @spacing-2x;
+    }
+
+    .chart-tile {
+        border: 1px solid @border-default;
+        border-radius: @spacing-1x;
+        margin: 12px;
+
+        &:hover {
+            box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .08), 0 2px 8px 0 rgba(0, 0, 0, .08);
+        }
+
+        .tile-header {
+            background-color: @color-brand;
+
+            h3 {
+                padding: @spacing-1x;
+                font-size: @font-size-small;
+                margin-bottom: @spacing-1x;
+                color: @color-text-inverse;
+            }
+        }
+
+        .chart-tile-header {
+            background-color: @color-brand;
+
+            h3 {
+                color: @color-text-inverse;
+                font-size: @small-font-size;
+            }
+        }
+    }
+}

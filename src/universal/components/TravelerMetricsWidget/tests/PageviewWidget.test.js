@@ -12,19 +12,30 @@ const data = [
     {label: '6:00 AM', value: 380},
 ];
 
-
 describe('LineChart component testing', () => {
-    it('checks TravelerMetricsWidget component exists', () => {
-        const wrapper = shallow(
+    let wrapper;
+
+    beforeEach(() => {
+        wrapper = shallow(
             <TravelerMetricsWidget title={'test'} data={data} brand={'Expedia'} />
         );
+    });
+
+    afterEach(() => {
+        wrapper.unmount();
+    });
+
+    it('checks TravelerMetricsWidget component exists', () => {
         expect(wrapper).to.have.length(1);
     });
 
     it('checks TravelerMetricsWidget create a widget with title if data is empty', () => {
-        const wrapper = shallow(
-            <TravelerMetricsWidget title={'test'} data={[]} brand={'Expedia'} />
-        );
+        wrapper.setProps({data: []});
         expect(wrapper.find('h3').text()).to.be.eql('test');
+    });
+
+    it('checks TravelerMetricsWidget render annotations if data is  empty', () => {
+        wrapper.setProps({annotations: []});
+        expect(wrapper.find('.recharts-reference-line')).to.have.length(0);
     });
 });

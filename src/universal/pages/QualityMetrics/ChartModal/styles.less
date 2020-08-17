@@ -1,0 +1,28 @@
+@import '../../../mixins.less';
+
+.chart-modal {
+    .Modal__dialog {
+        min-width: 80%;
+    }
+
+    .Modal__content {
+        padding: 0 @spacing-2x @spacing-2x @spacing-2x;
+
+        .Modal__header {
+            padding: 0;
+        }
+
+        .Modal__body {
+            margin-top: -@spacing-2x;
+        }
+
+        .Modal__close-btn {
+            height: @spacing-9x;
+            width: @spacing-9x;
+        }
+
+        .row {
+            padding: @spacing-2x;
+        }
+    }
+}

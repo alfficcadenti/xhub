@@ -308,6 +308,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     setSelectedProducts={setSelectedProducts}
                     selectedApplications={selectedApplications}
                     setSelectedApplications={setSelectedApplications}
+                    start={start}
+                    end={end}
                 />
             </div>
             {isSupportedBrand && (

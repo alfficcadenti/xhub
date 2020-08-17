@@ -1,8 +1,40 @@
+import {HOTELS_COM_BRAND} from '../constants';
 const AAT = 'Availability & Trends';
 const PHAR = 'Platform Health & Resiliency';
 
 export default [
+    {
+        category: '',
+        id: 'home',
+        link: '/home',
+        text: 'Home',
+        component: require('./Home'),
+        hidden: true
+    },
+    {
+        category: '',
+        id: 'landing-page',
+        link: '/landing-page',
+        text: 'Landing Page',
+        component: require('./LandingPage'),
+        hidden: true
+    },
     // AAT Dashboards
+    {
+        category: AAT,
+        id: 'checkout-fci',
+        link: '/checkout-fci',
+        text: 'Checkout FCI',
+        component: require('./CheckoutFCI')
+    },
+    {
+        category: AAT,
+        id: 'impulse',
+        link: '/impulse',
+        text: 'Impulse Dashboard',
+        component: require('./MockupImpulse'),
+        hidden: true
+    },
     {
         category: AAT,
         id: 'funnel-view',
@@ -33,6 +65,15 @@ export default [
         text: 'Quality Trends',
         component: require('./TicketTrends/DefectTrendsDashboard'),
         main: 'Platform Health & Resiliency'
+    },
+    {
+        category: PHAR,
+        id: 'quality-metrics',
+        link: '/quality-metrics',
+        text: 'Quality Metrics',
+        component: require('./QualityMetrics'),
+        main: 'Platform Health & Resiliency',
+        brands: [HOTELS_COM_BRAND]
     },
     {
         category: PHAR,

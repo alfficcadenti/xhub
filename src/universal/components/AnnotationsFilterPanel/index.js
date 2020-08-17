@@ -1,5 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, {useEffect, useState} from 'react';
+import moment from 'moment';
+import 'moment-timezone';
 import './styles.less';
 import {Checkbox} from '@homeaway/react-form-components';
 import Select from 'react-select';
@@ -15,7 +17,9 @@ const AnnotationsFilterPanel = ({
     selectedProducts,
     setSelectedProducts,
     selectedApplications,
-    setSelectedApplications
+    setSelectedApplications,
+    start,
+    end
 }) => {
     const [products, setProducts] = useState([]);
     const [productMapping, setProductMapping] = useState([]);
@@ -23,7 +27,10 @@ const AnnotationsFilterPanel = ({
 
     useEffect(() => {
         const fetchProductMapping = () => {
-            fetch('/productMapping')
+            const dateQuery = start && end
+                ? `startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
+                : '';
+            fetch(`/productMapping?${dateQuery}`)
                 .then(checkResponse)
                 .then((mapping) => {
                     setProductMapping(mapping);
@@ -35,21 +42,19 @@ const AnnotationsFilterPanel = ({
                     console.error(err);
                 });
         };
-
         fetchProductMapping();
     }, []);
 
     const handleProductsOnChange = (event) => {
         const newSelectedProducts = (event || []).map((item) => item.value);
         setSelectedProducts(newSelectedProducts);
-
+        // remove selections from applicationNames when there's no product selected
+        if (!newSelectedProducts.length) {
+            setSelectedApplications([]);
+        }
         const adjustedApplications = newSelectedProducts.reduce((acc, currrent) => {
             const currentApplicationNames = productMapping.find((item) => item.productName === currrent).applicationNames;
-
-            return [
-                ...acc,
-                ...currentApplicationNames
-            ];
+            return [...acc, ...currentApplicationNames];
         }, []);
         setApplications(adjustedApplications.map((a) => ({value: a, label: a})));
     };
@@ -68,7 +73,7 @@ const AnnotationsFilterPanel = ({
         <div className="filters-container">
             <div className="filter-option">
                 <div className="filter-label-wrapper">
-                    <p className="filter-label">Annotations</p>
+                    <p className="filter-label">{'Annotations'}</p>
                 </div>
                 <div className="filter-option-selection">
                     <Checkbox
@@ -82,7 +87,7 @@ const AnnotationsFilterPanel = ({
             </div>
             <div className="filter-option">
                 <div className="filter-label-wrapper">
-                    <p className="filter-label">Annotations Category</p>
+                    <p className="filter-label">{'Annotations Category'}</p>
                 </div>
                 <div className="filter-option-selection">
                     <Select
@@ -95,7 +100,7 @@ const AnnotationsFilterPanel = ({
             </div>
             <div className="filter-option">
                 <div className="filter-label-wrapper">
-                    <p className="filter-label">Products</p>
+                    <p className="filter-label">{'Products'}</p>
                 </div>
                 <div className="filter-option-selection">
                     <Select
@@ -108,7 +113,7 @@ const AnnotationsFilterPanel = ({
             </div>
             <div className="filter-option">
                 <div className="filter-label-wrapper">
-                    <p className="filter-label">Applications</p>
+                    <p className="filter-label">{'Applications'}</p>
                 </div>
                 <div className="filter-option-selection">
                     <Select

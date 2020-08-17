@@ -10,7 +10,7 @@ import uuid from 'uuid/v1';
 import * as h from '../../components/utils/formatDate';
 import {DATE_FORMAT, EGENCIA_BRAND, EXPEDIA_BRAND, HOTELS_COM_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../../constants';
 import {VRBO_BRAND} from '../../constants';
-import {divisionToBrand, getListOfUniqueProperties} from '../utils';
+import {divisionToBrand, getListOfUniqueProperties, buildTicketLink} from '../utils';
 
 export const adjustTicketProperties = (tickets = [], type = 'incident') => {
     return tickets.map((t) => {
@@ -34,14 +34,6 @@ export const adjustTicketProperties = (tickets = [], type = 'incident') => {
         }
         return result;
     });
-};
-
-const buildTicketLink = (id = '', brand = '', url = '') => {
-    if (url) {
-        return (`<a href="${url}" target="_blank">${id}</a>`);
-    }
-    const brandUrl = brand === VRBO_BRAND ? url : `https://expedia.service-now.com/go.do?id=${id}`;
-    return (`<a href="${brandUrl}" target="_blank">${id}</a>`);
 };
 
 export const getIncidentsData = (filteredIncidents = []) => filteredIncidents

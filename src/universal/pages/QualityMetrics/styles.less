@@ -1,0 +1,67 @@
+@import '../../mixins.less';
+
+.qm-container {
+    height: 100vh;
+
+    .search-form {
+        margin: @spacing-2x 0 @spacing-2x 0;
+        padding: @spacing-3x;
+        min-height: 212px;
+        background: @color-bg-accent;
+        border-radius: @spacing-1x;
+
+        .checkboxes-container {
+            float: left;
+            width: 25%;
+
+            .portfolio-checkbox {
+                float: left;
+                width: 50%;
+            }
+        }
+
+        .actions-container {
+            float: left;
+            width: 15%;
+        }
+
+        .info-container {
+            float: left;
+            width: 60%;
+
+            .info-title {
+                position: absolute;
+                background: @color-bg-accent;
+                width: 132px;
+                margin: -12px @spacing-1x;
+
+                .info-icon {
+                    margin: 0 @spacing-1x;
+                }
+            }
+
+            .info-box {
+                border: 1px solid @color-border-contrast;
+                border-radius: @spacing-1x;
+                padding: @spacing-2x;
+                height: 172px;
+                max-height: 172px;
+                overflow-y: scroll;
+
+                .info-stat__label {
+                    font-weight: 800;
+                }
+
+                .info-stat__value {
+                    margin-bottom: @spacing-1x;
+                }
+            }
+        }
+    }
+
+    .no-results {
+        text-align: center;
+        margin-top: 32px;
+        font-size: @h2-font-size;
+    }
+}

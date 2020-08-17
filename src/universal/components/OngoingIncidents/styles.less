@@ -2,6 +2,11 @@
 
 .ongoing-incidents-label {
     margin-top: @spacing-2x;
+
+    a {
+        text-decoration: none;
+        color: #292929;
+    }
 }
 
 .ongoing-incidents {
@@ -9,6 +14,10 @@
     margin-bottom: @spacing-2x;
     overflow-y: scroll;
     z-index: 2;
+
+    .helptext {
+        z-index: 99;
+    }
 
     .Divider {
         margin-bottom: @spacing-1x;
