@@ -1,4 +1,4 @@
-import {defects, incidents, prbs} from './dataService';
+import {defects, incidents, prbs, portfolio} from './dataService';
 import {login, logout} from './oauth';
 import {bookingsUserEvents} from './bookingsUserEvents';
 import {csrUserEvents} from './csrUserEvents';
@@ -15,6 +15,7 @@ const apiRoutes = [
     prbs,
     defects,
     incidents,
+    portfolio,
     bookingsUserEvents,
     csrUserEvents,
     changeRequests,

@@ -20,66 +20,19 @@
           "hostname": "opxhub-data-service.us-east-1.prod.expedia.com",
           "protocol": "https:",
           "connectionTimeout": 30000,
-          "timeout": 30000,
-          "routes": {
-            "prbs": {
-              "path": "/v1/prbs",
-              "operation": "GET_prbs",
-              "method": "GET"
-            },
-            "incidents": {
-              "path": "/v1/incidents",
-              "operation": "GET_incidents",
-              "method": "GET"
-            },
-            "defects": {
-              "path": "/v1/defects",
-              "operation": "GET_defects",
-              "method": "GET"
-            }
-          }
+          "timeout": 30000
         },
         "test": {
-          "hostname": "opxhub-data-service.us-west-2.test.expedia.com",
+          "hostname": "opxhub-data-service.us-east-1.prod.expedia.com",
           "protocol": "https:",
-          "routes": {
-            "prbs": {
-              "path": "/v1/prbs",
-              "operation": "GET_prbs",
-              "method": "GET"
-            },
-            "incidents": {
-              "path": "/v1/incidents",
-              "operation": "GET_incidents",
-              "method": "GET"
-            },
-            "defects": {
-              "path": "/v1/defects",
-              "operation": "GET_defects",
-              "method": "GET"
-            }
-          }
+          "connectionTimeout": 30000,
+          "timeout": 30000
         },
         "prod": {
           "hostname": "opxhub-data-service.us-east-1.prod.expedia.com",
           "protocol": "https:",
-          "routes": {
-            "prbs": {
-              "path": "/v1/prbs",
-              "operation": "GET_prbs",
-              "method": "GET"
-            },
-            "incidents": {
-              "path": "/v1/incidents",
-              "operation": "GET_incidents",
-              "method": "GET"
-            },
-            "defects": {
-              "path": "/v1/defects",
-              "operation": "GET_defects",
-              "method": "GET"
-            }
-          }
+          "connectionTimeout": 30000,
+          "timeout": 30000
         }
       },
       "userEventsApiServiceConfig": {
@@ -398,6 +351,11 @@
           },
           {
             "route": "require:./routes/pages/finder",
+            "component": "require:../universal/components/App/ServerApp.js",
+            "template": "templates/welcome.hbs"
+          },
+          {
+            "route": "require:./routes/pages/quality-metrics",
             "component": "require:../universal/components/App/ServerApp.js",
             "template": "templates/welcome.hbs"
           }

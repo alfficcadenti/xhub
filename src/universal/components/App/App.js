@@ -4,14 +4,7 @@ import {Route, Switch} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Header from '../Header';
 import Feedback from '../Feedback';
-import LandingPage from '../../pages/LandingPage';
-import Impulse from '../../pages/MockupImpulse';
-
-import FunnelView from '../../pages/FunnelView';
-import Finder from '../../pages/Finder';
-import SuccessRates from '../../pages/SuccessRates';
-import Home from '../../pages/Home';
-import pages from '../../pages';
+import PAGES from '../../pages';
 import {EG_BRAND, BRANDS} from '../../constants';
 import {usePrevious} from '../../pages/hooks';
 
@@ -62,13 +55,7 @@ function App() {
             <Feedback />
             <div className="main-container">
                 <Switch>
-                    <Route path="/landing-page" render={() => <LandingPage selectedBrands={selectedBrands} onBrandChange={handleBrandChange} />} />
-                    <Route path="/funnel-view" render={() => <FunnelView selectedBrands={selectedBrands} onBrandChange={handleBrandChange} />} />
-                    <Route path="/success-rates" render={() => <SuccessRates selectedBrands={selectedBrands} onBrandChange={handleBrandChange} />} />
-                    <Route path="/home" render={() => <Home selectedBrands={selectedBrands} onBrandChange={handleBrandChange} />} />
-                    <Route path="/finder" render={() => <Finder selectedBrands={selectedBrands} onBrandChange={handleBrandChange} />} />
-                    <Route path="/impulse" render={() => <Impulse selectedBrands={selectedBrands} onBrandChange={handleBrandChange} prevSelectedBrand={prevSelectedBrand} />} />
-                    {pages.map((p) => renderRoute(p, selectedBrands, handleBrandChange, prevSelectedBrand))}
+                    {PAGES.map((p) => renderRoute(p, selectedBrands, handleBrandChange, prevSelectedBrand))}
                 </Switch>
             </div>
         </Fragment>

@@ -5,14 +5,10 @@ const getConfig = (id) => ({
     log: {collect: true}
 });
 
-const getHandler = (route) => async (req) => {
+const getHandler = ({method, operation}) => async (req) => {
     try {
-        const serverConfig = req.server.app.config.get('apiDataServiceConfig');
-        const {method, operation} = serverConfig.routes[route];
-        const client = ServiceClient.create('api-v1-data-service-get', {
-            hostname: serverConfig.hostname,
-            protocol: serverConfig.protocol,
-        });
+        const {hostname, protocol} = req.server.app.config.get('apiDataServiceConfig');
+        const client = ServiceClient.create('api-v1-data-service-get', {hostname, protocol});
         const {payload} = await client.request({
             method: 'GET',
             path: req.path,
@@ -32,19 +28,26 @@ module.exports.defects = {
     method: 'GET',
     path: '/v1/defects/{param*}',
     config: getConfig('defects-get'),
-    handler: getHandler('defects')
+    handler: getHandler({method: 'GET', operation: 'GET_DEFECTS'})
 };
 
 module.exports.incidents = {
     method: 'GET',
     path: '/v1/incidents/{param*}',
     config: getConfig('incidents-get'),
-    handler: getHandler('incidents')
+    handler: getHandler({method: 'GET', operation: 'GET_INCIDENTS'})
 };
 
 module.exports.prbs = {
     method: 'GET',
     path: '/v1/prbs/{param*}',
     config: getConfig('prbs-get'),
-    handler: getHandler('prbs')
+    handler: getHandler({method: 'GET', operation: 'GET_PRBS'})
+};
+
+module.exports.portfolio = {
+    method: 'GET',
+    path: '/v1/portfolio/{param*}',
+    config: getConfig('portfolio-get'),
+    handler: getHandler({method: 'GET', operation: 'GET_QUALITY_METRICS'})
 };
