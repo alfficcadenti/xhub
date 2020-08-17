@@ -20,8 +20,19 @@ jest.mock('react-router-dom', () => {
 });
 
 describe('<Impulse />', () => {
+    const wrapper = shallow(<Impulse selectedBrands={selectedBrands}/>);
     it('renders successfully', () => {
-        const wrapper = shallow(<Impulse selectedBrands={selectedBrands}/>);
         expect(wrapper).to.have.length(1);
+    });
+
+    it('FilterDropDown render default Selected Brand', async () => {
+        const props = wrapper.find('FilterDropDown').first().props();
+        expect(props.selectedValue).equal('All LOBs');
+    });
+
+    it('LoadingContainer should have right props', async () => {
+        const props = wrapper.find('LoadingContainer').props();
+        expect(props.isLoading).equal(true);
+        expect(props.error).equal('');
     });
 });

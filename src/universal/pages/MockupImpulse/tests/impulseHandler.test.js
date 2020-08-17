@@ -1,6 +1,5 @@
 import {expect} from 'chai';
-import {getFilters, getBrandFromImpulseMapping} from '../impulseHandler';
-
+import {getFilters, getBrandFromImpulseMapping, getQueryParam} from '../impulseHandler';
 const typeofFilter = 'lob';
 const filterResult = ['Lodging'];
 import mockFilters from './filterMock.test.json';
@@ -35,7 +34,16 @@ describe('impulseHandler', () => {
         });
     });
 
-    describe('find brand name from impulse map', () => {
+    describe('test getQueryParam', () => {
+        it('should return empty string if All LOBs passed', () => {
+            expect(getQueryParam('lob', 'All LOBs', false, '')).eql('');
+        });
+        it('should return query string if valid LOB passed', () => {
+            expect(getQueryParam('lob', 'Car', true, '')).eql('&lob=Car');
+        });
+    });
+
+    describe('finds brand name from impulse map', () => {
         it('finds in global filters and return impulse filter', () => {
             const result = getBrandFromImpulseMapping(IMPULSE_MAPPING, EXPEDIA_PARTNER_SERVICES_BRAND);
             expect(result.impulseFilter).to.be.eql('Expedia Business Services');

@@ -15,7 +15,7 @@ import {
 } from '../../constants';
 import {useIsMount} from '../hooks';
 import moment from 'moment';
-import {getFilters, getBrandFromImpulseMapping} from './impulseHandler';
+import {getFilters, getBrandQueryParam, getQueryParam} from './impulseHandler';
 import {checkResponse} from '../utils';
 
 const PREDICTION_COUNT = 'Prediction Counts';
@@ -39,14 +39,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
     const [brands, setBrands] = useState([]);
     const [lobs, setLobs] = useState([]);
     const isMount = useIsMount();
-    const brandFromMapping = getBrandFromImpulseMapping(IMPULSE_MAPPING, globalBrandName).impulseFilter;
-    const getBrandQueryParam = () => {
-        if (brandFromMapping !== ALL_BRAND_GROUP) {
-            return brandFromMapping === EGENCIA_BRAND ? `&brand=${encodeURI(brandFromMapping)}` : `&brandGroupName=${encodeURI(brandFromMapping)}`;
-        }
-        return '';
-    };
-    const getQueryParam = (key, value, condition, defaultValue = '') => condition ? `&${key}=${value}` : defaultValue;
+
     const getQueryString = (lob, brand, deviceType, bookingType, newBrand, start, end, siteUrl) => {
         let query = `?startDate=${start.format('YYYY-MM-DDThh:mm:ss')}Z&endDate=${end.format('YYYY-MM-DDThh:mm:ss')}Z`;
         query += getQueryParam('lob', lob, lob !== ALL_LOB);
@@ -54,7 +47,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
         query += getQueryParam('deviceType', deviceType, deviceType !== ALL_DEVICE_TYPES);
         query += getQueryParam('bookingType', bookingType, bookingType !== ALL_BOOKING_TYPES);
         query += getQueryParam('egSiteUrl', siteUrl, siteUrl !== ALL_EG_SITE_URL);
-        query += getBrandQueryParam();
+        query += getBrandQueryParam(globalBrandName, IMPULSE_MAPPING);
         return query;
     };
     const getFilter = () => {

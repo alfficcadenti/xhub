@@ -65,8 +65,8 @@ const Impulse = (props) => {
     }, [res]);
 
     const handleDatetimeChange = ({start: startDateTimeStr, end: endDateTimeStr}) => {
-        setStartDateTime(moment(startDateTimeStr));
-        setEndDDateTime(moment(endDateTimeStr));
+        setStartDateTime(moment(startDateTimeStr).utc());
+        setEndDDateTime(moment(endDateTimeStr).utc());
     };
 
     const renderTabs = () => {
