@@ -5,7 +5,7 @@ import {
 import Panel from '../Panel';
 import ChartModal from '../ChartModal';
 import {CHART_COLORS} from '../../../constants';
-import {formatBarChartData, getPanelDataUrl} from '../utils';
+import {formatBarChartData, getPanelDataUrl, getSelectedBarTickets} from '../utils';
 
 const OpenDefects = ({portfolios, tickets, brand}) => {
     const [isLoading, setIsLoading] = useState(false);
@@ -38,7 +38,7 @@ const OpenDefects = ({portfolios, tickets, brand}) => {
 
     const handleBarClick = (selectedBar) => {
         if (selectedBar) {
-            const selectedTickets = selectedBar.activePayload[0].payload.tickets;
+            const selectedTickets = getSelectedBarTickets(selectedBar);
             const ticketDetails = selectedTickets.map((ticketId) => tickets.find(({Key}) => ticketId === Key));
             setModalData({data: ticketDetails});
             setIsModalOpen(true);

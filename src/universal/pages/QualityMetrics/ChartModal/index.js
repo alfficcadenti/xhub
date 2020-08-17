@@ -14,7 +14,7 @@ const ChartModal = ({title = '', isOpen = false, data = [], onClose}) => {
             <h3>{title}</h3>
             <DataTable
                 data={data.data || []}
-                columns={['Portfolio', 'Key', 'Summary', 'Priority', 'Status', 'Resolution', 'Opened', 'Updated']}
+                columns={['Portfolio', 'Key', 'Summary', 'Priority', 'Status', 'Resolution', 'Opened']}
                 paginated
             />
         </Modal>

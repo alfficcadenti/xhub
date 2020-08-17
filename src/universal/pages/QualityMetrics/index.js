@@ -65,7 +65,12 @@ const QualityMetrics = ({selectedBrands}) => {
     }, []);
 
     const handlePortfoliosChange = (portfolio) => {
-        const portfolios = JSON.parse(JSON.stringify(pendingPortfolios));
+        let portfolios = [];
+        try {
+            portfolios = JSON.parse(JSON.stringify(pendingPortfolios));
+        } catch (e) {
+            setError('An error occurred when parsing portfolios.');
+        }
         const idx = portfolios.map((p) => p.value).indexOf(portfolio.value);
         if (idx >= 0) {
             portfolios.splice(idx, 1);

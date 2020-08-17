@@ -18,6 +18,14 @@ export const formatBarChartData = (data) => Object.entries(data)
         return {date, counts: totalTickets, tickets: ticketIds};
     }, []);
 
+// eslint-disable-next-line complexity
+export const getSelectedBarTickets = (selectedBar) => {
+    if (selectedBar && selectedBar.activePayload && selectedBar.activePayload[0] && selectedBar.activePayload[0].payload && selectedBar.activePayload[0].payload.tickets) {
+        return selectedBar.activePayload[0].payload.tickets;
+    }
+    return [];
+};
+
 export const getPanelDataUrl = (portfolios, panel, brand) => {
     // const baseUrl = 'https://opxhub-data-service.us-west-2.test.expedia.com/v1/portfolio';
     const baseUrl = '/v1/portfolio';
