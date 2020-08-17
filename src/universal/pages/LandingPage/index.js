@@ -89,9 +89,6 @@ const LandingPage = (props) => {
                     <TotalChart data={chartData} brands={selectedBrands}/>
                 </div>
                 <div className="ongoing-incidents-wrapper card">
-                    <a target="_blank" rel="noopener noreferrer" href="https://expedia.service-now.com/triage/Triage.do" className="ongoing-incidents-tile-link">
-                        <div className="ongoing-incidents-tile-overlay" />
-                    </a>
                     <OngoingIncidents selectedBrands={props.selectedBrands} />
                 </div>
                 {Array.isArray(CSRData) && CSRData.length ?

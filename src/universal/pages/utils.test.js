@@ -1,6 +1,7 @@
+import React from 'react';
 import {expect} from 'chai';
 import {
-    divisionToBrand, getListOfUniqueProperties, isNotEmptyString, isNotDuplicate, sortArrayByMostRecentDate, getVisiblePages
+    divisionToBrand, getListOfUniqueProperties, isNotEmptyString, isNotDuplicate, sortArrayByMostRecentDate, buildTicketLink, getVisiblePages
 } from './utils';
 import {VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_BRAND, EGENCIA_BRAND} from '../constants';
 
@@ -80,6 +81,20 @@ describe('sortArrayByMostRecentDate', () => {
         ];
         expect(sortArrayByMostRecentDate(arr, 'a').map((obj) => obj.a)).to.be.eql(['2020-06-21', '2020-05-11', '2020-05-01']);
         expect(sortArrayByMostRecentDate(arr, 'b').map((obj) => obj.b)).to.be.eql(['2020-03-03', '2020-02-02', '2010-05-02']);
+    });
+});
+
+describe('buildTicketLink()', () => {
+    it('return a href link to url if url is passed', () => {
+        expect(buildTicketLink('INC1234', '', 'www.test.com/')).to.be.eql(<a href="www.test.com/" target="_blank">{'INC1234'}</a>);
+    });
+
+    it('return a href link to homeaway Jira if url is not passed and brand is VRBO', () => {
+        expect(buildTicketLink('INC1234', 'Vrbo', '')).to.be.eql(<a href="https://jira.homeawaycorp.com/browse/INC1234" target="_blank">{'INC1234'}</a>);
+    });
+
+    it('return a href link to expedia service now if ticket is not vrbo', () => {
+        expect(buildTicketLink('INC1234', '', '')).to.be.eql(<a href="https://expedia.service-now.com/go.do?id=INC1234" target="_blank">{'INC1234'}</a>);
     });
 });
 

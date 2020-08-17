@@ -1,3 +1,4 @@
+import React from 'react';
 import {BRANDS, EXPEDIA_BRAND, VRBO_BRAND, EGENCIA_BRAND, HOTELS_COM_BRAND} from '../constants';
 import ALL_PAGES from './index';
 
@@ -111,4 +112,13 @@ export const getListOfUniqueProperties = (data = [], prop) => {
         // sort array ignoring case
     list.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
     return list;
+};
+
+export const buildTicketLink = (id = '', brand = '', url = '') => {
+    if (url) {
+        return (<a href={url} target="_blank">{id}</a>);
+    }
+    const brandInUppercase = brand && brand.toUpperCase();
+    const brandUrl = brandInUppercase === VRBO_BRAND.toUpperCase() ? `https://jira.homeawaycorp.com/browse/${id}` : `https://expedia.service-now.com/go.do?id=${id}`;
+    return (<a href={brandUrl} target="_blank">{id}</a>);
 };

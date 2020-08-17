@@ -6,7 +6,8 @@ import {DATE_FORMAT} from '../../constants';
 import moment from 'moment';
 import './styles.less';
 import {EG_BRAND} from '../../constants';
-import {checkResponse, divisionToBrand} from '../../pages/utils';
+import {checkResponse, divisionToBrand, buildTicketLink} from '../../pages/utils';
+import HelpText from '../../components/HelpText/HelpText';
 
 const fromDate = moment().subtract(2, 'months').format(DATE_FORMAT);
 const toDate = moment().format(DATE_FORMAT);
@@ -50,18 +51,22 @@ const OngoingIncidents = ({selectedBrands}) => {
     }, [selectedBrand]);
 
     const getDateDetails = (date) => moment(date).format('dddd, MMMM Do YYYY, h:mm a [GMT]Z');
-
     return (
         <Fragment>
-            <h2 className="ongoing-incidents-label">{'Ongoing Incidents'}</h2>
+            <h2 className="ongoing-incidents-label">
+                <a target="_blank" rel="noopener noreferrer" href="https://expedia.service-now.com/triage/Triage.do" className="ongoing-incidents-tile-link">
+                    <HelpText text={'Click to open Expedia Service Now Triage'} placement="bottom" />
+                </a>
+                {'Ongoing Incidents'}
+            </h2>
             <LoadingContainer isLoading={isLoading} className="ongoing-incidents">
                 {
-                    ongoingIncidents.length ? ongoingIncidents.map(({summary, priority, startDate, id}) => {
+                    ongoingIncidents.length ? ongoingIncidents.map(({summary, priority, startDate, id, brand}) => {
                         return (
                             <Divider key={id} heading={summary} id="ongoing-incident">
                                 <div key={summary} className="ongoing-incident">
                                     <div><strong>{'Summary:'}</strong><span className="ongoing-incident-info">{summary}</span></div>
-                                    <div><strong>{'Ticket:'}</strong><a target="_blank" href={`https://jira.homeawaycorp.com/browse/${id}`}><span className="ongoing-incident-info">{id}</span></a></div>
+                                    <div><strong>{'Ticket:'}</strong>{buildTicketLink(id, brand)}</div>
                                     <div><strong>{'Priority:'}</strong><span className="ongoing-incident-info">{priority}</span></div>
                                     <div><strong>{'Started at:'}</strong><span className="ongoing-incident-info">{getDateDetails(startDate)}</span></div>
                                 </div>
