@@ -19,7 +19,7 @@ const Home = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     return (
         <div className="home-container">
             <div className="home-buttons-container">
-                {getVisiblePages().map(renderButton)}
+                {getVisiblePages(selectedBrands).map(renderButton)}
             </div>
         </div>
     );

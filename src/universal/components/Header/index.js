@@ -8,10 +8,6 @@ import Search from './Search';
 import {getVisiblePages} from '../../pages/utils';
 import './styles.less';
 
-const VISIBLE_PAGES = getVisiblePages();
-
-const CATEGORIES = VISIBLE_PAGES.reduce((acc, {category}) => (acc.includes(category) ? acc : [...acc, category]), []);
-
 const DEFAULT_PAGE_INFO = {
     title: 'OpxHub',
     team: 'opex',
@@ -21,11 +17,14 @@ const DEFAULT_PAGE_INFO = {
     description: ''
 };
 
-const Header = (props) => {
+const Header = ({selectedBrands, onBrandChange, brands}) => {
     const [redirectLink, setRedirectLink] = useState(null);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [selectedPages, setSelectedPages] = useState([]);
     const searchInput = useRef(null);
+
+    const VISIBLE_PAGES = getVisiblePages(selectedBrands);
+    const CATEGORIES = VISIBLE_PAGES.reduce((acc, {category}) => (acc.includes(category) ? acc : [...acc, category]), []);
 
     const handleOnBlur = () => {
         setIsSearchOpen(false);
@@ -73,9 +72,9 @@ const Header = (props) => {
             </Link>
             {CATEGORIES.map(renderCategoryDropdown)}
             <BrandSelector
-                selectedBrands={props.selectedBrands}
-                onBrandChange={props.onBrandChange}
-                brands={props.brands}
+                selectedBrands={selectedBrands}
+                onBrandChange={onBrandChange}
+                brands={brands}
             />
             <Help info={DEFAULT_PAGE_INFO} />
             <Search

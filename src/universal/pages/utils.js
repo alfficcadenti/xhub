@@ -1,8 +1,10 @@
 import {BRANDS, EXPEDIA_BRAND, VRBO_BRAND, EGENCIA_BRAND, HOTELS_COM_BRAND} from '../constants';
 import ALL_PAGES from './index';
 
-export const getVisiblePages = () => {
-    return [...ALL_PAGES].filter(({hidden}) => !hidden);
+export const getVisiblePages = (selectedBrands, pages = [...ALL_PAGES]) => {
+    return pages.filter(({hidden, brands}) => (
+        !hidden && (!brands || brands.filter((brand) => selectedBrands.includes(brand)).length > 0)
+    ));
 };
 
 export const getPieData = (filteredDefects, property) => {

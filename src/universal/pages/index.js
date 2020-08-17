@@ -1,3 +1,4 @@
+import {HOTELS_COM_BRAND} from '../constants';
 const AAT = 'Availability & Trends';
 const PHAR = 'Platform Health & Resiliency';
 
@@ -19,6 +20,13 @@ export default [
         hidden: true
     },
     // AAT Dashboards
+    {
+        category: AAT,
+        id: 'checkout-fci',
+        link: '/checkout-fci',
+        text: 'Checkout FCI',
+        component: require('./CheckoutFCI')
+    },
     {
         category: AAT,
         id: 'impulse',
@@ -65,7 +73,7 @@ export default [
         text: 'Quality Metrics',
         component: require('./QualityMetrics'),
         main: 'Platform Health & Resiliency',
-        hidden: true,
+        brands: [HOTELS_COM_BRAND]
     },
     {
         category: PHAR,

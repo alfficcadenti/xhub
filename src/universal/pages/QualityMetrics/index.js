@@ -26,6 +26,8 @@ const QualityMetrics = ({selectedBrands}) => {
     const {search} = useLocation();
     const portfolioBrand = getPortfolioBrand(selectedBrands);
 
+    const isSupportedBrand = portfolioBrand === 'HCOM';
+
     // Query params
     const {portfolios: qsPortfolios} = qs.parse(search);
     const initialPortfolios = (Array.isArray(qsPortfolios) ? qsPortfolios : [qsPortfolios])
@@ -59,7 +61,7 @@ const QualityMetrics = ({selectedBrands}) => {
     };
 
     useEffect(() => {
-        if (selectedPortfolios.length) {
+        if (selectedPortfolios.length && isSupportedBrand) {
             fetchData();
         }
     }, []);
@@ -157,16 +159,27 @@ const QualityMetrics = ({selectedBrands}) => {
         </div>
     );
 
+    const renderBody = () => (
+        <>
+            {renderForm()}
+            {selectedPortfolios && selectedPortfolios.length
+                ? renderPanels()
+                : <div className="no-results">{'No Portfolio Selected'}</div>}
+        </>
+    );
+
     return (
         <div className="qm-container">
             <h1 className="page-title">
                 {'Quality Metrics'}
                 <HelpText className="page-info" text="Quality metrics of defects within the last 180 days." />
             </h1>
-            {renderForm()}
-            {selectedPortfolios && selectedPortfolios.length
-                ? renderPanels()
-                : <div className="no-results">{'No Portfolio Selected'}</div>}
+            {isSupportedBrand
+                ? renderBody()
+                : <div className="messaged">{`Quality Metrics for ${selectedBrands} is not yet available.
+                    The following brands are supported at this time: "Hotels.com".
+                    If you have any questions, please ping #dpi-reo-opex-all or leave a comment via our Feedback form.`}</div>
+            }
         </div>
     );
 };
