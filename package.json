@@ -205,6 +205,7 @@
     "less": "^3.9.0",
     "less-loader": "^6.0.0",
     "node-dev": "^4.0.0",
+    "node-fetch": "^2.6.0",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "pino-pretty": "^4.0.0",
     "postcss": "^7.0.27",

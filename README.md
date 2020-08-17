@@ -1,8 +1,11 @@
 # OpXHub-UI
 
-This is a repository for the application: OpXHub-UI
+A [Catalyst](https://pages.github.expedia.biz/Catalyst/information/guide/introduction) web application that retrieves, organizes, and presents operational metrics across brands. OpXhub-UI is a [React](https://reactjs.org/) web application that runs on [Hapijs](https://hapi.dev/tutorials), an enterprise-grade [node](https://nodejs.org/) server system. [Recharts](https://recharts.org/) is the primary library used for its data visualizations.
 
-- App URL:
+See our official documentation [here](https://pages.github.expedia.biz/eg-reo-opex/eg-reo-opex-docs/guide/products/availability_and_trends/opxhub_ui/)
+
+
+## App URL
 
 | Environment | Endpoints                                                                                      |
 | ----------- | ---------------------------------------------------------------------------------------------- |
@@ -12,22 +15,22 @@ This is a repository for the application: OpXHub-UI
 
 Kumo: https://console.kumo.expedia.biz/apps/opxhub-ui
 
-### Logs
 
-- Splunk:
+## Logs
 
 | Environment | Endpoints                                                                                                                                                                                                |
 | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Test        | [https://splunk.test.egmonitoring.expedia.com/en-US/app/eg-opex-opxhub/opxhub_status_code_dashboard]https://splunk.test.egmonitoring.expedia.com/en-US/app/eg-opex-opxhub/opxhub_status_code_dashboard)  |
+| Test        | [https://splunk.test.egmonitoring.expedia.com/en-US/app/eg-opex-opxhub/opxhub_status_code_dashboard](https://splunk.test.egmonitoring.expedia.com/en-US/app/eg-opex-opxhub/opxhub_status_code_dashboard)  |
 | Prod        | [https://splunk.prod.egmonitoring.expedia.com/en-US/app/eg-opex-opxhub/opxhub_status_code_dashboard](https://splunk.prod.egmonitoring.expedia.com/en-US/app/eg-opex-opxhub/opxhub_status_code_dashboard) |
 
-### Monitoring
 
-- Grafana Dashboard:
+## Monitoring
+
   | Environment | Endpoints |
   | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-  | Test | [https://grafana.test.expedia.com/d/ZPlMgQyZz/opxhub-ui-monitoring-dashboard?orgId=1&from=now-1d&to=now]https://grafana.test.expedia.com/d/ZPlMgQyZz/opxhub-ui-monitoring-dashboard?orgId=1&from=now-1d&to=now) |
+  | Test | [https://grafana.test.expedia.com/d/ZPlMgQyZz/opxhub-ui-monitoring-dashboard?orgId=1&from=now-1d&to=now](https://grafana.test.expedia.com/d/ZPlMgQyZz/opxhub-ui-monitoring-dashboard?orgId=1&from=now-1d&to=now) |
   | Prod | [https://grafana.prod.expedia.com/d/rGyxu1mGz/opxhub-ui-monitoring-dashboard?orgId=1&from=now-1d&to=now](https://grafana.prod.expedia.com/d/rGyxu1mGz/opxhub-ui-monitoring-dashboard?orgId=1&from=now-1d&to=now) |
+
 
 ## Development
 
@@ -62,3 +65,8 @@ Kumo: https://console.kumo.expedia.biz/apps/opxhub-ui
    ```
 
 5. Navigate to `localhost:8080`
+
+
+## Contributing
+
+See our official documentation [here](https://pages.github.expedia.biz/eg-reo-opex/eg-reo-opex-docs/guide/products/availability_and_trends/opxhub_ui/)

@@ -5,10 +5,9 @@ import {Dropdown} from '@homeaway/react-dropdown';
 import BrandSelector from './BrandSelector';
 import Help from './Help';
 import Search from './Search';
-import PAGES from '../../pages';
+import {getVisiblePages} from '../../pages/utils';
 import './styles.less';
 
-const CATEGORIES = PAGES.reduce((acc, {category}) => (acc.includes(category) ? acc : [...acc, category]), []);
 const DEFAULT_PAGE_INFO = {
     title: 'OpxHub',
     team: 'opex',
@@ -18,11 +17,14 @@ const DEFAULT_PAGE_INFO = {
     description: ''
 };
 
-const Header = (props) => {
+const Header = ({selectedBrands, onBrandChange, brands}) => {
     const [redirectLink, setRedirectLink] = useState(null);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [selectedPages, setSelectedPages] = useState([]);
     const searchInput = useRef(null);
+
+    const VISIBLE_PAGES = getVisiblePages(selectedBrands);
+    const CATEGORIES = VISIBLE_PAGES.reduce((acc, {category}) => (acc.includes(category) ? acc : [...acc, category]), []);
 
     const handleOnBlur = () => {
         setIsSearchOpen(false);
@@ -55,7 +57,7 @@ const Header = (props) => {
             className="category-dropdown"
             closeAfterContentClick
         >
-            {PAGES
+            {VISIBLE_PAGES
                 .filter((p) => p.category === category)
                 .map((p) => (<li key={p.text}><Link to={p.link} className="category-dropdown-item">{p.text}</Link></li>))
             }
@@ -70,9 +72,9 @@ const Header = (props) => {
             </Link>
             {CATEGORIES.map(renderCategoryDropdown)}
             <BrandSelector
-                selectedBrands={props.selectedBrands}
-                onBrandChange={props.onBrandChange}
-                brands={props.brands}
+                selectedBrands={selectedBrands}
+                onBrandChange={onBrandChange}
+                brands={brands}
             />
             <Help info={DEFAULT_PAGE_INFO} />
             <Search
@@ -82,7 +84,7 @@ const Header = (props) => {
                 onBlur={handleOnBlur}
                 onToggleSearch={handleToggleSearch}
                 selectedPages={selectedPages}
-                options={PAGES.map(({text, link}) => ({label: text, value: link}))}
+                options={VISIBLE_PAGES.map(({text, link}) => ({label: text, value: link}))}
             />
         </div>
     );

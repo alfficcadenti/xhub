@@ -1,6 +1,7 @@
+import React from 'react';
 import {expect} from 'chai';
 import {
-    divisionToBrand, getListOfUniqueProperties, isNotEmptyString, isNotDuplicate, sortArrayByMostRecentDate
+    divisionToBrand, getListOfUniqueProperties, isNotEmptyString, isNotDuplicate, sortArrayByMostRecentDate, buildTicketLink, getVisiblePages
 } from './utils';
 import {VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_BRAND, EGENCIA_BRAND} from '../constants';
 
@@ -80,5 +81,38 @@ describe('sortArrayByMostRecentDate', () => {
         ];
         expect(sortArrayByMostRecentDate(arr, 'a').map((obj) => obj.a)).to.be.eql(['2020-06-21', '2020-05-11', '2020-05-01']);
         expect(sortArrayByMostRecentDate(arr, 'b').map((obj) => obj.b)).to.be.eql(['2020-03-03', '2020-02-02', '2010-05-02']);
+    });
+});
+
+describe('buildTicketLink()', () => {
+    it('return a href link to url if url is passed', () => {
+        expect(buildTicketLink('INC1234', '', 'www.test.com/')).to.be.eql(<a href="www.test.com/" target="_blank">{'INC1234'}</a>);
+    });
+
+    it('return a href link to homeaway Jira if url is not passed and brand is VRBO', () => {
+        expect(buildTicketLink('INC1234', 'Vrbo', '')).to.be.eql(<a href="https://jira.homeawaycorp.com/browse/INC1234" target="_blank">{'INC1234'}</a>);
+    });
+
+    it('return a href link to expedia service now if ticket is not vrbo', () => {
+        expect(buildTicketLink('INC1234', '', '')).to.be.eql(<a href="https://expedia.service-now.com/go.do?id=INC1234" target="_blank">{'INC1234'}</a>);
+    });
+});
+
+describe('getVisiblePages', () => {
+    it('displays only visible pages', () => {
+        const visibleIds = ['visible-a', 'visible-b'];
+        const pages = [{id: 'hidden', hidden: true}, {id: visibleIds[0], hidden: false}, {id: visibleIds[1]}];
+        const result = getVisiblePages([VRBO_BRAND], pages);
+        expect(result.length).to.be.equal(2);
+        expect(result[0].id).to.be.equal(visibleIds[0]);
+        expect(result[1].id).to.be.equal(visibleIds[1]);
+    });
+    it('displays pages be whitelisted brands', () => {
+        const visibleIds = ['brand-a', 'brand-b'];
+        const pages = [{id: visibleIds[0], brands: [VRBO_BRAND]}, {id: 'hidden', brands: [HOTELS_COM_BRAND]}, {id: visibleIds[1]}];
+        const result = getVisiblePages([VRBO_BRAND], pages);
+        expect(result.length).to.be.equal(2);
+        expect(result[0].id).to.be.equal(visibleIds[0]);
+        expect(result[1].id).to.be.equal(visibleIds[1]);
     });
 });
