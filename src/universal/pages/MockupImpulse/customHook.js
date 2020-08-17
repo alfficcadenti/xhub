@@ -69,13 +69,11 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
                 setDeviceTypes([ALL_DEVICE_TYPES, ...all.getFilters(respJson, 'deviceType')[0]]);
                 setBrands([ALL_BRANDS, ...all.getFilters(respJson, 'brand')[0]]);
                 setLobs([ALL_LOB, ...all.getFilters(respJson, 'lob')[0]]);
-
             });
-
     };
     const getData = () => {
         setIsLoading(true);
-        fetch(`/user-events-api/v1/bookings/count${getQueryString(selectedLob, selectedBrand, selectedDeviceType, selectedBookingType, globalBrandName, startDate, endDate)}`)
+        fetch(`/user-events-api/v1/bookings/count${getQueryString(selectedLob, selectedBrand, selectedDeviceType, selectedBookingType, globalBrandName, startDate, endDate, selectedEGSiteURL)}`)
             .then((result) => {
                 return result.json();
             }
