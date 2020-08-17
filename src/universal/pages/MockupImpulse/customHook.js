@@ -65,6 +65,9 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
                 setDeviceTypes([ALL_DEVICE_TYPES, ...getFilters(respJson, 'deviceType')[0]]);
                 setBrands([ALL_BRANDS, ...getFilters(respJson, 'brand')[0]]);
                 setLobs([ALL_LOB, ...getFilters(respJson, 'lob')[0]]);
+            }).catch((err) => {
+                setError('No data found for this selection.');
+                console.error(err);
             });
     };
     const getData = () => {
@@ -96,7 +99,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
             });
     };
     useEffect(() => {
-        if (globalBrandName !== prevBrand) {
+        if (!isApplyClicked && globalBrandName !== prevBrand) {
             getFilter();
         }
         if (isMount || isApplyClicked) {
