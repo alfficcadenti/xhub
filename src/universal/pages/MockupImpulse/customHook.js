@@ -15,7 +15,8 @@ import {
 } from '../../constants';
 import {useIsMount} from '../hooks';
 import moment from 'moment';
-import all from './implusehandler';
+import {getFilters, getBrandFromImpulseMapping} from './impulseHandler';
+import {checkResponse} from '../utils';
 
 const PREDICTION_COUNT = 'Prediction Counts';
 const BOOKING_COUNT = 'Booking Counts';
@@ -38,7 +39,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
     const [brands, setBrands] = useState([]);
     const [lobs, setLobs] = useState([]);
     const isMount = useIsMount();
-    const brandFromMapping = all.getBrandFromImpulseMapping(IMPULSE_MAPPING, globalBrandName).impulseFilter;
+    const brandFromMapping = getBrandFromImpulseMapping(IMPULSE_MAPPING, globalBrandName).impulseFilter;
     const getBrandQueryParam = () => {
         if (brandFromMapping !== ALL_BRAND_GROUP) {
             return brandFromMapping === EGENCIA_BRAND ? `&brand=${encodeURI(brandFromMapping)}` : `&brandGroupName=${encodeURI(brandFromMapping)}`;
@@ -57,18 +58,14 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
         return query;
     };
     const getFilter = () => {
-
         fetch(`/user-events-api/v1/bookings/filters?filter=lob,brand,egSiteUrl,deviceType,bookingType,brandGroupName${getBrandQueryParam()}`)
-            .then((result) => {
-                return result.json();
-            }
-            )
+            .then(checkResponse)
             .then((respJson) => {
-                setBookingDevices([ALL_BOOKING_TYPES, ...all.getFilters(respJson, 'bookingType')[0]]);
-                setEgSiteUrls([ALL_EG_SITE_URL, ...all.getFilters(respJson, 'egSiteUrl')[0]]);
-                setDeviceTypes([ALL_DEVICE_TYPES, ...all.getFilters(respJson, 'deviceType')[0]]);
-                setBrands([ALL_BRANDS, ...all.getFilters(respJson, 'brand')[0]]);
-                setLobs([ALL_LOB, ...all.getFilters(respJson, 'lob')[0]]);
+                setBookingDevices([ALL_BOOKING_TYPES, ...getFilters(respJson, 'bookingType')[0]]);
+                setEgSiteUrls([ALL_EG_SITE_URL, ...getFilters(respJson, 'egSiteUrl')[0]]);
+                setDeviceTypes([ALL_DEVICE_TYPES, ...getFilters(respJson, 'deviceType')[0]]);
+                setBrands([ALL_BRANDS, ...getFilters(respJson, 'brand')[0]]);
+                setLobs([ALL_LOB, ...getFilters(respJson, 'lob')[0]]);
             });
     };
     const getData = () => {
@@ -79,11 +76,11 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
             }
             )
             .then((respJson) => {
-                const chartData = respJson.map((items) => {
+                const chartData = respJson.map((item) => {
                     return {
-                        time: moment(items.time).format('MM/DD HH:mm'),
-                        [BOOKING_COUNT]: items.count,
-                        [PREDICTION_COUNT]: items.prediction.weightedCount
+                        time: moment(item.time).format('MM/DD HH:mm'),
+                        [BOOKING_COUNT]: item.count,
+                        [PREDICTION_COUNT]: item.prediction.weightedCount
                     };
                 });
                 return chartData;
