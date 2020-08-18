@@ -57,7 +57,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
         return query;
     };
     const getFilter = () => {
-        fetch(`/v1/bookings/filters?filter=lob,brand,egSiteUrl,deviceType,bookingType,brandGroupName${getBrandQueryParam()}`)
+        fetch(`http://localhost:8082/v1/bookings/filters?filter=lob,brand,egSiteUrl,deviceType,bookingType,brandGroupName${getBrandQueryParam()}`)
             .then(checkResponse)
             .then((respJson) => {
                 setBookingDevices([ALL_BOOKING_TYPES, ...getFilters(respJson, 'bookingType')[0]]);
@@ -71,7 +71,8 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
     };
     const getData = () => {
         setIsLoading(true);
-        fetch(`/v1/bookings/count${getQueryString(selectedLob, selectedBrand, selectedDeviceType, selectedBookingType, globalBrandName, startDate, endDate, selectedEGSiteURL)}`)
+
+        fetch(`http://localhost:8082/v1/bookings/count${getQueryString(selectedLob, selectedBrand, selectedDeviceType, selectedBookingType, globalBrandName, startDate, endDate, selectedEGSiteURL)}`)
             .then((result) => {
                 return result.json();
             }
@@ -98,10 +99,11 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
             });
     };
     useEffect(() => {
-        if (!isApplyClicked && globalBrandName !== prevBrand) {
+        if (isMount) {
+            getData();
             getFilter();
         }
-        if (isMount || isApplyClicked) {
+        if (isApplyClicked) {
             getData();
         }
         return () => {
