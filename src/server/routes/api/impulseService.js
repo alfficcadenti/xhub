@@ -8,14 +8,10 @@ const getConfig = (id) => {
         }
     };
 };
-const getHandler = (route) => async (req) => {
+const getHandler = ({method, operation}) => async (req) => {
     try {
-        const serverConfig = req.server.app.config.get('userEventsApiServiceConfig');
-        const {method, operation} = serverConfig.routes[route];
-        const client = ServiceClient.create('impulse-booking-data-api-v1-get', {
-            hostname: serverConfig.hostname,
-            protocol: serverConfig.protocol,
-        });
+        const {hostname, protocol} = req.server.app.config.get('userEventsApiServiceConfig');
+        const client = ServiceClient.create('impulse-booking-data-api-v1-get', {hostname, protocol});
         const {payload} = await client.request({
             method: 'GET',
             path: req.path,
@@ -32,15 +28,15 @@ const getHandler = (route) => async (req) => {
 
 module.exports.impulseFiltersService = {
     method: 'GET',
-    path: '/user-events-api/v1/bookings/filters/{param*}',
+    path: '/v1/bookings/filters/{param*}',
     config: getConfig('impulse-bookings-data-api-v1-get'),
-    handler: getHandler('filtersImpulse')
+    handler: getHandler({method: 'GET', operation: 'filtersImpulse'})
 };
 
 module.exports.impulseBookingDataService = {
     method: 'GET',
-    path: '/user-events-api/v1/bookings/count/{param*}',
+    path: '/v1/bookings/count/{param*}',
     config: getConfig('impulse-filters-data-api-v1-get'),
-    handler: getHandler('bookingsImpulse')
+    handler: getHandler({method: 'GET', operation: 'bookingsImpulse'})
 };
 
