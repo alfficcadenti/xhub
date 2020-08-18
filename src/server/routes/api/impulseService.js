@@ -29,14 +29,14 @@ const getHandler = ({method, operation}) => async (req) => {
 module.exports.impulseFiltersService = {
     method: 'GET',
     path: '/v1/bookings/filters/{param*}',
-    config: getConfig('impulse-bookings-data-api-v1-get'),
+    config: getConfig('impulse-filters-data-api-v1-get'),
     handler: getHandler({method: 'GET', operation: 'filtersImpulse'})
 };
 
 module.exports.impulseBookingDataService = {
     method: 'GET',
     path: '/v1/bookings/count/{param*}',
-    config: getConfig('impulse-filters-data-api-v1-get'),
+    config: getConfig('impulse-bookings-data-api-v1-get'),
     handler: getHandler({method: 'GET', operation: 'bookingsImpulse'})
 };
 
