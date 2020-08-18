@@ -57,6 +57,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
         return query;
     };
     const getFilter = () => {
+
         fetch(`/v1/bookings/filters?filter=lob,brand,egSiteUrl,deviceType,bookingType,brandGroupName${getBrandQueryParam()}`)
             .then(checkResponse)
             .then((respJson) => {
