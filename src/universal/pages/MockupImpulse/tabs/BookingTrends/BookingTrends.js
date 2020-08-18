@@ -1,7 +1,7 @@
 import React from 'react';
 import {Area, AreaChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
 import './styles.less';
-
+import moment from 'moment';
 const BOOKING_CHART_COLOR = '#1478F7';
 const PREDICTION_CHART_COLOR = '#c9405b';
 const PREDICTION_COUNT = 'Prediction Counts';
@@ -22,6 +22,22 @@ const IMPULSE_CHART_TYPE = [
     }
 ];
 
+const formatToolTimeTime = (date) => moment(new Date(date)).format('MM/DD HH:mm');
+
+const CustomTooltip = ({active, payload}) => {
+    const TIMEZONE = moment().tz(moment.tz.guess()).format('z');
+    if (active && payload && payload[0] && payload[0].payload) {
+        return (<div className="custom-tooltip">
+            <span className="label">{`${formatToolTimeTime(payload[0].payload.time)} ${TIMEZONE}`}</span>
+            {payload.map((item) => (
+                <div>
+                    <span className="label">{`${item.dataKey} : ${item.value}`}</span>
+                </div>
+            ))}
+        </div>);
+    }
+    return null;
+};
 
 const BookingTrends = ({data = []}) => {
     const getGradient = ({key, color}) => {
@@ -52,7 +68,7 @@ const BookingTrends = ({data = []}) => {
                     <XAxis dataKey="time" tick={{fontSize: 10}}/>
                     <YAxis tick={{fontSize: 10}}/>
                     <CartesianGrid strokeDasharray="3 3"/>
-                    <Tooltip/>
+                    <Tooltip content={<CustomTooltip/>}/>
                     {IMPULSE_CHART_TYPE.map((item) =>
                         renderChart(item)
                     )}

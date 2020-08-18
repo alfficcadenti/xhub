@@ -8,6 +8,7 @@ export const ALL_STATUSES_OPTION = 'All Statuses';
 export const ALL_TAGS_OPTION = 'All Tags';
 export const ALL_TAGS = ['cost-optimization', 'covid-19'];
 export const ALL_LOB = 'All LOBs';
+export const ALL_EG_SITE_URL = 'All Site URLs';
 export const ALL_BRANDS = 'All Brands';
 export const ALL_BRAND_GROUP = 'All Brand Group';
 export const FETCH_OPTION = {Accept: 'application/json', 'Content-Type': 'application/json'};
@@ -26,7 +27,7 @@ export const CHART_COLORS = ['#3366cc', '#dc3912', '#ff9900', '#109618', '#99009
 export const EG_BRAND = 'Expedia Group';
 export const BRANDS_LIST = ['Brand Expedia', 'CheapTickets', 'Egencia', 'Expedia Partner Solutions', 'HomeAway', 'Hotels.com', 'Hotwire', 'Orbitz', 'Travelocity', 'Wotif', 'eBookers'];
 export const ALL_DEVICE_TYPES = 'All Devices';
-export const ALL_BOOKING_TYPES = 'ALL Booking Types';
+export const ALL_BOOKING_TYPES = 'All Booking Types';
 export const DEVICE_TYPES = [
     'API',
     'Agent Tool',

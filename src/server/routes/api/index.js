@@ -4,7 +4,7 @@ import {bookingsUserEvents} from './bookingsUserEvents';
 import {csrUserEvents} from './csrUserEvents';
 import {changeRequests} from './changeRequests';
 import {pageViewsUserEvents} from './pageViews';
-import {impulseBookingDataService} from './impulseService';
+import {impulseBookingDataService, impulseFiltersService} from './impulseService';
 import {funnelViewUserEvents} from './funnelView';
 import {annotations} from './annotations';
 import {productMapping} from './productMapping';
@@ -23,7 +23,8 @@ const apiRoutes = [
     impulseBookingDataService,
     funnelViewUserEvents,
     annotations,
-    productMapping
+    productMapping,
+    impulseFiltersService
 ];
 
 export default apiRoutes;

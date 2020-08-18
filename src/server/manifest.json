@@ -65,6 +65,11 @@
               "path": "/v1/funnelView",
               "method": "GET",
               "operation": "GET_funnel_view_data"
+            },
+            "filtersImpulse": {
+              "path": "/v1/bookings/filters",
+              "method": "GET",
+              "operation": "GET_booking_data"
             }
           }
         },
@@ -96,6 +101,11 @@
               "path": "/v1/funnelView",
               "method": "GET",
               "operation": "GET_funnel_view_data"
+            },
+            "filtersImpulse": {
+              "path": "/v1/bookings/filters",
+              "method": "GET",
+              "operation": "GET_booking_data"
             }
           }
         },
@@ -127,6 +137,11 @@
               "path": "/v1/funnelView",
               "method": "GET",
               "operation": "GET_funnel_view_data"
+            },
+            "filtersImpulse": {
+              "path": "/v1/bookings/filters",
+              "method": "GET",
+              "operation": "GET_booking_data"
             }
           }
         },
@@ -158,6 +173,11 @@
               "path": "/v1/funnelView",
               "method": "GET",
               "operation": "GET_funnel_view_data"
+            },
+            "filtersImpulse": {
+              "path": "/v1/bookings/filters",
+              "method": "GET",
+              "operation": "GET_filters_data"
             }
           }
         }

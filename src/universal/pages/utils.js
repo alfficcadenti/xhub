@@ -109,7 +109,7 @@ export const getListOfUniqueProperties = (data = [], prop) => {
             }
             return acc;
         }, new Set()));
-        // sort array ignoring case
+    // sort array ignoring case
     list.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
     return list;
 };
