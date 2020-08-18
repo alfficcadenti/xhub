@@ -47,7 +47,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
         return '';
     };
     const getQueryString = (lob, brand, deviceType, bookingType, newBrand, start, end, siteUrl) => {
-        let query = `?startDate=${start.format('YYYY-MM-DDThh:mm:ss')}Z&endDate=${end.format('YYYY-MM-DDThh:mm:ss')}Z`;
+        let query = `?startDate=${start.format('YYYY-MM-DDTHH:mm:ss')}Z&endDate=${end.format('YYYY-MM-DDTHH:mm:ss')}Z`;
         query += getQueryParam('lob', lob, lob !== ALL_LOB);
         query += getQueryParam('brand', brand, brand !== ALL_BRANDS);
         query += getQueryParam('deviceType', deviceType, deviceType !== ALL_DEVICE_TYPES);
@@ -102,8 +102,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
         if (isMount) {
             getData();
             getFilter();
-        }
-        if (isApplyClicked) {
+        } else if (isApplyClicked) {
             getData();
         }
         return () => {
