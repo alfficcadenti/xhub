@@ -13,6 +13,6 @@ describe('<Header />', () => {
     it('renders Platform Health and Availability dropdown menus', () => {
         const wrapper = mount(<BrowserRouter><Header selectedBrands={['EG']} onBrandChange={sinon.spy} brands={validBrands} /></BrowserRouter>);
         expect(wrapper.find('[id="Platform Health & Resiliency-dropdown--container"]').children()).to.have.length(4);
-        expect(wrapper.find('[id="Availability & Trends-dropdown--container"]').children()).to.have.length(3);
+        expect(wrapper.find('[id="Availability & Trends-dropdown--container"]').children()).to.have.length(2);
     });
 });

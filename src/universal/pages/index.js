@@ -1,4 +1,4 @@
-import {HOTELS_COM_BRAND} from '../constants';
+import {EXPEDIA_BRAND, HOTELS_COM_BRAND} from '../constants';
 const AAT = 'Availability & Trends';
 const PHAR = 'Platform Health & Resiliency';
 
@@ -25,7 +25,8 @@ export default [
         id: 'checkout-fci',
         link: '/checkout-fci',
         text: 'Checkout FCI',
-        component: require('./CheckoutFCI')
+        component: require('./CheckoutFCI'),
+        brands: [EXPEDIA_BRAND]
     },
     {
         category: AAT,
