@@ -9,11 +9,16 @@
         width: 100%;
     }
 
-    &.fixed-height .chart-container,
-    &.fixed-height .table-container {
+    &.fixed-height .chart-tile {
         height: 400px;
         max-height: 400px;
-        overflow-y: scroll;
+
+        .chart-container,
+        .table-container {
+            height: 400px;
+            max-height: 400px;
+            overflow-y: scroll;
+        }
     }
 
     .tooltip-container {
@@ -53,5 +58,39 @@
                 font-size: @small-font-size;
             }
         }
+    }
+
+    .count-link {
+        color: @color-link-default;
+        cursor: pointer;
+
+        &:hover {
+            color: @color-link-hover;
+        }
+    }
+
+    .table-footer {
+        overflow: hidden;
+        padding: @spacing-1x 0;
+        font-size: @font-size-xsmall;
+        line-height: @small-font-line-height;
+
+        p {
+            white-space: nowrap;
+            margin: 0;
+
+            &.float-right {
+                float: right;
+            }
+
+            &.float-left {
+                float: left;
+            }
+        }
+    }
+
+    .chart-message {
+        margin-top: 120px;
+        text-align: center;
     }
 }

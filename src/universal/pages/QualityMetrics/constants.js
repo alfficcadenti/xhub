@@ -40,6 +40,18 @@ export const PORTFOLIOS = [
     }
 ];
 
+export const P1_LABEL = 'P1';
+export const P2_LABEL = 'P2';
+export const P3_LABEL = 'P3';
+export const P4_LABEL = 'P4';
+export const PRIORITY_LABELS = [P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL];
+export const PRIORITY_COLORS = {
+    [P1_LABEL]: '#dc3912',
+    [P2_LABEL]: '#ff9900',
+    [P3_LABEL]: '#109618',
+    [P4_LABEL]: '#3366cc'
+};
+
 export const SLA_COLUMNS = [
     'Priority',
     'p1',

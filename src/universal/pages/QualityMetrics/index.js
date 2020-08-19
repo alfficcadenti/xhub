@@ -6,12 +6,12 @@ import {QUESTION__16} from '@homeaway/svg-defs';
 import {Checkbox} from '@homeaway/react-form-components';
 import LoadingContainer from '../../components/LoadingContainer';
 import HelpText from '../../components/HelpText/HelpText';
-import OpenDefects from './Panels/OpenDefects';
-import OpenDefectsPastSLA from './Panels/OpenDefectsPastSLA';
+import BarChartPanel from './Panels/BarChartPanel';
+import TwoDimensionalPanel from './Panels/TwoDimensionalPanel';
 import SLADefinitions from './Panels/SLADefinitions';
 import {PORTFOLIOS} from './constants';
 import {getBrand} from '../utils';
-import {getPanelDataUrl, formatTickets} from './utils';
+import {getPanelDataUrl} from './utils';
 import './styles.less';
 
 const getPortfolioBrand = (selectedBrands) => {
@@ -41,22 +41,36 @@ const QualityMetrics = ({selectedBrands}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState();
 
+    const [TDData, setTDData] = useState({});
+    const [isTDDataLoading, setIsTDDataLoading] = useState(true);
+    const [TDDataError, setTDDataError] = useState();
+
     const fetchData = () => {
         setIsLoading(true);
+        const brandQuery = `?selectedBrand=${selectedBrands}`;
         const query = pendingPortfolios.length
-            ? `?portfolios=${pendingPortfolios.map((p) => p.value).join('&portfolios=')}`
-            : '';
+            ? `${brandQuery}&portfolios=${pendingPortfolios.map((p) => p.value).join('&portfolios=')}`
+            : brandQuery;
         history.push(`/quality-metrics${query}`);
-        fetch(getPanelDataUrl(pendingPortfolios))
+        fetch(getPanelDataUrl(pendingPortfolios, portfolioBrand))
             .then((data) => data.json())
             .then((allTickets) => {
-                const formattedTickets = formatTickets(allTickets);
-                setTickets(formattedTickets);
+                setTickets(allTickets);
                 setIsLoading(false);
             })
             .catch((e) => {
                 setError(e.message);
                 setIsLoading(false);
+            });
+        fetch(getPanelDataUrl(selectedPortfolios, portfolioBrand, 'twoDimensionalStatistics'))
+            .then((data) => data.json())
+            .then((response) => {
+                setTDData(response.data || {});
+                setIsTDDataLoading(false);
+            })
+            .catch((e) => {
+                setTDDataError(e.message);
+                setIsTDDataLoading(false);
             });
     };
 
@@ -152,9 +166,69 @@ const QualityMetrics = ({selectedBrands}) => {
     const renderPanels = () => (
         <div className="panels-container">
             <LoadingContainer isLoading={isLoading} error={error}>
-                <OpenDefectsPastSLA portfolios={selectedPortfolios} tickets={tickets} brand={portfolioBrand} />
-                <OpenDefects portfolios={selectedPortfolios} tickets={tickets} brand={portfolioBrand} />
+                <BarChartPanel
+                    title="Open Defects Past SLA"
+                    tickets={tickets}
+                    dataUrl={getPanelDataUrl(selectedPortfolios, portfolioBrand, 'opendefectspastsla')}
+                    dataKey="openDefectsPastSla"
+                />
+                <BarChartPanel
+                    title="Open Defects"
+                    tickets={tickets}
+                    dataUrl={getPanelDataUrl(selectedPortfolios, portfolioBrand, 'opendefects')}
+                    dataKey="openDefects"
+                />
                 <SLADefinitions />
+                <TwoDimensionalPanel
+                    title="Two Dimensional Filter Statistics - Defects Past SLA"
+                    tickets={tickets}
+                    data={TDData}
+                    portfolios={selectedPortfolios}
+                    dataKey="pastSLA"
+                    isLoading={isTDDataLoading}
+                    error={TDDataError}
+                    isFixedHeight
+                />
+                <TwoDimensionalPanel
+                    title="Two Dimensional Filter Statistics - Defects Approaching SLA"
+                    tickets={tickets}
+                    data={TDData}
+                    portfolios={selectedPortfolios}
+                    dataKey="approachingSLA"
+                    isLoading={isTDDataLoading}
+                    error={TDDataError}
+                    isFixedHeight
+                />
+                <TwoDimensionalPanel
+                    title="Two Dimensional Filter Statistics - Open Bugs"
+                    tickets={tickets}
+                    data={TDData}
+                    portfolios={selectedPortfolios}
+                    dataKey="openBugs"
+                    isLoading={isTDDataLoading}
+                    error={TDDataError}
+                    isFixedHeight
+                />
+                <TwoDimensionalPanel
+                    title="Two Dimensional Filter Statistics - Open Bugs with Salesforce Cases"
+                    tickets={tickets}
+                    data={TDData}
+                    portfolios={selectedPortfolios}
+                    dataKey="openBugsWithSalesforceCases"
+                    isLoading={isTDDataLoading}
+                    error={TDDataError}
+                    isFixedHeight
+                />
+                <TwoDimensionalPanel
+                    title="Two Dimensional Filter Statistics - Bugs needing triage"
+                    tickets={tickets}
+                    data={TDData}
+                    portfolios={selectedPortfolios}
+                    dataKey="bugsNeedingTriage"
+                    isLoading={isTDDataLoading}
+                    error={TDDataError}
+                    fullWidth
+                />
             </LoadingContainer>
         </div>
     );
