@@ -43,7 +43,7 @@ const AnnotationsFilterPanel = ({
                 });
         };
         fetchProductMapping();
-    }, []);
+    }, [start, end]);
 
     const handleProductsOnChange = (event) => {
         const newSelectedProducts = (event || []).map((item) => item.value);
