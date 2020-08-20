@@ -13,7 +13,10 @@ const getHandler = ({method, operation}) => async (req) => {
             method: 'GET',
             path: req.path,
             operation,
-            queryParams: req.url.query ? req.url.query : {}
+            queryParams: req.url.query ? req.url.query : {},
+            timeout: 20000,
+            connectionTimeout: 20000,
+            maxConnectRetry: 1
         });
         req.log('[API-REQUEST-DETAILS]', method, operation);
         return payload;
