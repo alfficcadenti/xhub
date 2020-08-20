@@ -23,6 +23,7 @@ const Header = ({selectedBrands, onBrandChange, brands}) => {
     const [selectedPages, setSelectedPages] = useState([]);
     const searchInput = useRef(null);
 
+    const BRAND_QUERY = `?selectedBrand=${selectedBrands[0]}`;
     const VISIBLE_PAGES = getVisiblePages(selectedBrands);
     const CATEGORIES = VISIBLE_PAGES.reduce((acc, {category}) => (acc.includes(category) ? acc : [...acc, category]), []);
 
@@ -35,7 +36,7 @@ const Header = ({selectedBrands, onBrandChange, brands}) => {
     const handleOnSearch = ({value}) => {
         if (value) {
             handleOnBlur();
-            setRedirectLink(value);
+            setRedirectLink(`${value}${BRAND_QUERY}`);
         }
     };
 
@@ -59,7 +60,7 @@ const Header = ({selectedBrands, onBrandChange, brands}) => {
         >
             {VISIBLE_PAGES
                 .filter((p) => p.category === category)
-                .map((p) => (<li key={p.text}><Link to={p.link} className="category-dropdown-item">{p.text}</Link></li>))
+                .map((p) => (<li key={p.text}><Link to={`${p.link}${BRAND_QUERY}`} className="category-dropdown-item">{p.text}</Link></li>))
             }
         </Dropdown>
     );
@@ -67,7 +68,7 @@ const Header = ({selectedBrands, onBrandChange, brands}) => {
     return (
         <div className="header">
             {redirectLink && <Redirect push to={redirectLink} />}
-            <Link to="/home" className="header--logo" >
+            <Link to={`/home${BRAND_QUERY}`} className="header--logo" >
                 {'OpXHub'}
             </Link>
             {CATEGORIES.map(renderCategoryDropdown)}
