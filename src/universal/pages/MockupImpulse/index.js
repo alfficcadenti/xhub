@@ -6,6 +6,8 @@ import FilterDropDown from '../../components/FilterDropDown';
 import {BookingTrends} from './tabs/index';
 import {useQueryParamChange, useSelectedBrand} from '../hooks';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
+import {Checkbox} from '@homeaway/react-form-components';
+
 import moment from 'moment/moment';
 import {
     ALL_LOB,
@@ -39,7 +41,7 @@ const Impulse = (props) => {
     const [selectedDeviceType, setSelectedDeviceType] = useState(ALL_DEVICE_TYPES);
     const [selectedBookingType, setSelectedBookingType] = useState(ALL_BOOKING_TYPES);
     const [selectedEGSiteURL, setSelectedEGSiteURL] = useState(ALL_EG_SITE_URL);
-
+    const [isUTC, setIsUTC] = useState(false);
     useQueryParamChange(props.selectedBrands[0], props.onBrandChange);
     useSelectedBrand(props.selectedBrands[0], props.onBrandChange, props.prevSelectedBrand);
     const [isLoading, res, error, bookingTypes, egSiteUrl, deviceTypes, brands, lobs] = useFetchBlipData(isApplyClicked, setIsApplyClicked, startDateTime, endDateTime, selectedLob, selectedBrand, selectedDeviceType, selectedBookingType, newBrand, props.prevSelectedBrand, selectedEGSiteURL);
@@ -72,9 +74,9 @@ const Impulse = (props) => {
     const renderTabs = () => {
         switch (activeIndex) {
             case 0:
-                return <BookingTrends data={allData}/>;
+                return <BookingTrends data={allData} isUTC={isUTC}/>;
             default:
-                return <BookingTrends data={allData}/>;
+                return <BookingTrends data={allData} isUTC={isUTC}/>;
         }
     };
 
@@ -122,6 +124,14 @@ const Impulse = (props) => {
                     selectedValue={selectedBookingType}
                     list={bookingTypes}
                     onClickHandler={handleBookingTypeChange}
+                />
+                <Checkbox
+                    name="utc-checkbox"
+                    label="In UTC?"
+                    checked={isUTC}
+                    onChange={() => setIsUTC(!isUTC)}
+                    size="sm"
+                    className="check-box-utc"
                 />
                 <button
                     type="button"

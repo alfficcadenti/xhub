@@ -1,5 +1,6 @@
 import {expect} from 'chai';
-import {getFilters, getBrandFromImpulseMapping, getQueryParam} from '../impulseHandler';
+import {getFilters, getQueryParam, getBrandQueryParam} from '../impulseHandler';
+
 const typeofFilter = 'lob';
 const filterResult = ['Lodging'];
 import mockFilters from './filterMock.test.json';
@@ -8,7 +9,7 @@ import {
     EG_BRAND, EGENCIA_BRAND,
     EXPEDIA_BRAND,
     EXPEDIA_PARTNER_SERVICES_BRAND,
-    HOTELS_COM_BRAND, VRBO_BRAND
+    HOTELS_COM_BRAND, VRBO_BRAND,
 } from '../../../constants';
 
 const IMPULSE_MAPPING = [
@@ -42,11 +43,15 @@ describe('impulseHandler', () => {
             expect(getQueryParam('lob', 'Car', true, '')).eql('&lob=Car');
         });
     });
-
-    describe('finds brand name from impulse map', () => {
-        it('finds in global filters and return impulse filter', () => {
-            const result = getBrandFromImpulseMapping(IMPULSE_MAPPING, EXPEDIA_PARTNER_SERVICES_BRAND);
-            expect(result.impulseFilter).to.be.eql('Expedia Business Services');
+    describe('test brand query string', () => {
+        it('should return empty string if All Brand Group passed', () => {
+            expect(getBrandQueryParam(IMPULSE_MAPPING, EG_BRAND)).eql('');
+        });
+        it('should return brandName = Expedia Business Services if Expedia Partner Services passed', () => {
+            expect(getBrandQueryParam(IMPULSE_MAPPING, EXPEDIA_PARTNER_SERVICES_BRAND)).eql('&brandGroupName=Expedia%20Business%20Services');
+        });
+        it('should return brand=Egencia if Egencia passed', () => {
+            expect(getBrandQueryParam(IMPULSE_MAPPING, EGENCIA_BRAND)).eql('&brand=Egencia');
         });
     });
 });

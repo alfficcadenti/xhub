@@ -22,13 +22,16 @@ const IMPULSE_CHART_TYPE = [
     }
 ];
 
-const formatToolTimeTime = (date) => moment(new Date(date)).format('MM/DD HH:mm');
+const formatDateTimeUTC = (date) => moment(date).utc().format('MM/DD HH:mm');
+const formatDateTimeLocal = (date) => moment(date).format('MM/DD HH:mm');
 
-const CustomTooltip = ({active, payload}) => {
+const CustomTooltip = ({active, payload, isUTC}) => {
     const TIMEZONE = moment().tz(moment.tz.guess()).format('z');
     if (active && payload && payload[0] && payload[0].payload) {
         return (<div className="custom-tooltip">
-            <span className="label">{`${formatToolTimeTime(payload[0].payload.time)} ${TIMEZONE}`}</span>
+            <span
+                className="label"
+            >{!isUTC ? `${formatDateTimeLocal(payload[0].payload.time)} ${TIMEZONE}` : `${formatDateTimeUTC(payload[0].payload.time)} UTC`}</span>
             {payload.map((item) => (
                 <div>
                     <span className="label">{`${item.dataKey} : ${item.value}`}</span>
@@ -39,7 +42,7 @@ const CustomTooltip = ({active, payload}) => {
     return null;
 };
 
-const BookingTrends = ({data = []}) => {
+const BookingTrends = ({data = [], isUTC = false}) => {
     const getGradient = ({key, color}) => {
         const id = key === 'bookingChart' ? `color${key}` : '';
         return (<linearGradient key={`${key}Gradient`} id={id} x1="0" y1="0" x2="0" y2="1">
@@ -65,10 +68,10 @@ const BookingTrends = ({data = []}) => {
                             getGradient(item)
                         )}
                     </defs>
-                    <XAxis dataKey="time" tick={{fontSize: 10}}/>
+                    <XAxis dataKey="time" tick={{fontSize: 10}} tickFormatter={!isUTC ? formatDateTimeLocal : formatDateTimeUTC}/>
                     <YAxis tick={{fontSize: 10}}/>
                     <CartesianGrid strokeDasharray="3 3"/>
-                    <Tooltip content={<CustomTooltip/>}/>
+                    <Tooltip content={<CustomTooltip isUTC={isUTC}/>}/>
                     {IMPULSE_CHART_TYPE.map((item) =>
                         renderChart(item)
                     )}
