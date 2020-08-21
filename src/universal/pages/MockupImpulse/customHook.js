@@ -14,8 +14,7 @@ import {
     ALL_EG_SITE_URL
 } from '../../constants';
 import {useIsMount} from '../hooks';
-import moment from 'moment';
-import {getFilters, getQueryParam, getBrandFromImpulseMapping} from './impulseHandler';
+import {getFilters, getBrandQueryParam, getQueryString} from './impulseHandler';
 import {checkResponse} from '../utils';
 
 const PREDICTION_COUNT = 'Prediction Counts';
@@ -39,41 +38,23 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
     const [brands, setBrands] = useState([]);
     const [lobs, setLobs] = useState([]);
     const isMount = useIsMount();
-
-    const getBrandQueryParam = () => {
-        if (getBrandFromImpulseMapping(IMPULSE_MAPPING, globalBrandName).impulseFilter !== ALL_BRAND_GROUP) {
-            return getBrandFromImpulseMapping(IMPULSE_MAPPING, globalBrandName).impulseFilter === EGENCIA_BRAND ? `&brand=${encodeURI(getBrandFromImpulseMapping(IMPULSE_MAPPING, globalBrandName).impulseFilter)}` : `&brandGroupName=${encodeURI(getBrandFromImpulseMapping(IMPULSE_MAPPING, globalBrandName).impulseFilter)}`;
-        }
-        return '';
-    };
-    const getQueryString = (lob, brand, deviceType, bookingType, newBrand, start, end, siteUrl) => {
-        let query = `?startDate=${start.format('YYYY-MM-DDTHH:mm:ss')}Z&endDate=${end.format('YYYY-MM-DDTHH:mm:ss')}Z`;
-        query += getQueryParam('lob', lob, lob !== ALL_LOB);
-        query += getQueryParam('brand', brand, brand !== ALL_BRANDS);
-        query += getQueryParam('deviceType', deviceType, deviceType !== ALL_DEVICE_TYPES);
-        query += getQueryParam('bookingType', bookingType, bookingType !== ALL_BOOKING_TYPES);
-        query += getQueryParam('egSiteUrl', siteUrl, siteUrl !== ALL_EG_SITE_URL);
-        query += getBrandQueryParam();
-        return query;
-    };
     const getFilter = () => {
-
-        fetch(`/v1/bookings/filters?filter=lob,brand,egSiteUrl,deviceType,bookingType,brandGroupName${getBrandQueryParam()}`)
+        fetch(`/v1/bookings/filters?filter=lob,brand,egSiteUrl,deviceType,bookingType,brandGroupName${getBrandQueryParam(IMPULSE_MAPPING, globalBrandName)}`)
             .then(checkResponse)
             .then((respJson) => {
-                setBookingDevices([ALL_BOOKING_TYPES, ...getFilters(respJson, 'bookingType')[0]]);
-                setEgSiteUrls([ALL_EG_SITE_URL, ...getFilters(respJson, 'egSiteUrl')[0]]);
-                setDeviceTypes([ALL_DEVICE_TYPES, ...getFilters(respJson, 'deviceType')[0]]);
-                setBrands([ALL_BRANDS, ...getFilters(respJson, 'brand')[0]]);
-                setLobs([ALL_LOB, ...getFilters(respJson, 'lob')[0]]);
-            }).catch((err) => {
+                setBookingDevices([ALL_BOOKING_TYPES, ...getFilters(respJson, 'bookingType')[0].sort((A, B) => A.localeCompare(B))]);
+                setEgSiteUrls([ALL_EG_SITE_URL, ...getFilters(respJson, 'egSiteUrl')[0].sort((A, B) => A.localeCompare(B))]);
+                setDeviceTypes([ALL_DEVICE_TYPES, ...getFilters(respJson, 'deviceType')[0].sort((A, B) => A.localeCompare(B))]);
+                setBrands([ALL_BRANDS, ...getFilters(respJson, 'brand')[0].sort((A, B) => A.localeCompare(B))]);
+                setLobs([ALL_LOB, ...getFilters(respJson, 'lob')[0].sort((A, B) => A.localeCompare(B))]);
+            })
+            .catch((err) => {
                 console.error(err);
             });
     };
     const getData = () => {
         setIsLoading(true);
-
-        fetch(`/v1/bookings/count${getQueryString(selectedLob, selectedBrand, selectedDeviceType, selectedBookingType, globalBrandName, startDate, endDate, selectedEGSiteURL)}`)
+        fetch(`/v1/bookings/count${getQueryString(selectedLob, selectedBrand, selectedDeviceType, selectedBookingType, globalBrandName, startDate, endDate, selectedEGSiteURL, IMPULSE_MAPPING, globalBrandName)}`)
             .then((result) => {
                 return result.json();
             }
@@ -81,7 +62,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
             .then((respJson) => {
                 const chartData = respJson.map((item) => {
                     return {
-                        time: moment(item.time).format('MM/DD HH:mm'),
+                        time: item.time,
                         [BOOKING_COUNT]: item.count,
                         [PREDICTION_COUNT]: item.prediction.weightedCount
                     };
