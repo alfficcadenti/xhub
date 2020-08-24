@@ -5,12 +5,16 @@ export const getPropValue = (item, prop) => item[prop] || '-';
 
 export const formatDefect = (defect) => ({
     Portfolio: getPropValue(defect, 'portfolio'),
-    Key: getPropValue(defect, 'defectNumber'),
+    Key: defect.defectNumber
+        ? (<a href={`https://jira.hcom/browse/${defect.defectNumber}`} target="_blank">{defect.defectNumber}</a>)
+        : '-',
+    id: getPropValue(defect, 'defectNumber'),
     Summary: getPropValue(defect, 'summary'),
     Priority: getPropValue(defect, 'priority'),
     Status: getPropValue(defect, 'status'),
     Resolution: getPropValue(defect, 'resolution'),
-    Opened: getPropValue(defect, 'openDate')
+    Opened: getPropValue(defect, 'openDate'),
+    'Days to Resolve': getPropValue(defect, 'daysToResolve')
 });
 
 export const findAndFormatTicket = (tickets, id) => {
@@ -52,6 +56,35 @@ export const formatBarChartData = (data) => {
                 [P4_LABEL]: p4,
                 counts: totalTickets,
                 tickets: ticketIds};
+        }, []);
+};
+
+export const formatTTRData = (data) => {
+    return Object.entries(data)
+        .map(([date, {p1DaysToResolve = 0, p2DaysToResolve = 0, p3DaysToResolve = 0, p4DaysToResolve = 0, totalTickets = 0, ticketIds = []}]) => {
+            return {
+                date,
+                [P1_LABEL]: p1DaysToResolve,
+                [P2_LABEL]: p2DaysToResolve,
+                [P3_LABEL]: p3DaysToResolve,
+                [P4_LABEL]: p4DaysToResolve,
+                counts: totalTickets,
+                tickets: ticketIds
+            };
+        }, []);
+};
+
+export const formatWoWData = (data) => {
+    return Object.entries(data)
+        .map(([date, {numberOfCreatedIssues = 0, numberOfResolvedIssues = 0, diffResolvedCreated = 0, ticketIds = [], resolvedTicketIds = []}]) => {
+            return {
+                date,
+                created: numberOfCreatedIssues,
+                resolved: numberOfResolvedIssues,
+                diff: diffResolvedCreated,
+                createdTickets: ticketIds,
+                resolvedTickets: resolvedTicketIds
+            };
         }, []);
 };
 
@@ -139,6 +172,28 @@ export const processTwoDimensionalIssues = (
     return {
         data: processTableData(finalList)
     };
+};
+
+export const formatCreatedVsResolvedData = (data, selectedPriorities) => {
+    const {createdIssuesByWeek, resolvedIssuesByWeek} = data;
+    const filteredPriorites = selectedPriorities && Array.isArray(selectedPriorities) && selectedPriorities.length
+        ? selectedPriorities.filter((p) => PRIORITY_LABELS.includes(p))
+        : PRIORITY_LABELS;
+    const priorities = filteredPriorites.map((p) => p.toLowerCase());
+    return Object
+        .values(createdIssuesByWeek || {})
+        .map((createdWeek) => {
+            const resolvedWeek = resolvedIssuesByWeek[createdWeek.weekStartDate] || {};
+            const created = priorities.reduce((acc, curr) => acc + (createdWeek[curr] || 0), 0);
+            const resolved = priorities.reduce((acc, curr) => acc + (resolvedWeek[curr] || 0), 0);
+            return {
+                date: createdWeek.weekStartDate,
+                created,
+                resolved,
+                createdTickets: createdWeek.ticketIds,
+                resolvedTickets: resolvedWeek.ticketIds
+            };
+        });
 };
 
 export const getPanelDataUrl = (portfolios, brand, panel) => {

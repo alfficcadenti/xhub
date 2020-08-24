@@ -3,6 +3,8 @@ import Modal from '@homeaway/react-modal';
 import DataTable from '../../../components/DataTable';
 import './styles.less';
 
+const defaultColumns = ['Portfolio', 'Key', 'Summary', 'Priority', 'Status', 'Resolution', 'Opened'];
+
 const ChartModal = ({title = '', isOpen = false, data = {}, onClose}) => {
     return (
         <Modal
@@ -15,7 +17,7 @@ const ChartModal = ({title = '', isOpen = false, data = {}, onClose}) => {
             {data.description && <div className="modal-description">{data.description}</div>}
             <DataTable
                 data={data.data || []}
-                columns={['Portfolio', 'Key', 'Summary', 'Priority', 'Status', 'Resolution', 'Opened']}
+                columns={data.columns || defaultColumns}
                 paginated
             />
         </Modal>
