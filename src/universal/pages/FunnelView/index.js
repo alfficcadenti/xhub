@@ -1,10 +1,9 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState} from 'react';
 import moment from 'moment';
 import 'moment-timezone';
 import TravelerMetricsWidget from '../../components/TravelerMetricsWidget';
 import LoadingContainer from '../../components/LoadingContainer';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
-import RealTimeSummaryPanel from '../../components/RealTimeSummaryPanel';
 import AnnotationsFilterPanel from '../../components/AnnotationsFilterPanel';
 import {useQueryParamChange, useSelectedBrand, useZoomAndSynced} from '../hooks';
 import {EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../../constants';
@@ -23,10 +22,6 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const initialEnd = moment().endOf('minute');
     const initialTimeRange = 'Last 6 hours';
 
-    const [realTimeTotals, setRealTimeTotals] = useState({});
-    const [isRttLoading, setIsRttLoading] = useState(true);
-    const [rttError, setRttError] = useState('');
-
     const [widgets, setWidgets] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
@@ -38,7 +33,6 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [currentTimeRange, setCurrentTimeRange] = useState(initialTimeRange);
     const [pendingTimeRange, setPendingTimeRange] = useState(initialTimeRange);
     const [isFormDisabled, setIsFormDisabled] = useState(false);
-    const [isSupportedBrand, setIsSupportedBrand] = useState(false);
 
     // annotations state
     const [enableAlerts, setEnableAlerts] = useState(false);
@@ -70,8 +64,6 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         pendingTimeRange
     );
 
-    const rttRef = useRef();
-
     const PAGES_LIST = [
         {name: 'home', label: 'Home'},
         {name: 'searchresults', label: 'Search'},
@@ -91,51 +83,6 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         {text: 'Last 12 hours', value: getValue(12, 'hours')},
         {text: 'Last 24 hours', value: getValue(24, 'hours')}
     ];
-
-    const fetchRealTimeData = ([selectedBrand]) => {
-        const {funnelBrand} = getBrand(selectedBrand, 'label');
-        setIsRttLoading(true);
-        setRttError('');
-        const now = moment();
-        const rttStart = moment(now).subtract(2, 'minute').startOf('minute');
-        const rttEnd = moment(now).subtract(1, 'minute').startOf('minute');
-        const dateQuery = `&startDate=${rttStart.utc().format()}&endDate=${rttEnd.utc().format()}`;
-        fetch(`/v1/pageViews?brand=${funnelBrand}&timeInterval=1${dateQuery}`)
-            .then(checkResponse)
-            .then((fetchedPageviews) => {
-                const nextRealTimeTotals = PAGES_LIST.reduce((acc, {label}) => {
-                    acc[label] = 0;
-                    return acc;
-                }, {});
-                PAGES_LIST.forEach(({name, label}) => {
-                    fetchedPageviews.forEach(({time, pageViewsData}) => {
-                        const currentPageViews = pageViewsData.find((item) => item.page === name);
-                        if (currentPageViews) {
-                            const momentTime = moment(time);
-                            if (momentTime.isBetween(rttStart, rttEnd, 'minute', '(]')) {
-                                nextRealTimeTotals[label] += currentPageViews.views || 0;
-                            }
-                        }
-                    });
-                });
-
-                // apply toFixed to the final values here after the computation above is done because it returns a string and break the computation if applied above
-                Object.keys(nextRealTimeTotals).forEach((item) => {
-                    nextRealTimeTotals[item] = nextRealTimeTotals[item].toFixed();
-                });
-
-                setRealTimeTotals(nextRealTimeTotals);
-            })
-            .catch((err) => {
-                let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
-                    ? 'Query has timed out. Try refreshing the page. If the problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.'
-                    : 'An unexpected error has occurred. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.';
-                setRttError(errorMessage);
-                // eslint-disable-next-line no-console
-                console.error(err);
-            })
-            .finally(() => setIsRttLoading(false));
-    };
 
     const fetchPageViewsData = ([selectedBrand]) => {
         const {label: pageBrand, funnelBrand} = getBrand(selectedBrand, 'label');
@@ -183,24 +130,16 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     };
 
     useEffect(() => {
-        clearInterval(rttRef.current);
         if ([EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND].includes(selectedBrands[0])) {
-            setIsSupportedBrand(false);
             setError(`Page views for ${selectedBrands} is not yet available.
                 The following brands are supported at this time: "Expedia", "Hotels.com", and "Vrbo".
                 If you have any questions, please ping #dpi-reo-opex-all or leave a comment via our Feedback form.`);
             setIsFormDisabled(true);
         } else {
-            setIsSupportedBrand(true);
             setError(null);
             setIsFormDisabled(false);
-            fetchRealTimeData(selectedBrands);
-            rttRef.current = setInterval(fetchRealTimeData.bind(null, selectedBrands), 60000); // refresh every minute
             fetchPageViewsData(selectedBrands);
         }
-        return function cleanup() {
-            clearInterval(rttRef.current);
-        };
     }, [selectedBrands, start, end]);
 
     useEffect(() => {
@@ -312,15 +251,6 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     end={end}
                 />
             </div>
-            {isSupportedBrand && (
-                <RealTimeSummaryPanel
-                    realTimeTotals={realTimeTotals}
-                    isRttLoading={isRttLoading}
-                    rttError={rttError}
-                    tooltipLabel={'Real time pageview totals within the last minute. Refreshes every minute.'}
-                    label={'Real Time Pageviews'}
-                />
-            )}
             <LoadingContainer isLoading={isLoading} error={error} className="page-views-loading-container">
                 <div className="page-views-widget-container">
                     {widgets.map(renderWidget)}
