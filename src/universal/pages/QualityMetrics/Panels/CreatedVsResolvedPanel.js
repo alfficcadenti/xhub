@@ -7,7 +7,7 @@ import ChartModal from '../ChartModal';
 import {CHART_COLORS} from '../../../constants';
 import {formatCreatedVsResolvedData, findAndFormatTicket, mapPriority} from '../utils';
 
-const CreatedVsResolvedPanel = ({title, tickets, data, isLoading, error, priorities}) => {
+const CreatedVsResolvedPanel = ({title, info, tickets, data, isLoading, error, priorities}) => {
     const [chartData, setChartData] = useState([]);
     const [modalData, setModalData] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -39,9 +39,9 @@ const CreatedVsResolvedPanel = ({title, tickets, data, isLoading, error, priorit
     return (
         <Panel
             title={title}
+            info={info}
             isLoading={isLoading}
             error={error}
-            info="The weekly average amount of days between a ticket's create date and resolve date w.r.t. priority"
         >
             <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={chartData} cursor="pointer">

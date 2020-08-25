@@ -7,19 +7,20 @@ import ChartModal from '../ChartModal';
 import {mapPriority, findAndFormatTicket} from '../utils';
 import {CHART_COLORS} from '../../../constants';
 
-const PiePanel = ({title, tickets, groupBy}) => {
+const PiePanel = ({title, info, tickets, groupBy}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [chartData, setChartData] = useState([]);
     const [modalData, setModalData] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const NOT_PRIORITIZED_LABEL = 'Not Prioritized';
 
     useEffect(() => {
         const fetchData = () => {
             setIsLoading(true);
             setError(null);
             const getGroupKey = groupBy === 'Priority'
-                ? (ticket) => mapPriority(ticket.priority) || '-'
+                ? (ticket) => mapPriority(ticket.priority) || NOT_PRIORITIZED_LABEL
                 : (ticket) => ticket.defectNumber.split('-')[0];
             const counter = {};
             Object.values(tickets.portfolioTickets || {})
@@ -35,6 +36,14 @@ const PiePanel = ({title, tickets, groupBy}) => {
                 });
             const data = Object.entries(counter)
                 .map(([name, stats]) => ({name, counts: stats.counts, tickets: stats.tickets}));
+            data.sort((a, b) => {
+                if (a.name === NOT_PRIORITIZED_LABEL) {
+                    return 1;
+                } else if (b.name === NOT_PRIORITIZED_LABEL) {
+                    return -1;
+                }
+                return (a.name || '').localeCompare(b.name);
+            });
             setChartData(data);
             setIsLoading(false);
         };
@@ -43,7 +52,7 @@ const PiePanel = ({title, tickets, groupBy}) => {
 
     const getClickHandler = (cellName, cellTickets) => () => {
         const getGroupKey = groupBy === 'Priority'
-            ? (ticket) => mapPriority(ticket.Priority) || '-'
+            ? (ticket) => mapPriority(ticket.Priority) || NOT_PRIORITIZED_LABEL
             : (ticket) => ticket.id.split('-')[0];
         const ticketDetails = cellTickets
             .map((ticketId) => findAndFormatTicket(tickets, ticketId))
@@ -62,7 +71,7 @@ const PiePanel = ({title, tickets, groupBy}) => {
     };
 
     return (
-        <Panel title={title} isLoading={isLoading} error={error}>
+        <Panel title={title} info={info} isLoading={isLoading} error={error}>
             <ResponsiveContainer width="100%" height={300}>
                 <PieChart cursor="pointer">
                     <Tooltip />

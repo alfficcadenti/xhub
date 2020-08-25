@@ -9,19 +9,30 @@
         width: 100%;
     }
 
-    &.fixed-height .chart-tile {
-        height: 400px;
-        max-height: 400px;
-        overflow-y: scroll;
+    &.fixed-height {
+        .loading-container {
+            height: 400px;
+            max-height: 400px;
+            overflow-y: scroll;
+        }
     }
 
     .tooltip-container {
         float: right;
+
+        .Tooltip__inner {
+            font-weight: 400;
+        }
     }
 
     .chart-container,
     .table-container {
         padding: @spacing-1x @spacing-2x;
+    }
+
+    .recharts-default-legend {
+        max-height: 80px;
+        overflow-y: scroll;
     }
 
     .chart-tile {

@@ -9,16 +9,14 @@ const data = [{
     p2: '14 days',
     p3: '45 days',
     p4: '60 days',
-    p5: '90 days',
-    'With Salesforce Cases': '30 days'
+    p5: '90 days'
 }, {
     Priority: 'Nearing SLA',
     p1: '1 day',
     p2: '11 days',
     p3: '30 days',
     p4: '45 days',
-    p5: '75 days',
-    'With Salesforce Cases': '20 days'
+    p5: '75 days'
 }];
 
 const SLADefinitions = () => (

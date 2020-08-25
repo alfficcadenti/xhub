@@ -5,7 +5,7 @@ import DataTable from '../../../components/DataTable';
 import {PRIORITY_COLUMN_HEADERS} from '../constants';
 import {formatTableData, processTwoDimensionalIssues} from '../utils';
 
-const TwoDimensionalPanel = ({title, tickets, portfolios, data, dataKey, isLoading, error, isFixedHeight = false, fullWidth = false}) => {
+const TwoDimensionalPanel = ({title, info, tickets, portfolios, data, dataKey, isLoading, error, fullWidth = false}) => {
     const [chartData, setChartData] = useState([]);
     const [modalData, setModalData] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -37,9 +37,10 @@ const TwoDimensionalPanel = ({title, tickets, portfolios, data, dataKey, isLoadi
     return (
         <Panel
             title={title}
+            info={info}
             isLoading={isLoading}
             error={error}
-            isFixedHeight={isFixedHeight}
+            isFixedHeight
             isFullWidth={fullWidth}
         >
             <DataTable

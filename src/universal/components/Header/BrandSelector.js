@@ -53,6 +53,7 @@ const BrandSelector = ({selectedBrands, onBrandChange, brands}) => {
             className="header--brand-selector"
             dropdownRight
             noArrow
+            closeAfterContentClick
         >
             {brands.map(renderBrandItem)}
         </Dropdown>

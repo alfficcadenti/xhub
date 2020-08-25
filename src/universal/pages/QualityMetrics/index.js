@@ -31,9 +31,6 @@ const getPortfolioBrand = (selectedBrands) => {
 const QualityMetrics = ({selectedBrands}) => {
     const history = useHistory();
     const {search} = useLocation();
-    const portfolioBrand = getPortfolioBrand(selectedBrands);
-
-    const isSupportedBrand = portfolioBrand === 'HCOM';
 
     // Query params
     const {portfolios: qsPortfolios} = qs.parse(search);
@@ -41,6 +38,9 @@ const QualityMetrics = ({selectedBrands}) => {
         .map((portfolio) => PORTFOLIOS.find((p) => p.value === portfolio))
         .filter((portfolio) => !!portfolio);
 
+
+    const [isSupportedBrand, setIsSupportedBrand] = useState(true);
+    const [portfolioBrand, setPortfolioBrand] = useState(getPortfolioBrand(selectedBrands));
     const [pendingPortfolios, setPendingPortfolios] = useState(initialPortfolios);
     const [selectedPortfolios, setSelectedPortfolios] = useState(initialPortfolios);
     const [isDirtyForm, setIsDirtyForm] = useState(false);
@@ -60,60 +60,62 @@ const QualityMetrics = ({selectedBrands}) => {
     const [isUnresolvedDataLoading, setIsUnresolvedDataLoading] = useState(true);
     const [unresolvedDataError, setUnresolvedDataError] = useState();
 
-    const fetchData = () => {
-        setIsLoading(true);
-        const brandQuery = `?selectedBrand=${selectedBrands}`;
-        const query = pendingPortfolios.length
-            ? `${brandQuery}&portfolios=${pendingPortfolios.map((p) => p.value).join('&portfolios=')}`
-            : brandQuery;
-        history.push(`/quality-metrics${query}`);
-        fetch(getPanelDataUrl(pendingPortfolios, portfolioBrand))
-            .then((data) => data.json())
-            .then((allTickets) => {
-                setTickets(allTickets);
-                setIsLoading(false);
-            })
-            .catch((e) => {
-                setError(e.message);
-                setIsLoading(false);
-            });
-        fetch(getPanelDataUrl(selectedPortfolios, portfolioBrand, 'twoDimensionalStatistics'))
-            .then((data) => data.json())
-            .then((response) => {
-                setTdData(response.data || {});
-                setIsTdDataLoading(false);
-            })
-            .catch((e) => {
-                setTdDataError(e.message);
-                setIsTdDataLoading(false);
-            });
-        fetch(getPanelDataUrl(selectedPortfolios, portfolioBrand, 'createdVsResolved'))
-            .then((data) => data.json())
-            .then((response) => {
-                setCvrData(response.data || {});
-                setIsCvrDataLoading(false);
-            })
-            .catch((e) => {
-                setCvrDataError(e.message);
-                setIsCvrDataLoading(false);
-            });
-        fetch(getPanelDataUrl(selectedPortfolios, portfolioBrand, 'unresolvedissuescount'))
-            .then((data) => data.json())
-            .then((response) => {
-                setUnresolvedData(response.data || {});
-                setIsUnresolvedDataLoading(false);
-            })
-            .catch((e) => {
-                setUnresolvedDataError(e.message);
-                setIsUnresolvedDataLoading(false);
-            });
-    };
-
     useEffect(() => {
-        if (selectedPortfolios.length && isSupportedBrand) {
-            fetchData();
-        }
-    }, []);
+        const fetchData = () => {
+            setPortfolioBrand(getPortfolioBrand(selectedBrands));
+            setIsSupportedBrand(portfolioBrand === 'HCOM');
+            if (!selectedPortfolios.length || portfolioBrand !== 'HCOM') {
+                return;
+            }
+            setIsLoading(true);
+            const brandQuery = `?selectedBrand=${portfolioBrand}`;
+            const query = selectedPortfolios.length
+                ? `${brandQuery}&portfolios=${selectedPortfolios.map((p) => p.value).join('&portfolios=')}`
+                : brandQuery;
+            history.push(`/quality-metrics${query}`);
+            fetch(getPanelDataUrl(selectedPortfolios, portfolioBrand))
+                .then((data) => data.json())
+                .then((allTickets) => {
+                    setTickets(allTickets);
+                    setIsLoading(false);
+                })
+                .catch((e) => {
+                    setError(e.message);
+                    setIsLoading(false);
+                });
+            fetch(getPanelDataUrl(selectedPortfolios, portfolioBrand, 'twoDimensionalStatistics'))
+                .then((data) => data.json())
+                .then((response) => {
+                    setTdData(response.data || {});
+                    setIsTdDataLoading(false);
+                })
+                .catch((e) => {
+                    setTdDataError(e.message);
+                    setIsTdDataLoading(false);
+                });
+            fetch(getPanelDataUrl(selectedPortfolios, portfolioBrand, 'createdVsResolved'))
+                .then((data) => data.json())
+                .then((response) => {
+                    setCvrData(response.data || {});
+                    setIsCvrDataLoading(false);
+                })
+                .catch((e) => {
+                    setCvrDataError(e.message);
+                    setIsCvrDataLoading(false);
+                });
+            fetch(getPanelDataUrl(selectedPortfolios, portfolioBrand, 'unresolvedissuescount'))
+                .then((data) => data.json())
+                .then((response) => {
+                    setUnresolvedData(response.data || {});
+                    setIsUnresolvedDataLoading(false);
+                })
+                .catch((e) => {
+                    setUnresolvedDataError(e.message);
+                    setIsUnresolvedDataLoading(false);
+                });
+        };
+        fetchData();
+    }, [history, portfolioBrand, selectedBrands, selectedPortfolios]);
 
     const handlePortfoliosChange = (portfolio) => {
         let portfolios = [];
@@ -141,7 +143,6 @@ const QualityMetrics = ({selectedBrands}) => {
             setPendingPortfolios([]);
             setSelectedPortfolios([]);
         }
-        fetchData();
     };
 
     const renderPortfolioCheckbox = (portfolio) => (
@@ -203,12 +204,14 @@ const QualityMetrics = ({selectedBrands}) => {
             <LoadingContainer isLoading={isLoading} error={error}>
                 <BarChartPanel
                     title="Open Defects Past SLA"
+                    info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived'. See panel below for SLA definitions. Click bar chart to see corresponding defects."
                     tickets={tickets}
                     dataUrl={getPanelDataUrl(selectedPortfolios, portfolioBrand, 'opendefectspastsla')}
                     dataKey="openDefectsPastSla"
                 />
                 <BarChartPanel
                     title="Open Defects"
+                    info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived'. Click bar chart to see corresponding defects."
                     tickets={tickets}
                     dataUrl={getPanelDataUrl(selectedPortfolios, portfolioBrand, 'opendefects')}
                     dataKey="openDefects"
@@ -216,53 +219,43 @@ const QualityMetrics = ({selectedBrands}) => {
                 <SLADefinitions />
                 <TwoDimensionalPanel
                     title="Two Dimensional Filter Statistics - Defects Past SLA"
+                    info="Displaying defects past SLA (See SLA definitions in above panel)"
                     tickets={tickets}
                     data={tdData}
                     portfolios={selectedPortfolios}
                     dataKey="pastSLA"
                     isLoading={isTdDataLoading}
                     error={tdDataError}
-                    isFixedHeight
                 />
                 <TwoDimensionalPanel
                     title="Two Dimensional Filter Statistics - Defects Approaching SLA"
+                    info="Displaying defects approaching SLA (See SLA definitions in above panel)"
                     tickets={tickets}
                     data={tdData}
                     portfolios={selectedPortfolios}
                     dataKey="approachingSLA"
                     isLoading={isTdDataLoading}
                     error={tdDataError}
-                    isFixedHeight
                 />
                 <TwoDimensionalPanel
                     title="Two Dimensional Filter Statistics - Open Bugs"
+                    info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived'"
                     tickets={tickets}
                     data={tdData}
                     portfolios={selectedPortfolios}
                     dataKey="openBugs"
                     isLoading={isTdDataLoading}
                     error={tdDataError}
-                    isFixedHeight
-                />
-                <TwoDimensionalPanel
-                    title="Two Dimensional Filter Statistics - Open Bugs with Salesforce Cases"
-                    tickets={tickets}
-                    data={tdData}
-                    portfolios={selectedPortfolios}
-                    dataKey="openBugsWithSalesforceCases"
-                    isLoading={isTdDataLoading}
-                    error={tdDataError}
-                    isFixedHeight
                 />
                 <TwoDimensionalPanel
                     title="Two Dimensional Filter Statistics - Bugs needing triage"
+                    info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived'"
                     tickets={tickets}
                     data={tdData}
                     portfolios={selectedPortfolios}
                     dataKey="bugsNeedingTriage"
                     isLoading={isTdDataLoading}
                     error={tdDataError}
-                    fullWidth
                 />
                 <MTTRPanel
                     tickets={tickets}
@@ -270,6 +263,7 @@ const QualityMetrics = ({selectedBrands}) => {
                 />
                 <CreatedVsResolvedPanel
                     title="Created vs. Resolved Chart - All P1s and P2s"
+                    info="Charting P1 and P2 priority defects by their open date and resolve date (bucketed by week). Click line point for more details."
                     tickets={tickets}
                     data={cvrData}
                     isLoading={isCvrDataLoading}
@@ -278,6 +272,7 @@ const QualityMetrics = ({selectedBrands}) => {
                 />
                 <CreatedVsResolvedPanel
                     title="Created vs. Resolved Chart - All Bugs"
+                    info="Charting all defects by their open date and resolve date (bucketed by week). Click line point for more details."
                     tickets={tickets}
                     data={cvrData}
                     isLoading={isCvrDataLoading}
@@ -285,6 +280,7 @@ const QualityMetrics = ({selectedBrands}) => {
                 />
                 <UnresolvedCountsPanel
                     title="Unresolved Trend Line - All P1s and P2s"
+                    info="Charting unresolved P1 and P2 priority defects by their open date (bucketed by week)"
                     tickets={tickets}
                     data={unresolvedData}
                     isLoading={isUnresolvedDataLoading}
@@ -293,6 +289,7 @@ const QualityMetrics = ({selectedBrands}) => {
                 />
                 <UnresolvedCountsPanel
                     title="Unresolved Trend Line - All Bugs"
+                    info="Charting all unresolved defects by their open date (bucketed by week)"
                     tickets={tickets}
                     data={unresolvedData}
                     isLoading={isUnresolvedDataLoading}
@@ -305,11 +302,13 @@ const QualityMetrics = ({selectedBrands}) => {
                 />
                 <PiePanel
                     title="Open Bugs (w.r.t. Priority)"
+                    info="Charting all defects with regard to priority. Click pie slice for more details."
                     groupBy="Priority"
                     tickets={tickets}
                 />
                 <PiePanel
                     title="Open Bugs (w.r.t. Project)"
+                    info="Charting all defects with regard to project. Click pie slices for more details."
                     groupBy="Project"
                     tickets={tickets}
                 />

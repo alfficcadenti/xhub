@@ -5,7 +5,7 @@ import {
 import Panel from '../Panel';
 import {CHART_COLORS} from '../../../constants';
 
-const UnresolvedCountsPanel = ({title, tickets, data, isLoading, error, dataKey}) => {
+const UnresolvedCountsPanel = ({title, info, tickets, data, isLoading, error, dataKey}) => {
     const [chartData, setChartData] = useState([]);
 
     useEffect(() => {
@@ -20,6 +20,7 @@ const UnresolvedCountsPanel = ({title, tickets, data, isLoading, error, dataKey}
     return (
         <Panel
             title={title}
+            info={info}
             isLoading={isLoading}
             error={error}
             info="The weekly average amount of days between a ticket's create date and resolve date w.r.t. priority"

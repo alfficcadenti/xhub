@@ -58,8 +58,7 @@ export const SLA_COLUMNS = [
     'p2',
     'p3',
     'p4',
-    'p5',
-    'With Salesforce Cases'
+    'p5'
 ];
 
 const getIconHeader = (src, title) => (

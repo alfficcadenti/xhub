@@ -31,7 +31,7 @@ describe('Quality Metrics Util', () => {
         };
         const formattedDefect = {
             Portfolio: '-',
-            Key: <a href="https://jira.hcom/browse/PM-1001" target="_blank">PM-1001</a>,
+            Key: <a href="https://jira.hcom/browse/PM-1001" target="_blank">{'PM-1001'}</a>,
             id: defect.defectNumber,
             Summary: defect.summary,
             Priority: defect.priority,
@@ -133,8 +133,9 @@ describe('Quality Metrics Util', () => {
             created: numberOfCreatedIssues,
             resolved: numberOfResolvedIssues,
             diff: diffResolvedCreated,
-            createdTickets: ticketIds,
-            resolvedTickets: resolvedTicketIds
+            'created tickets': ticketIds,
+            'resolved tickets': resolvedTicketIds,
+            'all tickets': [...ticketIds, ...resolvedTicketIds]
         }]);
     });
 

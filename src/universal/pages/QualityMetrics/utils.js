@@ -10,7 +10,7 @@ export const formatDefect = (defect) => ({
         : '-',
     id: getPropValue(defect, 'defectNumber'),
     Summary: getPropValue(defect, 'summary'),
-    Priority: getPropValue(defect, 'priority'),
+    Priority: defect.priority || 'Not Prioritized',
     Status: getPropValue(defect, 'status'),
     Resolution: getPropValue(defect, 'resolution'),
     Opened: getPropValue(defect, 'openDate'),
@@ -82,8 +82,9 @@ export const formatWoWData = (data) => {
                 created: numberOfCreatedIssues,
                 resolved: numberOfResolvedIssues,
                 diff: diffResolvedCreated,
-                createdTickets: ticketIds,
-                resolvedTickets: resolvedTicketIds
+                'created tickets': ticketIds,
+                'resolved tickets': resolvedTicketIds,
+                'all tickets': [...ticketIds, ...resolvedTicketIds]
             };
         }, []);
 };

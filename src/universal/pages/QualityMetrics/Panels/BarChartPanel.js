@@ -7,7 +7,7 @@ import ChartModal from '../ChartModal';
 import {PRIORITY_LABELS, PRIORITY_COLORS} from '../constants';
 import {formatBarChartData, findAndFormatTicket, mapPriority} from '../utils';
 
-const BarChartPanel = ({title, tickets, dataUrl, dataKey}) => {
+const BarChartPanel = ({title, info, tickets, dataUrl, dataKey}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [chartData, setChartData] = useState([]);
@@ -74,7 +74,7 @@ const BarChartPanel = ({title, tickets, dataUrl, dataKey}) => {
             title={title}
             isLoading={isLoading}
             error={error}
-            info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', or 'Archived'"
+            info={info}
             isFixedHeight
         >
             {chartData.length ? renderChart() : <div className="chart-message">{'No Results Found'}</div>}
