@@ -1,4 +1,4 @@
-import {EXPEDIA_BRAND, HOTELS_COM_BRAND} from '../constants';
+import {EXPEDIA_BRAND, HOTELS_COM_BRAND, VRBO_BRAND} from '../constants';
 const AAT = 'Availability & Trends';
 const PHAR = 'Platform Health & Resiliency';
 
@@ -41,14 +41,16 @@ export default [
         id: 'funnel-view',
         link: '/funnel-view',
         text: 'Page Views',
-        component: require('./FunnelView')
+        component: require('./FunnelView'),
+        brands: [EXPEDIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND]
     },
     {
         category: AAT,
         id: 'success-rates',
         link: '/success-rates',
         text: 'Success Rates',
-        component: require('./SuccessRates')
+        component: require('./SuccessRates'),
+        brands: [EXPEDIA_BRAND, VRBO_BRAND]
     },
     // PHAR Dashboards
     {
