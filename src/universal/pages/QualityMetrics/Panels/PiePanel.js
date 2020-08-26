@@ -5,6 +5,7 @@ import {
 import Panel from '../Panel';
 import ChartModal from '../ChartModal';
 import {mapPriority, findAndFormatTicket} from '../utils';
+import {NOT_PRIORITIZED_LABEL} from '../constants';
 import {CHART_COLORS} from '../../../constants';
 
 const PiePanel = ({title, info, tickets, groupBy}) => {
@@ -13,14 +14,13 @@ const PiePanel = ({title, info, tickets, groupBy}) => {
     const [chartData, setChartData] = useState([]);
     const [modalData, setModalData] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const NOT_PRIORITIZED_LABEL = 'Not Prioritized';
 
     useEffect(() => {
         const fetchData = () => {
             setIsLoading(true);
             setError(null);
             const getGroupKey = groupBy === 'Priority'
-                ? (ticket) => mapPriority(ticket.priority) || NOT_PRIORITIZED_LABEL
+                ? (ticket) => mapPriority(ticket.priority)
                 : (ticket) => ticket.defectNumber.split('-')[0];
             const counter = {};
             Object.values(tickets.portfolioTickets || {})
@@ -52,7 +52,7 @@ const PiePanel = ({title, info, tickets, groupBy}) => {
 
     const getClickHandler = (cellName, cellTickets) => () => {
         const getGroupKey = groupBy === 'Priority'
-            ? (ticket) => mapPriority(ticket.Priority) || NOT_PRIORITIZED_LABEL
+            ? (ticket) => mapPriority(ticket.Priority)
             : (ticket) => ticket.id.split('-')[0];
         const ticketDetails = cellTickets
             .map((ticketId) => findAndFormatTicket(tickets, ticketId))

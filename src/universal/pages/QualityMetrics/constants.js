@@ -44,12 +44,16 @@ export const P1_LABEL = 'P1';
 export const P2_LABEL = 'P2';
 export const P3_LABEL = 'P3';
 export const P4_LABEL = 'P4';
-export const PRIORITY_LABELS = [P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL];
+export const P5_LABEL = 'P5';
+export const NOT_PRIORITIZED_LABEL = 'Not Prioritized';
+export const PRIORITY_LABELS = [P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL, NOT_PRIORITIZED_LABEL];
 export const PRIORITY_COLORS = {
     [P1_LABEL]: '#dc3912',
     [P2_LABEL]: '#ff9900',
     [P3_LABEL]: '#109618',
-    [P4_LABEL]: '#3366cc'
+    [P4_LABEL]: '#3366cc',
+    [P5_LABEL]: '#22aa99',
+    [NOT_PRIORITIZED_LABEL]: '#b0b0b0'
 };
 
 export const SLA_COLUMNS = [

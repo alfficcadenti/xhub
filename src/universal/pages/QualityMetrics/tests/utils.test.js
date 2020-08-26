@@ -11,7 +11,7 @@ import {
     formatCreatedVsResolvedData,
     getPanelDataUrl
 } from '../utils';
-import {P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL} from '../constants';
+import {P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL, NOT_PRIORITIZED_LABEL} from '../constants';
 
 describe('Quality Metrics Util', () => {
     it('getPropValue', () => {
@@ -60,10 +60,15 @@ describe('Quality Metrics Util', () => {
     });
 
     it('mapPriority', () => {
-        expect(mapPriority('P1')).to.eql(P1_LABEL);
+        expect(mapPriority('0-Code Red')).to.eql(P1_LABEL);
+        expect(mapPriority('1-High')).to.eql(P1_LABEL);
         expect(mapPriority('P2')).to.eql(P2_LABEL);
-        expect(mapPriority('P3')).to.eql(P3_LABEL);
-        expect(mapPriority('P4')).to.eql(P4_LABEL);
+        expect(mapPriority('3')).to.eql(P3_LABEL);
+        expect(mapPriority('4-low')).to.eql(P4_LABEL);
+        expect(mapPriority('5')).to.eql(P5_LABEL);
+        expect(mapPriority('6')).to.eql(NOT_PRIORITIZED_LABEL);
+        expect(mapPriority()).to.eql(NOT_PRIORITIZED_LABEL);
+        expect(mapPriority('-')).to.eql(NOT_PRIORITIZED_LABEL);
     });
 
     it('formatBarChartData', () => {
