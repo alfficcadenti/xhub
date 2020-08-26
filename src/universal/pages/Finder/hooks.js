@@ -1,10 +1,5 @@
 import {useState, useEffect} from 'react';
 import {adjustCRsProperties} from './crUtils';
-import {
-    ALL_PLATFORMS_OPTION,
-    ALL_BUSINESS_REASONS_OPTION,
-    ALL_STATUSES_OPTION
-} from './constants';
 import {useIsMount} from '../hooks';
 import {checkResponse, getUniqueByProperty, getListOfUniqueProperties, sortArrayByMostRecentDate} from '../utils';
 
@@ -12,10 +7,10 @@ export const useFetchCRs = (
     isApplyClicked,
     startDate,
     endDate,
-    applyFilters,
+    applyAdvancedFilter,
     setIsApplyClicked,
 ) => {
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
 
     const [allUniqueCRs, setAllUniqueCRs] = useState([]);
@@ -24,11 +19,7 @@ export const useFetchCRs = (
     const [lastStartDate, setLastStartDate] = useState('');
     const [lastEndDate, setLastEndDate] = useState('');
 
-    const [indexedData, setIndexedData] = useState([]);
-    const [platforms, setPlatforms] = useState([]);
-    const [businessReasons, setBusinessReason] = useState([]);
-    const [statuses, setStatuses] = useState([]);
-
+    const [indexedDataForSuggestions, setIndexedDataForSuggestions] = useState({});
     const isMount = useIsMount();
 
     useEffect(() => {
@@ -50,11 +41,15 @@ export const useFetchCRs = (
                     const dataBusinessReasons = getListOfUniqueProperties(adjustedUniqueCRs, 'businessReason').sort();
                     const dataStatuses = getListOfUniqueProperties(adjustedUniqueCRs, 'status').sort();
 
-                    setPlatforms([ALL_PLATFORMS_OPTION, ...dataPlatforms]);
-                    setBusinessReason([ALL_BUSINESS_REASONS_OPTION, ...dataBusinessReasons]);
-                    setStatuses([ALL_STATUSES_OPTION, ...dataStatuses]);
-                    setIndexedData([...dataProducts, ...dataApplications, ...dataCRnumbers, ...dataTeams]);
-
+                    setIndexedDataForSuggestions({
+                        'productName': dataProducts,
+                        'applicationName': dataApplications,
+                        'platform': dataPlatforms,
+                        'businessReason': dataBusinessReasons,
+                        'number': dataCRnumbers,
+                        'status': dataStatuses,
+                        'team': dataTeams,
+                    });
                     setAllUniqueCRs(adjustedUniqueCRs);
                     setAllCRs(crs);
 
@@ -68,13 +63,13 @@ export const useFetchCRs = (
                 });
         };
 
-        if (isMount) {
+        if (isMount && !isLoading) {
             fetchCRs();
         } else if (isApplyClicked) {
             if (lastStartDate !== startDate || lastEndDate !== endDate) {
                 fetchCRs();
             } else {
-                applyFilters();
+                applyAdvancedFilter();
             }
         }
 
@@ -88,9 +83,6 @@ export const useFetchCRs = (
         error,
         allUniqueCRs,
         allCRs,
-        indexedData,
-        platforms,
-        businessReasons,
-        statuses
+        indexedDataForSuggestions
     ];
 };

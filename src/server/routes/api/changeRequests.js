@@ -15,6 +15,8 @@ module.exports.changeRequests = {
             const client = ServiceClient.create('change-request-api-v1-get', {
                 hostname: serverConfig.hostname,
                 protocol: serverConfig.protocol,
+                timeout: 20000,
+                connectionTimeout: 20000,
             });
             const {payload} = await client.request({
                 method: serverConfig.routes.changeDetails.method,

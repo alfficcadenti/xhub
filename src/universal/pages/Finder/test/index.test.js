@@ -29,7 +29,7 @@ describe('<Finder/>', () => {
 
     it('LoadingContainer should have right props', async () => {
         const props = wrapper.find('LoadingContainer').props();
-        expect(props.isLoading).to.be.eql(true);
+        expect(props.isLoading).to.be.eql(false);
         expect(props.error).to.be.eql('');
     });
 });

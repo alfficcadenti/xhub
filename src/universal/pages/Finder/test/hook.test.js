@@ -16,7 +16,7 @@ HookWrapper.propTypes = {
     hook: func
 };
 
-describe('Incident Trends Dashboard custom hooks', () => {
+describe('CR Finder custom hooks', () => {
     it('should render', () => {
         let wrapper = shallow(<HookWrapper />);
 
@@ -33,18 +33,14 @@ describe('Incident Trends Dashboard custom hooks', () => {
                 error,
                 allUniqueCRs,
                 allCRs,
-                priorities,
-                categories,
-                teams
+                indexedDataForSuggestions
             ] = hook;
 
-            expect(isLoading).eql(true);
+            expect(isLoading).eql(false);
             expect(allCRs).eql([]);
             expect(allUniqueCRs).eql([]);
-            expect(priorities).eql([]);
-            expect(categories).eql([]);
-            expect(teams).eql([]);
             expect(error).eql('');
+            expect(indexedDataForSuggestions).eql({});
         });
     });
 });
