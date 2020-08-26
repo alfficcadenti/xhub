@@ -9,9 +9,10 @@ import {
     formatTTRData,
     formatWoWData,
     formatCreatedVsResolvedData,
+    processTwoDimensionalIssues,
     getPanelDataUrl
 } from '../utils';
-import {P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL} from '../constants';
+import {P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL, NOT_PRIORITIZED_LABEL} from '../constants';
 
 describe('Quality Metrics Util', () => {
     it('getPropValue', () => {
@@ -60,10 +61,15 @@ describe('Quality Metrics Util', () => {
     });
 
     it('mapPriority', () => {
-        expect(mapPriority('P1')).to.eql(P1_LABEL);
+        expect(mapPriority('0-Code Red')).to.eql(P1_LABEL);
+        expect(mapPriority('1-High')).to.eql(P1_LABEL);
         expect(mapPriority('P2')).to.eql(P2_LABEL);
-        expect(mapPriority('P3')).to.eql(P3_LABEL);
-        expect(mapPriority('P4')).to.eql(P4_LABEL);
+        expect(mapPriority('3')).to.eql(P3_LABEL);
+        expect(mapPriority('4-low')).to.eql(P4_LABEL);
+        expect(mapPriority('5')).to.eql(P5_LABEL);
+        expect(mapPriority('6')).to.eql(NOT_PRIORITIZED_LABEL);
+        expect(mapPriority()).to.eql(NOT_PRIORITIZED_LABEL);
+        expect(mapPriority('-')).to.eql(NOT_PRIORITIZED_LABEL);
     });
 
     it('formatBarChartData', () => {
@@ -137,6 +143,44 @@ describe('Quality Metrics Util', () => {
             'resolved tickets': resolvedTicketIds,
             'all tickets': [...ticketIds, ...resolvedTicketIds]
         }]);
+    });
+
+    it('processTwoDimensionalIssues', () => {
+        const defects = [
+            {defectNumber: 'AND-1001', priority: '1-High', status: 'To Do'},
+            {defectNumber: 'AND-1002', priority: '3-Medium', status: 'To Do'},
+            {defectNumber: 'AND-1003', priority: '3-Medium', status: 'To Do'},
+            {defectNumber: 'AND-1004', priority: '5-Trivial', status: 'To Do'},
+            {defectNumber: 'AND-1005', priority: '5-Trivial', status: 'To Do'},
+            {defectNumber: 'AND-1006', priority: '5-Trivial', status: 'To Do'},
+        ];
+        const portfolios = [{text: 'AND - Android', value: 'and'}];
+        const project = 'openBugs';
+        const projectTickets = {
+            [project]: {
+                p1: 1, p2: 0, p3: 2, p4: 0, p5: 0, totalTickets: 6, ticketIds: defects.map((d) => d.defectNumber)
+            }
+        };
+        const allJiraTickets = {
+            portfolioTickets: {
+                and: defects.reduce((acc, curr) => {
+                    acc[curr.defectNumber] = curr;
+                    return acc;
+                }, {})
+            }
+        };
+        expect(processTwoDimensionalIssues(allJiraTickets, projectTickets, project, portfolios))
+            .to.eql({data: defects.map(formatDefect)});
+        expect(processTwoDimensionalIssues(allJiraTickets, projectTickets, project, portfolios, P1_LABEL))
+            .to.eql({data: [defects[0]].map(formatDefect)});
+        expect(processTwoDimensionalIssues(allJiraTickets, projectTickets, project, portfolios, P2_LABEL))
+            .to.eql({data: []});
+        expect(processTwoDimensionalIssues(allJiraTickets, projectTickets, project, portfolios, P3_LABEL))
+            .to.eql({data: [defects[1], defects[2]].map(formatDefect)});
+        expect(processTwoDimensionalIssues(allJiraTickets, projectTickets, project, portfolios, P4_LABEL))
+            .to.eql({data: []});
+        expect(processTwoDimensionalIssues(allJiraTickets, projectTickets, project, portfolios, P5_LABEL))
+            .to.eql({data: [defects[3], defects[4], defects[5]].map(formatDefect)});
     });
 
     it('formatCreatedVsResolvedData', () => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import {PRIORITY_LABELS, P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL} from './constants';
+import {PRIORITY_LABELS, P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL, NOT_PRIORITIZED_LABEL} from './constants';
 
 export const getPropValue = (item, prop) => item[prop] || '-';
 
@@ -10,7 +10,7 @@ export const formatDefect = (defect) => ({
         : '-',
     id: getPropValue(defect, 'defectNumber'),
     Summary: getPropValue(defect, 'summary'),
-    Priority: defect.priority || 'Not Prioritized',
+    Priority: defect.priority || NOT_PRIORITIZED_LABEL,
     Status: getPropValue(defect, 'status'),
     Resolution: getPropValue(defect, 'resolution'),
     Opened: getPropValue(defect, 'openDate'),
@@ -35,14 +35,17 @@ export const findAndFormatTicket = (tickets, id) => {
 
 export const mapPriority = (p) => {
     if (!p) {
-        return null;
+        return NOT_PRIORITIZED_LABEL;
+    }
+    if (p.includes(0)) {
+        return P1_LABEL;
     }
     for (let i = 0; i < PRIORITY_LABELS.length; i++) {
-        if (p.includes(PRIORITY_LABELS[i])) {
+        if (p.includes(i + 1)) {
             return PRIORITY_LABELS[i];
         }
     }
-    return null;
+    return NOT_PRIORITIZED_LABEL;
 };
 
 export const formatBarChartData = (data) => {
@@ -141,11 +144,11 @@ export const formatTableData = (rawData, onClickHandler) => {
         Project, p1, p2, p3, p4, p5, notPrioritized, totalTickets
     }) => ({
         Project,
-        p1: formatLink(p1, Project, 'P1 - Blocker'),
-        p2: formatLink(p2, Project, 'P2 - Major'),
-        p3: formatLink(p3, Project, 'P3 - Normal'),
-        p4: formatLink(p4, Project, 'P4 - Minor'),
-        p5: formatLink(p5, Project, 'P5 - Trivial'),
+        p1: formatLink(p1, Project, P1_LABEL),
+        p2: formatLink(p2, Project, P2_LABEL),
+        p3: formatLink(p3, Project, P3_LABEL),
+        p4: formatLink(p4, Project, P4_LABEL),
+        p5: formatLink(p5, Project, P5_LABEL),
         notPrioritized: formatLink(notPrioritized, Project, 'Not prioritized'),
         totalTickets: formatLink(totalTickets, Project, null)
     }));
@@ -157,6 +160,7 @@ const processTableData = (data) => (data || []).map(formatDefect);
 export const processTwoDimensionalIssues = (
     allJiraTickets, projectTickets, project, portfolios, priority
 ) => {
+    const selectedPriority = mapPriority(priority);
     const tickets = project === TOTAL_UNIQUE_ISSUES_LABEL
         ? Object.values(projectTickets).reduce((acc, curr) => acc.concat(curr.ticketIds), [])
         : projectTickets[project].ticketIds;
@@ -164,7 +168,7 @@ export const processTwoDimensionalIssues = (
     portfolios.forEach((portfolio) => {
         tickets.forEach((id) => {
             const t = allJiraTickets.portfolioTickets[portfolio.value][id];
-            if (t && (!priority || t.priority === priority)) {
+            if (t && (!priority || mapPriority(t.priority) === selectedPriority)) {
                 t.portfolio = portfolio.text;
                 finalList.push(t);
             }

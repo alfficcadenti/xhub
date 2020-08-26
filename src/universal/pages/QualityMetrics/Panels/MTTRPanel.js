@@ -62,10 +62,9 @@ const MTTRPanel = ({tickets, dataUrl}) => {
     return (
         <Panel
             title={title}
-            info="Charting defects by their mean time (days) to resolve (bucketed by week). Click line point for more details."
+            info="Charting defects by their mean time (in days) to resolve (bucketed by week). Click line point for more details."
             isLoading={isLoading}
             error={error}
-            info="The weekly average amount of days between a ticket's create date and resolve date w.r.t. priority"
             isFullWidth
         >
             <ResponsiveContainer width="100%" height={300}>
