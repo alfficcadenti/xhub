@@ -115,7 +115,8 @@ export const formatTableData = (rawData, onClickHandler) => {
                 p3: '-',
                 p4: '-',
                 p5: '-',
-                notPrioritized: '-'
+                notPrioritized: '-',
+                totalTickets: 0
             };
             Object.entries(counts)
                 .forEach(([priority, count]) => {
@@ -175,7 +176,10 @@ export const processTwoDimensionalIssues = (
         });
     });
     return {
-        data: processTableData(finalList)
+        data: processTableData(finalList),
+        description: priority
+            ? `Displaying "${project}" defects with ${priority} priority`
+            : `Displaying all ${project ? `"${project}"` : ''} defects`
     };
 };
 

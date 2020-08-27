@@ -5,38 +5,31 @@ export const PORTFOLIOS = [
     {
         text: 'Checkout',
         value: 'checkout',
-        projects: ['COPB', 'EPOCH', 'CCAT', 'HBILL', 'HPAY', 'CKOCLD', 'COLT', 'CXP', 'PLT', 'ROCK', 'SCOUTS', 'HCKOSUP', 'HCOMCOP'],
-        components: []
+        projects: ['COPB', 'EPOCH', 'CCAT', 'HBILL', 'HPAY', 'CKOCLD', 'COLT', 'CXP', 'PLT', 'ROCK', 'SCOUTS', 'HCKOSUP', 'HCOMCOP']
     }, {
         text: 'Core Services',
         value: 'coreservices',
-        projects: ['BANK', 'BUD', 'PRIME', 'ONEAPI', 'MOB', 'HCR', 'HK'],
-        components: []
+        projects: ['BANK', 'BUD', 'PRIME', 'ONEAPI', 'MOB', 'HCR', 'HK']
     }, {
         text: 'Customer',
         value: 'customer',
-        projects: ['LOYD', 'CRTC', 'CARTA', 'CRTC', 'CRTR', 'CMLTD'],
-        components: []
+        projects: ['LOYD', 'CRTC', 'CARTA', 'CRTC', 'CRTR', 'CMLTD']
     }, {
         text: 'H4P',
         value: 'h4p',
-        projects: ['PIT', 'HROP'],
-        components: []
+        projects: ['PIT', 'HROP']
     }, {
         text: 'Kes',
         value: 'kes',
-        projects: ['KES'],
-        components: []
+        projects: ['KES']
     }, {
         text: 'Landing',
         value: 'landing',
-        projects: ['LAPLAT', 'FIGS', 'LASER', 'PANDA', 'VIKING', 'COLOSSEO'],
-        components: []
+        projects: ['LAPLAT', 'FIGS', 'LASER', 'PANDA', 'VIKING', 'COLOSSEO']
     }, {
         text: 'Mobile',
         value: 'mobile',
-        projects: ['ALO', 'HLR', 'PDI', 'SHP', 'INCREDIBLE'],
-        components: []
+        projects: ['ALO', 'HLR', 'PDI', 'SHP', 'INCREDIBLE']
     }
 ];
 

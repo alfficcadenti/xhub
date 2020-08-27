@@ -170,17 +170,17 @@ describe('Quality Metrics Util', () => {
             }
         };
         expect(processTwoDimensionalIssues(allJiraTickets, projectTickets, project, portfolios))
-            .to.eql({data: defects.map(formatDefect)});
+            .to.eql({data: defects.map(formatDefect), description: 'Displaying all "openBugs" defects'});
         expect(processTwoDimensionalIssues(allJiraTickets, projectTickets, project, portfolios, P1_LABEL))
-            .to.eql({data: [defects[0]].map(formatDefect)});
+            .to.eql({data: [defects[0]].map(formatDefect), description: 'Displaying "openBugs" defects with P1 priority'});
         expect(processTwoDimensionalIssues(allJiraTickets, projectTickets, project, portfolios, P2_LABEL))
-            .to.eql({data: []});
+            .to.eql({data: [], description: 'Displaying "openBugs" defects with P2 priority'});
         expect(processTwoDimensionalIssues(allJiraTickets, projectTickets, project, portfolios, P3_LABEL))
-            .to.eql({data: [defects[1], defects[2]].map(formatDefect)});
+            .to.eql({data: [defects[1], defects[2]].map(formatDefect), description: 'Displaying "openBugs" defects with P3 priority'});
         expect(processTwoDimensionalIssues(allJiraTickets, projectTickets, project, portfolios, P4_LABEL))
-            .to.eql({data: []});
+            .to.eql({data: [], description: 'Displaying "openBugs" defects with P4 priority'});
         expect(processTwoDimensionalIssues(allJiraTickets, projectTickets, project, portfolios, P5_LABEL))
-            .to.eql({data: [defects[3], defects[4], defects[5]].map(formatDefect)});
+            .to.eql({data: [defects[3], defects[4], defects[5]].map(formatDefect), description: 'Displaying "openBugs" defects with P5 priority'});
     });
 
     it('formatCreatedVsResolvedData', () => {

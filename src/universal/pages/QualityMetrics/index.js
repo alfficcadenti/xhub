@@ -12,7 +12,6 @@ import {
     MTTRPanel,
     SLADefinitions,
     CreatedVsResolvedPanel,
-    UnresolvedCountsPanel,
     WoWPanel,
     PiePanel
 } from './Panels';
@@ -56,10 +55,6 @@ const QualityMetrics = ({selectedBrands}) => {
     const [isCvrDataLoading, setIsCvrDataLoading] = useState(true);
     const [cvrDataError, setCvrDataError] = useState();
 
-    const [unresolvedData, setUnresolvedData] = useState({});
-    const [isUnresolvedDataLoading, setIsUnresolvedDataLoading] = useState(true);
-    const [unresolvedDataError, setUnresolvedDataError] = useState();
-
     useEffect(() => {
         const fetchData = () => {
             setPortfolioBrand(getPortfolioBrand(selectedBrands));
@@ -102,16 +97,6 @@ const QualityMetrics = ({selectedBrands}) => {
                 .catch((e) => {
                     setCvrDataError(e.message);
                     setIsCvrDataLoading(false);
-                });
-            fetch(getPanelDataUrl(selectedPortfolios, portfolioBrand, 'unresolvedissuescount'))
-                .then((data) => data.json())
-                .then((response) => {
-                    setUnresolvedData(response.data || {});
-                    setIsUnresolvedDataLoading(false);
-                })
-                .catch((e) => {
-                    setUnresolvedDataError(e.message);
-                    setIsUnresolvedDataLoading(false);
                 });
         };
         fetchData();
@@ -183,14 +168,6 @@ const QualityMetrics = ({selectedBrands}) => {
                         <div className="info-stat__value">
                             {selectedPortfolios
                                 .reduce((acc, curr) => acc.concat(curr.projects), [])
-                                .join(', ') || 'None'}
-                        </div>
-                    </div>
-                    <div className="info-stat">
-                        <div className="info-stat__label">{'Dev Inbox Components included:'}</div>
-                        <div className="info-stat__value">
-                            {selectedPortfolios
-                                .reduce((acc, curr) => acc.concat(curr.components), [])
                                 .join(', ') || 'None'}
                         </div>
                     </div>
@@ -277,24 +254,6 @@ const QualityMetrics = ({selectedBrands}) => {
                     data={cvrData}
                     isLoading={isCvrDataLoading}
                     error={cvrDataError}
-                />
-                <UnresolvedCountsPanel
-                    title="Unresolved Trend Line - All P1s and P2s"
-                    info="Charting unresolved P1 and P2 priority defects by their open date (bucketed by week)"
-                    tickets={tickets}
-                    data={unresolvedData}
-                    isLoading={isUnresolvedDataLoading}
-                    error={unresolvedDataError}
-                    dataKey="unResolvedP1AndP2IssuesByWeek"
-                />
-                <UnresolvedCountsPanel
-                    title="Unresolved Trend Line - All Bugs"
-                    info="Charting all unresolved defects by their open date (bucketed by week)"
-                    tickets={tickets}
-                    data={unresolvedData}
-                    isLoading={isUnresolvedDataLoading}
-                    error={unresolvedDataError}
-                    dataKey="unResolvedIssuesByWeek"
                 />
                 <WoWPanel
                     tickets={tickets}
