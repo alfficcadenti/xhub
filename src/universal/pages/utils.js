@@ -64,6 +64,26 @@ export const divisionToBrand = (division = '') => {
     }
 };
 
+export const consolidateTicketsById = (tickets) => {
+    const results = [];
+    const ticketIdSet = new Set();
+    tickets.forEach((ticket) => {
+        const {id} = ticket;
+        if (ticketIdSet.has(id)) {
+            const idx = results.findIndex((t) => t.id === id);
+            if (results[idx].impactedBrand) {
+                results[idx].impactedBrand += `,${ticket.impactedBrand}`;
+            }
+            results[idx].estimatedRevenueLoss = `${parseFloat(results[idx].estimatedRevenueLoss) + parseFloat(ticket.estimatedRevenueLoss || 0)}`;
+            results[idx].estimatedGrossLoss = `${parseFloat(results[idx].estimatedGrossLoss) + parseFloat(ticket.estimatedGrossLoss || 0)}`;
+            return;
+        }
+        ticketIdSet.add(id);
+        results.push(ticket);
+    });
+    return results;
+};
+
 export const getUniqueByProperty = (element, property) => {
     const group = element.reduce((acc, item) => {
         const id = item[property];

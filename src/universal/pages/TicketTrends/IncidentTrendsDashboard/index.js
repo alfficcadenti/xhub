@@ -95,7 +95,8 @@ const IncidentTrendsDashboard = (props) => {
 
     function applyFilters() {
         const matchesPriority = (t) => selectedPriority === priorityDefaultValue || t.priority === selectedPriority;
-        const matchesBrand = (t) => selectedBrand === EG_BRAND || selectedBrand === impactedBrandToDivision(t.impactedBrand);
+        const matchesBrand = (t) => (selectedBrand === EG_BRAND
+            || (t.impactedBrand || '').split(',').some((iBrand) => selectedBrand === impactedBrandToDivision(iBrand)));
         const matchesStatus = (t) => selectedStatus === statusDefaultValue || t.status === selectedStatus;
         const matchesTag = (t) => selectedTag === tagDefaultValue || t.tag === selectedTag || (Array.isArray(t.tag) && t.tag.includes(selectedTag));
         const matchesRcOwner = (t) => selectedRcOwner === rcOwnerDefaultValue || t['RC Owner'] === selectedRcOwner;

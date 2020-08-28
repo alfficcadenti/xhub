@@ -306,8 +306,8 @@ export const getWeeklyCounts = (startDate, endDate, tickets, key) => {
     return {data, keys: ['count']};
 };
 
-export const impactedBrandToDivision = (division = '') => {
-    switch (division && division.toUpperCase()) {
+export const impactedBrandToDivision = (impactedBrand = '') => {
+    switch (impactedBrand && impactedBrand.toUpperCase()) {
         case 'EGENCIA NA':
         case 'EGENCIA EU':
         case 'EGENCIA EU, EGENCIA NA':

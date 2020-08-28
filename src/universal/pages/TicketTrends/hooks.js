@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-import {adjustTicketProperties} from './incidentsHelper';
+import {adjustTicketProperties, impactedBrandToDivision} from './incidentsHelper';
 import {
     ALL_PRIORITIES_OPTION,
     ALL_STATUSES_OPTION,
@@ -9,7 +9,7 @@ import {
     ALL_RC_OWNERS_OPTION
 } from '../../constants';
 import {useIsMount} from '../hooks';
-import {checkResponse, getListOfUniqueProperties, getUniqueByProperty, sortArrayByMostRecentDate} from '../utils';
+import {checkResponse, getListOfUniqueProperties, consolidateTicketsById, sortArrayByMostRecentDate} from '../utils';
 
 
 export const useFetchTickets = (
@@ -40,7 +40,6 @@ export const useFetchTickets = (
             setIsLoading(true);
             setLastStartDate(startDate);
             setLastEndDate(endDate);
-
             fetch(`/v1/${url}?fromDate=${startDate}&toDate=${endDate}`)
                 .then(checkResponse)
                 .then((data) => {
@@ -48,7 +47,7 @@ export const useFetchTickets = (
                     const tickets = (isIncidents)
                         ? sortArrayByMostRecentDate(data, 'startDate')
                         : sortArrayByMostRecentDate(data, 'openDate');
-                    const uniqueTickets = getUniqueByProperty(tickets, 'id');
+                    const uniqueTickets = consolidateTicketsById(tickets, 'id');
                     const adjustedUniqueTickets = adjustTicketProperties(uniqueTickets, isIncidents ? 'incident' : 'defect');
                     const ticketPriorities = getListOfUniqueProperties(adjustedUniqueTickets, 'priority').sort();
                     const ticketStatuses = getListOfUniqueProperties(adjustedUniqueTickets, 'Status');
@@ -98,11 +97,13 @@ export const useFetchTickets = (
 
 export const useRootCauseOwner = (selectedBrand, allUniqueIncidents) => {
     const [rootCauseOwners, setRootCauseOwners] = useState([]);
-
     useEffect(() => {
-        const filteredIncidents = allUniqueIncidents.filter((item) => selectedBrand === EG_BRAND || selectedBrand === item.Brand);
-        const rcOwners = getListOfUniqueProperties(filteredIncidents, 'rootCauseOwner');
-
+        const filteredIncidents = selectedBrand === EG_BRAND
+            ? allUniqueIncidents
+            : allUniqueIncidents.filter(
+                ({impactedBrand}) => (impactedBrand && impactedBrand.split(',').some((iBrand) => (selectedBrand === impactedBrandToDivision(iBrand))))
+            );
+        const rcOwners = getListOfUniqueProperties(filteredIncidents, 'RC Owner');
         setRootCauseOwners([ALL_RC_OWNERS_OPTION, ...rcOwners]);
     }, [selectedBrand, allUniqueIncidents]);
 

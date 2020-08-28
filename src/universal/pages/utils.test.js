@@ -1,7 +1,14 @@
 import React from 'react';
 import {expect} from 'chai';
 import {
-    divisionToBrand, getListOfUniqueProperties, isNotEmptyString, isNotDuplicate, sortArrayByMostRecentDate, buildTicketLink, getVisiblePages
+    divisionToBrand,
+    consolidateTicketsById,
+    getListOfUniqueProperties,
+    isNotEmptyString,
+    isNotDuplicate,
+    sortArrayByMostRecentDate,
+    buildTicketLink,
+    getVisiblePages
 } from './utils';
 import {VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_BRAND, EGENCIA_BRAND} from '../constants';
 
@@ -10,6 +17,68 @@ describe('divisionToBrand', () => {
     it('returns Egencia when the input value is EGENCIA - CONSOLIDATED', () => {
         const result = divisionToBrand('EGENCIA - CONSOLIDATED');
         expect(result).to.be.eql(EGENCIA_BRAND);
+    });
+
+    it('returns Vrbo when the input value is VRBO or HOME AWAY', () => {
+        const result = divisionToBrand('VRBO');
+        expect(result).to.be.eql(VRBO_BRAND);
+        const result2 = divisionToBrand('HOME AWAY');
+        expect(result2).to.be.eql(VRBO_BRAND);
+    });
+
+    it('returns Hotels.com when the input value is HOTELS WORLDWIDE (HWW)', () => {
+        const result = divisionToBrand('HOTELS WORLDWIDE (HWW)');
+        expect(result).to.be.eql(HOTELS_COM_BRAND);
+        const result2 = divisionToBrand('HCOM');
+        expect(result2).to.be.eql(HOTELS_COM_BRAND);
+    });
+
+    it('returns BEX - Expedia Group as default when the input value doesn t match', () => {
+        const result = divisionToBrand('random text');
+        expect(result).to.be.eql(EXPEDIA_BRAND);
+    });
+
+    it('returns Expedia Group if division is empty', () => {
+        const result = divisionToBrand();
+        expect(result).to.be.eql(EXPEDIA_BRAND);
+    });
+
+    it('returns Expedia Group if division is null', () => {
+        const result = divisionToBrand(null);
+        expect(result).to.be.eql(EXPEDIA_BRAND);
+    });
+});
+
+describe('consolidateTicketsById', () => {
+    it('consolidates impactedBrands, revenue loss, and gross loss for tickets with same id', () => {
+        const tickets = [{
+            id: 'INC-0001',
+            impactedBrand: 'vrbo',
+            estimatedRevenueLoss: '1000',
+            estimatedGrossLoss: '2222'
+        }, {
+            id: 'INC-0001',
+            impactedBrand: 'expedia',
+            estimatedRevenueLoss: '2005',
+            estimatedGrossLoss: '15'
+        }, {
+            id: 'INC-0002',
+            impactedBrand: 'hotels',
+            estimatedRevenueLoss: '1',
+            estimatedGrossLoss: '2'
+        }];
+        const result = consolidateTicketsById(tickets);
+        expect(result).to.be.eql([{
+            id: 'INC-0001',
+            impactedBrand: 'vrbo,expedia',
+            estimatedRevenueLoss: '3005',
+            estimatedGrossLoss: '2237'
+        }, {
+            id: 'INC-0002',
+            impactedBrand: 'hotels',
+            estimatedRevenueLoss: '1',
+            estimatedGrossLoss: '2'
+        }]);
     });
 
     it('returns Vrbo when the input value is VRBO or HOME AWAY', () => {
