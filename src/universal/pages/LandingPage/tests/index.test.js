@@ -4,6 +4,7 @@ import LandingPage from '../index';
 import {formatCSRData} from '../utils';
 import {expect} from 'chai';
 import {mockData, expectedVrboFormattedData, garbageData} from './mockData';
+import {VRBO_BRAND} from '../../../constants';
 
 const selectedBrands = ['Expedia Group'];
 jest.mock('react-router-dom', () => {
@@ -33,21 +34,21 @@ describe('<LandingPage />', () => {
     });
 
     describe('formatCSRData()', () => {
-        const expectedEmptyData = [{brandName: 'Vrbo', CSRTrend: []}];
+        const expectedEmptyData = [{brandName: 'Vrbo Retail', CSRTrend: []}];
 
         it('return object with CSRTrend empty array if brand selected but data is not present', () => {
             const data = [];
-            const formattedData = formatCSRData(data, ['Vrbo']);
+            const formattedData = formatCSRData(data, [VRBO_BRAND]);
             expect(formattedData).to.be.eql(expectedEmptyData);
         });
 
         it('formats data from CSR api', () => {
-            const formattedData = formatCSRData(mockData, ['Vrbo']);
+            const formattedData = formatCSRData(mockData, [VRBO_BRAND]);
             expect(formattedData).to.be.eql(expectedVrboFormattedData);
         });
 
         it('return object with CSRTrend empty array if brand selected but garbage data', () => {
-            const formattedData = formatCSRData(garbageData, ['Vrbo']);
+            const formattedData = formatCSRData(garbageData, [VRBO_BRAND]);
             expect(formattedData).to.be.eql(expectedEmptyData);
         });
     });

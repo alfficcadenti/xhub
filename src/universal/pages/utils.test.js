@@ -26,7 +26,7 @@ describe('divisionToBrand', () => {
         expect(result2).to.be.eql(VRBO_BRAND);
     });
 
-    it('returns Hotels.com when the input value is HOTELS WORLDWIDE (HWW)', () => {
+    it('returns Hotels.com Retail when the input value is HOTELS WORLDWIDE (HWW)', () => {
         const result = divisionToBrand('HOTELS WORLDWIDE (HWW)');
         expect(result).to.be.eql(HOTELS_COM_BRAND);
         const result2 = divisionToBrand('HCOM');
@@ -88,7 +88,7 @@ describe('consolidateTicketsById', () => {
         expect(result2).to.be.eql(VRBO_BRAND);
     });
 
-    it('returns Hotels.com when the input value is HOTELS WORLDWIDE (HWW)', () => {
+    it('returns Hotels.com Retail when the input value is HOTELS WORLDWIDE (HWW)', () => {
         const result = divisionToBrand('HOTELS WORLDWIDE (HWW)');
         expect(result).to.be.eql(HOTELS_COM_BRAND);
         const result2 = divisionToBrand('HCOM');
@@ -159,7 +159,7 @@ describe('buildTicketLink()', () => {
     });
 
     it('return a href link to homeaway Jira if url is not passed and brand is VRBO', () => {
-        expect(buildTicketLink('INC1234', 'Vrbo', '')).to.be.eql(<a href="https://jira.homeawaycorp.com/browse/INC1234" target="_blank">{'INC1234'}</a>);
+        expect(buildTicketLink('INC1234', VRBO_BRAND, '')).to.be.eql(<a href="https://jira.homeawaycorp.com/browse/INC1234" target="_blank">{'INC1234'}</a>);
     });
 
     it('return a href link to expedia service now if ticket is not vrbo', () => {

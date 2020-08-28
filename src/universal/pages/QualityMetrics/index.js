@@ -293,7 +293,7 @@ const QualityMetrics = ({selectedBrands}) => {
             {isSupportedBrand
                 ? renderBody()
                 : <div className="messaged">{`Quality Metrics for ${selectedBrands} is not yet available.
-                    The following brands are supported at this time: "Hotels.com".
+                    The following brands are supported at this time: "Hotels.com Retail".
                     If you have any questions, please ping #dpi-reo-opex-all or leave a comment via our Feedback form.`}</div>
             }
         </div>
