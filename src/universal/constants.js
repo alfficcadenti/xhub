@@ -17,8 +17,8 @@ export const ALL_RC_OWNERS_OPTION = 'All Root Cause Owners';
 export const ALL_RC_CATEGORIES_OPTION = 'All Root Cause Categories';
 export const EPIC_ISSUE_TYPE = 'Epic';
 export const EXPEDIA_BRAND = 'Expedia';
-export const VRBO_BRAND = 'Vrbo Retail';
-export const HOTELS_COM_BRAND = 'Hotels.com Retail';
+export const VRBO_BRAND = 'Vrbo';
+export const HOTELS_COM_BRAND = 'Hotels.com';
 export const EXPEDIA_PARTNER_SERVICES_BRAND = 'Expedia Partner Services';
 export const EGENCIA_BRAND = 'Egencia';
 export const CHART_COLORS = ['#3366cc', '#dc3912', '#ff9900', '#109618', '#990099', '#0099c6', '#dd4477', '#66aa00', '#b82e2e', '#316395', '#3366cc', '#994499', '#22aa99', '#aaaa11', '#6633cc', '#e67300', '#8b0707', '#651067', '#329262', '#5574a6', '#3b3eac', '#b77322', '#16d620', '#b91383', '#f4359e', '#9c5935', '#a9c413', '#2a778d', '#668d1c', '#bea413', '#0c5922', '#743411'];
@@ -54,7 +54,7 @@ export const BRANDS = [
         color: '#1B5CAF'
     },
     {
-        label: HOTELS_COM_BRAND,
+        label: `${HOTELS_COM_BRAND} Retail`,
         psrBrand: 'hcom',
         funnelBrand: 'hcom',
         landingBrand: HOTELS_COM_BRAND,
@@ -62,7 +62,7 @@ export const BRANDS = [
         color: '#F71414'
     },
     {
-        label: VRBO_BRAND,
+        label: `${VRBO_BRAND} Retail`,
         psrBrand: 'vrbo',
         funnelBrand: 'vrbo',
         landingBrand: VRBO_BRAND,

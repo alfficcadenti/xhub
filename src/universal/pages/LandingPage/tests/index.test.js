@@ -34,7 +34,7 @@ describe('<LandingPage />', () => {
     });
 
     describe('formatCSRData()', () => {
-        const expectedEmptyData = [{brandName: 'Vrbo Retail', CSRTrend: []}];
+        const expectedEmptyData = [{brandName: 'Vrbo', CSRTrend: []}];
 
         it('return object with CSRTrend empty array if brand selected but data is not present', () => {
             const data = [];
