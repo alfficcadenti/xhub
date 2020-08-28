@@ -117,7 +117,9 @@ export const getListOfUniqueProperties = (data = [], prop) => {
     });
     if (!isArray) {
         // filter empty strings and duplicates
-        return values.filter((value, index, self) => value && self.indexOf(value) === index);
+        const list = values.filter((value, index, self) => value && self.indexOf(value) === index);
+        list.sort();
+        return list;
     }
     // create a set of values and convert to array
     const list = Array.from(values
