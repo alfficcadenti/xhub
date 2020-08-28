@@ -4,11 +4,11 @@ import React from 'react';
 import {expect} from 'chai';
 import {shallow} from 'enzyme/build';
 import {func} from 'prop-types';
-import {useFetchTickets} from '../hooks';
+import {HOTELS_COM_BRAND} from '../../../constants';
+import {useFetchTickets, useRootCauseOwner} from '../hooks';
 
 function HookWrapper(props) {
     const hook = props.hook ? props.hook() : undefined;
-
     return <div hook={hook} />;
 }
 
@@ -19,30 +19,32 @@ HookWrapper.propTypes = {
 describe('Incident Trends Dashboard custom hooks', () => {
     it('should render', () => {
         let wrapper = shallow(<HookWrapper />);
-
         expect(wrapper.exists()).to.be.ok;
     });
 
-    describe('test useFetchTickets hook', () => {
-        it('fetch tickets successfully', () => {
-            const wrapper = shallow(<HookWrapper hook={() => useFetchTickets()} />);
+    it('useFetchTickets', () => {
+        const wrapper = shallow(<HookWrapper hook={() => useFetchTickets()} />);
+        const {hook} = wrapper.find('div').props();
+        let [
+            isLoading,
+            error,
+            allUniqueTickets,
+            allTickets,
+            priorities,
+            statuses,
+        ] = hook;
+        expect(isLoading).eql(true);
+        expect(allTickets).eql([]);
+        expect(allUniqueTickets).eql([]);
+        expect(priorities).eql([]);
+        expect(statuses).eql([]);
+        expect(error).eql('');
+    });
 
-            let {hook} = wrapper.find('div').props();
-            let [
-                isLoading,
-                error,
-                allUniqueTickets,
-                allTickets,
-                priorities,
-                statuses,
-            ] = hook;
-
-            expect(isLoading).eql(true);
-            expect(allTickets).eql([]);
-            expect(allUniqueTickets).eql([]);
-            expect(priorities).eql([]);
-            expect(statuses).eql([]);
-            expect(error).eql('');
-        });
+    it('useRootCauseOwner', () => {
+        const tickets = [{impactedBrand: 'Hotels', 'RC Owner': 'bob'}, {impactedBrands: 'vrbo', 'RC Owner': 'joe'}];
+        const wrapper = shallow(<HookWrapper hook={() => useRootCauseOwner(HOTELS_COM_BRAND, tickets)} />);
+        const {hook} = wrapper.find('div').props();
+        expect(hook).to.eql([]);
     });
 });

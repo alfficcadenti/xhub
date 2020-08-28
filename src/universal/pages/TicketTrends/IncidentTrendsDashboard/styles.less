@@ -79,10 +79,17 @@
             background: @color-bg-accent;
             border-radius: 0 0 @spacing-1x @spacing-1x;
 
-            .rc-owner-dropdown .Dropdown__toggle {
-                .dropdown-button;
+            .rc-owner-dropdown {
+                .Dropdown__toggle {
+                    .dropdown-button;
+                }
             }
         }
+    }
+
+    .Dropdown__menu {
+        max-height: 300px;
+        overflow-y: scroll;
     }
 
     .Navigation {
