@@ -1,17 +1,12 @@
 import {useEffect, useState} from 'react';
 import {
-    ALL_LOB,
-    ALL_BRANDS,
     ALL_BRAND_GROUP,
-    ALL_DEVICE_TYPES,
-    ALL_BOOKING_TYPES,
     EGENCIA_BRAND,
     EG_BRAND,
     EXPEDIA_BRAND,
     EXPEDIA_PARTNER_SERVICES_BRAND,
     HOTELS_COM_BRAND,
     VRBO_BRAND,
-    ALL_EG_SITE_URL
 } from '../../constants';
 import {useIsMount} from '../hooks';
 import {getFilters, getBrandQueryParam, getQueryString} from './impulseHandler';
@@ -28,25 +23,30 @@ const IMPULSE_MAPPING = [
     {globalFilter: VRBO_BRAND, impulseFilter: 'VRBO'}
 ];
 
-export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, endDate, selectedLob, selectedBrand, selectedDeviceType, selectedBookingType, globalBrandName, prevBrand, selectedEGSiteURL) => {
+export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, endDate, globalBrandName, prevBrand, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, selectedBookingTypeMulti, selectedSiteId, selectedTPID) => {
     const [res, setRes] = useState([]);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(true);
-    const [bookingTypes, setBookingDevices] = useState([]);
-    const [egSiteUrls, setEgSiteUrls] = useState([]);
-    const [deviceTypes, setDeviceTypes] = useState([]);
-    const [brands, setBrands] = useState([]);
-    const [lobs, setLobs] = useState([]);
+
+    const [egSiteURLMulti, setEgSiteURLMulti] = useState({});
+    const [lobsMulti, setLobsMulti] = useState({});
+    const [brandsMulti, setBrandMulti] = useState({});
+    const [deviceTypeMulti, setDeviceTypesMulti] = useState({});
+    const [bookingTypeMulti, setBookingTypesMulti] = useState({});
+    const [siteIds, setSiteIds] = useState({});
+    const [tpids, setTpids] = useState({});
     const isMount = useIsMount();
     const getFilter = () => {
-        fetch(`/v1/bookings/filters?filter=lob,brand,egSiteUrl,deviceType,bookingType,brandGroupName${getBrandQueryParam(IMPULSE_MAPPING, globalBrandName)}`)
+        fetch(`/v1/bookings/filters?filter=lob,brand,egSiteUrl,deviceType,bookingType,brandGroupName,tpid,siteId${getBrandQueryParam(IMPULSE_MAPPING, globalBrandName)}`)
             .then(checkResponse)
             .then((respJson) => {
-                setBookingDevices([ALL_BOOKING_TYPES, ...getFilters(respJson, 'bookingType')[0].sort((A, B) => A.localeCompare(B))]);
-                setEgSiteUrls([ALL_EG_SITE_URL, ...getFilters(respJson, 'egSiteUrl')[0].sort((A, B) => A.localeCompare(B))]);
-                setDeviceTypes([ALL_DEVICE_TYPES, ...getFilters(respJson, 'deviceType')[0].sort((A, B) => A.localeCompare(B))]);
-                setBrands([ALL_BRANDS, ...getFilters(respJson, 'brand')[0].sort((A, B) => A.localeCompare(B))]);
-                setLobs([ALL_LOB, ...getFilters(respJson, 'lob')[0].sort((A, B) => A.localeCompare(B))]);
+                setEgSiteURLMulti(getFilters(respJson, 'egSiteUrl')[0].map((a) => ({value: a, label: a})));
+                setLobsMulti(getFilters(respJson, 'lob')[0].map((a) => ({value: a, label: a})));
+                setBrandMulti(getFilters(respJson, 'brand')[0].map((a) => ({value: a, label: a})));
+                setDeviceTypesMulti(getFilters(respJson, 'deviceType')[0].map((a) => ({value: a, label: a})));
+                setBookingTypesMulti(getFilters(respJson, 'bookingType')[0].map((a) => ({value: a, label: a})));
+                setSiteIds(getFilters(respJson, 'siteId')[0].map((a) => ({value: a, label: a})));
+                setTpids(getFilters(respJson, 'tpid')[0].map((a) => ({value: a, label: a})));
             })
             .catch((err) => {
                 console.error(err);
@@ -54,7 +54,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
     };
     const getData = () => {
         setIsLoading(true);
-        fetch(`/v1/bookings/count${getQueryString(selectedLob, selectedBrand, selectedDeviceType, selectedBookingType, globalBrandName, startDate, endDate, selectedEGSiteURL, IMPULSE_MAPPING, globalBrandName)}`)
+        fetch(`/v1/bookings/count${getQueryString(startDate, endDate, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, selectedBookingTypeMulti, selectedSiteId, selectedTPID)}`)
             .then((result) => {
                 return result.json();
             }
@@ -95,11 +95,13 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
         isLoading,
         res,
         error,
-        bookingTypes,
-        egSiteUrls,
-        deviceTypes,
-        brands,
-        lobs
+        egSiteURLMulti,
+        lobsMulti,
+        brandsMulti,
+        deviceTypeMulti,
+        bookingTypeMulti,
+        siteIds,
+        tpids
     ];
 };
 

@@ -33,7 +33,7 @@ export default [
         id: 'impulse',
         link: '/impulse',
         text: 'Impulse Dashboard',
-        component: require('./MockupImpulse'),
+        component: require('./Impulse'),
         hidden: true
     },
     {

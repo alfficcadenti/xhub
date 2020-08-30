@@ -1,0 +1,98 @@
+@import '../../mixins.less';
+.impulse-container {
+  .impulse-filters-wrapper {
+    .first-filter-spacing{
+      margin-left: 7px;
+      height: fit-content;
+    }
+    .all-filters{
+      margin-left: 5px;
+      height: fit-content;
+
+    }
+    .apply-button {
+      margin: 5px;
+    }
+
+    .apply-button {
+      height: fit-content;
+    }
+    .more-filters-btn {
+      min-height: @spacing-7x;
+      margin-top:5px;
+      padding-top: 10px;
+      padding-left: 10px;
+      font-size: .75rem;
+      line-height: 1rem;
+      box-shadow: none;
+      border-radius: @spacing-1x @spacing-1x 0 0;
+
+      &.active {
+        background: @color-bg-accent;
+      }
+    }
+    .impulse-dropdown .Dropdown__toggle {
+      .dropdown-button(160px,@color-text-default);
+    }
+  }
+}
+
+.filter-option {
+  display: flex;
+  margin: 5px;
+  z-index: 15;
+
+  .check-box-utc {
+    margin-top: 20px;
+    margin-left: 5px;
+  }
+
+  .filter-option-selection {
+    //width: auto;
+    width: 220px;
+    z-index: 25;
+    margin-left: 5px;
+  }
+  .filter-option-expand {
+    width: auto;
+    min-width: 220px;
+    max-width: 550px;
+    z-index: 15;
+    margin-left: 5px;
+  }
+
+}
+
+.more-filters-divider {
+  //margin: -4px 0 4px 5px;
+  margin-top: -2px;
+
+  .Divider__heading {
+    display: none;
+  }
+
+  .Divider__body {
+    margin-top: 2px;
+    padding: @spacing-2x;
+    background: @color-bg-accent;
+    border-radius: 0 0 @spacing-1x @spacing-1x;
+
+    .impulse-dropdown .Dropdown__toggle {
+      .dropdown-button(160px,@color-text-default);
+    }
+  }
+}
+.impulse-loading-container{
+  margin-top: 50px;
+
+.impulse-chart-container{
+  text-align: center;
+  margin-right: 0 @spacing-5x;
+  height: 490px;
+
+  .impulse-bookings-container {
+    display: flex;
+    height: 490px;
+  }
+}
+}
