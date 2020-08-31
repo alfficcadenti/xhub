@@ -38,11 +38,11 @@ describe('Impulse custom hooks', () => {
 
             expect(isLoading).eql(true);
             expect(res).eql([]);
-            expect(bookingTypes).eql([]);
-            expect(egSiteUrls).eql([]);
-            expect(deviceTypes).eql([]);
-            expect(brands).eql([]);
-            expect(lobs).eql([]);
+            expect(bookingTypes).eql({});
+            expect(egSiteUrls).eql({});
+            expect(deviceTypes).eql({});
+            expect(brands).eql({});
+            expect(lobs).eql({});
             expect(error).eql('');
         });
     });

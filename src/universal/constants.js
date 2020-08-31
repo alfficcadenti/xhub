@@ -10,6 +10,11 @@ export const ALL_TAGS = ['cost-optimization', 'covid-19'];
 export const ALL_LOB = 'All LOBs';
 export const ALL_EG_SITE_URL = 'All Site URLs';
 export const ALL_BRANDS = 'All Brands';
+export const ALL_POS = 'All POS';
+export const ALL_SITE_ID = 'All Site IDs';
+export const ALL_TPID = 'All TPIDs';
+export const ALL_DEVICES = 'All Devices';
+export const ALL_BOOKING_TYPES = 'Booking Types';
 export const ALL_BRAND_GROUP = 'All Brand Group';
 export const FETCH_OPTION = {Accept: 'application/json', 'Content-Type': 'application/json'};
 export const ALL_TYPES_OPTION = 'All Types';
@@ -23,24 +28,8 @@ export const VRBO_BRAND = 'Vrbo';
 export const HOTELS_COM_BRAND = 'Hotels.com';
 export const EXPEDIA_PARTNER_SERVICES_BRAND = 'Expedia Partner Services';
 export const EGENCIA_BRAND = 'Egencia';
-export const LOBS = ['Air', 'Activity', 'Car', 'Insurance', 'Lodging'];
 export const CHART_COLORS = ['#3366cc', '#dc3912', '#ff9900', '#109618', '#990099', '#0099c6', '#dd4477', '#66aa00', '#b82e2e', '#316395', '#3366cc', '#994499', '#22aa99', '#aaaa11', '#6633cc', '#e67300', '#8b0707', '#651067', '#329262', '#5574a6', '#3b3eac', '#b77322', '#16d620', '#b91383', '#f4359e', '#9c5935', '#a9c413', '#2a778d', '#668d1c', '#bea413', '#0c5922', '#743411'];
 export const EG_BRAND = 'Expedia Group';
-export const BRANDS_LIST = ['Brand Expedia', 'CheapTickets', 'Egencia', 'Expedia Partner Solutions', 'HomeAway', 'Hotels.com', 'Hotwire', 'Orbitz', 'Travelocity', 'Wotif', 'eBookers'];
-export const ALL_DEVICE_TYPES = 'All Devices';
-export const ALL_BOOKING_TYPES = 'All Booking Types';
-export const DEVICE_TYPES = [
-    'API',
-    'Agent Tool',
-    'Mobile App',
-    'Mobile Site',
-    'Traditional Browser',
-    'Unknown'];
-
-export const BOOKING_TYPES = [
-    'Online',
-    'Offline',
-    'Unknown'];
 
 export const BRANDS = [
     {
