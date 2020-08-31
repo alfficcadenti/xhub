@@ -44,7 +44,7 @@ export const useFetchTickets = (
                 .then(checkResponse)
                 .then((data) => {
                     const isIncidents = url === 'incidents';
-                    const tickets = (isIncidents)
+                    const tickets = isIncidents
                         ? sortArrayByMostRecentDate(data, 'startDate')
                         : sortArrayByMostRecentDate(data, 'openDate');
                     const uniqueTickets = consolidateTicketsById(tickets, 'id');
