@@ -1,8 +1,11 @@
 import {expect} from 'chai';
-import {getFilters, getQueryParam, getBrandQueryParam} from '../impulseHandler';
+import {getFilters, getQueryParamMulti, getBrandQueryParam, getQueryString} from '../impulseHandler';
+import moment from 'moment';
 
+let endDate = moment().set({second: 0}).format('YYYY-MM-DDTHH:mm:ss');
+let startDate = moment().set({second: 0}).subtract(1, 'days').format('YYYY-MM-DDTHH:mm:ss');
 const typeofFilter = 'lob';
-const filterResult = ['Lodging'];
+const filterResult = {label: 'Lodging', value: 'Lodging'};
 import mockFilters from './filterMock.test.json';
 import {
     ALL_BRAND_GROUP,
@@ -24,23 +27,21 @@ const IMPULSE_MAPPING = [
 
 describe('impulseHandler', () => {
     describe('get filters in the array', () => {
-        it('return array of filters for specific brand', () => {
+        it('return object of filters for specific lob', () => {
             const result = getFilters(mockFilters, typeofFilter);
             expect(result[0]).to.be.eql(filterResult);
-        });
-
-        it('length of array is greater than 0', () => {
-            const result = getFilters(mockFilters, typeofFilter);
-            expect(result[0].length).to.be.gt(0);
         });
     });
 
     describe('test getQueryParam', () => {
         it('should return empty string if All LOBs passed', () => {
-            expect(getQueryParam('lob', 'All LOBs', false, '')).eql('');
+            expect(getQueryParamMulti('lob', 'All LOBs', false, '')).eql('');
         });
         it('should return query string if valid LOB passed', () => {
-            expect(getQueryParam('lob', 'Car', true, '')).eql('&lob=Car');
+            expect(getQueryParamMulti('lob', ['Car'], true, '')).eql('&lob=Car');
+        });
+        it('should return query string if valid LOBs if multiple LOBs passed', () => {
+            expect(getQueryParamMulti('lob', ['Car', 'Air'], true, '')).eql('&lob=Car,Air');
         });
     });
     describe('test brand query string', () => {
@@ -52,6 +53,11 @@ describe('impulseHandler', () => {
         });
         it('should return brand=Egencia if Egencia passed', () => {
             expect(getBrandQueryParam(IMPULSE_MAPPING, EGENCIA_BRAND)).eql('&brand=Egencia');
+        });
+    });
+    describe('test final query string', () => {
+        it('should return string with datetime into query string if no filter has been selected', () => {
+            expect(getQueryString(moment().set({second: 0}), moment().set({second: 0}).subtract(1, 'days'), IMPULSE_MAPPING, EG_BRAND, [], [], [], [], [], [], [])).eql(`?startDate=${endDate}Z&endDate=${startDate}Z`);
         });
     });
 });

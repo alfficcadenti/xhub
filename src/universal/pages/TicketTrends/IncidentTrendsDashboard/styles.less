@@ -32,7 +32,9 @@
 
         .brand-dropdown .Dropdown__toggle,
         .status-dropdown .Dropdown__toggle,
-        .tag-dropdown .Dropdown__toggle {
+        .tag-dropdown .Dropdown__toggle,
+
+        .partner-dropdown .Dropdown__toggle {
             .dropdown-button;
         }
 
@@ -59,6 +61,20 @@
         }
     }
 
+    .division-container {
+        margin-left: 6px; // Irregular spacing to match more filters container
+        height: @spacing-6x;
+        margin-top: @spacing-1x;
+        border-radius: @spacing-1x;
+        padding: @spacing-2x;
+        background: @color-bg-accent;
+
+        .checkboxes-container .checkbox-column {
+            float: left;
+            margin-right: @spacing-2x;
+        }
+    }
+
     .Datatable__header {
         background: #e3f4fc;
         border-top: 1px #908f8f solid;
@@ -79,10 +95,12 @@
             background: @color-bg-accent;
             border-radius: 0 0 @spacing-1x @spacing-1x;
 
-            .rc-owner-dropdown {
-                .Dropdown__toggle {
-                    .dropdown-button;
-                }
+            .Dropdown {
+                margin: 5px;
+            }
+
+            .rc-owner-dropdown .Dropdown__toggle {
+                .dropdown-button;
             }
         }
     }

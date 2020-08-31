@@ -5,8 +5,10 @@ import NoResults from '../../../../../components/NoResults/NoResults';
 import {getIncidentsData} from '../../../incidentsHelper';
 
 
-const renderTable = (filteredIncidents) => {
-    const columns = ['Incident', 'Priority', 'Impacted Brand', 'Owning Division', 'Started', 'Summary', 'RC Owner', 'TTD', 'TTR', 'Status'];
+const renderTable = (filteredIncidents, isPartnerBrand) => {
+    const columns = isPartnerBrand
+        ? ['Incident', 'Priority', 'Brand', 'Division', 'Started', 'Summary', 'Impacted Partners', 'RC Owner', 'TTD', 'TTR', 'Notification Sent', 'Status']
+        : ['Incident', 'Priority', 'Brand', 'Division', 'Started', 'Summary', 'RC Owner', 'TTD', 'TTR', 'Status'];
     const columnsInfo = {
         TTD: <div>{'Time to Detect'}</div>,
         TTR: <div>{'Time to Resolve (Duration)'}</div>
@@ -29,11 +31,11 @@ const renderTable = (filteredIncidents) => {
     );
 };
 
-const Incidents = ({filteredIncidents}) => (
+const Incidents = ({filteredIncidents, isPartnerBrand}) => (
     <div data-wdio="incidents-table">
         {
             filteredIncidents.length
-                ? renderTable(filteredIncidents)
+                ? renderTable(filteredIncidents, isPartnerBrand)
                 : <NoResults />
         }
     </div>
