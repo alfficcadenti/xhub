@@ -25,6 +25,9 @@ const navLinks = [
 ];
 import {ALL_LOB, ALL_POS, ALL_SITE_ID, ALL_TPID, ALL_BRANDS, ALL_DEVICES, ALL_BOOKING_TYPES} from '../../constants';
 
+const filterSelectionClass = 'filter-option-selection';
+const filterExpandClass = 'filter-option-expand';
+
 const Impulse = (props) => {
     const newBrand = props.selectedBrands[0];
     const [startDateTime, setStartDateTime] = useState(startDateDefaultValue);
@@ -40,8 +43,8 @@ const Impulse = (props) => {
     const [selectedSiteId, setSelectedSiteId] = useState([]);
     const [selectedTPID, setSelectedTPID] = useState([]);
 
-    useQueryParamChange(props.selectedBrands[0], props.onBrandChange);
-    useSelectedBrand(props.selectedBrands[0], props.onBrandChange, props.prevSelectedBrand);
+    useQueryParamChange(newBrand, props.onBrandChange);
+    useSelectedBrand(newBrand, props.onBrandChange, props.prevSelectedBrand);
     const [isLoading, res, error, egSiteURLMulti, lobsMulti, brandsMulti, deviceTypesMulti, bookingTypesMulti, siteIds, TPIDs] = useFetchBlipData(isApplyClicked, setIsApplyClicked, startDateTime, endDateTime, newBrand, props.prevSelectedBrand, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, selectedBookingTypeMulti, selectedSiteId, selectedTPID);
     // eslint-disable-next-line complexity
     const handleMultiChange = (event, handler) => {
@@ -81,40 +84,25 @@ const Impulse = (props) => {
     const handleShowMoreFilters = () => {
         setShowMoreFilters(!showMoreFilters);
     };
+    const renderMultiSelectFilters = (value, options, key, placeholder, className) => {
+        return (<div className={className}>
+            <Select
+                isMulti
+                styles={customStyles}
+                value={value.map((v) => ({value: v, label: v}))}
+                options={options}
+                onChange={(e) => handleMultiChange(e, key)}
+                placeholder={placeholder}
+            />
+        </div>);
+    };
     const renderMoreFilters = () => (
         <Divider heading={'Advance filters for Impulse'} id="advance-filters-divider" className="more-filters-divider" expanded={showMoreFilters}>
             <form className="search-form search-form__more">
                 <div className="filter-option">
-                    <div className="filter-option-expand">
-                        <Select
-                            isMulti
-                            styles={customStyles}
-                            value={selectedSiteURLMulti.map((v) => ({value: v, label: v}))}
-                            options={egSiteURLMulti}
-                            onChange={(e) => handleMultiChange(e, 'egSiteUrl')}
-                            placeholder={ALL_POS}
-                        />
-                    </div>
-                    <div className="filter-option-expand">
-                        <Select
-                            isMulti
-                            styles={customStyles}
-                            value={selectedSiteId.map((v) => ({value: v, label: v}))}
-                            options={siteIds}
-                            onChange={(e) => handleMultiChange(e, 'siteId')}
-                            placeholder={ALL_SITE_ID}
-                        />
-                    </div>
-                    <div className="filter-option-expand">
-                        <Select
-                            isMulti
-                            styles={customStyles}
-                            value={selectedTPID.map((v) => ({value: v, label: v}))}
-                            options={TPIDs}
-                            onChange={(e) => handleMultiChange(e, 'tpid')}
-                            placeholder={ALL_TPID}
-                        />
-                    </div>
+                    {renderMultiSelectFilters(selectedSiteURLMulti, egSiteURLMulti, 'egSiteUrl', ALL_POS, filterExpandClass)}
+                    {renderMultiSelectFilters(selectedSiteId, siteIds, 'siteId', ALL_SITE_ID, filterExpandClass)}
+                    {renderMultiSelectFilters(selectedTPID, TPIDs, 'tpid', ALL_TPID, filterExpandClass)}
                 </div>
             </form>
         </Divider>
@@ -127,7 +115,6 @@ const Impulse = (props) => {
                 return <BookingTrends data={allData}/>;
         }
     };
-
     return (
         <div className="impulse-container">
             <div>
@@ -140,46 +127,10 @@ const Impulse = (props) => {
                     endDate={endDateTime.toDate()}
                 />
                 <div className="filter-option">
-                    <div className="filter-option-selection">
-                        <Select
-                            isMulti
-                            styles={customStyles}
-                            value={selectedBrandMulti.map((v) => ({value: v, label: v}))}
-                            options={brandsMulti}
-                            onChange={(e) => handleMultiChange(e, 'brand')}
-                            placeholder={ALL_BRANDS}
-                        />
-                    </div>
-                    <div className="filter-option-selection">
-                        <Select
-                            isMulti
-                            styles={customStyles}
-                            value={selectedLobMulti.map((v) => ({value: v, label: v}))}
-                            options={lobsMulti}
-                            onChange={(e) => handleMultiChange(e, 'lob')}
-                            placeholder={ALL_LOB}
-                        />
-                    </div>
-                    <div className="filter-option-selection">
-                        <Select
-                            isMulti
-                            styles={customStyles}
-                            value={selectedDeviceTypeMulti.map((v) => ({value: v, label: v}))}
-                            options={deviceTypesMulti}
-                            onChange={(e) => handleMultiChange(e, 'deviceType')}
-                            placeholder={ALL_DEVICES}
-                        />
-                    </div>
-                    <div className="filter-option-selection">
-                        <Select
-                            isMulti
-                            styles={customStyles}
-                            value={selectedBookingTypeMulti.map((v) => ({value: v, label: v}))}
-                            options={bookingTypesMulti}
-                            onChange={(e) => handleMultiChange(e, 'bookingType')}
-                            placeholder={ALL_BOOKING_TYPES}
-                        />
-                    </div>
+                    {renderMultiSelectFilters(selectedBrandMulti, brandsMulti, 'brand', ALL_BRANDS, filterSelectionClass)}
+                    {renderMultiSelectFilters(selectedLobMulti, lobsMulti, 'lob', ALL_LOB, filterSelectionClass)}
+                    {renderMultiSelectFilters(selectedDeviceTypeMulti, deviceTypesMulti, 'deviceType', ALL_DEVICES, filterSelectionClass)}
+                    {renderMultiSelectFilters(selectedBookingTypeMulti, bookingTypesMulti, 'bookingType', ALL_BOOKING_TYPES, filterSelectionClass)}
                     <button
                         type="button"
                         className="apply-button btn btn-primary active"

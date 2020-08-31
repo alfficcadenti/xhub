@@ -28,6 +28,11 @@ const IMPULSE_CHART_TYPE = [
         key: 'predictionChart'
     }
 ];
+const TIME_ZONES = [
+    {value: PST, label: 'PST'},
+    {value: UTC, label: 'UTC'},
+    {value: LOCAL, label: 'Local'}
+];
 
 const formatDateTimeUTC = (date) => moment(date).utc().format('MM/DD HH:mm');
 const formatDateTimeLocal = (date) => moment(date).format('MM/DD HH:mm');
@@ -44,9 +49,7 @@ const formatTooltip = (date, choice) => {
 const CustomTooltip = ({active, payload, choice = PST}) => {
     if (active && payload && payload[0] && payload[0].payload) {
         return (<div className="custom-tooltip">
-            <span
-                className="label"
-            >{formatTooltip(payload[0].payload.time, choice)}</span>
+            <span className="label">{formatTooltip(payload[0].payload.time, choice)}</span>
             {payload.map((item) => (
                 <div>
                     <span className="label">{`${item.dataKey} : ${item.value}`}</span>
@@ -83,6 +86,17 @@ const BookingTrends = ({data = []}) => {
         }
         return formatDateTimeLocal(date);
     };
+    const renderTimeZoneRadioButtons = ({value, label}) => {
+        return (<RadioButton
+            label={label}
+            value={value}
+            checked={choice === value}
+            onChange={() => handleChoiceChange(value)}
+            inline
+            size="sm"
+            className="radio-buttons"
+        />);
+    };
     return (
         <div className="bookings-container-box">
             <div className="header-container">
@@ -91,50 +105,20 @@ const BookingTrends = ({data = []}) => {
                 </h2>
                 <div className="radio-group-style">
                     <RadioGroup name="timezone" ariaLabel="timezone selection">
-                        <RadioButton
-                            label="PST"
-                            value="pst"
-                            checked={choice === PST}
-                            onChange={() => handleChoiceChange(PST)}
-                            inline
-                            size="sm"
-                            className="radio-buttons"
-                        />
-                        <RadioButton
-                            label="UTC"
-                            value="utc"
-                            checked={choice === UTC}
-                            onChange={() => handleChoiceChange(UTC)}
-                            inline
-                            size="sm"
-                            className="radio-buttons"
-                        />
-                        <RadioButton
-                            label="Local"
-                            value="local"
-                            checked={choice === LOCAL}
-                            onChange={() => handleChoiceChange(LOCAL)}
-                            inline
-                            size="sm"
-                            className="radio-buttons"
-                        />
+                        {TIME_ZONES.map(renderTimeZoneRadioButtons)}
                     </RadioGroup>
                 </div>
             </div>
             <ResponsiveContainer width="100%" height="70%">
                 <AreaChart data={data} margin={{top: 10, right: 30, left: 0, bottom: 0}}>
                     <defs>
-                        {IMPULSE_CHART_TYPE.map((item) =>
-                            getGradient(item)
-                        )}
+                        {IMPULSE_CHART_TYPE.map(getGradient)}
                     </defs>
                     <XAxis dataKey="time" tick={{fontSize: 10}} tickFormatter={renderXAxis}/>
                     <YAxis tick={{fontSize: 10}}/>
                     <CartesianGrid strokeDasharray="3 3"/>
                     <Tooltip content={<CustomTooltip choice={choice}/>}/>
-                    {IMPULSE_CHART_TYPE.map((item) =>
-                        renderChart(item)
-                    )}
+                    {IMPULSE_CHART_TYPE.map(renderChart)}
                     <Legend/>
                 </AreaChart>
             </ResponsiveContainer>

@@ -3,11 +3,10 @@ import {
     EGENCIA_BRAND
 } from '../../constants';
 
-export const getFilters = (data = [], typeOfFilter) => data.filter((item) => item.tag === typeOfFilter).map((item) => item.values);
+export const getFilters = (data = [], typeOfFilter) => data.filter((item) => item.tag === typeOfFilter).map((item) => item.values)[0].map((a) => ({value: a, label: a}));
 export const getQueryParamMulti = (key, value, condition, defaultValue = '') => condition ? `&${key}=${value.join(',')}` : defaultValue;
 export const getBrandQueryParam = (IMPULSE_MAPPING, globalBrandName) => {
-    let globalBrand = IMPULSE_MAPPING.find((brandNames) => brandNames.globalFilter === globalBrandName);
-    globalBrand = globalBrand.impulseFilter;
+    let globalBrand = IMPULSE_MAPPING.find((brandNames) => brandNames.globalFilter === globalBrandName)?.impulseFilter;
     if (globalBrand !== ALL_BRAND_GROUP) {
         return globalBrand === EGENCIA_BRAND ? `&brand=${encodeURI(globalBrand)}` : `&brandGroupName=${encodeURI(globalBrand)}`;
     }

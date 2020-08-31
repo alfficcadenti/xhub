@@ -5,7 +5,7 @@ import moment from 'moment';
 let endDate = moment().set({second: 0}).format('YYYY-MM-DDTHH:mm:ss');
 let startDate = moment().set({second: 0}).subtract(1, 'days').format('YYYY-MM-DDTHH:mm:ss');
 const typeofFilter = 'lob';
-const filterResult = ['Lodging'];
+const filterResult = {label: 'Lodging', value: 'Lodging'};
 import mockFilters from './filterMock.test.json';
 import {
     ALL_BRAND_GROUP,
@@ -27,14 +27,9 @@ const IMPULSE_MAPPING = [
 
 describe('impulseHandler', () => {
     describe('get filters in the array', () => {
-        it('return array of filters for specific brand', () => {
+        it('return object of filters for specific lob', () => {
             const result = getFilters(mockFilters, typeofFilter);
             expect(result[0]).to.be.eql(filterResult);
-        });
-
-        it('length of array is greater than 0', () => {
-            const result = getFilters(mockFilters, typeofFilter);
-            expect(result[0].length).to.be.gt(0);
         });
     });
 

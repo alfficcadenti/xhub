@@ -40,13 +40,13 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
         fetch(`/v1/bookings/filters?filter=lob,brand,egSiteUrl,deviceType,bookingType,brandGroupName,tpid,siteId${getBrandQueryParam(IMPULSE_MAPPING, globalBrandName)}`)
             .then(checkResponse)
             .then((respJson) => {
-                setEgSiteURLMulti(getFilters(respJson, 'egSiteUrl')[0].map((a) => ({value: a, label: a})));
-                setLobsMulti(getFilters(respJson, 'lob')[0].map((a) => ({value: a, label: a})));
-                setBrandMulti(getFilters(respJson, 'brand')[0].map((a) => ({value: a, label: a})));
-                setDeviceTypesMulti(getFilters(respJson, 'deviceType')[0].map((a) => ({value: a, label: a})));
-                setBookingTypesMulti(getFilters(respJson, 'bookingType')[0].map((a) => ({value: a, label: a})));
-                setSiteIds(getFilters(respJson, 'siteId')[0].map((a) => ({value: a, label: a})));
-                setTpids(getFilters(respJson, 'tpid')[0].map((a) => ({value: a, label: a})));
+                setEgSiteURLMulti(getFilters(respJson, 'egSiteUrl'));
+                setLobsMulti(getFilters(respJson, 'lob'));
+                setBrandMulti(getFilters(respJson, 'brand'));
+                setDeviceTypesMulti(getFilters(respJson, 'deviceType'));
+                setBookingTypesMulti(getFilters(respJson, 'bookingType'));
+                setSiteIds(getFilters(respJson, 'siteId'));
+                setTpids(getFilters(respJson, 'tpid'));
             })
             .catch((err) => {
                 console.error(err);
