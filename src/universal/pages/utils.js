@@ -1,5 +1,5 @@
 import React from 'react';
-import {BRANDS, EXPEDIA_BRAND, VRBO_BRAND, EGENCIA_BRAND, HOTELS_COM_BRAND} from '../constants';
+import {BRANDS, EXPEDIA_BRAND, VRBO_BRAND, EGENCIA_BRAND, HOTELS_COM_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../constants';
 import ALL_PAGES from './index';
 
 export const getVisiblePages = (selectedBrands, pages = [...ALL_PAGES]) => {
@@ -67,11 +67,12 @@ export const divisionToBrand = (division = '') => {
 export const consolidateTicketsById = (tickets) => {
     const results = [];
     const ticketIdSet = new Set();
+    // eslint-disable-next-line complexity
     tickets.forEach((ticket) => {
         const {id} = ticket;
         if (ticketIdSet.has(id)) {
             const idx = results.findIndex((t) => t.id === id);
-            if (results[idx].impactedBrand) {
+            if (results[idx].impactedBrand && !results[idx].impactedBrand.split(',').includes(ticket.impactedBrand)) {
                 results[idx].impactedBrand += `,${ticket.impactedBrand}`;
             }
             results[idx].estimatedRevenueLoss = `${parseFloat(results[idx].estimatedRevenueLoss) + parseFloat(ticket.estimatedRevenueLoss || 0)}`;
@@ -143,4 +144,34 @@ export const buildTicketLink = (id = '', brand = '', url = '') => {
     const brandInUppercase = brand && brand.toUpperCase();
     const brandUrl = brandInUppercase === VRBO_BRAND.toUpperCase() ? `https://jira.homeawaycorp.com/browse/${id}` : `https://expedia.service-now.com/go.do?id=${id}`;
     return (<a href={brandUrl} target="_blank">{id}</a>);
+};
+
+export const parseDurationToMs = (strDuration = '') => {
+    if (typeof strDuration === 'number') {
+        return strDuration;
+    }
+    if (!strDuration || strDuration === '0') {
+        return 0;
+    }
+    const numRegex = new RegExp(/\d+/, 'g');
+    const getNumValue = (str) => (
+        strDuration.includes(str)
+            ? Number.parseInt(numRegex.exec(strDuration)[0], 10)
+            : 0
+    );
+    const days = getNumValue('d');
+    const hours = getNumValue('h');
+    const minutes = getNumValue('m');
+    const totalMinutes = (days * 24 * 60) + (hours * 60) + minutes;
+    return totalMinutes * 60000;
+};
+
+export const mapEpsData = (t) => {
+    const result = t;
+    result.brand = EXPEDIA_PARTNER_SERVICES_BRAND;
+    result.impactedBrand = EXPEDIA_PARTNER_SERVICES_BRAND;
+    result.duration = parseDurationToMs(t.duration);
+    result.timeToDetect = parseDurationToMs(t.timeToDetect);
+    result.timeToResolve = parseDurationToMs(t.timeToResolve);
+    return result;
 };

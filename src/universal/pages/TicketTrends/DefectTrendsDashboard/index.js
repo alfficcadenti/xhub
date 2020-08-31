@@ -39,14 +39,15 @@ const IncidentTrendsDashboard = (props) => {
         allUniqueDefects,
         allDefects,
         defectsPriorities,
-        defectsStatuses
+        defectsStatuses,
     ] = useFetchTickets(
         isApplyClicked,
         startDate,
         endDate,
         applyFilters,
         setIsApplyClicked,
-        'defects'
+        'defects',
+        selectedBrand
     );
     useQueryParamChange(selectedBrand, props.onBrandChange);
     useSelectedBrand(selectedBrand, props.onBrandChange, props.prevSelectedBrand);

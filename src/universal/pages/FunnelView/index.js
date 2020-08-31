@@ -6,10 +6,18 @@ import LoadingContainer from '../../components/LoadingContainer';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import AnnotationsFilterPanel from '../../components/AnnotationsFilterPanel';
 import {useQueryParamChange, useSelectedBrand, useZoomAndSynced} from '../hooks';
-import {EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../../constants';
-import {checkResponse, getBrand} from '../utils';
+import {
+    EG_BRAND,
+    EGENCIA_BRAND,
+    EXPEDIA_PARTNER_SERVICES_BRAND
+} from '../../constants';
+import {
+    checkResponse,
+    getBrand,
+    getUniqueByProperty
+} from '../utils';
 import './styles.less';
-
+import {adjustTicketProperties} from '../TicketTrends/incidentsHelper';
 
 const initialCategories = [{value: 'Application Software', label: 'Deployments'}];
 
@@ -165,10 +173,11 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                         serviceName,
                         tags: [productName, platform],
                         time: moment(openedAt).format('YYYY-MM-DD HH:mm'),
-                        bucketTime: moment(openedAt).format('YYYY-MM-DD HH:mm')
+                        bucketTime: moment(openedAt).format('YYYY-MM-DD HH:mm'),
+                        category: 'deployment'
                     }));
 
-                    setAnnotations(adjustedAnnotations);
+                    setAnnotations([...annotations, ...adjustedAnnotations]);
                 })
                 .catch((err) => {
                     // eslint-disable-next-line no-console
@@ -178,6 +187,36 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
         fetchAnnotations();
     }, [start, end, selectedCategories, selectedProducts, selectedApplications]);
+
+    useEffect(() => {
+        const fetchIncidents = () => {
+            const dateQuery = start && end
+                ? `?fromDate=${moment(start).utc().format()}&toDate=${moment(end).utc().format()}`
+                : '';
+
+            fetch(`/v1/incidents${dateQuery}`)
+                .then(checkResponse)
+                .then((data) => {
+                    const uniqueTickets = getUniqueByProperty(data, 'id');
+                    const adjustedUniqueTickets = adjustTicketProperties(uniqueTickets, 'incident')
+                        .map((incident) => {
+                            incident.bucketTime = moment(incident.openDate).format('YYYY-MM-DD HH:mm');
+                            incident.time = moment(incident.openDate).format('YYYY-MM-DD HH:mm');
+                            incident.category = 'incident';
+
+                            return incident;
+                        });
+
+                    setAnnotations([...annotations, ...adjustedUniqueTickets]);
+                })
+                .catch((err) => {
+                    // eslint-disable-next-line no-console
+                    console.error(err);
+                });
+        };
+
+        fetchIncidents();
+    }, [start, end]);
 
     const handleDatetimeChange = ({start: startDateTimeStr, end: endDateTimeStr}, text) => {
         setPendingTimeRange(text || pendingTimeRange);

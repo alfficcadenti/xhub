@@ -8,9 +8,11 @@ import {
     isNotDuplicate,
     sortArrayByMostRecentDate,
     buildTicketLink,
-    getVisiblePages
+    getVisiblePages,
+    mapEpsData,
+    parseDurationToMs
 } from './utils';
-import {VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_BRAND, EGENCIA_BRAND} from '../constants';
+import {VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../constants';
 
 
 describe('divisionToBrand', () => {
@@ -183,5 +185,48 @@ describe('getVisiblePages', () => {
         expect(result.length).to.be.equal(2);
         expect(result[0].id).to.be.equal(visibleIds[0]);
         expect(result[1].id).to.be.equal(visibleIds[1]);
+    });
+});
+
+describe('mapEpsData', () => {
+    let data = {
+        duration: '1 hour',
+        timeToDetect: '10 minutes',
+        timeToResolve: '50 minutes'
+    };
+    expect(mapEpsData(data)).to.eql({
+        brand: EXPEDIA_PARTNER_SERVICES_BRAND,
+        impactedBrand: EXPEDIA_PARTNER_SERVICES_BRAND,
+        duration: 1 * 60 * 60 * 1000,
+        timeToDetect: 10 * 60 * 1000,
+        timeToResolve: 50 * 60 * 1000
+    });
+    data = {
+        duration: 30000,
+        timeToDetect: 20000,
+        timeToResolve: 10000
+    };
+    expect(mapEpsData(data)).to.eql({
+        brand: EXPEDIA_PARTNER_SERVICES_BRAND,
+        impactedBrand: EXPEDIA_PARTNER_SERVICES_BRAND,
+        duration: data.duration,
+        timeToDetect: data.timeToDetect,
+        timeToResolve: data.timeToResolve
+    });
+});
+
+describe('parseDurationToMs', () => {
+    const minutesToMs = (m) => m * 60000;
+    const hoursToMs = (h) => h * 60 * minutesToMs(1);
+    const daysToMs = (d) => d * 24 * hoursToMs(1);
+    it('parses duration correctly', () => {
+        expect(parseDurationToMs('1 minute')).to.be.equal(minutesToMs(1));
+        expect(parseDurationToMs('59 minutes')).to.be.equal(minutesToMs(59));
+        expect(parseDurationToMs('61 minutes')).to.be.equal(minutesToMs(61));
+        expect(parseDurationToMs('1 hour')).to.be.equal(hoursToMs(1));
+        expect(parseDurationToMs('3 hours 2 minutes')).to.be.equal(hoursToMs(3) + minutesToMs(2));
+        expect(parseDurationToMs('1 day')).to.be.equal(daysToMs(1));
+        expect(parseDurationToMs('1 day 1 minute')).to.be.equal(daysToMs(1) + minutesToMs(1));
+        expect(parseDurationToMs('2 days 2 hours 3 minutes')).to.be.equal(daysToMs(2) + hoursToMs(2) + minutesToMs(3));
     });
 });

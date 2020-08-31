@@ -21,6 +21,7 @@ export const ALL_TYPES_OPTION = 'All Types';
 export const ALL_ORGS_OPTION = 'All Owning Orgs';
 export const ALL_RC_OWNERS_OPTION = 'All Root Cause Owners';
 export const ALL_RC_CATEGORIES_OPTION = 'All Root Cause Categories';
+export const ALL_PARTNERS_OPTION = 'All Partners';
 export const EPIC_ISSUE_TYPE = 'Epic';
 export const EXPEDIA_BRAND = 'Expedia';
 export const VRBO_BRAND = 'Vrbo';

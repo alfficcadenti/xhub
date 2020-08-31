@@ -29,7 +29,7 @@ const OngoingIncidents = ({selectedBrands}) => {
         const fetchTickets = () => {
             setIsLoading(true);
 
-            fetch(`/v1/incidents?startDate=${fromDate}&endDate=${toDate}`)
+            fetch(`/v1/incidents?fromDate=${fromDate}&toDate=${toDate}`)
                 .then(checkResponse)
                 .then((fetchedIncidents) => {
                     setAllIncidents(fetchedIncidents);
