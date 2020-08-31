@@ -27,6 +27,9 @@ export const adjustTicketProperties = (tickets = [], type = 'incident') => {
         if (type === 'incident') {
             result.duration = t.duration && t.resolvedDate ? t.duration : null;
             result.timeToResolve = t.timeToResolve && t.resolvedDate ? t.timeToResolve : null;
+            result.partner_division = t.division;
+            result['Impacted Partners'] = t.impactedPartners;
+            result['Notification Sent'] = t.notificationSent;
         } else if (type === 'defect') {
             result.duration = (t.openDate && t.resolvedDate)
                 ? moment(t.resolvedDate).diff(t.openDate, 'milliseconds')
@@ -61,6 +64,9 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
         'RC Owner': inc.rootCauseOwner || '-',
         'Impacted Brand': inc.impactedBrand || '-',
         'Owning Division': inc.Division || '-',
+        partner_division: inc.division || '-',
+        'Impacted Partners': inc.impactedPartners || '-',
+        'Notification Sent': inc.notificationSent || '-',
         Details: (
             <div className="expandable-row-wrapper">
                 <div className="expandable-row">
@@ -320,6 +326,7 @@ export const impactedBrandToDivision = (impactedBrand = '') => {
             return HOTELS_COM_BRAND;
         case 'EXPEDIA PARTNER SOLUTIONS':
         case 'EAN':
+        case 'EXPEDIA PARTNER SERVICES':
             return EXPEDIA_PARTNER_SERVICES_BRAND;
         default:
             return '';

@@ -6,10 +6,12 @@ import {
     ALL_TAGS_OPTION,
     ALL_TAGS,
     EG_BRAND,
+    EXPEDIA_PARTNER_SERVICES_BRAND,
+    ALL_PARTNERS_OPTION,
     ALL_RC_OWNERS_OPTION
 } from '../../constants';
 import {useIsMount} from '../hooks';
-import {checkResponse, getListOfUniqueProperties, consolidateTicketsById, sortArrayByMostRecentDate} from '../utils';
+import {checkResponse, getListOfUniqueProperties, consolidateTicketsById, sortArrayByMostRecentDate, mapEpsData} from '../utils';
 
 
 export const useFetchTickets = (
@@ -18,7 +20,8 @@ export const useFetchTickets = (
     endDate,
     applyFilters,
     setIsApplyClicked,
-    url
+    url,
+    selectedBrand
 ) => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
@@ -32,6 +35,7 @@ export const useFetchTickets = (
     const [priorities, setPriorities] = useState([]);
     const [statuses, setStatuses] = useState([]);
     const [tags, setTags] = useState([]);
+    const [partners, setPartners] = useState([]);
 
     const isMount = useIsMount();
 
@@ -40,33 +44,41 @@ export const useFetchTickets = (
             setIsLoading(true);
             setLastStartDate(startDate);
             setLastEndDate(endDate);
-            fetch(`/v1/${url}?fromDate=${startDate}&toDate=${endDate}`)
-                .then(checkResponse)
-                .then((data) => {
+            // const paths = [`https://opxhub-data-service.us-west-2.test.expedia.com/v1/${url}?fromDate=${startDate}&toDate=${endDate}`];
+            const paths = [`/v1/${url}?fromDate=${startDate}&toDate=${endDate}`];
+            if (selectedBrand === EXPEDIA_PARTNER_SERVICES_BRAND) {
+                paths.push(`https://opxhub-data-service.us-west-2.test.expedia.com/v1/eps/${url}?fromDate=${startDate}&toDate=${endDate}`);
+            }
+            const handleError = (err) => {
+                // eslint-disable-next-line no-console
+                console.error(JSON.stringify(err, null, 4));
+                setIsLoading(false);
+                setError('Not all incidents and/or defects are available. Check your VPN or refresh the page to try again. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.');
+            };
+            Promise.all(paths.map((path) => fetch(path).catch(handleError)))
+                .then((responses) => Promise.all(responses.map(checkResponse).catch(handleError)))
+                .then(([incidents, epsData = []]) => {
                     const isIncidents = url === 'incidents';
-                    const tickets = isIncidents
-                        ? sortArrayByMostRecentDate(data, 'startDate')
-                        : sortArrayByMostRecentDate(data, 'openDate');
+                    const epsIncidents = epsData.map(mapEpsData);
+                    const tickets = (isIncidents)
+                        ? sortArrayByMostRecentDate([...incidents, ...epsIncidents], 'startDate')
+                        : sortArrayByMostRecentDate(...incidents, ...epsIncidents, 'openDate');
                     const uniqueTickets = consolidateTicketsById(tickets, 'id');
                     const adjustedUniqueTickets = adjustTicketProperties(uniqueTickets, isIncidents ? 'incident' : 'defect');
                     const ticketPriorities = getListOfUniqueProperties(adjustedUniqueTickets, 'priority').sort();
                     const ticketStatuses = getListOfUniqueProperties(adjustedUniqueTickets, 'Status');
+                    const ticketPartners = getListOfUniqueProperties(adjustedUniqueTickets, 'Impacted Partners');
 
                     setPriorities([ALL_PRIORITIES_OPTION, ...ticketPriorities]);
                     setStatuses([ALL_STATUSES_OPTION, ...ticketStatuses]);
                     setTags([ALL_TAGS_OPTION, ...ALL_TAGS]);
+                    setPartners([ALL_PARTNERS_OPTION, ...ticketPartners]);
 
                     setAllUniqueTickets(adjustedUniqueTickets);
                     setAllTickets(tickets);
-
                     setIsLoading(false);
                 })
-                .catch((err) => {
-                    setIsLoading(false);
-                    setError('Not all incidents and/or defects are available. Refresh the page to try again.');
-                    // eslint-disable-next-line no-console
-                    console.error(err);
-                });
+                .catch(handleError);
         };
 
         if (isMount) {
@@ -91,7 +103,8 @@ export const useFetchTickets = (
         allTickets,
         priorities,
         statuses,
-        tags
+        tags,
+        partners
     ];
 };
 
