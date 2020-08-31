@@ -113,8 +113,8 @@ const IncidentTrendsDashboard = (props) => {
         const matchesStatus = (t) => selectedStatus === statusDefaultValue || t.status === selectedStatus;
         const matchesTag = (t) => selectedTag === tagDefaultValue || t.tag === selectedTag || (Array.isArray(t.tag) && t.tag.includes(selectedTag));
         const matchesRcOwner = (t) => selectedRcOwner === rcOwnerDefaultValue || t['RC Owner'] === selectedRcOwner;
-        const matchesDivision = (t) => isPartnerBrand && divisionCheckboxes.find((cbox) => cbox.checked && cbox.text === t.partner_division);
-        const matchesPartner = (t) => isPartnerBrand && (selectedPartner === partnerDefaultValue || t['Impacted Partners'] === selectedPartner);
+        const matchesDivision = (t) => !isPartnerBrand || divisionCheckboxes.find((cbox) => cbox.checked && cbox.text === t.partner_division);
+        const matchesPartner = (t) => !isPartnerBrand || (selectedPartner === partnerDefaultValue || t['Impacted Partners'] === selectedPartner);
         // eslint-disable-next-line complexity
         const filterTickets = (t) => (matchesPriority(t) && matchesBrand(t) && matchesStatus(t) && matchesTag(t) && matchesRcOwner(t)
             && matchesPartner(t) && matchesDivision(t));
