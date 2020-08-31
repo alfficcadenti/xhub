@@ -56,7 +56,7 @@ export const useFetchTickets = (
                 setError('Not all incidents and/or defects are available. Check your VPN or refresh the page to try again. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.');
             };
             Promise.all(paths.map((path) => fetch(path).catch(handleError)))
-                .then((responses) => Promise.all(responses.map(checkResponse).catch(handleError)))
+                .then((responses) => Promise.all(responses.map(checkResponse)))
                 .then(([incidents, epsData = []]) => {
                     const isIncidents = url === 'incidents';
                     const epsIncidents = epsData.map(mapEpsData);
