@@ -15,7 +15,7 @@ const TIMEZONE_ABBR = moment.tz.zone(moment.tz.guess()).abbr(TIMEZONE_OFFSET);
 export default class TotalChart extends PureComponent {
     renderGradient = (brand) => {
         const brandLabel = brand.replace(/\s/g, '');
-        const {color} = getBrand(brand, 'landingBrand');
+        const {color} = getBrand(brand, 'label');
         const id = `color${brandLabel}`;
         return (
             <linearGradient key={`${brand}Gradient`} id={id} x1="0" y1="0" x2="0" y2="1">
@@ -27,7 +27,7 @@ export default class TotalChart extends PureComponent {
 
     renderArea = (brand) => {
         const brandLabel = brand.replace(/\s/g, '');
-        const {color} = getBrand(brand, 'landingBrand');
+        const {color} = getBrand(brand, 'label');
         const fill = `url(#color${brandLabel})`;
         return (
             <Area type="monotone" dataKey={brand} stroke={color} fillOpacity={1} fill={fill} key={`area${brand}`}/>

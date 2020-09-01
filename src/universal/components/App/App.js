@@ -7,6 +7,7 @@ import Feedback from '../Feedback';
 import PAGES from '../../pages';
 import {EG_BRAND, BRANDS} from '../../constants';
 import {usePrevious} from '../../pages/hooks';
+import {getBrand} from '../../pages/utils';
 
 
 function renderRoute(p, selectedBrands, handleBrandChange, prevSelectedBrand) {
@@ -40,9 +41,11 @@ function App() {
 
     const [selectedBrands, setSelectedBrands] = useState(storedBrands);
 
-    const handleBrandChange = useCallback((brand) => {
-        localStorage.setItem('selectedBrands', brand);
-        setSelectedBrands(brand);
+    const handleBrandChange = useCallback((brands) => {
+        const convertedLabels = brands.map((brand) => getBrand(brand, 'retailLabel').label);
+
+        localStorage.setItem('selectedBrands', convertedLabels);
+        setSelectedBrands(convertedLabels);
 
         localStorage.setItem('isBrandFilterChanged', JSON.stringify(true));
         localStorage.setItem('isQueryChanged', JSON.stringify(false));
