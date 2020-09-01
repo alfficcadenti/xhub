@@ -57,12 +57,12 @@ export const useFetchTickets = (
             };
             Promise.all(paths.map((path) => fetch(path).catch(handleError)))
                 .then((responses) => Promise.all(responses.map(checkResponse)))
-                .then(([incidents, epsData = []]) => {
+                .then(([ticketsData, epsTicketsData = []]) => {
                     const isIncidents = url === 'incidents';
-                    const epsIncidents = epsData.map(mapEpsData);
+                    const epsTickets = epsTicketsData.map(mapEpsData);
                     const tickets = (isIncidents)
-                        ? sortArrayByMostRecentDate([...incidents, ...epsIncidents], 'startDate')
-                        : sortArrayByMostRecentDate(...incidents, ...epsIncidents, 'openDate');
+                        ? sortArrayByMostRecentDate([...ticketsData, ...epsTickets], 'startDate')
+                        : sortArrayByMostRecentDate([...ticketsData, ...epsTickets], 'openDate');
                     const uniqueTickets = consolidateTicketsById(tickets, 'id');
                     const adjustedUniqueTickets = adjustTicketProperties(uniqueTickets, isIncidents ? 'incident' : 'defect');
                     const ticketPriorities = getListOfUniqueProperties(adjustedUniqueTickets, 'priority').sort();
