@@ -3,6 +3,7 @@ import React, {useState, useEffect, useCallback} from 'react';
 import moment from 'moment';
 import 'moment-timezone';
 import {Navigation} from '@homeaway/react-navigation';
+import {Checkbox} from '@homeaway/react-form-components';
 import LoadingContainer from '../../../components/LoadingContainer';
 import FilterDropDown from '../../../components/FilterDropDown';
 import DatePicker from '../../../components/DatePicker/index';
@@ -11,11 +12,12 @@ import {
     ALL_STATUSES_OPTION,
     ALL_PRIORITIES_OPTION,
     ALL_TAGS_OPTION,
-    ALL_RC_OWNERS_OPTION
+    ALL_RC_OWNERS_OPTION,
+    ALL_PARTNERS_OPTION
 } from '../../../constants';
 import {Incidents, Overview, Top5, FinancialImpact} from './tabs/index';
 import {useFetchTickets, useRootCauseOwner} from '../hooks';
-import {EG_BRAND} from '../../../constants';
+import {EG_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../../../constants';
 import {useSelectedBrand, useQueryParamChange} from '../../hooks';
 import {impactedBrandToDivision} from '../incidentsHelper';
 import './styles.less';
@@ -30,6 +32,11 @@ const rcOwnerDefaultValue = ALL_RC_OWNERS_OPTION;
 const startDateDefaultValue = moment().subtract(14, 'days').format(DATE_FORMAT);
 const endDateDefaultValue = moment().format(DATE_FORMAT);
 const minDate = moment('2019-01-01').toDate();
+const partnerDefaultValue = ALL_PARTNERS_OPTION;
+const divisionCheckboxesDefaultValue = [
+    {text: 'RAPID/TTAP', checked: true},
+    {text: 'E4P', checked: true}
+];
 const navLinks = [
     {
         id: 'overview',
@@ -56,6 +63,7 @@ const navLinks = [
 
 const IncidentTrendsDashboard = (props) => {
     const selectedBrand = props.selectedBrands[0];
+    const isPartnerBrand = selectedBrand === EXPEDIA_PARTNER_SERVICES_BRAND;
 
     const [activeIndex, setActiveIndex] = useState(1);
     const [selectedStatus, setSelectedStatus] = useState(statusDefaultValue);
@@ -66,9 +74,12 @@ const IncidentTrendsDashboard = (props) => {
     const [selectedPriority, setSelectedPriority] = useState(priorityDefaultValue);
     const [selectedTag, setSelectedTag] = useState(tagDefaultValue);
     const [selectedRcOwner, setSelectedRcOwner] = useState(rcOwnerDefaultValue);
+    const [selectedPartner, setSelectedPartner] = useState(partnerDefaultValue);
+    const [divisionCheckboxes, setDivisionCheckboxes] = useState(divisionCheckboxesDefaultValue);
+
     const [isDirtyForm, setIsDirtyForm] = useState(false);
     const [showMoreFilters, setShowMoreFilters] = useState(false);
-    // incidents
+
     const [filteredUniqueIncidents, setFilteredUniqueIncidents] = useState([]);
     const [filteredAllIncidents, setFilteredAllIncidents] = useState([]);
 
@@ -80,14 +91,16 @@ const IncidentTrendsDashboard = (props) => {
         allIncidents,
         incidentsPriorities,
         incidentsStatuses,
-        incidentsTags
+        incidentsTags,
+        incidentPartners
     ] = useFetchTickets(
         isApplyClicked,
         startDate,
         endDate,
         applyFilters,
         setIsApplyClicked,
-        'incidents'
+        'incidents',
+        selectedBrand
     );
     const rootCauseOwners = useRootCauseOwner(selectedBrand, allUniqueIncidents);
     useQueryParamChange(selectedBrand, props.onBrandChange);
@@ -100,7 +113,11 @@ const IncidentTrendsDashboard = (props) => {
         const matchesStatus = (t) => selectedStatus === statusDefaultValue || t.status === selectedStatus;
         const matchesTag = (t) => selectedTag === tagDefaultValue || t.tag === selectedTag || (Array.isArray(t.tag) && t.tag.includes(selectedTag));
         const matchesRcOwner = (t) => selectedRcOwner === rcOwnerDefaultValue || t['RC Owner'] === selectedRcOwner;
-        const filterTickets = (t) => matchesPriority(t) && matchesBrand(t) && matchesStatus(t) && matchesTag(t) && matchesRcOwner(t);
+        const matchesDivision = (t) => isPartnerBrand && divisionCheckboxes.find((cbox) => cbox.checked && cbox.text === t.partner_division);
+        const matchesPartner = (t) => isPartnerBrand && (selectedPartner === partnerDefaultValue || t['Impacted Partners'] === selectedPartner);
+        // eslint-disable-next-line complexity
+        const filterTickets = (t) => (matchesPriority(t) && matchesBrand(t) && matchesStatus(t) && matchesTag(t) && matchesRcOwner(t)
+            && matchesPartner(t) && matchesDivision(t));
 
         setFilteredUniqueIncidents([...allUniqueIncidents].filter(filterTickets));
         setFilteredAllIncidents([...allIncidents].filter(filterTickets));
@@ -149,7 +166,20 @@ const IncidentTrendsDashboard = (props) => {
     const handleRcOwnerChange = useCallback((owner) => {
         setSelectedRcOwner(owner);
         setIsDirtyForm(true);
-    });
+    }, []);
+
+    const handlePartnerChange = useCallback((partner) => {
+        setSelectedPartner(partner);
+        setIsDirtyForm(true);
+    }, []);
+
+    const handleCheckboxChange = (c) => {
+        const nextCheckboxes = JSON.parse(JSON.stringify(divisionCheckboxes));
+        const idx = divisionCheckboxes.findIndex((cbox) => cbox.text === c.text);
+        nextCheckboxes[idx].checked = !divisionCheckboxes[idx].checked;
+        setDivisionCheckboxes(nextCheckboxes);
+        setIsDirtyForm(true);
+    };
 
     const handleShowMoreFilters = () => {
         setShowMoreFilters(!showMoreFilters);
@@ -161,7 +191,7 @@ const IncidentTrendsDashboard = (props) => {
             case 0:
                 return <Overview startDate={appliedStartDate} endDate={appliedEndDate} filteredIncidents={filteredUniqueIncidents} />;
             case 1:
-                return <Incidents filteredIncidents={filteredUniqueIncidents} />;
+                return <Incidents filteredIncidents={filteredUniqueIncidents} isPartnerBrand />;
             case 2:
                 return <Top5 filteredIncidents={filteredUniqueIncidents} />;
             case 3:
@@ -170,6 +200,18 @@ const IncidentTrendsDashboard = (props) => {
                 return <Incidents filteredIncidents={filteredUniqueIncidents} />;
         }
     };
+
+    const renderDivisionCheckbox = (c) => (
+        <Checkbox
+            key={`column-${c.text}`}
+            size="sm"
+            className="checkbox-column col-xs-3"
+            name={c.text}
+            label={c.text}
+            checked={c.checked}
+            onChange={() => handleCheckboxChange(c)}
+        />
+    );
 
     const renderMoreFilters = () => (
         <Divider heading="More Filters" id="more-filters-divider" className="more-filters-divider" expanded={showMoreFilters}>
@@ -210,13 +252,23 @@ const IncidentTrendsDashboard = (props) => {
                     selectedValue={selectedStatus}
                     onClickHandler={handleStatusChange}
                 />
-                <FilterDropDown
-                    id="tag-dropdown"
-                    className="tag-dropdown"
-                    list={incidentsTags}
-                    selectedValue={selectedTag}
-                    onClickHandler={handleTagChange}
-                />
+                {isPartnerBrand ? (
+                    <FilterDropDown
+                        id="partner-dropdown"
+                        className="filter-dropdown partner-dropdown"
+                        list={incidentPartners}
+                        selectedValue={selectedPartner}
+                        onClickHandler={handlePartnerChange}
+                    />
+                ) : (
+                    <FilterDropDown
+                        id="tag-dropdown"
+                        className="tag-dropdown"
+                        list={incidentsTags}
+                        selectedValue={selectedTag}
+                        onClickHandler={handleTagChange}
+                    />
+                )}
                 <button
                     type="button"
                     className="apply-button btn btn-primary active"
@@ -236,6 +288,11 @@ const IncidentTrendsDashboard = (props) => {
                 </button>
             </div>
             {renderMoreFilters()}
+            {isPartnerBrand && (
+                <div className="division-container">
+                    <div className="checkboxes-container">{divisionCheckboxes.map(renderDivisionCheckbox)}</div>
+                </div>
+            )}
             <Navigation
                 noMobileSelect
                 activeIndex={activeIndex}
