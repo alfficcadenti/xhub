@@ -96,7 +96,7 @@ const TravelerMetricsWidget = ({
                                         yAxisId={yAxisId}
                                         x={annotation.bucketTime}
                                         label={<ReferenceLabel annotation={annotation} />}
-                                        stroke="red"
+                                        stroke={annotation.category === 'deployment' ? 'red' : 'green'}
                                         strokeDasharray="3 3"
                                         isFront
                                     />

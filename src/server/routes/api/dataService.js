@@ -41,6 +41,13 @@ module.exports.incidents = {
     handler: getHandler({method: 'GET', operation: 'GET_INCIDENTS'})
 };
 
+module.exports.incidentsV2 = {
+    method: 'GET',
+    path: '/v2/incidents/{param*}',
+    config: getConfig('incidents-get-v2'),
+    handler: getHandler({method: 'GET', operation: 'GET_V2_INCIDENTS'})
+};
+
 module.exports.epsIncidents = {
     method: 'GET',
     path: '/v1/eps/incidents/{param*}',
