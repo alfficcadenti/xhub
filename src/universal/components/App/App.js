@@ -7,7 +7,6 @@ import Feedback from '../Feedback';
 import PAGES from '../../pages';
 import {EG_BRAND, BRANDS} from '../../constants';
 import {usePrevious} from '../../pages/hooks';
-import {getBrand} from '../../pages/utils';
 
 
 function renderRoute(p, selectedBrands, handleBrandChange, prevSelectedBrand) {

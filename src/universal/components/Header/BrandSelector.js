@@ -30,7 +30,7 @@ const BrandSelector = ({selectedBrands, onBrandChange, brands}) => {
             }
         }
 
-        onBrandChange(nextSelectedBrands.map((brand) => getBrand(brand, 'retailLabel').label));
+        onBrandChange(nextSelectedBrands.map((nextBrand) => getBrand(nextBrand, 'retailLabel').label));
     };
 
     const renderBrandItem = (brand) => (
