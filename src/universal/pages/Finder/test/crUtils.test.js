@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {formatCRData, adjustCRsProperties, buildLink} from '../crUtils';
+import {formatCRData, adjustCRsProperties, buildLink, filterArrayFormatted} from '../crUtils';
 import mockCRsData from './mock';
 import mockResults from './mockResults';
 
@@ -33,6 +33,29 @@ describe('crUtils', () => {
         it('returns - with href if id not present', () => {
             const result = buildLink('', 'https://github.expedia.biz/Brand-Expedia/supply-baggagefees-dwsvc-service');
             expect(result).to.be.eql('<a href=\"https://github.expedia.biz/Brand-Expedia/supply-baggagefees-dwsvc-service\" target=\"_blank\">-</a>');
+        });
+    });
+
+    describe('filterArrayFormatted()', () => {
+        it('returns empty array if input undefined', () => {
+            const result = filterArrayFormatted();
+            expect(result).to.be.eql([]);
+        });
+
+        it('returns array with value as array', () => {
+            const mockArray = [{key: 'productName', value: 'Acquisition'},
+                {key: 'applicationName', value: 'air-orderstore'},
+                {key: 'applicationName', value: 'airchangeservice'}];
+            const mockResult = [{key: 'productName', values: ['Acquisition']},
+                {key: 'applicationName', values: ['air-orderstore', 'airchangeservice']}];
+            const result = filterArrayFormatted(mockArray);
+            expect(result).to.be.eql(mockResult);
+        });
+
+        it('returns empty array if array in input do not have key value format elements', () => {
+            const mockArray = [{keys: 'productName', value: 'Acquisition'}];
+            const result = filterArrayFormatted(mockArray);
+            expect(result).to.be.eql([]);
         });
     });
 });
