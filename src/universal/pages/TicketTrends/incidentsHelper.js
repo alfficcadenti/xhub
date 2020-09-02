@@ -1,7 +1,3 @@
-/* eslint-disable complexity */
-/* eslint-disable  no-use-before-define */
-/* eslint-disable no-shadow */
-
 import React from 'react';
 import {renderToString} from 'react-dom/server';
 import moment from 'moment/moment';
@@ -12,14 +8,32 @@ import {DATE_FORMAT, EGENCIA_BRAND, EXPEDIA_BRAND, HOTELS_COM_BRAND, EXPEDIA_PAR
 import {VRBO_BRAND} from '../../constants';
 import {divisionToBrand, getListOfUniqueProperties, buildTicketLink} from '../utils';
 
+export const getTableColumns = (selectedBrand) => {
+    if (selectedBrand === EXPEDIA_PARTNER_SERVICES_BRAND) {
+        return ['Incident', 'Priority', 'Division', 'Started', 'Summary', 'Impacted Partners', 'RC Owner', 'TTD', 'TTR', 'Notification Sent', 'Status'];
+    }
+    return ['Incident', 'Priority', 'Division', 'Started', 'Summary', 'RC Owner', 'TTD', 'TTR', 'Status'];
+};
+
+export const getValue = (item, property, transformFn) => {
+    if (transformFn) {
+        return transformFn(item[property]) || '-';
+    }
+    if (!item || !item[property]) {
+        return '-';
+    }
+    return item[property];
+};
+
 export const adjustTicketProperties = (tickets = [], type = 'incident') => {
+    // eslint-disable-next-line complexity
     return tickets.map((t) => {
         const result = {
             ...t,
             summary: t.summary,
             id: t.id,
             startDate: t.startDate ? t.startDate : t.openDate,
-            Division: t.brand,
+            Division: t.division || t.brand,
             Status: t.status,
             'RC Owner': t.rootCauseOwner,
             Brand: divisionToBrand(t.brand || '')
@@ -28,7 +42,7 @@ export const adjustTicketProperties = (tickets = [], type = 'incident') => {
             result.duration = t.duration && t.resolvedDate ? t.duration : null;
             result.timeToResolve = t.timeToResolve && t.resolvedDate ? t.timeToResolve : null;
             result.partner_division = t.division;
-            result['Impacted Partners'] = t.impactedPartners;
+            result['Impacted Partners'] = t.impactedPartnersLobs;
             result['Notification Sent'] = t.notificationSent;
         } else if (type === 'defect') {
             result.duration = (t.openDate && t.resolvedDate)
@@ -43,42 +57,42 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
     .map((inc) => ({
         id: uuid(),
         Incident: buildTicketLink(inc.id, inc.Brand, inc.url) || '-',
-        Priority: inc.priority || '-',
-        Brand: inc.Brand || '-',
-        Division: inc.Division || '-',
+        Priority: getValue(inc, 'priority'),
+        Brand: getValue(inc, 'Brand'),
+        Division: getValue(inc, 'Division'),
         Started: moment.utc(inc.startDate).local().isValid() ? moment.utc(inc.startDate).local().format('YYYY-MM-DD HH:mm') : '-',
-        Summary: (inc.summary || '-').trim(),
+        Summary: getValue(inc, 'summary').trim(),
         Duration: inc.duration ? h.formatDurationForTable(inc.duration) : '-',
         rawDuration: inc.duration,
-        TTD: inc.timeToDetect ? h.formatDurationForTable(inc.timeToDetect) : '-',
+        TTD: getValue(inc, 'timeToDetect', h.formatDurationForTable),
         rawTTD: inc.timeToDetect,
-        TTR: inc.timeToResolve ? h.formatDurationForTable(inc.timeToResolve) : '-',
+        TTR: getValue(inc, 'timeToResolve', h.formatDurationForTable),
         rawTTR: inc.timeToResolve,
-        'Resolution Notes': inc.rootCause || '-',
-        'Root Cause': inc.rootCause || '-',
-        'Root Cause Owner': inc.rootCauseOwner || '-',
-        Status: inc.Status || '-',
-        Tag: inc.tag || '-',
-        'Executive Summary': inc.executiveSummary || '-',
-        executiveSummary: inc.executiveSummary || '-',
-        'RC Owner': inc.rootCauseOwner || '-',
-        'Impacted Brand': inc.impactedBrand || '-',
-        'Owning Division': inc.Division || '-',
-        partner_division: inc.division || '-',
-        'Impacted Partners': inc.impactedPartners || '-',
-        'Notification Sent': inc.notificationSent || '-',
+        'Resolution Notes': getValue(inc, 'rootCause'),
+        'Root Cause': getValue(inc, 'rootCause'),
+        'Root Cause Owner': getValue(inc, 'rootCauseOwner'),
+        Status: getValue(inc, 'Status'),
+        Tag: getValue(inc, 'tag'),
+        'Executive Summary': getValue(inc, 'executiveSummary'),
+        executiveSummary: getValue(inc, 'executiveSummary'),
+        'RC Owner': getValue(inc, 'rootCauseOwner'),
+        'Impacted Brand': getValue(inc, 'impactedBrand'),
+        'Owning Division': getValue(inc, 'Division'),
+        partner_division: getValue(inc, 'division'),
+        'Impacted Partners': getValue(inc, 'impactedPartnersLobs'),
+        'Notification Sent': getValue(inc, 'notificationSent'),
         Details: (
             <div className="expandable-row-wrapper">
                 <div className="expandable-row">
                     <span className="expandable-row-header">{'Incident Executive Summary:'}</span>
                     <div className="expandable-row-section">
-                        {inc.executiveSummary || '-'}
+                        {getValue(inc, 'executiveSummary')}
                     </div>
                 </div>
                 <div className="expandable-row">
                     <span className="expandable-row-header">{'Resolution Notes:'}</span>
                     <div className="expandable-row-section">
-                        {inc.rootCause || '-'}
+                        {getValue(inc, 'rootCause')}
                     </div>
                 </div>
             </div>
@@ -87,20 +101,21 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
     .sort((a, b) => moment(a.Started).isBefore(b.Started));
 
 export const getQualityData = (filteredDefects = []) => filteredDefects
+    // eslint-disable-next-line complexity
     .map((t) => ({
         Defect: buildTicketLink(t.id, t.Brand, t.url) || '-',
-        Priority: t.priority || '-',
-        Brand: t.Brand || '-',
-        Division: t.Division || '-',
+        Priority: getValue(t, 'priority'),
+        Brand: getValue(t, 'Brand'),
+        Division: getValue(t, 'Division'),
         Opened: moment.utc(t.openDate).local().isValid() ? moment(t.openDate).local().format('YYYY-MM-DD HH:mm') : '-',
         Resolved: moment.utc(t.resolvedDate).local().isValid() ? moment(t.resolvedDate).local().format('YYYY-MM-DD HH:mm') : '-',
-        Summary: t.summary || '-',
-        Project: t.project || '-',
         Duration: t.duration && t.resolvedDate ? h.formatDurationForTable(t.duration) : '-',
+        Summary: getValue(t, 'summary'),
+        Project: getValue(t, 'project'),
         rawDuration: t.duration,
-        'Impacted Brand': t.impactedBrand || '-',
-        Status: t.Status || '-',
-        Tag: t.tag || '-',
+        'Impacted Brand': getValue(t, 'impactedBrand'),
+        Status: getValue(t, 'Status'),
+        Tag: getValue(t, 'tag'),
     }))
     .sort((a, b) => moment(a.Opened).isBefore(b.Opened));
 
@@ -121,6 +136,13 @@ export const getMarginDateValues = (tickets = []) => {
 const brandIncidents = (incidents, brand) => incidents.filter((incident) => incident.Brand === brand);
 
 export const incidentsOfTheWeek = (incidents, week = '') => incidents.filter(({startDate}) => moment(startDate).week() === week);
+
+export const sumPropertyInArrayOfObjects = (incidents = [], propertyToSum) =>
+    incidents.reduce((acc, curr) => (acc + Number(curr[propertyToSum])), 0);
+
+export const mttr = (incidents = []) => (sumPropertyInArrayOfObjects(incidents, 'timeToResolve') / incidents.length) || 0;
+
+const mttd = (incidents = []) => (sumPropertyInArrayOfObjects(incidents, 'timeToDetect') / incidents.length) || 0;
 
 export const getIncMetricsByBrand = (inc = []) => getListOfUniqueProperties(inc, 'Brand')
     .map((brand) => {
@@ -146,11 +168,15 @@ export const getIncMetricsByBrand = (inc = []) => getListOfUniqueProperties(inc,
 export const listOfIncByBrands = (inc = []) => getListOfUniqueProperties(inc, 'Brand')
     .map((brand) => brandIncidents(inc, brand));
 
-export const sumPropertyInArrayOfObjects = (incidents = [], propertyToSum) =>
-    incidents.reduce((acc, curr) => (acc + Number(curr[propertyToSum])), 0);
-
-export const mttr = (incidents = []) => (sumPropertyInArrayOfObjects(incidents, 'timeToResolve') / incidents.length) || 0;
-const mttd = (incidents = []) => (sumPropertyInArrayOfObjects(incidents, 'timeToDetect') / incidents.length) || 0;
+export const getWeeks = (start = '', end = '') => {
+    const weeks = [];
+    const current = moment(start).startOf('week');
+    while (current.isSameOrBefore(end)) {
+        weeks.push(current.format(DATE_FORMAT));
+        current.add(7, 'days');
+    }
+    return weeks;
+};
 
 export const weeklyMTTRMTTD = (incidents = []) => {
     const data = [];
@@ -200,16 +226,6 @@ export const weeklyMTTDbyBrand = (inc = []) => {
         data.push(result);
     });
     return {data, keys: Array.from(brands)};
-};
-
-export const getWeeks = (start = '', end = '') => {
-    const weeks = [];
-    const current = moment(start).startOf('week');
-    while (current.isSameOrBefore(end)) {
-        weeks.push(current.format(DATE_FORMAT));
-        current.add(7, 'days');
-    }
-    return weeks;
 };
 
 export const sortInAscOrderAndGetTop5 = (incidents, fieldToSort) => incidents
@@ -312,6 +328,7 @@ export const getWeeklyCounts = (startDate, endDate, tickets, key) => {
     return {data, keys: ['count']};
 };
 
+// eslint-disable-next-line complexity
 export const impactedBrandToDivision = (impactedBrand = '') => {
     switch (impactedBrand && impactedBrand.toUpperCase()) {
         case 'EGENCIA NA':

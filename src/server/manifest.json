@@ -17,7 +17,7 @@
       "apiDataServiceConfig": {
         "$filter": "env.EXPEDIA_ENVIRONMENT",
         "$default": {
-          "hostname": "opxhub-data-service.us-east-1.prod.expedia.com",
+          "hostname": "opxhub-data-service.us-west-2.test.expedia.com",
           "protocol": "https:"
         },
         "test": {

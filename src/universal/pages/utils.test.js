@@ -9,6 +9,7 @@ import {
     sortArrayByMostRecentDate,
     buildTicketLink,
     getVisiblePages,
+    getImpactedPartners,
     mapEpsData,
     parseDurationToMs
 } from './utils';
@@ -188,30 +189,56 @@ describe('getVisiblePages', () => {
     });
 });
 
-describe('mapEpsData', () => {
-    let data = {
-        duration: '1 hour',
-        timeToDetect: '10 minutes',
-        timeToResolve: '50 minutes'
-    };
-    expect(mapEpsData(data)).to.eql({
-        brand: EXPEDIA_PARTNER_SERVICES_BRAND,
-        impactedBrand: EXPEDIA_PARTNER_SERVICES_BRAND,
-        duration: 1 * 60 * 60 * 1000,
-        timeToDetect: 10 * 60 * 1000,
-        timeToResolve: 50 * 60 * 1000
+describe('getImpactedPartners', () => {
+    it('parses empty impacted partners correctly', () => {
+        expect(getImpactedPartners()).to.eql(null);
     });
-    data = {
-        duration: 30000,
-        timeToDetect: 20000,
-        timeToResolve: 10000
-    };
-    expect(mapEpsData(data)).to.eql({
-        brand: EXPEDIA_PARTNER_SERVICES_BRAND,
-        impactedBrand: EXPEDIA_PARTNER_SERVICES_BRAND,
-        duration: data.duration,
-        timeToDetect: data.timeToDetect,
-        timeToResolve: data.timeToResolve
+
+    it('parses string impacted partners & lobs correctly', () => {
+        expect(getImpactedPartners('[\'CHASE\',\'AMEX\']', ['Air'])).to.eql('CHASE-Air, AMEX-Air');
+    });
+
+    it('parses array impacted partners & lobs correctly', () => {
+        expect(getImpactedPartners(['CHASE', 'AMEX'], ['Air', 'Car'])).to.eql('CHASE-Air, CHASE-Car, AMEX-Air, AMEX-Car');
+    });
+
+    it('parses just partners correctly', () => {
+        expect(getImpactedPartners(['CHASE', 'AMEX'])).to.eql(['CHASE', 'AMEX']);
+    });
+});
+
+describe('mapEpsData', () => {
+    it('parses string time to metrics correctly', () => {
+        const data = {
+            duration: '1 hour',
+            timeToDetect: '10 minutes',
+            timeToResolve: '50 minutes'
+        };
+        expect(mapEpsData(data)).to.eql({
+            brand: EXPEDIA_PARTNER_SERVICES_BRAND,
+            impactedBrand: EXPEDIA_PARTNER_SERVICES_BRAND,
+            duration: 1 * 60 * 60 * 1000,
+            timeToDetect: 10 * 60 * 1000,
+            timeToResolve: 50 * 60 * 1000,
+            impactedPartners: null,
+            impactedPartnersLobs: null
+        });
+    });
+    it('parses numeric time to metrics correctly', () => {
+        const data = {
+            duration: 30000,
+            timeToDetect: 20000,
+            timeToResolve: 10000
+        };
+        expect(mapEpsData(data)).to.eql({
+            brand: EXPEDIA_PARTNER_SERVICES_BRAND,
+            impactedBrand: EXPEDIA_PARTNER_SERVICES_BRAND,
+            duration: data.duration,
+            timeToDetect: data.timeToDetect,
+            timeToResolve: data.timeToResolve,
+            impactedPartners: null,
+            impactedPartnersLobs: null
+        });
     });
 });
 
