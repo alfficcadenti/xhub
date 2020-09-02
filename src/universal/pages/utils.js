@@ -166,6 +166,23 @@ export const parseDurationToMs = (strDuration = '') => {
     return totalMinutes * 60000;
 };
 
+const getArray = (item) => {
+    return Array.isArray(item)
+        ? item.filter(isNotEmptyString)
+        : (item || '').replace(/\[/g, '').replace(/\]/g, '').replace(/\'/g, '').split(',').filter(isNotEmptyString);
+};
+
+export const getImpactedPartners = (partners, lobs = []) => {
+    const impactedPartners = getArray(partners);
+    const impactedLobs = getArray(lobs);
+    if (impactedPartners.length) {
+        return impactedLobs.length
+            ? impactedPartners.reduce((acc, curr) => acc.concat(impactedLobs.map((l) => `${curr}-${l}`)), []).join(', ')
+            : impactedPartners;
+    }
+    return null;
+};
+
 export const mapEpsData = (t) => {
     const result = t;
     result.brand = EXPEDIA_PARTNER_SERVICES_BRAND;
@@ -173,5 +190,7 @@ export const mapEpsData = (t) => {
     result.duration = parseDurationToMs(t.duration);
     result.timeToDetect = parseDurationToMs(t.timeToDetect);
     result.timeToResolve = parseDurationToMs(t.timeToResolve);
+    result.impactedPartners = getImpactedPartners(t.impactedPartners);
+    result.impactedPartnersLobs = getImpactedPartners(t.impactedPartners, t.impactedLobs || []);
     return result;
 };

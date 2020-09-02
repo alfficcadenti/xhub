@@ -29,7 +29,7 @@
         "timeout": 5,
         "max_attempts": 120
       },
-      "timeout": 300,
+      "timeout": 9,
       "listeners": [
         {
           "instance_protocol": "https",

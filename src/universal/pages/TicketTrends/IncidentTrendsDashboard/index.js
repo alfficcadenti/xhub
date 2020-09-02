@@ -2,28 +2,29 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import moment from 'moment';
 import 'moment-timezone';
-import {Navigation} from '@homeaway/react-navigation';
+import {Divider} from '@homeaway/react-collapse';
 import {Checkbox} from '@homeaway/react-form-components';
-import LoadingContainer from '../../../components/LoadingContainer';
-import FilterDropDown from '../../../components/FilterDropDown';
+import {Navigation} from '@homeaway/react-navigation';
+import {SVGIcon} from '@homeaway/react-svg';
+import {FILTER__16} from '@homeaway/svg-defs';
 import DatePicker from '../../../components/DatePicker/index';
+import FilterDropDown from '../../../components/FilterDropDown';
+import LoadingContainer from '../../../components/LoadingContainer';
 import {
     DATE_FORMAT,
     ALL_STATUSES_OPTION,
     ALL_PRIORITIES_OPTION,
     ALL_TAGS_OPTION,
     ALL_RC_OWNERS_OPTION,
-    ALL_PARTNERS_OPTION
+    ALL_PARTNERS_OPTION,
+    EG_BRAND,
+    EXPEDIA_PARTNER_SERVICES_BRAND
 } from '../../../constants';
 import {Incidents, Overview, Top5, FinancialImpact} from './tabs/index';
 import {useFetchTickets, useRootCauseOwner} from '../hooks';
-import {EG_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../../../constants';
 import {useSelectedBrand, useQueryParamChange} from '../../hooks';
 import {impactedBrandToDivision} from '../incidentsHelper';
 import './styles.less';
-import {SVGIcon} from '@homeaway/react-svg';
-import {FILTER__16} from '@homeaway/svg-defs';
-import {Divider} from '@homeaway/react-collapse';
 
 const statusDefaultValue = ALL_STATUSES_OPTION;
 const priorityDefaultValue = ALL_PRIORITIES_OPTION;
@@ -34,7 +35,7 @@ const endDateDefaultValue = moment().format(DATE_FORMAT);
 const minDate = moment('2019-01-01').toDate();
 const partnerDefaultValue = ALL_PARTNERS_OPTION;
 const divisionCheckboxesDefaultValue = [
-    {text: 'RAPID/TTAP', checked: true},
+    {text: 'RAPID/TAAP', checked: true},
     {text: 'E4P', checked: true}
 ];
 const navLinks = [
@@ -114,7 +115,8 @@ const IncidentTrendsDashboard = (props) => {
         const matchesTag = (t) => selectedTag === tagDefaultValue || t.tag === selectedTag || (Array.isArray(t.tag) && t.tag.includes(selectedTag));
         const matchesRcOwner = (t) => selectedRcOwner === rcOwnerDefaultValue || t['RC Owner'] === selectedRcOwner;
         const matchesDivision = (t) => !isPartnerBrand || divisionCheckboxes.find((cbox) => cbox.checked && cbox.text === t.partner_division);
-        const matchesPartner = (t) => !isPartnerBrand || (selectedPartner === partnerDefaultValue || t['Impacted Partners'] === selectedPartner);
+        const matchesPartner = (t) => !isPartnerBrand || selectedPartner === partnerDefaultValue ||
+            (t.impactedPartnersLobs && t.impactedPartnersLobs.includes(selectedPartner));
         // eslint-disable-next-line complexity
         const filterTickets = (t) => (matchesPriority(t) && matchesBrand(t) && matchesStatus(t) && matchesTag(t) && matchesRcOwner(t)
             && matchesPartner(t) && matchesDivision(t));
@@ -191,7 +193,7 @@ const IncidentTrendsDashboard = (props) => {
             case 0:
                 return <Overview startDate={appliedStartDate} endDate={appliedEndDate} filteredIncidents={filteredUniqueIncidents} />;
             case 1:
-                return <Incidents filteredIncidents={filteredUniqueIncidents} isPartnerBrand />;
+                return <Incidents filteredIncidents={filteredUniqueIncidents} selectedBrand={selectedBrand} />;
             case 2:
                 return <Top5 filteredIncidents={filteredUniqueIncidents} />;
             case 3:

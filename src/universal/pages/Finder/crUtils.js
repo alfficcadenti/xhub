@@ -98,3 +98,19 @@ export const adjustCRsProperties = (CRs = []) => {
         return result;
     });
 };
+
+export const filterArrayFormatted = (inputArray = []) => {
+    const uniqueFields = [];
+    const arrayNewFormat = [];
+    inputArray.forEach((x) => {
+        if (x && x.key) {
+            if (uniqueFields.indexOf(x && x.key) === -1) {
+                uniqueFields.push(x.key);
+                arrayNewFormat.push({key: x.key, values: [x && x.value]});
+            } else {
+                arrayNewFormat.find((y) => y.key === x.key).values.push(x.value);
+            }
+        }
+    });
+    return arrayNewFormat;
+};

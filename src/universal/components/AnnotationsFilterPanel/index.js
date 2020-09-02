@@ -52,8 +52,8 @@ const AnnotationsFilterPanel = ({
         if (!newSelectedProducts.length) {
             setSelectedApplications([]);
         }
-        const adjustedApplications = newSelectedProducts.reduce((acc, currrent) => {
-            const currentApplicationNames = productMapping.find((item) => item.productName === currrent).applicationNames;
+        const adjustedApplications = newSelectedProducts.reduce((acc, current) => {
+            const currentApplicationNames = productMapping.find((item) => item.productName === current).applicationNames;
             return [...acc, ...currentApplicationNames];
         }, []);
         setApplications(adjustedApplications.map((a) => ({value: a, label: a})));

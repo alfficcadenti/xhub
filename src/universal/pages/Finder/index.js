@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect} from 'react';
 import moment from 'moment';
 import 'moment-timezone';
 import LoadingContainer from '../../components/LoadingContainer';
@@ -11,8 +11,9 @@ import {ChangeRequests} from './tabs/index';
 import {useFetchCRs} from './hooks';
 import {useSelectedBrand, useQueryParamChange} from '../hooks';
 import './styles.less';
+import {filterArrayFormatted} from './crUtils';
 
-const startDateDefaultValue = moment().subtract(3, 'days').format(DATE_FORMAT);
+const startDateDefaultValue = moment().subtract(1, 'days').format(DATE_FORMAT);
 const endDateDefaultValue = moment().format(DATE_FORMAT);
 const minDate = moment('2019-01-01').toDate();
 
@@ -23,14 +24,15 @@ const Finder = (props) => {
     const [isDirtyForm, setIsDirtyForm] = useState(false);
     const [filteredUniqueCRs, setFilteredUniqueCRs] = useState([]);
     const [isApplyClicked, setIsApplyClicked] = useState(false);
-    const [advancedFilter, setAdvancedFilter] = useState({key: '', value: ''});
+    const [advancedFilter, setAdvancedFilter] = useState([]);
 
     const [
         isLoading,
         error,
         allUniqueCRs,
         allCRs,
-        indexedDataForSuggestions
+        indexedDataForSuggestions,
+        productMapping
     ] = useFetchCRs(
         isApplyClicked,
         startDate,
@@ -42,17 +44,25 @@ const Finder = (props) => {
     useSelectedBrand(selectedBrand, props.onBrandChange, props.prevSelectedBrand);
 
     const applyAdvancedFilter = () => {
-        if (advancedFilter && advancedFilter.value) {
-            setFilteredUniqueCRs([...allUniqueCRs].filter((x) => x[advancedFilter.key] === advancedFilter.value));
+        const filterNewFormat = filterArrayFormatted(advancedFilter);
+        let newFilteredCRs = [...allUniqueCRs];
+        if (filterNewFormat && filterNewFormat.length) {
+            filterNewFormat.forEach((filter) => {
+                if (Array.isArray(filter.values) && filter.values[0]) {
+                    newFilteredCRs = newFilteredCRs.filter((x) => filter.values.includes(x[filter.key]));
+                } else if (filter.values[0]) {
+                    newFilteredCRs = newFilteredCRs.filter((x) => x[filter.key] === filter.values);
+                }
+            });
+            setFilteredUniqueCRs(newFilteredCRs);
         } else {
             setFilteredUniqueCRs([...allUniqueCRs]);
         }
     };
 
-    const onFilterChange = useCallback((value) => {
+    const onFilterChange = (value) => {
         setAdvancedFilter(value);
-        applyAdvancedFilter();
-    }, [advancedFilter]);
+    };
 
     useEffect(() => {
         applyAdvancedFilter();
@@ -92,9 +102,10 @@ const Finder = (props) => {
                 >
                     {'Apply Dates'}
                 </button>
-                {isLoading ? '' : <UniversalSearch suggestions={indexedDataForSuggestions} onFilterChange={(selected) => {
-                    onFilterChange(selected);
-                }}
+                {isLoading ? '' : <UniversalSearch
+                    suggestions={indexedDataForSuggestions}
+                    suggestionMapping={productMapping}
+                    onFilterChange={onFilterChange}
                 />}
 
             </div>
