@@ -14,7 +14,6 @@ const ReferenceLabel = ({viewBox: {x}, annotation}) => {
         category,
         priority,
         status,
-        url,
         id
     } = annotation;
 
@@ -24,7 +23,7 @@ const ReferenceLabel = ({viewBox: {x}, annotation}) => {
             x={x - 5.5}
             y={-1}
         >
-            <div className="annotation-tooltip">
+            <div className={`annotation-tooltip ${category}`}>
                 <div className="tooltip-body">
                     <p className="timestamp">{moment(time).format('YYYY-MM-DD hh:mm')}</p>
                     <div className="tooltip-wrapper">
@@ -38,7 +37,7 @@ const ReferenceLabel = ({viewBox: {x}, annotation}) => {
                             </> : <>
                                 <span>{priority}</span>
                                 <span>{status}</span>
-                                <a href={url} target="_blank" className="incident-link">{id}</a>
+                                <a href={`https://jira.homeawaycorp.com/browse/${id}`} target="_blank" className="incident-link">{id}</a>
                             </>
                         }
                     </div>

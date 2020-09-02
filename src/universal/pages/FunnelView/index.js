@@ -194,7 +194,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 ? `?fromDate=${moment(start).utc().format()}&toDate=${moment(end).utc().format()}`
                 : '';
 
-            fetch(`/v1/incidents${dateQuery}`)
+            fetch(`/v2/incidents${dateQuery}`)
                 .then(checkResponse)
                 .then((data) => {
                     const uniqueTickets = getUniqueByProperty(data, 'id');
