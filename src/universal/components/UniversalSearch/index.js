@@ -37,13 +37,16 @@ const UniversalSearch = (props) => {
     };
 
     const selectedProduct = () => {
-        const product = fieldSelection && fieldSelection.length && fieldSelection.find((x) => x.key === 'productName');
-        return product;
+        const products = fieldSelection && fieldSelection.length && fieldSelection.filter((x) => x.key === 'productName');
+        return products;
     };
 
-    const productApplications = (product) => {
-        const productMappingOBj = props.suggestionMapping.find((x) => x.productName === product);
-        return productMappingOBj && productMappingOBj.applicationNames ? productMappingOBj.applicationNames : '';
+    const productApplications = (products) => {
+        const adjustedApplications = products.reduce((acc, current) => {
+            const currentApplicationNames = props.suggestionMapping.find((item) => item.productName === current.value).applicationNames;
+            return [...acc, ...currentApplicationNames];
+        }, []);
+        return adjustedApplications && adjustedApplications.length ? adjustedApplications : '';
     };
 
     const setNewTypeaheadList = () => {
@@ -51,11 +54,11 @@ const UniversalSearch = (props) => {
             if (isKeySelection) {
                 setTypeaheadList(keyTags);
             } else {
-                const product = selectedProduct();
+                const products = selectedProduct();
                 const currentFilter = fieldSelection && fieldSelection.length && fieldSelection[fieldSelection.length - 1];
-                if (product && product.value && currentFilter.key === 'applicationName') {
-                    const newList = productApplications(product.value) ?
-                        productApplications(product.value) :
+                if (products && products.length && currentFilter.key === 'applicationName') {
+                    const newList = productApplications(products) ?
+                        productApplications(products) :
                         props.suggestions[fieldSelection[fieldSelection.length - 1].key];
                     setTypeaheadList(newList);
                 } else {
