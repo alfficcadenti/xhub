@@ -5,7 +5,7 @@ import {Dropdown} from '@homeaway/react-dropdown';
 import BrandSelector from './BrandSelector';
 import Help from './Help';
 import Search from './Search';
-import {getVisiblePages} from '../../pages/utils';
+import {getBrand, getVisiblePages} from '../../pages/utils';
 import './styles.less';
 
 const DEFAULT_PAGE_INFO = {
@@ -73,9 +73,9 @@ const Header = ({selectedBrands, onBrandChange, brands}) => {
             </Link>
             {CATEGORIES.map(renderCategoryDropdown)}
             <BrandSelector
-                selectedBrands={selectedBrands}
+                selectedBrands={selectedBrands.map((brand) => getBrand(brand, 'label').retailLabel)}
                 onBrandChange={onBrandChange}
-                brands={brands}
+                brands={brands.map((brand) => getBrand(brand, 'label').retailLabel)}
             />
             <Help info={DEFAULT_PAGE_INFO} />
             <Search
