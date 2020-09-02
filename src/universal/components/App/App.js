@@ -42,10 +42,8 @@ function App() {
     const [selectedBrands, setSelectedBrands] = useState(storedBrands);
 
     const handleBrandChange = useCallback((brands) => {
-        const convertedLabels = brands.map((brand) => getBrand(brand, 'retailLabel').label);
-
-        localStorage.setItem('selectedBrands', convertedLabels);
-        setSelectedBrands(convertedLabels);
+        localStorage.setItem('selectedBrands', brands);
+        setSelectedBrands(brands);
 
         localStorage.setItem('isBrandFilterChanged', JSON.stringify(true));
         localStorage.setItem('isQueryChanged', JSON.stringify(false));
