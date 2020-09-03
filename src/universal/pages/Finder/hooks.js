@@ -26,7 +26,6 @@ export const useFetchCRs = (
 
     const [productMapping, setProductMapping] = useState([]);
 
-
     useEffect(() => {
         const fetchProductMapping = () => {
             const dateQuery = startDate && endDate
