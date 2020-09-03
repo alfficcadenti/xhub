@@ -23,7 +23,7 @@ describe('Change Requests component testing', () => {
         expect(wrapper.find('th')).to.have.length(9);
     });
 
-    it('renders table  with team as the last column if brand is different than EG_BRAND', () => {
+    it('renders table with team as the last column if brand is different than EG_BRAND', () => {
         const wrapper = mount(<ChangeRequests filteredCR={mockData} selectedBrand={EXPEDIA_BRAND}/>);
         expect(wrapper.find('th').last().text()).to.be.eql('Team');
         expect(wrapper.find('th')).to.have.length(8);
