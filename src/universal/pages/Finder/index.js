@@ -37,6 +37,7 @@ const Finder = (props) => {
         isApplyClicked,
         startDate,
         endDate,
+        selectedBrand,
         applyAdvancedFilter,
         setIsApplyClicked
     );
