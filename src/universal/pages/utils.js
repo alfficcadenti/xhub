@@ -75,6 +75,11 @@ export const consolidateTicketsById = (tickets) => {
             if (results[idx].impactedBrand && !results[idx].impactedBrand.split(',').includes(ticket.impactedBrand)) {
                 results[idx].impactedBrand += `,${ticket.impactedBrand}`;
             }
+            if (!results[idx].division) {
+                results[idx].division = ticket.division;
+            } else if (!results[idx].division.split(',').includes(ticket.division)) {
+                results[idx].division += `,${ticket.division}`;
+            }
             results[idx].estimatedRevenueLoss = `${parseFloat(results[idx].estimatedRevenueLoss) + parseFloat(ticket.estimatedRevenueLoss || 0)}`;
             results[idx].estimatedGrossLoss = `${parseFloat(results[idx].estimatedGrossLoss) + parseFloat(ticket.estimatedGrossLoss || 0)}`;
             return;

@@ -16,11 +16,11 @@ export const getTableColumns = (selectedBrand) => {
 };
 
 export const getValue = (item, property, transformFn) => {
-    if (transformFn) {
-        return transformFn(item[property]) || '-';
-    }
     if (!item || !item[property]) {
         return '-';
+    }
+    if (transformFn) {
+        return transformFn(item[property]) || '-';
     }
     return item[property];
 };
@@ -62,7 +62,7 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
         Division: getValue(inc, 'Division'),
         Started: moment.utc(inc.startDate).local().isValid() ? moment.utc(inc.startDate).local().format('YYYY-MM-DD HH:mm') : '-',
         Summary: getValue(inc, 'summary').trim(),
-        Duration: inc.duration ? h.formatDurationForTable(inc.duration) : '-',
+        Duration: getValue(inc, 'duration', h.formatDurationForTable),
         rawDuration: inc.duration,
         TTD: getValue(inc, 'timeToDetect', h.formatDurationForTable),
         rawTTD: inc.timeToDetect,
@@ -241,7 +241,6 @@ const filterByImpactedBrand = (incidents, brandName) => incidents
 
 const sumBrandLossPerInterval = (data = [], brandName, propertyToSum) => {
     const filteredByImpactedBrand = filterByImpactedBrand(data, brandName);
-
     return sumPropertyInArrayOfObjects(filteredByImpactedBrand, propertyToSum);
 };
 
@@ -344,6 +343,7 @@ export const impactedBrandToDivision = (impactedBrand = '') => {
         case 'EXPEDIA PARTNER SOLUTIONS':
         case 'EAN':
         case 'EXPEDIA PARTNER SERVICES':
+        case 'EPS':
             return EXPEDIA_PARTNER_SERVICES_BRAND;
         default:
             return '';

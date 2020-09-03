@@ -114,13 +114,12 @@ const IncidentTrendsDashboard = (props) => {
         const matchesStatus = (t) => selectedStatus === statusDefaultValue || t.status === selectedStatus;
         const matchesTag = (t) => selectedTag === tagDefaultValue || t.tag === selectedTag || (Array.isArray(t.tag) && t.tag.includes(selectedTag));
         const matchesRcOwner = (t) => selectedRcOwner === rcOwnerDefaultValue || t['RC Owner'] === selectedRcOwner;
-        const matchesDivision = (t) => !isPartnerBrand || divisionCheckboxes.find((cbox) => cbox.checked && cbox.text === t.partner_division);
+        const matchesDivision = (t) => !isPartnerBrand || divisionCheckboxes.find((cbox) => cbox.checked && (t.partner_division || '').includes(cbox.text));
         const matchesPartner = (t) => !isPartnerBrand || selectedPartner === partnerDefaultValue ||
             (t.impactedPartnersLobs && t.impactedPartnersLobs.includes(selectedPartner));
         // eslint-disable-next-line complexity
         const filterTickets = (t) => (matchesPriority(t) && matchesBrand(t) && matchesStatus(t) && matchesTag(t) && matchesRcOwner(t)
             && matchesPartner(t) && matchesDivision(t));
-
         setFilteredUniqueIncidents([...allUniqueIncidents].filter(filterTickets));
         setFilteredAllIncidents([...allIncidents].filter(filterTickets));
 
