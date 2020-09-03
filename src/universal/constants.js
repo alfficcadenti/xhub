@@ -45,7 +45,7 @@ export const BRANDS = [
         label: EXPEDIA_BRAND,
         psrBrand: 'expedia',
         funnelBrand: 'expedia',
-        changeRequests: 'expedia',
+        changeRequests: 'Expedia',
         landingBrand: EXPEDIA_BRAND,
         portfolioBrand: 'BEX',
         color: '#1B5CAF'
