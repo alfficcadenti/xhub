@@ -104,15 +104,17 @@ const Finder = (props) => {
                 >
                     {'Apply Dates'}
                 </button>
-                {isLoading ? '' : <UniversalSearch
-                    suggestions={indexedDataForSuggestions}
-                    suggestionMapping={productMapping}
-                    onFilterChange={onFilterChange}
-                />}
+                {!isLoading && (
+                    <UniversalSearch
+                        suggestions={indexedDataForSuggestions}
+                        suggestionMapping={productMapping}
+                        onFilterChange={onFilterChange}
+                    />
+                )}
 
             </div>
             <LoadingContainer isLoading={isLoading} error={error}>
-                <ChangeRequests filteredCR={filteredUniqueCRs} selectedBrand={selectedBrand}/>;
+                <ChangeRequests filteredCR={filteredUniqueCRs} selectedBrand={selectedBrand}/>
             </LoadingContainer>
         </div>
     );

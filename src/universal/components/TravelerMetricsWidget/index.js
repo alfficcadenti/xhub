@@ -31,6 +31,13 @@ const CustomTooltip = ({active, payload}) => {
 
 const formatXAxis = (date) => moment(date).format('MM/DD hh:mm');
 
+const renderHeader = (title, helpText) => (
+    <h3>
+        {title}
+        {helpText && <HelpText text="Only for nonNativeApps" />}
+    </h3>
+);
+
 const TravelerMetricsWidget = ({
     title = '',
     data = [],
@@ -49,15 +56,10 @@ const TravelerMetricsWidget = ({
     const brandLabel = brand.replace(/\s/g, '');
     const fill = `url(#${brandLabel})`;
     const {color} = getBrand(brand, 'label');
-
     const yAxisId = `yAxis-${title}`;
-
     return (
         <div className="widget-card card" key={title}>
-            <h3>
-                {title}
-                {helpText && <HelpText text="Only for nonNativeApps" />}
-            </h3>
+            {renderHeader(title, helpText)}
             {
                 data.length ?
                     <ResponsiveContainer width="100%" height="80%">

@@ -1,32 +1,30 @@
-import {defects, incidents, epsIncidents, prbs, portfolio, incidentsV2} from './dataService';
 import {login, logout} from './oauth';
-import {bookingsUserEvents} from './bookingsUserEvents';
-import {csrUserEvents} from './csrUserEvents';
-import {changeRequests} from './changeRequests';
-import {pageViewsUserEvents} from './pageViews';
-import {impulseBookingDataService, impulseFiltersService} from './impulseService';
-import {funnelViewUserEvents} from './funnelView';
-import {annotations} from './annotations';
-import {productMapping} from './productMapping';
+import {defects, incidents, incidentsV2, epsIncidents, prbs, portfolio} from './dataService';
+import {bookingsUserEvents, pageViewsUserEvents, impulseBookingDataService, impulseFiltersService, funnelViewUserEvents, csrUserEvents} from './userEventsService';
+import {changeRequests, annotations, productMapping} from './changeRequestService';
 
 const apiRoutes = [
+    // oauth
     login,
     logout,
-    prbs,
+    // data service
     defects,
     incidents,
     incidentsV2,
     epsIncidents,
+    prbs,
     portfolio,
+    // user events service
     bookingsUserEvents,
-    csrUserEvents,
-    changeRequests,
     pageViewsUserEvents,
     impulseBookingDataService,
+    impulseFiltersService,
     funnelViewUserEvents,
+    csrUserEvents,
+    // change request service
+    changeRequests,
     annotations,
-    productMapping,
-    impulseFiltersService
+    productMapping
 ];
 
 export default apiRoutes;

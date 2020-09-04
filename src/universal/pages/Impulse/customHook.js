@@ -49,6 +49,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
                 setTpids(getFilters(respJson, 'tpid'));
             })
             .catch((err) => {
+                // eslint-disable-next-line no-console
                 console.error(err);
             });
     };
@@ -77,6 +78,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
             .catch((err) => {
                 setIsLoading(false);
                 setError('No data found for this selection.');
+                // eslint-disable-next-line no-console
                 console.error(err);
             });
     };
