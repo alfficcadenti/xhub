@@ -11,9 +11,10 @@ import {
     getVisiblePages,
     getImpactedPartners,
     mapEpsData,
-    parseDurationToMs
+    parseDurationToMs,
+    getBrand
 } from './utils';
-import {VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../constants';
+import {EG_BRAND, VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../constants';
 
 
 describe('divisionToBrand', () => {
@@ -266,5 +267,15 @@ describe('parseDurationToMs', () => {
         expect(parseDurationToMs('1 day')).to.be.equal(daysToMs(1));
         expect(parseDurationToMs('1 day 1 minute')).to.be.equal(daysToMs(1) + minutesToMs(1));
         expect(parseDurationToMs('2 days 2 hours 3 minutes')).to.be.equal(daysToMs(2) + hoursToMs(2) + minutesToMs(3));
+    });
+});
+
+describe('getBrand()', () => {
+    it('finds the correct values for the changeRequests', () => {
+        expect(getBrand(EG_BRAND, 'label').changeRequests).to.be.eql('');
+        expect(getBrand(VRBO_BRAND, 'label').changeRequests).to.be.eql('Homeaway');
+        expect(getBrand(EGENCIA_BRAND, 'label').changeRequests).to.be.eql('Egencia EU,Egencia NA');
+        expect(getBrand(EXPEDIA_BRAND, 'label').changeRequests).to.be.eql('Expedia');
+        expect(getBrand(HOTELS_COM_BRAND, 'label').changeRequests).to.be.eql('Hotels');
     });
 });

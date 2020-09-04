@@ -1,15 +1,16 @@
 import {useState, useEffect} from 'react';
 import {adjustCRsProperties} from './crUtils';
 import {useIsMount} from '../hooks';
-import {checkResponse, getUniqueByProperty, getListOfUniqueProperties, sortArrayByMostRecentDate} from '../utils';
+import {getBrand, checkResponse, getUniqueByProperty, getListOfUniqueProperties, sortArrayByMostRecentDate} from '../utils';
 import moment from 'moment';
 
 export const useFetchCRs = (
     isApplyClicked,
     startDate,
     endDate,
+    selectedBrand,
     applyAdvancedFilter,
-    setIsApplyClicked,
+    setIsApplyClicked
 ) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
@@ -43,10 +44,14 @@ export const useFetchCRs = (
         fetchProductMapping();
 
         const fetchCRs = () => {
+            const brand = getBrand(selectedBrand, 'label');
             setIsLoading(true);
             setLastStartDate(startDate);
             setLastEndDate(endDate);
-            fetch(`/change-requests-api/v1/changeDetails?startDate=${startDate}&endDate=${endDate}`)
+            const url = brand && brand.changeRequests ?
+                `/change-requests-api/v1/changeDetails?startDate=${startDate}&endDate=${endDate}&platform=${brand.changeRequests}` :
+                `/change-requests-api/v1/changeDetails?startDate=${startDate}&endDate=${endDate}`;
+            fetch(url)
                 .then(checkResponse)
                 .then((data) => {
                     const crs = sortArrayByMostRecentDate(data, 'openedAt');
