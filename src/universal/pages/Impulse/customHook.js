@@ -34,7 +34,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
     const [bookingTypeMulti, setBookingTypesMulti] = useState({});
     const isMount = useIsMount();
     const getFilter = () => {
-        fetch(`http://localhost:8082/v1/bookings/filters?filter=lob,brand,egSiteUrl,deviceType,bookingType,brandGroupName${getBrandQueryParam(IMPULSE_MAPPING, globalBrandName)}`)
+        fetch(`/v1/bookings/filters?filter=lob,brand,egSiteUrl,deviceType,bookingType,brandGroupName${getBrandQueryParam(IMPULSE_MAPPING, globalBrandName)}`)
             .then(checkResponse)
             .then((respJson) => {
                 setEgSiteURLMulti(getFilters(respJson, 'egSiteUrl'));
@@ -49,7 +49,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
     };
     const getData = () => {
         setIsLoading(true);
-        fetch(`http://localhost:8082/v1/bookings/count${getQueryString(startDate, endDate, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, selectedBookingTypeMulti)}`)
+        fetch(`/v1/bookings/count${getQueryString(startDate, endDate, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, selectedBookingTypeMulti)}`)
             .then((result) => {
                 return result.json();
             }
