@@ -31,17 +31,13 @@ export const adjustTicketProperties = (tickets = [], type = 'incident') => {
     return tickets.map((t) => {
         const result = {
             ...t,
-            summary: t.summary,
-            id: t.id,
-            startDate: t.startDate ? t.startDate : t.openDate,
+            startDate: t.startDate || t.openDate,
             Division: String(t.divisions || '') || t.brand,
             Status: t.status,
             'RC Owner': t.rootCauseOwner,
             Brand: divisionToBrand(t.brand || '')
         };
         if (type === 'incident') {
-            result.duration = t.duration && t.resolvedDate ? t.duration : null;
-            result.timeToResolve = t.timeToResolve && t.resolvedDate ? t.timeToResolve : null;
             result.partner_divisions = t.divisions;
             result['Impacted Partners'] = t.impactedPartnersLobs;
             result['Notification Sent'] = t.notificationSent;
