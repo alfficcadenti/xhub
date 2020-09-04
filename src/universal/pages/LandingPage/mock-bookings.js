@@ -9,7 +9,7 @@ export const mockData = [{
         'count': 81
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1338
     },
     {
@@ -33,7 +33,7 @@ export const mockData = [{
         'count': 110
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1967
     },
     {
@@ -57,7 +57,7 @@ export const mockData = [{
         'count': 126
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1893
     },
     {
@@ -81,7 +81,7 @@ export const mockData = [{
         'count': 109
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1836
     },
     {
@@ -105,7 +105,7 @@ export const mockData = [{
         'count': 103
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1756
     },
     {
@@ -129,7 +129,7 @@ export const mockData = [{
         'count': 132
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1731
     },
     {
@@ -153,7 +153,7 @@ export const mockData = [{
         'count': 130
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1673
     },
     {
@@ -177,7 +177,7 @@ export const mockData = [{
         'count': 118
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1657
     },
     {
@@ -201,7 +201,7 @@ export const mockData = [{
         'count': 102
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1570
     },
     {
@@ -225,7 +225,7 @@ export const mockData = [{
         'count': 125
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1576
     },
     {
@@ -249,7 +249,7 @@ export const mockData = [{
         'count': 107
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1560
     },
     {
@@ -273,7 +273,7 @@ export const mockData = [{
         'count': 89
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1524
     },
     {
@@ -297,7 +297,7 @@ export const mockData = [{
         'count': 129
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1500
     },
     {
@@ -321,7 +321,7 @@ export const mockData = [{
         'count': 121
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1494
     },
     {
@@ -345,7 +345,7 @@ export const mockData = [{
         'count': 102
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1596
     },
     {
@@ -369,7 +369,7 @@ export const mockData = [{
         'count': 145
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1566
     },
     {
@@ -393,7 +393,7 @@ export const mockData = [{
         'count': 109
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1625
     },
     {
@@ -417,7 +417,7 @@ export const mockData = [{
         'count': 116
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1622
     },
     {
@@ -441,7 +441,7 @@ export const mockData = [{
         'count': 100
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1755
     },
     {
@@ -465,7 +465,7 @@ export const mockData = [{
         'count': 118
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1654
     },
     {
@@ -489,7 +489,7 @@ export const mockData = [{
         'count': 108
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1720
     },
     {
@@ -513,7 +513,7 @@ export const mockData = [{
         'count': 119
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1663
     },
     {
@@ -537,7 +537,7 @@ export const mockData = [{
         'count': 111
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1645
     },
     {
@@ -561,7 +561,7 @@ export const mockData = [{
         'count': 95
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1567
     },
     {
@@ -585,7 +585,7 @@ export const mockData = [{
         'count': 114
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1539
     },
     {
@@ -609,7 +609,7 @@ export const mockData = [{
         'count': 107
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1452
     },
     {
@@ -633,7 +633,7 @@ export const mockData = [{
         'count': 108
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1445
     },
     {
@@ -657,7 +657,7 @@ export const mockData = [{
         'count': 73
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1381
     },
     {
@@ -681,7 +681,7 @@ export const mockData = [{
         'count': 83
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1310
     },
     {
@@ -705,7 +705,7 @@ export const mockData = [{
         'count': 76
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1174
     },
     {
@@ -729,7 +729,7 @@ export const mockData = [{
         'count': 77
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1138
     },
     {
@@ -753,7 +753,7 @@ export const mockData = [{
         'count': 61
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1059
     },
     {
@@ -777,7 +777,7 @@ export const mockData = [{
         'count': 62
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1108
     },
     {
@@ -801,7 +801,7 @@ export const mockData = [{
         'count': 56
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 965
     },
     {
@@ -825,7 +825,7 @@ export const mockData = [{
         'count': 40
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 822
     },
     {
@@ -849,7 +849,7 @@ export const mockData = [{
         'count': 34
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 849
     },
     {
@@ -873,7 +873,7 @@ export const mockData = [{
         'count': 47
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 843
     },
     {
@@ -897,7 +897,7 @@ export const mockData = [{
         'count': 44
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 811
     },
     {
@@ -921,7 +921,7 @@ export const mockData = [{
         'count': 34
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 727
     },
     {
@@ -945,7 +945,7 @@ export const mockData = [{
         'count': 23
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 687
     },
     {
@@ -969,7 +969,7 @@ export const mockData = [{
         'count': 23
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 774
     },
     {
@@ -993,7 +993,7 @@ export const mockData = [{
         'count': 26
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 711
     },
     {
@@ -1017,7 +1017,7 @@ export const mockData = [{
         'count': 24
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 737
     },
     {
@@ -1041,7 +1041,7 @@ export const mockData = [{
         'count': 18
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 756
     },
     {
@@ -1065,7 +1065,7 @@ export const mockData = [{
         'count': 10
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 722
     },
     {
@@ -1089,7 +1089,7 @@ export const mockData = [{
         'count': 16
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 744
     },
     {
@@ -1113,7 +1113,7 @@ export const mockData = [{
         'count': 13
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 786
     },
     {
@@ -1137,7 +1137,7 @@ export const mockData = [{
         'count': 17
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 797
     },
     {
@@ -1161,7 +1161,7 @@ export const mockData = [{
         'count': 17
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 746
     },
     {
@@ -1185,7 +1185,7 @@ export const mockData = [{
         'count': 15
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 724
     },
     {
@@ -1209,7 +1209,7 @@ export const mockData = [{
         'count': 17
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 718
     },
     {
@@ -1233,7 +1233,7 @@ export const mockData = [{
         'count': 17
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 738
     },
     {
@@ -1257,7 +1257,7 @@ export const mockData = [{
         'count': 23
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 759
     },
     {
@@ -1281,7 +1281,7 @@ export const mockData = [{
         'count': 24
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 771
     },
     {
@@ -1305,7 +1305,7 @@ export const mockData = [{
         'count': 20
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 765
     },
     {
@@ -1329,7 +1329,7 @@ export const mockData = [{
         'count': 19
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 742
     },
     {
@@ -1353,7 +1353,7 @@ export const mockData = [{
         'count': 23
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 753
     },
     {
@@ -1377,7 +1377,7 @@ export const mockData = [{
         'count': 24
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 817
     },
     {
@@ -1401,7 +1401,7 @@ export const mockData = [{
         'count': 26
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 864
     },
     {
@@ -1425,7 +1425,7 @@ export const mockData = [{
         'count': 24
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 939
     },
     {
@@ -1449,7 +1449,7 @@ export const mockData = [{
         'count': 18
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 930
     },
     {
@@ -1473,7 +1473,7 @@ export const mockData = [{
         'count': 28
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 968
     },
     {
@@ -1497,7 +1497,7 @@ export const mockData = [{
         'count': 36
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1064
     },
     {
@@ -1521,7 +1521,7 @@ export const mockData = [{
         'count': 37
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1053
     },
     {
@@ -1545,7 +1545,7 @@ export const mockData = [{
         'count': 39
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1161
     },
     {
@@ -1569,7 +1569,7 @@ export const mockData = [{
         'count': 41
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1181
     },
     {
@@ -1593,7 +1593,7 @@ export const mockData = [{
         'count': 49
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1241
     },
     {
@@ -1617,7 +1617,7 @@ export const mockData = [{
         'count': 75
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1412
     },
     {
@@ -1641,7 +1641,7 @@ export const mockData = [{
         'count': 79
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1388
     },
     {
@@ -1665,7 +1665,7 @@ export const mockData = [{
         'count': 78
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1440
     },
     {
@@ -1689,7 +1689,7 @@ export const mockData = [{
         'count': 85
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1569
     },
     {
@@ -1713,7 +1713,7 @@ export const mockData = [{
         'count': 86
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1573
     },
     {
@@ -1737,7 +1737,7 @@ export const mockData = [{
         'count': 98
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1666
     },
     {
@@ -1761,7 +1761,7 @@ export const mockData = [{
         'count': 74
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1680
     },
     {
@@ -1785,7 +1785,7 @@ export const mockData = [{
         'count': 108
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1669
     },
     {
@@ -1809,7 +1809,7 @@ export const mockData = [{
         'count': 105
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1717
     },
     {
@@ -1833,7 +1833,7 @@ export const mockData = [{
         'count': 99
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1820
     },
     {
@@ -1857,7 +1857,7 @@ export const mockData = [{
         'count': 97
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1789
     },
     {
@@ -1881,7 +1881,7 @@ export const mockData = [{
         'count': 113
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1792
     },
     {
@@ -1905,7 +1905,7 @@ export const mockData = [{
         'count': 110
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1747
     },
     {
@@ -1929,7 +1929,7 @@ export const mockData = [{
         'count': 114
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1818
     },
     {
@@ -1953,7 +1953,7 @@ export const mockData = [{
         'count': 121
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1839
     },
     {
@@ -1977,7 +1977,7 @@ export const mockData = [{
         'count': 132
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1789
     },
     {
@@ -2001,7 +2001,7 @@ export const mockData = [{
         'count': 117
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1765
     },
     {
@@ -2025,7 +2025,7 @@ export const mockData = [{
         'count': 127
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1810
     },
     {
@@ -2049,7 +2049,7 @@ export const mockData = [{
         'count': 113
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1828
     },
     {
@@ -2073,7 +2073,7 @@ export const mockData = [{
         'count': 110
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1894
     },
     {
@@ -2097,7 +2097,7 @@ export const mockData = [{
         'count': 79
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1339
     },
     {
@@ -2121,7 +2121,7 @@ export const mockData = [{
         'count': 124
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 2333
     },
     {
@@ -2145,7 +2145,7 @@ export const mockData = [{
         'count': 120
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 2035
     },
     {
@@ -2169,7 +2169,7 @@ export const mockData = [{
         'count': 115
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1937
     },
     {
@@ -2193,7 +2193,7 @@ export const mockData = [{
         'count': 138
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 2032
     },
     {
@@ -2217,7 +2217,7 @@ export const mockData = [{
         'count': 109
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1985
     },
     {
@@ -2241,7 +2241,7 @@ export const mockData = [{
         'count': 128
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 2038
     },
     {
@@ -2265,7 +2265,7 @@ export const mockData = [{
         'count': 122
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1985
     },
     {
@@ -2289,7 +2289,7 @@ export const mockData = [{
         'count': 126
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 1997
     },
     {
@@ -2313,7 +2313,7 @@ export const mockData = [{
         'count': 33
     },
     {
-        'brandGroupName': 'Hotels.com',
+        'brandGroupName': 'Hotels.com Retail',
         'count': 607
     },
     {

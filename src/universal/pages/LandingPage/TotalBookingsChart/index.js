@@ -23,11 +23,11 @@ export default class TotalChart extends PureComponent {
                 <stop offset="95%" stopColor={color} stopOpacity={0} />
             </linearGradient>
         );
-    }
+    };
 
     renderArea = (brand) => {
         const brandLabel = brand.replace(/\s/g, '');
-        const color = getBrand(brand, 'label').color;
+        const {color} = getBrand(brand, 'label');
         const fill = `url(#color${brandLabel})`;
         return (
             <Area type="monotone" dataKey={brand} stroke={color} fillOpacity={1} fill={fill} key={`area${brand}`}/>

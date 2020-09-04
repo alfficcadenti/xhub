@@ -1,14 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import DataTable from '../../../../../components/DataTable';
 import NoResults from '../../../../../components/NoResults/NoResults';
-import {getIncidentsData} from '../../../incidentsHelper';
+import {getTableColumns, getIncidentsData} from '../../../incidentsHelper';
 
-
-const renderTable = (filteredIncidents, isPartnerBrand) => {
-    const columns = isPartnerBrand
-        ? ['Incident', 'Priority', 'Brand', 'Division', 'Started', 'Summary', 'Impacted Partners', 'RC Owner', 'TTD', 'TTR', 'Notification Sent', 'Status']
-        : ['Incident', 'Priority', 'Brand', 'Division', 'Started', 'Summary', 'RC Owner', 'TTD', 'TTR', 'Status'];
+const renderTable = (filteredIncidents, selectedBrand) => {
+    const columns = getTableColumns(selectedBrand);
     const columnsInfo = {
         TTD: <div>{'Time to Detect'}</div>,
         TTR: <div>{'Time to Resolve (Duration)'}</div>
@@ -31,18 +27,14 @@ const renderTable = (filteredIncidents, isPartnerBrand) => {
     );
 };
 
-const Incidents = ({filteredIncidents, isPartnerBrand}) => (
+const Incidents = ({filteredIncidents, selectedBrand}) => (
     <div data-wdio="incidents-table">
         {
             filteredIncidents.length
-                ? renderTable(filteredIncidents, isPartnerBrand)
+                ? renderTable(filteredIncidents, selectedBrand)
                 : <NoResults />
         }
     </div>
 );
-
-Incidents.propTypes = {
-    filteredIncidents: PropTypes.arrayOf(PropTypes.shape()).isRequired
-};
 
 export default React.memo(Incidents);

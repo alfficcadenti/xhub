@@ -2,6 +2,7 @@ import React from 'react';
 import {Dropdown} from '@homeaway/react-dropdown';
 import './BrandSelector.less';
 import {EG_BRAND} from '../../constants';
+import {getBrand} from '../../pages/utils';
 
 
 const BrandSelector = ({selectedBrands, onBrandChange, brands}) => {
@@ -29,7 +30,7 @@ const BrandSelector = ({selectedBrands, onBrandChange, brands}) => {
             }
         }
 
-        onBrandChange(nextSelectedBrands);
+        onBrandChange(nextSelectedBrands.map((nextBrand) => getBrand(nextBrand, 'retailLabel').label));
     };
 
     const renderBrandItem = (brand) => (

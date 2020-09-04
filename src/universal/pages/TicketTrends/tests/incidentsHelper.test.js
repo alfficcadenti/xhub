@@ -1,6 +1,7 @@
 import React from 'react';
 import {expect} from 'chai';
 import {
+    getTableColumns,
     getIncidentsData,
     sumPropertyInArrayOfObjects,
     getMarginDateValues,
@@ -9,6 +10,7 @@ import {
     listOfIncByBrands,
     mttr
 } from '../incidentsHelper';
+import {EG_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, VRBO_BRAND} from '../../../constants';
 import mockData from './filteredData.test.json';
 import mockData2 from './incData.test.json';
 import mockResult from './incByBrandResult.test.json';
@@ -45,6 +47,26 @@ const incMetricsByBrand = [
 ];
 
 describe('incidentsHelper', () => {
+    describe('getTableColumns', () => {
+        it('returns correct columns for EPS brand', () => {
+            expect(getTableColumns(EXPEDIA_PARTNER_SERVICES_BRAND)).to.eql([
+                'Incident', 'Priority', 'Division', 'Started', 'Summary', 'Impacted Partners', 'RC Owner', 'TTD', 'TTR', 'Notification Sent', 'Status'
+            ]);
+        });
+
+        it('returns correct columns for EG brand', () => {
+            expect(getTableColumns(EG_BRAND)).to.eql([
+                'Incident', 'Priority', 'Brand', 'Division', 'Started', 'Summary', 'RC Owner', 'TTD', 'TTR', 'Status'
+            ]);
+        });
+
+        it('returns correct columns for non-EPS and non-EG brand', () => {
+            expect(getTableColumns(VRBO_BRAND)).to.eql([
+                'Incident', 'Priority', 'Division', 'Started', 'Summary', 'RC Owner', 'TTD', 'TTR', 'Status'
+            ]);
+        });
+    });
+
     describe('getIncidentsData', () => {
         it('returns empty array if filteredIncidents is not passed', () => {
             const result = getIncidentsData();
