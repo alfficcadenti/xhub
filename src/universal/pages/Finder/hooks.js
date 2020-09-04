@@ -2,7 +2,6 @@ import {useState, useEffect} from 'react';
 import {adjustCRsProperties} from './crUtils';
 import {useIsMount} from '../hooks';
 import {getBrand, checkResponse, getUniqueByProperty, getListOfUniqueProperties, sortArrayByMostRecentDate} from '../utils';
-import moment from 'moment';
 
 export const useFetchCRs = (
     isApplyClicked,
@@ -24,24 +23,7 @@ export const useFetchCRs = (
     const [indexedDataForSuggestions, setIndexedDataForSuggestions] = useState({});
     const isMount = useIsMount();
 
-    const [productMapping, setProductMapping] = useState([]);
-
     useEffect(() => {
-        const fetchProductMapping = () => {
-            const dateQuery = startDate && endDate
-                ? `startDate=${moment(startDate).utc().format()}&endDate=${moment(endDate).utc().format()}`
-                : '';
-            fetch(`/productMapping?${dateQuery}`)
-                .then(checkResponse)
-                .then((mapping) => {
-                    setProductMapping(mapping);
-                })
-                .catch((err) => {
-                    // eslint-disable-next-line no-console
-                    console.error(err);
-                });
-        };
-
         const fetchCRs = () => {
             const brand = getBrand(selectedBrand, 'label');
             setIsLoading(true);
@@ -89,11 +71,9 @@ export const useFetchCRs = (
 
         if (isMount && !isLoading) {
             fetchCRs();
-            fetchProductMapping();
         } else if (isApplyClicked) {
             if (lastStartDate !== startDate || lastEndDate !== endDate) {
                 fetchCRs();
-                fetchProductMapping();
             } else {
                 applyAdvancedFilter();
             }
@@ -109,7 +89,6 @@ export const useFetchCRs = (
         error,
         allUniqueCRs,
         allCRs,
-        indexedDataForSuggestions,
-        productMapping
+        indexedDataForSuggestions
     ];
 };

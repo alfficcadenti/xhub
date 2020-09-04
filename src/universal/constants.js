@@ -76,7 +76,7 @@ export const BRANDS = [
         retailLabel: `${VRBO_BRAND} Retail`,
         psrBrand: 'vrbo',
         funnelBrand: 'vrbo',
-        changeRequests: 'Homeaway',
+        changeRequests: 'HomeAway',
         landingBrand: VRBO_BRAND,
         portfolioBrand: 'VRBO',
         color: '#1478F7'

@@ -1,11 +1,10 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, {useEffect, useState} from 'react';
-import moment from 'moment';
 import 'moment-timezone';
 import './styles.less';
 import {Checkbox} from '@homeaway/react-form-components';
 import Select from 'react-select';
-import {checkResponse} from '../../pages/utils';
+import {useFetchProductMapping} from '../../pages/hooks';
 
 const annotationCategories = [{value: 'Application Software', label: 'Deployments'}].map(({value, label}) => ({value, label}));
 
@@ -22,28 +21,14 @@ const AnnotationsFilterPanel = ({
     end
 }) => {
     const [products, setProducts] = useState([]);
-    const [productMapping, setProductMapping] = useState([]);
     const [applications, setApplications] = useState([]);
 
+    const productMapping = useFetchProductMapping(start, end);
+
     useEffect(() => {
-        const fetchProductMapping = () => {
-            const dateQuery = start && end
-                ? `startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
-                : '';
-            fetch(`/productMapping?${dateQuery}`)
-                .then(checkResponse)
-                .then((mapping) => {
-                    setProductMapping(mapping);
-                    const adjustedProducts = mapping.map((item) => ({value: item.productName, label: item.productName}));
-                    setProducts(adjustedProducts);
-                })
-                .catch((err) => {
-                    // eslint-disable-next-line no-console
-                    console.error(err);
-                });
-        };
-        fetchProductMapping();
-    }, [start, end]);
+        const adjustedProducts = productMapping.map(({productName}) => ({value: productName, label: productName}));
+        setProducts(adjustedProducts);
+    }, [productMapping]);
 
     const handleProductsOnChange = (event) => {
         const newSelectedProducts = (event || []).map((item) => item.value);

@@ -23,6 +23,7 @@ const initialCategories = [{value: 'Application Software', label: 'Deployments'}
 
 const TIMEZONE_OFFSET = (new Date()).getTimezoneOffset();
 const TIMEZONE_ABBR = moment.tz.zone(moment.tz.guess()).abbr(TIMEZONE_OFFSET);
+const PAGE_VIEWS_DATE_FORMAT = 'YYYY-MM-DD HH:mm';
 
 
 const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
@@ -114,8 +115,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                             const momentTime = moment(time);
                             if (momentTime.isBetween(start, end, 'minutes', '[]')) {
                                 aggregatedData.push({
-                                    label: `${momentTime.format('YYYY-MM-DD HH:mm')} ${TIMEZONE_ABBR}`,
-                                    time: momentTime.format('YYYY-MM-DD HH:mm'),
+                                    label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
+                                    time: momentTime.format(PAGE_VIEWS_DATE_FORMAT),
                                     momentTime,
                                     value: currentPageViews.views
                                 });
@@ -172,12 +173,12 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                         number,
                         serviceName,
                         tags: [productName, platform],
-                        time: moment(openedAt).format('YYYY-MM-DD HH:mm'),
-                        bucketTime: moment(openedAt).format('YYYY-MM-DD HH:mm'),
+                        time: moment(openedAt).format(PAGE_VIEWS_DATE_FORMAT),
+                        bucketTime: moment(openedAt).format(PAGE_VIEWS_DATE_FORMAT),
                         category: 'deployment'
                     }));
 
-                    setAnnotations([...annotations, ...adjustedAnnotations]);
+                    setAnnotations((prevAnnotations) => ([...prevAnnotations, ...adjustedAnnotations]));
                 })
                 .catch((err) => {
                     // eslint-disable-next-line no-console
@@ -200,14 +201,14 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     const uniqueTickets = getUniqueByProperty(data, 'id');
                     const adjustedUniqueTickets = adjustTicketProperties(uniqueTickets, 'incident')
                         .map((incident) => {
-                            incident.bucketTime = moment(incident.openDate).format('YYYY-MM-DD HH:mm');
-                            incident.time = moment(incident.openDate).format('YYYY-MM-DD HH:mm');
+                            incident.bucketTime = moment(incident.openDate).format(PAGE_VIEWS_DATE_FORMAT);
+                            incident.time = moment(incident.openDate).format(PAGE_VIEWS_DATE_FORMAT);
                             incident.category = 'incident';
 
                             return incident;
                         });
 
-                    setAnnotations([...annotations, ...adjustedUniqueTickets]);
+                    setAnnotations((prevAnnotations) => ([...prevAnnotations, ...adjustedUniqueTickets]));
                 })
                 .catch((err) => {
                     // eslint-disable-next-line no-console
