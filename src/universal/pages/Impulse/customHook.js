@@ -23,21 +23,18 @@ const IMPULSE_MAPPING = [
     {globalFilter: VRBO_BRAND, impulseFilter: 'VRBO'}
 ];
 
-export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, endDate, globalBrandName, prevBrand, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, selectedBookingTypeMulti, selectedSiteId, selectedTPID) => {
+export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, endDate, globalBrandName, prevBrand, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, selectedBookingTypeMulti) => {
     const [res, setRes] = useState([]);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(true);
-
     const [egSiteURLMulti, setEgSiteURLMulti] = useState({});
     const [lobsMulti, setLobsMulti] = useState({});
     const [brandsMulti, setBrandMulti] = useState({});
     const [deviceTypeMulti, setDeviceTypesMulti] = useState({});
     const [bookingTypeMulti, setBookingTypesMulti] = useState({});
-    const [siteIds, setSiteIds] = useState({});
-    const [tpids, setTpids] = useState({});
     const isMount = useIsMount();
     const getFilter = () => {
-        fetch(`/v1/bookings/filters?filter=lob,brand,egSiteUrl,deviceType,bookingType,brandGroupName,tpid,siteId${getBrandQueryParam(IMPULSE_MAPPING, globalBrandName)}`)
+        fetch(`http://localhost:8082/v1/bookings/filters?filter=lob,brand,egSiteUrl,deviceType,bookingType,brandGroupName${getBrandQueryParam(IMPULSE_MAPPING, globalBrandName)}`)
             .then(checkResponse)
             .then((respJson) => {
                 setEgSiteURLMulti(getFilters(respJson, 'egSiteUrl'));
@@ -45,8 +42,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
                 setBrandMulti(getFilters(respJson, 'brand'));
                 setDeviceTypesMulti(getFilters(respJson, 'deviceType'));
                 setBookingTypesMulti(getFilters(respJson, 'bookingType'));
-                setSiteIds(getFilters(respJson, 'siteId'));
-                setTpids(getFilters(respJson, 'tpid'));
             })
             .catch((err) => {
                 console.error(err);
@@ -54,7 +49,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
     };
     const getData = () => {
         setIsLoading(true);
-        fetch(`/v1/bookings/count${getQueryString(startDate, endDate, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, selectedBookingTypeMulti, selectedSiteId, selectedTPID)}`)
+        fetch(`http://localhost:8082/v1/bookings/count${getQueryString(startDate, endDate, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, selectedBookingTypeMulti)}`)
             .then((result) => {
                 return result.json();
             }
@@ -99,9 +94,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
         lobsMulti,
         brandsMulti,
         deviceTypeMulti,
-        bookingTypeMulti,
-        siteIds,
-        tpids
+        bookingTypeMulti
     ];
 };
 
