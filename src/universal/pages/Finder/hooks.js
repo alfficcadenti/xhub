@@ -41,7 +41,6 @@ export const useFetchCRs = (
                     console.error(err);
                 });
         };
-        fetchProductMapping();
 
         const fetchCRs = () => {
             const brand = getBrand(selectedBrand, 'label');
@@ -54,7 +53,8 @@ export const useFetchCRs = (
             fetch(url)
                 .then(checkResponse)
                 .then((data) => {
-                    const crs = sortArrayByMostRecentDate(data, 'openedAt');
+                    const filteredCR = brand && brand.changeRequests ? data.filter(x=>x.platform === brand.changeRequests) : data;
+                    const crs = sortArrayByMostRecentDate(filteredCR, 'openedAt');
                     const uniqueCRs = getUniqueByProperty(crs, 'number');
                     const adjustedUniqueCRs = adjustCRsProperties(uniqueCRs);
                     const dataProducts = getListOfUniqueProperties(adjustedUniqueCRs, 'productName').sort();
@@ -89,9 +89,11 @@ export const useFetchCRs = (
 
         if (isMount && !isLoading) {
             fetchCRs();
+            fetchProductMapping();
         } else if (isApplyClicked) {
             if (lastStartDate !== startDate || lastEndDate !== endDate) {
                 fetchCRs();
+                fetchProductMapping();
             } else {
                 applyAdvancedFilter();
             }
