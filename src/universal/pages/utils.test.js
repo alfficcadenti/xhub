@@ -273,7 +273,7 @@ describe('parseDurationToMs', () => {
 describe('getBrand()', () => {
     it('finds the correct values for the changeRequests', () => {
         expect(getBrand(EG_BRAND, 'label').changeRequests).to.be.eql('');
-        expect(getBrand(VRBO_BRAND, 'label').changeRequests).to.be.eql('Homeaway');
+        expect(getBrand(VRBO_BRAND, 'label').changeRequests).to.be.eql('HomeAway');
         expect(getBrand(EGENCIA_BRAND, 'label').changeRequests).to.be.eql('Egencia EU,Egencia NA');
         expect(getBrand(EXPEDIA_BRAND, 'label').changeRequests).to.be.eql('Expedia');
         expect(getBrand(HOTELS_COM_BRAND, 'label').changeRequests).to.be.eql('Hotels');
