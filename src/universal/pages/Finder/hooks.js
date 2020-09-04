@@ -35,7 +35,8 @@ export const useFetchCRs = (
             fetch(url)
                 .then(checkResponse)
                 .then((data) => {
-                    const crs = sortArrayByMostRecentDate(data, 'openedAt');
+                    const filteredCR = brand && brand.changeRequests ? data.filter(x=>x.platform === brand.changeRequests) : data;
+                    const crs = sortArrayByMostRecentDate(filteredCR, 'openedAt');
                     const uniqueCRs = getUniqueByProperty(crs, 'number');
                     const adjustedUniqueCRs = adjustCRsProperties(uniqueCRs);
                     const dataProducts = getListOfUniqueProperties(adjustedUniqueCRs, 'productName').sort();

@@ -63,6 +63,7 @@ const Finder = (props) => {
 
     const onFilterChange = (value) => {
         setAdvancedFilter(value);
+        setIsDirtyForm(false);
     };
 
     useEffect(() => {
