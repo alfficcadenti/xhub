@@ -14,7 +14,7 @@ describe('RealTimeSummaryPanel component testing', () => {
     let wrapper;
 
     beforeEach(() => {
-        wrapper = shallow(<RealTimeSummaryPanel realTimeTotals={realTimeTotals} />);
+        wrapper = shallow(<RealTimeSummaryPanel realTimeTotals={realTimeTotals} isRttLoading={false} />);
     });
 
     afterEach(() => {

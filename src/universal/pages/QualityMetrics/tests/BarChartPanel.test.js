@@ -1,6 +1,6 @@
 import React from 'react';
 import {expect} from 'chai';
-import {mount} from 'enzyme';
+import {shallow} from 'enzyme';
 import BarChartPanel from '../Panels/BarChartPanel';
 import {getPanelDataUrl} from '../utils';
 
@@ -10,7 +10,7 @@ describe('<BarChartPanel>', () => {
     let wrapper;
 
     beforeEach(() => {
-        wrapper = mount(
+        wrapper = shallow(
             <BarChartPanel
                 portfolios={['kes']}
                 tickets={[]}

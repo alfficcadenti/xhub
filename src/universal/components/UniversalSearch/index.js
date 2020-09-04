@@ -3,7 +3,7 @@ import './styles.less';
 import {SearchableList} from '@homeaway/react-searchable-list';
 import {Token} from '@homeaway/react-input-tokenize';
 
-const UniversalSearch = (props) => {
+const UniversalSearch = ({onFilterChange, suggestionMapping, suggestions}) => {
     const [keyTags, setKeyTags] = useState([]);
     const [selected, setSelected] = useState([]);
     const [typeaheadList, setTypeaheadList] = useState(keyTags);
@@ -32,6 +32,7 @@ const UniversalSearch = (props) => {
             setIsKeySelection(!isKeySelection);
             onClear();
         } catch (e) {
+            // eslint-disable-next-line no-console
             console.log(e);
         }
     };
@@ -43,12 +44,13 @@ const UniversalSearch = (props) => {
 
     const productApplications = (products) => {
         const adjustedApplications = products.reduce((acc, current) => {
-            const currentApplicationNames = props.suggestionMapping.find((item) => item.productName === current.value).applicationNames;
+            const currentApplicationNames = suggestionMapping.find((item) => item.productName === current.value).applicationNames;
             return [...acc, ...currentApplicationNames];
         }, []);
         return adjustedApplications && adjustedApplications.length ? adjustedApplications : '';
     };
 
+    // eslint-disable-next-line complexity
     const setNewTypeaheadList = () => {
         try {
             if (isKeySelection) {
@@ -59,14 +61,15 @@ const UniversalSearch = (props) => {
                 if (products && products.length && currentFilter.key === 'applicationName') {
                     const newList = productApplications(products) ?
                         productApplications(products) :
-                        props.suggestions[fieldSelection[fieldSelection.length - 1].key];
+                        suggestions[fieldSelection[fieldSelection.length - 1].key];
                     setTypeaheadList(newList);
                 } else {
-                    const newList = props.suggestions[fieldSelection[fieldSelection.length - 1].key];
+                    const newList = suggestions[fieldSelection[fieldSelection.length - 1].key];
                     setTypeaheadList(newList);
                 }
             }
         } catch (e) {
+            // eslint-disable-next-line no-console
             console.log(e);
         }
     };
@@ -76,17 +79,8 @@ const UniversalSearch = (props) => {
             const newLabel = isKeySelection ? 'Select the field to search' : `Select a value for ${fieldSelection[fieldSelection.length - 1].key}`;
             setLabel(newLabel);
         } catch (e) {
+            // eslint-disable-next-line no-console
             console.log(e);
-        }
-    };
-
-    const verifyKeySelection = () => {
-        if (!fieldSelection) {
-            setIsKeySelection(true);
-        } else if (fieldSelection[fieldSelection.length - 1] && !fieldSelection[fieldSelection.length - 1].value) {
-            setIsKeySelection(false);
-        } else {
-            setIsKeySelection(true);
         }
     };
 
@@ -97,9 +91,18 @@ const UniversalSearch = (props) => {
     };
 
     useEffect(() => {
+        const verifyKeySelection = () => {
+            if (!fieldSelection) {
+                setIsKeySelection(true);
+            } else if (fieldSelection[fieldSelection.length - 1] && !fieldSelection[fieldSelection.length - 1].value) {
+                setIsKeySelection(false);
+            } else {
+                setIsKeySelection(true);
+            }
+        };
         verifyKeySelection();
-        props.onFilterChange(fieldSelection);
-    }, [fieldSelection]);
+        onFilterChange(fieldSelection);
+    }, [fieldSelection, onFilterChange]);
 
     useEffect(() => {
         setNewTypeaheadList();
@@ -111,39 +114,38 @@ const UniversalSearch = (props) => {
     }, [selected]);
 
     useEffect(() => {
-        props.onFilterChange(fieldSelection);
-    }, [valueToggle]);
+        onFilterChange(fieldSelection);
+    }, [valueToggle, fieldSelection, onFilterChange]);
 
     useEffect(() => {
-        const newKeyTags = props.suggestions ? Object.keys(props.suggestions).map((x) => ({'key': x})) : [{'key': ''}];
+        const newKeyTags = suggestions ? Object.keys(suggestions).map((x) => ({'key': x})) : [{'key': ''}];
         setKeyTags(newKeyTags);
         setTypeaheadList(newKeyTags);
-    }, [props.suggestions]);
+    }, [suggestions]);
 
-    return (<div className="universal-search-bar">
-
-        <SearchableList
-            inputProps={{
-                label,
-                id: 'searchable-list-input'
-            }}
-            options={typeaheadList}
-            labelKey="key"
-            onChange={onChange}
-            clear={clear}
-            selected={selected}
+    const renderToken = (x, idx) => (
+        <Token
+            key={`token-${idx}`}
+            id={idx}
+            onRemove={onTokenRemove}
+            value={x.value ? `${x.key} = ${x.value}` : `${x.key} = `}
         />
-        <div className="tokens-container">
-            {fieldSelection ?
-                fieldSelection.map((x, idx) => (<Token
-                    key={`token-${idx}`}
-                    id={idx}
-                    onRemove={onTokenRemove}
-                    value={x.value ? `${x.key} = ${x.value}` : `${x.key} = `}
-                />))
-                : ''}
+    );
+
+    return (
+        <div className="universal-search-bar">
+            <SearchableList
+                inputProps={{label, id: 'searchable-list-input'}}
+                options={typeaheadList}
+                labelKey="key"
+                onChange={onChange}
+                clear={clear}
+                selected={selected}
+            />
+            <div className="tokens-container">
+                {fieldSelection && fieldSelection.map(renderToken)}
+            </div>
         </div>
-    </div>
     );
 };
 

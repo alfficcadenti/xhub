@@ -35,9 +35,11 @@ const endDateDefaultValue = moment().format(DATE_FORMAT);
 const minDate = moment('2019-01-01').toDate();
 const partnerDefaultValue = ALL_PARTNERS_OPTION;
 const divisionCheckboxesDefaultValue = [
-    {text: 'RAPID/TAAP', checked: true},
-    {text: 'E4P', checked: true}
+    {text: 'E4P', checked: true},
+    {text: 'RAPID', checked: true},
+    {text: 'TAAP', checked: true}
 ];
+
 const navLinks = [
     {
         id: 'overview',

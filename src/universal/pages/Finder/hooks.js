@@ -1,15 +1,15 @@
 import {useState, useEffect} from 'react';
 import {adjustCRsProperties} from './crUtils';
 import {useIsMount} from '../hooks';
-import {checkResponse, getUniqueByProperty, getListOfUniqueProperties, sortArrayByMostRecentDate} from '../utils';
-import moment from 'moment';
+import {getBrand, checkResponse, getUniqueByProperty, getListOfUniqueProperties, sortArrayByMostRecentDate} from '../utils';
 
 export const useFetchCRs = (
     isApplyClicked,
     startDate,
     endDate,
+    selectedBrand,
     applyAdvancedFilter,
-    setIsApplyClicked,
+    setIsApplyClicked
 ) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
@@ -23,33 +23,20 @@ export const useFetchCRs = (
     const [indexedDataForSuggestions, setIndexedDataForSuggestions] = useState({});
     const isMount = useIsMount();
 
-    const [productMapping, setProductMapping] = useState([]);
-
     useEffect(() => {
-        const fetchProductMapping = () => {
-            const dateQuery = startDate && endDate
-                ? `startDate=${moment(startDate).utc().format()}&endDate=${moment(endDate).utc().format()}`
-                : '';
-            fetch(`/productMapping?${dateQuery}`)
-                .then(checkResponse)
-                .then((mapping) => {
-                    setProductMapping(mapping);
-                })
-                .catch((err) => {
-                    // eslint-disable-next-line no-console
-                    console.error(err);
-                });
-        };
-        fetchProductMapping();
-
         const fetchCRs = () => {
+            const brand = getBrand(selectedBrand, 'label');
             setIsLoading(true);
             setLastStartDate(startDate);
             setLastEndDate(endDate);
-            fetch(`/change-requests-api/v1/changeDetails?startDate=${startDate}&endDate=${endDate}`)
+            const url = brand && brand.changeRequests ?
+                `/change-requests-api/v1/changeDetails?startDate=${startDate}&endDate=${endDate}&platform=${brand.changeRequests}` :
+                `/change-requests-api/v1/changeDetails?startDate=${startDate}&endDate=${endDate}`;
+            fetch(url)
                 .then(checkResponse)
                 .then((data) => {
-                    const crs = sortArrayByMostRecentDate(data, 'openedAt');
+                    const filteredCR = brand && brand.changeRequests ? data.filter(x=>x.platform === brand.changeRequests) : data;
+                    const crs = sortArrayByMostRecentDate(filteredCR, 'openedAt');
                     const uniqueCRs = getUniqueByProperty(crs, 'number');
                     const adjustedUniqueCRs = adjustCRsProperties(uniqueCRs);
                     const dataProducts = getListOfUniqueProperties(adjustedUniqueCRs, 'productName').sort();
@@ -71,7 +58,6 @@ export const useFetchCRs = (
                     });
                     setAllUniqueCRs(adjustedUniqueCRs);
                     setAllCRs(crs);
-
                     setIsLoading(false);
                 })
                 .catch((err) => {
@@ -102,7 +88,6 @@ export const useFetchCRs = (
         error,
         allUniqueCRs,
         allCRs,
-        indexedDataForSuggestions,
-        productMapping
+        indexedDataForSuggestions
     ];
 };

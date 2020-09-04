@@ -10,18 +10,20 @@ const initialEnd = moment().endOf('minute');
 
 describe('AnnotationsFilterPanel component testing', () => {
     it('checks AnnotationsFilterPanel component exists', () => {
-        const wrapper = shallow(<AnnotationsFilterPanel
-            enableAlerts
-            setEnableAlerts={jest.fn()}
-            selectedCategories={['test category']}
-            setSelectedCategories={jest.fn()}
-            selectedProducts={['test product']}
-            setSelectedProducts={jest.fn()}
-            selectedApplications={['test application']}
-            setSelectedApplications={jest.fn()}
-            start={initialStart}
-            end={initialEnd}
-        />);
+        const wrapper = shallow(
+            <AnnotationsFilterPanel
+                enableAlerts
+                setEnableAlerts={jest.fn()}
+                selectedCategories={['test category']}
+                setSelectedCategories={jest.fn()}
+                selectedProducts={['test product']}
+                setSelectedProducts={jest.fn()}
+                selectedApplications={['test application']}
+                setSelectedApplications={jest.fn()}
+                start={initialStart}
+                end={initialEnd}
+            />
+        );
 
         expect(wrapper).to.have.length(1);
     });

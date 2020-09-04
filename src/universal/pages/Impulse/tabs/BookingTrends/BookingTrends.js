@@ -41,19 +41,17 @@ const CustomTooltip = ({active, payload}) => {
 };
 
 const BookingTrends = ({data = []}) => {
-    const getGradient = ({key, color}) => {
-        const id = key === 'bookingChart' ? `color${key}` : '';
+    const getGradient = ({key, color}, idx) => {
+        const id = key === 'bookingChart' ? `color${key}` : idx;
         return (<linearGradient key={`${key}Gradient`} id={id} x1="0" y1="0" x2="0" y2="1">
             <stop offset="5%" stopColor={color} stopOpacity={0.8}/>
             <stop offset="95%" stopColor={color} stopOpacity={0}/>
         </linearGradient>);
     };
-
     const renderChart = ({key, color, name}) => {
         const fill = `url(#color${key})`;
-        return (<Area type="monotone" dataKey={name} stroke={color} fillOpacity={1} fill={fill}/>);
+        return (<Area key={`chart-${name}`} type="monotone" dataKey={name} stroke={color} fillOpacity={1} fill={fill}/>);
     };
-
     return (
         <div className="bookings-container-box">
             <div className="header-container">

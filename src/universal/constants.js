@@ -44,7 +44,7 @@ export const BRANDS = [
         retailLabel: EXPEDIA_BRAND,
         psrBrand: 'expedia',
         funnelBrand: 'expedia',
-        changeRequests: '',
+        changeRequests: 'Expedia',
         landingBrand: EXPEDIA_BRAND,
         portfolioBrand: 'BEX',
         color: '#1B5CAF'
@@ -54,6 +54,7 @@ export const BRANDS = [
         retailLabel: EGENCIA_BRAND,
         psrBrand: 'egencia',
         funnelBrand: 'egencia',
+        changeRequests: 'Egencia EU,Egencia NA',
         landingBrand: '',
         portfolioBrand: '',
         color: '#1B5CAF'
@@ -63,6 +64,7 @@ export const BRANDS = [
         retailLabel: `${HOTELS_COM_BRAND} Retail`,
         psrBrand: 'hcom',
         funnelBrand: 'hcom',
+        changeRequests: 'Hotels',
         landingBrand: HOTELS_COM_BRAND,
         portfolioBrand: 'HCOM',
         color: '#F71414'
@@ -72,6 +74,7 @@ export const BRANDS = [
         retailLabel: `${VRBO_BRAND} Retail`,
         psrBrand: 'vrbo',
         funnelBrand: 'vrbo',
+        changeRequests: 'HomeAway',
         landingBrand: VRBO_BRAND,
         portfolioBrand: 'VRBO',
         color: '#1478F7'
