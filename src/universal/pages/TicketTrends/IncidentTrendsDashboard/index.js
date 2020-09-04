@@ -36,7 +36,7 @@ const minDate = moment('2019-01-01').toDate();
 const partnerDefaultValue = ALL_PARTNERS_OPTION;
 const divisionCheckboxesDefaultValue = [
     {text: 'E4P', checked: true},
-    {text: 'RAPID', checked: true},
+    {text: 'Rapid', checked: true},
     {text: 'TAAP', checked: true}
 ];
 
