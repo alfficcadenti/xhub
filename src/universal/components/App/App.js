@@ -40,9 +40,9 @@ function App() {
 
     const [selectedBrands, setSelectedBrands] = useState(storedBrands);
 
-    const handleBrandChange = useCallback((brand) => {
-        localStorage.setItem('selectedBrands', brand);
-        setSelectedBrands(brand);
+    const handleBrandChange = useCallback((brands) => {
+        localStorage.setItem('selectedBrands', brands);
+        setSelectedBrands(brands);
 
         localStorage.setItem('isBrandFilterChanged', JSON.stringify(true));
         localStorage.setItem('isQueryChanged', JSON.stringify(false));

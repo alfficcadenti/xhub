@@ -16,7 +16,6 @@ export const ALL_TPID = 'All TPIDs';
 export const ALL_DEVICES = 'All Devices';
 export const ALL_BOOKING_TYPES = 'Booking Types';
 export const ALL_BRAND_GROUP = 'All Brand Group';
-export const FETCH_OPTION = {Accept: 'application/json', 'Content-Type': 'application/json'};
 export const ALL_TYPES_OPTION = 'All Types';
 export const ALL_ORGS_OPTION = 'All Owning Orgs';
 export const ALL_RC_OWNERS_OPTION = 'All Root Cause Owners';
@@ -34,6 +33,7 @@ export const EG_BRAND = 'Expedia Group';
 export const BRANDS = [
     {
         label: EG_BRAND,
+        retailLabel: EG_BRAND,
         psrBrand: EG_BRAND,
         funnelBrand: EG_BRAND,
         landingBrand: '',
@@ -43,6 +43,7 @@ export const BRANDS = [
     },
     {
         label: EXPEDIA_BRAND,
+        retailLabel: EXPEDIA_BRAND,
         psrBrand: 'expedia',
         funnelBrand: 'expedia',
         changeRequests: '',
@@ -52,6 +53,7 @@ export const BRANDS = [
     },
     {
         label: EGENCIA_BRAND,
+        retailLabel: EGENCIA_BRAND,
         psrBrand: 'egencia',
         funnelBrand: 'egencia',
         landingBrand: '',
@@ -60,6 +62,7 @@ export const BRANDS = [
     },
     {
         label: HOTELS_COM_BRAND,
+        retailLabel: `${HOTELS_COM_BRAND} Retail`,
         psrBrand: 'hcom',
         funnelBrand: 'hcom',
         landingBrand: HOTELS_COM_BRAND,
@@ -68,6 +71,7 @@ export const BRANDS = [
     },
     {
         label: VRBO_BRAND,
+        retailLabel: `${VRBO_BRAND} Retail`,
         psrBrand: 'vrbo',
         funnelBrand: 'vrbo',
         landingBrand: VRBO_BRAND,
@@ -76,6 +80,7 @@ export const BRANDS = [
     },
     {
         label: EXPEDIA_PARTNER_SERVICES_BRAND,
+        retailLabel: EXPEDIA_PARTNER_SERVICES_BRAND,
         psrBrand: '',
         funnelBrand: '',
         landingBrand: EXPEDIA_PARTNER_SERVICES_BRAND,

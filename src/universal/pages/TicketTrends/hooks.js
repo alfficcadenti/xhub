@@ -39,35 +39,35 @@ export const useFetchTickets = (
 
     const isMount = useIsMount();
 
+    const isIncidents = url === 'incidents';
+
     useEffect(() => {
         const fetchTickets = () => {
             setIsLoading(true);
             setLastStartDate(startDate);
             setLastEndDate(endDate);
-            // const paths = [`https://opxhub-data-service.us-west-2.test.expedia.com/v1/${url}?fromDate=${startDate}&toDate=${endDate}`];
             const paths = [`/v1/${url}?fromDate=${startDate}&toDate=${endDate}`];
-            if (selectedBrand === EXPEDIA_PARTNER_SERVICES_BRAND) {
+            if ([EXPEDIA_PARTNER_SERVICES_BRAND, EG_BRAND].includes(selectedBrand) && isIncidents) {
                 paths.push(`https://opxhub-data-service.us-west-2.test.expedia.com/v1/eps/${url}?fromDate=${startDate}&toDate=${endDate}`);
             }
-            const handleError = (err) => {
+            const handleFetchError = (err) => {
                 // eslint-disable-next-line no-console
                 console.error(JSON.stringify(err, null, 4));
                 setIsLoading(false);
                 setError('Not all incidents and/or defects are available. Check your VPN or refresh the page to try again. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.');
             };
-            Promise.all(paths.map((path) => fetch(path).catch(handleError)))
-                .then((responses) => Promise.all(responses.map(checkResponse).catch(handleError)))
-                .then(([incidents, epsData = []]) => {
-                    const isIncidents = url === 'incidents';
-                    const epsIncidents = epsData.map(mapEpsData);
+            Promise.all(paths.map((path) => fetch(path).catch(handleFetchError)))
+                .then((responses) => Promise.all(responses.map(checkResponse)))
+                .then(([ticketsData, epsTicketsData = []]) => {
+                    const epsTickets = epsTicketsData.map(mapEpsData);
                     const tickets = (isIncidents)
-                        ? sortArrayByMostRecentDate([...incidents, ...epsIncidents], 'startDate')
-                        : sortArrayByMostRecentDate(...incidents, ...epsIncidents, 'openDate');
+                        ? sortArrayByMostRecentDate([...ticketsData, ...epsTickets], 'startDate')
+                        : sortArrayByMostRecentDate([...ticketsData, ...epsTickets], 'openDate');
                     const uniqueTickets = consolidateTicketsById(tickets, 'id');
                     const adjustedUniqueTickets = adjustTicketProperties(uniqueTickets, isIncidents ? 'incident' : 'defect');
                     const ticketPriorities = getListOfUniqueProperties(adjustedUniqueTickets, 'priority').sort();
                     const ticketStatuses = getListOfUniqueProperties(adjustedUniqueTickets, 'Status');
-                    const ticketPartners = getListOfUniqueProperties(adjustedUniqueTickets, 'Impacted Partners');
+                    const ticketPartners = getListOfUniqueProperties(adjustedUniqueTickets, 'impactedPartners');
 
                     setPriorities([ALL_PRIORITIES_OPTION, ...ticketPriorities]);
                     setStatuses([ALL_STATUSES_OPTION, ...ticketStatuses]);
@@ -77,8 +77,12 @@ export const useFetchTickets = (
                     setAllUniqueTickets(adjustedUniqueTickets);
                     setAllTickets(tickets);
                     setIsLoading(false);
-                })
-                .catch(handleError);
+                }).catch((err) => {
+                    // eslint-disable-next-line no-console
+                    console.error(JSON.stringify(err, null, 4));
+                    setIsLoading(false);
+                    setError('Error occurred when reading tickets. Please try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.');
+                });
         };
 
         if (isMount) {

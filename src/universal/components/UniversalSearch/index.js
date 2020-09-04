@@ -8,9 +8,10 @@ const UniversalSearch = (props) => {
     const [selected, setSelected] = useState([]);
     const [typeaheadList, setTypeaheadList] = useState(keyTags);
     const [isKeySelection, setIsKeySelection] = useState(true);
-    const [fieldSelection, setFieldSelection] = useState({key: '', value: ''});
+    const [fieldSelection, setFieldSelection] = useState([]);
     const [clear, setClear] = useState(false);
     const [label, setLabel] = useState('Select the field to search');
+    const [valueToggle, setValueToggle] = useState(false);
 
     const onClear = () => {
         setSelected([]);
@@ -18,32 +19,87 @@ const UniversalSearch = (props) => {
         document.activeElement.blur();
     };
 
-    const onChange = (i) => {
-        const newObj = {...fieldSelection};
-        if (isKeySelection) {
-            newObj.key = i[0].key;
-        } else {
-            newObj.value = i[0];
+    const onChange = ([selection]) => {
+        try {
+            const newFieldSelection = [...fieldSelection];
+            if (isKeySelection) {
+                newFieldSelection.push({key: selection.key, value: ''});
+            } else {
+                setValueToggle(!valueToggle);
+                newFieldSelection[newFieldSelection.length - 1].value = selection;
+            }
+            setFieldSelection(newFieldSelection);
+            setIsKeySelection(!isKeySelection);
+            onClear();
+        } catch (e) {
+            console.log(e);
         }
-        setFieldSelection(newObj);
-        setIsKeySelection(!isKeySelection);
-        onClear();
+    };
+
+    const selectedProduct = () => {
+        const products = fieldSelection && fieldSelection.length && fieldSelection.filter((x) => x.key === 'productName');
+        return products;
+    };
+
+    const productApplications = (products) => {
+        const adjustedApplications = products.reduce((acc, current) => {
+            const currentApplicationNames = props.suggestionMapping.find((item) => item.productName === current.value).applicationNames;
+            return [...acc, ...currentApplicationNames];
+        }, []);
+        return adjustedApplications && adjustedApplications.length ? adjustedApplications : '';
     };
 
     const setNewTypeaheadList = () => {
-        const newList = !isKeySelection ? props.suggestions[fieldSelection.key] : keyTags;
-        setTypeaheadList(newList);
+        try {
+            if (isKeySelection) {
+                setTypeaheadList(keyTags);
+            } else {
+                const products = selectedProduct();
+                const currentFilter = fieldSelection && fieldSelection.length && fieldSelection[fieldSelection.length - 1];
+                if (products && products.length && currentFilter.key === 'applicationName') {
+                    const newList = productApplications(products) ?
+                        productApplications(products) :
+                        props.suggestions[fieldSelection[fieldSelection.length - 1].key];
+                    setTypeaheadList(newList);
+                } else {
+                    const newList = props.suggestions[fieldSelection[fieldSelection.length - 1].key];
+                    setTypeaheadList(newList);
+                }
+            }
+        } catch (e) {
+            console.log(e);
+        }
     };
 
     const setNewLabel = () => {
-        const newLabel = isKeySelection ? 'Select the field to search' : `Select a value for ${fieldSelection.key}`;
-        setLabel(newLabel);
+        try {
+            const newLabel = isKeySelection ? 'Select the field to search' : `Select a value for ${fieldSelection[fieldSelection.length - 1].key}`;
+            setLabel(newLabel);
+        } catch (e) {
+            console.log(e);
+        }
     };
 
-    const onTokenRemove = () => {
-        setFieldSelection({key: '', value: ''});
-        setIsKeySelection(true);
+    const verifyKeySelection = () => {
+        if (!fieldSelection) {
+            setIsKeySelection(true);
+        } else if (fieldSelection[fieldSelection.length - 1] && !fieldSelection[fieldSelection.length - 1].value) {
+            setIsKeySelection(false);
+        } else {
+            setIsKeySelection(true);
+        }
     };
+
+    const onTokenRemove = (e) => {
+        const newFieldSelection = [...fieldSelection];
+        newFieldSelection.splice(e, 1);
+        setFieldSelection(newFieldSelection);
+    };
+
+    useEffect(() => {
+        verifyKeySelection();
+        props.onFilterChange(fieldSelection);
+    }, [fieldSelection]);
 
     useEffect(() => {
         setNewTypeaheadList();
@@ -56,7 +112,7 @@ const UniversalSearch = (props) => {
 
     useEffect(() => {
         props.onFilterChange(fieldSelection);
-    }, [fieldSelection.value]);
+    }, [valueToggle]);
 
     useEffect(() => {
         const newKeyTags = props.suggestions ? Object.keys(props.suggestions).map((x) => ({'key': x})) : [{'key': ''}];
@@ -65,13 +121,8 @@ const UniversalSearch = (props) => {
     }, [props.suggestions]);
 
     return (<div className="universal-search-bar">
-        {fieldSelection.key ?
-            <Token
-                id="token"
-                onRemove={onTokenRemove}
-                value={fieldSelection.value ? `${fieldSelection.key} = ${fieldSelection.value}` : `${fieldSelection.key} = `}
-            /> : ''}
-        {!fieldSelection.value ? <SearchableList
+
+        <SearchableList
             inputProps={{
                 label,
                 id: 'searchable-list-input'
@@ -81,7 +132,17 @@ const UniversalSearch = (props) => {
             onChange={onChange}
             clear={clear}
             selected={selected}
-        /> : ''}
+        />
+        <div className="tokens-container">
+            {fieldSelection ?
+                fieldSelection.map((x, idx) => (<Token
+                    key={`token-${idx}`}
+                    id={idx}
+                    onRemove={onTokenRemove}
+                    value={x.value ? `${x.key} = ${x.value}` : `${x.key} = `}
+                />))
+                : ''}
+        </div>
     </div>
     );
 };

@@ -2,11 +2,34 @@
 
 .universal-search-bar {
     display: flex;
-    height: 55px;
+    //height: 55px;
     width: 60%;
     margin-left: @spacing-1x;
 
     .SearchableListBase {
-        width: 60%;
+        width: 50%;
+    }
+
+    .tokens-container {
+        width: 50%;
+        display: inline-flex;
+        flex-direction: column;
+
+        .Token {
+            width: 80%;
+            margin: 0 @spacing-1x;
+            display: flex;
+            justify-content: space-between;
+
+            .Token__value {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            button {
+                float: right;
+            }
+        }
     }
 }

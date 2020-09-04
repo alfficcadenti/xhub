@@ -22,7 +22,7 @@ describe('<QualityMetrics>', () => {
     const location = {pathname: '/quality-metrics/'};
     let wrapper;
     beforeEach(() => {
-        wrapper = mount(<QualityMetrics selectedBrands={['Hotels.com']} match="" history={history} location={location} />);
+        wrapper = mount(<QualityMetrics selectedBrands={['Hotels.com Retail']} match="" history={history} location={location} />);
     });
 
     it('renders successfully with default portfolio given base url', () => {

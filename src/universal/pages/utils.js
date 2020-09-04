@@ -59,6 +59,9 @@ export const divisionToBrand = (division = '') => {
         case 'HOTELS WORLDWIDE (HWW)':
         case 'HCOM':
             return HOTELS_COM_BRAND;
+        case EXPEDIA_PARTNER_SERVICES_BRAND:
+        case 'EPS':
+            return EXPEDIA_PARTNER_SERVICES_BRAND;
         default:
             return EXPEDIA_BRAND;
     }
@@ -71,16 +74,25 @@ export const consolidateTicketsById = (tickets) => {
     tickets.forEach((ticket) => {
         const {id} = ticket;
         if (ticketIdSet.has(id)) {
-            const idx = results.findIndex((t) => t.id === id);
-            if (results[idx].impactedBrand && !results[idx].impactedBrand.split(',').includes(ticket.impactedBrand)) {
-                results[idx].impactedBrand += `,${ticket.impactedBrand}`;
+            const found = results.find((t) => t.id === id);
+            if (found.impactedBrand && !found.impactedBrand.split(',').includes(ticket.impactedBrand)) {
+                found.impactedBrand += `,${ticket.impactedBrand}`;
             }
-            results[idx].estimatedRevenueLoss = `${parseFloat(results[idx].estimatedRevenueLoss) + parseFloat(ticket.estimatedRevenueLoss || 0)}`;
-            results[idx].estimatedGrossLoss = `${parseFloat(results[idx].estimatedGrossLoss) + parseFloat(ticket.estimatedGrossLoss || 0)}`;
-            return;
+            if (ticket.divisions && !found.divisions) {
+                found.divisions = ticket.division;
+            } else if (ticket.divisions && ticket.divisions.length) {
+                ticket.divisions.forEach((d) => {
+                    if (!found.divisions.includes(d)) {
+                        found.divisions.push(d);
+                    }
+                });
+            }
+            found.estimatedRevenueLoss = `${parseFloat(found.estimatedRevenueLoss) + parseFloat(ticket.estimatedRevenueLoss || 0)}`;
+            found.estimatedGrossLoss = `${parseFloat(found.estimatedGrossLoss) + parseFloat(ticket.estimatedGrossLoss || 0)}`;
+        } else {
+            ticketIdSet.add(id);
+            results.push(ticket);
         }
-        ticketIdSet.add(id);
-        results.push(ticket);
     });
     return results;
 };
@@ -166,6 +178,23 @@ export const parseDurationToMs = (strDuration = '') => {
     return totalMinutes * 60000;
 };
 
+const getArray = (item) => {
+    return Array.isArray(item)
+        ? item.filter(isNotEmptyString)
+        : (item || '').replace(/\[/g, '').replace(/\]/g, '').replace(/\'/g, '').split(',').filter(isNotEmptyString);
+};
+
+export const getImpactedPartners = (partners, lobs = []) => {
+    const impactedPartners = getArray(partners);
+    const impactedLobs = getArray(lobs);
+    if (impactedPartners.length) {
+        return impactedLobs.length
+            ? impactedPartners.reduce((acc, curr) => acc.concat(impactedLobs.map((l) => `${curr}-${l}`)), []).join(', ')
+            : impactedPartners;
+    }
+    return null;
+};
+
 export const mapEpsData = (t) => {
     const result = t;
     result.brand = EXPEDIA_PARTNER_SERVICES_BRAND;
@@ -173,5 +202,7 @@ export const mapEpsData = (t) => {
     result.duration = parseDurationToMs(t.duration);
     result.timeToDetect = parseDurationToMs(t.timeToDetect);
     result.timeToResolve = parseDurationToMs(t.timeToResolve);
+    result.impactedPartners = getImpactedPartners(t.impactedPartners);
+    result.impactedPartnersLobs = getImpactedPartners(t.impactedPartners, t.impactedLobs || []);
     return result;
 };

@@ -9,6 +9,7 @@ import {
     sortArrayByMostRecentDate,
     buildTicketLink,
     getVisiblePages,
+    getImpactedPartners,
     mapEpsData,
     parseDurationToMs
 } from './utils';
@@ -28,7 +29,7 @@ describe('divisionToBrand', () => {
         expect(result2).to.be.eql(VRBO_BRAND);
     });
 
-    it('returns Hotels.com when the input value is HOTELS WORLDWIDE (HWW)', () => {
+    it('returns Hotels.com Retail when the input value is HOTELS WORLDWIDE (HWW)', () => {
         const result = divisionToBrand('HOTELS WORLDWIDE (HWW)');
         expect(result).to.be.eql(HOTELS_COM_BRAND);
         const result2 = divisionToBrand('HCOM');
@@ -57,29 +58,40 @@ describe('consolidateTicketsById', () => {
             id: 'INC-0001',
             impactedBrand: 'vrbo',
             estimatedRevenueLoss: '1000',
-            estimatedGrossLoss: '2222'
+            estimatedGrossLoss: '2222',
+            divisions: ['E4P', 'Total Retail']
         }, {
             id: 'INC-0001',
             impactedBrand: 'expedia',
             estimatedRevenueLoss: '2005',
-            estimatedGrossLoss: '15'
+            estimatedGrossLoss: '15',
+            divisions: ['vrbo']
+        }, {
+            id: 'INC-0001',
+            impactedBrand: 'expedia',
+            estimatedRevenueLoss: '0',
+            estimatedGrossLoss: '0',
+            divisions: ['division']
         }, {
             id: 'INC-0002',
             impactedBrand: 'hotels',
             estimatedRevenueLoss: '1',
-            estimatedGrossLoss: '2'
+            estimatedGrossLoss: '2',
+            divisions: ['E4P']
         }];
         const result = consolidateTicketsById(tickets);
         expect(result).to.be.eql([{
             id: 'INC-0001',
             impactedBrand: 'vrbo,expedia',
             estimatedRevenueLoss: '3005',
-            estimatedGrossLoss: '2237'
+            estimatedGrossLoss: '2237',
+            divisions: ['E4P', 'Total Retail', 'vrbo', 'division']
         }, {
             id: 'INC-0002',
             impactedBrand: 'hotels',
             estimatedRevenueLoss: '1',
-            estimatedGrossLoss: '2'
+            estimatedGrossLoss: '2',
+            divisions: ['E4P']
         }]);
     });
 
@@ -90,7 +102,7 @@ describe('consolidateTicketsById', () => {
         expect(result2).to.be.eql(VRBO_BRAND);
     });
 
-    it('returns Hotels.com when the input value is HOTELS WORLDWIDE (HWW)', () => {
+    it('returns Hotels.com Retail when the input value is HOTELS WORLDWIDE (HWW)', () => {
         const result = divisionToBrand('HOTELS WORLDWIDE (HWW)');
         expect(result).to.be.eql(HOTELS_COM_BRAND);
         const result2 = divisionToBrand('HCOM');
@@ -161,7 +173,7 @@ describe('buildTicketLink()', () => {
     });
 
     it('return a href link to homeaway Jira if url is not passed and brand is VRBO', () => {
-        expect(buildTicketLink('INC1234', 'Vrbo', '')).to.be.eql(<a href="https://jira.homeawaycorp.com/browse/INC1234" target="_blank">{'INC1234'}</a>);
+        expect(buildTicketLink('INC1234', VRBO_BRAND, '')).to.be.eql(<a href="https://jira.homeawaycorp.com/browse/INC1234" target="_blank">{'INC1234'}</a>);
     });
 
     it('return a href link to expedia service now if ticket is not vrbo', () => {
@@ -188,30 +200,56 @@ describe('getVisiblePages', () => {
     });
 });
 
-describe('mapEpsData', () => {
-    let data = {
-        duration: '1 hour',
-        timeToDetect: '10 minutes',
-        timeToResolve: '50 minutes'
-    };
-    expect(mapEpsData(data)).to.eql({
-        brand: EXPEDIA_PARTNER_SERVICES_BRAND,
-        impactedBrand: EXPEDIA_PARTNER_SERVICES_BRAND,
-        duration: 1 * 60 * 60 * 1000,
-        timeToDetect: 10 * 60 * 1000,
-        timeToResolve: 50 * 60 * 1000
+describe('getImpactedPartners', () => {
+    it('parses empty impacted partners correctly', () => {
+        expect(getImpactedPartners()).to.eql(null);
     });
-    data = {
-        duration: 30000,
-        timeToDetect: 20000,
-        timeToResolve: 10000
-    };
-    expect(mapEpsData(data)).to.eql({
-        brand: EXPEDIA_PARTNER_SERVICES_BRAND,
-        impactedBrand: EXPEDIA_PARTNER_SERVICES_BRAND,
-        duration: data.duration,
-        timeToDetect: data.timeToDetect,
-        timeToResolve: data.timeToResolve
+
+    it('parses string impacted partners & lobs correctly', () => {
+        expect(getImpactedPartners('[\'CHASE\',\'AMEX\']', ['Air'])).to.eql('CHASE-Air, AMEX-Air');
+    });
+
+    it('parses array impacted partners & lobs correctly', () => {
+        expect(getImpactedPartners(['CHASE', 'AMEX'], ['Air', 'Car'])).to.eql('CHASE-Air, CHASE-Car, AMEX-Air, AMEX-Car');
+    });
+
+    it('parses just partners correctly', () => {
+        expect(getImpactedPartners(['CHASE', 'AMEX'])).to.eql(['CHASE', 'AMEX']);
+    });
+});
+
+describe('mapEpsData', () => {
+    it('parses string time to metrics correctly', () => {
+        const data = {
+            duration: '1 hour',
+            timeToDetect: '10 minutes',
+            timeToResolve: '50 minutes'
+        };
+        expect(mapEpsData(data)).to.eql({
+            brand: EXPEDIA_PARTNER_SERVICES_BRAND,
+            impactedBrand: EXPEDIA_PARTNER_SERVICES_BRAND,
+            duration: 1 * 60 * 60 * 1000,
+            timeToDetect: 10 * 60 * 1000,
+            timeToResolve: 50 * 60 * 1000,
+            impactedPartners: null,
+            impactedPartnersLobs: null
+        });
+    });
+    it('parses numeric time to metrics correctly', () => {
+        const data = {
+            duration: 30000,
+            timeToDetect: 20000,
+            timeToResolve: 10000
+        };
+        expect(mapEpsData(data)).to.eql({
+            brand: EXPEDIA_PARTNER_SERVICES_BRAND,
+            impactedBrand: EXPEDIA_PARTNER_SERVICES_BRAND,
+            duration: data.duration,
+            timeToDetect: data.timeToDetect,
+            timeToResolve: data.timeToResolve,
+            impactedPartners: null,
+            impactedPartnersLobs: null
+        });
     });
 });
 
