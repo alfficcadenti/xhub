@@ -3,6 +3,7 @@ import {useHistory, useLocation} from 'react-router-dom';
 import qs from 'query-string';
 import moment from 'moment';
 import 'moment-timezone';
+import {checkResponse} from './utils';
 
 
 export const useIsMount = () => {
@@ -115,4 +116,28 @@ export const useZoomAndSynced = (
         refAreaLeft,
         refAreaRight
     };
+};
+
+export const useFetchProductMapping = (startDate, endDate) => {
+    const [productMapping, setProductMapping] = useState([]);
+
+    useEffect(() => {
+        const fetchProductMapping = () => {
+            const dateQuery = startDate && endDate
+                ? `startDate=${moment(startDate).utc().format()}&endDate=${moment(endDate).utc().format()}`
+                : '';
+            fetch(`/productMapping?${dateQuery}`)
+                .then(checkResponse)
+                .then((mapping) => {
+                    setProductMapping(mapping);
+                })
+                .catch((err) => {
+                    // eslint-disable-next-line no-console
+                    console.error(err);
+                });
+        };
+        fetchProductMapping();
+    }, [startDate, endDate]);
+
+    return productMapping;
 };

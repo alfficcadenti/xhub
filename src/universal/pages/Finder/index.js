@@ -9,7 +9,7 @@ import {DATE_FORMAT} from '../../constants';
 
 import {ChangeRequests} from './tabs/index';
 import {useFetchCRs} from './hooks';
-import {useSelectedBrand, useQueryParamChange} from '../hooks';
+import {useSelectedBrand, useQueryParamChange, useFetchProductMapping} from '../hooks';
 import './styles.less';
 import {filterArrayFormatted} from './crUtils';
 
@@ -31,8 +31,7 @@ const Finder = (props) => {
         error,
         allUniqueCRs,
         allCRs,
-        indexedDataForSuggestions,
-        productMapping
+        indexedDataForSuggestions
     ] = useFetchCRs(
         isApplyClicked,
         startDate,
@@ -41,6 +40,7 @@ const Finder = (props) => {
         applyAdvancedFilter,
         setIsApplyClicked
     );
+    const productMapping = useFetchProductMapping(startDate, endDate);
     useQueryParamChange(selectedBrand, props.onBrandChange);
     useSelectedBrand(selectedBrand, props.onBrandChange, props.prevSelectedBrand);
 
