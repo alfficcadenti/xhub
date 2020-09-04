@@ -47,7 +47,7 @@ export const useFetchTickets = (
             setLastStartDate(startDate);
             setLastEndDate(endDate);
             const paths = [`/v1/${url}?fromDate=${startDate}&toDate=${endDate}`];
-            if (selectedBrand === EXPEDIA_PARTNER_SERVICES_BRAND && isIncidents) {
+            if ([EXPEDIA_PARTNER_SERVICES_BRAND, EG_BRAND].includes(selectedBrand) && isIncidents) {
                 paths.push(`https://opxhub-data-service.us-west-2.test.expedia.com/v1/eps/${url}?fromDate=${startDate}&toDate=${endDate}`);
             }
             const handleFetchError = (err) => {

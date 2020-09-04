@@ -10,7 +10,7 @@ import {
     listOfIncByBrands,
     mttr
 } from '../incidentsHelper';
-import {EG_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../../../constants';
+import {EG_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, VRBO_BRAND} from '../../../constants';
 import mockData from './filteredData.test.json';
 import mockData2 from './incData.test.json';
 import mockResult from './incByBrandResult.test.json';
@@ -54,8 +54,14 @@ describe('incidentsHelper', () => {
             ]);
         });
 
-        it('returns correct columns for non-EPS brand', () => {
+        it('returns correct columns for EG brand', () => {
             expect(getTableColumns(EG_BRAND)).to.eql([
+                'Incident', 'Priority', 'Brand', 'Division', 'Started', 'Summary', 'RC Owner', 'TTD', 'TTR', 'Status'
+            ]);
+        });
+
+        it('returns correct columns for non-EPS and non-EG brand', () => {
+            expect(getTableColumns(VRBO_BRAND)).to.eql([
                 'Incident', 'Priority', 'Division', 'Started', 'Summary', 'RC Owner', 'TTD', 'TTR', 'Status'
             ]);
         });

@@ -4,13 +4,14 @@ import moment from 'moment/moment';
 import {isArray} from 'util';
 import uuid from 'uuid/v1';
 import * as h from '../../components/utils/formatDate';
-import {DATE_FORMAT, EGENCIA_BRAND, EXPEDIA_BRAND, HOTELS_COM_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../../constants';
-import {VRBO_BRAND} from '../../constants';
+import {DATE_FORMAT, EGENCIA_BRAND, EXPEDIA_BRAND, HOTELS_COM_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, EG_BRAND, VRBO_BRAND} from '../../constants';
 import {divisionToBrand, getListOfUniqueProperties, buildTicketLink} from '../utils';
 
 export const getTableColumns = (selectedBrand) => {
     if (selectedBrand === EXPEDIA_PARTNER_SERVICES_BRAND) {
         return ['Incident', 'Priority', 'Division', 'Started', 'Summary', 'Impacted Partners', 'RC Owner', 'TTD', 'TTR', 'Notification Sent', 'Status'];
+    } else if (selectedBrand === EG_BRAND) {
+        return ['Incident', 'Priority', 'Brand', 'Division', 'Started', 'Summary', 'RC Owner', 'TTD', 'TTR', 'Status'];
     }
     return ['Incident', 'Priority', 'Division', 'Started', 'Summary', 'RC Owner', 'TTD', 'TTR', 'Status'];
 };
@@ -33,7 +34,7 @@ export const adjustTicketProperties = (tickets = [], type = 'incident') => {
             summary: t.summary,
             id: t.id,
             startDate: t.startDate ? t.startDate : t.openDate,
-            Division: t.division || t.brand,
+            Division: String(t.divisions || '') || t.brand,
             Status: t.status,
             'RC Owner': t.rootCauseOwner,
             Brand: divisionToBrand(t.brand || '')
@@ -41,7 +42,7 @@ export const adjustTicketProperties = (tickets = [], type = 'incident') => {
         if (type === 'incident') {
             result.duration = t.duration && t.resolvedDate ? t.duration : null;
             result.timeToResolve = t.timeToResolve && t.resolvedDate ? t.timeToResolve : null;
-            result.partner_division = t.division;
+            result.partner_divisions = t.divisions;
             result['Impacted Partners'] = t.impactedPartnersLobs;
             result['Notification Sent'] = t.notificationSent;
         } else if (type === 'defect') {
@@ -78,7 +79,7 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
         'RC Owner': getValue(inc, 'rootCauseOwner'),
         'Impacted Brand': getValue(inc, 'impactedBrand'),
         'Owning Division': getValue(inc, 'Division'),
-        partner_division: getValue(inc, 'division'),
+        partner_divisions: getValue(inc, 'divisions'),
         'Impacted Partners': getValue(inc, 'impactedPartnersLobs'),
         'Notification Sent': getValue(inc, 'notificationSent'),
         Details: (

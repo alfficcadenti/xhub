@@ -59,6 +59,9 @@ export const divisionToBrand = (division = '') => {
         case 'HOTELS WORLDWIDE (HWW)':
         case 'HCOM':
             return HOTELS_COM_BRAND;
+        case EXPEDIA_PARTNER_SERVICES_BRAND:
+        case 'EPS':
+            return EXPEDIA_PARTNER_SERVICES_BRAND;
         default:
             return EXPEDIA_BRAND;
     }
@@ -71,21 +74,25 @@ export const consolidateTicketsById = (tickets) => {
     tickets.forEach((ticket) => {
         const {id} = ticket;
         if (ticketIdSet.has(id)) {
-            const idx = results.findIndex((t) => t.id === id);
-            if (results[idx].impactedBrand && !results[idx].impactedBrand.split(',').includes(ticket.impactedBrand)) {
-                results[idx].impactedBrand += `,${ticket.impactedBrand}`;
+            const found = results.find((t) => t.id === id);
+            if (found.impactedBrand && !found.impactedBrand.split(',').includes(ticket.impactedBrand)) {
+                found.impactedBrand += `,${ticket.impactedBrand}`;
             }
-            if (!results[idx].division) {
-                results[idx].division = ticket.division;
-            } else if (!results[idx].division.split(',').includes(ticket.division)) {
-                results[idx].division += `,${ticket.division}`;
+            if (ticket.divisions && !found.divisions) {
+                found.divisions = ticket.division;
+            } else if (ticket.divisions && ticket.divisions.length) {
+                ticket.divisions.forEach((d) => {
+                    if (!found.divisions.includes(d)) {
+                        found.divisions.push(d);
+                    }
+                });
             }
-            results[idx].estimatedRevenueLoss = `${parseFloat(results[idx].estimatedRevenueLoss) + parseFloat(ticket.estimatedRevenueLoss || 0)}`;
-            results[idx].estimatedGrossLoss = `${parseFloat(results[idx].estimatedGrossLoss) + parseFloat(ticket.estimatedGrossLoss || 0)}`;
-            return;
+            found.estimatedRevenueLoss = `${parseFloat(found.estimatedRevenueLoss) + parseFloat(ticket.estimatedRevenueLoss || 0)}`;
+            found.estimatedGrossLoss = `${parseFloat(found.estimatedGrossLoss) + parseFloat(ticket.estimatedGrossLoss || 0)}`;
+        } else {
+            ticketIdSet.add(id);
+            results.push(ticket);
         }
-        ticketIdSet.add(id);
-        results.push(ticket);
     });
     return results;
 };
