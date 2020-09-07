@@ -5,7 +5,7 @@ import {isArray} from 'util';
 import uuid from 'uuid/v1';
 import * as h from '../../components/utils/formatDate';
 import {DATE_FORMAT, EGENCIA_BRAND, EXPEDIA_BRAND, HOTELS_COM_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, EG_BRAND, VRBO_BRAND} from '../../constants';
-import {divisionToBrand, getListOfUniqueProperties, buildTicketLink} from '../utils';
+import {isNotDuplicate, divisionToBrand, getListOfUniqueProperties, buildTicketLink} from '../utils';
 
 export const getTableColumns = (selectedBrand) => {
     if (selectedBrand === EXPEDIA_PARTNER_SERVICES_BRAND) {
@@ -35,7 +35,9 @@ export const adjustTicketProperties = (tickets = [], type = 'incident') => {
             Division: String(t.divisions || '') || t.brand,
             Status: t.status,
             'RC Owner': t.rootCauseOwner,
-            Brand: divisionToBrand(t.brand || '')
+            Brand: t.impactedBrand
+                ? t.impactedBrand.split(',').map((b) => divisionToBrand(b)).filter(isNotDuplicate).join(', ')
+                : divisionToBrand(t.brand)
         };
         if (type === 'incident') {
             result.partner_divisions = t.divisions;

@@ -98,7 +98,7 @@ export const useFetchTickets = (
         return () => {
             setIsApplyClicked(false);
         };
-    }, [isApplyClicked, startDate, endDate]);
+    }, [applyFilters, isApplyClicked, endDate, isIncidents, isMount, lastEndDate, lastStartDate, selectedBrand, startDate, url, setIsApplyClicked]);
 
     return [
         isLoading,

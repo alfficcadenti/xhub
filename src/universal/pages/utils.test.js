@@ -222,11 +222,13 @@ describe('getImpactedPartners', () => {
 describe('mapEpsData', () => {
     it('parses string time to metrics correctly', () => {
         const data = {
+            id: 'INC1999',
             duration: '1 hour',
             timeToDetect: '10 minutes',
             timeToResolve: '50 minutes'
         };
         expect(mapEpsData(data)).to.eql({
+            id: 'INC1999',
             brand: EXPEDIA_PARTNER_SERVICES_BRAND,
             impactedBrand: EXPEDIA_PARTNER_SERVICES_BRAND,
             duration: 1 * 60 * 60 * 1000,
@@ -238,11 +240,14 @@ describe('mapEpsData', () => {
     });
     it('parses numeric time to metrics correctly', () => {
         const data = {
+            incidentNumber: 'INC1999',
             duration: 30000,
             timeToDetect: 20000,
             timeToResolve: 10000
         };
         expect(mapEpsData(data)).to.eql({
+            id: 'INC1999',
+            incidentNumber: 'INC1999',
             brand: EXPEDIA_PARTNER_SERVICES_BRAND,
             impactedBrand: EXPEDIA_PARTNER_SERVICES_BRAND,
             duration: data.duration,

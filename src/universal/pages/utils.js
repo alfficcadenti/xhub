@@ -59,7 +59,7 @@ export const divisionToBrand = (division = '') => {
         case 'HOTELS WORLDWIDE (HWW)':
         case 'HCOM':
             return HOTELS_COM_BRAND;
-        case EXPEDIA_PARTNER_SERVICES_BRAND:
+        case 'EXPEDIA PARTNER SERVICES':
         case 'EPS':
             return EXPEDIA_PARTNER_SERVICES_BRAND;
         default:
@@ -75,11 +75,11 @@ export const consolidateTicketsById = (tickets) => {
         const {id} = ticket;
         if (ticketIdSet.has(id)) {
             const found = results.find((t) => t.id === id);
-            if (found.impactedBrand && !found.impactedBrand.split(',').includes(ticket.impactedBrand)) {
+            if (found.impactedBrand && ticket.impactedBrand && !found.impactedBrand.split(',').some((b) => ticket.impactedBrand.split(',').includes(b))) {
                 found.impactedBrand += `,${ticket.impactedBrand}`;
             }
             if (ticket.divisions && !found.divisions) {
-                found.divisions = ticket.division;
+                found.divisions = ticket.divisions;
             } else if (ticket.divisions && ticket.divisions.length) {
                 ticket.divisions.forEach((d) => {
                     if (!found.divisions.includes(d)) {
@@ -197,6 +197,7 @@ export const getImpactedPartners = (partners, lobs = []) => {
 
 export const mapEpsData = (t) => {
     const result = t;
+    result.id = t.incidentNumber || t.id;
     result.brand = EXPEDIA_PARTNER_SERVICES_BRAND;
     result.impactedBrand = EXPEDIA_PARTNER_SERVICES_BRAND;
     result.duration = parseDurationToMs(t.duration);

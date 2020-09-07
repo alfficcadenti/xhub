@@ -78,6 +78,7 @@ describe('incidentsHelper', () => {
                 status: 'To Do',
                 rootCauseOwner: 'owner',
                 brand: 'VRBO',
+                impactedBrand: 'vrbo,EPS,EPS',
                 impactedPartnerLobs: 'CHASE-Air',
                 notificationSent: 'chase'
             };
@@ -88,6 +89,7 @@ describe('incidentsHelper', () => {
                 status: 'To DO',
                 rootCauseOwner: 'owner',
                 brand: 'other',
+                impactedBrand: 'other',
                 impactedPartnerLobs: 'CHASE-Air',
                 notificationSent: 'chase'
             };
@@ -98,7 +100,7 @@ describe('incidentsHelper', () => {
                     Division: 'E4P,Other',
                     Status: ticketA.status,
                     'RC Owner': ticketA.rootCauseOwner,
-                    Brand: VRBO_BRAND,
+                    Brand: `${VRBO_BRAND}, ${EXPEDIA_PARTNER_SERVICES_BRAND}`,
                     partner_divisions: ticketA.divisions,
                     'Impacted Partners': ticketA.impactedPartnersLobs,
                     'Notification Sent': ticketA.notificationSent
