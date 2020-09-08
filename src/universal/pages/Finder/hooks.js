@@ -48,13 +48,13 @@ export const useFetchCRs = (
                     const dataStatuses = getListOfUniqueProperties(adjustedUniqueCRs, 'status').sort();
 
                     setIndexedDataForSuggestions({
-                        'productName': dataProducts,
-                        'applicationName': dataApplications,
-                        'platform': dataPlatforms,
-                        'businessReason': dataBusinessReasons,
-                        'number': dataCRnumbers,
-                        'status': dataStatuses,
-                        'team': dataTeams,
+                        productName: dataProducts,
+                        applicationName: dataApplications,
+                        platform: dataPlatforms,
+                        businessReason: dataBusinessReasons,
+                        number: dataCRnumbers,
+                        status: dataStatuses,
+                        team: dataTeams,
                     });
                     setAllUniqueCRs(adjustedUniqueCRs);
                     setAllCRs(crs);

@@ -4,8 +4,7 @@ import 'moment-timezone';
 import TravelerMetricsWidget from '../../components/TravelerMetricsWidget';
 import LoadingContainer from '../../components/LoadingContainer';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
-import AnnotationsFilterPanel from '../../components/AnnotationsFilterPanel';
-import {useQueryParamChange, useSelectedBrand, useZoomAndSynced} from '../hooks';
+import {useFetchProductMapping, useQueryParamChange, useSelectedBrand, useZoomAndSynced} from '../hooks';
 import {
     EG_BRAND,
     EGENCIA_BRAND,
@@ -18,8 +17,10 @@ import {
 } from '../utils';
 import './styles.less';
 import {adjustTicketProperties} from '../TicketTrends/incidentsHelper';
+import UniversalSearch from '../../components/UniversalSearch';
+import {filterArrayFormatted} from '../Finder/crUtils';
+import {Checkbox} from '@homeaway/react-form-components';
 
-const initialCategories = [{value: 'Application Software', label: 'Deployments'}];
 
 const TIMEZONE_OFFSET = (new Date()).getTimezoneOffset();
 const TIMEZONE_ABBR = moment.tz.zone(moment.tz.guess()).abbr(TIMEZONE_OFFSET);
@@ -44,14 +45,18 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [isFormDisabled, setIsFormDisabled] = useState(false);
 
     // annotations state
-    const [enableAlerts, setEnableAlerts] = useState(false);
-    const [selectedCategories, setSelectedCategories] = useState(initialCategories);
+    const [enableAnnotations, setEnableAnnotations] = useState(false);
+    // const [selectedCategories, setSelectedCategories] = useState(initialCategories);
     const [selectedProducts, setSelectedProducts] = useState([]);
     const [selectedApplications, setSelectedApplications] = useState([]);
     const [annotations, setAnnotations] = useState([]);
+    const [filteredAnnotations, setFilteredAnnotations] = useState([]);
 
     useQueryParamChange(selectedBrands[0], onBrandChange);
     useSelectedBrand(selectedBrands[0], onBrandChange, prevSelectedBrand);
+
+    const productMapping = useFetchProductMapping(start, end);
+    const [suggestions, setSuggestions] = useState({});
 
     const {
         handleMouseDown,
@@ -156,25 +161,17 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             const dateQuery = start && end
                 ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
                 : '';
-            const categoryQuery = selectedCategories && selectedCategories.length ? `&category=${selectedCategories[0].value}` : '';
             const productsQuery = selectedProducts && selectedProducts.length ? `&product=${selectedProducts}` : '';
             const applicationsQuery = selectedApplications && selectedApplications.length ? `&applicationName=${selectedApplications}` : '';
 
-            fetch(`/annotations?${dateQuery}${productsQuery}${applicationsQuery}${categoryQuery}`)
+            fetch(`/annotations?${dateQuery}${productsQuery}${applicationsQuery}`)
                 .then(checkResponse)
                 .then((fetchedAnnotations) => {
-                    const adjustedAnnotations = fetchedAnnotations.map(({
-                        number,
-                        serviceName,
-                        productName,
-                        platform,
-                        openedAt
-                    }) => ({
-                        number,
-                        serviceName,
-                        tags: [productName, platform],
-                        time: moment(openedAt).format(PAGE_VIEWS_DATE_FORMAT),
-                        bucketTime: moment(openedAt).format(PAGE_VIEWS_DATE_FORMAT),
+                    const adjustedAnnotations = fetchedAnnotations.map((annotation) => ({
+                        ...annotation,
+                        tags: [annotation.productName, annotation.platform],
+                        time: moment(annotation.openedAt).format(PAGE_VIEWS_DATE_FORMAT),
+                        bucketTime: moment(annotation.openedAt).format(PAGE_VIEWS_DATE_FORMAT),
                         category: 'deployment'
                     }));
 
@@ -187,7 +184,27 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         };
 
         fetchAnnotations();
-    }, [start, end, selectedCategories, selectedProducts, selectedApplications]);
+    }, [start, end]);
+
+    useEffect(() => {
+        let filteredRawAnnotations = [...annotations];
+
+        if (selectedProducts.length && selectedProducts[0]) {
+            filteredRawAnnotations = filteredRawAnnotations.filter((annotation) => {
+                return selectedProducts.includes(annotation.productName);
+            });
+        }
+
+        if (selectedApplications.length && selectedApplications[0]) {
+            filteredRawAnnotations = filteredRawAnnotations.filter((annotation) => {
+                return selectedApplications.includes(annotation.serviceName.toLowerCase());
+            });
+        }
+
+        if (filteredRawAnnotations.length) {
+            setFilteredAnnotations(filteredRawAnnotations);
+        }
+    }, [selectedProducts, selectedApplications]);
 
     useEffect(() => {
         const fetchIncidents = () => {
@@ -255,41 +272,71 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             chartRight={chartRight}
             refAreaLeft={refAreaLeft}
             refAreaRight={refAreaRight}
-            annotations={enableAlerts ? annotations : []}
+            annotations={enableAnnotations ? filteredAnnotations : []}
         />
     );
+
+    const onFilterChange = (value) => {
+        const filterNewFormat = filterArrayFormatted(value);
+
+        const productName = filterNewFormat.find((item) => item.key === 'productName');
+        const newProducts = productName ? productName.values : [];
+
+        const applicationName = filterNewFormat.find((item) => item.key === 'applicationName');
+        const newApplications = applicationName ? applicationName.values : [];
+
+        setSelectedProducts(newProducts);
+        setSelectedApplications(newApplications);
+    };
+
+    useEffect(() => {
+        const adjustedProducts = productMapping.map(({productName}) => productName);
+
+        const adjustedApplications = productMapping.reduce((acc, current) => {
+            return [...acc, ...current.applicationNames];
+        }, []);
+
+        setSuggestions({
+            productName: adjustedProducts,
+            applicationName: adjustedApplications
+        });
+    }, [productMapping]);
 
     return (
         <div className="funnel-views-container">
             <h1>{'Traveler Page Views'}</h1>
-            <div className="form-container">
-                <DatetimeRangePicker
-                    onChange={handleDatetimeChange}
-                    startDate={pendingStart.toDate()}
-                    endDate={pendingEnd.toDate()}
-                    presets={getPresets()}
-                    disabled={isFormDisabled}
-                />
-                <button
-                    className="btn btn-primary apply-btn"
-                    type="button"
-                    onClick={handleApplyFilters}
-                    disabled={!isDirtyForm}
-                >
-                    {'Apply'}
-                </button>
-                <AnnotationsFilterPanel
-                    enableAlerts={enableAlerts}
-                    setEnableAlerts={setEnableAlerts}
-                    selectedCategories={selectedCategories}
-                    setSelectedCategories={setSelectedCategories}
-                    selectedProducts={selectedProducts}
-                    setSelectedProducts={setSelectedProducts}
-                    selectedApplications={selectedApplications}
-                    setSelectedApplications={setSelectedApplications}
-                    start={start}
-                    end={end}
-                />
+            <div className="filters-wrapper">
+                <div className="date-filters-wrapper">
+                    <DatetimeRangePicker
+                        onChange={handleDatetimeChange}
+                        startDate={pendingStart.toDate()}
+                        endDate={pendingEnd.toDate()}
+                        presets={getPresets()}
+                        disabled={isFormDisabled}
+                    />
+                    <button
+                        className="btn btn-primary apply-btn"
+                        type="button"
+                        onClick={handleApplyFilters}
+                        disabled={!isDirtyForm}
+                    >
+                        {'Apply'}
+                    </button>
+                </div>
+                <div className="annotation-filters-wrapper">
+                    <Checkbox
+                        name="annotations-сheckbox"
+                        label="Show Annotations"
+                        checked={enableAnnotations}
+                        onChange={() => setEnableAnnotations(!enableAnnotations)}
+                        size="sm"
+                    />
+                    {!isLoading && <UniversalSearch
+                        suggestions={suggestions}
+                        suggestionMapping={productMapping}
+                        onFilterChange={onFilterChange}
+                    />}
+                </div>
             </div>
             <LoadingContainer isLoading={isLoading} error={error} className="page-views-loading-container">
                 <div className="page-views-widget-container">
