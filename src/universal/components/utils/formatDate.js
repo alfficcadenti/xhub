@@ -11,7 +11,7 @@ export function formatDurationToHours(duration) {
 }
 
 export function formatDurationToH(duration) {
-    return Number(moment.duration(Number(duration)).as('hours')).toFixed(2) || '';
+    return Number(moment.duration(Number(duration), 'milliseconds').as('hours')).toFixed(2) || '';
 }
 
 export function formatDurationForTable(m) {

@@ -1,5 +1,6 @@
 import React from 'react';
 import {expect} from 'chai';
+import moment from 'moment';
 import {
     getTableColumns,
     adjustTicketProperties,
@@ -9,6 +10,10 @@ import {
     incidentsOfTheWeek,
     getIncMetricsByBrand,
     listOfIncByBrands,
+    getWeeks,
+    weeklyMTTRMTTD,
+    weeklyMTTRbyBrand,
+    weeklyMTTDbyBrand,
     mttr
 } from '../incidentsHelper';
 import {EG_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, VRBO_BRAND, EXPEDIA_BRAND} from '../../../constants';
@@ -190,6 +195,91 @@ describe('incidentsHelper', () => {
         it('returns 0 if input array is empty', () => {
             const result = mttr([]);
             expect(result).to.be.eql(0);
+        });
+    });
+
+    describe('getWeeks', () => {
+        it('returns array of starting weeks given start and end date', () => {
+            expect(getWeeks('2020-08-01', '2020-08-07')).to.be.eql(['2020-07-26', '2020-08-02']);
+        });
+        it('returns array of starting weeks given start and end date - inclusive boundary', () => {
+            expect(getWeeks('2020-07-26', '2020-08-09')).to.be.eql(['2020-07-26', '2020-08-02', '2020-08-09']);
+        });
+    });
+
+    describe('weeklyMTTRMTTD', () => {
+        it('returns MTTR and MTTD for given date range and array of incidents bucketed by week', () => {
+            const incidents = [
+                {startDate: '2020-07-23T12:00:00Z', timeToResolve: '1100000', timeToDetect: '80000'},
+                {startDate: '2020-08-03T12:00:00Z', timeToResolve: '200000', timeToDetect: '50000'},
+                {startDate: '2020-08-03T12:00:00Z', timeToResolve: '500000', timeToDetect: '10000'},
+                {startDate: '2020-08-10T12:00:00Z', timeToResolve: '60000', timeToDetect: '30000'},
+                {startDate: '2020-08-23T12:00:00Z', timeToResolve: '1100000', timeToDetect: '100000'},
+            ];
+            expect(weeklyMTTRMTTD('2020-08-02', '2020-08-09', incidents)).to.be.eql({
+                data: [{
+                    name: '2020-08-02',
+                    MTTR: Number(moment.duration((200000 + 500000) / 2, 'milliseconds').as('hours').toFixed(2)),
+                    MTTD: Number(moment.duration((50000 + 10000) / 2, 'milliseconds').as('hours').toFixed(2))
+                }, {
+                    name: '2020-08-09',
+                    MTTR: Number(moment.duration(60000, 'milliseconds').as('hours').toFixed(2)),
+                    MTTD: Number(moment.duration(30000, 'milliseconds').as('hours').toFixed(2))
+                }],
+                keys: ['MTTR', 'MTTD']
+            });
+        });
+    });
+
+    describe('weeklyMTTRbyBrand', () => {
+        it('returns MTTR for given date range and array of incidents bucketed by week and brand', () => {
+            const incidents = [
+                {Brand: 'hotels', startDate: '2020-07-23T12:00:00Z', timeToResolve: '1100000'},
+                {Brand: 'vrbo', startDate: '2020-08-03T12:00:00Z', timeToResolve: '200000'},
+                {Brand: 'vrbo', startDate: '2020-08-03T12:00:00Z', timeToResolve: '500000'},
+                {Brand: 'expedia', startDate: '2020-08-10T12:00:00Z', timeToResolve: '60000'},
+                {Brand: 'expedia', startDate: '2020-08-23T12:00:00Z', timeToResolve: '1100000'},
+            ];
+            expect(weeklyMTTRbyBrand('2020-08-02', '2020-08-09', incidents)).to.be.eql({
+                data: [{
+                    name: '2020-08-02',
+                    hotels: 0,
+                    vrbo: Number(moment.duration((200000 + 500000) / 2, 'milliseconds').as('hours').toFixed(2)),
+                    expedia: 0
+                }, {
+                    name: '2020-08-09',
+                    hotels: 0,
+                    vrbo: 0,
+                    expedia: Number(moment.duration(60000, 'milliseconds').as('hours').toFixed(2)),
+                }],
+                keys: ['expedia', 'hotels', 'vrbo']
+            });
+        });
+    });
+
+    describe('weeklyMTTDbyBrand', () => {
+        it('returns MTTD for given date range and array of incidents bucketed by week and brand', () => {
+            const incidents = [
+                {Brand: 'hotels', startDate: '2020-07-23T12:00:00Z', timeToDetect: '80000'},
+                {Brand: 'vrbo', startDate: '2020-08-03T12:00:00Z', timeToDetect: '50000'},
+                {Brand: 'vrbo', startDate: '2020-08-03T12:00:00Z', timeToDetect: '10000'},
+                {Brand: 'expedia', startDate: '2020-08-10T12:00:00Z', timeToDetect: '30000'},
+                {Brand: 'expedia', startDate: '2020-08-23T12:00:00Z', timeToDetect: '100000'},
+            ];
+            expect(weeklyMTTDbyBrand('2020-08-02', '2020-08-09', incidents)).to.be.eql({
+                data: [{
+                    name: '2020-08-02',
+                    expedia: 0,
+                    hotels: 0,
+                    vrbo: Number(moment.duration((50000 + 10000) / 2, 'milliseconds').as('hours').toFixed(2))
+                }, {
+                    name: '2020-08-09',
+                    hotels: 0,
+                    vrbo: 0,
+                    expedia: Number(moment.duration(30000, 'milliseconds').as('hours').toFixed(2)),
+                }],
+                keys: ['expedia', 'hotels', 'vrbo']
+            });
         });
     });
 

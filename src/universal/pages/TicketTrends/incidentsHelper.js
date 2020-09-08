@@ -177,10 +177,9 @@ export const getWeeks = (start = '', end = '') => {
     return weeks;
 };
 
-export const weeklyMTTRMTTD = (incidents = []) => {
+export const weeklyMTTRMTTD = (startDate, endDate, incidents = []) => {
     const data = [];
-    const weeks = getMarginDateValues(incidents);
-    const weeksInterval = getWeeks(weeks[0], weeks[1]);
+    const weeksInterval = getWeeks(startDate, endDate);
     weeksInterval.forEach((date) => {
         data.push({
             name: date,
@@ -191,11 +190,10 @@ export const weeklyMTTRMTTD = (incidents = []) => {
     return {data, keys: ['MTTR', 'MTTD']};
 };
 
-export const weeklyMTTRbyBrand = (inc = []) => {
+export const weeklyMTTRbyBrand = (startDate, endDate, incidents = []) => {
     const data = [];
-    const weeks = getMarginDateValues(inc);
-    const weeksInterval = getWeeks(weeks[0], weeks[1]);
-    const incsByBrand = listOfIncByBrands(inc);
+    const weeksInterval = getWeeks(startDate, endDate);
+    const incsByBrand = listOfIncByBrands(incidents);
     const brands = new Set();
     weeksInterval.forEach((date) => {
         const result = {name: date};
@@ -209,11 +207,10 @@ export const weeklyMTTRbyBrand = (inc = []) => {
     return {data, keys: Array.from(brands)};
 };
 
-export const weeklyMTTDbyBrand = (inc = []) => {
+export const weeklyMTTDbyBrand = (startDate, endDate, incidents = []) => {
     const data = [];
-    const weeks = getMarginDateValues(inc);
-    const weeksInterval = getWeeks(weeks[0], weeks[1]);
-    const incsByBrand = listOfIncByBrands(inc);
+    const weeksInterval = getWeeks(startDate, endDate);
+    const incsByBrand = listOfIncByBrands(incidents);
     const brands = new Set();
     weeksInterval.forEach((date) => {
         const result = {name: date};
@@ -319,7 +316,7 @@ export const getWeeklyCounts = (startDate, endDate, tickets, key) => {
     tickets.forEach((ticket) => {
         const date = moment(ticket[key]).startOf('week').format(DATE_FORMAT);
         const idx = data.findIndex(({name}) => name === date);
-        if (idx > 0) {
+        if (idx > -1) {
             data[idx].count++;
         }
     });
