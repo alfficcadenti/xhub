@@ -102,7 +102,7 @@ const UniversalSearch = ({onFilterChange, suggestionMapping, suggestions}) => {
         };
         verifyKeySelection();
         onFilterChange(fieldSelection);
-    }, [fieldSelection, onFilterChange]);
+    }, [fieldSelection]);
 
     useEffect(() => {
         setNewTypeaheadList();
@@ -115,7 +115,7 @@ const UniversalSearch = ({onFilterChange, suggestionMapping, suggestions}) => {
 
     useEffect(() => {
         onFilterChange(fieldSelection);
-    }, [valueToggle, fieldSelection, onFilterChange]);
+    }, [valueToggle]);
 
     useEffect(() => {
         const newKeyTags = suggestions ? Object.keys(suggestions).map((x) => ({'key': x})) : [{'key': ''}];
