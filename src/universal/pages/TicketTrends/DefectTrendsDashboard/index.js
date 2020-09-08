@@ -14,7 +14,7 @@ import './styles.less';
 
 const statusDefaultValue = ALL_STATUSES_OPTION;
 const priorityDefaultValue = ALL_PRIORITIES_OPTION;
-const startDateDefaultValue = moment().subtract(90, 'days').format(DATE_FORMAT);
+const startDateDefaultValue = moment().subtract(14, 'days').format(DATE_FORMAT);
 const endDateDefaultValue = moment().format(DATE_FORMAT);
 const minDate = moment('2019-01-01').toDate();
 

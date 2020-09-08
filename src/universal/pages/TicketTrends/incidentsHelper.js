@@ -5,7 +5,7 @@ import {isArray} from 'util';
 import uuid from 'uuid/v1';
 import * as h from '../../components/utils/formatDate';
 import {DATE_FORMAT, EGENCIA_BRAND, EXPEDIA_BRAND, HOTELS_COM_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, EG_BRAND, VRBO_BRAND} from '../../constants';
-import {divisionToBrand, getListOfUniqueProperties, buildTicketLink} from '../utils';
+import {isNotDuplicate, divisionToBrand, getListOfUniqueProperties, buildTicketLink} from '../utils';
 
 export const getTableColumns = (selectedBrand) => {
     if (selectedBrand === EXPEDIA_PARTNER_SERVICES_BRAND) {
@@ -31,17 +31,15 @@ export const adjustTicketProperties = (tickets = [], type = 'incident') => {
     return tickets.map((t) => {
         const result = {
             ...t,
-            summary: t.summary,
-            id: t.id,
-            startDate: t.startDate ? t.startDate : t.openDate,
+            startDate: t.startDate || t.openDate,
             Division: String(t.divisions || '') || t.brand,
             Status: t.status,
             'RC Owner': t.rootCauseOwner,
-            Brand: divisionToBrand(t.brand || '')
+            Brand: t.impactedBrand
+                ? t.impactedBrand.split(',').map((b) => divisionToBrand(b)).filter(isNotDuplicate).join(', ')
+                : divisionToBrand(t.brand)
         };
         if (type === 'incident') {
-            result.duration = t.duration && t.resolvedDate ? t.duration : null;
-            result.timeToResolve = t.timeToResolve && t.resolvedDate ? t.timeToResolve : null;
             result.partner_divisions = t.divisions;
             result['Impacted Partners'] = t.impactedPartnersLobs;
             result['Notification Sent'] = t.notificationSent;

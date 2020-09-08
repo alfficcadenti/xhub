@@ -58,7 +58,6 @@ export const useFetchCRs = (
                     });
                     setAllUniqueCRs(adjustedUniqueCRs);
                     setAllCRs(crs);
-
                     setIsLoading(false);
                 })
                 .catch((err) => {

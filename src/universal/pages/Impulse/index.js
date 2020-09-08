@@ -13,7 +13,7 @@ import {FILTER__16} from '@homeaway/svg-defs';
 import './styles.less';
 
 const startDateDefaultValue = moment().utc().subtract(3, 'days').startOf('minute');
-const endDateDefaultValue = moment().utc().add(17, 'hours').endOf('minute');
+const endDateDefaultValue = moment().utc().endOf('minute');
 
 const activeIndex = 0;
 const navLinks = [
@@ -23,7 +23,7 @@ const navLinks = [
         href: '/impulse'
     }
 ];
-import {ALL_LOB, ALL_POS, ALL_SITE_ID, ALL_TPID, ALL_BRANDS, ALL_DEVICES, ALL_BOOKING_TYPES} from '../../constants';
+import {ALL_LOB, ALL_POS, ALL_BRANDS, ALL_DEVICES, ALL_BOOKING_TYPES} from '../../constants';
 
 const filterSelectionClass = 'filter-option-selection';
 const filterExpandClass = 'filter-option-expand';
@@ -40,12 +40,9 @@ const Impulse = (props) => {
     const [selectedBrandMulti, setSelectedBrandMulti] = useState([]);
     const [selectedDeviceTypeMulti, setSelectedDeviceTypeMulti] = useState([]);
     const [selectedBookingTypeMulti, setSelectedBookingTypeMulti] = useState([]);
-    const [selectedSiteId, setSelectedSiteId] = useState([]);
-    const [selectedTPID, setSelectedTPID] = useState([]);
-
     useQueryParamChange(newBrand, props.onBrandChange);
     useSelectedBrand(newBrand, props.onBrandChange, props.prevSelectedBrand);
-    const [isLoading, res, error, egSiteURLMulti, lobsMulti, brandsMulti, deviceTypesMulti, bookingTypesMulti, siteIds, TPIDs] = useFetchBlipData(isApplyClicked, setIsApplyClicked, startDateTime, endDateTime, newBrand, props.prevSelectedBrand, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, selectedBookingTypeMulti, selectedSiteId, selectedTPID);
+    const [isLoading, res, error, egSiteURLMulti, lobsMulti, brandsMulti, deviceTypesMulti, bookingTypesMulti] = useFetchBlipData(isApplyClicked, setIsApplyClicked, startDateTime, endDateTime, newBrand, props.prevSelectedBrand, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, selectedBookingTypeMulti);
     // eslint-disable-next-line complexity
     const handleMultiChange = (event, handler) => {
         const newValuesOnChange = (event || []).map((item) => item.value);
@@ -59,10 +56,6 @@ const Impulse = (props) => {
             setSelectedBookingTypeMulti(newValuesOnChange);
         } else if (handler === 'egSiteUrl') {
             setSelectedSiteURLMulti(newValuesOnChange);
-        } else if (handler === 'siteId') {
-            setSelectedSiteId(newValuesOnChange);
-        } else if (handler === 'tpid') {
-            setSelectedTPID(newValuesOnChange);
         }
     };
     useEffect(() => {
@@ -101,8 +94,6 @@ const Impulse = (props) => {
             <form className="search-form search-form__more">
                 <div className="filter-option">
                     {renderMultiSelectFilters(selectedSiteURLMulti, egSiteURLMulti, 'egSiteUrl', ALL_POS, filterExpandClass)}
-                    {renderMultiSelectFilters(selectedSiteId, siteIds, 'siteId', ALL_SITE_ID, filterExpandClass)}
-                    {renderMultiSelectFilters(selectedTPID, TPIDs, 'tpid', ALL_TPID, filterExpandClass)}
                 </div>
             </form>
         </Divider>

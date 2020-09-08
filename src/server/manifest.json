@@ -18,15 +18,111 @@
         "$filter": "env.EXPEDIA_ENVIRONMENT",
         "$default": {
           "hostname": "opxhub-data-service.us-west-2.test.expedia.com",
-          "protocol": "https:"
+          "protocol": "https:",
+          "routes": {
+            "defects": {
+              "path": "/v1/defects",
+              "method": "GET",
+              "operation": "GET_DEFECTS_V1"
+            },
+            "incidents": {
+              "path": "/v1/incidents",
+              "method": "GET",
+              "operation": "GET_INCIDENTS_V1"
+            },
+            "incidentsV2": {
+              "path": "/v1/incidentsV2",
+              "method": "GET",
+              "operation": "GET_INCIDENTS_V2"
+            },
+            "epsIncidents": {
+              "path": "/v1/eps/incidents",
+              "method": "GET",
+              "operation": "GET_EPS_INCIDENTS_V1"
+            },
+            "prbs": {
+              "path": "/v1/prbs",
+              "method": "GET",
+              "operation": "GET_PRBS_V1"
+            },
+            "portfolio": {
+              "path": "/v1/portfolio",
+              "method": "GET",
+              "operation": "GET_PORTFOLIO_V1"
+            }
+          }
         },
         "test": {
           "hostname": "opxhub-data-service.us-west-2.test.expedia.com",
-          "protocol": "https:"
+          "protocol": "https:",
+          "routes": {
+            "defects": {
+              "path": "/v1/defects",
+              "method": "GET",
+              "operation": "GET_DEFECTS_V1"
+            },
+            "incidents": {
+              "path": "/v1/incidents",
+              "method": "GET",
+              "operation": "GET_INCIDENTS_V1"
+            },
+            "incidentsV2": {
+              "path": "/v1/incidentsV2",
+              "method": "GET",
+              "operation": "GET_INCIDENTS_V2"
+            },
+            "epsIncidents": {
+              "path": "/v1/eps/incidents",
+              "method": "GET",
+              "operation": "GET_EPS_INCIDENTS_V1"
+            },
+            "prbs": {
+              "path": "/v1/prbs",
+              "method": "GET",
+              "operation": "GET_PRBS_V1"
+            },
+            "portfolio": {
+              "path": "/v1/portfolio",
+              "method": "GET",
+              "operation": "GET_PORTFOLIO_V1"
+            }
+          }
         },
         "prod": {
           "hostname": "opxhub-data-service.us-east-1.prod.expedia.com",
-          "protocol": "https:"
+          "protocol": "https:",
+          "routes": {
+            "defects": {
+              "path": "/v1/defects",
+              "method": "GET",
+              "operation": "GET_DEFECTS_V1"
+            },
+            "incidents": {
+              "path": "/v1/incidents",
+              "method": "GET",
+              "operation": "GET_INCIDENTS_V1"
+            },
+            "incidentsV2": {
+              "path": "/v1/incidentsV2",
+              "method": "GET",
+              "operation": "GET_INCIDENTS_V2"
+            },
+            "epsIncidents": {
+              "path": "/v1/eps/incidents",
+              "method": "GET",
+              "operation": "GET_EPS_INCIDENTS_V1"
+            },
+            "prbs": {
+              "path": "/v1/prbs",
+              "method": "GET",
+              "operation": "GET_PRBS_V1"
+            },
+            "portfolio": {
+              "path": "/v1/portfolio",
+              "method": "GET",
+              "operation": "GET_PORTFOLIO_V1"
+            }
+          }
         }
       },
       "userEventsApiServiceConfig": {
@@ -49,6 +145,16 @@
               "path": "/v1/pageViews",
               "method": "GET",
               "operation": "GET_user_events_pageviews_api_v1"
+            },
+            "bookingsImpulseCount": {
+              "path": "/v1/bookings/count",
+              "method": "GET",
+              "operation": "GET_booking_data"
+            },
+            "bookingsImpulseFilters": {
+              "path": "/v1/bookings/filters",
+              "method": "GET",
+              "operation": "GET_booking_data"
             },
             "bookingsImpulse": {
               "path": "/v1/bookings/count",
@@ -86,8 +192,13 @@
               "method": "GET",
               "operation": "GET_user_events_pageviews_api_v1"
             },
-            "bookingsImpulse": {
+            "bookingsImpulseCount": {
               "path": "/v1/bookings/count",
+              "method": "GET",
+              "operation": "GET_booking_data"
+            },
+            "bookingsImpulseFilters": {
+              "path": "/v1/bookings/filters",
               "method": "GET",
               "operation": "GET_booking_data"
             },
@@ -122,8 +233,13 @@
               "method": "GET",
               "operation": "GET_user_events_pageviews_api_v1"
             },
-            "bookingsImpulse": {
+            "bookingsImpulseCount": {
               "path": "/v1/bookings/count",
+              "method": "GET",
+              "operation": "GET_booking_data"
+            },
+            "bookingsImpulseFilters": {
+              "path": "/v1/bookings/filters",
               "method": "GET",
               "operation": "GET_booking_data"
             },
@@ -131,11 +247,6 @@
               "path": "/v1/funnelView",
               "method": "GET",
               "operation": "GET_funnel_view_data"
-            },
-            "filtersImpulse": {
-              "path": "/v1/bookings/filters",
-              "method": "GET",
-              "operation": "GET_booking_data"
             }
           }
         },
@@ -148,18 +259,18 @@
               "method": "GET",
               "operation": "GET_user_events_bookings_api_v1"
             },
-            "checkoutSuccessRate": {
-              "path": "/v1/checkoutSuccessRate",
-              "method": "GET",
-              "operation": "GET_user_events_csr_api_v1"
-            },
             "pageViews": {
               "path": "/v1/pageViews",
               "method": "GET",
               "operation": "GET_user_events_pageviews_api_v1"
             },
-            "bookingsImpulse": {
+            "bookingsImpulseCount": {
               "path": "/v1/bookings/count",
+              "method": "GET",
+              "operation": "GET_booking_data"
+            },
+            "bookingsImpulseFilters": {
+              "path": "/v1/bookings/filters",
               "method": "GET",
               "operation": "GET_booking_data"
             },
@@ -167,11 +278,6 @@
               "path": "/v1/funnelView",
               "method": "GET",
               "operation": "GET_funnel_view_data"
-            },
-            "filtersImpulse": {
-              "path": "/v1/bookings/filters",
-              "method": "GET",
-              "operation": "GET_filters_data"
             }
           }
         }

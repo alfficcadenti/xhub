@@ -2,6 +2,7 @@ import React from 'react';
 import {expect} from 'chai';
 import {
     getTableColumns,
+    adjustTicketProperties,
     getIncidentsData,
     sumPropertyInArrayOfObjects,
     getMarginDateValues,
@@ -10,7 +11,7 @@ import {
     listOfIncByBrands,
     mttr
 } from '../incidentsHelper';
-import {EG_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, VRBO_BRAND} from '../../../constants';
+import {EG_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, VRBO_BRAND, EXPEDIA_BRAND} from '../../../constants';
 import mockData from './filteredData.test.json';
 import mockData2 from './incData.test.json';
 import mockResult from './incByBrandResult.test.json';
@@ -64,6 +65,56 @@ describe('incidentsHelper', () => {
             expect(getTableColumns(VRBO_BRAND)).to.eql([
                 'Incident', 'Priority', 'Division', 'Started', 'Summary', 'RC Owner', 'TTD', 'TTR', 'Status'
             ]);
+        });
+    });
+
+    describe('adjustTicketProperties', () => {
+        it('maps incidents correctly', () => {
+            const ticketA = {
+                summary: 'summary',
+                timeToResolve: '20000',
+                startDate: '2020-01-01',
+                divisions: ['E4P', 'Other'],
+                status: 'To Do',
+                rootCauseOwner: 'owner',
+                brand: 'VRBO',
+                impactedBrand: 'vrbo,EPS,EPS',
+                impactedPartnerLobs: 'CHASE-Air',
+                notificationSent: 'chase'
+            };
+            const ticketB = {
+                summary: 'summary',
+                timeToResolve: '2 hours 2 minutes',
+                openDate: '2020-01-02',
+                status: 'To DO',
+                rootCauseOwner: 'owner',
+                brand: 'other',
+                impactedBrand: 'other',
+                impactedPartnerLobs: 'CHASE-Air',
+                notificationSent: 'chase'
+            };
+            expect(adjustTicketProperties([ticketA, ticketB], 'incident')).to.eql([
+                Object.assign(ticketA, {
+                    startDate: ticketA.startDate,
+                    timeToResolve: ticketA.timeToResolve,
+                    Division: 'E4P,Other',
+                    Status: ticketA.status,
+                    'RC Owner': ticketA.rootCauseOwner,
+                    Brand: `${VRBO_BRAND}, ${EXPEDIA_PARTNER_SERVICES_BRAND}`,
+                    partner_divisions: ticketA.divisions,
+                    'Impacted Partners': ticketA.impactedPartnersLobs,
+                    'Notification Sent': ticketA.notificationSent
+                }), Object.assign(ticketB, {
+                    startDate: ticketB.openDate,
+                    timeToResolve: ticketB.timeToResolve,
+                    Division: ticketB.brand,
+                    Status: ticketB.status,
+                    'RC Owner': ticketB.rootCauseOwner,
+                    Brand: EXPEDIA_BRAND,
+                    partner_divisions: ticketB.divisions,
+                    'Impacted Partners': ticketB.impactedPartnersLobs,
+                    'Notification Sent': ticketB.notificationSent
+                })]);
         });
     });
 
