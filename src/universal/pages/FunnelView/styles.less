@@ -33,20 +33,35 @@
         font-weight: 400;
     }
 
-    .form-container {
+    .filters-wrapper {
+        display: flex;
+        flex-direction: column;
         margin-bottom: @spacing-3x;
 
-        .preset-dropdown {
-            float: right;
-            margin-top: -@spacing-9x;
+        .date-filters-wrapper {
+            .datetime-range-picker {
+                width: 755px;
+            }
 
-            .Dropdown__toggle {
-                .dropdown-button;
+            .preset-dropdown {
+                float: right;
+                margin-top: -@spacing-9x;
+
+                .Dropdown__toggle {
+                    .dropdown-button;
+                }
+            }
+
+            .apply-btn {
+                margin-left: @spacing-1x;
+                height: fit-content;
             }
         }
 
-        .apply-btn {
-            margin-left: @spacing-1x;
+        .annotation-filters-wrapper {
+            display: flex;
+            align-items: center;
+            margin-top: @spacing-3x;
         }
     }
 }
