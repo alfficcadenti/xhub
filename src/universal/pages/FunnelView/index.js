@@ -13,7 +13,8 @@ import {
 import {
     checkResponse,
     getBrand,
-    getUniqueByProperty
+    getUniqueByProperty,
+    isNotEmptyString
 } from '../utils';
 import './styles.less';
 import {adjustTicketProperties} from '../TicketTrends/incidentsHelper';
@@ -49,6 +50,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     // const [selectedCategories, setSelectedCategories] = useState(initialCategories);
     const [selectedProducts, setSelectedProducts] = useState([]);
     const [selectedApplications, setSelectedApplications] = useState([]);
+    const [selectedServiceTiers, setSelectedServiceTiers] = useState([]);
     const [annotations, setAnnotations] = useState([]);
     const [filteredAnnotations, setFilteredAnnotations] = useState([]);
 
@@ -161,10 +163,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             const dateQuery = start && end
                 ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
                 : '';
-            const productsQuery = selectedProducts && selectedProducts.length ? `&product=${selectedProducts}` : '';
-            const applicationsQuery = selectedApplications && selectedApplications.length ? `&applicationName=${selectedApplications}` : '';
 
-            fetch(`/annotations?${dateQuery}${productsQuery}${applicationsQuery}`)
+            fetch(`/annotations?${dateQuery}`)
                 .then(checkResponse)
                 .then((fetchedAnnotations) => {
                     const adjustedAnnotations = fetchedAnnotations.map((annotation) => ({
@@ -189,22 +189,28 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     useEffect(() => {
         let filteredRawAnnotations = [...annotations];
 
-        if (selectedProducts.length && selectedProducts[0]) {
-            filteredRawAnnotations = filteredRawAnnotations.filter((annotation) => {
-                return selectedProducts.includes(annotation.productName);
+        if (selectedProducts.length) {
+            filteredRawAnnotations = filteredRawAnnotations.filter(({productName}) => {
+                return selectedProducts.includes(productName);
             });
         }
 
-        if (selectedApplications.length && selectedApplications[0]) {
-            filteredRawAnnotations = filteredRawAnnotations.filter((annotation) => {
-                return selectedApplications.includes(annotation.serviceName.toLowerCase());
+        if (selectedApplications.length) {
+            filteredRawAnnotations = filteredRawAnnotations.filter(({serviceName}) => {
+                return selectedApplications.includes(serviceName.toLowerCase());
+            });
+        }
+
+        if (selectedServiceTiers.length) {
+            filteredRawAnnotations = filteredRawAnnotations.filter(({serviceTier}) => {
+                return selectedServiceTiers.includes(serviceTier);
             });
         }
 
         if (filteredRawAnnotations.length) {
             setFilteredAnnotations(filteredRawAnnotations);
         }
-    }, [selectedProducts, selectedApplications]);
+    }, [selectedProducts, selectedApplications, selectedServiceTiers]);
 
     useEffect(() => {
         const fetchIncidents = () => {
@@ -278,15 +284,20 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
     const onFilterChange = (value) => {
         const filterNewFormat = filterArrayFormatted(value);
+        const hasValues = (item) => !!item.values.filter(isNotEmptyString).length;
 
         const productName = filterNewFormat.find((item) => item.key === 'productName');
-        const newProducts = productName ? productName.values : [];
+        const newProducts = (productName && hasValues(productName)) ? productName.values : [];
 
         const applicationName = filterNewFormat.find((item) => item.key === 'applicationName');
-        const newApplications = applicationName ? applicationName.values : [];
+        const newApplications = (applicationName && hasValues(applicationName)) ? applicationName.values : [];
+
+        const serviceTier = filterNewFormat.find((item) => item.key === 'serviceTier');
+        const newServiceTiers = (serviceTier && hasValues(serviceTier)) ? serviceTier.values : [];
 
         setSelectedProducts(newProducts);
         setSelectedApplications(newApplications);
+        setSelectedServiceTiers(newServiceTiers);
     };
 
     useEffect(() => {
@@ -298,7 +309,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
         setSuggestions({
             productName: adjustedProducts,
-            applicationName: adjustedApplications
+            applicationName: adjustedApplications,
+            serviceTier: ['Tier 1', 'Tier 2', 'Tier 3']
         });
     }, [productMapping]);
 
