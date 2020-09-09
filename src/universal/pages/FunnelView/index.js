@@ -189,21 +189,21 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     useEffect(() => {
         let filteredRawAnnotations = [...annotations];
 
-        if (selectedProducts.length && selectedProducts[0]) {
-            filteredRawAnnotations = filteredRawAnnotations.filter((annotation) => {
-                return selectedProducts.includes(annotation.productName);
+        if (selectedProducts.length) {
+            filteredRawAnnotations = filteredRawAnnotations.filter(({productName}) => {
+                return selectedProducts.includes(productName);
             });
         }
 
-        if (selectedApplications.length && selectedApplications[0]) {
-            filteredRawAnnotations = filteredRawAnnotations.filter((annotation) => {
-                return selectedApplications.includes(annotation.serviceName.toLowerCase());
+        if (selectedApplications.length) {
+            filteredRawAnnotations = filteredRawAnnotations.filter(({serviceName}) => {
+                return selectedApplications.includes(serviceName.toLowerCase());
             });
         }
 
-        if (selectedServiceTiers.length && selectedServiceTiers[0]) {
-            filteredRawAnnotations = filteredRawAnnotations.filter((annotation) => {
-                return selectedServiceTiers.includes(annotation.serviceTier);
+        if (selectedServiceTiers.length) {
+            filteredRawAnnotations = filteredRawAnnotations.filter(({serviceTier}) => {
+                return selectedServiceTiers.includes(serviceTier);
             });
         }
 
@@ -307,12 +307,10 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             return [...acc, ...current.applicationNames];
         }, []);
 
-        const serviceTiers = ['Tier 1', 'Tier 2', 'Tier 3'];
-
         setSuggestions({
             productName: adjustedProducts,
             applicationName: adjustedApplications,
-            serviceTier: serviceTiers
+            serviceTier: ['Tier 1', 'Tier 2', 'Tier 3']
         });
     }, [productMapping]);
 
