@@ -19,7 +19,8 @@
     },
     "loadbalancer": {
       "https_enabled": true,
-      "http_enabled": false
+      "http_enabled": false,
+      "timeout" : 19
     },
     "app_ssl_port": 8080,
     "app_ssl_protocol": "HTTP",
