@@ -39,6 +39,9 @@
     "no-auto-delete": true,
     "instances": {
       "initial_count": 2
+    },
+    "loadbalancer": {
+      "timeout" : 19
     }
   },
   "ewetest-int": {
