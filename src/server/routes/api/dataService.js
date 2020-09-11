@@ -43,7 +43,7 @@ module.exports.prbs = {
 
 module.exports.portfolio = {
     method: 'GET',
-    path: '/v1/portfolio/{param*}',
+    path: '/v1/portfolio/{panel*}',
     config: getConfig('portfolio-get'),
-    handler: getHandler(getHandlerParams('portfolio'))
+    handler: getHandler(Object.assign(getHandlerParams('portfolio'), {pathParam: 'panel'}))
 };

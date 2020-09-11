@@ -28,7 +28,8 @@ describe('Quality Metrics Util', () => {
             priority: 'priority',
             status: 'Done',
             resolution: 'resolution',
-            openDate: '2020-01-02'
+            openDate: '2020-01-02',
+            url: 'https://jira.hcom/browse/PM-1001'
         };
         const formattedDefect = {
             Portfolio: '-',
