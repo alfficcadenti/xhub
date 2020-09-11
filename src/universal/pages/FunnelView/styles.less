@@ -39,8 +39,11 @@
         margin-bottom: @spacing-3x;
 
         .date-filters-wrapper {
+            display: flex;
+            align-items: center;
+
             .datetime-range-picker {
-                width: 755px;
+                width: 680px;
             }
 
             .preset-dropdown {
@@ -54,24 +57,29 @@
 
             .apply-btn {
                 margin-left: @spacing-1x;
+                margin-right: @spacing-3x;
                 height: fit-content;
+            }
+
+            .annotations-сheckbox {
+                margin-bottom: 0;
             }
         }
 
         .annotation-filters-wrapper {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             margin-top: @spacing-3x;
+            background: @color-bg-contrast;
+            padding: @spacing-2x;
+            width: 1150px;
 
             .category-filters {
                 display: flex;
-                background: rgba(0, 0, 0, .04);
                 align-items: center;
-                width: 270px;
                 justify-content: space-around;
-                padding: 10px 10px 0;
-                margin-bottom: 15px;
-                margin-left: 35px;
+                min-width: 270px;
+                padding: @spacing-2x @spacing-1x 0;
             }
         }
     }

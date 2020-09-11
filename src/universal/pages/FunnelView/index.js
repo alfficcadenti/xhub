@@ -422,37 +422,40 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     >
                         {'Apply'}
                     </button>
-                </div>
-                <div className="annotation-filters-wrapper">
                     <Checkbox
                         name="annotations-сheckbox"
                         label="Show Annotations"
                         checked={enableAnnotations}
                         onChange={() => setEnableAnnotations(!enableAnnotations)}
                         size="sm"
+                        className="annotations-сheckbox"
                     />
-                    <div className="category-filters">
-                        <Checkbox
-                            name="deployment-сheckbox"
-                            label="deployments"
-                            checked={deploymentCategory}
-                            onChange={() => setDeploymentCategory(!deploymentCategory)}
-                            size="sm"
-                        />
-                        <Checkbox
-                            name="incident-сheckbox"
-                            label="incidents"
-                            checked={incidentCategory}
-                            onChange={() => setIncidentCategory(!incidentCategory)}
-                            size="sm"
+                </div>
+                {!isLoading && <>
+                    <div className="annotation-filters-wrapper">
+                        <div className="category-filters">
+                            <Checkbox
+                                name="deployment-сheckbox"
+                                label="deployments"
+                                checked={deploymentCategory}
+                                onChange={() => setDeploymentCategory(!deploymentCategory)}
+                                size="sm"
+                            />
+                            <Checkbox
+                                name="incident-сheckbox"
+                                label="incidents"
+                                checked={incidentCategory}
+                                onChange={() => setIncidentCategory(!incidentCategory)}
+                                size="sm"
+                            />
+                        </div>
+                        <UniversalSearch
+                            suggestions={suggestions}
+                            suggestionMapping={productMapping}
+                            onFilterChange={onFilterChange}
                         />
                     </div>
-                    {!isLoading && <UniversalSearch
-                        suggestions={suggestions}
-                        suggestionMapping={productMapping}
-                        onFilterChange={onFilterChange}
-                    />}
-                </div>
+                </>}
             </div>
             <LoadingContainer isLoading={isLoading} error={error} className="page-views-loading-container">
                 <div className="page-views-widget-container">
