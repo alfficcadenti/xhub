@@ -58,6 +58,7 @@ export const divisionToBrand = (division = '') => {
             return VRBO_BRAND;
         case 'HOTELS WORLDWIDE (HWW)':
         case 'HCOM':
+        case 'HOTELS':
             return HOTELS_COM_BRAND;
         case 'EXPEDIA PARTNER SERVICES':
         case 'EPS':
@@ -73,11 +74,18 @@ export const consolidateTicketsById = (tickets) => {
     // eslint-disable-next-line complexity
     tickets.forEach((ticket) => {
         const {id} = ticket;
-        if (ticketIdSet.has(id)) {
-            const found = results.find((t) => t.id === id);
+        const ids = id.split(',');
+        if (ids.some((i) => ticketIdSet.has(i))) {
+            const found = results.find((t) => ids.some((i) => t.id.split(',').some((j) => i === j)));
             if (found.impactedBrand && ticket.impactedBrand && !found.impactedBrand.split(',').some((b) => ticket.impactedBrand.split(',').includes(b))) {
                 found.impactedBrand += `,${ticket.impactedBrand}`;
             }
+            const foundIds = found.id.split(',');
+            ids.forEach((i) => {
+                if (!foundIds.includes(i)) {
+                    found.id = `${found.id},${i}`;
+                }
+            });
             if (ticket.divisions && !found.divisions) {
                 found.divisions = ticket.divisions;
             } else if (ticket.divisions && ticket.divisions.length) {
@@ -90,9 +98,9 @@ export const consolidateTicketsById = (tickets) => {
             found.estimatedRevenueLoss = `${parseFloat(found.estimatedRevenueLoss) + parseFloat(ticket.estimatedRevenueLoss || 0)}`;
             found.estimatedGrossLoss = `${parseFloat(found.estimatedGrossLoss) + parseFloat(ticket.estimatedGrossLoss || 0)}`;
         } else {
-            ticketIdSet.add(id);
             results.push(ticket);
         }
+        ids.forEach((i) => ticketIdSet.add(i));
     });
     return results;
 };
@@ -158,6 +166,19 @@ export const buildTicketLink = (id = '', brand = '', url = '') => {
     return (<a href={brandUrl} target="_blank">{id}</a>);
 };
 
+export const buildTicketLinks = (id = '', brand = '', url = '') => {
+    const ids = id.split(',');
+    const urls = url.split(',');
+    if (ids.length > 1) {
+        return (
+            <div>
+                {ids.map((i, idx) => <div>{buildTicketLink(i, brand, urls.length > idx ? urls[idx] : '')}</div>)}
+            </div>
+        );
+    }
+    return buildTicketLink(id, brand, url);
+};
+
 export const parseDurationToMs = (strDuration = '') => {
     if (typeof strDuration === 'number') {
         return strDuration;
@@ -197,7 +218,9 @@ export const getImpactedPartners = (partners, lobs = []) => {
 
 export const mapEpsData = (t) => {
     const result = t;
-    result.id = t.incidentNumber || t.id;
+    if (t.id && t.incidentNumber) {
+        result.id = `${t.id},${t.incidentNumber}`;
+    }
     result.brand = EXPEDIA_PARTNER_SERVICES_BRAND;
     result.impactedBrand = EXPEDIA_PARTNER_SERVICES_BRAND;
     result.duration = parseDurationToMs(t.duration);

@@ -6,19 +6,18 @@ import DataTable from '../../../../../components/DataTable';
 import {
     getIncMetricsByBrand,
     weeklyMTTRMTTD,
-    weeklyMTTRbyBrand,
-    weeklyMTTDbyBrand,
+    weeklyMeanTimebyBrand,
     getWeeklyCounts
 } from '../../../incidentsHelper';
 
-const Overview = ({startDate, endDate, filteredIncidents}) => {
+const Overview = ({startDate, endDate, filteredIncidents, brand}) => {
     if (!filteredIncidents || !filteredIncidents.length) {
         return <NoResults />;
     }
     const {data: countData, keys: countKeys, yMax: countYMax} = getWeeklyCounts(startDate, endDate, filteredIncidents, 'openDate');
     const {data: mttdMttrData, keys: mttdMttrKeys, yMax: mttdMttrYMax} = weeklyMTTRMTTD(startDate, endDate, filteredIncidents);
-    const {data: mttdData, keys: mttdKeys, yMax: mttdYMax} = weeklyMTTDbyBrand(startDate, endDate, filteredIncidents);
-    const {data: mttrData, keys: mttrKeys, yMax: mttrYMax} = weeklyMTTRbyBrand(startDate, endDate, filteredIncidents);
+    const {data: mttdData, keys: mttdKeys, yMax: mttdYMax} = weeklyMeanTimebyBrand(startDate, endDate, filteredIncidents, brand, 'timeToDetect');
+    const {data: mttrData, keys: mttrKeys, yMax: mttrYMax} = weeklyMeanTimebyBrand(startDate, endDate, filteredIncidents, brand, 'timeToResolve');
     return (
         <div data-wdio="incidents-byBrand-table" id="inc-overview-table">
             <LineChartWrapper title="Incident Trends" data={countData} keys={countKeys} yMax={countYMax} helpText="Number of incidents per week by open date" />

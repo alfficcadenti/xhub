@@ -192,7 +192,7 @@ const IncidentTrendsDashboard = (props) => {
     const renderTabs = () => {
         switch (activeIndex) {
             case 0:
-                return <Overview startDate={appliedStartDate} endDate={appliedEndDate} filteredIncidents={filteredUniqueIncidents} />;
+                return <Overview startDate={appliedStartDate} endDate={appliedEndDate} filteredIncidents={filteredUniqueIncidents} brand={selectedBrand} />;
             case 1:
                 return <Incidents filteredIncidents={filteredUniqueIncidents} selectedBrand={selectedBrand} />;
             case 2:

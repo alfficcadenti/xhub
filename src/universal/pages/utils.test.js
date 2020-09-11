@@ -7,6 +7,7 @@ import {
     isNotEmptyString,
     isNotDuplicate,
     sortArrayByMostRecentDate,
+    buildTicketLinks,
     buildTicketLink,
     getVisiblePages,
     getImpactedPartners,
@@ -79,6 +80,12 @@ describe('consolidateTicketsById', () => {
             estimatedRevenueLoss: '1',
             estimatedGrossLoss: '2',
             divisions: ['E4P']
+        }, {
+            id: 'INC-0002,INC-0003',
+            impactedBrand: 'hotels',
+            estimatedRevenueLoss: '1',
+            estimatedGrossLoss: '2',
+            divisions: ['E4P']
         }];
         const result = consolidateTicketsById(tickets);
         expect(result).to.be.eql([{
@@ -88,10 +95,10 @@ describe('consolidateTicketsById', () => {
             estimatedGrossLoss: '2237',
             divisions: ['E4P', 'Total Retail', 'vrbo', 'division']
         }, {
-            id: 'INC-0002',
+            id: 'INC-0002,INC-0003',
             impactedBrand: 'hotels',
-            estimatedRevenueLoss: '1',
-            estimatedGrossLoss: '2',
+            estimatedRevenueLoss: '2',
+            estimatedGrossLoss: '4',
             divisions: ['E4P']
         }]);
     });
@@ -168,7 +175,19 @@ describe('sortArrayByMostRecentDate', () => {
     });
 });
 
-describe('buildTicketLink()', () => {
+
+describe('buildTicketLinks', () => {
+    it('return href link for each id and url passed', () => {
+        expect(buildTicketLinks('INC1234,INC5678', '', 'www.expedia.com/,www.vrbo.com/')).to.be.eql(
+            <div>
+                <div><a href="www.expedia.com/" target="_blank">{'INC1234'}</a></div>
+                <div><a href="www.vrbo.com/" target="_blank">{'INC5678'}</a></div>
+            </div>
+        );
+    });
+});
+
+describe('buildTicketLink', () => {
     it('return a href link to url if url is passed', () => {
         expect(buildTicketLink('INC1234', '', 'www.test.com/')).to.be.eql(<a href="www.test.com/" target="_blank">{'INC1234'}</a>);
     });
@@ -246,8 +265,27 @@ describe('mapEpsData', () => {
             timeToResolve: 10000
         };
         expect(mapEpsData(data)).to.eql({
-            id: 'INC1999',
             incidentNumber: 'INC1999',
+            brand: EXPEDIA_PARTNER_SERVICES_BRAND,
+            impactedBrand: EXPEDIA_PARTNER_SERVICES_BRAND,
+            duration: data.duration,
+            timeToDetect: data.timeToDetect,
+            timeToResolve: data.timeToResolve,
+            impactedPartners: null,
+            impactedPartnersLobs: null
+        });
+    });
+    it('merged ids when given more than one', () => {
+        const data = {
+            id: 'EPS-0001',
+            incidentNumber: 'INC1234567',
+            duration: 30000,
+            timeToDetect: 20000,
+            timeToResolve: 10000
+        };
+        expect(mapEpsData(data)).to.eql({
+            id: 'EPS-0001,INC1234567',
+            incidentNumber: 'INC1234567',
             brand: EXPEDIA_PARTNER_SERVICES_BRAND,
             impactedBrand: EXPEDIA_PARTNER_SERVICES_BRAND,
             duration: data.duration,

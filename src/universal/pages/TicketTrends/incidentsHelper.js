@@ -5,7 +5,7 @@ import {isArray} from 'util';
 import uuid from 'uuid/v1';
 import * as h from '../../components/utils/formatDate';
 import {DATE_FORMAT, EGENCIA_BRAND, EXPEDIA_BRAND, HOTELS_COM_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, EG_BRAND, VRBO_BRAND} from '../../constants';
-import {isNotDuplicate, divisionToBrand, getListOfUniqueProperties, buildTicketLink} from '../utils';
+import {isNotDuplicate, divisionToBrand, getListOfUniqueProperties, buildTicketLinks} from '../utils';
 
 export const getTableColumns = (selectedBrand) => {
     if (selectedBrand === EXPEDIA_PARTNER_SERVICES_BRAND) {
@@ -55,7 +55,7 @@ export const adjustTicketProperties = (tickets = [], type = 'incident') => {
 export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
     .map((inc) => ({
         id: uuid(),
-        Incident: buildTicketLink(inc.id, inc.Brand, inc.url) || '-',
+        Incident: buildTicketLinks(inc.id, inc.Brand, inc.url) || '-',
         Priority: getValue(inc, 'priority'),
         Brand: getValue(inc, 'Brand'),
         Division: getValue(inc, 'Division'),
@@ -102,7 +102,7 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
 export const getQualityData = (filteredDefects = []) => filteredDefects
     // eslint-disable-next-line complexity
     .map((t) => ({
-        Defect: buildTicketLink(t.id, t.Brand, t.url) || '-',
+        Defect: buildTicketLinks(t.id, t.Brand, t.url) || '-',
         Priority: getValue(t, 'priority'),
         Brand: getValue(t, 'Brand'),
         Division: getValue(t, 'Division'),
@@ -139,15 +139,13 @@ export const incidentsOfTheWeek = (incidents, week = '') => incidents.filter(({s
 export const sumPropertyInArrayOfObjects = (incidents = [], propertyToSum) =>
     incidents.reduce((acc, curr) => (acc + Number(curr[propertyToSum])), 0);
 
-export const mttr = (incidents = []) => (sumPropertyInArrayOfObjects(incidents, 'timeToResolve') / incidents.length) || 0;
-
-const mttd = (incidents = []) => (sumPropertyInArrayOfObjects(incidents, 'timeToDetect') / incidents.length) || 0;
+export const getMeanValue = (incidents = [], property) => (sumPropertyInArrayOfObjects(incidents, property) / incidents.length) || 0;
 
 export const getIncMetricsByBrand = (inc = []) => getListOfUniqueProperties(inc, 'Brand')
     .map((brand) => {
         const brandIncidentsList = brandIncidents(inc, brand);
-        const brandMTTR = h.formatDurationToHours(mttr(brandIncidentsList));
-        const brandMTTD = h.formatDurationToHours(mttd(brandIncidentsList));
+        const brandMTTR = h.formatDurationToHours(getMeanValue(brandIncidentsList, 'timeToResolve'));
+        const brandMTTD = h.formatDurationToHours(getMeanValue(brandIncidentsList, 'timeToDetect'));
         const P1inc = brandIncidentsList.filter((incident) => incident.priority === '1-Critical').length;
         const P2inc = brandIncidentsList.filter((incident) => incident.priority === '2-High').length;
         const all = brandIncidentsList.length;
@@ -164,9 +162,6 @@ export const getIncMetricsByBrand = (inc = []) => getListOfUniqueProperties(inc,
         };
     });
 
-export const listOfIncByBrands = (inc = []) => getListOfUniqueProperties(inc, 'Brand')
-    .map((brand) => brandIncidents(inc, brand));
-
 export const getWeeks = (start = '', end = '') => {
     const weeks = [];
     const current = moment(start).startOf('week');
@@ -177,51 +172,46 @@ export const getWeeks = (start = '', end = '') => {
     return weeks;
 };
 
+export const getMeanHours = (incidents, date, property) => Number.parseFloat(h.formatDurationToH(
+    getMeanValue(incidentsOfTheWeek(incidents, moment(date).week()), property)
+));
+
 export const weeklyMTTRMTTD = (startDate, endDate, incidents = []) => {
     const data = [];
     const weeksInterval = getWeeks(startDate, endDate);
     weeksInterval.forEach((date) => {
         data.push({
             name: date,
-            MTTR: Number.parseFloat(h.formatDurationToH(mttr(incidentsOfTheWeek(incidents, moment(date).week())))),
-            MTTD: Number.parseFloat(h.formatDurationToH(mttd(incidentsOfTheWeek(incidents, moment(date).week()))))
+            MTTR: getMeanHours(incidents, date, 'timeToResolve'),
+            MTTD: getMeanHours(incidents, date, 'timeToDetect')
         });
     });
     return {data, keys: ['MTTR', 'MTTD']};
 };
 
-export const weeklyMTTRbyBrand = (startDate, endDate, incidents = []) => {
+export const weeklyMeanTimebyBrand = (startDate, endDate, incidents = [], brand, property) => {
     const data = [];
     const weeksInterval = getWeeks(startDate, endDate);
-    const incsByBrand = listOfIncByBrands(incidents);
-    const brands = new Set();
+    const brandDelimiter = ', ';
+    const keys = brand === EG_BRAND
+        ? getListOfUniqueProperties(incidents.map((inc) => {
+            const mappedInc = JSON.parse(JSON.stringify(inc));
+            mappedInc.Brand = mappedInc.Brand.split(brandDelimiter);
+            return mappedInc;
+        }), 'Brand')
+        : [brand];
     weeksInterval.forEach((date) => {
         const result = {name: date};
-        incsByBrand.map((incident) => {
-            const brand = incident[0].Brand;
-            brands.add(brand);
-            result[brand] = Number.parseFloat(h.formatDurationToH(mttr(incidentsOfTheWeek(incident, moment(date).week()))));
+        incidents.forEach((inc) => {
+            inc.Brand.split(brandDelimiter).forEach((b) => {
+                if (keys.includes(b)) {
+                    result[b] = getMeanHours(brandIncidents(incidents, b), date, property);
+                }
+            });
         });
         data.push(result);
     });
-    return {data, keys: Array.from(brands)};
-};
-
-export const weeklyMTTDbyBrand = (startDate, endDate, incidents = []) => {
-    const data = [];
-    const weeksInterval = getWeeks(startDate, endDate);
-    const incsByBrand = listOfIncByBrands(incidents);
-    const brands = new Set();
-    weeksInterval.forEach((date) => {
-        const result = {name: date};
-        incsByBrand.map((incident) => {
-            const brand = incident[0].Brand;
-            brands.add(brand);
-            result[brand] = Number.parseFloat(h.formatDurationToH(mttd(incidentsOfTheWeek(incident, moment(date).week()))));
-        });
-        data.push(result);
-    });
-    return {data, keys: Array.from(brands)};
+    return {data, keys};
 };
 
 export const sortInAscOrderAndGetTop5 = (incidents, fieldToSort) => incidents
@@ -246,7 +236,7 @@ const filterIncidentsPerInterval = (data = [], brandName, propertyToSum) => {
     const uniqueIds = getListOfUniqueProperties(filteredByImpactedBrand, 'id');
 
     const tooltipEntryData = uniqueIds.reduce((prev, incId) => {
-        const link = buildTicketLink(incId);
+        const link = buildTicketLinks(incId);
         const incidentsFilteredByUniqueNumber = filteredByImpactedBrand
             .filter(({id}) => id === incId);
         const lostRevenue = sumPropertyInArrayOfObjects(incidentsFilteredByUniqueNumber, propertyToSum);
