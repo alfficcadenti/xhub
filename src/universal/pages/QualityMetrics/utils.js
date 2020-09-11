@@ -6,7 +6,7 @@ export const getPropValue = (item, prop) => item[prop] || '-';
 export const formatDefect = (defect) => ({
     Portfolio: getPropValue(defect, 'portfolio'),
     Key: defect.defectNumber
-        ? (<a href={`https://jira.hcom/browse/${defect.defectNumber}`} target="_blank">{defect.defectNumber}</a>)
+        ? (<a href={`${defect.url}`} target="_blank">{defect.defectNumber}</a>)
         : '-',
     id: getPropValue(defect, 'defectNumber'),
     Summary: getPropValue(defect, 'summary'),
