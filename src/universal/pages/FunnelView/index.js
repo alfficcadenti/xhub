@@ -13,6 +13,7 @@ import {
 import {
     checkResponse,
     getBrand,
+    getListOfUniqueProperties,
     getUniqueByProperty,
     isNotEmptyString
 } from '../utils';
@@ -51,8 +52,20 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [selectedProducts, setSelectedProducts] = useState([]);
     const [selectedApplications, setSelectedApplications] = useState([]);
     const [selectedServiceTiers, setSelectedServiceTiers] = useState([]);
+    const [selectedStatuses, setSelectedStatuses] = useState([]);
+    const [selectedPriorities, setSelectedPriorities] = useState([]);
+
     const [annotations, setAnnotations] = useState([]);
     const [filteredAnnotations, setFilteredAnnotations] = useState([]);
+
+    const [deploymentCategory, setDeploymentCategory] = useState(true);
+    const [incidentCategory, setIncidentCategory] = useState(true);
+
+    const [incidentPrioritySuggestions, setIncidentPrioritySuggestions] = useState([]);
+    const [incidentStatusSuggestions, setIncidentStatusSuggestions] = useState([]);
+    const [applicationNameSuggestions, setApplicationNameSuggestions] = useState([]);
+    const [productNameSuggestions, setProductNameSuggestions] = useState([]);
+    const [serviceTierSuggestions, setServiceTierSuggestions] = useState([]);
 
     useQueryParamChange(selectedBrands[0], onBrandChange);
     useSelectedBrand(selectedBrands[0], onBrandChange, prevSelectedBrand);
@@ -187,30 +200,81 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     }, [start, end]);
 
     useEffect(() => {
-        let filteredRawAnnotations = [...annotations];
+        let deploymentAnnotations = annotations.filter(({category}) => category === 'deployment');
+        let incidentAnnotations = annotations.filter(({category}) => category === 'incident');
 
         if (selectedProducts.length) {
-            filteredRawAnnotations = filteredRawAnnotations.filter(({productName}) => {
-                return selectedProducts.includes(productName);
-            });
+            deploymentAnnotations = deploymentAnnotations.filter(({productName}) => selectedProducts.includes(productName));
         }
 
         if (selectedApplications.length) {
-            filteredRawAnnotations = filteredRawAnnotations.filter(({serviceName}) => {
-                return selectedApplications.includes(serviceName.toLowerCase());
-            });
+            deploymentAnnotations = deploymentAnnotations.filter(({serviceName}) => selectedApplications.includes(serviceName.toLowerCase()));
         }
 
         if (selectedServiceTiers.length) {
-            filteredRawAnnotations = filteredRawAnnotations.filter(({serviceTier}) => {
-                return selectedServiceTiers.includes(serviceTier);
-            });
+            deploymentAnnotations = deploymentAnnotations.filter(({serviceTier}) => selectedServiceTiers.includes(serviceTier));
         }
 
-        if (filteredRawAnnotations.length) {
-            setFilteredAnnotations(filteredRawAnnotations);
+        if (selectedStatuses.length) {
+            incidentAnnotations = incidentAnnotations.filter(({status}) => selectedStatuses.includes(status));
         }
-    }, [selectedProducts, selectedApplications, selectedServiceTiers]);
+
+        if (selectedPriorities.length) {
+            incidentAnnotations = incidentAnnotations.filter(({priority}) => selectedPriorities.includes(priority));
+        }
+
+        setFilteredAnnotations([...deploymentAnnotations, ...incidentAnnotations]);
+    }, [
+        selectedProducts,
+        selectedApplications,
+        selectedServiceTiers,
+        selectedStatuses,
+        selectedPriorities
+    ]);
+
+    useEffect(() => {
+        let filteredRawAnnotations = [...annotations];
+        const categoryOptions = [];
+        let filteredRawSuggestions = {...suggestions};
+
+        if (deploymentCategory) {
+            categoryOptions.push('deployment');
+
+            if (!filteredRawSuggestions.productName) {
+                filteredRawSuggestions.productName = productNameSuggestions;
+            }
+
+            if (!filteredRawSuggestions.serviceTier) {
+                filteredRawSuggestions.serviceTier = serviceTierSuggestions;
+            }
+
+            if (!filteredRawSuggestions.applicationName) {
+                filteredRawSuggestions.applicationName = applicationNameSuggestions;
+            }
+        } else {
+            delete filteredRawSuggestions.applicationName;
+            delete filteredRawSuggestions.productName;
+            delete filteredRawSuggestions.serviceTier;
+        }
+
+        if (incidentCategory) {
+            categoryOptions.push('incident');
+
+            if (!filteredRawSuggestions.incidentPriority) {
+                filteredRawSuggestions.incidentPriority = incidentPrioritySuggestions;
+                filteredRawSuggestions.incidentStatus = incidentStatusSuggestions;
+            }
+        } else {
+            delete filteredRawSuggestions.incidentPriority;
+            delete filteredRawSuggestions.incidentStatus;
+        }
+
+        setSuggestions(filteredRawSuggestions);
+
+        filteredRawAnnotations = filteredRawAnnotations.filter(({category}) => categoryOptions.includes(category));
+
+        setFilteredAnnotations(filteredRawAnnotations);
+    }, [deploymentCategory, incidentCategory]);
 
     useEffect(() => {
         const fetchIncidents = () => {
@@ -231,7 +295,17 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                             return incident;
                         });
 
+                    const incidentPriority = getListOfUniqueProperties(adjustedUniqueTickets, 'priority').sort();
+                    const incidentStatus = getListOfUniqueProperties(adjustedUniqueTickets, 'status').sort();
+
+                    setIncidentPrioritySuggestions(incidentPriority);
+                    setIncidentStatusSuggestions(incidentStatus);
                     setAnnotations((prevAnnotations) => ([...prevAnnotations, ...adjustedUniqueTickets]));
+                    setSuggestions((prevSuggestions) => ({
+                        ...prevSuggestions,
+                        incidentPriority,
+                        incidentStatus
+                    }));
                 })
                 .catch((err) => {
                     // eslint-disable-next-line no-console
@@ -295,9 +369,17 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         const serviceTier = filterNewFormat.find((item) => item.key === 'serviceTier');
         const newServiceTiers = (serviceTier && hasValues(serviceTier)) ? serviceTier.values : [];
 
+        const incidentStatus = filterNewFormat.find((item) => item.key === 'incidentStatus');
+        const newStatuses = (incidentStatus && hasValues(incidentStatus)) ? incidentStatus.values : [];
+
+        const incidentPriority = filterNewFormat.find((item) => item.key === 'incidentPriority');
+        const newPriorities = (incidentPriority && hasValues(incidentPriority)) ? incidentPriority.values : [];
+
         setSelectedProducts(newProducts);
         setSelectedApplications(newApplications);
         setSelectedServiceTiers(newServiceTiers);
+        setSelectedStatuses(newStatuses);
+        setSelectedPriorities(newPriorities);
     };
 
     useEffect(() => {
@@ -306,12 +388,18 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         const adjustedApplications = productMapping.reduce((acc, current) => {
             return [...acc, ...current.applicationNames];
         }, []);
+        const serviceTier = ['Tier 1', 'Tier 2', 'Tier 3'];
 
-        setSuggestions({
+        setProductNameSuggestions(adjustedProducts);
+        setApplicationNameSuggestions(adjustedApplications);
+        setServiceTierSuggestions(serviceTier);
+
+        setSuggestions((prevSuggestions) => ({
+            ...prevSuggestions,
             productName: adjustedProducts,
             applicationName: adjustedApplications,
-            serviceTier: ['Tier 1', 'Tier 2', 'Tier 3']
-        });
+            serviceTier
+        }));
     }, [productMapping]);
 
     return (
@@ -334,21 +422,40 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     >
                         {'Apply'}
                     </button>
-                </div>
-                <div className="annotation-filters-wrapper">
                     <Checkbox
                         name="annotations-сheckbox"
                         label="Show Annotations"
                         checked={enableAnnotations}
                         onChange={() => setEnableAnnotations(!enableAnnotations)}
                         size="sm"
+                        className="annotations-сheckbox"
                     />
-                    {!isLoading && <UniversalSearch
-                        suggestions={suggestions}
-                        suggestionMapping={productMapping}
-                        onFilterChange={onFilterChange}
-                    />}
                 </div>
+                {!isLoading && <>
+                    <div className="annotation-filters-wrapper">
+                        <div className="category-filters">
+                            <Checkbox
+                                name="deployment-сheckbox"
+                                label="deployments"
+                                checked={deploymentCategory}
+                                onChange={() => setDeploymentCategory(!deploymentCategory)}
+                                size="sm"
+                            />
+                            <Checkbox
+                                name="incident-сheckbox"
+                                label="incidents"
+                                checked={incidentCategory}
+                                onChange={() => setIncidentCategory(!incidentCategory)}
+                                size="sm"
+                            />
+                        </div>
+                        <UniversalSearch
+                            suggestions={suggestions}
+                            suggestionMapping={productMapping}
+                            onFilterChange={onFilterChange}
+                        />
+                    </div>
+                </>}
             </div>
             <LoadingContainer isLoading={isLoading} error={error} className="page-views-loading-container">
                 <div className="page-views-widget-container">

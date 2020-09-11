@@ -31,7 +31,7 @@
               "operation": "GET_INCIDENTS_V1"
             },
             "incidentsV2": {
-              "path": "/v1/incidentsV2",
+              "path": "/v2/incidents",
               "method": "GET",
               "operation": "GET_INCIDENTS_V2"
             },
@@ -67,7 +67,7 @@
               "operation": "GET_INCIDENTS_V1"
             },
             "incidentsV2": {
-              "path": "/v1/incidentsV2",
+              "path": "/v2/incidents",
               "method": "GET",
               "operation": "GET_INCIDENTS_V2"
             },
@@ -103,7 +103,7 @@
               "operation": "GET_INCIDENTS_V1"
             },
             "incidentsV2": {
-              "path": "/v1/incidentsV2",
+              "path": "/v2/incidents",
               "method": "GET",
               "operation": "GET_INCIDENTS_V2"
             },
