@@ -63,7 +63,7 @@ const QualityMetrics = ({selectedBrands}) => {
                 return;
             }
             setIsLoading(true);
-            const brandQuery = `?selectedBrand=${portfolioBrand}`;
+            const brandQuery = `?selectedBrand=${selectedBrands[0]}`;
             const query = selectedPortfolios.length
                 ? `${brandQuery}&portfolios=${selectedPortfolios.map((p) => p.value).join('&portfolios=')}`
                 : brandQuery;
