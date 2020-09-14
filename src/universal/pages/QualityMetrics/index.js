@@ -17,7 +17,7 @@ import {
 } from './Panels';
 import {PORTFOLIOS, P1_LABEL, P2_LABEL} from './constants';
 import {getBrand} from '../utils';
-import {getPanelDataUrl} from './utils';
+import {getPanelDataUrl, formatBarChartData, getTicketIds} from './utils';
 import './styles.less';
 
 const getPortfolioBrand = (selectedBrands) => {
@@ -54,6 +54,11 @@ const QualityMetrics = ({selectedBrands}) => {
     const [cvrData, setCvrData] = useState({});
     const [isCvrDataLoading, setIsCvrDataLoading] = useState(true);
     const [cvrDataError, setCvrDataError] = useState();
+
+    const [openDefectTicketIds, setOpenDefectTicketIds] = useState([]);
+    const [openDefectsData, setOpenDefectsData] = useState({});
+    const [isOpenDefectsDataLoading, setIsOpenDefectsDataLoading] = useState(true);
+    const [openDefectsError, setOpenDefectsError] = useState();
 
     useEffect(() => {
         const fetchData = () => {
@@ -97,6 +102,17 @@ const QualityMetrics = ({selectedBrands}) => {
                 .catch((e) => {
                     setCvrDataError(e.message);
                     setIsCvrDataLoading(false);
+                });
+            fetch(getPanelDataUrl(selectedPortfolios, portfolioBrand, 'opendefects'))
+                .then((data) => data.json())
+                .then((response) => {
+                    setOpenDefectsData(response.data.openDefects || {});
+                    setOpenDefectTicketIds(getTicketIds(response.data.openDefects));
+                    setIsOpenDefectsDataLoading(false);
+                })
+                .catch((e) => {
+                    setOpenDefectsError(e.message);
+                    setIsOpenDefectsDataLoading(false);
                 });
         };
         fetchData();
@@ -190,7 +206,9 @@ const QualityMetrics = ({selectedBrands}) => {
                     title="Open Defects"
                     info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived'. Click bar chart to see corresponding defects."
                     tickets={tickets}
-                    dataUrl={getPanelDataUrl(selectedPortfolios, portfolioBrand, 'opendefects')}
+                    data={formatBarChartData(openDefectsData)}
+                    isLoading={isOpenDefectsDataLoading}
+                    error={openDefectsError}
                     dataKey="openDefects"
                 />
                 <SLADefinitions />
@@ -264,12 +282,14 @@ const QualityMetrics = ({selectedBrands}) => {
                     info="Charting all defects with regard to priority. Click pie slice for more details."
                     groupBy="Priority"
                     tickets={tickets}
+                    openDefectTicketIds={openDefectTicketIds}
                 />
                 <PiePanel
                     title="Open Bugs (w.r.t. Project)"
                     info="Charting all defects with regard to project. Click pie slices for more details."
                     groupBy="Project"
                     tickets={tickets}
+                    openDefectTicketIds={openDefectTicketIds}
                 />
             </LoadingContainer>
         </div>
