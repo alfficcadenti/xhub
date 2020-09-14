@@ -103,6 +103,30 @@ describe('consolidateTicketsById', () => {
         }]);
     });
 
+    it('ignores tickets with null id', () => {
+        const tickets = [{
+            id: null,
+            impactedBrand: 'hotels',
+            estimatedRevenueLoss: '1',
+            estimatedGrossLoss: '2',
+            divisions: ['E4P']
+        }, {
+            id: 'INC-0002,INC-0003',
+            impactedBrand: 'hotels',
+            estimatedRevenueLoss: '1',
+            estimatedGrossLoss: '2',
+            divisions: ['E4P']
+        }];
+        const result = consolidateTicketsById(tickets);
+        expect(result).to.be.eql([{
+            id: 'INC-0002,INC-0003',
+            impactedBrand: 'hotels',
+            estimatedRevenueLoss: '1',
+            estimatedGrossLoss: '2',
+            divisions: ['E4P']
+        }]);
+    });
+
     it('returns Vrbo when the input value is VRBO or HOME AWAY', () => {
         const result = divisionToBrand('VRBO');
         expect(result).to.be.eql(VRBO_BRAND);
