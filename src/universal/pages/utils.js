@@ -81,9 +81,12 @@ export const consolidateTicketsById = (tickets) => {
     // eslint-disable-next-line complexity
     tickets.forEach((ticket) => {
         const {id} = ticket;
+        if (!id) {
+            return;
+        }
         const ids = id.split(',');
         if (ids.some((i) => ticketIdSet.has(i))) {
-            const found = results.find((t) => ids.some((i) => t.id.split(',').some((j) => i === j)));
+            const found = results.find((t) => ids.some((i) => t.id && t.id.split(',').some((j) => i === j)));
             if (found.impactedBrand && ticket.impactedBrand && !found.impactedBrand.split(',').some((b) => ticket.impactedBrand.split(',').includes(b))) {
                 found.impactedBrand += `,${ticket.impactedBrand}`;
             }

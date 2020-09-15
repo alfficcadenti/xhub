@@ -7,35 +7,46 @@ import ChartModal from '../ChartModal';
 import {PRIORITY_LABELS, PRIORITY_COLORS} from '../constants';
 import {formatBarChartData, findAndFormatTicket, mapPriority} from '../utils';
 
-const BarChartPanel = ({title, info, tickets, dataUrl, dataKey}) => {
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [chartData, setChartData] = useState([]);
+const BarChartPanel = ({title, info, tickets, dataUrl, dataKey, data = [], isLoading = false, error = null}) => {
+    const [isDataLoading, setIsDataLoading] = useState(isLoading);
+    const [dataError, setDataError] = useState(error);
+    const [chartData, setChartData] = useState(data);
     const [modalData, setModalData] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchData = () => {
-            setIsLoading(true);
-            setError(null);
+            setIsDataLoading(true);
+            setDataError(null);
             fetch(dataUrl)
-                .then((data) => data.json())
+                .then((d) => d.json())
                 .then((response) => {
                     const rawData = response.data[dataKey] || {};
-                    const data = rawData.info && rawData.info.message === 'no data found'
+                    const formattedData = rawData.info && rawData.info.message === 'no data found'
                         ? []
                         : formatBarChartData(rawData);
-                    setChartData(data);
-                    setIsLoading(false);
+                    setChartData(formattedData);
+                    setIsDataLoading(false);
                 })
                 .catch((e) => {
                     setChartData([]);
-                    setError(e.message);
-                    setIsLoading(false);
+                    setDataError(e.message);
+                    setIsDataLoading(false);
                 });
         };
-        fetchData();
+
+        if (dataUrl) {
+            fetchData();
+        }
     }, [tickets, dataUrl, dataKey]);
+
+    useEffect(() => setIsDataLoading(isLoading), [isLoading]);
+
+    useEffect(() => {
+        if (!dataUrl) {
+            setChartData(data);
+        }
+    }, [dataUrl, data]);
 
     const getBarClickHandler = (priority) => (selectedBar) => {
         if (selectedBar) {
@@ -72,8 +83,8 @@ const BarChartPanel = ({title, info, tickets, dataUrl, dataKey}) => {
     return (
         <Panel
             title={title}
-            isLoading={isLoading}
-            error={error}
+            isLoading={isDataLoading}
+            error={dataError}
             info={info}
             isFixedHeight
         >
