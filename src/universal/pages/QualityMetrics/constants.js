@@ -29,6 +29,10 @@ export const PORTFOLIOS = [
     }, {
         text: 'Mobile',
         value: 'mobile',
+        projects: ['AND', 'ENG', 'IOS', 'RVN']
+    }, {
+        text: 'Shopping',
+        value: 'shopping',
         projects: ['ALO', 'HLR', 'PDI', 'SHP', 'INCREDIBLE']
     }
 ];
