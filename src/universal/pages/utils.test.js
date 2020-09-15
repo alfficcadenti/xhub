@@ -13,7 +13,8 @@ import {
     getImpactedPartners,
     mapEpsData,
     parseDurationToMs,
-    getBrand
+    getBrand,
+    filterArrayFormatted
 } from './utils';
 import {EG_BRAND, VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../constants';
 
@@ -320,5 +321,28 @@ describe('getBrand()', () => {
         expect(getBrand(EGENCIA_BRAND, 'label').changeRequests).to.be.eql('Egencia EU,Egencia NA');
         expect(getBrand(EXPEDIA_BRAND, 'label').changeRequests).to.be.eql('Expedia');
         expect(getBrand(HOTELS_COM_BRAND, 'label').changeRequests).to.be.eql('Hotels');
+    });
+});
+
+describe('filterArrayFormatted()', () => {
+    it('returns empty array if input undefined', () => {
+        const result = filterArrayFormatted();
+        expect(result).to.be.eql([]);
+    });
+
+    it('returns array with value as array', () => {
+        const mockArray = [{key: 'productName', value: 'Acquisition'},
+            {key: 'applicationName', value: 'air-orderstore'},
+            {key: 'applicationName', value: 'airchangeservice'}];
+        const mockResult = [{key: 'productName', values: ['Acquisition']},
+            {key: 'applicationName', values: ['air-orderstore', 'airchangeservice']}];
+        const result = filterArrayFormatted(mockArray);
+        expect(result).to.be.eql(mockResult);
+    });
+
+    it('returns empty array if array in input do not have key value format elements', () => {
+        const mockArray = [{keys: 'productName', value: 'Acquisition'}];
+        const result = filterArrayFormatted(mockArray);
+        expect(result).to.be.eql([]);
     });
 });

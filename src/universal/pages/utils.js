@@ -1,5 +1,12 @@
 import React from 'react';
-import {BRANDS, EXPEDIA_BRAND, VRBO_BRAND, EGENCIA_BRAND, HOTELS_COM_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../constants';
+import {
+    BRANDS,
+    EGENCIA_BRAND,
+    EXPEDIA_BRAND,
+    EXPEDIA_PARTNER_SERVICES_BRAND,
+    HOTELS_COM_BRAND,
+    VRBO_BRAND
+} from '../constants';
 import ALL_PAGES from './index';
 
 export const getVisiblePages = (selectedBrands, pages = [...ALL_PAGES]) => {
@@ -229,4 +236,20 @@ export const mapEpsData = (t) => {
     result.impactedPartners = getImpactedPartners(t.impactedPartners);
     result.impactedPartnersLobs = getImpactedPartners(t.impactedPartners, t.impactedLobs || []);
     return result;
+};
+
+export const filterArrayFormatted = (inputArray = []) => {
+    const uniqueFields = [];
+    const arrayNewFormat = [];
+    inputArray.forEach((x) => {
+        if (x && x.key) {
+            if (uniqueFields.indexOf(x.key) === -1) {
+                uniqueFields.push(x.key);
+                arrayNewFormat.push({key: x.key, values: [x.value]});
+            } else {
+                arrayNewFormat.find((y) => y.key === x.key).values.push(x.value);
+            }
+        }
+    });
+    return arrayNewFormat;
 };
