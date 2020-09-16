@@ -11,6 +11,7 @@ import {
 import {useIsMount} from '../hooks';
 import {getFilters, getBrandQueryParam, getQueryString} from './impulseHandler';
 import {checkResponse} from '../utils';
+import moment from 'moment';
 
 const PREDICTION_COUNT = 'Prediction Counts';
 const BOOKING_COUNT = 'Booking Counts';
@@ -23,7 +24,7 @@ const IMPULSE_MAPPING = [
     {globalFilter: VRBO_BRAND, impulseFilter: 'VRBO'}
 ];
 
-export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, endDate, globalBrandName, prevBrand, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, selectedBookingTypeMulti) => {
+export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, endDate, globalBrandName, prevBrand, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, selectedBookingTypeMulti, chartSliced, setChartSliced) => {
     const [res, setRes] = useState([]);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(true);
@@ -53,12 +54,11 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
         fetch(`/v1/bookings/count${getQueryString(startDate, endDate, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, selectedBookingTypeMulti)}`)
             .then((result) => {
                 return result.json();
-            }
-            )
+            })
             .then((respJson) => {
                 const chartData = respJson.map((item) => {
                     return {
-                        time: item.time,
+                        time: moment.utc(item.time).valueOf(),
                         [BOOKING_COUNT]: item.count,
                         [PREDICTION_COUNT]: item.prediction.weightedCount
                     };
@@ -68,6 +68,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
             .then((chartData) => {
                 setError('');
                 setRes(chartData);
+                setChartSliced(false);
                 setIsLoading(false);
             })
             .catch((err) => {
@@ -81,7 +82,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
         if (isMount) {
             getData();
             getFilter();
-        } else if (isApplyClicked) {
+        } else if (chartSliced || isApplyClicked) {
             getData();
         }
         return () => {
