@@ -24,6 +24,7 @@ const navLinks = [
     }
 ];
 import {ALL_LOB, ALL_POS, ALL_BRANDS, ALL_DEVICES, ALL_BOOKING_TYPES} from '../../constants';
+import {getFilters, getFiltersForMultiKeys} from './impulseHandler';
 
 const filterSelectionClass = 'filter-option-selection';
 const filterExpandClass = 'filter-option-expand';
@@ -42,13 +43,33 @@ const Impulse = (props) => {
     const [selectedBookingTypeMulti, setSelectedBookingTypeMulti] = useState([]);
     useQueryParamChange(newBrand, props.onBrandChange);
     useSelectedBrand(newBrand, props.onBrandChange, props.prevSelectedBrand);
-    const [isLoading, res, error, egSiteURLMulti, lobsMulti, brandsMulti, deviceTypesMulti, bookingTypesMulti] = useFetchBlipData(isApplyClicked, setIsApplyClicked, startDateTime, endDateTime, newBrand, props.prevSelectedBrand, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, selectedBookingTypeMulti);
+    const [isLoading, res, error, egSiteURLMulti, setEgSiteURLMulti, lobsMulti, setLobsMulti, brandsMulti, deviceTypesMulti, setDeviceTypesMulti, bookingTypesMulti, setBookingTypesMulti, filterData, brandsFilterData] = useFetchBlipData(isApplyClicked, setIsApplyClicked, startDateTime, endDateTime, newBrand, props.prevSelectedBrand, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, selectedBookingTypeMulti);
+
+    const modifyFilters = (newValuesOnChange) => {
+        setSelectedLobMulti([]);
+        setSelectedDeviceTypeMulti([]);
+        setSelectedBookingTypeMulti([]);
+        setSelectedSiteURLMulti([]);
+        if (typeof newValuesOnChange !== 'undefined' && brandsFilterData !== null && newValuesOnChange.length !== null && newValuesOnChange.length > 0) {
+            setLobsMulti(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'lob'));
+            setDeviceTypesMulti(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'deviceType'));
+            setBookingTypesMulti(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'bookingType'));
+            setEgSiteURLMulti(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'egSiteUrl'));
+        } else {
+            setLobsMulti(getFilters(filterData, 'lob'));
+            setDeviceTypesMulti(getFilters(filterData, 'deviceType'));
+            setBookingTypesMulti(getFilters(filterData, 'bookingType'));
+            setEgSiteURLMulti(getFilters(filterData, 'egSiteUrl'));
+        }
+    };
+
     // eslint-disable-next-line complexity
     const handleMultiChange = (event, handler) => {
         const newValuesOnChange = (event || []).map((item) => item.value);
         if (handler === 'lob') {
             setSelectedLobMulti(newValuesOnChange);
         } else if (handler === 'brand') {
+            modifyFilters(newValuesOnChange);
             setSelectedBrandMulti(newValuesOnChange);
         } else if (handler === 'deviceType') {
             setSelectedDeviceTypeMulti(newValuesOnChange);
