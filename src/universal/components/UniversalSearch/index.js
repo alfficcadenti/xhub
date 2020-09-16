@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import './styles.less';
 import {SearchableList} from '@homeaway/react-searchable-list';
 import {Token} from '@homeaway/react-input-tokenize';
+import {filterArrayFormatted} from '../../pages/utils';
 
 const UniversalSearch = ({onFilterChange, suggestionMapping, suggestions}) => {
     const [keyTags, setKeyTags] = useState([]);
@@ -19,15 +20,27 @@ const UniversalSearch = ({onFilterChange, suggestionMapping, suggestions}) => {
         document.activeElement.blur();
     };
 
+    const checkIfValueExists = (value, inputValue) => {
+        const filterNewFormat = filterArrayFormatted(inputValue);
+        const lastSelectionItem = inputValue[inputValue.length - 1];
+        const foundSelection = filterNewFormat.find((item) => item.key === lastSelectionItem.key);
+
+        return foundSelection && foundSelection.values.includes(value);
+    };
+
     const onChange = ([selection]) => {
         try {
             const newFieldSelection = [...fieldSelection];
             if (isKeySelection) {
                 newFieldSelection.push({key: selection.key, value: ''});
+            } else if (checkIfValueExists(selection, newFieldSelection)) {
+                setValueToggle(!valueToggle);
+                newFieldSelection.pop();
             } else {
                 setValueToggle(!valueToggle);
                 newFieldSelection[newFieldSelection.length - 1].value = selection;
             }
+
             setFieldSelection(newFieldSelection);
             setIsKeySelection(!isKeySelection);
             onClear();

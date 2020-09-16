@@ -12,6 +12,7 @@ import {
 } from '../../constants';
 import {
     checkResponse,
+    filterArrayFormatted,
     getBrand,
     getListOfUniqueProperties,
     getUniqueByProperty,
@@ -20,7 +21,6 @@ import {
 import './styles.less';
 import {adjustTicketProperties} from '../TicketTrends/incidentsHelper';
 import UniversalSearch from '../../components/UniversalSearch';
-import {filterArrayFormatted} from '../Finder/crUtils';
 import {Checkbox} from '@homeaway/react-form-components';
 
 
@@ -48,7 +48,6 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
     // annotations state
     const [enableAnnotations, setEnableAnnotations] = useState(false);
-    // const [selectedCategories, setSelectedCategories] = useState(initialCategories);
     const [selectedProducts, setSelectedProducts] = useState([]);
     const [selectedApplications, setSelectedApplications] = useState([]);
     const [selectedServiceTiers, setSelectedServiceTiers] = useState([]);
@@ -233,7 +232,6 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     ]);
 
     useEffect(() => {
-        let filteredRawAnnotations = [...annotations];
         const categoryOptions = [];
         let filteredRawSuggestions = {...suggestions};
 
@@ -271,7 +269,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
         setSuggestions(filteredRawSuggestions);
 
-        filteredRawAnnotations = filteredRawAnnotations.filter(({category}) => categoryOptions.includes(category));
+        const filteredRawAnnotations = annotations.filter(({category}) => categoryOptions.includes(category));
 
         setFilteredAnnotations(filteredRawAnnotations);
     }, [deploymentCategory, incidentCategory]);
@@ -315,6 +313,10 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
         fetchIncidents();
     }, [start, end]);
+
+    useEffect(() => {
+        setFilteredAnnotations((prevAnnotations) => ([...prevAnnotations, ...annotations]));
+    }, [annotations]);
 
     const handleDatetimeChange = ({start: startDateTimeStr, end: endDateTimeStr}, text) => {
         setPendingTimeRange(text || pendingTimeRange);

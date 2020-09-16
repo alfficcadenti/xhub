@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment/moment';
 import Tooltip from '@homeaway/react-tooltip';
-import {EG_BRAND, EXPEDIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND, EGENCIA_BRAND} from '../../constants';
+import {EG_BRAND, EGENCIA_BRAND, EXPEDIA_BRAND, HOTELS_COM_BRAND, VRBO_BRAND} from '../../constants';
 
 // eslint-disable-next-line complexity
 export const platformToBrand = (platform = '') => {
@@ -90,28 +90,7 @@ export const formatCRData = (filteredCRs = []) => filteredCRs
     }))
     .sort((a, b) => moment(a.Started).isBefore(b.Started));
 
-export const adjustCRsProperties = (CRs = []) => {
-    return CRs.map((t) => {
-        const result = {
-            ...t,
-            'Brand': platformToBrand(t.platform),
-        };
-        return result;
-    });
-};
-
-export const filterArrayFormatted = (inputArray = []) => {
-    const uniqueFields = [];
-    const arrayNewFormat = [];
-    inputArray.forEach((x) => {
-        if (x && x.key) {
-            if (uniqueFields.indexOf(x.key) === -1) {
-                uniqueFields.push(x.key);
-                arrayNewFormat.push({key: x.key, values: [x.value]});
-            } else {
-                arrayNewFormat.find((y) => y.key === x.key).values.push(x.value);
-            }
-        }
-    });
-    return arrayNewFormat;
-};
+export const adjustCRsProperties = (CRs = []) => CRs.map((t) => ({
+    ...t,
+    Brand: platformToBrand(t.platform),
+}));
