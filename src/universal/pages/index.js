@@ -9,8 +9,7 @@ export default [
         link: '/home',
         text: 'Home',
         component: require('./Home'),
-        hidden: true,
-        hiddenFromSearch: true
+        hidden: true
     },
     {
         category: '',
@@ -18,8 +17,7 @@ export default [
         link: '/landing-page',
         text: 'Landing Page',
         component: require('./LandingPage'),
-        hidden: true,
-        hiddenFromSearch: true
+        hidden: true
     },
     // AAT Dashboards
     {
@@ -37,8 +35,7 @@ export default [
         link: '/impulse',
         text: 'Impulse Dashboard',
         component: require('./Impulse'),
-        hidden: true,
-        hiddenFromSearch: true
+        hidden: true
     },
     {
         category: AAT,
