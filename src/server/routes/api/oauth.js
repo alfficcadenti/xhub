@@ -4,7 +4,7 @@ function login(request, response) {
         return request.oauthClient.login(request).then((id) => {
             const ttl = id.exp - id.iat;
             return response
-                .redirect('/home')
+                .redirect('/impulse')
                 .header('Set-Cookie', `access_token=${id.tokenDecoded.token};Path=/;HttpOnly;Max-Age=${ttl};`)
                 .header('Set-Cookie', `email=${id.email};Path=/;Max-Age=${ttl};`, {'append': true});
         }).catch((e) => {
@@ -14,7 +14,7 @@ function login(request, response) {
     }
     if ('access_token' in request.state) {
         return request.oauthClient.verify(request.state.access_token)
-            .then(() => response.redirect('/home'))
+            .then(() => response.redirect('/impulse'))
             .catch(() => response.redirect(request.oauthClient.authorizeUrl(request)));
     }
     return response.redirect(request.oauthClient.authorizeUrl(request));
@@ -23,7 +23,7 @@ function login(request, response) {
 /* Handler for logout */
 function logout(request, response) {
     return response
-        .redirect('/home')
+        .redirect('/impulse')
         .header('Set-Cookie', 'access_token=;Path=/;Max-Age=1;HttpOnly;')// erase cookies
         .header('Set-Cookie', 'access_token=;Path=/;Max-Age=1;', {'append': true});// erase cookies
 }

@@ -6,6 +6,7 @@ import BrandSelector from './BrandSelector';
 import Help from './Help';
 import Search from './Search';
 import {getBrand, getVisiblePages} from '../../pages/utils';
+import ALL_PAGES from '../../pages/index';
 import './styles.less';
 
 const DEFAULT_PAGE_INFO = {
@@ -68,7 +69,7 @@ const Header = ({selectedBrands, onBrandChange, brands}) => {
     return (
         <div className="header">
             {redirectLink && <Redirect push to={redirectLink} />}
-            <Link to={`/home${BRAND_QUERY}`} className="header--logo" >
+            <Link to={`/impulse${BRAND_QUERY}`} className="header--logo" >
                 {'OpXHub'}
             </Link>
             {CATEGORIES.map(renderCategoryDropdown)}
@@ -85,7 +86,7 @@ const Header = ({selectedBrands, onBrandChange, brands}) => {
                 onBlur={handleOnBlur}
                 onToggleSearch={handleToggleSearch}
                 selectedPages={selectedPages}
-                options={VISIBLE_PAGES.map(({text, link}) => ({label: text, value: link}))}
+                options={ALL_PAGES.map(({text, link}) => ({label: text, value: link}))}
             />
         </div>
     );
