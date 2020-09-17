@@ -29,21 +29,33 @@ describe('Impulse custom hooks', () => {
                 isLoading,
                 res,
                 error,
-                bookingTypes,
                 egSiteUrls,
-                deviceTypes,
+                setEgSiteURLMulti,
+                lobs,
+                setLobsMulti,
                 brands,
-                lobs
+                deviceTypes,
+                setDeviceTypesMulti,
+                bookingTypes,
+                setBookingTypesMulti,
+                filterData,
+                brandsFilterData
             ] = hook;
 
             expect(isLoading).eql(true);
             expect(res).eql([]);
-            expect(bookingTypes).eql({});
-            expect(egSiteUrls).eql({});
-            expect(deviceTypes).eql({});
-            expect(brands).eql({});
-            expect(lobs).eql({});
             expect(error).eql('');
+            expect(egSiteUrls).eql({});
+            expect(typeof (setEgSiteURLMulti)).eql('function');
+            expect(lobs).eql({});
+            expect(typeof (setLobsMulti)).eql('function');
+            expect(brands).eql({});
+            expect(deviceTypes).eql({});
+            expect(typeof (setDeviceTypesMulti)).eql('function');
+            expect(bookingTypes).eql({});
+            expect(typeof (setBookingTypesMulti)).eql('function');
+            expect(filterData).eql({});
+            expect(brandsFilterData).eql({});
         });
     });
 });

@@ -11,6 +11,8 @@ import {Divider} from '@homeaway/react-collapse';
 import {SVGIcon} from '@homeaway/react-svg';
 import {FILTER__16} from '@homeaway/svg-defs';
 import './styles.less';
+import {ALL_LOB, ALL_POS, ALL_BRANDS, ALL_DEVICES, ALL_BOOKING_TYPES} from '../../constants';
+import {getFilters, getFiltersForMultiKeys} from './impulseHandler';
 
 const startDateDefaultValue = moment().utc().subtract(3, 'days').startOf('minute');
 const endDateDefaultValue = moment().utc().endOf('minute');
@@ -23,7 +25,17 @@ const navLinks = [
         href: '/impulse'
     }
 ];
-import {ALL_LOB, ALL_POS, ALL_BRANDS, ALL_DEVICES, ALL_BOOKING_TYPES} from '../../constants';
+
+const getNowDate = () => moment().endOf('minute').toDate();
+const getLastDate = (value, unit) => moment().subtract(value, unit).startOf('minute').toDate();
+const getValue = (value, unit) => ({start: getLastDate(value, unit), end: getNowDate()});
+const getPresets = () => [
+    {text: 'Last 5 Minutes', value: getValue(6, 'minute')},
+    {text: 'Last 15 Minutes', value: getValue(15, 'minute')},
+    {text: 'Last 60 Minutes', value: getValue(60, 'minute')},
+    {text: 'Last 24 Hours', value: getValue(24, 'hours')},
+
+];
 
 const filterSelectionClass = 'filter-option-selection';
 const filterExpandClass = 'filter-option-expand';
@@ -40,15 +52,37 @@ const Impulse = (props) => {
     const [selectedBrandMulti, setSelectedBrandMulti] = useState([]);
     const [selectedDeviceTypeMulti, setSelectedDeviceTypeMulti] = useState([]);
     const [selectedBookingTypeMulti, setSelectedBookingTypeMulti] = useState([]);
+    const [chartSliced, setChartSliced] = useState(false);
     useQueryParamChange(newBrand, props.onBrandChange);
     useSelectedBrand(newBrand, props.onBrandChange, props.prevSelectedBrand);
-    const [isLoading, res, error, egSiteURLMulti, lobsMulti, brandsMulti, deviceTypesMulti, bookingTypesMulti] = useFetchBlipData(isApplyClicked, setIsApplyClicked, startDateTime, endDateTime, newBrand, props.prevSelectedBrand, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, selectedBookingTypeMulti);
+
+    const [isLoading, res, error, egSiteURLMulti, setEgSiteURLMulti, lobsMulti, setLobsMulti, brandsMulti, deviceTypesMulti, setDeviceTypesMulti, bookingTypesMulti, setBookingTypesMulti, filterData, brandsFilterData] = useFetchBlipData(isApplyClicked, setIsApplyClicked, startDateTime, endDateTime, newBrand, props.prevSelectedBrand, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, selectedBookingTypeMulti, chartSliced, setChartSliced);
+
+    const modifyFilters = (newValuesOnChange) => {
+        setSelectedLobMulti([]);
+        setSelectedDeviceTypeMulti([]);
+        setSelectedBookingTypeMulti([]);
+        setSelectedSiteURLMulti([]);
+        if (typeof newValuesOnChange !== 'undefined' && brandsFilterData !== null && newValuesOnChange.length > 0) {
+            setLobsMulti(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'lob'));
+            setDeviceTypesMulti(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'deviceType'));
+            setBookingTypesMulti(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'bookingType'));
+            setEgSiteURLMulti(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'egSiteUrl'));
+        } else {
+            setLobsMulti(getFilters(filterData, 'lob'));
+            setDeviceTypesMulti(getFilters(filterData, 'deviceType'));
+            setBookingTypesMulti(getFilters(filterData, 'bookingType'));
+            setEgSiteURLMulti(getFilters(filterData, 'egSiteUrl'));
+        }
+    };
+
     // eslint-disable-next-line complexity
     const handleMultiChange = (event, handler) => {
         const newValuesOnChange = (event || []).map((item) => item.value);
         if (handler === 'lob') {
             setSelectedLobMulti(newValuesOnChange);
         } else if (handler === 'brand') {
+            modifyFilters(newValuesOnChange);
             setSelectedBrandMulti(newValuesOnChange);
         } else if (handler === 'deviceType') {
             setSelectedDeviceTypeMulti(newValuesOnChange);
@@ -93,7 +127,8 @@ const Impulse = (props) => {
         <Divider heading={'Advance filters for Impulse'} id="advance-filters-divider" className="more-filters-divider" expanded={showMoreFilters}>
             <form className="search-form search-form__more">
                 <div className="filter-option">
-                    {renderMultiSelectFilters(selectedSiteURLMulti, egSiteURLMulti, 'egSiteUrl', ALL_POS, filterExpandClass)}
+                    {renderMultiSelectFilters(selectedDeviceTypeMulti, deviceTypesMulti, 'deviceType', ALL_DEVICES, filterSelectionClass)}
+                    {renderMultiSelectFilters(selectedBookingTypeMulti, bookingTypesMulti, 'bookingType', ALL_BOOKING_TYPES, filterSelectionClass)}
                 </div>
             </form>
         </Divider>
@@ -101,9 +136,9 @@ const Impulse = (props) => {
     const renderTabs = () => {
         switch (activeIndex) {
             case 0:
-                return <BookingTrends data={allData}/>;
+                return <BookingTrends data={allData} setStartDateTime={setStartDateTime} setEndDDateTime={setEndDDateTime} setChartSliced={setChartSliced}/>;
             default:
-                return <BookingTrends data={allData}/>;
+                return <BookingTrends data={allData} setStartDateTime={setStartDateTime} setEndDDateTime={setEndDDateTime} setChartSliced={setChartSliced}/>;
         }
     };
     return (
@@ -116,12 +151,12 @@ const Impulse = (props) => {
                     onChange={handleDatetimeChange}
                     startDate={startDateTime.toDate()}
                     endDate={endDateTime.toDate()}
+                    presets={getPresets()}
                 />
                 <div className="filter-option">
                     {renderMultiSelectFilters(selectedBrandMulti, brandsMulti, 'brand', ALL_BRANDS, filterSelectionClass)}
                     {renderMultiSelectFilters(selectedLobMulti, lobsMulti, 'lob', ALL_LOB, filterSelectionClass)}
-                    {renderMultiSelectFilters(selectedDeviceTypeMulti, deviceTypesMulti, 'deviceType', ALL_DEVICES, filterSelectionClass)}
-                    {renderMultiSelectFilters(selectedBookingTypeMulti, bookingTypesMulti, 'bookingType', ALL_BOOKING_TYPES, filterSelectionClass)}
+                    {renderMultiSelectFilters(selectedSiteURLMulti, egSiteURLMulti, 'egSiteUrl', ALL_POS, filterExpandClass)}
                     <button
                         type="button"
                         className="apply-button btn btn-primary active"
