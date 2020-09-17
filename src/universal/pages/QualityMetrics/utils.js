@@ -48,6 +48,8 @@ export const mapPriority = (p) => {
     return NOT_PRIORITIZED_LABEL;
 };
 
+export const getTicketIds = (data) => Object.values(data).reduce((acc, {ticketIds}) => [...acc, ...ticketIds], []);
+
 export const formatBarChartData = (data) => {
     return Object.entries(data)
         .map(([date, {p1 = 0, p2 = 0, p3 = 0, p4 = 0, totalTickets = 0, ticketIds = []}]) => {

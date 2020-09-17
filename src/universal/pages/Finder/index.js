@@ -11,7 +11,7 @@ import {ChangeRequests} from './tabs/index';
 import {useFetchCRs} from './hooks';
 import {useSelectedBrand, useQueryParamChange, useFetchProductMapping} from '../hooks';
 import './styles.less';
-import {filterArrayFormatted} from './crUtils';
+import {filterArrayFormatted} from '../utils';
 
 const startDateDefaultValue = moment().subtract(1, 'days').format(DATE_FORMAT);
 const endDateDefaultValue = moment().format(DATE_FORMAT);

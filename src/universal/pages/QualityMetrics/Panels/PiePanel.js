@@ -8,7 +8,7 @@ import {mapPriority, findAndFormatTicket} from '../utils';
 import {NOT_PRIORITIZED_LABEL} from '../constants';
 import {CHART_COLORS} from '../../../constants';
 
-const PiePanel = ({title, info, tickets, groupBy}) => {
+const PiePanel = ({title, info, groupBy, tickets, openDefectTicketIds}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [chartData, setChartData] = useState([]);
@@ -26,6 +26,9 @@ const PiePanel = ({title, info, tickets, groupBy}) => {
             Object.values(tickets.portfolioTickets || {})
                 .forEach((portfolioTickets) => {
                     Object.values(portfolioTickets).forEach((ticketDetail) => {
+                        if (!openDefectTicketIds.includes(ticketDetail.defectNumber)) {
+                            return;
+                        }
                         const groupKey = getGroupKey(ticketDetail);
                         if (!counter[groupKey]) {
                             counter[groupKey] = {counts: 0, tickets: []};
@@ -48,7 +51,7 @@ const PiePanel = ({title, info, tickets, groupBy}) => {
             setIsLoading(false);
         };
         fetchData();
-    }, [tickets, groupBy]);
+    }, [groupBy, tickets, openDefectTicketIds]);
 
     const getClickHandler = (cellName, cellTickets) => () => {
         const getGroupKey = groupBy === 'Priority'

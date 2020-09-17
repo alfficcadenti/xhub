@@ -5,6 +5,7 @@ import {
     formatDefect,
     findAndFormatTicket,
     mapPriority,
+    getTicketIds,
     formatBarChartData,
     formatTTRData,
     formatWoWData,
@@ -71,6 +72,13 @@ describe('Quality Metrics Util', () => {
         expect(mapPriority('6')).to.eql(NOT_PRIORITIZED_LABEL);
         expect(mapPriority()).to.eql(NOT_PRIORITIZED_LABEL);
         expect(mapPriority('-')).to.eql(NOT_PRIORITIZED_LABEL);
+    });
+
+    it('getTicketIds', () => {
+        expect(getTicketIds({
+            '2020-03-22': {p4: 2, weekStartDate: '2020-03-22', weekEndDate: '2020-03-28', ticketIds: ['KES-2391', 'AND-17284']},
+            '2020-04-05': {p3: 1, weekStartDate: '2020-04-05', weekEndDate: '2020-05-11', ticketIds: ['KES-2494']}
+        })).to.eql(['KES-2391', 'AND-17284', 'KES-2494']);
     });
 
     it('formatBarChartData', () => {
