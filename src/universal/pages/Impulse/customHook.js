@@ -33,11 +33,14 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
     const [brandsMulti, setBrandMulti] = useState({});
     const [deviceTypeMulti, setDeviceTypesMulti] = useState({});
     const [bookingTypeMulti, setBookingTypesMulti] = useState({});
+    const [brandsFilterData, setBrandsFilterData] = useState({});
+    const [filterData, setFilterData] = useState({});
     const isMount = useIsMount();
     const getFilter = () => {
         fetch(`/v1/bookings/filters?filter=lob,brand,egSiteUrl,deviceType,bookingType,brandGroupName${getBrandQueryParam(IMPULSE_MAPPING, globalBrandName)}`)
             .then(checkResponse)
             .then((respJson) => {
+                setFilterData(respJson);
                 setEgSiteURLMulti(getFilters(respJson, 'egSiteUrl'));
                 setLobsMulti(getFilters(respJson, 'lob'));
                 setBrandMulti(getFilters(respJson, 'brand'));
@@ -49,6 +52,18 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
                 console.error(err);
             });
     };
+    const getBrandsFilterData = () => {
+        fetch('/v1/bookings/filters/brands')
+            .then(checkResponse)
+            .then((respJson) => {
+                setBrandsFilterData(respJson);
+            })
+            .catch((err) => {
+                // eslint-disable-next-line no-console
+                console.error(err);
+            });
+    };
+
     const getData = () => {
         setIsLoading(true);
         fetch(`/v1/bookings/count${getQueryString(startDate, endDate, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, selectedBookingTypeMulti)}`)
@@ -82,6 +97,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
         if (isMount) {
             getData();
             getFilter();
+            getBrandsFilterData();
         } else if (chartSliced || isApplyClicked) {
             getData();
         }
@@ -94,10 +110,16 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
         res,
         error,
         egSiteURLMulti,
+        setEgSiteURLMulti,
         lobsMulti,
+        setLobsMulti,
         brandsMulti,
         deviceTypeMulti,
-        bookingTypeMulti
+        setDeviceTypesMulti,
+        bookingTypeMulti,
+        setBookingTypesMulti,
+        filterData,
+        brandsFilterData
     ];
 };
 
