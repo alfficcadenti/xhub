@@ -9,9 +9,9 @@ import {
 } from '../constants';
 import ALL_PAGES from './index';
 
-export const getVisiblePages = (selectedBrands, hiddenField, pages = [...ALL_PAGES]) => {
-    return pages.filter((page) => (
-        !page[hiddenField] && (!page.brands || page.brands.filter((brand) => selectedBrands.includes(brand)).length > 0)
+export const getVisiblePages = (selectedBrands, pages = [...ALL_PAGES]) => {
+    return pages.filter(({hidden, brands}) => (
+        !hidden && (!brands || brands.filter((brand) => selectedBrands.includes(brand)).length > 0)
     ));
 };
 

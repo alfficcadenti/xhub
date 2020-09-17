@@ -6,6 +6,7 @@ import BrandSelector from './BrandSelector';
 import Help from './Help';
 import Search from './Search';
 import {getBrand, getVisiblePages} from '../../pages/utils';
+import ALL_PAGES from '../../pages/index';
 import './styles.less';
 
 const DEFAULT_PAGE_INFO = {
@@ -24,7 +25,7 @@ const Header = ({selectedBrands, onBrandChange, brands}) => {
     const searchInput = useRef(null);
 
     const BRAND_QUERY = `?selectedBrand=${selectedBrands[0]}`;
-    const VISIBLE_PAGES = getVisiblePages(selectedBrands, 'hidden');
+    const VISIBLE_PAGES = getVisiblePages(selectedBrands);
     const CATEGORIES = VISIBLE_PAGES.reduce((acc, {category}) => (acc.includes(category) ? acc : [...acc, category]), []);
 
     const handleOnBlur = () => {
@@ -85,7 +86,7 @@ const Header = ({selectedBrands, onBrandChange, brands}) => {
                 onBlur={handleOnBlur}
                 onToggleSearch={handleToggleSearch}
                 selectedPages={selectedPages}
-                options={getVisiblePages(selectedBrands, 'hiddenFromSearch').map(({text, link}) => ({label: text, value: link}))}
+                options={ALL_PAGES.map(({text, link}) => ({label: text, value: link}))}
             />
         </div>
     );

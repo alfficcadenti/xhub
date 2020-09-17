@@ -230,7 +230,7 @@ describe('getVisiblePages', () => {
     it('displays only visible pages', () => {
         const visibleIds = ['visible-a', 'visible-b'];
         const pages = [{id: 'hidden', hidden: true}, {id: visibleIds[0], hidden: false}, {id: visibleIds[1]}];
-        const result = getVisiblePages([VRBO_BRAND], 'hidden', pages);
+        const result = getVisiblePages([VRBO_BRAND], pages);
         expect(result.length).to.be.equal(2);
         expect(result[0].id).to.be.equal(visibleIds[0]);
         expect(result[1].id).to.be.equal(visibleIds[1]);
@@ -238,7 +238,7 @@ describe('getVisiblePages', () => {
     it('displays pages be whitelisted brands', () => {
         const visibleIds = ['brand-a', 'brand-b'];
         const pages = [{id: visibleIds[0], brands: [VRBO_BRAND]}, {id: 'hidden', brands: [HOTELS_COM_BRAND]}, {id: visibleIds[1]}];
-        const result = getVisiblePages([VRBO_BRAND], 'hidden', pages);
+        const result = getVisiblePages([VRBO_BRAND], pages);
         expect(result.length).to.be.equal(2);
         expect(result[0].id).to.be.equal(visibleIds[0]);
         expect(result[1].id).to.be.equal(visibleIds[1]);
