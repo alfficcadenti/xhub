@@ -27,6 +27,13 @@ module.exports.impulseBookingDataService = {
     handler: getHandler(getHandlerParams('bookingsImpulseCount'))
 };
 
+module.exports.impulseBrandsService = {
+    method: 'GET',
+    path: '/v1/bookings/filters/brands',
+    config: getConfig('impulse-brands-data-api-v1-get'),
+    handler: getHandler(getHandlerParams('bookingsImpulseBrands'))
+};
+
 module.exports.impulseFiltersService = {
     method: 'GET',
     path: '/v1/bookings/filters/{param*}',
