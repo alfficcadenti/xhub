@@ -5,7 +5,7 @@ module.exports = {
     options: {
         id: 'root',
         handler(request, h) {
-            return h.redirect('/home');
+            return h.redirect('/impulse');
         }
     }
 };
