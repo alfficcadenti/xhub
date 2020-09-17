@@ -24,7 +24,7 @@ const Header = ({selectedBrands, onBrandChange, brands}) => {
     const searchInput = useRef(null);
 
     const BRAND_QUERY = `?selectedBrand=${selectedBrands[0]}`;
-    const VISIBLE_PAGES = getVisiblePages(selectedBrands);
+    const VISIBLE_PAGES = getVisiblePages(selectedBrands, 'hidden');
     const CATEGORIES = VISIBLE_PAGES.reduce((acc, {category}) => (acc.includes(category) ? acc : [...acc, category]), []);
 
     const handleOnBlur = () => {
@@ -68,7 +68,7 @@ const Header = ({selectedBrands, onBrandChange, brands}) => {
     return (
         <div className="header">
             {redirectLink && <Redirect push to={redirectLink} />}
-            <Link to={`/home${BRAND_QUERY}`} className="header--logo" >
+            <Link to={`/impulse${BRAND_QUERY}`} className="header--logo" >
                 {'OpXHub'}
             </Link>
             {CATEGORIES.map(renderCategoryDropdown)}
@@ -85,7 +85,7 @@ const Header = ({selectedBrands, onBrandChange, brands}) => {
                 onBlur={handleOnBlur}
                 onToggleSearch={handleToggleSearch}
                 selectedPages={selectedPages}
-                options={VISIBLE_PAGES.map(({text, link}) => ({label: text, value: link}))}
+                options={getVisiblePages(selectedBrands, 'hiddenFromSearch').map(({text, link}) => ({label: text, value: link}))}
             />
         </div>
     );

@@ -9,7 +9,8 @@ export default [
         link: '/home',
         text: 'Home',
         component: require('./Home'),
-        hidden: true
+        hidden: true,
+        hiddenFromSearch: true
     },
     {
         category: '',
@@ -17,7 +18,8 @@ export default [
         link: '/landing-page',
         text: 'Landing Page',
         component: require('./LandingPage'),
-        hidden: true
+        hidden: true,
+        hiddenFromSearch: true
     },
     // AAT Dashboards
     {
@@ -26,7 +28,8 @@ export default [
         link: '/checkout-fci',
         text: 'Checkout FCI',
         component: require('./CheckoutFCI'),
-        brands: [EXPEDIA_BRAND]
+        brands: [EXPEDIA_BRAND],
+        hidden: true
     },
     {
         category: AAT,
@@ -34,7 +37,8 @@ export default [
         link: '/impulse',
         text: 'Impulse Dashboard',
         component: require('./Impulse'),
-        hidden: true
+        hidden: true,
+        hiddenFromSearch: true
     },
     {
         category: AAT,
@@ -50,7 +54,8 @@ export default [
         link: '/success-rates',
         text: 'Success Rates',
         component: require('./SuccessRates'),
-        brands: [EXPEDIA_BRAND, VRBO_BRAND]
+        brands: [EXPEDIA_BRAND, VRBO_BRAND],
+        hidden: true
     },
     // PHAR Dashboards
     {
