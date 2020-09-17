@@ -8,11 +8,16 @@ export const getFilters = (data = [], typeOfFilter) => data.filter((item) => ite
     label: a
 })).sort((A, B) => A.value.localeCompare(B.value));
 
-export const getFiltersForMultiKeys = (keys = [], data = {}, typeOfFilter) => keys.flatMap((key) =>
-    data[key].filter((obj) => obj.tag === typeOfFilter).map((item) => item.values)[0].map((a) => ({
-        value: a,
-        label: a
-    })).sort((A, B) => A.value.localeCompare(B.value))).filter((v, i, a) => a.findIndex((t) => (t.label === v.label && t.value === v.value)) === i);
+export const getFiltersForMultiKeys = (keys = [], data = {}, typeOfFilter) => keys
+    .flatMap((key) => data[key]
+        .filter((obj) => obj.tag === typeOfFilter)
+        .map((item) => item.values)[0]
+        .map((a) => ({
+            value: a,
+            label: a
+        }))
+        .sort((A, B) => A.value.localeCompare(B.value)))
+    .filter((v, i, a) => a.findIndex((t) => (t.label === v.label && t.value === v.value)) === i);
 
 export const getQueryParamMulti = (key, value, condition, defaultValue = '') => condition ? `&${key}=${value.join(',')}` : defaultValue;
 export const getBrandQueryParam = (IMPULSE_MAPPING, globalBrandName) => {

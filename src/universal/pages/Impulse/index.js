@@ -50,7 +50,7 @@ const Impulse = (props) => {
         setSelectedDeviceTypeMulti([]);
         setSelectedBookingTypeMulti([]);
         setSelectedSiteURLMulti([]);
-        if (typeof newValuesOnChange !== 'undefined' && brandsFilterData !== null && newValuesOnChange.length !== null && newValuesOnChange.length > 0) {
+        if (typeof newValuesOnChange !== 'undefined' && brandsFilterData !== null && newValuesOnChange.length > 0) {
             setLobsMulti(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'lob'));
             setDeviceTypesMulti(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'deviceType'));
             setBookingTypesMulti(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'bookingType'));
