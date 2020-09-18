@@ -15,7 +15,7 @@ module.exports.defects = {
 
 module.exports.incidents = {
     method: 'GET',
-    path: '/v1/incidents/{param*}',
+    path: '/v1/incidents',
     config: getConfig('incidents-get'),
     handler: getHandler(getHandlerParams('incidents'))
 };
@@ -25,6 +25,13 @@ module.exports.incidentsV2 = {
     path: '/v2/incidents/{param*}',
     config: getConfig('incidents-get-v2'),
     handler: getHandler(getHandlerParams('incidentsV2'))
+};
+
+module.exports.impulseIncidents = {
+    method: 'GET',
+    path: '/v1/incidents/impulse',
+    config: getConfig('impulse-incidents-get'),
+    handler: getHandler(getHandlerParams('impulseIncidents'))
 };
 
 module.exports.epsIncidents = {

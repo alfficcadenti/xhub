@@ -35,6 +35,11 @@
               "method": "GET",
               "operation": "GET_INCIDENTS_V2"
             },
+            "impulseIncidents": {
+              "path": "/v1/incidents/impulse",
+              "method": "GET",
+              "operation": "GET_IMPULSE_INCIDENTS_V1"
+            },
             "epsIncidents": {
               "path": "/v1/eps/incidents",
               "method": "GET",
@@ -71,6 +76,11 @@
               "method": "GET",
               "operation": "GET_INCIDENTS_V2"
             },
+            "impulseIncidents": {
+              "path": "/v1/incidents/impulse",
+              "method": "GET",
+              "operation": "GET_IMPULSE_INCIDENTS_V1"
+            },
             "epsIncidents": {
               "path": "/v1/eps/incidents",
               "method": "GET",
@@ -106,6 +116,11 @@
               "path": "/v2/incidents",
               "method": "GET",
               "operation": "GET_INCIDENTS_V2"
+            },
+            "impulseIncidents": {
+              "path": "/v1/incidents/impulse",
+              "method": "GET",
+              "operation": "GET_IMPULSE_INCIDENTS_V1"
             },
             "epsIncidents": {
               "path": "/v1/eps/incidents",
@@ -166,6 +181,16 @@
               "method": "GET",
               "operation": "GET_booking_data"
             },
+            "bookingsImpulseRevloss": {
+              "path": "/v1/bookings/revenueLoss",
+              "method": "GET",
+              "operation": "GET_impulse_booking_revloss"
+            },
+            "bookingsImpulseRevlossImpact": {
+              "path": "/v1/bookings/revenueLoss/impact",
+              "method": "GET",
+              "operation": "GET_impulse_booking_revloss_impact"
+            },
             "funnelView": {
               "path": "/v1/funnelView",
               "method": "GET",
@@ -211,6 +236,16 @@
               "path": "/v1/bookings/filters",
               "method": "GET",
               "operation": "GET_booking_data"
+            },
+            "bookingsImpulseRevloss": {
+              "path": "/v1/bookings/revenueLoss",
+              "method": "GET",
+              "operation": "GET_impulse_booking_revloss"
+            },
+            "bookingsImpulseRevlossImpact": {
+              "path": "/v1/bookings/revenueLoss/impact",
+              "method": "GET",
+              "operation": "GET_impulse_booking_revloss_impact"
             },
             "funnelView": {
               "path": "/v1/funnelView",
@@ -258,6 +293,16 @@
               "method": "GET",
               "operation": "GET_booking_data"
             },
+            "bookingsImpulseRevloss": {
+              "path": "/v1/bookings/revenueLoss",
+              "method": "GET",
+              "operation": "GET_impulse_booking_revloss"
+            },
+            "bookingsImpulseRevlossImpact": {
+              "path": "/v1/bookings/revenueLoss/impact",
+              "method": "GET",
+              "operation": "GET_impulse_booking_revloss_impact"
+            },
             "funnelView": {
               "path": "/v1/funnelView",
               "method": "GET",
@@ -293,6 +338,16 @@
               "path": "/v1/bookings/filters",
               "method": "GET",
               "operation": "GET_booking_data"
+            },
+            "bookingsImpulseRevloss": {
+              "path": "/v1/bookings/revenueLoss",
+              "method": "GET",
+              "operation": "GET_impulse_booking_revloss"
+            },
+            "bookingsImpulseRevlossImpact": {
+              "path": "/v1/bookings/revenueLoss/impact",
+              "method": "GET",
+              "operation": "GET_impulse_booking_revloss_impact"
             },
             "funnelView": {
               "path": "/v1/funnelView",

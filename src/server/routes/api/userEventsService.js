@@ -41,6 +41,20 @@ module.exports.impulseFiltersService = {
     handler: getHandler(getHandlerParams('bookingsImpulseFilters'))
 };
 
+module.exports.impulseRevloss = {
+    method: 'GET',
+    path: '/v1/bookings/revenueLoss',
+    config: getConfig('impulse-revloss-api-v1-get'),
+    handler: getHandler(getHandlerParams('bookingsImpulseRevloss'))
+};
+
+module.exports.impulseRevlossImpact = {
+    method: 'GET',
+    path: '/v1/bookings/revenueLoss/impact',
+    config: getConfig('impulse-revloss-impact-api-v1-get'),
+    handler: getHandler(getHandlerParams('bookingsImpulseRevlossImpact'))
+};
+
 module.exports.funnelViewUserEvents = {
     method: 'GET',
     path: '/user-events-api/v1/funnelView/{param*}',
