@@ -14,7 +14,7 @@ import {
     mapEpsData,
     parseDurationToMs,
     getBrand,
-    filterArrayFormatted
+    adjustInputValue
 } from './utils';
 import {EG_BRAND, VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../constants';
 
@@ -348,9 +348,9 @@ describe('getBrand()', () => {
     });
 });
 
-describe('filterArrayFormatted()', () => {
+describe('adjustInputValue()', () => {
     it('returns empty array if input undefined', () => {
-        const result = filterArrayFormatted();
+        const result = adjustInputValue();
         expect(result).to.be.eql([]);
     });
 
@@ -360,13 +360,13 @@ describe('filterArrayFormatted()', () => {
             {key: 'applicationName', value: 'airchangeservice'}];
         const mockResult = [{key: 'productName', values: ['Acquisition']},
             {key: 'applicationName', values: ['air-orderstore', 'airchangeservice']}];
-        const result = filterArrayFormatted(mockArray);
+        const result = adjustInputValue(mockArray);
         expect(result).to.be.eql(mockResult);
     });
 
     it('returns empty array if array in input do not have key value format elements', () => {
         const mockArray = [{keys: 'productName', value: 'Acquisition'}];
-        const result = filterArrayFormatted(mockArray);
+        const result = adjustInputValue(mockArray);
         expect(result).to.be.eql([]);
     });
 });

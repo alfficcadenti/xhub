@@ -12,7 +12,7 @@ import {
 } from '../../constants';
 import {
     checkResponse,
-    filterArrayFormatted,
+    adjustInputValue,
     getBrand,
     getListOfUniqueProperties,
     getUniqueByProperty,
@@ -54,7 +54,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [selectedStatuses, setSelectedStatuses] = useState([]);
     const [selectedPriorities, setSelectedPriorities] = useState([]);
 
-    const [annotations, setAnnotations] = useState([]);
+    const [deploymentAnnotations, setDeploymentAnnotations] = useState([]);
+    const [incidentAnnotations, setIncidentAnnotations] = useState([]);
     const [filteredAnnotations, setFilteredAnnotations] = useState([]);
 
     const [deploymentCategory, setDeploymentCategory] = useState(true);
@@ -187,7 +188,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                         category: 'deployment'
                     }));
 
-                    setAnnotations((prevAnnotations) => ([...prevAnnotations, ...adjustedAnnotations]));
+                    setDeploymentAnnotations(adjustedAnnotations);
                 })
                 .catch((err) => {
                     // eslint-disable-next-line no-console
@@ -199,30 +200,30 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     }, [start, end]);
 
     useEffect(() => {
-        let deploymentAnnotations = annotations.filter(({category}) => category === 'deployment');
-        let incidentAnnotations = annotations.filter(({category}) => category === 'incident');
+        let filteredDeploymentAnnotations = [...deploymentAnnotations];
+        let filteredIncidentAnnotations = [...incidentAnnotations];
 
         if (selectedProducts.length) {
-            deploymentAnnotations = deploymentAnnotations.filter(({productName}) => selectedProducts.includes(productName));
+            filteredDeploymentAnnotations = filteredDeploymentAnnotations.filter(({productName}) => selectedProducts.includes(productName));
         }
 
         if (selectedApplications.length) {
-            deploymentAnnotations = deploymentAnnotations.filter(({serviceName}) => selectedApplications.includes(serviceName.toLowerCase()));
+            filteredDeploymentAnnotations = filteredDeploymentAnnotations.filter(({serviceName}) => selectedApplications.includes(serviceName.toLowerCase()));
         }
 
         if (selectedServiceTiers.length) {
-            deploymentAnnotations = deploymentAnnotations.filter(({serviceTier}) => selectedServiceTiers.includes(serviceTier));
+            filteredDeploymentAnnotations = filteredDeploymentAnnotations.filter(({serviceTier}) => selectedServiceTiers.includes(serviceTier));
         }
 
         if (selectedStatuses.length) {
-            incidentAnnotations = incidentAnnotations.filter(({status}) => selectedStatuses.includes(status));
+            filteredIncidentAnnotations = filteredIncidentAnnotations.filter(({status}) => selectedStatuses.includes(status));
         }
 
         if (selectedPriorities.length) {
-            incidentAnnotations = incidentAnnotations.filter(({priority}) => selectedPriorities.includes(priority));
+            filteredIncidentAnnotations = filteredIncidentAnnotations.filter(({priority}) => selectedPriorities.includes(priority));
         }
 
-        setFilteredAnnotations([...deploymentAnnotations, ...incidentAnnotations]);
+        setFilteredAnnotations([...filteredDeploymentAnnotations, ...filteredIncidentAnnotations]);
     }, [
         selectedProducts,
         selectedApplications,
@@ -231,22 +232,22 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         selectedPriorities
     ]);
 
-    useEffect(() => {
+    const filterCategories = () => {
         const categoryOptions = [];
         let filteredRawSuggestions = {...suggestions};
 
         if (deploymentCategory) {
             categoryOptions.push('deployment');
 
-            if (!filteredRawSuggestions.productName) {
+            if (!filteredRawSuggestions.productName && productNameSuggestions.length) {
                 filteredRawSuggestions.productName = productNameSuggestions;
             }
 
-            if (!filteredRawSuggestions.serviceTier) {
+            if (!filteredRawSuggestions.serviceTier && serviceTierSuggestions.length) {
                 filteredRawSuggestions.serviceTier = serviceTierSuggestions;
             }
 
-            if (!filteredRawSuggestions.applicationName) {
+            if (!filteredRawSuggestions.applicationName && applicationNameSuggestions.length) {
                 filteredRawSuggestions.applicationName = applicationNameSuggestions;
             }
         } else {
@@ -258,8 +259,11 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         if (incidentCategory) {
             categoryOptions.push('incident');
 
-            if (!filteredRawSuggestions.incidentPriority) {
+            if (!filteredRawSuggestions.incidentPriority && incidentPrioritySuggestions.length) {
                 filteredRawSuggestions.incidentPriority = incidentPrioritySuggestions;
+            }
+
+            if (!filteredRawSuggestions.incidentStatus && incidentStatusSuggestions.length) {
                 filteredRawSuggestions.incidentStatus = incidentStatusSuggestions;
             }
         } else {
@@ -269,9 +273,14 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
         setSuggestions(filteredRawSuggestions);
 
-        const filteredRawAnnotations = annotations.filter(({category}) => categoryOptions.includes(category));
+        const allAnnotations = [...deploymentAnnotations, ...incidentAnnotations];
+        const filteredRawAnnotations = allAnnotations.filter(({category}) => categoryOptions.includes(category));
 
         setFilteredAnnotations(filteredRawAnnotations);
+    };
+
+    useEffect(() => {
+        filterCategories();
     }, [deploymentCategory, incidentCategory]);
 
     useEffect(() => {
@@ -298,7 +307,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
                     setIncidentPrioritySuggestions(incidentPriority);
                     setIncidentStatusSuggestions(incidentStatus);
-                    setAnnotations((prevAnnotations) => ([...prevAnnotations, ...adjustedUniqueTickets]));
+                    setIncidentAnnotations(adjustedUniqueTickets);
                     setSuggestions((prevSuggestions) => ({
                         ...prevSuggestions,
                         incidentPriority,
@@ -315,8 +324,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     }, [start, end]);
 
     useEffect(() => {
-        setFilteredAnnotations((prevAnnotations) => ([...prevAnnotations, ...annotations]));
-    }, [annotations]);
+        filterCategories();
+    }, [deploymentAnnotations, incidentAnnotations]);
 
     const handleDatetimeChange = ({start: startDateTimeStr, end: endDateTimeStr}, text) => {
         setPendingTimeRange(text || pendingTimeRange);
@@ -359,22 +368,22 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     );
 
     const onFilterChange = (value) => {
-        const filterNewFormat = filterArrayFormatted(value);
+        const adjustedInputValue = adjustInputValue(value);
         const hasValues = (item) => !!item.values.filter(isNotEmptyString).length;
 
-        const productName = filterNewFormat.find((item) => item.key === 'productName');
+        const productName = adjustedInputValue.find((item) => item.key === 'productName');
         const newProducts = (productName && hasValues(productName)) ? productName.values : [];
 
-        const applicationName = filterNewFormat.find((item) => item.key === 'applicationName');
+        const applicationName = adjustedInputValue.find((item) => item.key === 'applicationName');
         const newApplications = (applicationName && hasValues(applicationName)) ? applicationName.values : [];
 
-        const serviceTier = filterNewFormat.find((item) => item.key === 'serviceTier');
+        const serviceTier = adjustedInputValue.find((item) => item.key === 'serviceTier');
         const newServiceTiers = (serviceTier && hasValues(serviceTier)) ? serviceTier.values : [];
 
-        const incidentStatus = filterNewFormat.find((item) => item.key === 'incidentStatus');
+        const incidentStatus = adjustedInputValue.find((item) => item.key === 'incidentStatus');
         const newStatuses = (incidentStatus && hasValues(incidentStatus)) ? incidentStatus.values : [];
 
-        const incidentPriority = filterNewFormat.find((item) => item.key === 'incidentPriority');
+        const incidentPriority = adjustedInputValue.find((item) => item.key === 'incidentPriority');
         const newPriorities = (incidentPriority && hasValues(incidentPriority)) ? incidentPriority.values : [];
 
         setSelectedProducts(newProducts);
