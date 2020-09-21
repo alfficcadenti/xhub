@@ -175,6 +175,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
     useEffect(() => {
         const fetchAnnotations = () => {
+            setDeploymentAnnotations([]);
             const dateQuery = start && end
                 ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
                 : '';
@@ -261,6 +262,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
     useEffect(() => {
         const fetchIncidents = () => {
+            setIncidentAnnotations([]);
             const dateQuery = start && end
                 ? `?fromDate=${moment(start).utc().format()}&toDate=${moment(end).utc().format()}`
                 : '';
