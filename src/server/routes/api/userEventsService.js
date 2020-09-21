@@ -43,7 +43,7 @@ module.exports.impulseFiltersService = {
 
 module.exports.impulseRevloss = {
     method: 'GET',
-    path: '/v1/bookings/revenueLoss/{param*}',
+    path: '/v1/bookings/revenueLoss/{impact*}',
     config: getConfig('impulse-revloss-api-v1-get'),
     handler: getHandler(Object.assign(getHandlerParams('bookingsImpulseRevloss'), {pathParam: 'impact'}))
 };
