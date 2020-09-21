@@ -256,3 +256,23 @@ export const adjustInputValue = (inputArray = []) => {
     });
     return adjustedInputValue;
 };
+
+export const addSuggestionType = (suggestions, type, items) => {
+    if (!suggestions[type] && items.length) {
+        suggestions[type] = items;
+    }
+    return suggestions;
+};
+
+export const getAnnotationsFilter = (selectedItems, property, toLowerCase = false) => (
+    toLowerCase
+        ? (a) => !selectedItems.length || selectedItems.includes(a[property]).toLowerCase()
+        : (a) => !selectedItems.length || selectedItems.includes(a[property])
+);
+
+export const filterNewSelectedItems = (input, key) => {
+    const items = input.find((item) => item.key === key);
+    return items && items.values && !!items.values.filter(isNotEmptyString).length
+        ? items.values
+        : [];
+};
