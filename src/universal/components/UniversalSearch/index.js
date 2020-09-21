@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import './styles.less';
 import {SearchableList} from '@homeaway/react-searchable-list';
 import {Token} from '@homeaway/react-input-tokenize';
-import {filterArrayFormatted} from '../../pages/utils';
+import {adjustInputValue} from '../../pages/utils';
 
 const UniversalSearch = ({onFilterChange, suggestionMapping, suggestions}) => {
     const [keyTags, setKeyTags] = useState([]);
@@ -21,9 +21,9 @@ const UniversalSearch = ({onFilterChange, suggestionMapping, suggestions}) => {
     };
 
     const checkIfValueExists = (value, inputValue) => {
-        const filterNewFormat = filterArrayFormatted(inputValue);
+        const adjustedInputValue = adjustInputValue(inputValue);
         const lastSelectionItem = inputValue[inputValue.length - 1];
-        const foundSelection = filterNewFormat.find((item) => item.key === lastSelectionItem.key);
+        const foundSelection = adjustedInputValue.find((item) => item.key === lastSelectionItem.key);
 
         return foundSelection && foundSelection.values.includes(value);
     };

@@ -14,7 +14,10 @@ import {
     mapEpsData,
     parseDurationToMs,
     getBrand,
-    filterArrayFormatted
+    adjustInputValue,
+    addSuggestionType,
+    getAnnotationsFilter,
+    filterNewSelectedItems
 } from './utils';
 import {EG_BRAND, VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../constants';
 
@@ -348,9 +351,9 @@ describe('getBrand()', () => {
     });
 });
 
-describe('filterArrayFormatted()', () => {
+describe('adjustInputValue()', () => {
     it('returns empty array if input undefined', () => {
-        const result = filterArrayFormatted();
+        const result = adjustInputValue();
         expect(result).to.be.eql([]);
     });
 
@@ -360,13 +363,95 @@ describe('filterArrayFormatted()', () => {
             {key: 'applicationName', value: 'airchangeservice'}];
         const mockResult = [{key: 'productName', values: ['Acquisition']},
             {key: 'applicationName', values: ['air-orderstore', 'airchangeservice']}];
-        const result = filterArrayFormatted(mockArray);
+        const result = adjustInputValue(mockArray);
         expect(result).to.be.eql(mockResult);
     });
 
     it('returns empty array if array in input do not have key value format elements', () => {
         const mockArray = [{keys: 'productName', value: 'Acquisition'}];
-        const result = filterArrayFormatted(mockArray);
+        const result = adjustInputValue(mockArray);
         expect(result).to.be.eql([]);
+    });
+});
+
+describe('addSuggestionType()', () => {
+    const serviceTiers = ['Tier 1', 'Tier 2', 'Tier 3'];
+    const productNames = ['testName'];
+    const suggestions = {
+        productName: productNames,
+        applicationName: [],
+        incidentPriority: [],
+        incidentStatus: []
+    };
+
+    it('returns updates suggestions if no property', () => {
+        const result = addSuggestionType(suggestions, 'serviceTier', serviceTiers);
+        expect(result.serviceTier).to.be.eql(serviceTiers);
+    });
+
+    it('returns unchanged suggestions if property already exists', () => {
+        const result = addSuggestionType(suggestions, 'productName', productNames);
+        expect(result.productName[0]).to.be.eql(productNames[0]);
+    });
+});
+
+describe('getAnnotationsFilter()', () => {
+    const tickets = [{
+        brand: 'Brand Expedia',
+        bucketTime: '2020-09-21 14:18',
+        businessJustification: 'Automated Deployment',
+        businessReason: 'Upgrade',
+        category: 'deployment',
+        serviceTier: 'Tier 1',
+        tags: ['LX Shopping', 'Expedia'],
+        teamContactDL: 'lxshop@expedia.com',
+        teamName: 'LX',
+        time: '2020-09-21 14:18'
+    }, {
+        brand: 'Brand Expedia',
+        bucketTime: '2020-09-21 14:21',
+        businessJustification: 'Automated Deployment',
+        businessReason: 'Upgrade',
+        category: 'deployment',
+        serviceName: 'activities-web',
+        serviceTier: 'Tier 1',
+        teamContactDL: 'lxshop@expedia.com',
+        teamName: 'LX',
+        time: '2020-09-21 14:21'
+    }, {
+        brand: 'eCommerce Platform',
+        bucketTime: '2020-09-21 12:13',
+        businessJustification: 'Automated Deployment',
+        businessReason: 'Upgrade',
+        category: 'deployment',
+        serviceTier: 'Tier 2',
+        teamContactDL: 'FlightCrewNotifications@expedia.com',
+        teamName: 'Air P&C',
+        time: '2020-09-21 12:13'
+    }];
+
+    it('returns properly filtered tickets', () => {
+        const result = tickets.filter(getAnnotationsFilter(['Tier 1'], 'serviceTier'));
+        expect(result.length).to.be.eql(2);
+    });
+
+    it('returns empty array when filter does not match', () => {
+        const result = tickets.filter(getAnnotationsFilter(['Tier 3'], 'serviceTier'));
+        expect(result.length).to.be.eql(0);
+    });
+});
+
+describe('filterNewSelectedItems()', () => {
+    const adjustedInputValue = [{
+        key: 'serviceTier',
+        values: ['Tier 3']
+    }, {
+        key: 'productName',
+        values: ['Core Services']
+    }];
+
+    it('returns correct filter option', () => {
+        const result = filterNewSelectedItems(adjustedInputValue, 'productName');
+        expect(result[0]).to.be.eql('Core Services');
     });
 });

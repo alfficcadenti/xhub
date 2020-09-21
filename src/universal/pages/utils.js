@@ -241,18 +241,38 @@ export const mapEpsData = (t) => {
     return result;
 };
 
-export const filterArrayFormatted = (inputArray = []) => {
+export const adjustInputValue = (inputArray = []) => {
     const uniqueFields = [];
-    const arrayNewFormat = [];
+    const adjustedInputValue = [];
     inputArray.forEach((x) => {
         if (x && x.key) {
             if (uniqueFields.indexOf(x.key) === -1) {
                 uniqueFields.push(x.key);
-                arrayNewFormat.push({key: x.key, values: [x.value]});
+                adjustedInputValue.push({key: x.key, values: [x.value]});
             } else {
-                arrayNewFormat.find((y) => y.key === x.key).values.push(x.value);
+                adjustedInputValue.find((y) => y.key === x.key).values.push(x.value);
             }
         }
     });
-    return arrayNewFormat;
+    return adjustedInputValue;
+};
+
+export const addSuggestionType = (suggestions, type, items) => {
+    if (!suggestions[type] && items.length) {
+        suggestions[type] = items;
+    }
+    return suggestions;
+};
+
+export const getAnnotationsFilter = (selectedItems, property, toLowerCase = false) => (
+    toLowerCase
+        ? (a) => !selectedItems.length || selectedItems.includes(a[property]).toLowerCase()
+        : (a) => !selectedItems.length || selectedItems.includes(a[property])
+);
+
+export const filterNewSelectedItems = (input, key) => {
+    const items = input.find((item) => item.key === key);
+    return items && items.values && !!items.values.filter(isNotEmptyString).length
+        ? items.values
+        : [];
 };
