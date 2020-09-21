@@ -15,9 +15,9 @@ module.exports.defects = {
 
 module.exports.incidents = {
     method: 'GET',
-    path: '/v1/incidents',
+    path: '/v1/incidents/{param*}',
     config: getConfig('incidents-get'),
-    handler: getHandler(getHandlerParams('incidents'))
+    handler: getHandler(Object.assign(getHandlerParams('incidents'), {pathParam: 'impulse'}))
 };
 
 module.exports.incidentsV2 = {
