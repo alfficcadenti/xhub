@@ -35,6 +35,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
     const [bookingTypeMulti, setBookingTypesMulti] = useState({});
     const [brandsFilterData, setBrandsFilterData] = useState({});
     const [filterData, setFilterData] = useState({});
+    const [annotations, setAnnotations] = useState([]);
     const isMount = useIsMount();
     const getFilter = () => {
         fetch(`/v1/bookings/filters?filter=lob,brand,egSiteUrl,deviceType,bookingType,brandGroupName${getBrandQueryParam(IMPULSE_MAPPING, globalBrandName)}`)
@@ -57,6 +58,27 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
             .then(checkResponse)
             .then((respJson) => {
                 setBrandsFilterData(respJson);
+            })
+            .catch((err) => {
+                // eslint-disable-next-line no-console
+                console.error(err);
+            });
+    };
+
+    const fetchIncidents = () => {
+        const queryString = `fromDate=${moment(startDate).utc().format('YYYY-MM-DD')}&toDate=${moment(endDate).utc().format('YYYY-MM-DD')}`;
+        fetch(`/v1/incidents/impulse?${queryString}`)
+            .then(checkResponse)
+            .then((incidents) => {
+                const annotationData = incidents.map((item) => ({
+                    ...item,
+                    incidentTime: moment.utc(item.startDate).valueOf(),
+                    category: 'incidents',
+                    time: moment.utc(item.startDate).valueOf(),
+                    revLoss: item.estimatedImpact[0].lobs.map((losses) => losses.revenueLoss !== 'NA' ? parseFloat(losses.revenueLoss) : 'NA').reduce((a, b) => a + b, 0)
+
+                }));
+                setAnnotations(annotationData);
             })
             .catch((err) => {
                 // eslint-disable-next-line no-console
@@ -98,8 +120,10 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
             getData();
             getFilter();
             getBrandsFilterData();
+            fetchIncidents();
         } else if (chartSliced || isApplyClicked) {
             getData();
+            fetchIncidents();
         }
         return () => {
             setIsApplyClicked(false);
@@ -119,7 +143,8 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
         bookingTypeMulti,
         setBookingTypesMulti,
         filterData,
-        brandsFilterData
+        brandsFilterData,
+        annotations
     ];
 };
 

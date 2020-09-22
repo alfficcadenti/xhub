@@ -13,6 +13,7 @@ import {FILTER__16} from '@homeaway/svg-defs';
 import './styles.less';
 import {ALL_LOB, ALL_POS, ALL_BRANDS, ALL_DEVICES, ALL_BOOKING_TYPES} from '../../constants';
 import {getFilters, getFiltersForMultiKeys} from './impulseHandler';
+import {Checkbox} from '@homeaway/react-form-components';
 
 const startDateDefaultValue = moment().utc().subtract(3, 'days').startOf('minute');
 const endDateDefaultValue = moment().utc().endOf('minute');
@@ -52,11 +53,13 @@ const Impulse = (props) => {
     const [selectedBrandMulti, setSelectedBrandMulti] = useState([]);
     const [selectedDeviceTypeMulti, setSelectedDeviceTypeMulti] = useState([]);
     const [selectedBookingTypeMulti, setSelectedBookingTypeMulti] = useState([]);
+    const [enableIncidents, setEnableIncidents] = useState(false);
     const [chartSliced, setChartSliced] = useState(false);
     useQueryParamChange(newBrand, props.onBrandChange);
     useSelectedBrand(newBrand, props.onBrandChange, props.prevSelectedBrand);
 
-    const [isLoading, res, error, egSiteURLMulti, setEgSiteURLMulti, lobsMulti, setLobsMulti, brandsMulti, deviceTypesMulti, setDeviceTypesMulti, bookingTypesMulti, setBookingTypesMulti, filterData, brandsFilterData] = useFetchBlipData(isApplyClicked, setIsApplyClicked, startDateTime, endDateTime, newBrand, props.prevSelectedBrand, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, selectedBookingTypeMulti, chartSliced, setChartSliced);
+
+    const [isLoading, res, error, egSiteURLMulti, setEgSiteURLMulti, lobsMulti, setLobsMulti, brandsMulti, deviceTypesMulti, setDeviceTypesMulti, bookingTypesMulti, setBookingTypesMulti, filterData, brandsFilterData, annotations] = useFetchBlipData(isApplyClicked, setIsApplyClicked, startDateTime, endDateTime, newBrand, props.prevSelectedBrand, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, selectedBookingTypeMulti, chartSliced, setChartSliced);
 
     const modifyFilters = (newValuesOnChange) => {
         setSelectedLobMulti([]);
@@ -136,9 +139,9 @@ const Impulse = (props) => {
     const renderTabs = () => {
         switch (activeIndex) {
             case 0:
-                return <BookingTrends data={allData} setStartDateTime={setStartDateTime} setEndDDateTime={setEndDDateTime} setChartSliced={setChartSliced}/>;
+                return <BookingTrends data={allData} setStartDateTime={setStartDateTime} setEndDDateTime={setEndDDateTime} setChartSliced={setChartSliced} annotations={enableIncidents ? annotations : []}/>;
             default:
-                return <BookingTrends data={allData} setStartDateTime={setStartDateTime} setEndDDateTime={setEndDDateTime} setChartSliced={setChartSliced}/>;
+                return <BookingTrends data={allData} setStartDateTime={setStartDateTime} setEndDDateTime={setEndDDateTime} setChartSliced={setChartSliced} annotations={enableIncidents ? annotations : []}/>;
         }
     };
     return (
@@ -167,14 +170,23 @@ const Impulse = (props) => {
                         {'Submit'}
                     </button>
                 </div>
-
-                <button
-                    type="button"
-                    className={`btn btn-default more-filters-btn ${showMoreFilters ? 'active' : ''}`}
-                    onClick={handleShowMoreFilters}
-                >
-                    <SVGIcon usefill markup={FILTER__16}/>{' Advance Filters'}
-                </button>
+                <div className="advance-filters-block">
+                    <button
+                        type="button"
+                        className={`btn btn-default more-filters-btn ${showMoreFilters ? 'active' : ''}`}
+                        onClick={handleShowMoreFilters}
+                    >
+                        <SVGIcon usefill markup={FILTER__16}/>{' Advance Filters'}
+                    </button>
+                    <Checkbox
+                        name="incidents-сheckbox"
+                        label="Show Incidents"
+                        checked={enableIncidents}
+                        onChange={() => setEnableIncidents(!enableIncidents)}
+                        size="sm"
+                        className="incidents-сheckbox"
+                    />
+                </div>
             </div>
             {renderMoreFilters()}
             <Navigation

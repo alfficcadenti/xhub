@@ -4,7 +4,7 @@ import {
     AreaChart,
     CartesianGrid,
     Legend,
-    ReferenceArea,
+    ReferenceArea, ReferenceLine,
     ResponsiveContainer,
     Tooltip,
     XAxis,
@@ -12,6 +12,7 @@ import {
 } from 'recharts';
 import './styles.less';
 import moment from 'moment';
+import ReferenceLabel from '../../../../components/ReferenceLabel';
 
 const BOOKING_CHART_COLOR = '#1478F7';
 const PREDICTION_CHART_COLOR = '#c9405b';
@@ -49,16 +50,16 @@ const CustomTooltip = ({active, payload}) => {
     }
     return null;
 };
-const BookingTrends = ({data = [], setStartDateTime, setEndDDateTime, setChartSliced}) => {
+const BookingTrends = ({data = [], setStartDateTime, setEndDDateTime, setChartSliced, annotations}) => {
     let [refAreaLeft, setRefAreaLeft] = useState('');
     let [refAreaRight, setRefAreaRight] = useState('');
     let [newData, setNewData] = useState(data);
     let [left, setLeft] = useState('dataMin');
     let [right, setRight] = useState('dataMax');
     const getGradient = ({key, color}) => {
-        const id = key === 'bookingChart' ? `color${key}` : '';
+        const id = `color${key}`;
         return (<linearGradient key={`${key}Gradient`} id={id} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor={color} stopOpacity={0.8}/>
+            <stop offset="5%" stopColor={color} stopOpacity={key === 'bookingChart' ? 0.8 : 0.2}/>
             <stop offset="95%" stopColor={color} stopOpacity={0}/>
         </linearGradient>);
     };
@@ -116,6 +117,19 @@ const BookingTrends = ({data = [], setStartDateTime, setEndDDateTime, setChartSl
                     <CartesianGrid strokeDasharray="3 3"/>
                     <Tooltip content={<CustomTooltip/>}/>
                     {IMPULSE_CHART_TYPE.map(renderChart)}
+                    {
+                        annotations && annotations.map((annotation) => (
+                            <ReferenceLine
+                                key={Math.random()}
+                                yAxisId={1}
+                                x={annotation.incidentTime}
+                                label={<ReferenceLabel annotation={annotation} source={'impulse'}/>}
+                                stroke={'red'}
+                                strokeDasharray="3 3"
+                                isFront
+                            />
+                        ))
+                    }
                     {
                         (refAreaLeft && refAreaRight)
                             ? <ReferenceArea yAxisId={1} x1={refAreaLeft} x2={refAreaRight} strokeOpacity={0.3}/>
