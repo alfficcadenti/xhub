@@ -202,20 +202,24 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         fetchAnnotations();
     }, [start, end]);
 
-    useEffect(() => {
-        let filteredDeploymentAnnotations = deploymentCategory ? [...deploymentAnnotations] : [];
-        let filteredIncidentAnnotations = incidentCategory ? [...incidentAnnotations] : [];
-
-        filteredDeploymentAnnotations = filteredDeploymentAnnotations
+    const filterAnnotations = (deployments, incidents) => {
+        const filteredDeployments = deployments
             .filter(getAnnotationsFilter(selectedProducts, 'productName'))
             .filter(getAnnotationsFilter(selectedApplications, 'serviceName', true))
             .filter(getAnnotationsFilter(selectedServiceTiers, 'serviceTier'));
 
-        filteredIncidentAnnotations = filteredIncidentAnnotations
+        const filteredIncidents = incidents
             .filter(getAnnotationsFilter(selectedStatuses, 'status'))
             .filter(getAnnotationsFilter(selectedPriorities, 'priority'));
 
-        setFilteredAnnotations([...filteredDeploymentAnnotations, ...filteredIncidentAnnotations]);
+        return [...filteredDeployments, ...filteredIncidents];
+    };
+
+    useEffect(() => {
+        const deployments = deploymentCategory ? [...deploymentAnnotations] : [];
+        const incidents = incidentCategory ? [...incidentAnnotations] : [];
+
+        setFilteredAnnotations(filterAnnotations(deployments, incidents));
     }, [
         selectedProducts,
         selectedApplications,
@@ -256,7 +260,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     };
 
     useEffect(() => {
-        filterCategories(filteredAnnotations);
+        filterCategories(filterAnnotations(deploymentAnnotations, incidentAnnotations));
     }, [deploymentCategory, incidentCategory]);
 
     useEffect(() => {
