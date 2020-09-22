@@ -203,8 +203,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     }, [start, end]);
 
     useEffect(() => {
-        let filteredDeploymentAnnotations = [...deploymentAnnotations];
-        let filteredIncidentAnnotations = [...incidentAnnotations];
+        let filteredDeploymentAnnotations = deploymentCategory ? [...deploymentAnnotations] : [];
+        let filteredIncidentAnnotations = incidentCategory ? [...incidentAnnotations] : [];
 
         filteredDeploymentAnnotations = filteredDeploymentAnnotations
             .filter(getAnnotationsFilter(selectedProducts, 'productName'))
