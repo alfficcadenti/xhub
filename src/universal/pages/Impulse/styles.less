@@ -1,15 +1,18 @@
 @import '../../mixins.less';
+
 .impulse-container {
   .impulse-filters-wrapper {
-    .first-filter-spacing{
+    .first-filter-spacing {
       margin-left: @spacing-1x;
       height: fit-content;
     }
-    .all-filters{
+
+    .all-filters {
       margin-left: 5px;
       height: fit-content;
 
     }
+
     .apply-button {
       margin: 5px;
     }
@@ -17,22 +20,33 @@
     .apply-button {
       height: fit-content;
     }
-    .more-filters-btn {
-      min-height: @spacing-7x;
-      margin-top:5px;
-      padding-top: 10px;
-      padding-left: 10px;
-      font-size: .75rem;
-      line-height: 1rem;
-      box-shadow: none;
-      border-radius: @spacing-1x @spacing-1x 0 0;
 
-      &.active {
-        background: @color-bg-accent;
+    .advance-filters-block {
+      display: flex;
+
+
+      .more-filters-btn {
+        min-height: @spacing-7x;
+        margin-top: 5px;
+        padding-top: 10px;
+        padding-left: 10px;
+        font-size: 12px;
+        line-height: @spacing-2x;
+        box-shadow: none;
+        border-radius: @spacing-1x @spacing-1x 0 0;
+
+        &.active {
+          background: @color-bg-accent;
+        }
+      }
+
+      .incidents-сheckbox {
+        margin-top: @spacing-3x;
       }
     }
+
     .impulse-dropdown .Dropdown__toggle {
-      .dropdown-button(160px,@color-text-default);
+      .dropdown-button(160px, @color-text-default);
     }
   }
 }
@@ -52,6 +66,7 @@
     z-index: 25;
     margin-left: @spacing-1x;
   }
+
   .filter-option-expand {
     width: auto;
     min-width: 220px;
@@ -61,6 +76,7 @@
   }
 
 }
+
 
 .more-filters-divider {
   margin-top: -2px;
@@ -76,21 +92,22 @@
     border-radius: 0 0 @spacing-1x @spacing-1x;
 
     .impulse-dropdown .Dropdown__toggle {
-      .dropdown-button(160px,@color-text-default);
+      .dropdown-button(160px, @color-text-default);
     }
   }
 }
-.impulse-loading-container{
+
+.impulse-loading-container {
   margin-top: 50px;
 
-.impulse-chart-container{
-  text-align: center;
-  margin-right: 0 @spacing-5x;
-  height: 490px;
-
-  .impulse-bookings-container {
-    display: flex;
+  .impulse-chart-container {
+    text-align: center;
+    margin-right: 0 @spacing-5x;
     height: 490px;
+
+    .impulse-bookings-container {
+      display: flex;
+      height: 490px;
+    }
   }
-}
 }
