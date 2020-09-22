@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
-import qs from 'query-string';
 import {SVGIcon} from '@homeaway/react-svg';
 import {QUESTION__16} from '@homeaway/svg-defs';
 import {Checkbox} from '@homeaway/react-form-components';
+import DatePicker from '../../components/DatePicker';
 import LoadingContainer from '../../components/LoadingContainer';
 import HelpText from '../../components/HelpText/HelpText';
 import {
@@ -15,30 +15,20 @@ import {
     WoWPanel,
     PiePanel
 } from './Panels';
-import {PORTFOLIOS, P1_LABEL, P2_LABEL} from './constants';
-import {getBrand} from '../utils';
-import {getPanelDataUrl, formatBarChartData, getTicketIds} from './utils';
+import {PORTFOLIOS, P1_LABEL, P2_LABEL, MIN_DATE} from './constants';
+import {getQueryValues, getPortfolioBrand, getPanelDataUrl, formatBarChartData, getTicketIds} from './utils';
 import './styles.less';
-
-const getPortfolioBrand = (selectedBrands) => {
-    const selectedBrand = getBrand(selectedBrands[0], 'label');
-    return selectedBrand && selectedBrand.portfolioBrand
-        ? selectedBrand.portfolioBrand
-        : 'HCOM';
-};
 
 const QualityMetrics = ({selectedBrands}) => {
     const history = useHistory();
     const {search} = useLocation();
-
-    // Query params
-    const {portfolios: qsPortfolios} = qs.parse(search);
-    const initialPortfolios = (Array.isArray(qsPortfolios) ? qsPortfolios : [qsPortfolios])
-        .map((portfolio) => PORTFOLIOS.find((p) => p.value === portfolio))
-        .filter((portfolio) => !!portfolio);
-
+    const {initialPortfolios, initialStart, initialEnd} = getQueryValues(search);
 
     const [isSupportedBrand, setIsSupportedBrand] = useState(true);
+    const [pendingStart, setPendingStart] = useState(initialStart);
+    const [pendingEnd, setPendingEnd] = useState(initialEnd);
+    const [start, setStart] = useState(initialStart);
+    const [end, setEnd] = useState(initialEnd);
     const [portfolioBrand, setPortfolioBrand] = useState(getPortfolioBrand(selectedBrands));
     const [pendingPortfolios, setPendingPortfolios] = useState(initialPortfolios);
     const [selectedPortfolios, setSelectedPortfolios] = useState(initialPortfolios);
@@ -69,11 +59,10 @@ const QualityMetrics = ({selectedBrands}) => {
             }
             setIsLoading(true);
             const brandQuery = `?selectedBrand=${selectedBrands[0]}`;
-            const query = selectedPortfolios.length
-                ? `${brandQuery}&portfolios=${selectedPortfolios.map((p) => p.value).join('&portfolios=')}`
-                : brandQuery;
-            history.push(`/quality-metrics${query}`);
-            fetch(getPanelDataUrl(selectedPortfolios, portfolioBrand))
+            const dateRangeQuery = `&start=${start}&end=${end}`;
+            const portfoliosQuery = selectedPortfolios.length ? `&portfolios=${selectedPortfolios.map((p) => p.value).join('&portfolios=')}` : '';
+            history.push(`/quality-metrics${brandQuery}${dateRangeQuery}${portfoliosQuery}`);
+            fetch(getPanelDataUrl(selectedPortfolios, start, end, portfolioBrand))
                 .then((data) => data.json())
                 .then((allTickets) => {
                     setTickets(allTickets);
@@ -83,7 +72,7 @@ const QualityMetrics = ({selectedBrands}) => {
                     setError(e.message);
                     setIsLoading(false);
                 });
-            fetch(getPanelDataUrl(selectedPortfolios, portfolioBrand, 'twoDimensionalStatistics'))
+            fetch(getPanelDataUrl(selectedPortfolios, start, end, portfolioBrand, 'twoDimensionalStatistics'))
                 .then((data) => data.json())
                 .then((response) => {
                     setTdData(response.data || {});
@@ -93,7 +82,7 @@ const QualityMetrics = ({selectedBrands}) => {
                     setTdDataError(e.message);
                     setIsTdDataLoading(false);
                 });
-            fetch(getPanelDataUrl(selectedPortfolios, portfolioBrand, 'createdVsResolved'))
+            fetch(getPanelDataUrl(selectedPortfolios, start, end, portfolioBrand, 'createdVsResolved'))
                 .then((data) => data.json())
                 .then((response) => {
                     setCvrData(response.data || {});
@@ -103,7 +92,7 @@ const QualityMetrics = ({selectedBrands}) => {
                     setCvrDataError(e.message);
                     setIsCvrDataLoading(false);
                 });
-            fetch(getPanelDataUrl(selectedPortfolios, portfolioBrand, 'opendefects'))
+            fetch(getPanelDataUrl(selectedPortfolios, start, end, portfolioBrand, 'opendefects'))
                 .then((data) => data.json())
                 .then((response) => {
                     setOpenDefectsData(response.data.openDefects || {});
@@ -116,7 +105,7 @@ const QualityMetrics = ({selectedBrands}) => {
                 });
         };
         fetchData();
-    }, [history, portfolioBrand, selectedBrands, selectedPortfolios]);
+    }, [history, portfolioBrand, selectedBrands, selectedPortfolios, start, end]);
 
     const handlePortfoliosChange = (portfolio) => {
         let portfolios = [];
@@ -137,13 +126,26 @@ const QualityMetrics = ({selectedBrands}) => {
 
     const handleApplyFilters = () => {
         if (pendingPortfolios.length) {
-            setIsDirtyForm(false);
             setSelectedPortfolios(JSON.parse(JSON.stringify(pendingPortfolios)));
         } else {
-            setIsDirtyForm(false);
             setPendingPortfolios([]);
             setSelectedPortfolios([]);
         }
+        setStart(pendingStart);
+        setEnd(pendingEnd);
+        setIsDirtyForm(false);
+    };
+
+    const handleDateRangeChange = (startDate, endDate) => {
+        setPendingStart(startDate || start);
+        setPendingEnd(endDate || end);
+        setIsDirtyForm(true);
+    };
+
+    const handleClearDates = () => {
+        setPendingStart('');
+        setPendingEnd('');
+        setIsDirtyForm(true);
     };
 
     const renderPortfolioCheckbox = (portfolio) => (
@@ -160,8 +162,17 @@ const QualityMetrics = ({selectedBrands}) => {
 
     const renderForm = () => (
         <div className="search-form">
-            <div className="checkboxes-container">
-                {PORTFOLIOS.map(renderPortfolioCheckbox)}
+            <div className="form-container">
+                <DatePicker
+                    startDate={pendingStart}
+                    endDate={pendingEnd}
+                    minDate={MIN_DATE}
+                    handleDateRangeChange={handleDateRangeChange}
+                    handleClearDates={handleClearDates}
+                />
+                <div className="checkboxes-container">
+                    {PORTFOLIOS.map(renderPortfolioCheckbox)}
+                </div>
             </div>
             <div className="actions-container">
                 <button
@@ -199,7 +210,7 @@ const QualityMetrics = ({selectedBrands}) => {
                     title="Open Defects Past SLA"
                     info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived'. See panel below for SLA definitions. Click bar chart to see corresponding defects."
                     tickets={tickets}
-                    dataUrl={getPanelDataUrl(selectedPortfolios, portfolioBrand, 'opendefectspastsla')}
+                    dataUrl={getPanelDataUrl(selectedPortfolios, start, end, portfolioBrand, 'opendefectspastsla')}
                     dataKey="openDefectsPastSla"
                 />
                 <BarChartPanel
@@ -254,7 +265,7 @@ const QualityMetrics = ({selectedBrands}) => {
                 />
                 <MTTRPanel
                     tickets={tickets}
-                    dataUrl={getPanelDataUrl(selectedPortfolios, portfolioBrand, 'timetoresolve')}
+                    dataUrl={getPanelDataUrl(selectedPortfolios, start, end, portfolioBrand, 'timetoresolve')}
                 />
                 <CreatedVsResolvedPanel
                     title="Created vs. Resolved Chart - All P1s and P2s"
@@ -275,7 +286,7 @@ const QualityMetrics = ({selectedBrands}) => {
                 />
                 <WoWPanel
                     tickets={tickets}
-                    dataUrl={getPanelDataUrl(selectedPortfolios, portfolioBrand, 'issueswowdata')}
+                    dataUrl={getPanelDataUrl(selectedPortfolios, start, end, portfolioBrand, 'issueswowdata')}
                 />
                 <PiePanel
                     title="Open Bugs (w.r.t. Priority)"
@@ -308,7 +319,7 @@ const QualityMetrics = ({selectedBrands}) => {
         <div className="qm-container">
             <h1 className="page-title">
                 {'Quality Metrics'}
-                <HelpText className="page-info" text="Quality metrics of defects within the last 180 days." />
+                <HelpText className="page-info" text="Quality metrics of defects" />
             </h1>
             {isSupportedBrand
                 ? renderBody()

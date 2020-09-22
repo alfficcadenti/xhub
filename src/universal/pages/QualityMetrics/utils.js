@@ -1,5 +1,26 @@
 import React from 'react';
-import {PRIORITY_LABELS, P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL, NOT_PRIORITIZED_LABEL} from './constants';
+import qs from 'query-string';
+import moment from 'moment';
+import {DATE_FORMAT} from '../../constants';
+import {getBrand} from '../utils';
+import {PORTFOLIOS, PRIORITY_LABELS, P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL, NOT_PRIORITIZED_LABEL} from './constants';
+
+export const getPortfolioBrand = (selectedBrands) => {
+    const selectedBrand = getBrand(selectedBrands[0], 'label');
+    return selectedBrand && selectedBrand.portfolioBrand
+        ? selectedBrand.portfolioBrand
+        : 'HCOM';
+};
+
+export const getQueryValues = (search) => {
+    const {portfolios, start, end} = qs.parse(search);
+    const initialPortfolios = (Array.isArray(portfolios) ? portfolios : [portfolios])
+        .map((portfolio) => PORTFOLIOS.find((p) => p.value === portfolio))
+        .filter((portfolio) => !!portfolio);
+    const initialStart = start || moment().subtract(180, 'days').format(DATE_FORMAT);
+    const initialEnd = end || moment().format(DATE_FORMAT);
+    return {initialPortfolios, initialStart, initialEnd};
+};
 
 export const getPropValue = (item, prop) => item[prop] || '-';
 
@@ -207,14 +228,15 @@ export const formatCreatedVsResolvedData = (data, selectedPriorities) => {
         });
 };
 
-export const getPanelDataUrl = (portfolios, brand, panel) => {
+export const getPanelDataUrl = (portfolios, start, end, brand, panel) => {
     // const baseUrl = 'https://opxhub-data-service.us-west-2.test.expedia.com/v1/portfolio';
     const baseUrl = '/v1/portfolio';
+    const dateQuery = `fromDate=${start}&toDate=${end}`;
     const brandQuery = `brand=${brand}`;
     const portfoliosQuery = `portfolios=${portfolios.map((p) => p.value).join('&portfolios=')}`;
     const query = portfolios && portfolios.length
-        ? `?${brandQuery}&${portfoliosQuery}`
-        : `?${brandQuery}`;
+        ? `?${brandQuery}&${dateQuery}&${portfoliosQuery}`
+        : `?${brandQuery}&${dateQuery}`;
     if (!panel) {
         return `${baseUrl}${query}`;
     }

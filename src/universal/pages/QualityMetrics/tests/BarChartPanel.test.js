@@ -14,7 +14,7 @@ describe('<BarChartPanel>', () => {
             <BarChartPanel
                 portfolios={['kes']}
                 tickets={[]}
-                dataUrl={getPanelDataUrl(['kes'], 'HCOM', 'opendefectspastsla')}
+                dataUrl={getPanelDataUrl(['kes'], '2020-01-01', '2020-02-02', 'HCOM', 'opendefectspastsla')}
                 dataKey="openDefectsPastSla"
             />);
     });

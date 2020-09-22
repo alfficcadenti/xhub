@@ -1,6 +1,8 @@
 import React from 'react';
 import {expect} from 'chai';
 import {
+    getPortfolioBrand,
+    getQueryValues,
     getPropValue,
     formatDefect,
     findAndFormatTicket,
@@ -13,9 +15,24 @@ import {
     processTwoDimensionalIssues,
     getPanelDataUrl
 } from '../utils';
-import {P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL, NOT_PRIORITIZED_LABEL} from '../constants';
+import {PORTFOLIOS, P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL, NOT_PRIORITIZED_LABEL} from '../constants';
+import {HOTELS_COM_BRAND, EXPEDIA_BRAND} from '../../../constants';
 
 describe('Quality Metrics Util', () => {
+    it('getPortfolioBrand', () => {
+        expect(getPortfolioBrand([HOTELS_COM_BRAND])).to.be.eql('HCOM');
+        expect(getPortfolioBrand([EXPEDIA_BRAND])).to.be.eql('BEX');
+    });
+
+    it('getQueryValues', () => {
+        const portfolios = ['kes'];
+        const start = '2020-01-01';
+        const end = '2020-02-02';
+        expect(getQueryValues(`https://localhost:8080/quality-metrics?selectedBrand=${HOTELS_COM_BRAND}&portfolios=${portfolios.toString()}&start=${start}&end=${end}`)).to.be.eql({
+            initialPortfolios: portfolios.map((p) => PORTFOLIOS.find(({value}) => p === value)), initialStart: start, initialEnd: end
+        });
+    });
+
     it('getPropValue', () => {
         const item = {a: 'hello'};
         expect(getPropValue(item, 'a')).to.be.eql('hello');
@@ -220,9 +237,15 @@ describe('Quality Metrics Util', () => {
 
     it('getPanelDataUrl', () => {
         const portfolios = [{text: 'KES', value: 'kes'}];
+        const start = '2020-01-01';
+        const end = '2020-02-02';
         const brand = 'HCOM';
         const panel = 'opendefects';
-        expect(getPanelDataUrl(portfolios, brand, panel)).to.be.equal(`/v1/portfolio/panel/${panel}?brand=${brand}&portfolios=kes`);
-        expect(getPanelDataUrl(portfolios, brand)).to.be.equal(`/v1/portfolio?brand=${brand}&portfolios=kes`);
+        expect(getPanelDataUrl(portfolios, start, end, brand, panel)).to.be.equal(
+            `/v1/portfolio/panel/${panel}?brand=${brand}&fromDate=${start}&toDate=${end}&portfolios=kes`
+        );
+        expect(getPanelDataUrl(portfolios, start, end, brand)).to.be.equal(
+            `/v1/portfolio?brand=${brand}&fromDate=${start}&toDate=${end}&portfolios=kes`
+        );
     });
 });

@@ -10,28 +10,41 @@
     .search-form {
         margin: @spacing-2x 0 @spacing-2x 0;
         padding: @spacing-3x;
-        min-height: 212px;
+        min-height: 240px;
         background: @color-bg-accent;
         border-radius: @spacing-1x;
 
-        .checkboxes-container {
-            float: left;
-            width: 25%;
+        .form-combined__svg {
+            background: @color-text-inverse;
+        }
 
-            .portfolio-checkbox {
-                float: left;
-                width: 50%;
+        .form-container {
+            float: left;
+            width: 40%;
+
+            .checkboxes-container {
+                margin: @spacing-3x 0 0 @spacing-1x;
+
+                .portfolio-checkbox {
+                    float: left;
+                    width: 50%;
+                }
             }
         }
 
         .actions-container {
             float: left;
-            width: 15%;
+            width: 10%;
+
+            .apply-btn {
+                margin-left: @spacing-2x;
+                height: @spacing-7x;
+            }
         }
 
         .info-container {
             float: left;
-            width: 60%;
+            width: 50%;
 
             .info-title {
                 position: absolute;
@@ -48,8 +61,8 @@
                 border: 1px solid @color-border-contrast;
                 border-radius: @spacing-1x;
                 padding: @spacing-2x;
-                height: 172px;
-                max-height: 172px;
+                height: 196px;
+                max-height: 196px;
                 overflow-y: scroll;
 
                 .info-stat__label {
