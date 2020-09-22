@@ -123,7 +123,7 @@ const BookingTrends = ({data = [], setStartDateTime, setEndDDateTime, setChartSl
                                 key={Math.random()}
                                 yAxisId={1}
                                 x={annotation.incidentTime}
-                                label={<ReferenceLabel annotation={annotation} source={'impulse'}/>}
+                                label={<ReferenceLabel annotation={annotation} isImpulse/>}
                                 stroke={'red'}
                                 strokeDasharray="3 3"
                                 isFront

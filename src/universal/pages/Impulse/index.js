@@ -176,7 +176,7 @@ const Impulse = (props) => {
                         className={`btn btn-default more-filters-btn ${showMoreFilters ? 'active' : ''}`}
                         onClick={handleShowMoreFilters}
                     >
-                        <SVGIcon usefill markup={FILTER__16}/>{' Advance Filters'}
+                        <SVGIcon usefill markup={FILTER__16}/>{'Advance Filters'}
                     </button>
                     <Checkbox
                         name="incidents-сheckbox"

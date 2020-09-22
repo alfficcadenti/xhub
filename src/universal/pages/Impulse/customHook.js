@@ -76,7 +76,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
                     category: 'incidents',
                     time: moment.utc(item.startDate).valueOf(),
                     revLoss: item.estimatedImpact[0].lobs.map((losses) => losses.revenueLoss !== 'NA' ? parseFloat(losses.revenueLoss) : 'NA').reduce((a, b) => a + b, 0)
-
                 }));
                 setAnnotations(annotationData);
             })
