@@ -406,14 +406,15 @@ describe('getAnnotationsFilter()', () => {
         tags: ['LX Shopping', 'Expedia'],
         teamContactDL: 'lxshop@expedia.com',
         teamName: 'LX',
-        time: '2020-09-21 14:18'
+        time: '2020-09-21 14:18',
+        serviceName: 'test-service-name'
     }, {
         brand: 'Brand Expedia',
         bucketTime: '2020-09-21 14:21',
         businessJustification: 'Automated Deployment',
         businessReason: 'Upgrade',
         category: 'deployment',
-        serviceName: 'activities-web',
+        serviceName: 'test-service',
         serviceTier: 'Tier 1',
         teamContactDL: 'lxshop@expedia.com',
         teamName: 'LX',
@@ -427,7 +428,8 @@ describe('getAnnotationsFilter()', () => {
         serviceTier: 'Tier 2',
         teamContactDL: 'FlightCrewNotifications@expedia.com',
         teamName: 'Air P&C',
-        time: '2020-09-21 12:13'
+        time: '2020-09-21 12:13',
+        serviceName: 'Activities-Web'
     }];
 
     it('returns properly filtered tickets', () => {
@@ -438,6 +440,11 @@ describe('getAnnotationsFilter()', () => {
     it('returns empty array when filter does not match', () => {
         const result = tickets.filter(getAnnotationsFilter(['Tier 3'], 'serviceTier'));
         expect(result.length).to.be.eql(0);
+    });
+
+    it('returns proper result with the toLowerCase param set to true', () => {
+        const result = tickets.filter(getAnnotationsFilter(['activities-web'], 'serviceName', true));
+        expect(result.length).to.be.eql(1);
     });
 });
 
