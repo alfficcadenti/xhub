@@ -230,10 +230,23 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
     const filterCategories = (annotationsToFilter) => {
         const categoryOptions = [];
-        let filteredRawSuggestions = {...suggestions};
 
         if (deploymentCategory) {
             categoryOptions.push('deployment');
+        }
+
+        if (incidentCategory) {
+            categoryOptions.push('incident');
+        }
+
+        const filteredRawAnnotations = annotationsToFilter.filter(({category}) => categoryOptions.includes(category));
+        setFilteredAnnotations(filteredRawAnnotations);
+    };
+
+    const filterSuggestions = () => {
+        let filteredRawSuggestions = {...suggestions};
+
+        if (deploymentCategory) {
             addSuggestionType(filteredRawSuggestions, 'productName', productNameSuggestions);
             addSuggestionType(filteredRawSuggestions, 'serviceTier', serviceTierSuggestions);
             addSuggestionType(filteredRawSuggestions, 'applicationName', applicationNameSuggestions);
@@ -244,7 +257,6 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         }
 
         if (incidentCategory) {
-            categoryOptions.push('incident');
             addSuggestionType(filteredRawSuggestions, 'incidentPriority', incidentPrioritySuggestions);
             addSuggestionType(filteredRawSuggestions, 'incidentStatus', incidentStatusSuggestions);
         } else {
@@ -253,14 +265,11 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         }
 
         setSuggestions(filteredRawSuggestions);
-
-        const filteredRawAnnotations = annotationsToFilter.filter(({category}) => categoryOptions.includes(category));
-
-        setFilteredAnnotations(filteredRawAnnotations);
     };
 
     useEffect(() => {
         filterCategories(filterAnnotations(deploymentAnnotations, incidentAnnotations));
+        filterSuggestions();
     }, [deploymentCategory, incidentCategory]);
 
     useEffect(() => {
@@ -307,6 +316,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     useEffect(() => {
         const allAnnotations = [...deploymentAnnotations, ...incidentAnnotations];
         filterCategories(allAnnotations);
+        filterSuggestions();
     }, [deploymentAnnotations, incidentAnnotations]);
 
     const handleDatetimeChange = ({start: startDateTimeStr, end: endDateTimeStr}, text) => {
