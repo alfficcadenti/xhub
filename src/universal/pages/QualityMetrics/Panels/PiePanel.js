@@ -4,65 +4,36 @@ import {
 } from 'recharts';
 import Panel from '../Panel';
 import ChartModal from '../ChartModal';
-import {mapPriority, findAndFormatTicket} from '../utils';
+import {findAndFormatTicket} from '../utils';
 import {NOT_PRIORITIZED_LABEL} from '../constants';
 import {CHART_COLORS} from '../../../constants';
 
-const PiePanel = ({title, info, groupBy, tickets, openDefectTicketIds}) => {
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
+const PiePanel = ({title, info, tickets, dataKey, data, isLoading, error}) => {
     const [chartData, setChartData] = useState([]);
     const [modalData, setModalData] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
-        const fetchData = () => {
-            setIsLoading(true);
-            setError(null);
-            const getGroupKey = groupBy === 'Priority'
-                ? (ticket) => mapPriority(ticket.priority)
-                : (ticket) => ticket.defectNumber.split('-')[0];
-            const counter = {};
-            Object.values(tickets.portfolioTickets || {})
-                .forEach((portfolioTickets) => {
-                    Object.values(portfolioTickets).forEach((ticketDetail) => {
-                        if (!openDefectTicketIds.includes(ticketDetail.defectNumber)) {
-                            return;
-                        }
-                        const groupKey = getGroupKey(ticketDetail);
-                        if (!counter[groupKey]) {
-                            counter[groupKey] = {counts: 0, tickets: []};
-                        }
-                        counter[groupKey].counts++;
-                        counter[groupKey].tickets.push(ticketDetail.defectNumber);
-                    });
-                });
-            const data = Object.entries(counter)
-                .map(([name, stats]) => ({name, counts: stats.counts, tickets: stats.tickets}));
-            data.sort((a, b) => {
-                if (a.name === NOT_PRIORITIZED_LABEL) {
-                    return 1;
-                } else if (b.name === NOT_PRIORITIZED_LABEL) {
-                    return -1;
-                }
-                return (a.name || '').localeCompare(b.name);
-            });
-            setChartData(data);
-            setIsLoading(false);
-        };
-        fetchData();
-    }, [groupBy, tickets, openDefectTicketIds]);
+        const slices = Object.entries(data[dataKey] || {})
+            .map(([name, stats]) => ({name, counts: stats.totalTickets, tickets: stats.ticketIds}));
+        slices.sort((a, b) => {
+            if (a.name === NOT_PRIORITIZED_LABEL) {
+                return 1;
+            } else if (b.name === NOT_PRIORITIZED_LABEL) {
+                return -1;
+            }
+            return (a.name || '').localeCompare(b.name);
+        });
+        setChartData(slices);
+    }, [tickets, dataKey, data]);
 
     const getClickHandler = (cellName, cellTickets) => () => {
-        const getGroupKey = groupBy === 'Priority'
-            ? (ticket) => mapPriority(ticket.Priority)
-            : (ticket) => ticket.id.split('-')[0];
         const ticketDetails = cellTickets
             .map((ticketId) => findAndFormatTicket(tickets, ticketId))
-            .filter((details) => details && getGroupKey(details) === cellName);
+            .filter((ticket) => cellTickets.includes(ticket.id));
         setModalData({
             data: ticketDetails,
-            description: `Displaying open bugs with ${groupBy === 'Priority' ? 'priority' : 'project'} ${cellName}`,
+            description: `Displaying ${cellName} open bugs`,
             columns: ['Portfolio', 'Key', 'Summary', 'Priority', 'Status', 'Resolution', 'Opened', 'Days to Resolve']
         });
         setIsModalOpen(true);

@@ -9,10 +9,11 @@ import {
     BarChartPanel,
     TwoDimensionalPanel,
     SLADefinitions,
+    CreatedVsResolvedPanel,
     PiePanel
 } from './Panels';
-import {PORTFOLIOS} from './constants';
-import {getQueryValues, getPortfolioBrand, getPanelDataUrl, formatBarChartData, getTicketIds} from './utils';
+import {PORTFOLIOS, P1_LABEL, P2_LABEL} from './constants';
+import {getQueryValues, getPortfolioBrand, getPanelDataUrl} from './utils';
 import './styles.less';
 
 const QualityMetrics = ({selectedBrands}) => {
@@ -33,55 +34,64 @@ const QualityMetrics = ({selectedBrands}) => {
     const [isTdDataLoading, setIsTdDataLoading] = useState(true);
     const [tdDataError, setTdDataError] = useState();
 
-    const [openDefectTicketIds, setOpenDefectTicketIds] = useState([]);
-    const [openDefectsData, setOpenDefectsData] = useState({});
-    const [isOpenDefectsDataLoading, setIsOpenDefectsDataLoading] = useState(true);
-    const [openDefectsError, setOpenDefectsError] = useState();
+    const [cvrData, setCvrData] = useState({});
+    const [isCvrDataLoading, setIsCvrDataLoading] = useState(true);
+    const [cvrDataError, setCvrDataError] = useState();
+
+    const [pieData, setPieData] = useState({});
+    const [isPieDataLoading, setIsPieDataLoading] = useState(true);
+    const [pieDataError, setPieDataError] = useState();
 
     useEffect(() => {
-        const fetchData = () => {
-            setPortfolioBrand(getPortfolioBrand(selectedBrands));
-            setIsSupportedBrand(portfolioBrand === 'HCOM');
-            if (!selectedPortfolios.length || portfolioBrand !== 'HCOM') {
-                return;
-            }
-            setIsLoading(true);
-            const brandQuery = `?selectedBrand=${selectedBrands[0]}`;
-            const portfoliosQuery = selectedPortfolios.length ? `&portfolios=${selectedPortfolios.map((p) => p.value).join('&portfolios=')}` : '';
-            history.push(`/quality-metrics${brandQuery}${portfoliosQuery}`);
-            fetch(getPanelDataUrl(selectedPortfolios, portfolioBrand))
-                .then((data) => data.json())
-                .then((allTickets) => {
-                    setTickets(allTickets);
-                    setIsLoading(false);
-                })
-                .catch((e) => {
-                    setError(e.message);
-                    setIsLoading(false);
-                });
-            fetch(getPanelDataUrl(selectedPortfolios, portfolioBrand, 'twoDimensionalStatistics'))
-                .then((data) => data.json())
-                .then((response) => {
-                    setTdData(response.data || {});
-                    setIsTdDataLoading(false);
-                })
-                .catch((e) => {
-                    setTdDataError(e.message);
-                    setIsTdDataLoading(false);
-                });
-            fetch(getPanelDataUrl(selectedPortfolios, portfolioBrand, 'opendefects'))
-                .then((data) => data.json())
-                .then((response) => {
-                    setOpenDefectsData(response.data.openDefects || {});
-                    setOpenDefectTicketIds(getTicketIds(response.data.openDefects));
-                    setIsOpenDefectsDataLoading(false);
-                })
-                .catch((e) => {
-                    setOpenDefectsError(e.message);
-                    setIsOpenDefectsDataLoading(false);
-                });
-        };
-        fetchData();
+        setPortfolioBrand(getPortfolioBrand(selectedBrands));
+        setIsSupportedBrand(portfolioBrand === 'HCOM');
+        if (!selectedPortfolios.length || portfolioBrand !== 'HCOM') {
+            return;
+        }
+        setIsLoading(true);
+        const brandQuery = `?selectedBrand=${selectedBrands[0]}`;
+        const portfoliosQuery = selectedPortfolios.length ? `&portfolios=${selectedPortfolios.map((p) => p.value).join('&portfolios=')}` : '';
+        history.push(`/quality-metrics${brandQuery}${portfoliosQuery}`);
+        fetch(getPanelDataUrl(selectedPortfolios, portfolioBrand))
+            .then((data) => data.json())
+            .then((allTickets) => {
+                setTickets(allTickets);
+                setIsLoading(false);
+            })
+            .catch((e) => {
+                setError(e.message);
+                setIsLoading(false);
+            });
+        fetch(getPanelDataUrl(selectedPortfolios, portfolioBrand, 'twoDimensionalStatistics'))
+            .then((data) => data.json())
+            .then((response) => {
+                setTdData(response.data || {});
+                setIsTdDataLoading(false);
+            })
+            .catch((e) => {
+                setTdDataError(e.message);
+                setIsTdDataLoading(false);
+            });
+        fetch(getPanelDataUrl(selectedPortfolios, portfolioBrand, 'createdVsResolved'))
+            .then((data) => data.json())
+            .then((response) => {
+                setCvrData(response.data || {});
+                setIsCvrDataLoading(false);
+            })
+            .catch((e) => {
+                setCvrDataError(e.message);
+                setIsCvrDataLoading(false);
+            });
+        fetch(getPanelDataUrl(selectedPortfolios, portfolioBrand, 'piecharts'))
+            .then((data) => data.json())
+            .then((response) => {
+                setPieData(response.data || {});
+                setIsPieDataLoading(false);
+            })
+            .catch((e) => {
+                setPieDataError(e.message);
+                setIsPieDataLoading(false);
+            });
     }, [history, portfolioBrand, selectedBrands, selectedPortfolios]);
 
     const handlePortfoliosChange = (portfolio) => {
@@ -173,10 +183,8 @@ const QualityMetrics = ({selectedBrands}) => {
                     title="Open Defects"
                     info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived'. Click bar chart to see corresponding defects."
                     tickets={tickets}
-                    data={formatBarChartData(openDefectsData)}
-                    isLoading={isOpenDefectsDataLoading}
-                    error={openDefectsError}
-                    dataKey="openDefects"
+                    dataUrl={getPanelDataUrl(selectedPortfolios, portfolioBrand, 'openDefects')}
+                    dataKey="openDefectsPastSla"
                 />
                 <SLADefinitions />
                 <TwoDimensionalPanel
@@ -199,19 +207,41 @@ const QualityMetrics = ({selectedBrands}) => {
                     isLoading={isTdDataLoading}
                     error={tdDataError}
                 />
+                <CreatedVsResolvedPanel
+                    title="Created vs. Resolved Chart - All P1s and P2s"
+                    info="Charting P1 and P2 priority defects by their open date and resolve date (bucketed by week). Click line point for more details."
+                    tickets={tickets}
+                    data={cvrData}
+                    isLoading={isCvrDataLoading}
+                    error={cvrDataError}
+                    priorities={[P1_LABEL, P2_LABEL]}
+                />
+                <CreatedVsResolvedPanel
+                    title="Created vs. Resolved Chart - All Bugs"
+                    info="Charting all defects by their open date and resolve date (bucketed by week). Click line point for more details."
+                    tickets={tickets}
+                    data={cvrData}
+                    isLoading={isCvrDataLoading}
+                    error={cvrDataError}
+                />
                 <PiePanel
                     title="Open Bugs (w.r.t. Priority)"
                     info="Charting all defects with regard to priority. Click pie slice for more details."
                     groupBy="Priority"
                     tickets={tickets}
-                    openDefectTicketIds={openDefectTicketIds}
+                    dataKey="openBugsByPriority"
+                    data={pieData}
+                    isLoading={isPieDataLoading}
+                    error={pieDataError}
                 />
                 <PiePanel
                     title="Open Bugs (w.r.t. Project)"
                     info="Charting all defects with regard to project. Click pie slices for more details."
-                    groupBy="Project"
                     tickets={tickets}
-                    openDefectTicketIds={openDefectTicketIds}
+                    dataKey="openBugsByProject"
+                    data={pieData}
+                    isLoading={isPieDataLoading}
+                    error={pieDataError}
                 />
             </LoadingContainer>
         </div>
