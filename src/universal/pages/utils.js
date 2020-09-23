@@ -69,6 +69,7 @@ export const divisionToBrand = (division = '') => {
             return HOTELS_COM_BRAND;
         case 'EXPEDIA PARTNER SERVICES':
         case 'EPS':
+        case 'EAN':
             return EXPEDIA_PARTNER_SERVICES_BRAND;
         default:
             return EXPEDIA_BRAND;
