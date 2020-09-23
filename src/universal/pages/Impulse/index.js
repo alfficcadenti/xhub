@@ -60,7 +60,36 @@ const Impulse = (props) => {
     useSelectedBrand(newBrand, props.onBrandChange, props.prevSelectedBrand);
 
 
-    const [isLoading, res, error, egSiteURLMulti, setEgSiteURLMulti, lobsMulti, setLobsMulti, brandsMulti, deviceTypesMulti, setDeviceTypesMulti, bookingTypesMulti, setBookingTypesMulti, incidentMulti, filterData, brandsFilterData, annotations, annotationsMulti, setAnnotationsMulti] = useFetchBlipData(isApplyClicked, setIsApplyClicked, startDateTime, endDateTime, newBrand, props.prevSelectedBrand, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, selectedBookingTypeMulti, chartSliced, setChartSliced);
+    const [isLoading,
+        res,
+        error,
+        egSiteURLMulti,
+        setEgSiteURLMulti,
+        lobsMulti,
+        setLobsMulti,
+        brandsMulti,
+        deviceTypesMulti,
+        setDeviceTypesMulti,
+        bookingTypesMulti,
+        setBookingTypesMulti,
+        incidentMulti,
+        filterData,
+        brandsFilterData,
+        annotations,
+        annotationsMulti,
+        setAnnotationsMulti] = useFetchBlipData(
+        isApplyClicked,
+        setIsApplyClicked,
+        startDateTime,
+        endDateTime,
+        newBrand,
+        props.prevSelectedBrand,
+        selectedSiteURLMulti,
+        selectedLobMulti,
+        selectedBrandMulti,
+        selectedDeviceTypeMulti,
+        selectedBookingTypeMulti,
+        chartSliced, setChartSliced);
     const modifyFilters = (newValuesOnChange) => {
         setSelectedLobMulti([]);
         setSelectedDeviceTypeMulti([]);

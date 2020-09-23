@@ -97,8 +97,11 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
                     revLoss: item.estimatedImpact[0].lobs.map((losses) => losses.revenueLoss !== 'NA' ? parseFloat(losses.revenueLoss) : 'NA').reduce((a, b) => a + b, 0)
                 }));
                 setAnnotations(annotationData);
-                // eslint-disable-next-line no-unused-expressions
-                isApplyClicked ? setAnnotationsMulti(annotationsMulti) : setAnnotationsMulti(annotationData);
+                if (isApplyClicked) {
+                    setAnnotationsMulti(annotationsMulti);
+                } else {
+                    setAnnotationsMulti(annotationData);
+                }
                 setIncidentMulti(incidentMultiOptions);
             })
             .catch((err) => {
