@@ -266,7 +266,7 @@ export const addSuggestionType = (suggestions, type, items) => {
 
 export const getAnnotationsFilter = (selectedItems, property, toLowerCase = false) => (
     toLowerCase
-        ? (a) => !selectedItems.length || selectedItems.includes(a[property]).toLowerCase()
+        ? (a) => !selectedItems.length || selectedItems.includes(a[property].toLowerCase())
         : (a) => !selectedItems.length || selectedItems.includes(a[property])
 );
 
