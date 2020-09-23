@@ -184,7 +184,7 @@ const QualityMetrics = ({selectedBrands}) => {
                     info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived'. Click bar chart to see corresponding defects."
                     tickets={tickets}
                     dataUrl={getPanelDataUrl(selectedPortfolios, portfolioBrand, 'openDefects')}
-                    dataKey="openDefectsPastSla"
+                    dataKey="openDefects"
                 />
                 <SLADefinitions />
                 <TwoDimensionalPanel
