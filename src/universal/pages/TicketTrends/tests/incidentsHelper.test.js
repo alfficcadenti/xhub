@@ -6,7 +6,6 @@ import {
     adjustTicketProperties,
     getIncidentsData,
     sumPropertyInArrayOfObjects,
-    getMarginDateValues,
     incidentsOfTheWeek,
     getIncMetricsByBrand,
     getWeeks,
@@ -287,18 +286,6 @@ describe('incidentsHelper', () => {
                 }],
                 keys: ['expedia', 'hotels', 'vrbo']
             });
-        });
-    });
-
-    describe('getMarginDateValues', () => {
-        it('returns the min and max dates of a given array of incidents', () => {
-            const result = getMarginDateValues(mockData2);
-            expect(result).to.be.eql(['2019-09-20', '2019-09-25']);
-        });
-
-        it('returns empty array if input array is empty', () => {
-            const result = getMarginDateValues([]);
-            expect(result).to.be.eql([]);
         });
     });
 

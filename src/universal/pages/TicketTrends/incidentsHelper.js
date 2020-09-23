@@ -1,10 +1,9 @@
 import React from 'react';
 import {renderToString} from 'react-dom/server';
 import moment from 'moment/moment';
-import {isArray} from 'util';
 import uuid from 'uuid/v1';
 import * as h from '../../components/utils/formatDate';
-import {DATE_FORMAT, EGENCIA_BRAND, EXPEDIA_BRAND, HOTELS_COM_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, EG_BRAND, VRBO_BRAND} from '../../constants';
+import {DATE_FORMAT, EGENCIA_BRAND, EXPEDIA_BRAND, HOTELS_COM_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, EG_BRAND, VRBO_BRAND, BRANDS} from '../../constants';
 import {isNotDuplicate, divisionToBrand, getListOfUniqueProperties, buildTicketLinks} from '../utils';
 
 export const getTableColumns = (selectedBrand) => {
@@ -118,26 +117,16 @@ export const getQualityData = (filteredDefects = []) => filteredDefects
     }))
     .sort((a, b) => moment(a.Opened).isBefore(b.Opened));
 
-const max = (accumulator, currentValue) => (currentValue > accumulator ? currentValue : accumulator);
-const min = (accumulator, currentValue) => (currentValue < accumulator ? currentValue : accumulator);
-
-export const getMarginDateValues = (tickets = []) => {
-    const dates = tickets.map((ticket) => moment(ticket.startDate));
-
-    return dates.length === 0 || !isArray(dates) ?
-        [] :
-        [
-            moment(dates.reduce(min)).format(DATE_FORMAT),
-            moment(dates.reduce(max)).format(DATE_FORMAT)
-        ];
-};
-
 const brandIncidents = (incidents, brand) => incidents.filter((incident) => incident.Brand === brand);
 
 export const incidentsOfTheWeek = (incidents, week = '') => incidents.filter(({startDate}) => moment(startDate).week() === week);
 
 export const sumPropertyInArrayOfObjects = (incidents = [], propertyToSum) =>
-    incidents.reduce((acc, curr) => (acc + Number(curr[propertyToSum])), 0);
+    incidents.reduce((acc, curr) => {
+        const value = Number(curr[propertyToSum]);
+        const numValue = Number.isNaN(value) ? 0 : value;
+        return acc + numValue;
+    }, 0);
 
 export const getMeanValue = (incidents = [], property) => (sumPropertyInArrayOfObjects(incidents, property) / incidents.length) || 0;
 
@@ -222,17 +211,9 @@ export const sortInDescOrderAndGetTop5 = (incidents, fieldToSort) => incidents
     .sort((a, b) => Number(b[fieldToSort]) - Number(a[fieldToSort]))
     .slice(0, 5);
 
-const filterByImpactedBrand = (incidents, brandName) => incidents
-    .filter((incident) => incident.impactedBrand === brandName);
-
-const sumBrandLossPerInterval = (data = [], brandName, propertyToSum) => {
-    const filteredByImpactedBrand = filterByImpactedBrand(data, brandName);
-    return sumPropertyInArrayOfObjects(filteredByImpactedBrand, propertyToSum);
-};
-
-const filterIncidentsPerInterval = (data = [], brandName, propertyToSum) => {
+const filterIncidentsPerInterval = (data = [], filter, propertyToSum) => {
     const propertyToSort = 'lostRevenue';
-    const filteredByImpactedBrand = filterByImpactedBrand(data, brandName);
+    const filteredByImpactedBrand = data.filter(filter);
     const uniqueIds = getListOfUniqueProperties(filteredByImpactedBrand, 'id');
 
     const tooltipEntryData = uniqueIds.reduce((prev, incId) => {
@@ -255,21 +236,22 @@ const filterIncidentsPerInterval = (data = [], brandName, propertyToSum) => {
     return sortInDescOrderAndGetTop5(tooltipEntryData, propertyToSort);
 };
 
-const buildRawSeriesForFinancialImpact = (brandNames, weekIntervals, incidentsPerIntervalMap, propertyToSum) => {
+const buildRawSeriesForFinancialImpact = (keys, filterKey, weekIntervals, incidentsPerIntervalMap, propertyToSum) => {
     return weekIntervals.map((w) => {
         const interval = {name: w};
-        brandNames.forEach((brandName) => {
-            interval[brandName] = sumBrandLossPerInterval(incidentsPerIntervalMap[w], brandName, propertyToSum);
+        keys.forEach((key) => {
+            const incidents = incidentsPerIntervalMap[w].filter((incident) => incident[filterKey].includes(key));
+            interval[key] = sumPropertyInArrayOfObjects(incidents, propertyToSum);
         });
         return interval;
     });
 };
 
-const buildFinancialImpactTooltipData = (brandNames, weekIntervals, incidentsPerIntervalMap, propertyToSum) => weekIntervals
+const buildFinancialImpactTooltipData = (keys, filterKey, weekIntervals, incidentsPerIntervalMap, propertyToSum) => weekIntervals
     .reduce((prev, weekInterval) => {
-        const newMetricPoint = brandNames.reduce((map, brand) => ({
+        const newMetricPoint = keys.reduce((map, key) => ({
             ...map,
-            [brand]: filterIncidentsPerInterval(incidentsPerIntervalMap[weekInterval], brand, propertyToSum)
+            [key]: filterIncidentsPerInterval(incidentsPerIntervalMap[weekInterval], (incident) => incident[filterKey].includes(key), propertyToSum)
         }), {});
 
         return {
@@ -278,25 +260,23 @@ const buildFinancialImpactTooltipData = (brandNames, weekIntervals, incidentsPer
         };
     }, {});
 
-const buildIncidentsPerIntervalHash = (weekIntervals, incidents) => weekIntervals
-    .reduce((prev, weekInterval) => {
-        const week = moment(weekInterval).week();
-        return {
-            ...prev,
-            [weekInterval]: incidentsOfTheWeek(incidents, week)
-        };
-    }, {});
-
-export const buildFinancialImpactData = (incidents, propertyToSum) => {
-    const [lowerMarginDateValue, maxMarginDateValue] = getMarginDateValues(incidents);
-    const weekIntervals = getWeeks(lowerMarginDateValue, maxMarginDateValue);
-    const brands = getListOfUniqueProperties(incidents, 'impactedBrand');
-    const incidentsPerIntervalHash = buildIncidentsPerIntervalHash(weekIntervals, incidents);
-    const tooltipData = buildFinancialImpactTooltipData(brands, weekIntervals, incidentsPerIntervalHash, propertyToSum);
+export const buildFinancialImpactData = (incidents, startDate, endDate, selectedBrand, propertyToSum) => {
+    const weekIntervals = getWeeks(startDate, endDate);
+    const filterKey = selectedBrand === EG_BRAND
+        ? 'Brand'
+        : 'Division';
+    const keys = selectedBrand === EG_BRAND
+        ? BRANDS.map((b) => b.label)
+        : getListOfUniqueProperties(incidents, 'Division');
+    const incidentsPerIntervalHash = weekIntervals
+        .reduce((acc, weekInterval) => ({
+            ...acc,
+            [weekInterval]: incidentsOfTheWeek(incidents, moment(weekInterval).week())
+        }), {});
     return {
-        data: buildRawSeriesForFinancialImpact(brands, weekIntervals, incidentsPerIntervalHash, propertyToSum),
-        brands,
-        tooltipData
+        data: buildRawSeriesForFinancialImpact(keys, filterKey, weekIntervals, incidentsPerIntervalHash, propertyToSum),
+        keys,
+        tooltipData: buildFinancialImpactTooltipData(keys, filterKey, weekIntervals, incidentsPerIntervalHash, propertyToSum)
     };
 };
 

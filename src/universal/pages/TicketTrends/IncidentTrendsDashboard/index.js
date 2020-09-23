@@ -83,8 +83,7 @@ const IncidentTrendsDashboard = (props) => {
     const [isDirtyForm, setIsDirtyForm] = useState(false);
     const [showMoreFilters, setShowMoreFilters] = useState(false);
 
-    const [filteredUniqueIncidents, setFilteredUniqueIncidents] = useState([]);
-    const [filteredAllIncidents, setFilteredAllIncidents] = useState([]);
+    const [tickets, setTickets] = useState([]);
 
     const [isApplyClicked, setIsApplyClicked] = useState(false);
     const [
@@ -122,8 +121,7 @@ const IncidentTrendsDashboard = (props) => {
         // eslint-disable-next-line complexity
         const filterTickets = (t) => (matchesPriority(t) && matchesBrand(t) && matchesStatus(t) && matchesTag(t) && matchesRcOwner(t)
             && matchesPartner(t) && matchesDivision(t));
-        setFilteredUniqueIncidents([...allUniqueIncidents].filter(filterTickets));
-        setFilteredAllIncidents([...allIncidents].filter(filterTickets));
+        setTickets([...allUniqueIncidents].filter(filterTickets));
 
         setAppliedStartDate(startDate);
         setAppliedEndDate(endDate);
@@ -147,7 +145,7 @@ const IncidentTrendsDashboard = (props) => {
     const handleClearDates = () => {
         setStartDate('');
         setEndDate('');
-        setFilteredUniqueIncidents([]);
+        setTickets([]);
         setIsDirtyForm(true);
     };
 
@@ -192,15 +190,15 @@ const IncidentTrendsDashboard = (props) => {
     const renderTabs = () => {
         switch (activeIndex) {
             case 0:
-                return <Overview startDate={appliedStartDate} endDate={appliedEndDate} filteredIncidents={filteredUniqueIncidents} brand={selectedBrand} />;
+                return <Overview startDate={appliedStartDate} endDate={appliedEndDate} tickets={tickets} brand={selectedBrand} />;
             case 1:
-                return <Incidents filteredIncidents={filteredUniqueIncidents} selectedBrand={selectedBrand} />;
+                return <Incidents tickets={tickets} selectedBrand={selectedBrand} />;
             case 2:
-                return <Top5 filteredIncidents={filteredUniqueIncidents} />;
+                return <Top5 tickets={tickets} />;
             case 3:
-                return <FinancialImpact filteredIncidents={filteredAllIncidents} />;
+                return <FinancialImpact startDate={appliedStartDate} endDate={appliedEndDate} tickets={tickets} brand={selectedBrand} />;
             default:
-                return <Incidents filteredIncidents={filteredUniqueIncidents} />;
+                return <Incidents tickets={tickets} />;
         }
     };
 

@@ -2,7 +2,7 @@ import React from 'react';
 import {expect} from 'chai';
 import {shallow} from 'enzyme/build';
 import Quality from '../Quality';
-import NoResults from '../../../../../../components/NoResults/NoResults';
+import NoResults from '../../../../../../components/NoResults';
 import mockData from './filteredData.test.json';
 
 

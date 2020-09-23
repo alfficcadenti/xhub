@@ -2,7 +2,7 @@ import React from 'react';
 import {expect} from 'chai';
 import {shallow} from 'enzyme/build';
 import FinancialImpact from '../FinancialImpact';
-import NoResults from '../../../../../../components/NoResults/NoResults';
+import NoResults from '../../../../../../components/NoResults';
 import mockData from './lostRevenueData.test.json';
 
 
@@ -11,7 +11,7 @@ describe('FinancialImpact component testing', () => {
 
     beforeEach(() => {
         wrapper = shallow(
-            <FinancialImpact filteredIncidents={mockData} />
+            <FinancialImpact tickets={mockData} />
         );
     });
 
@@ -24,7 +24,7 @@ describe('FinancialImpact component testing', () => {
     });
 
     it('renders NoResults component when no data available', () => {
-        wrapper.setProps({filteredIncidents: []});
+        wrapper.setProps({tickets: []});
         expect(wrapper.contains(<NoResults />)).to.equal(true);
     });
 });

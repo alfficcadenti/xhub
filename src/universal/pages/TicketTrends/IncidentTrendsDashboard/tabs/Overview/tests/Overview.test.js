@@ -2,7 +2,7 @@ import React from 'react';
 import {expect} from 'chai';
 import {shallow} from 'enzyme/build';
 import Overview from '../Overview';
-import NoResults from '../../../../../../components/NoResults/NoResults';
+import NoResults from '../../../../../../components/NoResults';
 import mockData from './filteredData.test.json';
 
 describe('<Overview />', () => {
@@ -10,7 +10,7 @@ describe('<Overview />', () => {
 
     beforeEach(() => {
         wrapper = shallow(
-            <Overview startDate={'2019-09-01'} endDate={'2019-09-31'} filteredIncidents={mockData} />
+            <Overview startDate={'2019-09-01'} endDate={'2019-09-31'} tickets={mockData} />
         );
     });
 
@@ -31,7 +31,7 @@ describe('<Overview />', () => {
     });
 
     it('renders NoResults component when no data available', () => {
-        wrapper.setProps({filteredIncidents: []});
+        wrapper.setProps({tickets: []});
         expect(wrapper.contains(<NoResults />)).to.equal(true);
     });
 });

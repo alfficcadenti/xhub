@@ -1,20 +1,20 @@
 import React from 'react';
-import NoResults from '../../../../../components/NoResults/NoResults';
+import NoResults from '../../../../../components/NoResults';
 import {buildFinancialImpactData} from '../../../incidentsHelper';
 import LineChartWrapper from '../../../../../components/LineChartWrapper';
 import './styles.less';
 
-const FinancialImpact = ({filteredIncidents}) => {
+const FinancialImpact = ({startDate, endDate, tickets, brand}) => {
     const {
         data: revenueData,
-        brands: revenueBrands,
+        keys: revenueKeys,
         tooltipData: revenueTooltipData
-    } = buildFinancialImpactData(filteredIncidents, 'estimatedRevenueLoss');
+    } = buildFinancialImpactData(tickets, startDate, endDate, brand, 'estimatedRevenueLoss');
     const {
         data: grossData,
-        brands: grossBrands,
+        keys: grossKeys,
         tooltipData: grossTooltipData
-    } = buildFinancialImpactData(filteredIncidents, 'estimatedGrossLoss');
+    } = buildFinancialImpactData(tickets, startDate, endDate, brand, 'estimatedGrossLoss');
 
     const htmlDecode = (input) => {
         const doc = new DOMParser().parseFromString(input, 'text/html');
@@ -38,21 +38,21 @@ const FinancialImpact = ({filteredIncidents}) => {
     return (
         <div className="financial-impact">
             {
-                !filteredIncidents || !filteredIncidents.length
+                !tickets || !tickets.length
                     ? <NoResults />
                     : (
                         <>
                             <LineChartWrapper
                                 title="Booking Revenue Loss"
                                 data={revenueData}
-                                keys={revenueBrands}
+                                keys={revenueKeys}
                                 tooltipData={revenueTooltipData}
                                 renderTooltipContent={renderLinks}
                             />
                             <LineChartWrapper
                                 title="Gross Booking Value Loss"
                                 data={grossData}
-                                keys={grossBrands}
+                                keys={grossKeys}
                                 tooltipData={grossTooltipData}
                                 renderTooltipContent={renderLinks}
                             />

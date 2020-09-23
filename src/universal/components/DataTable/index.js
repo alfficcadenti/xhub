@@ -12,7 +12,7 @@ import {Divider} from '@homeaway/react-collapse';
 import {Checkbox} from '@homeaway/react-form-components';
 import './DataTable.less';
 import {Dropdown, DropdownItem} from '@homeaway/react-dropdown';
-import NoResults from '../NoResults/NoResults';
+import NoResults from '../NoResults';
 
 const sanitizeOption = {
     allowedAttributes: Object.assign(sanitizeHtml.defaults.allowedAttributes, {div: ['value']})

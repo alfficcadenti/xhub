@@ -1,6 +1,6 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import NoResults from '../NoResults';
+import NoResults from '../index';
 
 
 describe('<NoResults />', () => {

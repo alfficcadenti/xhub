@@ -2,7 +2,7 @@ import React from 'react';
 import {expect} from 'chai';
 import {shallow} from 'enzyme/build';
 import Top5 from '../Top5';
-import NoResults from '../../../../../../components/NoResults/NoResults';
+import NoResults from '../../../../../../components/NoResults';
 import mockData from './filteredData.test.json';
 
 describe('<Top5 />', () => {
@@ -10,7 +10,7 @@ describe('<Top5 />', () => {
 
     beforeEach(() => {
         wrapper = shallow(
-            <Top5 filteredIncidents={mockData} />
+            <Top5 tickets={mockData} />
         );
     });
 
@@ -31,7 +31,7 @@ describe('<Top5 />', () => {
     });
 
     it('renders NoResults component when no data available', () => {
-        wrapper.setProps({filteredIncidents: []});
+        wrapper.setProps({tickets: []});
         expect(wrapper.contains(<NoResults />)).to.equal(true);
     });
 });

@@ -3,7 +3,7 @@ import {expect} from 'chai';
 import {shallow} from 'enzyme/build';
 import Incidents from '../Incidents';
 import mockData from './filteredData.test.json';
-import NoResults from '../../../../../../components/NoResults/NoResults';
+import NoResults from '../../../../../../components/NoResults';
 
 
 describe('Incidents component testing', () => {
@@ -11,7 +11,7 @@ describe('Incidents component testing', () => {
 
     beforeEach(() => {
         wrapper = shallow(
-            <Incidents filteredIncidents={mockData}/>
+            <Incidents tickets={mockData}/>
         );
     });
 
@@ -42,7 +42,7 @@ describe('Incidents component testing', () => {
     });
 
     it('renders NoResults component when no data available', () => {
-        wrapper.setProps({filteredIncidents: []});
+        wrapper.setProps({tickets: []});
         expect(wrapper.contains(<NoResults />)).to.equal(true);
     });
 });

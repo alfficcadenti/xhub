@@ -3,7 +3,7 @@ import {
     PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend
 } from 'recharts';
 import {CHART_COLORS} from '../../constants';
-import NoResults from '../NoResults/NoResults';
+import NoResults from '../NoResults';
 import './styles.less';
 
 const PieChartWrapper = ({

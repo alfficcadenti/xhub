@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import DataTable from '../../../../../components/DataTable';
 import LineChartWrapper from '../../../../../components/LineChartWrapper';
 import PieChart from '../../../../../components/PieChart';
-import NoResults from '../../../../../components/NoResults/NoResults';
+import NoResults from '../../../../../components/NoResults';
 import {getQualityData, getWeeklyCounts} from '../../../incidentsHelper';
 import {getPieData} from '../../../../utils';
 import './Quality.less';
