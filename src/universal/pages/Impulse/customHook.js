@@ -78,7 +78,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
                     revLoss: item.estimatedImpact.flatMap((impacts) => impacts.lobs.map((losses) => losses.revenueLoss !== 'NA' ? parseFloat(losses.revenueLoss) : 'NA')).reduce((a, b) => a + b, 0)
 
                 }));
-                console.log(annotationData);
                 setAnnotations(annotationData);
             })
             .catch((err) => {
