@@ -15,7 +15,8 @@ const ReferenceLabel = ({viewBox: {x}, annotation, isImpulse = false}) => {
         priority,
         status,
         id,
-        revLoss
+        revLoss,
+        summary
     } = annotation;
 
     return (
@@ -37,6 +38,7 @@ const ReferenceLabel = ({viewBox: {x}, annotation, isImpulse = false}) => {
                                 </div>
                             </> : <>
                                 <span>{priority}</span>
+                                <span className="summary">{summary}</span>
                                 <span>{status}</span>
                                 <a href={`https://jira.homeawaycorp.com/browse/${id}`} target="_blank" className="incident-link">{id}</a>
                                 {isImpulse && <div>
