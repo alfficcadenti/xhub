@@ -33,10 +33,29 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
     const [brandsMulti, setBrandMulti] = useState({});
     const [deviceTypeMulti, setDeviceTypesMulti] = useState({});
     const [bookingTypeMulti, setBookingTypesMulti] = useState({});
+    const [incidentMulti, setIncidentMulti] = useState({});
     const [brandsFilterData, setBrandsFilterData] = useState({});
     const [filterData, setFilterData] = useState({});
+    const [annotationsMulti, setAnnotationsMulti] = useState([]);
     const [annotations, setAnnotations] = useState([]);
     const isMount = useIsMount();
+    const incidentMultiOptions = [
+        {
+            value: 'All',
+            label: 'All'
+        },
+        {
+            value: '0-Code Red',
+            label: '0-Code Red'
+        },
+        {
+            value: '1-Critical',
+            label: '1-Critical'
+        },
+        {
+            value: '2-High',
+            label: '2-High'
+        }];
     const getFilter = () => {
         fetch(`/v1/bookings/filters?filter=lob,brand,egSiteUrl,deviceType,bookingType,brandGroupName${getBrandQueryParam(IMPULSE_MAPPING, globalBrandName)}`)
             .then(checkResponse)
@@ -78,6 +97,12 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
                     revLoss: item.estimatedImpact[0].lobs.map((losses) => losses.revenueLoss !== 'NA' ? parseFloat(losses.revenueLoss) : 'NA').reduce((a, b) => a + b, 0)
                 }));
                 setAnnotations(annotationData);
+                if (isApplyClicked) {
+                    setAnnotationsMulti(annotationsMulti);
+                } else {
+                    setAnnotationsMulti(annotationData);
+                }
+                setIncidentMulti(incidentMultiOptions);
             })
             .catch((err) => {
                 // eslint-disable-next-line no-console
@@ -141,9 +166,12 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
         setDeviceTypesMulti,
         bookingTypeMulti,
         setBookingTypesMulti,
+        incidentMulti,
         filterData,
         brandsFilterData,
-        annotations
+        annotations,
+        annotationsMulti,
+        setAnnotationsMulti
     ];
 };
 
