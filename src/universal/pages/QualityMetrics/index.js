@@ -9,9 +9,10 @@ import {
     BarChartPanel,
     TwoDimensionalPanel,
     SLADefinitions,
+    CreatedVsResolvedPanel,
     PiePanel
 } from './Panels';
-import {PORTFOLIOS} from './constants';
+import {PORTFOLIOS, P1_LABEL, P2_LABEL} from './constants';
 import {getQueryValues, getPortfolioBrand, getPanelDataUrl, formatBarChartData, getTicketIds} from './utils';
 import './styles.less';
 
@@ -32,6 +33,10 @@ const QualityMetrics = ({selectedBrands}) => {
     const [tdData, setTdData] = useState({});
     const [isTdDataLoading, setIsTdDataLoading] = useState(true);
     const [tdDataError, setTdDataError] = useState();
+
+    const [cvrData, setCvrData] = useState({});
+    const [isCvrDataLoading, setIsCvrDataLoading] = useState(true);
+    const [cvrDataError, setCvrDataError] = useState();
 
     const [openDefectTicketIds, setOpenDefectTicketIds] = useState([]);
     const [openDefectsData, setOpenDefectsData] = useState({});
@@ -68,6 +73,16 @@ const QualityMetrics = ({selectedBrands}) => {
                 .catch((e) => {
                     setTdDataError(e.message);
                     setIsTdDataLoading(false);
+                });
+            fetch(getPanelDataUrl(selectedPortfolios, portfolioBrand, 'createdVsResolved'))
+                .then((data) => data.json())
+                .then((response) => {
+                    setCvrData(response.data || {});
+                    setIsCvrDataLoading(false);
+                })
+                .catch((e) => {
+                    setCvrDataError(e.message);
+                    setIsCvrDataLoading(false);
                 });
             fetch(getPanelDataUrl(selectedPortfolios, portfolioBrand, 'opendefects'))
                 .then((data) => data.json())
@@ -198,6 +213,23 @@ const QualityMetrics = ({selectedBrands}) => {
                     dataKey="openBugs"
                     isLoading={isTdDataLoading}
                     error={tdDataError}
+                />
+                <CreatedVsResolvedPanel
+                    title="Created vs. Resolved Chart - All P1s and P2s"
+                    info="Charting P1 and P2 priority defects by their open date and resolve date (bucketed by week). Click line point for more details."
+                    tickets={tickets}
+                    data={cvrData}
+                    isLoading={isCvrDataLoading}
+                    error={cvrDataError}
+                    priorities={[P1_LABEL, P2_LABEL]}
+                />
+                <CreatedVsResolvedPanel
+                    title="Created vs. Resolved Chart - All Bugs"
+                    info="Charting all defects by their open date and resolve date (bucketed by week). Click line point for more details."
+                    tickets={tickets}
+                    data={cvrData}
+                    isLoading={isCvrDataLoading}
+                    error={cvrDataError}
                 />
                 <PiePanel
                     title="Open Bugs (w.r.t. Priority)"
