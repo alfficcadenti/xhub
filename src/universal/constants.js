@@ -13,6 +13,7 @@ export const ALL_BRANDS = 'All Brands';
 export const ALL_POS = 'All POS';
 export const ALL_DEVICES = 'All Devices';
 export const ALL_BOOKING_TYPES = 'Booking Types';
+export const ALL_INCIDENTS = 'All Incidents';
 export const ALL_BRAND_GROUP = 'All Brand Group';
 export const ALL_TYPES_OPTION = 'All Types';
 export const ALL_ORGS_OPTION = 'All Owning Orgs';
