@@ -1,9 +1,9 @@
 import React from 'react';
-import qs from 'query-string';
 import moment from 'moment';
-import {DATE_FORMAT} from '../../constants';
+import qs from 'query-string';
 import {getBrand} from '../utils';
 import {PORTFOLIOS, PRIORITY_LABELS, P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL, NOT_PRIORITIZED_LABEL} from './constants';
+import {DATE_FORMAT} from '../../constants';
 
 export const getPortfolioBrand = (selectedBrands) => {
     const selectedBrand = getBrand(selectedBrands[0], 'label');
@@ -13,13 +13,11 @@ export const getPortfolioBrand = (selectedBrands) => {
 };
 
 export const getQueryValues = (search) => {
-    const {portfolios, start, end} = qs.parse(search);
+    const {portfolios} = qs.parse(search);
     const initialPortfolios = (Array.isArray(portfolios) ? portfolios : [portfolios])
         .map((portfolio) => PORTFOLIOS.find((p) => p.value === portfolio))
         .filter((portfolio) => !!portfolio);
-    const initialStart = start || moment().subtract(180, 'days').format(DATE_FORMAT);
-    const initialEnd = end || moment().format(DATE_FORMAT);
-    return {initialPortfolios, initialStart, initialEnd};
+    return {initialPortfolios};
 };
 
 export const getPropValue = (item, prop) => item[prop] || '-';
@@ -73,13 +71,14 @@ export const getTicketIds = (data) => Object.values(data).reduce((acc, {ticketId
 
 export const formatBarChartData = (data) => {
     return Object.entries(data)
-        .map(([date, {p1 = 0, p2 = 0, p3 = 0, p4 = 0, totalTickets = 0, ticketIds = []}]) => {
+        .map(([date, {p1 = 0, p2 = 0, p3 = 0, p4 = 0, p5 = 0, totalTickets = 0, ticketIds = []}]) => {
             return {
                 date,
                 [P1_LABEL]: p1,
                 [P2_LABEL]: p2,
                 [P3_LABEL]: p3,
                 [P4_LABEL]: p4,
+                [P5_LABEL]: p5,
                 counts: totalTickets,
                 tickets: ticketIds};
         }, []);
@@ -87,13 +86,14 @@ export const formatBarChartData = (data) => {
 
 export const formatTTRData = (data) => {
     return Object.entries(data)
-        .map(([date, {p1DaysToResolve = 0, p2DaysToResolve = 0, p3DaysToResolve = 0, p4DaysToResolve = 0, totalTickets = 0, ticketIds = []}]) => {
+        .map(([date, {p1DaysToResolve = 0, p2DaysToResolve = 0, p3DaysToResolve = 0, p4DaysToResolve = 0, p5DaysToResolve = 0, totalTickets = 0, ticketIds = []}]) => {
             return {
                 date,
                 [P1_LABEL]: p1DaysToResolve,
                 [P2_LABEL]: p2DaysToResolve,
                 [P3_LABEL]: p3DaysToResolve,
                 [P4_LABEL]: p4DaysToResolve,
+                [P5_LABEL]: p5DaysToResolve,
                 counts: totalTickets,
                 tickets: ticketIds
             };
@@ -228,9 +228,10 @@ export const formatCreatedVsResolvedData = (data, selectedPriorities) => {
         });
 };
 
-export const getPanelDataUrl = (portfolios, start, end, brand, panel) => {
-    // const baseUrl = 'https://opxhub-data-service.us-west-2.test.expedia.com/v1/portfolio';
+export const getPanelDataUrl = (portfolios, brand, panel) => {
     const baseUrl = '/v1/portfolio';
+    const start = moment().subtract(180, 'days').format(DATE_FORMAT);
+    const end = moment().format(DATE_FORMAT);
     const dateQuery = `fromDate=${start}&toDate=${end}`;
     const brandQuery = `brand=${brand}`;
     const portfoliosQuery = `portfolios=${portfolios.map((p) => p.value).join('&portfolios=')}`;

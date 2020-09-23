@@ -3,32 +3,24 @@ import {useHistory, useLocation} from 'react-router-dom';
 import {SVGIcon} from '@homeaway/react-svg';
 import {QUESTION__16} from '@homeaway/svg-defs';
 import {Checkbox} from '@homeaway/react-form-components';
-import DatePicker from '../../components/DatePicker';
 import LoadingContainer from '../../components/LoadingContainer';
 import HelpText from '../../components/HelpText/HelpText';
 import {
     BarChartPanel,
     TwoDimensionalPanel,
-    MTTRPanel,
     SLADefinitions,
-    CreatedVsResolvedPanel,
-    WoWPanel,
     PiePanel
 } from './Panels';
-import {PORTFOLIOS, P1_LABEL, P2_LABEL, MIN_DATE} from './constants';
+import {PORTFOLIOS} from './constants';
 import {getQueryValues, getPortfolioBrand, getPanelDataUrl, formatBarChartData, getTicketIds} from './utils';
 import './styles.less';
 
 const QualityMetrics = ({selectedBrands}) => {
     const history = useHistory();
     const {search} = useLocation();
-    const {initialPortfolios, initialStart, initialEnd} = getQueryValues(search);
+    const {initialPortfolios} = getQueryValues(search);
 
     const [isSupportedBrand, setIsSupportedBrand] = useState(true);
-    const [pendingStart, setPendingStart] = useState(initialStart);
-    const [pendingEnd, setPendingEnd] = useState(initialEnd);
-    const [start, setStart] = useState(initialStart);
-    const [end, setEnd] = useState(initialEnd);
     const [portfolioBrand, setPortfolioBrand] = useState(getPortfolioBrand(selectedBrands));
     const [pendingPortfolios, setPendingPortfolios] = useState(initialPortfolios);
     const [selectedPortfolios, setSelectedPortfolios] = useState(initialPortfolios);
@@ -40,10 +32,6 @@ const QualityMetrics = ({selectedBrands}) => {
     const [tdData, setTdData] = useState({});
     const [isTdDataLoading, setIsTdDataLoading] = useState(true);
     const [tdDataError, setTdDataError] = useState();
-
-    const [cvrData, setCvrData] = useState({});
-    const [isCvrDataLoading, setIsCvrDataLoading] = useState(true);
-    const [cvrDataError, setCvrDataError] = useState();
 
     const [openDefectTicketIds, setOpenDefectTicketIds] = useState([]);
     const [openDefectsData, setOpenDefectsData] = useState({});
@@ -59,10 +47,9 @@ const QualityMetrics = ({selectedBrands}) => {
             }
             setIsLoading(true);
             const brandQuery = `?selectedBrand=${selectedBrands[0]}`;
-            const dateRangeQuery = `&start=${start}&end=${end}`;
             const portfoliosQuery = selectedPortfolios.length ? `&portfolios=${selectedPortfolios.map((p) => p.value).join('&portfolios=')}` : '';
-            history.push(`/quality-metrics${brandQuery}${dateRangeQuery}${portfoliosQuery}`);
-            fetch(getPanelDataUrl(selectedPortfolios, start, end, portfolioBrand))
+            history.push(`/quality-metrics${brandQuery}${portfoliosQuery}`);
+            fetch(getPanelDataUrl(selectedPortfolios, portfolioBrand))
                 .then((data) => data.json())
                 .then((allTickets) => {
                     setTickets(allTickets);
@@ -72,7 +59,7 @@ const QualityMetrics = ({selectedBrands}) => {
                     setError(e.message);
                     setIsLoading(false);
                 });
-            fetch(getPanelDataUrl(selectedPortfolios, start, end, portfolioBrand, 'twoDimensionalStatistics'))
+            fetch(getPanelDataUrl(selectedPortfolios, portfolioBrand, 'twoDimensionalStatistics'))
                 .then((data) => data.json())
                 .then((response) => {
                     setTdData(response.data || {});
@@ -82,17 +69,7 @@ const QualityMetrics = ({selectedBrands}) => {
                     setTdDataError(e.message);
                     setIsTdDataLoading(false);
                 });
-            fetch(getPanelDataUrl(selectedPortfolios, start, end, portfolioBrand, 'createdVsResolved'))
-                .then((data) => data.json())
-                .then((response) => {
-                    setCvrData(response.data || {});
-                    setIsCvrDataLoading(false);
-                })
-                .catch((e) => {
-                    setCvrDataError(e.message);
-                    setIsCvrDataLoading(false);
-                });
-            fetch(getPanelDataUrl(selectedPortfolios, start, end, portfolioBrand, 'opendefects'))
+            fetch(getPanelDataUrl(selectedPortfolios, portfolioBrand, 'opendefects'))
                 .then((data) => data.json())
                 .then((response) => {
                     setOpenDefectsData(response.data.openDefects || {});
@@ -105,7 +82,7 @@ const QualityMetrics = ({selectedBrands}) => {
                 });
         };
         fetchData();
-    }, [history, portfolioBrand, selectedBrands, selectedPortfolios, start, end]);
+    }, [history, portfolioBrand, selectedBrands, selectedPortfolios]);
 
     const handlePortfoliosChange = (portfolio) => {
         let portfolios = [];
@@ -131,21 +108,7 @@ const QualityMetrics = ({selectedBrands}) => {
             setPendingPortfolios([]);
             setSelectedPortfolios([]);
         }
-        setStart(pendingStart);
-        setEnd(pendingEnd);
         setIsDirtyForm(false);
-    };
-
-    const handleDateRangeChange = (startDate, endDate) => {
-        setPendingStart(startDate || start);
-        setPendingEnd(endDate || end);
-        setIsDirtyForm(true);
-    };
-
-    const handleClearDates = () => {
-        setPendingStart('');
-        setPendingEnd('');
-        setIsDirtyForm(true);
     };
 
     const renderPortfolioCheckbox = (portfolio) => (
@@ -163,13 +126,6 @@ const QualityMetrics = ({selectedBrands}) => {
     const renderForm = () => (
         <div className="search-form">
             <div className="form-container">
-                <DatePicker
-                    startDate={pendingStart}
-                    endDate={pendingEnd}
-                    minDate={MIN_DATE}
-                    handleDateRangeChange={handleDateRangeChange}
-                    handleClearDates={handleClearDates}
-                />
                 <div className="checkboxes-container">
                     {PORTFOLIOS.map(renderPortfolioCheckbox)}
                 </div>
@@ -210,7 +166,7 @@ const QualityMetrics = ({selectedBrands}) => {
                     title="Open Defects Past SLA"
                     info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived'. See panel below for SLA definitions. Click bar chart to see corresponding defects."
                     tickets={tickets}
-                    dataUrl={getPanelDataUrl(selectedPortfolios, start, end, portfolioBrand, 'opendefectspastsla')}
+                    dataUrl={getPanelDataUrl(selectedPortfolios, portfolioBrand, 'opendefectspastsla')}
                     dataKey="openDefectsPastSla"
                 />
                 <BarChartPanel
@@ -234,16 +190,6 @@ const QualityMetrics = ({selectedBrands}) => {
                     error={tdDataError}
                 />
                 <TwoDimensionalPanel
-                    title="Two Dimensional Filter Statistics - Defects Approaching SLA"
-                    info="Displaying defects approaching SLA (See SLA definitions in above panel)"
-                    tickets={tickets}
-                    data={tdData}
-                    portfolios={selectedPortfolios}
-                    dataKey="approachingSLA"
-                    isLoading={isTdDataLoading}
-                    error={tdDataError}
-                />
-                <TwoDimensionalPanel
                     title="Two Dimensional Filter Statistics - Open Bugs"
                     info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived'"
                     tickets={tickets}
@@ -252,41 +198,6 @@ const QualityMetrics = ({selectedBrands}) => {
                     dataKey="openBugs"
                     isLoading={isTdDataLoading}
                     error={tdDataError}
-                />
-                <TwoDimensionalPanel
-                    title="Two Dimensional Filter Statistics - Bugs needing triage"
-                    info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived'"
-                    tickets={tickets}
-                    data={tdData}
-                    portfolios={selectedPortfolios}
-                    dataKey="bugsNeedingTriage"
-                    isLoading={isTdDataLoading}
-                    error={tdDataError}
-                />
-                <MTTRPanel
-                    tickets={tickets}
-                    dataUrl={getPanelDataUrl(selectedPortfolios, start, end, portfolioBrand, 'timetoresolve')}
-                />
-                <CreatedVsResolvedPanel
-                    title="Created vs. Resolved Chart - All P1s and P2s"
-                    info="Charting P1 and P2 priority defects by their open date and resolve date (bucketed by week). Click line point for more details."
-                    tickets={tickets}
-                    data={cvrData}
-                    isLoading={isCvrDataLoading}
-                    error={cvrDataError}
-                    priorities={[P1_LABEL, P2_LABEL]}
-                />
-                <CreatedVsResolvedPanel
-                    title="Created vs. Resolved Chart - All Bugs"
-                    info="Charting all defects by their open date and resolve date (bucketed by week). Click line point for more details."
-                    tickets={tickets}
-                    data={cvrData}
-                    isLoading={isCvrDataLoading}
-                    error={cvrDataError}
-                />
-                <WoWPanel
-                    tickets={tickets}
-                    dataUrl={getPanelDataUrl(selectedPortfolios, start, end, portfolioBrand, 'issueswowdata')}
                 />
                 <PiePanel
                     title="Open Bugs (w.r.t. Priority)"
