@@ -1,8 +1,5 @@
 import React from 'react';
-import moment from 'moment';
 import Tooltip from '@homeaway/react-tooltip';
-
-export const MIN_DATE = moment('2020-01-01').toDate();
 
 export const PORTFOLIOS = [
     {

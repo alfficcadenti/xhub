@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import {expect} from 'chai';
 import {
     getPortfolioBrand,
@@ -16,7 +17,7 @@ import {
     getPanelDataUrl
 } from '../utils';
 import {PORTFOLIOS, P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL, NOT_PRIORITIZED_LABEL} from '../constants';
-import {HOTELS_COM_BRAND, EXPEDIA_BRAND} from '../../../constants';
+import {HOTELS_COM_BRAND, EXPEDIA_BRAND, DATE_FORMAT} from '../../../constants';
 
 describe('Quality Metrics Util', () => {
     it('getPortfolioBrand', () => {
@@ -26,10 +27,8 @@ describe('Quality Metrics Util', () => {
 
     it('getQueryValues', () => {
         const portfolios = ['kes'];
-        const start = '2020-01-01';
-        const end = '2020-02-02';
-        expect(getQueryValues(`https://localhost:8080/quality-metrics?selectedBrand=${HOTELS_COM_BRAND}&portfolios=${portfolios.toString()}&start=${start}&end=${end}`)).to.be.eql({
-            initialPortfolios: portfolios.map((p) => PORTFOLIOS.find(({value}) => p === value)), initialStart: start, initialEnd: end
+        expect(getQueryValues(`https://localhost:8080/quality-metrics?selectedBrand=${HOTELS_COM_BRAND}&portfolios=${portfolios.toString()}`)).to.be.eql({
+            initialPortfolios: portfolios.map((p) => PORTFOLIOS.find(({value}) => p === value))
         });
     });
 
@@ -100,20 +99,26 @@ describe('Quality Metrics Util', () => {
 
     it('formatBarChartData', () => {
         const date = '2020-01-01';
-        const counts = 1;
-        const tickets = ['INC-0001'];
+        const counts = 7;
+        const tickets = ['INC-0001', 'INC-0002', 'INC-0003', 'INC-0004', 'INC-0005', 'INC-0006', 'INC-0007'];
         const data = {
             [date]: {
+                p1: 1,
+                p2: 2,
+                p3: 0,
+                p4: 1,
+                p5: 3,
                 totalTickets: counts,
                 ticketIds: tickets
             }
         };
         expect(formatBarChartData(data)).to.be.eql([{
             date,
-            P1: 0,
-            P2: 0,
+            P1: 1,
+            P2: 2,
             P3: 0,
-            P4: 0,
+            P4: 1,
+            P5: 3,
             counts,
             tickets
         }]);
@@ -124,12 +129,14 @@ describe('Quality Metrics Util', () => {
         const p1DaysToResolve = 1;
         const p2DaysToResolve = 2;
         const p4DaysToResolve = 4;
+        const p5DaysToResolve = 3;
         const ticketIds = ['INC-0001'];
         const data = {
             [date]: {
                 p1DaysToResolve,
                 p2DaysToResolve,
                 p4DaysToResolve,
+                p5DaysToResolve,
                 totalTickets: ticketIds.length, ticketIds
             }
         };
@@ -139,6 +146,8 @@ describe('Quality Metrics Util', () => {
             [P2_LABEL]: p2DaysToResolve,
             [P3_LABEL]: 0,
             [P4_LABEL]: p4DaysToResolve,
+            [P4_LABEL]: p4DaysToResolve,
+            [P5_LABEL]: p5DaysToResolve,
             counts: ticketIds.length,
             tickets: ticketIds
         }]);
@@ -237,14 +246,14 @@ describe('Quality Metrics Util', () => {
 
     it('getPanelDataUrl', () => {
         const portfolios = [{text: 'KES', value: 'kes'}];
-        const start = '2020-01-01';
-        const end = '2020-02-02';
+        const start = moment().subtract(180, 'days').format(DATE_FORMAT);
+        const end = moment().format(DATE_FORMAT);
         const brand = 'HCOM';
         const panel = 'opendefects';
-        expect(getPanelDataUrl(portfolios, start, end, brand, panel)).to.be.equal(
+        expect(getPanelDataUrl(portfolios, brand, panel)).to.be.equal(
             `/v1/portfolio/panel/${panel}?brand=${brand}&fromDate=${start}&toDate=${end}&portfolios=kes`
         );
-        expect(getPanelDataUrl(portfolios, start, end, brand)).to.be.equal(
+        expect(getPanelDataUrl(portfolios, brand)).to.be.equal(
             `/v1/portfolio?brand=${brand}&fromDate=${start}&toDate=${end}&portfolios=kes`
         );
     });
