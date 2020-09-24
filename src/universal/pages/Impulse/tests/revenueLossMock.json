@@ -1,0 +1,60 @@
+[{
+  "id": "INC5186181",
+  "rootCause": "Digital River World Payments (NetGiro) confirmed that issue was caused due to a scheduled change at their and they rolled it back to mitigate the impact.",
+  "duration": "9060000",
+  "timeToDetect": "840000",
+  "timeToResolve": "8220000",
+  "brand": "Platform & Marketplaces",
+  "summary": "Digital River World Payments (NetGiro) Processor Degraded",
+  "executiveSummary": "A service degradation was observed with Netgiro Payment Processor.",
+  "status": "Done",
+  "openDate": "2020-09-22 09:59:38.0000000",
+  "priority": "2-High",
+  "resolvedDate": "2020-09-22 11:46:24.0000000",
+  "bookingImpact": "Minor Booking Impact",
+  "url": "https://expedia.service-now.com/go.do?id=INC5186181",
+  "resolution": "",
+  "estimatedImpact": [{
+    "brand": null,
+    "lobs": [{
+      "revenueLoss": "NA",
+      "grossLoss": "NA",
+      "orderLoss": "NA",
+      "lob": null
+    }]
+  }],
+  "labels": [""],
+  "tag": "finOK",
+  "rootCauseOwner": "EGP Platform Ops",
+  "startDate": "2020-09-22 08:16:00.0000000"
+},
+  {
+    "id": "INC5184413",
+    "rootCause": "rolled back CHG2691245\t  Deploy lodging-pwa-bff-api - segment lshop - cluster kmc-default - flavor   from all regions",
+    "duration": "1560000",
+    "timeToDetect": "360000",
+    "timeToResolve": "1200000",
+    "brand": "Total Retail",
+    "summary": "Brand Expedia Lodging Degraded",
+    "executiveSummary": "Brand Expedia and EPS E4P, EPS TAAP experienced fatal errors on the Hotel details page, preventing lodging bookings. This was caused by a lodging-pwa-bff-api release. The release was rolled back to restore service.",
+    "status": "Done",
+    "openDate": "2020-09-21 15:10:29.0000000",
+    "priority": "1-Critical",
+    "resolvedDate": "2020-09-21 16:02:14.0000000",
+    "bookingImpact": "Severe Booking Impact",
+    "url": "https://expedia.service-now.com/go.do?id=INC5184413",
+    "resolution": "",
+    "estimatedImpact": [{
+      "brand": "Brand Expedia",
+      "lobs": [{
+        "revenueLoss": "44627.00",
+        "grossLoss": "405701.00",
+        "orderLoss": "1014",
+        "lob": "Lodging"
+      }]
+    }],
+    "labels": [""],
+    "tag": "ClosureCodeOK",
+    "rootCauseOwner": "Lodging Shopping",
+    "startDate": "2020-09-21 15:04:00.0000000"
+  }]
