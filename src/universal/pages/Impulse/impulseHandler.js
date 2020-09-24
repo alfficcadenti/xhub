@@ -27,6 +27,8 @@ export const getBrandQueryParam = (IMPULSE_MAPPING, globalBrandName) => {
     }
     return '';
 };
+export const getRevLoss = (incident) => incident.estimatedImpact.map((impacts) => impacts.lobs.map((losses) => losses.revenueLoss !== 'NA' ? parseFloat(losses.revenueLoss) : 'NA')[0]).reduce((a, b) => a + b, 0);
+
 
 export const getQueryString = (start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, selectedBookingTypeMulti) => {
     let query = `?startDate=${start.format('YYYY-MM-DDTHH:mm:ss')}Z&endDate=${end.format('YYYY-MM-DDTHH:mm:ss')}Z`;

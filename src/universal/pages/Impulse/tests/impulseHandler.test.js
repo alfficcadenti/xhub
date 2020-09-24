@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {getFilters, getQueryParamMulti, getBrandQueryParam, getQueryString} from '../impulseHandler';
+import {getFilters, getQueryParamMulti, getBrandQueryParam, getQueryString, getRevLoss} from '../impulseHandler';
 import moment from 'moment';
 
 let endDate = moment().set({second: 0}).format('YYYY-MM-DDTHH:mm:ss');
@@ -7,6 +7,7 @@ let startDate = moment().set({second: 0}).subtract(1, 'days').format('YYYY-MM-DD
 const typeofFilter = 'lob';
 const filterResult = {label: 'Lodging', value: 'Lodging'};
 import mockFilters from './filterMock.test.json';
+import mockRevenue from './revenueLossMock.json';
 import {
     ALL_BRAND_GROUP,
     EG_BRAND, EGENCIA_BRAND,
@@ -58,6 +59,14 @@ describe('impulseHandler', () => {
     describe('test final query string', () => {
         it('should return string with datetime into query string if no filter has been selected', () => {
             expect(getQueryString(moment().set({second: 0}), moment().set({second: 0}).subtract(1, 'days'), IMPULSE_MAPPING, EG_BRAND, [], [], [], [], [], [], [])).eql(`?startDate=${endDate}Z&endDate=${startDate}Z`);
+        });
+    });
+    describe('test revenue loss calculation method', () => {
+        it('should return integer greater than zero on valid revenue impact details', () => {
+            expect(getRevLoss(mockRevenue[1])).to.be.above(0);
+        });
+        it('return string should contain NA on empty revenue loss', () => {
+            expect(getRevLoss(mockRevenue[0])).to.include('NA');
         });
     });
 });
