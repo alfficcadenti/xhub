@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {useFetchBlipData} from './customHook';
 import {Navigation} from '@homeaway/react-navigation';
 import LoadingContainer from '../../components/LoadingContainer';
@@ -124,6 +124,9 @@ const Impulse = (props) => {
         }
         renderTabs();
     };
+    useEffect(() => {
+        setSelectedIncidentMulti([]);
+    }, [isApplyClicked]);
     // eslint-disable-next-line complexity
     const handleMultiChange = (event, handler) => {
         const newValuesOnChange = (event || []).map((item) => item.value);
@@ -146,6 +149,29 @@ const Impulse = (props) => {
     useEffect(() => {
         setFilterAllData([...res]);
     }, [res]);
+    function useOnClickOutside(ref, handler) {
+        useEffect(
+            () => {
+                const listener = (event) => {
+                    // Do nothing if clicking ref's element or descendent elements
+                    if (!ref.current || ref.current.contains(event.target)) {
+                        return;
+                    }
+
+                    handler(event);
+                };
+
+                document.addEventListener('mousedown', listener);
+                document.addEventListener('touchstart', listener);
+
+                return () => {
+                    document.removeEventListener('mousedown', listener);
+                    document.removeEventListener('touchstart', listener);
+                };
+            },
+            [ref, handler]
+        );
+    }
     const customStyles = {
         control: (base) => ({
             ...base,
@@ -179,15 +205,21 @@ const Impulse = (props) => {
             />
         </div>);
     };
+    const advanceFiltersRef = useRef(null);
+    useOnClickOutside(advanceFiltersRef, () => {
+        setShowMoreFilters(false);
+    });
     const renderMoreFilters = () => (
-        <Divider heading={'Advance filters for Impulse'} id="advance-filters-divider" className="more-filters-divider" expanded={showMoreFilters}>
-            <form className="search-form search-form__more">
-                <div className="filter-option">
-                    {renderMultiSelectFilters(selectedDeviceTypeMulti, deviceTypesMulti, 'deviceType', ALL_DEVICES, filterSelectionClass)}
-                    {renderMultiSelectFilters(selectedBookingTypeMulti, bookingTypesMulti, 'bookingType', ALL_BOOKING_TYPES, filterSelectionClass)}
-                </div>
-            </form>
-        </Divider>
+        <div ref={advanceFiltersRef}>
+            <Divider heading={'Advance filters for Impulse'} id="advance-filters-divider" className="more-filters-divider" expanded={showMoreFilters}>
+                <form className="search-form search-form__more">
+                    <div className="filter-option">
+                        {renderMultiSelectFilters(selectedDeviceTypeMulti, deviceTypesMulti, 'deviceType', ALL_DEVICES, filterSelectionClass)}
+                        {renderMultiSelectFilters(selectedBookingTypeMulti, bookingTypesMulti, 'bookingType', ALL_BOOKING_TYPES, filterSelectionClass)}
+                    </div>
+                </form>
+            </Divider>
+        </div>
     );
     return (
         <div className="impulse-container">
@@ -205,7 +237,6 @@ const Impulse = (props) => {
                     {renderMultiSelectFilters(selectedBrandMulti, brandsMulti, 'brand', ALL_BRANDS, filterSelectionClass)}
                     {renderMultiSelectFilters(selectedLobMulti, lobsMulti, 'lob', ALL_LOB, filterSelectionClass)}
                     {renderMultiSelectFilters(selectedSiteURLMulti, egSiteURLMulti, 'egSiteUrl', ALL_POS, filterExpandClass)}
-                    {enableIncidents ? renderMultiSelectFilters(selectedIncidentMulti, incidentMulti, 'incidentCategory', ALL_INCIDENTS, filterExpandClass) : null}
                     <button
                         type="button"
                         className="apply-button btn btn-primary active"
@@ -226,12 +257,15 @@ const Impulse = (props) => {
                     </button>
                     <Checkbox
                         name="incidents-сheckbox"
-                        label="Show Incidents"
+                        label="Booking Impacting INCs"
                         checked={enableIncidents}
                         onChange={handleEnableIncidentChange}
                         size="sm"
                         className="incidents-сheckbox"
                     />
+                    <div className="filter-option">
+                        {enableIncidents ? renderMultiSelectFilters(selectedIncidentMulti, incidentMulti, 'incidentCategory', ALL_INCIDENTS, filterSelectionClass) : null}
+                    </div>
                 </div>
             </div>
             {renderMoreFilters()}

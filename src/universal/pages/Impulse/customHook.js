@@ -45,16 +45,16 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
             label: 'All'
         },
         {
-            value: '0-Code Red',
-            label: '0-Code Red'
+            value: 'P0 - Code Red',
+            label: 'P0 - Code Red'
         },
         {
-            value: '1-Critical',
-            label: '1-Critical'
+            value: 'P1 - Blocker',
+            label: 'P1 - Blocker'
         },
         {
-            value: '2-High',
-            label: '2-High'
+            value: 'P2 - Major',
+            label: 'P2 - Major'
         }];
     const getFilter = () => {
         fetch(`/v1/bookings/filters?filter=lob,brand,egSiteUrl,deviceType,bookingType,brandGroupName${getBrandQueryParam(IMPULSE_MAPPING, globalBrandName)}`)
@@ -97,11 +97,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
                     revLoss: item.estimatedImpact[0].lobs.map((losses) => losses.revenueLoss !== 'NA' ? parseFloat(losses.revenueLoss) : 'NA').reduce((a, b) => a + b, 0)
                 }));
                 setAnnotations(annotationData);
-                if (isApplyClicked) {
-                    setAnnotationsMulti(annotationsMulti);
-                } else {
-                    setAnnotationsMulti(annotationData);
-                }
+                setAnnotationsMulti(annotationData);
                 setIncidentMulti(incidentMultiOptions);
             })
             .catch((err) => {
@@ -148,6 +144,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
         } else if (chartSliced || isApplyClicked) {
             getData();
             fetchIncidents();
+            getBrandsFilterData();
         }
         return () => {
             setIsApplyClicked(false);
