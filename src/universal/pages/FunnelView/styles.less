@@ -27,6 +27,12 @@
         display: grid;
         grid-gap: @spacing-2x;
         grid-template-columns: 1fr 1fr;
+
+        .recharts-responsive-container {
+            svg.recharts-surface {
+                overflow: visible;
+            }
+        }
     }
 
     .page-info .Tooltip .Tooltip__inner {

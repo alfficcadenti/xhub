@@ -23,7 +23,9 @@ const ReferenceLabel = ({viewBox: {x}, annotation, isImpulse = false}) => {
         <foreignObject
             className="foreign-object"
             x={x - 5.5}
-            y={-1}
+            y={-115}
+            width={10}
+            height={120}
         >
             <div className={`annotation-tooltip ${isImpulse ? 'incidents-impulse' : category}`}>
                 <div className="tooltip-body">
@@ -31,7 +33,7 @@ const ReferenceLabel = ({viewBox: {x}, annotation, isImpulse = false}) => {
                     <div className="tooltip-wrapper">
                         {
                             category === 'deployment' ? <>
-                                <span>{serviceName}</span>
+                                <span className="service-name">{serviceName}</span>
                                 <a href={`https://expedia.service-now.com/go.do?id=${number}`} target="_blank" className="incident-link">{number}</a>
                                 <div className="tags">
                                     {tags && tags.map((t) => <div key={uuid()} className="tag"><span>{t}</span></div>)}

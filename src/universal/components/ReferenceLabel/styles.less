@@ -1,5 +1,6 @@
 .foreign-object {
     overflow: visible;
+    position: relative;
 
     .annotation-tooltip {
         cursor: help;
@@ -9,6 +10,8 @@
         height: 0;
         border-style: solid;
         border-width: 7px 5.5px 0 5.5px;
+        position: absolute;
+        bottom: 0;
 
         &.deployment {
             border-color: #ff8281 transparent transparent transparent;
@@ -25,15 +28,19 @@
         &:hover .tooltip-body {
             visibility: visible;
             opacity: .9;
+            display: block;
         }
 
         .tooltip-body {
+            display: none;
             visibility: hidden;
             opacity: 0;
             background-color: #e0e0e0;
             width: 160px;
             padding: 0 10px 10px;
             text-align: left;
+            position: absolute;
+            bottom: 0;
 
             .timestamp {
               font-weight: 800;
@@ -58,7 +65,15 @@
                         display: flex;
                         align-items: center;
                         margin: 2px 2px 0 0;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
                     }
+                }
+
+                .service-name {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
 
                 .summary {
