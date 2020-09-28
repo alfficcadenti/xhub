@@ -124,6 +124,9 @@ const Impulse = (props) => {
         }
         renderTabs();
     };
+    useEffect(() => {
+        setSelectedIncidentMulti([]);
+    }, [isApplyClicked]);
     // eslint-disable-next-line complexity
     const handleMultiChange = (event, handler) => {
         const newValuesOnChange = (event || []).map((item) => item.value);
@@ -205,7 +208,6 @@ const Impulse = (props) => {
                     {renderMultiSelectFilters(selectedBrandMulti, brandsMulti, 'brand', ALL_BRANDS, filterSelectionClass)}
                     {renderMultiSelectFilters(selectedLobMulti, lobsMulti, 'lob', ALL_LOB, filterSelectionClass)}
                     {renderMultiSelectFilters(selectedSiteURLMulti, egSiteURLMulti, 'egSiteUrl', ALL_POS, filterExpandClass)}
-                    {enableIncidents ? renderMultiSelectFilters(selectedIncidentMulti, incidentMulti, 'incidentCategory', ALL_INCIDENTS, filterExpandClass) : null}
                     <button
                         type="button"
                         className="apply-button btn btn-primary active"
@@ -226,12 +228,15 @@ const Impulse = (props) => {
                     </button>
                     <Checkbox
                         name="incidents-сheckbox"
-                        label="Show Incidents"
+                        label="Booking Impacting INCs"
                         checked={enableIncidents}
                         onChange={handleEnableIncidentChange}
                         size="sm"
                         className="incidents-сheckbox"
                     />
+                    <div className="filter-option" onClick={() => setShowMoreFilters(false)}>
+                        {enableIncidents ? renderMultiSelectFilters(selectedIncidentMulti, incidentMulti, 'incidentCategory', ALL_INCIDENTS, filterSelectionClass) : null}
+                    </div>
                 </div>
             </div>
             {renderMoreFilters()}
