@@ -97,11 +97,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
                     revLoss: getRevLoss(item)
                 }));
                 setAnnotations(annotationData);
-                if (isApplyClicked) {
-                    setAnnotationsMulti(annotationsMulti);
-                } else {
-                    setAnnotationsMulti(annotationData);
-                }
+                setAnnotationsMulti(annotationData);
                 setIncidentMulti(incidentMultiOptions);
             })
             .catch((err) => {
@@ -148,6 +144,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
         } else if (chartSliced || isApplyClicked) {
             getData();
             fetchIncidents();
+            getBrandsFilterData();
         }
         return () => {
             setIsApplyClicked(false);
