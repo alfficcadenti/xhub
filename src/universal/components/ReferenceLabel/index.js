@@ -33,7 +33,7 @@ const ReferenceLabel = ({viewBox: {x}, annotation, isImpulse = false}) => {
                     <div className="tooltip-wrapper">
                         {
                             category === 'deployment' ? <>
-                                <span>{serviceName}</span>
+                                <span className="service-name">{serviceName}</span>
                                 <a href={`https://expedia.service-now.com/go.do?id=${number}`} target="_blank" className="incident-link">{number}</a>
                                 <div className="tags">
                                     {tags && tags.map((t) => <div key={uuid()} className="tag"><span>{t}</span></div>)}
