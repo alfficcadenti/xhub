@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useFetchBlipData} from './customHook';
 import {Navigation} from '@homeaway/react-navigation';
 import LoadingContainer from '../../components/LoadingContainer';
@@ -149,29 +149,6 @@ const Impulse = (props) => {
     useEffect(() => {
         setFilterAllData([...res]);
     }, [res]);
-    function useOnClickOutside(ref, handler) {
-        useEffect(
-            () => {
-                const listener = (event) => {
-                    // Do nothing if clicking ref's element or descendent elements
-                    if (!ref.current || ref.current.contains(event.target)) {
-                        return;
-                    }
-
-                    handler(event);
-                };
-
-                document.addEventListener('mousedown', listener);
-                document.addEventListener('touchstart', listener);
-
-                return () => {
-                    document.removeEventListener('mousedown', listener);
-                    document.removeEventListener('touchstart', listener);
-                };
-            },
-            [ref, handler]
-        );
-    }
     const customStyles = {
         control: (base) => ({
             ...base,
@@ -205,21 +182,15 @@ const Impulse = (props) => {
             />
         </div>);
     };
-    const advanceFiltersRef = useRef(null);
-    useOnClickOutside(advanceFiltersRef, () => {
-        setShowMoreFilters(false);
-    });
     const renderMoreFilters = () => (
-        <div ref={advanceFiltersRef}>
-            <Divider heading={'Advance filters for Impulse'} id="advance-filters-divider" className="more-filters-divider" expanded={showMoreFilters}>
-                <form className="search-form search-form__more">
-                    <div className="filter-option">
-                        {renderMultiSelectFilters(selectedDeviceTypeMulti, deviceTypesMulti, 'deviceType', ALL_DEVICES, filterSelectionClass)}
-                        {renderMultiSelectFilters(selectedBookingTypeMulti, bookingTypesMulti, 'bookingType', ALL_BOOKING_TYPES, filterSelectionClass)}
-                    </div>
-                </form>
-            </Divider>
-        </div>
+        <Divider heading={'Advance filters for Impulse'} id="advance-filters-divider" className="more-filters-divider" expanded={showMoreFilters}>
+            <form className="search-form search-form__more">
+                <div className="filter-option">
+                    {renderMultiSelectFilters(selectedDeviceTypeMulti, deviceTypesMulti, 'deviceType', ALL_DEVICES, filterSelectionClass)}
+                    {renderMultiSelectFilters(selectedBookingTypeMulti, bookingTypesMulti, 'bookingType', ALL_BOOKING_TYPES, filterSelectionClass)}
+                </div>
+            </form>
+        </Divider>
     );
     return (
         <div className="impulse-container">
@@ -263,7 +234,7 @@ const Impulse = (props) => {
                         size="sm"
                         className="incidents-сheckbox"
                     />
-                    <div className="filter-option">
+                    <div className="filter-option" onClick={() => setShowMoreFilters(false)}>
                         {enableIncidents ? renderMultiSelectFilters(selectedIncidentMulti, incidentMulti, 'incidentCategory', ALL_INCIDENTS, filterSelectionClass) : null}
                     </div>
                 </div>
