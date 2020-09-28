@@ -9,7 +9,7 @@ import {
     VRBO_BRAND,
 } from '../../constants';
 import {useIsMount} from '../hooks';
-import {getFilters, getBrandQueryParam, getQueryString} from './impulseHandler';
+import {getFilters, getBrandQueryParam, getQueryString, getRevLoss} from './impulseHandler';
 import {checkResponse} from '../utils';
 import moment from 'moment';
 
@@ -94,7 +94,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
                     incidentTime: moment.utc(item.startDate).valueOf(),
                     category: 'incidents',
                     time: moment.utc(item.startDate).valueOf(),
-                    revLoss: item.estimatedImpact[0].lobs.map((losses) => losses.revenueLoss !== 'NA' ? parseFloat(losses.revenueLoss) : 'NA').reduce((a, b) => a + b, 0)
+                    revLoss: getRevLoss(item)
                 }));
                 setAnnotations(annotationData);
                 if (isApplyClicked) {

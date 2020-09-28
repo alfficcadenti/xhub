@@ -20,7 +20,7 @@ import {
     EG_BRAND,
     EXPEDIA_PARTNER_SERVICES_BRAND
 } from '../../../constants';
-import {Incidents, Overview, Top5, FinancialImpact} from './tabs/index';
+import {Incidents, Overview, Top5} from './tabs/index';
 import {useFetchTickets, useRootCauseOwner} from '../hooks';
 import {useSelectedBrand, useQueryParamChange} from '../../hooks';
 import {impactedBrandToDivision} from '../incidentsHelper';
@@ -56,11 +56,11 @@ const navLinks = [
         label: 'Top 5',
         href: '/incident-trends'
     },
-    {
-        id: 'financialImpact',
-        label: 'Financial Impact',
-        href: '/incident-trends'
-    },
+    // {
+    //     id: 'financialImpact',
+    //     label: 'Financial Impact',
+    //     href: '/incident-trends'
+    // },
 ];
 
 
@@ -195,8 +195,8 @@ const IncidentTrendsDashboard = (props) => {
                 return <Incidents tickets={tickets} selectedBrand={selectedBrand} />;
             case 2:
                 return <Top5 tickets={tickets} />;
-            case 3:
-                return <FinancialImpact startDate={appliedStartDate} endDate={appliedEndDate} tickets={tickets} brand={selectedBrand} />;
+            // case 3:
+            //     return <FinancialImpact startDate={appliedStartDate} endDate={appliedEndDate} tickets={tickets} brand={selectedBrand} />;
             default:
                 return <Incidents tickets={tickets} />;
         }
