@@ -16,7 +16,8 @@ const ReferenceLabel = ({viewBox: {x}, annotation, isImpulse = false}) => {
         status,
         id,
         revLoss,
-        summary
+        summary,
+        url
     } = annotation;
 
     return (
@@ -42,10 +43,15 @@ const ReferenceLabel = ({viewBox: {x}, annotation, isImpulse = false}) => {
                                 <span>{priority}</span>
                                 <span className="summary">{summary}</span>
                                 <span>{status}</span>
-                                <a href={`https://jira.homeawaycorp.com/browse/${id}`} target="_blank" className="incident-link">{id}</a>
-                                {isImpulse && <div>
-                                    <span>{'Revenue Loss:'} </span><span>{typeof revLoss === 'string' ? 'NA' : `$${revLoss}`}</span>
-                                </div> }
+                                {isImpulse ?
+                                    <div><a href={url} target="_blank" className="incident-link">{id}</a>
+                                        <div>
+                                            <span>{'Revenue Loss:'} </span><span>{typeof revLoss === 'string' ? 'NA' : `$${revLoss}`}</span>
+                                        </div>
+                                    </div>
+                                    :
+                                    <a href={`https://jira.homeawaycorp.com/browse/${id}`} target="_blank" className="incident-link">{id}</a>
+                                }
                             </>
                         }
                     </div>

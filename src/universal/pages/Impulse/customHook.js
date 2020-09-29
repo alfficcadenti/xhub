@@ -168,7 +168,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
         brandsFilterData,
         annotations,
         annotationsMulti,
-        setAnnotationsMulti
+        setAnnotationsMulti,
     ];
 };
 

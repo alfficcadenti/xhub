@@ -35,7 +35,7 @@ export default [
         link: '/impulse',
         text: 'Impulse Dashboard',
         component: require('./Impulse'),
-        hidden: true
+        hidden: false
     },
     {
         category: AAT,
