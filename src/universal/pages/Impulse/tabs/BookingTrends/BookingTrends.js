@@ -18,18 +18,15 @@ const BOOKING_CHART_COLOR = '#1478F7';
 const PREDICTION_CHART_COLOR = '#c9405b';
 const PREDICTION_COUNT = 'Prediction Counts';
 const BOOKING_COUNT = 'Booking Counts';
-const AreaChartType = 'Area';
 const IMPULSE_CHART_TYPE = [
     {
         name: BOOKING_COUNT,
         color: BOOKING_CHART_COLOR,
-        chartType: AreaChartType,
         key: 'bookingChart'
     },
     {
         name: PREDICTION_COUNT,
         color: PREDICTION_CHART_COLOR,
-        chartType: AreaChartType,
         key: 'predictionChart'
     }
 ];
@@ -50,18 +47,25 @@ const CustomTooltip = ({active, payload}) => {
     }
     return null;
 };
-const BookingTrends = ({data = [], setStartDateTime, setEndDDateTime, setChartSliced, annotations}) => {
+const BookingTrends = ({data = [], startDateTime, endDateTime, setStartDateTime, setEndDateTime, setChartSliced, annotations, defaultStartDate, defaultEndDate}) => {
     let [refAreaLeft, setRefAreaLeft] = useState('');
     let [refAreaRight, setRefAreaRight] = useState('');
     let [newData, setNewData] = useState(data);
     let [left, setLeft] = useState('dataMin');
     let [right, setRight] = useState('dataMax');
+    let [daysDifference, setDaysDifference] = useState(moment(endDateTime).diff(moment(startDateTime), 'days'));
     const getGradient = ({key, color}) => {
         const id = `color${key}`;
         return (<linearGradient key={`${key}Gradient`} id={id} x1="0" y1="0" x2="0" y2="1">
             <stop offset="5%" stopColor={color} stopOpacity={key === 'bookingChart' ? 0.8 : 0.2}/>
             <stop offset="95%" stopColor={color} stopOpacity={0}/>
         </linearGradient>);
+    };
+    const resetGraphToDefault = () => {
+        setStartDateTime(defaultStartDate);
+        setEndDateTime(defaultEndDate);
+        setChartSliced(true);
+        setDaysDifference(3);
     };
     const zoomIn = () => {
         if (refAreaLeft === refAreaRight || refAreaRight === '') {
@@ -81,7 +85,7 @@ const BookingTrends = ({data = [], setStartDateTime, setEndDDateTime, setChartSl
         setLeft(nextRefAreaLeft);
         setRight(nextRefAreaRight);
         setStartDateTime(moment(nextRefAreaLeft).utc());
-        setEndDDateTime(moment(nextRefAreaRight).utc());
+        setEndDateTime(moment(nextRefAreaRight).utc());
         setChartSliced(true);
     };
     const renderChart = ({key, color, name}) => {
@@ -99,6 +103,16 @@ const BookingTrends = ({data = [], setStartDateTime, setEndDDateTime, setChartSl
     };
     return (
         <div className="bookings-container-box">
+            <div className="reset-div">
+                <button
+                    type="button"
+                    className={'btn btn-default reset-btn'}
+                    disabled={daysDifference >= 3}
+                    onClick={() => resetGraphToDefault()}
+                >
+                    {'Reset Graph'}
+                </button>
+            </div>
             <ResponsiveContainer width="100%" height="70%">
                 <AreaChart
                     syncId="pageviews-widget"
