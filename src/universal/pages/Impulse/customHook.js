@@ -38,7 +38,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
     const [filterData, setFilterData] = useState({});
     const [annotationsMulti, setAnnotationsMulti] = useState([]);
     const [annotations, setAnnotations] = useState([]);
-    const [defaultData, setDefaultData] = useState([]);
     const isMount = useIsMount();
     const incidentMultiOptions = [
         {
@@ -128,7 +127,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
                 setRes(chartData);
                 setChartSliced(false);
                 setIsLoading(false);
-                setDefaultData(chartData);
             })
             .catch((err) => {
                 setIsLoading(false);
@@ -171,7 +169,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
         annotations,
         annotationsMulti,
         setAnnotationsMulti,
-        defaultData
     ];
 };
 
