@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import {v1 as uuid} from 'uuid';
+import {buildTicketLink} from '../../pages/utils';
 import './styles.less';
 
 
@@ -17,20 +18,9 @@ const ReferenceLabel = ({viewBox: {x}, annotation, isImpulse = false}) => {
         id,
         revLoss,
         summary,
-        url
+        url,
+        brand
     } = annotation;
-
-    const getLink = (annotationType, link) => {
-        let hrefLink;
-
-        if (annotationType === 'deployment' || !link.includes('-')) {
-            hrefLink = `https://expedia.service-now.com/go.do?id=${link}`;
-        } else {
-            hrefLink = `https://jira.homeawaycorp.com/browse/${link}`;
-        }
-
-        return (<a href={hrefLink} target="_blank">{link}</a>);
-    };
 
     return (
         <foreignObject
@@ -47,7 +37,7 @@ const ReferenceLabel = ({viewBox: {x}, annotation, isImpulse = false}) => {
                         {
                             category === 'deployment' ? <>
                                 <span className="service-name">{serviceName}</span>
-                                {getLink(category, number)}
+                                {buildTicketLink(number, brand)}
                                 <div className="tags">
                                     {tags && tags.map((t) => <div key={uuid()} className="tag"><span>{t}</span></div>)}
                                 </div>
@@ -57,12 +47,12 @@ const ReferenceLabel = ({viewBox: {x}, annotation, isImpulse = false}) => {
                                 <span>{status}</span>
                                 {isImpulse ?
                                     <div>
-                                        <a href={url} target="_blank">{id}</a>
+                                        {buildTicketLink(id, null, url)}
                                         <div>
                                             <span>{'Revenue Loss:'} </span><span>{typeof revLoss === 'string' ? 'NA' : `$${revLoss}`}</span>
                                         </div>
                                     </div>
-                                    : getLink(category, id)
+                                    : buildTicketLink(id, brand)
                                 }
                             </>
                         }
