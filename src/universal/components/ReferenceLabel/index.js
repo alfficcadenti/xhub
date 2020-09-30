@@ -20,6 +20,18 @@ const ReferenceLabel = ({viewBox: {x}, annotation, isImpulse = false}) => {
         url
     } = annotation;
 
+    const getLink = (annotationType, link) => {
+        let hrefLink;
+
+        if (annotationType === 'deployment' || !link.includes('-')) {
+            hrefLink = `https://expedia.service-now.com/go.do?id=${link}`;
+        } else {
+            hrefLink = `https://jira.homeawaycorp.com/browse/${link}`;
+        }
+
+        return (<a href={hrefLink} target="_blank" className="incident-link">{link}</a>);
+    };
+
     return (
         <foreignObject
             className="foreign-object"
@@ -35,7 +47,7 @@ const ReferenceLabel = ({viewBox: {x}, annotation, isImpulse = false}) => {
                         {
                             category === 'deployment' ? <>
                                 <span className="service-name">{serviceName}</span>
-                                <a href={`https://expedia.service-now.com/go.do?id=${number}`} target="_blank" className="incident-link">{number}</a>
+                                {getLink(category, number)}
                                 <div className="tags">
                                     {tags && tags.map((t) => <div key={uuid()} className="tag"><span>{t}</span></div>)}
                                 </div>
@@ -49,8 +61,7 @@ const ReferenceLabel = ({viewBox: {x}, annotation, isImpulse = false}) => {
                                             <span>{'Revenue Loss:'} </span><span>{typeof revLoss === 'string' ? 'NA' : `$${revLoss}`}</span>
                                         </div>
                                     </div>
-                                    :
-                                    <a href={`https://jira.homeawaycorp.com/browse/${id}`} target="_blank" className="incident-link">{id}</a>
+                                    : getLink(category, id)
                                 }
                             </>
                         }
