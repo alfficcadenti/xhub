@@ -29,7 +29,7 @@ const ReferenceLabel = ({viewBox: {x}, annotation, isImpulse = false}) => {
             hrefLink = `https://jira.homeawaycorp.com/browse/${link}`;
         }
 
-        return (<a href={hrefLink} target="_blank" className="incident-link">{link}</a>);
+        return (<a href={hrefLink} target="_blank">{link}</a>);
     };
 
     return (
@@ -56,7 +56,8 @@ const ReferenceLabel = ({viewBox: {x}, annotation, isImpulse = false}) => {
                                 <span className="summary">{summary}</span>
                                 <span>{status}</span>
                                 {isImpulse ?
-                                    <div><a href={url} target="_blank" className="incident-link">{id}</a>
+                                    <div>
+                                        <a href={url} target="_blank">{id}</a>
                                         <div>
                                             <span>{'Revenue Loss:'} </span><span>{typeof revLoss === 'string' ? 'NA' : `$${revLoss}`}</span>
                                         </div>
