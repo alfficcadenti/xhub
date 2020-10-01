@@ -7,7 +7,8 @@ const annotation = {
     time: '2020-01-01',
     number: 'testNumber',
     tags: [],
-    serviceName: 'testServiceName'
+    serviceName: 'testServiceName',
+    id: '2020-01-02'
 };
 
 describe('ReferenceLabel component testing', () => {

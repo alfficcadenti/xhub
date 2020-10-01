@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import {v1 as uuid} from 'uuid';
+import {buildTicketLink} from '../../pages/utils';
 import './styles.less';
 
 
@@ -17,7 +18,8 @@ const ReferenceLabel = ({viewBox: {x}, annotation, isImpulse = false}) => {
         id,
         revLoss,
         summary,
-        url
+        url,
+        brand
     } = annotation;
 
     return (
@@ -35,7 +37,7 @@ const ReferenceLabel = ({viewBox: {x}, annotation, isImpulse = false}) => {
                         {
                             category === 'deployment' ? <>
                                 <span className="service-name">{serviceName}</span>
-                                <a href={`https://expedia.service-now.com/go.do?id=${number}`} target="_blank" className="incident-link">{number}</a>
+                                {buildTicketLink(number, brand)}
                                 <div className="tags">
                                     {tags && tags.map((t) => <div key={uuid()} className="tag"><span>{t}</span></div>)}
                                 </div>
@@ -44,13 +46,13 @@ const ReferenceLabel = ({viewBox: {x}, annotation, isImpulse = false}) => {
                                 <span className="summary">{summary}</span>
                                 <span>{status}</span>
                                 {isImpulse ?
-                                    <div><a href={url} target="_blank" className="incident-link">{id}</a>
+                                    <div>
+                                        {buildTicketLink(id, null, url)}
                                         <div>
                                             <span>{'Revenue Loss:'} </span><span>{typeof revLoss === 'string' ? 'NA' : `$${revLoss}`}</span>
                                         </div>
                                     </div>
-                                    :
-                                    <a href={`https://jira.homeawaycorp.com/browse/${id}`} target="_blank" className="incident-link">{id}</a>
+                                    : buildTicketLink(id, brand)
                                 }
                             </>
                         }
