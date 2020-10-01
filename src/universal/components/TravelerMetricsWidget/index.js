@@ -15,6 +15,7 @@ import {v1 as uuid} from 'uuid';
 import HelpText from '../HelpText/HelpText';
 import ReferenceLabel from '../ReferenceLabel';
 import {getBrand} from '../../pages/utils';
+import {DEPLOYMENT_ANNOTATION_CATEGORY} from '../../constants';
 import './styles.less';
 
 // eslint-disable-next-line complexity
@@ -98,7 +99,7 @@ const TravelerMetricsWidget = ({
                                         yAxisId={yAxisId}
                                         x={annotation.bucketTime}
                                         label={<ReferenceLabel annotation={annotation} />}
-                                        stroke={annotation.category === 'deployment' ? 'red' : 'green'}
+                                        stroke={annotation.category === DEPLOYMENT_ANNOTATION_CATEGORY ? 'red' : 'green'}
                                         strokeDasharray="3 3"
                                         isFront
                                     />
