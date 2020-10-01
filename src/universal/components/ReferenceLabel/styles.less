@@ -1,3 +1,5 @@
+@import '../../mixins.less';
+
 .foreign-object {
     overflow: visible;
     position: relative;
@@ -65,9 +67,8 @@
                         display: flex;
                         align-items: center;
                         margin: 2px 2px 0 0;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
+
+                        .overflow-wrapper;
                     }
                 }
 
@@ -78,9 +79,8 @@
 
                 .summary {
                     width: 150px;
-                    white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
+
+                    .overflow-wrapper;
                 }
             }
         }
