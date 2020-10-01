@@ -19,7 +19,7 @@ body {
     min-width: 300px;
 }
 
-div.main-app-container {
+.main-app-container {
     margin: 0;
     max-width: 100%;
     width: 100%;
@@ -40,11 +40,6 @@ div.main-app-container {
 .main-container {
     margin: 0 @spacing-6x;
     padding: 88px 0;
-}
-
-.container-full-width {
-    width: 100%;
-    text-align: -webkit-center;
 }
 
 .page-title {
@@ -78,15 +73,6 @@ div.main-app-container {
     }
 }
 
-// -- Flexbox mixins --------------
-
-// Vertical and horizontally cetner contents of a flexbox
-.centered-flex() {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .dropdown-button(@width: 220px,@filter-color:#717171) {
     min-width: @width;
     font-weight: 400;
@@ -100,4 +86,10 @@ div.main-app-container {
     width: 350px;
     height: @filter-size;
     color: @filter-color;
+}
+
+.overflow-wrapper {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

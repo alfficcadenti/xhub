@@ -8,7 +8,9 @@ import {useFetchProductMapping, useQueryParamChange, useSelectedBrand, useZoomAn
 import {
     EG_BRAND,
     EGENCIA_BRAND,
-    EXPEDIA_PARTNER_SERVICES_BRAND
+    EXPEDIA_PARTNER_SERVICES_BRAND,
+    DEPLOYMENT_ANNOTATION_CATEGORY,
+    INCIDENT_ANNOTATION_CATEGORY
 } from '../../constants';
 import {
     checkResponse,
@@ -188,7 +190,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                         tags: [annotation.productName, annotation.platform],
                         time: moment(annotation.openedAt).format(PAGE_VIEWS_DATE_FORMAT),
                         bucketTime: moment(annotation.openedAt).format(PAGE_VIEWS_DATE_FORMAT),
-                        category: 'deployment'
+                        category: DEPLOYMENT_ANNOTATION_CATEGORY
                     }));
 
                     setDeploymentAnnotations(adjustedAnnotations);
@@ -232,11 +234,11 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         const categoryOptions = [];
 
         if (deploymentCategory) {
-            categoryOptions.push('deployment');
+            categoryOptions.push(DEPLOYMENT_ANNOTATION_CATEGORY);
         }
 
         if (incidentCategory) {
-            categoryOptions.push('incident');
+            categoryOptions.push(INCIDENT_ANNOTATION_CATEGORY);
         }
 
         const filteredRawAnnotations = annotationsToFilter.filter(({category}) => categoryOptions.includes(category));
@@ -283,11 +285,11 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 .then(checkResponse)
                 .then((data) => {
                     const uniqueTickets = getUniqueByProperty(data, 'id');
-                    const adjustedUniqueTickets = adjustTicketProperties(uniqueTickets, 'incident')
+                    const adjustedUniqueTickets = adjustTicketProperties(uniqueTickets, INCIDENT_ANNOTATION_CATEGORY)
                         .map((incident) => {
                             incident.bucketTime = moment(incident.openDate).format(PAGE_VIEWS_DATE_FORMAT);
                             incident.time = moment(incident.openDate).format(PAGE_VIEWS_DATE_FORMAT);
-                            incident.category = 'incident';
+                            incident.category = INCIDENT_ANNOTATION_CATEGORY;
 
                             return incident;
                         });

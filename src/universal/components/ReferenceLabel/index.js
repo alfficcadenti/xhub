@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import {v1 as uuid} from 'uuid';
 import {buildTicketLink} from '../../pages/utils';
+import {DEPLOYMENT_ANNOTATION_CATEGORY} from '../../constants';
 import './styles.less';
 
 
@@ -35,7 +36,7 @@ const ReferenceLabel = ({viewBox: {x}, annotation, isImpulse = false}) => {
                     <p className="timestamp">{moment(time).format('YYYY-MM-DD hh:mm')}</p>
                     <div className="tooltip-wrapper">
                         {
-                            category === 'deployment' ? <>
+                            category === DEPLOYMENT_ANNOTATION_CATEGORY ? <>
                                 <span className="service-name">{serviceName}</span>
                                 {buildTicketLink(number, brand)}
                                 <div className="tags">
@@ -49,7 +50,8 @@ const ReferenceLabel = ({viewBox: {x}, annotation, isImpulse = false}) => {
                                     <div>
                                         {buildTicketLink(id, null, url)}
                                         <div>
-                                            <span>{'Revenue Loss:'} </span><span>{typeof revLoss === 'string' ? 'NA' : `$${revLoss}`}</span>
+                                            <span>{'Revenue Loss:'}</span>
+                                            <span>{typeof revLoss === 'string' ? 'NA' : `$${revLoss}`}</span>
                                         </div>
                                     </div>
                                     : buildTicketLink(id, brand)
