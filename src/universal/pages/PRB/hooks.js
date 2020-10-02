@@ -2,9 +2,7 @@
 import React, {useState, useEffect} from 'react';
 import moment from 'moment';
 import DataTable from '../../components/DataTable';
-import {useIsMount} from '../hooks';
 import {isNotEmptyString, isNotDuplicate, checkResponse, sortArrayByMostRecentDate} from '../utils';
-
 
 const getListOfUniqueProperties = (tickets = [], prop) => tickets
     .map((ticket) => ticket[prop])
@@ -90,8 +88,8 @@ export const useFetchTickets = (
     const [allTickets, setAllTickets] = useState([]);
     const [lastStartDate, setLastStartDate] = useState('');
     const [lastEndDate, setLastEndDate] = useState('');
+    const [isMounted, setIsMounted] = useState(false);
 
-    const isMount = useIsMount();
 
     useEffect(() => {
         const fetchTickets = () => {
@@ -120,7 +118,7 @@ export const useFetchTickets = (
                 });
         };
 
-        if (isMount) {
+        if (isMounted) {
             fetchTickets();
         } else if (isApplyClicked) {
             if (lastStartDate !== startDate || lastEndDate !== endDate) {
@@ -129,6 +127,7 @@ export const useFetchTickets = (
                 applyFilters();
             }
         }
+        setIsMounted(true);
 
         return () => {
             setIsApplyClicked(false);
@@ -139,7 +138,7 @@ export const useFetchTickets = (
             setCurrentRcOwners(['EWE - Air Development', 'Egencia - Hotel Shopping']); // TODO hardcoded
             setCurrentRcCategories(['Architectural']);
         };
-    }, [isApplyClicked, startDate, endDate]);
+    }, [isApplyClicked, isMounted]);
 
     return [
         isLoading,
