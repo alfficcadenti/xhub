@@ -1,6 +1,5 @@
 import {useState, useEffect} from 'react';
 import {adjustCRsProperties} from './crUtils';
-import {useIsMount} from '../hooks';
 import {getBrand, checkResponse, getUniqueByProperty, getListOfUniqueProperties, sortArrayByMostRecentDate} from '../utils';
 
 export const useFetchCRs = (
@@ -21,7 +20,7 @@ export const useFetchCRs = (
     const [lastEndDate, setLastEndDate] = useState('');
 
     const [indexedDataForSuggestions, setIndexedDataForSuggestions] = useState({});
-    const isMount = useIsMount();
+    const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
         const fetchCRs = () => {
@@ -68,7 +67,7 @@ export const useFetchCRs = (
                 });
         };
 
-        if (isMount && !isLoading) {
+        if (isMounted && !isLoading) {
             fetchCRs();
         } else if (isApplyClicked) {
             if (lastStartDate !== startDate || lastEndDate !== endDate) {
@@ -77,11 +76,12 @@ export const useFetchCRs = (
                 applyAdvancedFilter();
             }
         }
+        setIsMounted(true);
 
         return () => {
             setIsApplyClicked(false);
         };
-    }, [isApplyClicked, startDate, endDate]);
+    }, [isApplyClicked, isMounted]);
 
     return [
         isLoading,

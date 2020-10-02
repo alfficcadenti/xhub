@@ -10,7 +10,6 @@ import {
     ALL_PARTNERS_OPTION,
     ALL_RC_OWNERS_OPTION
 } from '../../constants';
-import {useIsMount} from '../hooks';
 import {checkResponse, getListOfUniqueProperties, consolidateTicketsById, sortArrayByMostRecentDate, mapEpsData} from '../utils';
 
 
@@ -36,9 +35,7 @@ export const useFetchTickets = (
     const [statuses, setStatuses] = useState([]);
     const [tags, setTags] = useState([]);
     const [partners, setPartners] = useState([]);
-
-    const isMount = useIsMount();
-
+    const [isMounted, setIsMounted] = useState(false);
     const isIncidents = url === 'incidents';
 
     useEffect(() => {
@@ -85,7 +82,7 @@ export const useFetchTickets = (
                 });
         };
 
-        if (isMount) {
+        if (isMounted) {
             fetchTickets();
         } else if (isApplyClicked) {
             if (lastStartDate !== startDate || lastEndDate !== endDate) {
@@ -94,11 +91,12 @@ export const useFetchTickets = (
                 applyFilters();
             }
         }
+        setIsMounted(true);
 
         return () => {
             setIsApplyClicked(false);
         };
-    }, [applyFilters, isApplyClicked, endDate, isIncidents, isMount, lastEndDate, lastStartDate, selectedBrand, startDate, url, setIsApplyClicked]);
+    }, [isApplyClicked, isMounted]);
 
     return [
         isLoading,

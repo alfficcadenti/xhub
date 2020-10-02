@@ -39,7 +39,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const initialTimeRange = 'Last 6 hours';
 
     const [widgets, setWidgets] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
     const [pendingStart, setPendingStart] = useState(initialStart);
     const [pendingEnd, setPendingEnd] = useState(initialEnd);
@@ -76,6 +76,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
     const productMapping = useFetchProductMapping(start, end);
     const [suggestions, setSuggestions] = useState({});
+
+    const [isMounted, setIsMounted] = useState(false);
 
     const {
         handleMouseDown,
@@ -116,93 +118,6 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         {text: 'Last 12 hours', value: getValue(12, 'hours')},
         {text: 'Last 24 hours', value: getValue(24, 'hours')}
     ];
-
-    const fetchPageViewsData = ([selectedBrand]) => {
-        const {label: pageBrand, funnelBrand} = getBrand(selectedBrand, 'label');
-        setIsLoading(true);
-        setError('');
-        const dateQuery = start && end
-            ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
-            : '';
-        fetch(`/v1/pageViews?brand=${funnelBrand}&timeInterval=1${dateQuery}`)
-            .then(checkResponse)
-            .then((fetchedPageviews) => {
-                if (!fetchedPageviews || !fetchedPageviews.length) {
-                    setError('No data found. Try refreshing the page or select another brand.');
-                    return;
-                }
-                const widgetObjects = PAGES_LIST.map(({name, label}) => {
-                    const aggregatedData = [];
-                    fetchedPageviews.forEach(({time, pageViewsData}) => {
-                        const currentPageViews = pageViewsData.find((item) => item.page === name);
-                        if (currentPageViews) {
-                            const momentTime = moment(time);
-                            if (momentTime.isBetween(start, end, 'minutes', '[]')) {
-                                aggregatedData.push({
-                                    label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
-                                    time: momentTime.format(PAGE_VIEWS_DATE_FORMAT),
-                                    momentTime,
-                                    value: currentPageViews.views
-                                });
-                            }
-                        }
-                    });
-                    return {pageName: label, aggregatedData, pageBrand};
-                });
-                setWidgets(widgetObjects);
-            })
-            .catch((err) => {
-                let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
-                    ? 'Query has timed out. Try refreshing the page. If the problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.'
-                    : 'An unexpected error has occurred. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.';
-                setError(errorMessage);
-                // eslint-disable-next-line no-console
-                console.error(err);
-            })
-            .finally(() => setIsLoading(false));
-    };
-
-    useEffect(() => {
-        if ([EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND].includes(selectedBrands[0])) {
-            setError(`Page views for ${selectedBrands} is not yet available.
-                The following brands are supported at this time: "Expedia", "Hotels.com Retail", and "Vrbo Retail".
-                If you have any questions, please ping #dpi-reo-opex-all or leave a comment via our Feedback form.`);
-            setIsFormDisabled(true);
-        } else {
-            setError(null);
-            setIsFormDisabled(false);
-            fetchPageViewsData(selectedBrands);
-        }
-    }, [selectedBrands, start, end]);
-
-    useEffect(() => {
-        const fetchAnnotations = () => {
-            setDeploymentAnnotations([]);
-            const dateQuery = start && end
-                ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
-                : '';
-
-            fetch(`/annotations?${dateQuery}`)
-                .then(checkResponse)
-                .then((fetchedAnnotations) => {
-                    const adjustedAnnotations = fetchedAnnotations.map((annotation) => ({
-                        ...annotation,
-                        tags: [annotation.productName, annotation.platform],
-                        time: moment(annotation.openedAt).format(PAGE_VIEWS_DATE_FORMAT),
-                        bucketTime: moment(annotation.openedAt).format(PAGE_VIEWS_DATE_FORMAT),
-                        category: DEPLOYMENT_ANNOTATION_CATEGORY
-                    }));
-
-                    setDeploymentAnnotations(adjustedAnnotations);
-                })
-                .catch((err) => {
-                    // eslint-disable-next-line no-console
-                    console.error(err);
-                });
-        };
-
-        fetchAnnotations();
-    }, [start, end]);
 
     const filterAnnotations = (deployments, incidents) => {
         const filteredDeployments = deployments
@@ -275,6 +190,76 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     }, [deploymentCategory, incidentCategory]);
 
     useEffect(() => {
+        const fetchPageViewsData = ([selectedBrand]) => {
+            const {label: pageBrand, funnelBrand} = getBrand(selectedBrand, 'label');
+            setIsLoading(true);
+            setError('');
+            const dateQuery = start && end
+                ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
+                : '';
+            fetch(`/v1/pageViews?brand=${funnelBrand}&timeInterval=1${dateQuery}`)
+                .then(checkResponse)
+                .then((fetchedPageviews) => {
+                    if (!fetchedPageviews || !fetchedPageviews.length) {
+                        setError('No data found. Try refreshing the page or select another brand.');
+                        return;
+                    }
+                    const widgetObjects = PAGES_LIST.map(({name, label}) => {
+                        const aggregatedData = [];
+                        fetchedPageviews.forEach(({time, pageViewsData}) => {
+                            const currentPageViews = pageViewsData.find((item) => item.page === name);
+                            if (currentPageViews) {
+                                const momentTime = moment(time);
+                                if (momentTime.isBetween(start, end, 'minutes', '[]')) {
+                                    aggregatedData.push({
+                                        label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
+                                        time: momentTime.format(PAGE_VIEWS_DATE_FORMAT),
+                                        momentTime,
+                                        value: currentPageViews.views
+                                    });
+                                }
+                            }
+                        });
+                        return {pageName: label, aggregatedData, pageBrand};
+                    });
+                    setWidgets(widgetObjects);
+                })
+                .catch((err) => {
+                    let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
+                        ? 'Query has timed out. Try refreshing the page. If the problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.'
+                        : 'An unexpected error has occurred. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.';
+                    setError(errorMessage);
+                    // eslint-disable-next-line no-console
+                    console.error(err);
+                })
+                .finally(() => setIsLoading(false));
+        };
+
+        const fetchAnnotations = () => {
+            setDeploymentAnnotations([]);
+            const dateQuery = start && end
+                ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
+                : '';
+
+            fetch(`/annotations?${dateQuery}`)
+                .then(checkResponse)
+                .then((fetchedAnnotations) => {
+                    const adjustedAnnotations = fetchedAnnotations.map((annotation) => ({
+                        ...annotation,
+                        tags: [annotation.productName, annotation.platform],
+                        time: moment(annotation.openedAt).format(PAGE_VIEWS_DATE_FORMAT),
+                        bucketTime: moment(annotation.openedAt).format(PAGE_VIEWS_DATE_FORMAT),
+                        category: 'deployment'
+                    }));
+
+                    setDeploymentAnnotations(adjustedAnnotations);
+                })
+                .catch((err) => {
+                    // eslint-disable-next-line no-console
+                    console.error(err);
+                });
+        };
+
         const fetchIncidents = () => {
             setIncidentAnnotations([]);
             const dateQuery = start && end
@@ -312,8 +297,20 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 });
         };
 
-        fetchIncidents();
-    }, [start, end]);
+        if ([EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND].includes(selectedBrands[0])) {
+            setError(`Page views for ${selectedBrands} is not yet available.
+                The following brands are supported at this time: "Expedia", "Hotels.com Retail", and "Vrbo Retail".
+                If you have any questions, please ping #dpi-reo-opex-all or leave a comment via our Feedback form.`);
+            setIsFormDisabled(true);
+        } else if (isMounted) {
+            setError(null);
+            setIsFormDisabled(false);
+            fetchPageViewsData(selectedBrands);
+            fetchIncidents();
+            fetchAnnotations();
+        }
+        setIsMounted(true);
+    }, [selectedBrands, start, end, isMounted]);
 
     useEffect(() => {
         const allAnnotations = [...deploymentAnnotations, ...incidentAnnotations];

@@ -68,7 +68,7 @@ const Finder = (props) => {
 
     useEffect(() => {
         applyAdvancedFilter();
-    }, [allUniqueCRs, allCRs, selectedBrand, advancedFilter]);
+    }, [allCRs, allUniqueCRs, advancedFilter, selectedBrand]);
 
     const handleDateRangeChange = (start, end) => {
         setStartDate(start || startDate);
@@ -99,6 +99,7 @@ const Finder = (props) => {
                     className="apply-button btn btn-primary active"
                     onClick={() => {
                         setIsApplyClicked(true);
+                        setIsDirtyForm(false);
                     }}
                     disabled={!isDirtyForm}
                 >
