@@ -20,13 +20,13 @@ import {
     getUniqueByProperty,
     addSuggestionType,
     getAnnotationsFilter,
-    filterNewSelectedItems
+    filterNewSelectedItems,
+    bucketTime
 } from '../utils';
 import './styles.less';
 import {adjustTicketProperties} from '../TicketTrends/incidentsHelper';
 import UniversalSearch from '../../components/UniversalSearch';
 import {Checkbox} from '@homeaway/react-form-components';
-
 
 const TIMEZONE_OFFSET = (new Date()).getTimezoneOffset();
 const TIMEZONE_ABBR = moment.tz.zone(moment.tz.guess()).abbr(TIMEZONE_OFFSET);
@@ -272,7 +272,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     const uniqueTickets = getUniqueByProperty(data, 'id');
                     const adjustedUniqueTickets = adjustTicketProperties(uniqueTickets, INCIDENT_ANNOTATION_CATEGORY)
                         .map((incident) => {
-                            incident.bucketTime = moment(incident.openDate).format(PAGE_VIEWS_DATE_FORMAT);
+                            incident.bucketTime = bucketTime(incident.openDate, PAGE_VIEWS_DATE_FORMAT, start, end);
                             incident.time = moment(incident.openDate).format(PAGE_VIEWS_DATE_FORMAT);
                             incident.category = INCIDENT_ANNOTATION_CATEGORY;
 
@@ -281,7 +281,6 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
                     const incidentPriority = getListOfUniqueProperties(adjustedUniqueTickets, 'priority').sort();
                     const incidentStatus = getListOfUniqueProperties(adjustedUniqueTickets, 'status').sort();
-
                     setIncidentPrioritySuggestions(incidentPriority);
                     setIncidentStatusSuggestions(incidentStatus);
                     setIncidentAnnotations(adjustedUniqueTickets);

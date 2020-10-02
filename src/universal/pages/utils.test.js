@@ -17,10 +17,11 @@ import {
     adjustInputValue,
     addSuggestionType,
     getAnnotationsFilter,
-    filterNewSelectedItems
+    filterNewSelectedItems,
+    bucketTime
 } from './utils';
 import {EG_BRAND, VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../constants';
-
+import moment from 'moment';
 
 describe('divisionToBrand', () => {
     it('returns Egencia when the input value is EGENCIA - CONSOLIDATED', () => {
@@ -460,5 +461,49 @@ describe('filterNewSelectedItems()', () => {
     it('returns correct filter option', () => {
         const result = filterNewSelectedItems(adjustedInputValue, 'productName');
         expect(result[0]).to.be.eql('Core Services');
+    });
+});
+
+describe('bucketTime()', () => {
+    const PAGE_VIEWS_DATE_FORMAT = 'YYYY-MM-DD HH:mm';
+
+    it('returns date for the specified format if the interval is less than 24h', () => {
+        const date = '2020-10-02 07:27:04.0000000';
+        const startDate = moment('2020-10-01 07:27:04');
+        const endDate = moment('2020-10-01 13:27:04');
+        const result = bucketTime(date, PAGE_VIEWS_DATE_FORMAT, startDate, endDate);
+        expect(result).to.be.eql('2020-10-02 07:27');
+    });
+
+    it('returns date rounded to the 10 minutes if the interval is > 24h', () => {
+        const date = moment('2020-10-02 07:27:04');
+        const startDate = moment('2020-10-01 07:27:04');
+        const endDate = moment('2020-10-02 13:27:04');
+        const result = bucketTime(date, PAGE_VIEWS_DATE_FORMAT, startDate, endDate);
+        expect(result).to.be.eql('2020-10-02 07:20');
+    });
+
+    it('returns date rounded to the hour if the interval is > 7days', () => {
+        const date = '2020-10-02 07:27:04.0000000';
+        const startDate = moment('2020-09-01 15:27:04');
+        const endDate = moment('2020-10-01 13:27:04');
+        const result = bucketTime(date, PAGE_VIEWS_DATE_FORMAT, startDate, endDate);
+        expect(result).to.be.eql('2020-10-02 07:00');
+    });
+
+    it('returns date rounded to the hour if the startDate is older 90 days', () => {
+        const date = '2020-10-02 07:27:04.0000000';
+        const startDate = moment('2020-03-01 15:27:04');
+        const endDate = moment('2020-10-01 13:27:04');
+        const result = bucketTime(date, PAGE_VIEWS_DATE_FORMAT, startDate, endDate);
+        expect(result).to.be.eql('2020-10-02 07:00');
+    });
+
+    it('returns date rounded to the day if the startDate is older 365 days', () => {
+        const date = '2020-10-02 07:27:04.0000000';
+        const startDate = moment('2019-09-01 15:27:04');
+        const endDate = moment('2020-10-01 13:27:04');
+        const result = bucketTime(date, PAGE_VIEWS_DATE_FORMAT, startDate, endDate);
+        expect(result).to.be.eql('2020-10-02 00:00');
     });
 });

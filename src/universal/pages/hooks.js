@@ -141,7 +141,6 @@ export const useFetchProductMapping = (startDate, endDate) => {
             fetchProductMapping();
         }
         setIsMounted(true);
-
     }, [startDate, endDate, isMounted]);
 
     return productMapping;
