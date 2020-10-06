@@ -12,7 +12,7 @@ import {
     CreatedVsResolvedPanel,
     PiePanel
 } from './Panels';
-import {PORTFOLIOS, P1_LABEL, P2_LABEL} from './constants';
+import {PORTFOLIOS, PRIORITY_LABELS} from './constants';
 import {getQueryValues, getPortfolioBrand, getPanelDataUrl} from './utils';
 import './styles.less';
 
@@ -188,6 +188,17 @@ const QualityMetrics = ({selectedBrands}) => {
                 />
                 <SLADefinitions />
                 <TwoDimensionalPanel
+                    title="Two Dimensional Filter Statistics - Open Bugs By Portfolio"
+                    info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived' by portfolio"
+                    tickets={tickets}
+                    data={tdData}
+                    portfolios={selectedPortfolios}
+                    dataKey="openBugs"
+                    isLoading={isTdDataLoading}
+                    error={tdDataError}
+                    groupByPillar
+                />
+                <TwoDimensionalPanel
                     title="Two Dimensional Filter Statistics - Defects Past SLA"
                     info="Displaying defects past SLA (See SLA definitions in above panel)"
                     tickets={tickets}
@@ -207,23 +218,18 @@ const QualityMetrics = ({selectedBrands}) => {
                     isLoading={isTdDataLoading}
                     error={tdDataError}
                 />
-                <CreatedVsResolvedPanel
-                    title="Created vs. Resolved Chart - All P1s and P2s"
-                    info="Charting P1 and P2 priority defects by their open date and resolve date (bucketed by week). Click line point for more details."
-                    tickets={tickets}
-                    data={cvrData}
-                    isLoading={isCvrDataLoading}
-                    error={cvrDataError}
-                    priorities={[P1_LABEL, P2_LABEL]}
-                />
-                <CreatedVsResolvedPanel
-                    title="Created vs. Resolved Chart - All Bugs"
-                    info="Charting all defects by their open date and resolve date (bucketed by week). Click line point for more details."
-                    tickets={tickets}
-                    data={cvrData}
-                    isLoading={isCvrDataLoading}
-                    error={cvrDataError}
-                />
+                {PRIORITY_LABELS.map((priority) => (
+                    <CreatedVsResolvedPanel
+                        key={`${priority} Created vs. Resolved Chart`}
+                        title={`${priority} Created vs. Resolved Chart`}
+                        info={`Charting ${priority} defects by their open date and resolve date (bucketed by week). Click line point for more details.`}
+                        priority={priority}
+                        tickets={tickets}
+                        data={cvrData}
+                        isLoading={isCvrDataLoading}
+                        error={cvrDataError}
+                    />
+                ))}
                 <PiePanel
                     title="Open Bugs (w.r.t. Priority)"
                     info="Charting all defects with regard to priority. Click pie slice for more details."

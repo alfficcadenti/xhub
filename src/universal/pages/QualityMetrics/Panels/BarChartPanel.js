@@ -12,6 +12,7 @@ const BarChartPanel = ({title, info, tickets, dataUrl, dataKey}) => {
     const [dataError, setDataError] = useState();
     const [chartData, setChartData] = useState([]);
     const [modalData, setModalData] = useState({});
+    const [hiddenKeys, setHiddenKeys] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
@@ -53,6 +54,14 @@ const BarChartPanel = ({title, info, tickets, dataUrl, dataKey}) => {
         setModalData({});
     };
 
+    const handleLegendClick = (e) => {
+        if (e && e.dataKey) {
+            const nextHiddenBars = {...hiddenKeys};
+            nextHiddenBars[e.dataKey] = !hiddenKeys[e.dataKey];
+            setHiddenKeys(nextHiddenBars);
+        }
+    };
+
     const renderChart = () => (
         <ResponsiveContainer width="100%" height={300}>
             <BarChart data={chartData} cursor="pointer">
@@ -60,8 +69,9 @@ const BarChartPanel = ({title, info, tickets, dataUrl, dataKey}) => {
                 <XAxis dataKey="date" />
                 <YAxis />
                 <Tooltip />
+                <Legend onClick={handleLegendClick} cursor="pointer" />
                 <Legend />
-                {PRIORITY_LABELS.map((p) => <Bar key={p} dataKey={p} stackId="a" fill={PRIORITY_COLORS[p]} onClick={getBarClickHandler(p)} />)}
+                {PRIORITY_LABELS.map((p) => <Bar key={p} dataKey={p} stackId="a" fill={PRIORITY_COLORS[p]} hide={hiddenKeys[p]} onClick={getBarClickHandler(p)} />)}
             </BarChart>
         </ResponsiveContainer>
     );

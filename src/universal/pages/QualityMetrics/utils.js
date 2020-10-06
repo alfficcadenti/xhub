@@ -115,10 +115,41 @@ export const formatWoWData = (data) => {
 
 const TOTAL_UNIQUE_ISSUES_LABEL = 'Total Unique Issues';
 
-export const formatTableData = (rawData, onClickHandler) => {
+export const groupDataByPillar = (data = {}, portfolios = []) => {
+    const keys = ['p1', 'p2', 'p3', 'p4', 'p5', 'notPrioritized', 'totalTickets'];
+    const result = portfolios.reduce((acc, {text}) => {
+        acc[text] = {};
+        return acc;
+    }, {});
+    // eslint-disable-next-line complexity
+    return Object.entries(data).reduce((acc, [, counts]) => {
+        if (counts.ticketIds) {
+            const project = counts.ticketIds[0].split('-')[0];
+            const portfolio = PORTFOLIOS.find((p) => p.projects.includes(project));
+            if (portfolio && acc[portfolio.text]) {
+                const portfolioKey = portfolio.text;
+                keys.forEach((key) => {
+                    if (acc[portfolioKey][key] && counts[key]) {
+                        acc[portfolioKey][key] += counts[key];
+                    } else if (counts[key]) {
+                        acc[portfolioKey][key] = counts[key];
+                    }
+                });
+                if (acc[portfolioKey].ticketIds && counts.ticketIds) {
+                    acc[portfolioKey].ticketIds = acc[portfolioKey].ticketIds.concat(counts.ticketIds);
+                } else if (counts.ticketIds) {
+                    acc[portfolioKey].ticketIds = counts.ticketIds;
+                }
+            }
+        }
+        return acc;
+    }, result);
+};
+
+export const formatTableData = (rawData, onClickHandler, rowKey = 'Project') => {
     const data = [];
     const totalCounts = {
-        Project: TOTAL_UNIQUE_ISSUES_LABEL,
+        [rowKey]: TOTAL_UNIQUE_ISSUES_LABEL,
         p1: 0,
         p2: 0,
         p3: 0,
@@ -128,9 +159,9 @@ export const formatTableData = (rawData, onClickHandler) => {
         totalTickets: 0
     };
     Object.entries(rawData || {})
-        .forEach(([project, counts]) => {
+        .forEach(([key, counts]) => {
             const row = {
-                Project: project,
+                [rowKey]: key,
                 p1: '-',
                 p2: '-',
                 p3: '-',
@@ -147,7 +178,7 @@ export const formatTableData = (rawData, onClickHandler) => {
             data.push(row);
         });
     data.push(totalCounts);
-    const formatLink = (value, project, priority) => (
+    const formatLink = (value, key, priority) => (
         value === '-'
             ? '-'
             : (
@@ -155,25 +186,27 @@ export const formatTableData = (rawData, onClickHandler) => {
                     className="count-link"
                     role="button"
                     tabIndex={0}
-                    onClick={() => onClickHandler(rawData, project, priority)}
-                    onKeyUp={() => onClickHandler(rawData, project, priority)}
+                    onClick={() => onClickHandler(rawData, key, priority)}
+                    onKeyUp={() => onClickHandler(rawData, key, priority)}
                 >
                     {value}
                 </div>
             )
     );
-    const result = data.map(({
-        Project, p1, p2, p3, p4, p5, notPrioritized, totalTickets
-    }) => ({
-        Project,
-        p1: formatLink(p1, Project, P1_LABEL),
-        p2: formatLink(p2, Project, P2_LABEL),
-        p3: formatLink(p3, Project, P3_LABEL),
-        p4: formatLink(p4, Project, P4_LABEL),
-        p5: formatLink(p5, Project, P5_LABEL),
-        notPrioritized: formatLink(notPrioritized, Project, 'Not prioritized'),
-        totalTickets: formatLink(totalTickets, Project, null)
-    }));
+    const result = data.map((row) => {
+        const {p1, p2, p3, p4, p5, notPrioritized, totalTickets} = row;
+        const key = row[rowKey];
+        return {
+            [rowKey]: key,
+            p1: formatLink(p1, key, P1_LABEL),
+            p2: formatLink(p2, key, P2_LABEL),
+            p3: formatLink(p3, key, P3_LABEL),
+            p4: formatLink(p4, key, P4_LABEL),
+            p5: formatLink(p5, key, P5_LABEL),
+            notPrioritized: formatLink(notPrioritized, key, 'Not prioritized'),
+            totalTickets: formatLink(totalTickets, key, null)
+        };
+    });
     return result;
 };
 
@@ -204,25 +237,26 @@ export const processTwoDimensionalIssues = (
     };
 };
 
-export const formatCreatedVsResolvedData = (data, selectedPriorities) => {
+export const formatCreatedVsResolvedData = (data) => {
     const {createdIssuesByWeek, resolvedIssuesByWeek} = data;
-    const filteredPriorites = selectedPriorities && Array.isArray(selectedPriorities) && selectedPriorities.length
-        ? selectedPriorities.filter((p) => PRIORITY_LABELS.includes(p))
-        : PRIORITY_LABELS;
-    const priorities = filteredPriorites.map((p) => p.toLowerCase());
+    const priorityKeys = PRIORITY_LABELS.map((p) => p.toLowerCase());
     return Object
         .values(createdIssuesByWeek || {})
         .map((createdWeek) => {
             const resolvedWeek = resolvedIssuesByWeek[createdWeek.weekStartDate] || {};
-            const created = priorities.reduce((acc, curr) => acc + (createdWeek[curr] || 0), 0);
-            const resolved = priorities.reduce((acc, curr) => acc + (resolvedWeek[curr] || 0), 0);
-            return {
+            const result = {
                 date: createdWeek.weekStartDate,
-                created,
-                resolved,
+                'Total Created': priorityKeys.reduce((acc, curr) => acc + (createdWeek[curr] || 0), 0),
+                'Total Resolved': priorityKeys.reduce((acc, curr) => acc + (resolvedWeek[curr] || 0), 0),
                 createdTickets: createdWeek.ticketIds,
                 resolvedTickets: resolvedWeek.ticketIds
             };
+            PRIORITY_LABELS.forEach((priority) => {
+                const p = priority.toLowerCase();
+                result[`Created ${priority}`] = createdWeek[p] || 0;
+                result[`Resolved ${priority}`] = resolvedWeek[p] || 0;
+            });
+            return result;
         });
 };
 

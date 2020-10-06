@@ -11,6 +11,8 @@ import {
     formatBarChartData,
     formatTTRData,
     formatWoWData,
+    groupDataByPillar,
+    formatTableData,
     formatCreatedVsResolvedData,
     processTwoDimensionalIssues,
     getPanelDataUrl
@@ -172,6 +174,57 @@ describe('Quality Metrics Util', () => {
         }]);
     });
 
+    it('groupDataByPillar', () => {
+        const data = {
+            'AND - Android': {p4: 2, notPrioritized: 1, totalTickets: 3, ticketIds: ['AND-0001', 'AND-0002', 'AND-0003']},
+            'iOS Engagement': {p1: 1, notPrioritized: 1, totalTickets: 2, ticketIds: ['ENG-0001', 'ENG-0002']},
+            'Kes': {p1: 1, p2: 1, p4: 1, p5: 2, totalTickets: 5, ticketIds: ['KES-0001', 'KES-0002', 'KES-0003', 'KES-0004', 'KES-0005']},
+        };
+        const result = groupDataByPillar(data, [{text: 'Mobile'}, {text: 'Kes'}]);
+        expect(result.Mobile).to.eql({
+            p1: 1, p4: 2, notPrioritized: 2, totalTickets: 5, ticketIds: ['AND-0001', 'AND-0002', 'AND-0003', 'ENG-0001', 'ENG-0002']
+        });
+        expect(result.Kes).to.eql(data.Kes);
+    });
+
+    it('formatTableData by Project', () => {
+        const rowKey = 'rowKey';
+        const result = formatTableData({
+            'AND - Android': {p4: 2, notPrioritized: 1, totalTickets: 3, ticketIds: ['AND-0001', 'AND-0002', 'AND-0003']},
+            'Kes': {p1: 1, p2: 1, p4: 1, p5: 2, totalTickets: 5, ticketIds: ['KES-0001', 'KES-0002', 'KES-0003', 'KES-0004', 'KES-0005']},
+        }, () => true, rowKey);
+        // AND
+        const row0 = result[0];
+        expect(row0[rowKey]).to.eql('AND - Android');
+        expect(row0.p1).to.eql('-');
+        expect(row0.p2).to.eql('-');
+        expect(row0.p3).to.eql('-');
+        expect(row0.p4.props.children).to.eql(2);
+        expect(row0.p5).to.eql('-');
+        expect(row0.notPrioritized.props.children).to.eql(1);
+        expect(row0.totalTickets.props.children).to.eql(3);
+        // KES
+        const row1 = result[1];
+        expect(row1[rowKey]).to.eql('Kes');
+        expect(row1.p1.props.children).to.eql(1);
+        expect(row1.p2.props.children).to.eql(1);
+        expect(row1.p3).to.eql('-');
+        expect(row1.p4.props.children).to.eql(1);
+        expect(row1.p5.props.children).to.eql(2);
+        expect(row1.notPrioritized).to.eql('-');
+        expect(row1.totalTickets.props.children).to.eql(5);
+        // Summary Row
+        const row2 = result[2];
+        expect(row2[rowKey]).to.eql('Total Unique Issues');
+        expect(row2.p1.props.children).to.eql(1);
+        expect(row2.p2.props.children).to.eql(1);
+        expect(row2.p3.props.children).to.eql(0);
+        expect(row2.p4.props.children).to.eql(3);
+        expect(row2.p5.props.children).to.eql(2);
+        expect(row2.notPrioritized.props.children).to.eql(1);
+        expect(row2.totalTickets.props.children).to.eql(8);
+    });
+
     it('processTwoDimensionalIssues', () => {
         const defects = [
             {defectNumber: 'AND-1001', priority: '1-High', status: 'To Do'},
@@ -222,15 +275,20 @@ describe('Quality Metrics Util', () => {
         };
         expect(formatCreatedVsResolvedData(data)).to.be.eql([{
             date: weekStartDate,
-            created: 2,
-            resolved: 2,
-            createdTickets: ['AND-17049', 'AND-17048'],
-            resolvedTickets: ['AND-17041', 'AND-17042']
-        }]);
-        expect(formatCreatedVsResolvedData(data, ['P1'])).to.be.eql([{
-            date: weekStartDate,
-            created: 1,
-            resolved: 1,
+            'Created Not Prioritized': 0,
+            'Created P1': 1,
+            'Created P2': 0,
+            'Created P3': 0,
+            'Created P4': 1,
+            'Created P5': 0,
+            'Resolved Not Prioritized': 0,
+            'Resolved P1': 1,
+            'Resolved P2': 1,
+            'Resolved P3': 0,
+            'Resolved P4': 0,
+            'Resolved P5': 0,
+            'Total Created': 2,
+            'Total Resolved': 2,
             createdTickets: ['AND-17049', 'AND-17048'],
             resolvedTickets: ['AND-17041', 'AND-17042']
         }]);

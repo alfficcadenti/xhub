@@ -4,30 +4,40 @@ import {
 } from 'recharts';
 import Panel from '../Panel';
 import ChartModal from '../ChartModal';
-import {CHART_COLORS} from '../../../constants';
-import {formatCreatedVsResolvedData, findAndFormatTicket, mapPriority} from '../utils';
+import {formatCreatedVsResolvedData, findAndFormatTicket} from '../utils';
 
-const CreatedVsResolvedPanel = ({title, info, tickets, data, isLoading, error, priorities}) => {
+const CreatedVsResolvedPanel = ({title, info, priority, tickets, data, isLoading, error}) => {
     const [chartData, setChartData] = useState([]);
     const [modalData, setModalData] = useState({});
+    const [hiddenKeys, setHiddenKeys] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const createdDataKey = `Created ${priority}`;
+    const resolvedDataKey = `Resolved ${priority}`;
 
     useEffect(() => {
-        setChartData(formatCreatedVsResolvedData(data, priorities));
-    }, [tickets, data, priorities]);
+        setChartData(formatCreatedVsResolvedData(data));
+    }, [tickets, data]);
 
     const getClickHandler = (ticketsKey) => (selected) => {
         if (selected && selected.payload) {
             const selectedTickets = selected.payload[ticketsKey] || [];
             const ticketDetails = selectedTickets
                 .map((ticketId) => findAndFormatTicket(tickets, ticketId))
-                .filter((details) => details && (!priorities || priorities.includes(mapPriority(details.Priority))));
+                .filter(({Priority}) => Priority && Priority.includes(priority));
             setModalData({
                 data: ticketDetails,
-                description: 'Displaying created and resolved defects',
+                description: `Displaying ${ticketsKey === 'createdTickets' ? 'created' : 'resolved'} defects with ${priority} priority`,
                 columns: ['Portfolio', 'Key', 'Summary', 'Priority', 'Status', 'Resolution', 'Opened', 'Days to Resolve']
             });
             setIsModalOpen(true);
+        }
+    };
+
+    const handleLegendClick = (e) => {
+        if (e && e.dataKey) {
+            const nextHiddenBars = {...hiddenKeys};
+            nextHiddenBars[e.dataKey] = !hiddenKeys[e.dataKey];
+            setHiddenKeys(nextHiddenBars);
         }
     };
 
@@ -38,6 +48,7 @@ const CreatedVsResolvedPanel = ({title, info, tickets, data, isLoading, error, p
 
     return (
         <Panel
+            key={title}
             title={title}
             info={info}
             isLoading={isLoading}
@@ -49,9 +60,21 @@ const CreatedVsResolvedPanel = ({title, info, tickets, data, isLoading, error, p
                     <XAxis dataKey="date" />
                     <YAxis />
                     <Tooltip />
-                    <Legend />
-                    <Line dataKey="created" stroke={CHART_COLORS[4]} activeDot={{onClick: getClickHandler('createdTickets')}} />
-                    <Line dataKey="resolved" stroke={CHART_COLORS[5]} activeDot={{onClick: getClickHandler('resolvedTickets')}} />
+                    <Legend onClick={handleLegendClick} cursor="pointer" />
+                    <Line
+                        name="Created"
+                        hide={hiddenKeys[createdDataKey]}
+                        dataKey={createdDataKey}
+                        stroke="#3366cc"
+                        activeDot={{onClick: getClickHandler('createdTickets')}}
+                    />
+                    <Line
+                        name="Resolved"
+                        hide={hiddenKeys[resolvedDataKey]}
+                        dataKey={resolvedDataKey}
+                        stroke="#109618"
+                        activeDot={{onClick: getClickHandler('resolvedTickets')}}
+                    />
                 </LineChart>
             </ResponsiveContainer>
             <ChartModal
