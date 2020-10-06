@@ -53,6 +53,7 @@ const CreatedVsResolvedPanel = ({title, info, priority, tickets, data, isLoading
             info={info}
             isLoading={isLoading}
             error={error}
+            isFixedHeight
         >
             <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={chartData} cursor="pointer">

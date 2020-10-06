@@ -12,7 +12,7 @@ import {
     CreatedVsResolvedPanel,
     PiePanel
 } from './Panels';
-import {PORTFOLIOS, PRIORITY_LABELS} from './constants';
+import {PORTFOLIOS, P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL} from './constants';
 import {getQueryValues, getPortfolioBrand, getPanelDataUrl} from './utils';
 import './styles.less';
 
@@ -196,7 +196,7 @@ const QualityMetrics = ({selectedBrands}) => {
                     dataKey="openBugs"
                     isLoading={isTdDataLoading}
                     error={tdDataError}
-                    groupByPillar
+                    groupBy="Portfolio"
                 />
                 <TwoDimensionalPanel
                     title="Two Dimensional Filter Statistics - Defects Past SLA"
@@ -218,7 +218,7 @@ const QualityMetrics = ({selectedBrands}) => {
                     isLoading={isTdDataLoading}
                     error={tdDataError}
                 />
-                {PRIORITY_LABELS.map((priority) => (
+                {[P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL].map((priority) => (
                     <CreatedVsResolvedPanel
                         key={`${priority} Created vs. Resolved Chart`}
                         title={`${priority} Created vs. Resolved Chart`}
