@@ -280,14 +280,15 @@ export const filterNewSelectedItems = (input, key) => {
 };
 
 export const bucketTime = (date, format, intervalStartDate, intervalEndDate) => {
+    let localDate = moment.utc(date).local().isValid() ? moment.utc(date).local() : moment(date);
     if (moment().diff(intervalStartDate, 'days') >= 365) {
-        return moment(date).startOf('day').format(format);
+        return localDate.startOf('day').format(format);
     } else if (moment().diff(intervalStartDate, 'days') >= 90) {
-        return moment(date).startOf('hour').format(format);
+        return localDate.startOf('hour').format(format);
     } else if (intervalEndDate.diff(intervalStartDate) >= 86459999 && intervalEndDate.diff(intervalStartDate) < 518459999) {
-        return moment(date).set('minute', Math.floor(moment(date).minutes() / 10) * 10).format(format);
+        return moment.utc(date).local().set('minute', (Math.floor(moment(date).minutes() / 10) * 10)).format(format);
     } else if (intervalEndDate.diff(intervalStartDate) >= 518459999) {
-        return moment(date).startOf('hour').format(format);
+        return localDate.startOf('hour').format(format);
     }
-    return moment(date).format(format);
+    return localDate.format(format);
 };

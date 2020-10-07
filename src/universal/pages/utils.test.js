@@ -476,7 +476,7 @@ describe('bucketTime()', () => {
     });
 
     it('returns date rounded to the 10 minutes if the interval is > 24h', () => {
-        const date = moment('2020-10-02 07:27:04');
+        const date = '2020-10-02 07:27:04.0000000';
         const startDate = moment('2020-10-01 07:27:04');
         const endDate = moment('2020-10-02 13:27:04');
         const result = bucketTime(date, PAGE_VIEWS_DATE_FORMAT, startDate, endDate);
