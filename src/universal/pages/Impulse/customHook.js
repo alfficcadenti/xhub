@@ -36,7 +36,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
     const [incidentMulti, setIncidentMulti] = useState({});
     const [brandsFilterData, setBrandsFilterData] = useState({});
     const [filterData, setFilterData] = useState({});
-    const [annotationsMulti, setAnnotationsMulti] = useState([]);
     const [annotations, setAnnotations] = useState([]);
     const isMount = useIsMount();
     const incidentMultiOptions = [
@@ -97,7 +96,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
                     revLoss: getRevLoss(item)
                 }));
                 setAnnotations(annotationData);
-                setAnnotationsMulti(annotationData);
                 setIncidentMulti(incidentMultiOptions);
             })
             .catch((err) => {
@@ -166,9 +164,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
         incidentMulti,
         filterData,
         brandsFilterData,
-        annotations,
-        annotationsMulti,
-        setAnnotationsMulti,
+        annotations
     ];
 };
 

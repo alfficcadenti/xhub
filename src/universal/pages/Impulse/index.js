@@ -48,6 +48,7 @@ const Impulse = (props) => {
     const [isApplyClicked, setIsApplyClicked] = useState(false);
     const [allData, setFilterAllData] = useState([]);
     const [showMoreFilters, setShowMoreFilters] = useState(false);
+    const [annotationsMulti, setAnnotationsMulti] = useState([]);
     const [selectedSiteURLMulti, setSelectedSiteURLMulti] = useState([]);
     const [selectedLobMulti, setSelectedLobMulti] = useState([]);
     const [selectedBrandMulti, setSelectedBrandMulti] = useState([]);
@@ -75,9 +76,7 @@ const Impulse = (props) => {
         incidentMulti,
         filterData,
         brandsFilterData,
-        annotations,
-        annotationsMulti,
-        setAnnotationsMulti] = useFetchBlipData(
+        annotations] = useFetchBlipData(
         isApplyClicked,
         setIsApplyClicked,
         startDateTime,
@@ -107,14 +106,6 @@ const Impulse = (props) => {
             setEgSiteURLMulti(getFilters(filterData, 'egSiteUrl'));
         }
     };
-    const renderTabs = () => {
-        switch (activeIndex) {
-            case 0:
-                return <BookingTrends data={allData} startDateTime={startDateTime} endDateTime={endDateTime} setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime} setChartSliced={setChartSliced} annotations={enableIncidents ? annotationsMulti : []} defaultStartDate={startDateDefaultValue} defaultEndDate={endDateDefaultValue}/>;
-            default:
-                return <BookingTrends data={allData} startDateTime={startDateTime} endDateTime={endDateTime} setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime} setChartSliced={setChartSliced} annotations={enableIncidents ? annotationsMulti : []} defaultStartDate={startDateDefaultValue} defaultEndDate={endDateDefaultValue}/>;
-        }
-    };
     const filterAnnotations = (newValuesOnChange) => {
         if (typeof newValuesOnChange !== 'undefined' && newValuesOnChange !== null && newValuesOnChange.length > 0 && !newValuesOnChange.includes('All')) {
             const filteredAnnotations = annotations.filter((annotation) => newValuesOnChange.includes(annotation.priority));
@@ -122,11 +113,7 @@ const Impulse = (props) => {
         } else {
             setAnnotationsMulti(annotations);
         }
-        renderTabs();
     };
-    useEffect(() => {
-        setSelectedIncidentMulti([]);
-    }, [isApplyClicked]);
     // eslint-disable-next-line complexity
     const handleMultiChange = (event, handler) => {
         const newValuesOnChange = (event || []).map((item) => item.value);
@@ -148,7 +135,9 @@ const Impulse = (props) => {
     };
     useEffect(() => {
         setFilterAllData([...res]);
-    }, [res]);
+        setAnnotationsMulti(annotations);
+        filterAnnotations(selectedIncidentMulti);
+    }, [res, annotations]);
     const customStyles = {
         control: (base) => ({
             ...base,
@@ -169,6 +158,14 @@ const Impulse = (props) => {
         setEnableIncidents(!enableIncidents);
         setSelectedIncidentMulti([]);
         setAnnotationsMulti(annotations);
+    };
+    const renderTabs = () => {
+        switch (activeIndex) {
+            case 0:
+                return <BookingTrends data={allData} startDateTime={startDateTime} endDateTime={endDateTime} setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime} setChartSliced={setChartSliced} annotations={enableIncidents ? annotationsMulti : []} defaultStartDate={startDateDefaultValue} defaultEndDate={endDateDefaultValue}/>;
+            default:
+                return <BookingTrends data={allData} startDateTime={startDateTime} endDateTime={endDateTime} setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime} setChartSliced={setChartSliced} annotations={enableIncidents ? annotationsMulti : []} defaultStartDate={startDateDefaultValue} defaultEndDate={endDateDefaultValue}/>;
+        }
     };
     const renderMultiSelectFilters = (value, options, key, placeholder, className) => {
         return (<div className={className}>
