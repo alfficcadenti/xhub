@@ -5,13 +5,7 @@ import {QUESTION__16} from '@homeaway/svg-defs';
 import {Checkbox} from '@homeaway/react-form-components';
 import LoadingContainer from '../../components/LoadingContainer';
 import HelpText from '../../components/HelpText/HelpText';
-import {
-    BarChartPanel,
-    TwoDimensionalPanel,
-    SLADefinitions,
-    CreatedVsResolvedPanel,
-    PiePanel
-} from './Panels';
+import {TwoDimensionalPanel, CreatedVsResolvedPanel, PiePanel} from './Panels';
 import {PORTFOLIOS, P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL} from './constants';
 import {getQueryValues, getPortfolioBrand, getPanelDataUrl} from './utils';
 import './styles.less';
@@ -172,21 +166,6 @@ const QualityMetrics = ({selectedBrands}) => {
     const renderPanels = () => (
         <div className="panels-container">
             <LoadingContainer isLoading={isLoading} error={error}>
-                <BarChartPanel
-                    title="Open Defects Past SLA"
-                    info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived'. See panel below for SLA definitions. Click bar chart to see corresponding defects."
-                    tickets={tickets}
-                    dataUrl={getPanelDataUrl(selectedPortfolios, portfolioBrand, 'opendefectspastsla')}
-                    dataKey="openDefectsPastSla"
-                />
-                <BarChartPanel
-                    title="Open Defects"
-                    info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived'. Click bar chart to see corresponding defects."
-                    tickets={tickets}
-                    dataUrl={getPanelDataUrl(selectedPortfolios, portfolioBrand, 'openDefects')}
-                    dataKey="openDefects"
-                />
-                <SLADefinitions />
                 <TwoDimensionalPanel
                     title="Two Dimensional Filter Statistics - Open Bugs By Portfolio"
                     info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived' by portfolio"
