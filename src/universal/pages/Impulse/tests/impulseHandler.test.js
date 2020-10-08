@@ -68,5 +68,8 @@ describe('impulseHandler', () => {
         it('return string should contain NA on empty revenue loss', () => {
             expect(getRevLoss(mockRevenue[0])).to.include('NA');
         });
+        it('return string should contain NA on empty estimatedImpact', () => {
+            expect(getRevLoss(mockRevenue[2])).to.include('NA');
+        });
     });
 });
