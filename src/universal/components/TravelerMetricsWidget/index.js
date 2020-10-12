@@ -88,7 +88,13 @@ const TravelerMetricsWidget = ({
                                 domain={[chartLeft, chartRight]}
                                 tick={{fontSize: 10}}
                             />
-                            <YAxis allowDataOverflow type="number" yAxisId={yAxisId} tick={{fontSize: 10}} />
+                            <YAxis
+                                allowDataOverflow
+                                type="number"
+                                yAxisId={yAxisId}
+                                tick={{fontSize: 10}}
+                                domain={['auto', 'auto']}
+                            />
                             <CartesianGrid strokeDasharray="3 3" />
                             <Tooltip content={<CustomTooltip />} />
                             <Area type="monotone" dataKey="value" stroke={color} fillOpacity={1} fill={fill} key={`area${brand}`} yAxisId={yAxisId} />
