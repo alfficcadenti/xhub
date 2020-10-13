@@ -23,7 +23,8 @@ const CustomTooltip = ({active, payload}) => {
     if (active && payload && payload[0] && payload[0].payload && payload[0].payload.label && payload[0].value) {
         return (
             <div className="custom-tooltip">
-                <p className="label">{`${payload[0].payload.label} : ${payload[0].value}`}</p>
+                <p className="label">{payload[0].payload.label}</p>
+                {payload && payload.map((x) => <p className="label">{`${x.dataKey} = ${x.value}`}</p>)}
             </div>
         );
     }
@@ -53,7 +54,8 @@ const TravelerMetricsWidget = ({
     refAreaRight,
     helpText,
     annotations = [],
-    formatYAxis = (value) => value
+    formatYAxis = (value) => value,
+    selectedLoB = []
 }) => {
     const brandLabel = brand.replace(/\s/g, '');
     const fill = `url(#${brandLabel})`;
@@ -95,10 +97,16 @@ const TravelerMetricsWidget = ({
                                 yAxisId={yAxisId}
                                 tick={{fontSize: 10}}
                                 tickFormatter={formatYAxis}
+                                domain={['auto', 'auto']}
                             />
                             <CartesianGrid strokeDasharray="3 3" />
                             <Tooltip content={<CustomTooltip />} />
-                            <Area type="monotone" dataKey="value" stroke={color} fillOpacity={1} fill={fill} key={`area${brand}`} yAxisId={yAxisId} />
+                            {selectedLoB && selectedLoB.length ?
+                                selectedLoB.map((lob) =>
+                                    <Area stackId="1" type="monotone" dataKey={lob.label} stroke={color} fillOpacity={1} fill={fill} key={`area${lob.label}`} yAxisId={yAxisId} />
+                                ) :
+                                <Area type="monotone" dataKey="Views" stroke={color} fillOpacity={1} fill={fill} key={`area${brand}`} yAxisId={yAxisId} />
+                            };
                             {
                                 annotations && annotations.map((annotation) => (
                                     <ReferenceLine

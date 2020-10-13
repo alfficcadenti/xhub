@@ -13,6 +13,13 @@ module.exports.bookingsUserEvents = {
     handler: getHandler(getHandlerParams('bookings'))
 };
 
+module.exports.pageViewsLoBUserEvents = {
+    method: 'GET',
+    path: '/v1/pageViewsLoB/{param*}',
+    config: getConfig('page-views-lob-api-v1-get'),
+    handler: getHandler(getHandlerParams('pageViewsLoB'))
+};
+
 module.exports.pageViewsUserEvents = {
     method: 'GET',
     path: '/v1/pageViews/{param*}',

@@ -10,13 +10,19 @@
     padding: @spacing-1x;
 
     .custom-tooltip {
-        background-color: rgba(150, 150, 151, .9);
-        border-radius: 15px;
+        background-color: rgba(200, 200, 202, 0.9);
+        border-radius: 8px;
         vertical-align: middle;
         text-align: center;
+        display: block;
+        min-height: 54px;
+        padding: @spacing-1x;
 
         .label {
             color: @text-color;
+            display: block;
+            line-height: 90%;
+            margin: @spacing-1x;
         }
     }
 

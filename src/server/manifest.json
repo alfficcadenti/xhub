@@ -146,6 +146,11 @@
               "method": "GET",
               "operation": "GET_user_events_pageviews_api_v1"
             },
+            "pageViewsLoB": {
+              "path": "/v1/pageViewsLoB",
+              "method": "GET",
+              "operation": "GET_user_events_pageviews_lob_api_v1"
+            },
             "bookingsImpulseCount": {
               "path": "/v1/bookings/count",
               "method": "GET",
@@ -202,6 +207,11 @@
               "method": "GET",
               "operation": "GET_user_events_pageviews_api_v1"
             },
+            "pageViewsLoB": {
+              "path": "/v1/pageViewsLoB",
+              "method": "GET",
+              "operation": "GET_user_events_pageviews_lob_api_v1"
+            },
             "bookingsImpulseCount": {
               "path": "/v1/bookings/count",
               "method": "GET",
@@ -253,6 +263,11 @@
               "method": "GET",
               "operation": "GET_user_events_pageviews_api_v1"
             },
+            "pageViewsLoB": {
+              "path": "/v1/pageViewsLoB",
+              "method": "GET",
+              "operation": "GET_user_events_pageviews_lob_api_v1"
+            },
             "bookingsImpulseCount": {
               "path": "/v1/bookings/count",
               "method": "GET",
@@ -293,6 +308,11 @@
               "path": "/v1/pageViews",
               "method": "GET",
               "operation": "GET_user_events_pageviews_api_v1"
+            },
+            "pageViewsLoB": {
+              "path": "/v1/pageViewsLoB",
+              "method": "GET",
+              "operation": "GET_user_events_pageviews_lob_api_v1"
             },
             "bookingsImpulseCount": {
               "path": "/v1/bookings/count",

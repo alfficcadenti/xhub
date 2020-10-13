@@ -33,7 +33,7 @@
     "test": "npm run lint && npm run test:unit",
     "test:browser": "npm run wdio:clean && wdio tests/browser/wdio.conf.js",
     "test:browser:remote": "npm run wdio:clean && BROWSERNAME=win10_chrome wdio tests/browser/wdio.conf.sauce.js",
-    "test:unit": "BABEL_ENV=test jest --colors --verbose -u --testNamePattern",
+    "test:unit": "BABEL_ENV=test TZ=UTC jest --colors --verbose -u --testNamePattern",
     "test:style": "stylelint --fix src/**/*.less",
     "tool:checkAssetSize": "node ./tools/sizes/checkAssetSize.js",
     "wdio:clean": "node tests/browser/tools/tasks/clean.js"

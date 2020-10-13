@@ -30,6 +30,26 @@ export const EG_BRAND = 'Expedia Group';
 export const DEPLOYMENT_ANNOTATION_CATEGORY = 'deployment';
 export const INCIDENT_ANNOTATION_CATEGORY = 'incident';
 
+export const LOB_LIST = [
+    {value: 'C', label: 'Cars'},
+    {value: 'CR', label: 'Cruise'},
+    {value: 'F', label: 'Flights'},
+    {value: 'H', label: 'Hotels'},
+    {value: 'P', label: 'Package'},
+    {value: '3PP', label: 'ThreePP'},
+    {value: 'U', label: 'Unknown'},
+];
+
+export const PAGE_VIEWS_DATE_FORMAT = 'YYYY-MM-DD HH:mm';
+
+export const PAGES_LIST = [
+    {name: 'home', label: 'Home'},
+    {name: 'searchresults', label: 'Search'},
+    {name: 'property', label: 'Property'},
+    {name: 'bookingform', label: 'Booking Form'},
+    {name: 'bookingconfirmation', label: 'Booking Confirmation'},
+];
+
 export const BRANDS = [
     {
         label: EG_BRAND,
