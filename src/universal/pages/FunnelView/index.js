@@ -1,16 +1,23 @@
 import React, {useEffect, useState} from 'react';
 import moment from 'moment';
 import 'moment-timezone';
+import Select from 'react-select';
 import TravelerMetricsWidget from '../../components/TravelerMetricsWidget';
 import LoadingContainer from '../../components/LoadingContainer';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
+import HelpText from '../../components/HelpText/HelpText';
 import {useFetchProductMapping, useQueryParamChange, useSelectedBrand, useZoomAndSynced} from '../hooks';
 import {
     EG_BRAND,
+    VRBO_BRAND,
+    HOTELS_COM_BRAND,
     EGENCIA_BRAND,
     EXPEDIA_PARTNER_SERVICES_BRAND,
     DEPLOYMENT_ANNOTATION_CATEGORY,
-    INCIDENT_ANNOTATION_CATEGORY
+    INCIDENT_ANNOTATION_CATEGORY,
+    LOB_LIST,
+    PAGE_VIEWS_DATE_FORMAT,
+    PAGES_LIST
 } from '../../constants';
 import {
     checkResponse,
@@ -23,6 +30,7 @@ import {
     filterNewSelectedItems,
     bucketTime
 } from '../utils';
+import {makePageViewLoBObjects} from './pageViewsUtils';
 import './styles.less';
 import {adjustTicketProperties} from '../TicketTrends/incidentsHelper';
 import UniversalSearch from '../../components/UniversalSearch';
@@ -30,8 +38,6 @@ import {Checkbox} from '@homeaway/react-form-components';
 
 const TIMEZONE_OFFSET = (new Date()).getTimezoneOffset();
 const TIMEZONE_ABBR = moment.tz.zone(moment.tz.guess()).abbr(TIMEZONE_OFFSET);
-const PAGE_VIEWS_DATE_FORMAT = 'YYYY-MM-DD HH:mm';
-
 
 const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const initialStart = moment().subtract(6, 'hours').startOf('minute');
@@ -39,6 +45,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const initialTimeRange = 'Last 6 hours';
 
     const [widgets, setWidgets] = useState([]);
+    const [lobWidgets, setLoBWidgets] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
     const [pendingStart, setPendingStart] = useState(initialStart);
@@ -49,6 +56,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [currentTimeRange, setCurrentTimeRange] = useState(initialTimeRange);
     const [pendingTimeRange, setPendingTimeRange] = useState(initialTimeRange);
     const [isFormDisabled, setIsFormDisabled] = useState(false);
+    const [isLoBAvailable, setIsLoBAvailable] = useState(true);
+    const [lobSelected, setLobSelected] = useState([]);
 
     // annotations state
     const [enableAnnotations, setEnableAnnotations] = useState(false);
@@ -99,13 +108,6 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         pendingTimeRange
     );
 
-    const PAGES_LIST = [
-        {name: 'home', label: 'Home'},
-        {name: 'searchresults', label: 'Search'},
-        {name: 'property', label: 'Property'},
-        {name: 'bookingform', label: 'Booking Form'},
-        {name: 'bookingconfirmation', label: 'Booking Confirmation'},
-    ];
     const getNowDate = () => moment().endOf('minute').toDate();
     const getLastDate = (value, unit) => moment().subtract(value, unit).startOf('minute').toDate();
     const getValue = (value, unit) => ({start: getLastDate(value, unit), end: getNowDate()});
@@ -215,7 +217,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                                         label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
                                         time: momentTime.format(PAGE_VIEWS_DATE_FORMAT),
                                         momentTime,
-                                        value: currentPageViews.views
+                                        Views: currentPageViews.views
                                     });
                                 }
                             }
@@ -223,6 +225,36 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                         return {pageName: label, aggregatedData, pageBrand};
                     });
                     setWidgets(widgetObjects);
+                })
+                .catch((err) => {
+                    let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
+                        ? 'Query has timed out. Try refreshing the page. If the problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.'
+                        : 'An unexpected error has occurred. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.';
+                    setError(errorMessage);
+                    // eslint-disable-next-line no-console
+                    console.error(err);
+                })
+                .finally(() => setIsLoading(false));
+        };
+
+        const fetchPageViewsLoBData = ([selectedBrand]) => {
+            const {label: pageBrand, funnelBrand} = getBrand(selectedBrand, 'label');
+            setIsLoading(true);
+            setError('');
+            const dateQuery = start && end
+                ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
+                : '';
+            fetch(`/v1/pageViewsLoB?brand=${funnelBrand}&timeInterval=1${dateQuery}`)
+                .then(checkResponse)
+                .then((fetchedPageviews) => {
+                    if (!fetchedPageviews || !fetchedPageviews.length) {
+                        setError('No data found. Try refreshing the page or select another brand.');
+                        return;
+                    }
+                    console.log('fetched', fetchedPageviews);
+                    const widgetObjects = makePageViewLoBObjects(fetchedPageviews, start, end, pageBrand);
+                    console.log(widgetObjects);
+                    setLoBWidgets(widgetObjects);
                 })
                 .catch((err) => {
                     let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
@@ -295,6 +327,12 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 });
         };
 
+        if ([EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, VRBO_BRAND, HOTELS_COM_BRAND].includes(selectedBrands[0])) {
+            setIsLoBAvailable(false);
+        } else if (isMounted) {
+            fetchPageViewsLoBData(selectedBrands);
+        }
+
         if ([EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND].includes(selectedBrands[0])) {
             setError(`Page views for ${selectedBrands} is not yet available.
                 The following brands are supported at this time: "Expedia", "Hotels.com Retail", and "Vrbo Retail".
@@ -353,6 +391,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             refAreaLeft={refAreaLeft}
             refAreaRight={refAreaRight}
             annotations={enableAnnotations ? filteredAnnotations : []}
+            selectedLoB={lobSelected}
         />
     );
 
@@ -365,6 +404,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         setSelectedStatuses(filterNewSelectedItems(adjustedInputValue, 'incidentStatus'));
         setSelectedPriorities(filterNewSelectedItems(adjustedInputValue, 'incidentPriority'));
     };
+
+    const handleLoBChange = (lobValue) => setLobSelected(lobValue || []);
 
     useEffect(() => {
         const adjustedProducts = productMapping.map(({productName}) => productName);
@@ -388,7 +429,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
     return (
         <div className="funnel-views-container">
-            <h1>{'Traveler Page Views'}</h1>
+            <h1>{'Traveler Page Views'}{!isLoBAvailable && <HelpText text="Only for LOB Hotels" placement="top" />}</h1>
             <div className="filters-wrapper">
                 <div className="date-filters-wrapper">
                     <DatetimeRangePicker
@@ -414,6 +455,14 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                         size="sm"
                         className="annotations-сheckbox"
                     />
+                    {!isLoading && isLoBAvailable && <Select
+                        isMulti
+                        classNamePrefix="lob-select"
+                        className="lob-select-container"
+                        options={LOB_LIST}
+                        onChange={handleLoBChange}
+                        placeholder={'Select Line of Business'}
+                    />}
                 </div>
                 {!isLoading && <>
                     <div className="annotation-filters-wrapper">
@@ -443,7 +492,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             </div>
             <LoadingContainer isLoading={isLoading} error={error} className="page-views-loading-container">
                 <div className="page-views-widget-container">
-                    {widgets.map(renderWidget)}
+                    {lobSelected && lobSelected.length && lobWidgets.map(renderWidget)} 
+                    {widgets && !lobSelected && widgets.map(renderWidget)}
                 </div>
             </LoadingContainer>
         </div>
