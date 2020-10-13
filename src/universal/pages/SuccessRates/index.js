@@ -247,6 +247,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             refAreaLeft={refAreaLeft}
             refAreaRight={refAreaRight}
             helpText={shouldShowTooltip(pageName, pageBrand)}
+            formatYAxis={(value) => `${value}%`}
         />
     );
 
