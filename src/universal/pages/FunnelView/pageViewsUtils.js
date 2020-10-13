@@ -6,7 +6,6 @@ const TIMEZONE_OFFSET = (new Date()).getTimezoneOffset();
 const TIMEZONE_ABBR = moment.tz.zone(moment.tz.guess()).abbr(TIMEZONE_OFFSET);
 
 export const makePageViewLoBObjects = (data = [], start, end, pageBrand = '') => {
-    console.log(start, end);
     return PAGES_LIST.map(({name, label}) => {
         const aggregatedData = [];
         data.forEach(({time, pageViewsData}) => {

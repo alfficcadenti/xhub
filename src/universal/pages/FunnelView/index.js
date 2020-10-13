@@ -251,9 +251,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                         setError('No data found. Try refreshing the page or select another brand.');
                         return;
                     }
-                    console.log('fetched', fetchedPageviews);
                     const widgetObjects = makePageViewLoBObjects(fetchedPageviews, start, end, pageBrand);
-                    console.log(widgetObjects);
                     setLoBWidgets(widgetObjects);
                 })
                 .catch((err) => {
@@ -492,8 +490,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             </div>
             <LoadingContainer isLoading={isLoading} error={error} className="page-views-loading-container">
                 <div className="page-views-widget-container">
-                    {lobSelected && lobSelected.length && lobWidgets.map(renderWidget)} 
-                    {widgets && !lobSelected && widgets.map(renderWidget)}
+                    {lobSelected && lobSelected.length && lobWidgets.map(renderWidget) || ''} 
+                    {widgets && widgets.length && !lobSelected.length && widgets.map(renderWidget) || ''}
                 </div>
             </LoadingContainer>
         </div>
