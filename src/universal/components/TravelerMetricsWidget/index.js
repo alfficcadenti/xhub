@@ -105,7 +105,7 @@ const TravelerMetricsWidget = ({
                                 selectedLoB.map((lob) =>
                                     <Area stackId="1" type="monotone" dataKey={lob.label} stroke={color} fillOpacity={1} fill={fill} key={`area${lob.label}`} yAxisId={yAxisId} />
                                 ) :
-                                <Area type="monotone" dataKey="Views" stroke={color} fillOpacity={1} fill={fill} key={`area${brand}`} yAxisId={yAxisId} />
+                                <Area type="monotone" dataKey="value" stroke={color} fillOpacity={1} fill={fill} key={`area${brand}`} yAxisId={yAxisId} />
                             };
                             {
                                 annotations && annotations.map((annotation) => (

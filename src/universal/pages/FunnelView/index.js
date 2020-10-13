@@ -217,7 +217,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                                         label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
                                         time: momentTime.format(PAGE_VIEWS_DATE_FORMAT),
                                         momentTime,
-                                        Views: currentPageViews.views
+                                        value: currentPageViews.views
                                     });
                                 }
                             }
