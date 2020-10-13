@@ -52,7 +52,8 @@ const TravelerMetricsWidget = ({
     refAreaLeft,
     refAreaRight,
     helpText,
-    annotations = []
+    annotations = [],
+    formatYAxis = (value) => value
 }) => {
     const brandLabel = brand.replace(/\s/g, '');
     const fill = `url(#${brandLabel})`;
@@ -88,7 +89,13 @@ const TravelerMetricsWidget = ({
                                 domain={[chartLeft, chartRight]}
                                 tick={{fontSize: 10}}
                             />
-                            <YAxis allowDataOverflow type="number" yAxisId={yAxisId} tick={{fontSize: 10}} />
+                            <YAxis
+                                allowDataOverflow
+                                type="number"
+                                yAxisId={yAxisId}
+                                tick={{fontSize: 10}}
+                                tickFormatter={formatYAxis}
+                            />
                             <CartesianGrid strokeDasharray="3 3" />
                             <Tooltip content={<CustomTooltip />} />
                             <Area type="monotone" dataKey="value" stroke={color} fillOpacity={1} fill={fill} key={`area${brand}`} yAxisId={yAxisId} />
