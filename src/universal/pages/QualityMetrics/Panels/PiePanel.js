@@ -45,8 +45,8 @@ const PiePanel = ({title, info, tickets, dataKey, data, isLoading, error}) => {
     };
 
     return (
-        <Panel title={title} info={info} isLoading={isLoading} error={error}>
-            <ResponsiveContainer width="100%" height={300}>
+        <Panel title={title} info={info} isLoading={isLoading} error={error} isFixedHeight>
+            <ResponsiveContainer width="100%" height={320}>
                 <PieChart cursor="pointer">
                     <Tooltip />
                     <Legend />

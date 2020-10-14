@@ -5,7 +5,7 @@ import {QUESTION__16} from '@homeaway/svg-defs';
 import {Checkbox} from '@homeaway/react-form-components';
 import LoadingContainer from '../../components/LoadingContainer';
 import HelpText from '../../components/HelpText/HelpText';
-import {TwoDimensionalPanel, CreatedVsResolvedPanel, PiePanel} from './Panels';
+import {DurationPanel, TwoDimensionalPanel, CreatedVsResolvedPanel, PiePanel} from './Panels';
 import {PORTFOLIOS, P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL} from './constants';
 import {getQueryValues, getPortfolioBrand, getPanelDataUrl} from './utils';
 import './styles.less';
@@ -167,7 +167,7 @@ const QualityMetrics = ({selectedBrands}) => {
         <div className="panels-container">
             <LoadingContainer isLoading={isLoading} error={error}>
                 <TwoDimensionalPanel
-                    title="Two Dimensional Filter Statistics - Open Bugs By Portfolio"
+                    title="Open Bugs By Portfolio"
                     info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived' by portfolio"
                     tickets={tickets}
                     data={tdData}
@@ -178,17 +178,7 @@ const QualityMetrics = ({selectedBrands}) => {
                     groupBy="Portfolio"
                 />
                 <TwoDimensionalPanel
-                    title="Two Dimensional Filter Statistics - Defects Past SLA"
-                    info="Displaying defects past SLA (See SLA definitions in above panel)"
-                    tickets={tickets}
-                    data={tdData}
-                    portfolios={selectedPortfolios}
-                    dataKey="pastSLA"
-                    isLoading={isTdDataLoading}
-                    error={tdDataError}
-                />
-                <TwoDimensionalPanel
-                    title="Two Dimensional Filter Statistics - Open Bugs"
+                    title="Open Bugs"
                     info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived'"
                     tickets={tickets}
                     data={tdData}
@@ -196,6 +186,13 @@ const QualityMetrics = ({selectedBrands}) => {
                     dataKey="openBugs"
                     isLoading={isTdDataLoading}
                     error={tdDataError}
+                />
+                <DurationPanel
+                    title="Mean Time to Resolve by Portfolio"
+                    info="Mean time to resolve in days by portfolio"
+                    tickets={tickets}
+                    portfolios={selectedPortfolios}
+                    dataUrl={getPanelDataUrl(selectedPortfolios, portfolioBrand, 'ttrSummary')}
                 />
                 {[P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL].map((priority) => (
                     <CreatedVsResolvedPanel

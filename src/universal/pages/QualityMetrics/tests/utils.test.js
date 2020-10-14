@@ -10,6 +10,7 @@ import {
     mapPriority,
     formatBarChartData,
     formatTTRData,
+    formatDurationData,
     formatWoWData,
     groupDataByPillar,
     formatTableData,
@@ -34,9 +35,10 @@ describe('Quality Metrics Util', () => {
     });
 
     it('getPropValue', () => {
-        const item = {a: 'hello'};
+        const item = {a: 'hello', c: 0};
         expect(getPropValue(item, 'a')).to.be.eql('hello');
         expect(getPropValue(item, 'b')).to.be.eql('-');
+        expect(getPropValue(item, 'c')).to.be.eql(0);
     });
 
     it('formatDefect', () => {
@@ -147,6 +149,51 @@ describe('Quality Metrics Util', () => {
         }]);
     });
 
+    it('formatDurationData', () => {
+        const data = {
+            kes: {
+                avgP1DaysToResolve: 0,
+                avgP2DaysToResolve: 1,
+                avgP3DaysToResolve: 3,
+                avgP4DaysToResolve: 5,
+                avgP5DaysToResolve: 4,
+                totalCount: 2,
+                projectTTRSummaries: {
+                    KES: {ticketIds: ['KES-2935', 'KES-2865']}
+                }
+            },
+            checkout: {
+                avgP1DaysToResolve: 1,
+                avgP2DaysToResolve: 0,
+                avgP3DaysToResolve: 1,
+                avgP4DaysToResolve: 0,
+                avgP5DaysToResolve: 0,
+                totalCount: 2,
+                projectTTRSummaries: {
+                    EPOCH: {ticketIds: ['EPOCH-2833']},
+                    HBILL: {ticketIds: ['HBILL-6593']}
+                }
+            }
+        };
+        const {kes, checkout} = formatDurationData(data);
+        // kes
+        expect(kes.p1).to.eql(data.kes.avgP1DaysToResolve);
+        expect(kes.p2).to.eql(data.kes.avgP2DaysToResolve);
+        expect(kes.p3).to.eql(data.kes.avgP3DaysToResolve);
+        expect(kes.p4).to.eql(data.kes.avgP4DaysToResolve);
+        expect(kes.p5).to.eql(data.kes.avgP5DaysToResolve);
+        expect(kes.totalTickets).to.eql(data.kes.totalCount);
+        expect(kes.ticketIds).to.eql(['KES-2935', 'KES-2865']);
+        // checkout
+        expect(checkout.p1).to.eql(data.checkout.avgP1DaysToResolve);
+        expect(checkout.p2).to.eql(data.checkout.avgP2DaysToResolve);
+        expect(checkout.p3).to.eql(data.checkout.avgP3DaysToResolve);
+        expect(checkout.p4).to.eql(data.checkout.avgP4DaysToResolve);
+        expect(checkout.p5).to.eql(data.checkout.avgP5DaysToResolve);
+        expect(checkout.totalTickets).to.eql(data.checkout.totalCount);
+        expect(checkout.ticketIds).to.eql(['EPOCH-2833', 'HBILL-6593']);
+    });
+
     it('formatWoWData', () => {
         const date = '2020-01-01';
         const numberOfCreatedIssues = 1;
@@ -187,12 +234,13 @@ describe('Quality Metrics Util', () => {
         expect(result.Kes).to.eql(data.Kes);
     });
 
-    it('formatTableData by Project', () => {
+    it('formatTableData - counts by project', () => {
         const rowKey = 'rowKey';
         const result = formatTableData({
             'AND - Android': {p4: 2, notPrioritized: 1, totalTickets: 3, ticketIds: ['AND-0001', 'AND-0002', 'AND-0003']},
             'Kes': {p1: 1, p2: 1, p4: 1, p5: 2, totalTickets: 5, ticketIds: ['KES-0001', 'KES-0002', 'KES-0003', 'KES-0004', 'KES-0005']},
         }, () => true, rowKey);
+        expect(result.length).to.eql(3);
         // AND
         const row0 = result[0];
         expect(row0[rowKey]).to.eql('AND - Android');
@@ -223,6 +271,35 @@ describe('Quality Metrics Util', () => {
         expect(row2.p5.props.children).to.eql(2);
         expect(row2.notPrioritized.props.children).to.eql(1);
         expect(row2.totalTickets.props.children).to.eql(8);
+    });
+
+    it('formatTableData - duration by project', () => {
+        const rowKey = 'rowKey';
+        const result = formatTableData({
+            'AND - Android': {p4: 2, notPrioritized: 1, totalTickets: 3, ticketIds: ['AND-0001', 'AND-0002', 'AND-0003']},
+            'Kes': {p1: 1, p2: 1, p4: 1, p5: 2, totalTickets: 5, ticketIds: ['KES-0001', 'KES-0002', 'KES-0003', 'KES-0004', 'KES-0005']},
+        }, () => true, rowKey, true);
+        expect(result.length).to.eql(2);
+        // AND
+        const row0 = result[0];
+        expect(row0[rowKey]).to.eql('AND - Android');
+        expect(row0.p1).to.eql('-');
+        expect(row0.p2).to.eql('-');
+        expect(row0.p3).to.eql('-');
+        expect(row0.p4.props.children).to.eql('2 days');
+        expect(row0.p5).to.eql('-');
+        expect(row0.notPrioritized.props.children).to.eql('1 day');
+        expect(row0.totalTickets.props.children).to.eql(3);
+        // KES
+        const row1 = result[1];
+        expect(row1[rowKey]).to.eql('Kes');
+        expect(row1.p1.props.children).to.eql('1 day');
+        expect(row1.p2.props.children).to.eql('1 day');
+        expect(row1.p3).to.eql('-');
+        expect(row1.p4.props.children).to.eql('1 day');
+        expect(row1.p5.props.children).to.eql('2 days');
+        expect(row1.notPrioritized).to.eql('-');
+        expect(row1.totalTickets.props.children).to.eql(5);
     });
 
     it('processTwoDimensionalIssues', () => {
@@ -302,6 +379,10 @@ describe('Quality Metrics Util', () => {
         const panel = 'opendefects';
         expect(getPanelDataUrl(portfolios, brand, panel)).to.be.equal(
             `/v1/portfolio/panel/${panel}?brand=${brand}&fromDate=${start}&toDate=${end}&portfolios=kes`
+        );
+        const ttrPanel = 'ttrSummary';
+        expect(getPanelDataUrl(portfolios, brand, ttrPanel)).to.be.equal(
+            `/v1/portfolio/${ttrPanel}?brand=${brand}&fromDate=${start}&toDate=${end}&portfolios=kes`
         );
         expect(getPanelDataUrl(portfolios, brand)).to.be.equal(
             `/v1/portfolio?brand=${brand}&fromDate=${start}&toDate=${end}&portfolios=kes`

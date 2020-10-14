@@ -20,7 +20,7 @@ export const getQueryValues = (search) => {
     return {initialPortfolios};
 };
 
-export const getPropValue = (item, prop) => item[prop] || '-';
+export const getPropValue = (item, prop) => item[prop] || item[prop] === 0 ? item[prop] : '-';
 
 export const formatDefect = (defect) => ({
     Portfolio: getPropValue(defect, 'portfolio'),
@@ -95,7 +95,30 @@ export const formatTTRData = (data) => {
                 counts: totalTickets,
                 tickets: ticketIds
             };
-        }, []);
+        });
+};
+
+export const formatDurationData = (data) => {
+    return Object.entries(data).reduce((acc, [Portfolio, {
+        avgP1DaysToResolve = 0,
+        avgP2DaysToResolve = 0,
+        avgP3DaysToResolve = 0,
+        avgP4DaysToResolve = 0,
+        avgP5DaysToResolve = 0,
+        totalCount = 0,
+        projectTTRSummaries = {}
+    }]) => {
+        acc[Portfolio] = {
+            p1: avgP1DaysToResolve,
+            p2: avgP2DaysToResolve,
+            p3: avgP3DaysToResolve,
+            p4: avgP4DaysToResolve,
+            p5: avgP5DaysToResolve,
+            totalTickets: totalCount,
+            ticketIds: Object.values(projectTTRSummaries).reduce((all, {ticketIds}) => [...all, ...ticketIds], [])
+        };
+        return acc;
+    }, {});
 };
 
 export const formatWoWData = (data) => {
@@ -146,7 +169,7 @@ export const groupDataByPillar = (data = {}, portfolios = []) => {
     }, result);
 };
 
-export const formatTableData = (rawData, onClickHandler, rowKey = 'Project') => {
+export const formatTableData = (rawData, onClickHandler, rowKey = 'Project', isDuration = false) => {
     const data = [];
     const totalCounts = {
         [rowKey]: TOTAL_UNIQUE_ISSUES_LABEL,
@@ -177,22 +200,29 @@ export const formatTableData = (rawData, onClickHandler, rowKey = 'Project') => 
                 });
             data.push(row);
         });
-    data.push(totalCounts);
-    const formatLink = (value, key, priority) => (
-        value === '-'
-            ? '-'
-            : (
-                <div
-                    className="count-link"
-                    role="button"
-                    tabIndex={0}
-                    onClick={() => onClickHandler(rawData, key, priority)}
-                    onKeyUp={() => onClickHandler(rawData, key, priority)}
-                >
-                    {value}
-                </div>
-            )
-    );
+    if (!isDuration) {
+        data.push(totalCounts);
+    }
+    const formatLink = (value, key, priority) => {
+        if (value === '-') {
+            return '-';
+        }
+        const text = (isDuration && priority)
+            ? `${value} day${value === 1 ? '' : 's'}`
+            : value;
+        const clickHandler = () => onClickHandler(rawData, key, priority);
+        return (
+            <div
+                className="count-link"
+                role="button"
+                tabIndex={0}
+                onClick={clickHandler}
+                onKeyUp={clickHandler}
+            >
+                {text}
+            </div>
+        );
+    };
     const result = data.map((row) => {
         const {p1, p2, p3, p4, p5, notPrioritized, totalTickets} = row;
         const key = row[rowKey];
@@ -209,8 +239,6 @@ export const formatTableData = (rawData, onClickHandler, rowKey = 'Project') => 
     });
     return result;
 };
-
-const processTableData = (data) => (data || []).map(formatDefect);
 
 export const processTwoDimensionalIssues = (
     allJiraTickets, projectTickets, project, portfolios, priority
@@ -230,7 +258,7 @@ export const processTwoDimensionalIssues = (
         });
     });
     return {
-        data: processTableData(finalList),
+        data: (finalList || []).map(formatDefect),
         description: priority
             ? `Displaying "${project}" defects with ${priority} priority`
             : `Displaying all ${project ? `"${project}"` : ''} defects`
@@ -272,6 +300,8 @@ export const getPanelDataUrl = (portfolios, brand, panel) => {
         : `?${brandQuery}&${dateQuery}`;
     if (!panel) {
         return `${baseUrl}${query}`;
+    } else if (panel === 'ttrSummary') {
+        return `${baseUrl}/ttrSummary${query}`;
     }
     return `${baseUrl}/panel/${panel}${query}`;
 };
