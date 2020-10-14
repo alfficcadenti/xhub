@@ -33,7 +33,7 @@ const ReferenceLabel = ({viewBox: {x}, annotation, isImpulse = false}) => {
         >
             <div className={`annotation-tooltip ${isImpulse ? 'incidents-impulse' : category}`}>
                 <div className="tooltip-body">
-                    <p className="timestamp">{moment(time).format('YYYY-MM-DD hh:mm')}</p>
+                    <p className="timestamp">{moment(time).format('YYYY-MM-DD HH:mm')}</p>
                     <div className="tooltip-wrapper">
                         {
                             category === DEPLOYMENT_ANNOTATION_CATEGORY ? <>
