@@ -49,7 +49,9 @@ describe('Quality Metrics Util', () => {
             status: 'Done',
             resolution: 'resolution',
             openDate: '2020-01-02',
-            url: 'https://jira.hcom/browse/PM-1001'
+            url: 'https://jira.hcom/browse/PM-1001',
+            daysToResolve: 2,
+            timeToResolve: 3
         };
         const formattedDefect = {
             Portfolio: '-',
@@ -60,7 +62,8 @@ describe('Quality Metrics Util', () => {
             Status: defect.status,
             Resolution: defect.resolution,
             Opened: defect.openDate,
-            'Days to Resolve': '-'
+            'Days to Resolve': 2,
+            'Time to Resolve': '3m'
         };
         expect(formatDefect(defect)).to.eql(formattedDefect);
     });
@@ -122,28 +125,28 @@ describe('Quality Metrics Util', () => {
 
     it('formatTTRData', () => {
         const date = '2020-01-01';
-        const p1DaysToResolve = 1;
-        const p2DaysToResolve = 2;
-        const p4DaysToResolve = 4;
-        const p5DaysToResolve = 3;
+        const p1MinsToResolve = 1;
+        const p2MinsToResolve = 2;
+        const p4MinsToResolve = 4;
+        const p5MinsToResolve = 3;
         const ticketIds = ['INC-0001'];
         const data = {
             [date]: {
-                p1DaysToResolve,
-                p2DaysToResolve,
-                p4DaysToResolve,
-                p5DaysToResolve,
+                p1MinsToResolve,
+                p2MinsToResolve,
+                p4MinsToResolve,
+                p5MinsToResolve,
                 totalTickets: ticketIds.length, ticketIds
             }
         };
         expect(formatTTRData(data)).to.be.eql([{
             date,
-            [P1_LABEL]: p1DaysToResolve,
-            [P2_LABEL]: p2DaysToResolve,
+            [P1_LABEL]: p1MinsToResolve,
+            [P2_LABEL]: p2MinsToResolve,
             [P3_LABEL]: 0,
-            [P4_LABEL]: p4DaysToResolve,
-            [P4_LABEL]: p4DaysToResolve,
-            [P5_LABEL]: p5DaysToResolve,
+            [P4_LABEL]: p4MinsToResolve,
+            [P4_LABEL]: p4MinsToResolve,
+            [P5_LABEL]: p5MinsToResolve,
             counts: ticketIds.length,
             tickets: ticketIds
         }]);
@@ -152,22 +155,22 @@ describe('Quality Metrics Util', () => {
     it('formatDurationData', () => {
         const data = {
             kes: {
-                avgP1DaysToResolve: 0,
-                avgP2DaysToResolve: 1,
-                avgP3DaysToResolve: 3,
-                avgP4DaysToResolve: 5,
-                avgP5DaysToResolve: 4,
+                avgP1MinsToResolve: 0,
+                avgP2MinsToResolve: 1,
+                avgP3MinsToResolve: 3,
+                avgP4MinsToResolve: 5,
+                avgP5MinsToResolve: 4,
                 totalCount: 2,
                 projectTTRSummaries: {
                     KES: {ticketIds: ['KES-2935', 'KES-2865']}
                 }
             },
             checkout: {
-                avgP1DaysToResolve: 1,
-                avgP2DaysToResolve: 0,
-                avgP3DaysToResolve: 1,
-                avgP4DaysToResolve: 0,
-                avgP5DaysToResolve: 0,
+                avgP1MinsToResolve: 1,
+                avgP2MinsToResolve: 0,
+                avgP3MinsToResolve: 1,
+                avgP4MinsToResolve: 0,
+                avgP5MinsToResolve: 0,
                 totalCount: 2,
                 projectTTRSummaries: {
                     EPOCH: {ticketIds: ['EPOCH-2833']},
@@ -177,19 +180,19 @@ describe('Quality Metrics Util', () => {
         };
         const {kes, checkout} = formatDurationData(data);
         // kes
-        expect(kes.p1).to.eql(data.kes.avgP1DaysToResolve);
-        expect(kes.p2).to.eql(data.kes.avgP2DaysToResolve);
-        expect(kes.p3).to.eql(data.kes.avgP3DaysToResolve);
-        expect(kes.p4).to.eql(data.kes.avgP4DaysToResolve);
-        expect(kes.p5).to.eql(data.kes.avgP5DaysToResolve);
+        expect(kes.p1).to.eql(data.kes.avgP1MinsToResolve);
+        expect(kes.p2).to.eql(data.kes.avgP2MinsToResolve);
+        expect(kes.p3).to.eql(data.kes.avgP3MinsToResolve);
+        expect(kes.p4).to.eql(data.kes.avgP4MinsToResolve);
+        expect(kes.p5).to.eql(data.kes.avgP5MinsToResolve);
         expect(kes.totalTickets).to.eql(data.kes.totalCount);
         expect(kes.ticketIds).to.eql(['KES-2935', 'KES-2865']);
         // checkout
-        expect(checkout.p1).to.eql(data.checkout.avgP1DaysToResolve);
-        expect(checkout.p2).to.eql(data.checkout.avgP2DaysToResolve);
-        expect(checkout.p3).to.eql(data.checkout.avgP3DaysToResolve);
-        expect(checkout.p4).to.eql(data.checkout.avgP4DaysToResolve);
-        expect(checkout.p5).to.eql(data.checkout.avgP5DaysToResolve);
+        expect(checkout.p1).to.eql(data.checkout.avgP1MinsToResolve);
+        expect(checkout.p2).to.eql(data.checkout.avgP2MinsToResolve);
+        expect(checkout.p3).to.eql(data.checkout.avgP3MinsToResolve);
+        expect(checkout.p4).to.eql(data.checkout.avgP4MinsToResolve);
+        expect(checkout.p5).to.eql(data.checkout.avgP5MinsToResolve);
         expect(checkout.totalTickets).to.eql(data.checkout.totalCount);
         expect(checkout.ticketIds).to.eql(['EPOCH-2833', 'HBILL-6593']);
     });
@@ -286,18 +289,18 @@ describe('Quality Metrics Util', () => {
         expect(row0.p1).to.eql('-');
         expect(row0.p2).to.eql('-');
         expect(row0.p3).to.eql('-');
-        expect(row0.p4.props.children).to.eql('2 days');
+        expect(row0.p4.props.children).to.eql('2m');
         expect(row0.p5).to.eql('-');
-        expect(row0.notPrioritized.props.children).to.eql('1 day');
+        expect(row0.notPrioritized.props.children).to.eql('1m');
         expect(row0.totalTickets.props.children).to.eql(3);
         // KES
         const row1 = result[1];
         expect(row1[rowKey]).to.eql('Kes');
-        expect(row1.p1.props.children).to.eql('1 day');
-        expect(row1.p2.props.children).to.eql('1 day');
+        expect(row1.p1.props.children).to.eql('1m');
+        expect(row1.p2.props.children).to.eql('1m');
         expect(row1.p3).to.eql('-');
-        expect(row1.p4.props.children).to.eql('1 day');
-        expect(row1.p5.props.children).to.eql('2 days');
+        expect(row1.p4.props.children).to.eql('1m');
+        expect(row1.p5.props.children).to.eql('2m');
         expect(row1.notPrioritized).to.eql('-');
         expect(row1.totalTickets.props.children).to.eql(5);
     });

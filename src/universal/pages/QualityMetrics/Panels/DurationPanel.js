@@ -21,7 +21,7 @@ const DurationPanel = ({title, info, tickets, portfolios, dataUrl}) => {
                 const rawData = response.portfolioTTRSummaries;
                 const handleClick = (d, portfolio, priority) => {
                     const nextModalData = processTwoDimensionalIssues(tickets, d, portfolio, portfolios, priority);
-                    nextModalData.columns = ['Portfolio', 'Key', 'Summary', 'Priority', 'Status', 'Days to Resolve', 'Opened'];
+                    nextModalData.columns = ['Portfolio', 'Key', 'Summary', 'Priority', 'Status', 'Time to Resolve', 'Opened'];
                     setModalData(nextModalData);
                     setIsModalOpen(true);
                 };

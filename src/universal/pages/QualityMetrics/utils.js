@@ -3,6 +3,7 @@ import moment from 'moment';
 import qs from 'query-string';
 import {getBrand} from '../utils';
 import {PORTFOLIOS, PRIORITY_LABELS, P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL, NOT_PRIORITIZED_LABEL} from './constants';
+import {formatDuration} from '../../components/utils/formatDate';
 import {DATE_FORMAT} from '../../constants';
 
 export const getPortfolioBrand = (selectedBrands) => {
@@ -33,7 +34,10 @@ export const formatDefect = (defect) => ({
     Status: getPropValue(defect, 'status'),
     Resolution: getPropValue(defect, 'resolution'),
     Opened: getPropValue(defect, 'openDate'),
-    'Days to Resolve': getPropValue(defect, 'daysToResolve')
+    'Days to Resolve': getPropValue(defect, 'daysToResolve'),
+    'Time to Resolve': defect.timeToResolve || defect.timeToResolve === 0
+        ? formatDuration(defect.timeToResolve, 'minutes')
+        : '-'
 });
 
 export const findAndFormatTicket = (tickets, id) => {
@@ -84,14 +88,14 @@ export const formatBarChartData = (data) => {
 
 export const formatTTRData = (data) => {
     return Object.entries(data)
-        .map(([date, {p1DaysToResolve = 0, p2DaysToResolve = 0, p3DaysToResolve = 0, p4DaysToResolve = 0, p5DaysToResolve = 0, totalTickets = 0, ticketIds = []}]) => {
+        .map(([date, {p1MinsToResolve = 0, p2MinsToResolve = 0, p3MinsToResolve = 0, p4MinsToResolve = 0, p5MinsToResolve = 0, totalTickets = 0, ticketIds = []}]) => {
             return {
                 date,
-                [P1_LABEL]: p1DaysToResolve,
-                [P2_LABEL]: p2DaysToResolve,
-                [P3_LABEL]: p3DaysToResolve,
-                [P4_LABEL]: p4DaysToResolve,
-                [P5_LABEL]: p5DaysToResolve,
+                [P1_LABEL]: p1MinsToResolve,
+                [P2_LABEL]: p2MinsToResolve,
+                [P3_LABEL]: p3MinsToResolve,
+                [P4_LABEL]: p4MinsToResolve,
+                [P5_LABEL]: p5MinsToResolve,
                 counts: totalTickets,
                 tickets: ticketIds
             };
@@ -100,20 +104,20 @@ export const formatTTRData = (data) => {
 
 export const formatDurationData = (data) => {
     return Object.entries(data).reduce((acc, [Portfolio, {
-        avgP1DaysToResolve = 0,
-        avgP2DaysToResolve = 0,
-        avgP3DaysToResolve = 0,
-        avgP4DaysToResolve = 0,
-        avgP5DaysToResolve = 0,
+        avgP1MinsToResolve = 0,
+        avgP2MinsToResolve = 0,
+        avgP3MinsToResolve = 0,
+        avgP4MinsToResolve = 0,
+        avgP5MinsToResolve = 0,
         totalCount = 0,
         projectTTRSummaries = {}
     }]) => {
         acc[Portfolio] = {
-            p1: avgP1DaysToResolve,
-            p2: avgP2DaysToResolve,
-            p3: avgP3DaysToResolve,
-            p4: avgP4DaysToResolve,
-            p5: avgP5DaysToResolve,
+            p1: avgP1MinsToResolve,
+            p2: avgP2MinsToResolve,
+            p3: avgP3MinsToResolve,
+            p4: avgP4MinsToResolve,
+            p5: avgP5MinsToResolve,
             totalTickets: totalCount,
             ticketIds: Object.values(projectTTRSummaries).reduce((all, {ticketIds}) => [...all, ...ticketIds], [])
         };
@@ -208,7 +212,7 @@ export const formatTableData = (rawData, onClickHandler, rowKey = 'Project', isD
             return '-';
         }
         const text = (isDuration && priority)
-            ? `${value} day${value === 1 ? '' : 's'}`
+            ? formatDuration(value, 'minutes')
             : value;
         const clickHandler = () => onClickHandler(rawData, key, priority);
         return (
