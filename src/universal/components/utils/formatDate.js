@@ -14,19 +14,24 @@ export function formatDurationToH(duration) {
     return Number(moment.duration(Number(duration), 'milliseconds').as('hours')).toFixed(2) || '';
 }
 
-export function formatDurationForTable(m) {
+export function formatDuration(m, unit = 'milliseconds') {
     const value = Number(m);
-    const paddedStrValue = String(value).padStart(12);
-    const duration = moment.duration(value, 'milliseconds');
+    const duration = moment.duration(value, unit);
     const dd = Math.floor(duration.asDays());
     const remainingDuration = duration.subtract(dd, 'days');
     const hh = remainingDuration.hours();
     const mm = remainingDuration.minutes();
     if (dd > 0) {
-        return `<div value=${paddedStrValue}>${dd}d ${hh}h ${mm}m</div>`;
+        return `${dd}d ${hh}h ${mm}m`;
     }
     if (hh > 0) {
-        return `<div value=${paddedStrValue}>${hh}h ${mm}m</div>`;
+        return `${hh}h ${mm}m`;
     }
-    return `<div value=${paddedStrValue}>${mm}m</div>`;
+    return `${mm}m`;
+}
+
+export function formatDurationForTable(m, unit = 'milliseconds') {
+    const value = Number(m);
+    const paddedStrValue = String(value).padStart(12);
+    return `<div value=${paddedStrValue}>${formatDuration(m, unit)}</div>`;
 }

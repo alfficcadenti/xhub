@@ -490,7 +490,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             </div>
             <LoadingContainer isLoading={isLoading} error={error} className="page-views-loading-container">
                 <div className="page-views-widget-container">
-                    {lobSelected && lobSelected.length && lobWidgets.map(renderWidget) || ''} 
+                    {lobSelected && lobSelected.length && lobWidgets.map(renderWidget) || ''}
                     {widgets && widgets.length && !lobSelected.length && widgets.map(renderWidget) || ''}
                 </div>
             </LoadingContainer>
