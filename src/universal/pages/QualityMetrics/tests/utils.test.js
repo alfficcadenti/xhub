@@ -376,7 +376,7 @@ describe('Quality Metrics Util', () => {
 
     it('getPanelDataUrl', () => {
         const portfolios = [{text: 'KES', value: 'kes'}];
-        const start = moment().subtract(180, 'days').format(DATE_FORMAT);
+        const start = moment().subtract(400, 'days').format(DATE_FORMAT);
         const end = moment().format(DATE_FORMAT);
         const brand = 'HCOM';
         const panel = 'opendefects';
