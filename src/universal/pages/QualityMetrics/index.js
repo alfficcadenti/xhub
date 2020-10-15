@@ -216,15 +216,6 @@ const QualityMetrics = ({selectedBrands}) => {
                     isLoading={isPieDataLoading}
                     error={pieDataError}
                 />
-                <PiePanel
-                    title="Open Bugs (w.r.t. Project)"
-                    info="Charting all defects with regard to project. Click pie slices for more details."
-                    tickets={tickets}
-                    dataKey="openBugsByProject"
-                    data={pieData}
-                    isLoading={isPieDataLoading}
-                    error={pieDataError}
-                />
             </LoadingContainer>
         </div>
     );
