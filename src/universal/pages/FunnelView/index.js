@@ -44,6 +44,9 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [lobWidgets, setLoBWidgets] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
+    const [isAnnotationsLoading, setIsAnnotationsIsLoading] = useState(false);
+    const [isIncidentsAnnotationsLoading, setIsIncidentsAnnotationsIsLoading] = useState(false);
+    const [annotationsError, setAnnotationsError] = useState('');
     const [pendingStart, setPendingStart] = useState(initialStart);
     const [pendingEnd, setPendingEnd] = useState(initialEnd);
     const [start, setStart] = useState(initialStart);
@@ -67,8 +70,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [incidentAnnotations, setIncidentAnnotations] = useState([]);
     const [filteredAnnotations, setFilteredAnnotations] = useState([]);
 
-    const [deploymentCategory, setDeploymentCategory] = useState(true);
-    const [incidentCategory, setIncidentCategory] = useState(true);
+    const [deploymentCategory, setDeploymentCategory] = useState(false);
+    const [incidentCategory, setIncidentCategory] = useState(false);
 
     const [incidentPrioritySuggestions, setIncidentPrioritySuggestions] = useState([]);
     const [incidentStatusSuggestions, setIncidentStatusSuggestions] = useState([]);
@@ -245,6 +248,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         };
 
         const fetchAnnotations = () => {
+            setIsAnnotationsIsLoading(true);
             setDeploymentAnnotations([]);
             const dateQuery = start && end
                 ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
@@ -264,12 +268,15 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     setDeploymentAnnotations(adjustedAnnotations);
                 })
                 .catch((err) => {
+                    setAnnotationsError(err);
                     // eslint-disable-next-line no-console
                     console.error(err);
-                });
+                })
+                .finally(() => setIsAnnotationsIsLoading(false));
         };
 
         const fetchIncidents = () => {
+            setIsIncidentsAnnotationsIsLoading(true);
             setIncidentAnnotations([]);
             const dateQuery = start && end
                 ? `?fromDate=${moment(start).utc().format()}&toDate=${moment(end).utc().format()}`
@@ -299,9 +306,11 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     }));
                 })
                 .catch((err) => {
+                    setAnnotationsError(err);
                     // eslint-disable-next-line no-console
                     console.error(err);
-                });
+                })
+                .finally(() => setIsIncidentsAnnotationsIsLoading(false));
         };
 
         if ([EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, VRBO_BRAND, HOTELS_COM_BRAND].includes(selectedBrands[0])) {
@@ -330,6 +339,15 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         filterCategories(allAnnotations);
         filterSuggestions();
     }, [deploymentAnnotations, incidentAnnotations]);
+
+    useEffect(() => {
+        if (deploymentCategory || incidentCategory) {
+            setEnableAnnotations(true);
+        }
+        if (!deploymentCategory && !incidentCategory) {
+            setEnableAnnotations(false);
+        }
+    }, [deploymentCategory, incidentCategory]);
 
     const handleDatetimeChange = ({start: startDateTimeStr, end: endDateTimeStr}, text) => {
         setPendingTimeRange(text || pendingTimeRange);
@@ -424,46 +442,41 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     >
                         {'Apply'}
                     </button>
-                    <Checkbox
-                        name="annotations-сheckbox"
-                        label="Show Annotations"
-                        checked={enableAnnotations}
-                        onChange={() => setEnableAnnotations(!enableAnnotations)}
-                        size="sm"
-                        className="annotations-сheckbox"
-                    />
-                    {!isLoading && isLoBAvailable && <Select
-                        isMulti
-                        classNamePrefix="lob-select"
-                        className="lob-select-container"
-                        options={LOB_LIST}
-                        onChange={handleLoBChange}
-                        placeholder={'Select Line of Business'}
-                    />}
                 </div>
                 {!isLoading && <>
-                    <div className="annotation-filters-wrapper">
-                        <div className="category-filters">
-                            <Checkbox
-                                name="deployment-сheckbox"
-                                label="deployments"
-                                checked={deploymentCategory}
-                                onChange={() => setDeploymentCategory(!deploymentCategory)}
-                                size="sm"
+                    <div className="dynamic-filters-wrapper">
+                        {isLoBAvailable && <Select
+                            isMulti
+                            classNamePrefix="lob-select"
+                            className="lob-select-container"
+                            options={LOB_LIST}
+                            onChange={handleLoBChange}
+                            placeholder={'Select Line of Business'}
+                        />}
+                        <LoadingContainer isLoading={isAnnotationsLoading || isIncidentsAnnotationsLoading} error={annotationsError} className="annotations-filters-container">
+                            <div className="annotations-category-filters">
+                                <h4>Annotations:</h4>
+                                <Checkbox
+                                    name="deployment-сheckbox"
+                                    label="deployments"
+                                    checked={deploymentCategory}
+                                    onChange={() => setDeploymentCategory(!deploymentCategory)}
+                                    size="sm"
+                                />
+                                <Checkbox
+                                    name="incident-сheckbox"
+                                    label="incidents"
+                                    checked={incidentCategory}
+                                    onChange={() => setIncidentCategory(!incidentCategory)}
+                                    size="sm"
+                                />
+                            </div>
+                            <UniversalSearch
+                                suggestions={suggestions}
+                                suggestionMapping={productMapping}
+                                onFilterChange={onFilterChange}
                             />
-                            <Checkbox
-                                name="incident-сheckbox"
-                                label="incidents"
-                                checked={incidentCategory}
-                                onChange={() => setIncidentCategory(!incidentCategory)}
-                                size="sm"
-                            />
-                        </div>
-                        <UniversalSearch
-                            suggestions={suggestions}
-                            suggestionMapping={productMapping}
-                            onFilterChange={onFilterChange}
-                        />
+                        </LoadingContainer>
                     </div>
                 </>}
             </div>
