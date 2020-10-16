@@ -294,7 +294,7 @@ export const formatCreatedVsResolvedData = (data) => {
 
 export const getPanelDataUrl = (portfolios, brand, panel) => {
     const baseUrl = '/v1/portfolio';
-    const start = moment().subtract(180, 'days').format(DATE_FORMAT);
+    const start = moment().subtract(400, 'days').format(DATE_FORMAT);
     const end = moment().format(DATE_FORMAT);
     const dateQuery = `fromDate=${start}&toDate=${end}`;
     const brandQuery = `brand=${brand}`;

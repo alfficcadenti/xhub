@@ -17,7 +17,6 @@ import {
     INCIDENT_ANNOTATION_CATEGORY,
     LOB_LIST,
     PAGE_VIEWS_DATE_FORMAT,
-    PAGES_LIST
 } from '../../constants';
 import {
     checkResponse,
@@ -30,14 +29,11 @@ import {
     filterNewSelectedItems,
     bucketTime
 } from '../utils';
-import {makePageViewLoBObjects} from './pageViewsUtils';
+import {makePageViewLoBObjects, makePageViewObjects} from './pageViewsUtils';
 import './styles.less';
 import {adjustTicketProperties} from '../TicketTrends/incidentsHelper';
 import UniversalSearch from '../../components/UniversalSearch';
 import {Checkbox} from '@homeaway/react-form-components';
-
-const TIMEZONE_OFFSET = (new Date()).getTimezoneOffset();
-const TIMEZONE_ABBR = moment.tz.zone(moment.tz.guess()).abbr(TIMEZONE_OFFSET);
 
 const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const initialStart = moment().subtract(6, 'hours').startOf('minute');
@@ -207,25 +203,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                         setError('No data found. Try refreshing the page or select another brand.');
                         return;
                     }
-                    const widgetObjects = PAGES_LIST.map(({name, label}) => {
-                        const aggregatedData = [];
-                        fetchedPageviews.forEach(({time, pageViewsData}) => {
-                            const currentPageViews = pageViewsData.find((item) => item.page === name);
-                            if (currentPageViews) {
-                                const momentTime = moment(time);
-                                if (momentTime.isBetween(start, end, 'minutes', '[]')) {
-                                    aggregatedData.push({
-                                        label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
-                                        time: momentTime.format(PAGE_VIEWS_DATE_FORMAT),
-                                        momentTime,
-                                        value: currentPageViews.views
-                                    });
-                                }
-                            }
-                        });
-                        return {pageName: label, aggregatedData, pageBrand};
-                    });
 
+                    const widgetObjects = makePageViewObjects(fetchedPageviews, start, end, pageBrand);
                     const pageViews = widgetObjects
                         .flatMap((item) => item.aggregatedData)
                         .map((item) => item.value);

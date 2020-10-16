@@ -32,3 +32,24 @@ export const makePageViewLoBObjects = (data = [], start, end, pageBrand = '') =>
         return {pageName: label, aggregatedData, pageBrand, lob: true};
     });
 };
+
+export const makePageViewObjects = (data = [], start, end, pageBrand = '') => {
+    return PAGES_LIST.map(({name, label}) => {
+        const aggregatedData = [];
+        data.forEach(({time, pageViewsData}) => {
+            const currentPageViews = pageViewsData.find((item) => item.page === name);
+            if (currentPageViews) {
+                const momentTime = moment(time);
+                if (momentTime.isBetween(start, end, 'minutes', '[]')) {
+                    aggregatedData.push({
+                        label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
+                        time: momentTime.format(PAGE_VIEWS_DATE_FORMAT),
+                        momentTime: momentTime.format(),
+                        value: currentPageViews.views
+                    });
+                }
+            }
+        });
+        return {pageName: label, aggregatedData, pageBrand};
+    });
+};
