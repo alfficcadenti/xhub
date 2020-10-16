@@ -42,6 +42,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [pendingTimeRange, setPendingTimeRange] = useState(initialTimeRange);
     const [isFormDisabled, setIsFormDisabled] = useState(false);
     const [isSupportedBrand, setIsSupportedBrand] = useState(false);
+    const [minChartValue, setMinChartValue] = useState(0);
 
     useQueryParamChange(selectedBrands[0], onBrandChange);
     useSelectedBrand(selectedBrands[0], onBrandChange, prevSelectedBrand);
@@ -159,7 +160,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     fetchedSuccessRates[i].forEach(({time, successRatePercentagesData}) => {
                         const currentSuccessRates = successRatePercentagesData.find((item) => mapBrandNames(item.brand) === selectedBrand);
 
-                        if (currentSuccessRates) {
+                        if (currentSuccessRates && currentSuccessRates.rate) {
                             const momentTime = moment(time);
 
                             if (momentTime.isBetween(start, end, 'minutes', '[]')) {
@@ -167,7 +168,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                                     label: `${momentTime.format('YYYY-MM-DD HH:mm')} ${TIMEZONE_ABBR}`,
                                     time: momentTime.format('YYYY-MM-DD HH:mm'),
                                     momentTime,
-                                    value: (currentSuccessRates.rate || 0).toFixed(2)
+                                    value: parseFloat((currentSuccessRates.rate || 0).toFixed(2))
                                 });
                             }
                         }
@@ -176,6 +177,12 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     return {pageName, aggregatedData, pageBrand};
                 });
 
+                const successRates = widgetObjects
+                    .flatMap((item) => item.aggregatedData)
+                    .map((item) => item.value);
+                const minValue = Math.min(...successRates);
+
+                setMinChartValue(minValue);
                 setWidgets(widgetObjects);
             })
             .catch((err) => {
@@ -247,7 +254,8 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             refAreaLeft={refAreaLeft}
             refAreaRight={refAreaRight}
             helpText={shouldShowTooltip(pageName, pageBrand)}
-            formatYAxis={(value) => `${value}%`}
+            formatYAxis={(value) => `${value.toFixed()}%`}
+            minChartValue={minChartValue}
         />
     );
 

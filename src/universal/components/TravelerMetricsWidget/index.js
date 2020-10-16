@@ -55,7 +55,8 @@ const TravelerMetricsWidget = ({
     helpText,
     annotations = [],
     formatYAxis = (value) => value,
-    selectedLoB = []
+    selectedLoB = [],
+    minChartValue
 }) => {
     const brandLabel = brand.replace(/\s/g, '');
     const fill = `url(#${brandLabel})`;
@@ -97,7 +98,7 @@ const TravelerMetricsWidget = ({
                                 yAxisId={yAxisId}
                                 tick={{fontSize: 10}}
                                 tickFormatter={formatYAxis}
-                                domain={['auto', 'auto']}
+                                domain={[minChartValue, 100]}
                             />
                             <CartesianGrid strokeDasharray="3 3" />
                             <Tooltip content={<CustomTooltip />} />

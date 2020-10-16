@@ -58,6 +58,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [isFormDisabled, setIsFormDisabled] = useState(false);
     const [isLoBAvailable, setIsLoBAvailable] = useState(true);
     const [lobSelected, setLobSelected] = useState([]);
+    const [minChartValue, setMinChartValue] = useState(0);
 
     // annotations state
     const [enableAnnotations, setEnableAnnotations] = useState(false);
@@ -224,6 +225,13 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                         });
                         return {pageName: label, aggregatedData, pageBrand};
                     });
+
+                    const pageViews = widgetObjects
+                        .flatMap((item) => item.aggregatedData)
+                        .map((item) => item.value);
+                    const minValue = Math.min(...pageViews);
+
+                    setMinChartValue(minValue);
                     setWidgets(widgetObjects);
                 })
                 .catch((err) => {
@@ -390,6 +398,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             refAreaRight={refAreaRight}
             annotations={enableAnnotations ? filteredAnnotations : []}
             selectedLoB={lobSelected}
+            minChartValue={minChartValue}
         />
     );
 
