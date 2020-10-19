@@ -13,13 +13,10 @@ import {
     HOTELS_COM_BRAND,
     EXPEDIA_BRAND
 } from '../../constants';
-import {mapBrandNames, checkResponse, getBrand} from '../utils';
+import {mapBrandNames, checkResponse, getBrand, makeSuccessRatesObjects} from '../utils';
 import HelpText from '../../components/HelpText/HelpText';
 import './styles.less';
 
-
-const TIMEZONE_OFFSET = (new Date()).getTimezoneOffset();
-const TIMEZONE_ABBR = moment.tz.zone(moment.tz.guess()).abbr(TIMEZONE_OFFSET);
 
 const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const initialStart = moment().subtract(6, 'hours').startOf('minute');
@@ -42,7 +39,6 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [pendingTimeRange, setPendingTimeRange] = useState(initialTimeRange);
     const [isFormDisabled, setIsFormDisabled] = useState(false);
     const [isSupportedBrand, setIsSupportedBrand] = useState(false);
-    const [minChartValue, setMinChartValue] = useState(0);
 
     useQueryParamChange(selectedBrands[0], onBrandChange);
     useSelectedBrand(selectedBrands[0], onBrandChange, prevSelectedBrand);
@@ -69,7 +65,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
     const rttRef = useRef();
 
-    const PAGES_LIST = [
+    const SUCCESS_RATES_PAGES_LIST = [
         'Home To Search Page (SERP)',
         'Search (SERP) To Property Page (PDP)',
         'Property (PDP) To Checkout Page (CKO)',
@@ -101,12 +97,12 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         Promise.all(metricNames.map((metricName) => fetch(`/user-events-api/v1/funnelView?metricName=${metricName}${dateQuery}`)))
             .then((responses) => Promise.all(responses.map(checkResponse)))
             .then((fetchedSuccessRates) => {
-                const nextRealTimeTotals = PAGES_LIST.reduce((acc, label) => {
+                const nextRealTimeTotals = SUCCESS_RATES_PAGES_LIST.reduce((acc, label) => {
                     acc[label] = 0;
                     return acc;
                 }, {});
 
-                PAGES_LIST.forEach((label, i) => {
+                SUCCESS_RATES_PAGES_LIST.forEach((label, i) => {
                     const currentSuccessRatesData = fetchedSuccessRates[i];
 
                     for (let counter = 1; counter <= currentSuccessRatesData.length; counter++) {
@@ -154,35 +150,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     return;
                 }
 
-                const widgetObjects = PAGES_LIST.map((pageName, i) => {
-                    const aggregatedData = [];
-
-                    fetchedSuccessRates[i].forEach(({time, successRatePercentagesData}) => {
-                        const currentSuccessRates = successRatePercentagesData.find((item) => mapBrandNames(item.brand) === selectedBrand);
-
-                        if (currentSuccessRates && currentSuccessRates.rate) {
-                            const momentTime = moment(time);
-
-                            if (momentTime.isBetween(start, end, 'minutes', '[]')) {
-                                aggregatedData.push({
-                                    label: `${momentTime.format('YYYY-MM-DD HH:mm')} ${TIMEZONE_ABBR}`,
-                                    time: momentTime.format('YYYY-MM-DD HH:mm'),
-                                    momentTime,
-                                    value: parseFloat((currentSuccessRates.rate || 0).toFixed(2))
-                                });
-                            }
-                        }
-                    });
-
-                    return {pageName, aggregatedData, pageBrand};
-                });
-
-                const successRates = widgetObjects
-                    .flatMap((item) => item.aggregatedData)
-                    .map((item) => item.value);
-                const minValue = Math.min(...successRates);
-
-                setMinChartValue(minValue);
+                const widgetObjects = makeSuccessRatesObjects(fetchedSuccessRates, start, end, pageBrand, selectedBrand);
                 setWidgets(widgetObjects);
             })
             .catch((err) => {
@@ -237,9 +205,9 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         'Last 24 hours'
     ].includes(timeRange) ? 20 : 5;
 
-    const shouldShowTooltip = (pageName, pageBrand) => pageBrand === EXPEDIA_BRAND && pageName === PAGES_LIST[PAGES_LIST.length - 1];
+    const shouldShowTooltip = (pageName, pageBrand) => pageBrand === EXPEDIA_BRAND && pageName === SUCCESS_RATES_PAGES_LIST[SUCCESS_RATES_PAGES_LIST.length - 1];
 
-    const renderWidget = ({pageName, aggregatedData, pageBrand}) => (
+    const renderWidget = ({pageName, aggregatedData, pageBrand, minValue}) => (
         <TravelerMetricsWidget
             title={pageName}
             data={aggregatedData}
@@ -255,7 +223,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             refAreaRight={refAreaRight}
             helpText={shouldShowTooltip(pageName, pageBrand)}
             formatYAxis={(value) => `${value.toFixed()}%`}
-            minChartValue={minChartValue}
+            minChartValue={minValue}
         />
     );
 

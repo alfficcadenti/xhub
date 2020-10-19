@@ -18,10 +18,20 @@ import {
     addSuggestionType,
     getAnnotationsFilter,
     filterNewSelectedItems,
-    bucketTime
+    bucketTime,
+    makeSuccessRatesObjects
 } from './utils';
-import {EG_BRAND, VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../constants';
+import {
+    EG_BRAND,
+    VRBO_BRAND,
+    HOTELS_COM_BRAND,
+    EXPEDIA_BRAND,
+    EGENCIA_BRAND,
+    EXPEDIA_PARTNER_SERVICES_BRAND,
+    SUCCESS_RATES_PAGES_LIST
+} from '../constants';
 import moment from 'moment';
+import {successRatesMockData} from './SuccessRates/mockData';
 
 describe('divisionToBrand', () => {
     it('returns Egencia when the input value is EGENCIA - CONSOLIDATED', () => {
@@ -505,5 +515,30 @@ describe('bucketTime()', () => {
         const endDate = moment('2020-10-01 13:27:04');
         const result = bucketTime(date, PAGE_VIEWS_DATE_FORMAT, startDate, endDate);
         expect(result).to.be.eql('2020-10-02 00:00');
+    });
+});
+
+describe('makeSuccessRatesObjects()', () => {
+    const start = moment('2020-08-10');
+    const end = moment('2020-08-11');
+    it('creates an array with one element for each page view in PAGES_LIST', () => {
+        expect(makeSuccessRatesObjects([[], [], [], []], start, end, EXPEDIA_BRAND, EXPEDIA_BRAND)).to.have.length(SUCCESS_RATES_PAGES_LIST.length);
+    });
+
+    it('returns array with objects if no inputs are passed', () => {
+        const emptyPageViewsMockResults = [{'aggregatedData': [], 'minValue': 0, 'pageBrand': '', 'pageName': 'Home To Search Page (SERP)'}, {'aggregatedData': [], 'minValue': 0, 'pageBrand': '', 'pageName': 'Search (SERP) To Property Page (PDP)'}, {'aggregatedData': [], 'minValue': 0, 'pageBrand': '', 'pageName': 'Property (PDP) To Checkout Page (CKO)'}, {'aggregatedData': [], 'minValue': 0, 'pageBrand': '', 'pageName': 'Checkout (CKO) To Checkout Confirmation Page'}];
+
+        expect(makeSuccessRatesObjects()).to.eql(emptyPageViewsMockResults);
+    });
+
+    it('creates an array with each object and the expected format', () => {
+        const pageViewsMockResults = [
+            {'aggregatedData': [], 'minValue': 57.53, 'pageBrand': 'Expedia', 'pageName': 'Home To Search Page (SERP)'},
+            {'aggregatedData': [], 'minValue': 57.53, 'pageBrand': 'Expedia', 'pageName': 'Search (SERP) To Property Page (PDP)'},
+            {'aggregatedData': [], 'minValue': 57.53, 'pageBrand': 'Expedia', 'pageName': 'Property (PDP) To Checkout Page (CKO)'},
+            {'aggregatedData': [], 'minValue': 57.53, 'pageBrand': 'Expedia', 'pageName': 'Checkout (CKO) To Checkout Confirmation Page'}
+        ];
+
+        expect(makeSuccessRatesObjects(successRatesMockData, start, end, EXPEDIA_BRAND, EXPEDIA_BRAND)).to.eql(pageViewsMockResults);
     });
 });

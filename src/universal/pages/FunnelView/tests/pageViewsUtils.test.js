@@ -27,7 +27,7 @@ describe('makePageViewLoBObjects component testing', () => {
     });
 });
 
-describe('makePageViewObjects component testing', () => {
+describe('makePageViewObjects()', () => {
     const start = moment('2020-08-10');
     const end = moment('2020-08-11');
     it('creates an array with one element for each page view in PAGES_LIST', () => {

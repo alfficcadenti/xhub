@@ -54,7 +54,6 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [isFormDisabled, setIsFormDisabled] = useState(false);
     const [isLoBAvailable, setIsLoBAvailable] = useState(true);
     const [lobSelected, setLobSelected] = useState([]);
-    const [minChartValue, setMinChartValue] = useState(0);
 
     // annotations state
     const [enableAnnotations, setEnableAnnotations] = useState(false);
@@ -205,12 +204,6 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     }
 
                     const widgetObjects = makePageViewObjects(fetchedPageviews, start, end, pageBrand);
-                    const pageViews = widgetObjects
-                        .flatMap((item) => item.aggregatedData)
-                        .map((item) => item.value);
-                    const minValue = Math.min(...pageViews);
-
-                    setMinChartValue(minValue);
                     setWidgets(widgetObjects);
                 })
                 .catch((err) => {
@@ -361,7 +354,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         'Last 24 hours'
     ].includes(timeRange) ? 20 : 5;
 
-    const renderWidget = ({pageName, aggregatedData, pageBrand}) => (
+    const renderWidget = ({pageName, aggregatedData, pageBrand, minValue}) => (
         <TravelerMetricsWidget
             title={pageName}
             data={aggregatedData}
@@ -377,7 +370,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             refAreaRight={refAreaRight}
             annotations={enableAnnotations ? filteredAnnotations : []}
             selectedLoB={lobSelected}
-            minChartValue={minChartValue}
+            minChartValue={minValue}
         />
     );
 
