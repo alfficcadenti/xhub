@@ -1,3 +1,6 @@
+import moment from 'moment';
+import 'moment-timezone';
+
 export const RC_PORTFOLIOS = 'All RootCause Portfolios';
 export const RC_PORTFOLIO_GROUPS = 'All RootCause Portfolio Groups';
 export const IMPACTED_PORTFOLIOS = 'All Impacted Portfolios';
@@ -49,6 +52,16 @@ export const PAGES_LIST = [
     {name: 'bookingform', label: 'Booking Form'},
     {name: 'bookingconfirmation', label: 'Booking Confirmation'},
 ];
+
+export const SUCCESS_RATES_PAGES_LIST = [
+    'Home To Search Page (SERP)',
+    'Search (SERP) To Property Page (PDP)',
+    'Property (PDP) To Checkout Page (CKO)',
+    'Checkout (CKO) To Checkout Confirmation Page'
+];
+
+const TIMEZONE_OFFSET = (new Date()).getTimezoneOffset();
+export const TIMEZONE_ABBR = moment.tz.zone(moment.tz.guess()).abbr(TIMEZONE_OFFSET);
 
 export const BRANDS = [
     {

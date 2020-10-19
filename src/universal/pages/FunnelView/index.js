@@ -205,6 +205,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                         setError('No data found. Try refreshing the page or select another brand.');
                         return;
                     }
+
                     const widgetObjects = makePageViewObjects(fetchedPageviews, start, end, pageBrand);
                     setWidgets(widgetObjects);
                 })
@@ -371,7 +372,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         'Last 24 hours'
     ].includes(timeRange) ? 20 : 5;
 
-    const renderWidget = ({pageName, aggregatedData, pageBrand}) => (
+    const renderWidget = ({pageName, aggregatedData, pageBrand, minValue}) => (
         <TravelerMetricsWidget
             title={pageName}
             data={aggregatedData}
@@ -387,6 +388,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             refAreaRight={refAreaRight}
             annotations={enableAnnotations ? filteredAnnotations : []}
             selectedLoB={lobSelected}
+            minChartValue={minValue}
         />
     );
 

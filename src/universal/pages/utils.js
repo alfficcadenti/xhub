@@ -5,7 +5,10 @@ import {
     EXPEDIA_BRAND,
     EXPEDIA_PARTNER_SERVICES_BRAND,
     HOTELS_COM_BRAND,
-    VRBO_BRAND
+    PAGE_VIEWS_DATE_FORMAT,
+    VRBO_BRAND,
+    TIMEZONE_ABBR,
+    SUCCESS_RATES_PAGES_LIST
 } from '../constants';
 import ALL_PAGES from './index';
 import moment from 'moment';
@@ -291,4 +294,39 @@ export const bucketTime = (date, format, intervalStartDate, intervalEndDate) => 
         return localDate.startOf('hour').format(format);
     }
     return localDate.format(format);
+};
+
+export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pageBrand = '', selectedBrand = '') => {
+    let minValue;
+
+    return SUCCESS_RATES_PAGES_LIST.map((pageName, i) => {
+        const aggregatedData = [];
+
+        const tempMinValue = data[i].reduce((prev, {time, successRatePercentagesData}) => {
+            const currentSuccessRates = successRatePercentagesData.find((item) => mapBrandNames(item.brand) === selectedBrand);
+
+            if (currentSuccessRates && currentSuccessRates.rate) {
+                const momentTime = moment(time);
+
+                if (momentTime.isBetween(start, end, 'minutes', '[]')) {
+                    aggregatedData.push({
+                        label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
+                        time: momentTime.format(PAGE_VIEWS_DATE_FORMAT),
+                        momentTime,
+                        value: parseFloat((currentSuccessRates.rate || 0).toFixed(2))
+                    });
+                }
+            }
+
+            return Math.min(prev, currentSuccessRates.rate ? parseFloat((currentSuccessRates.rate || 0).toFixed(2)) : prev);
+        }, (data[0] && data[0][0]) ? data[0][0].successRatePercentagesData.find((item) => mapBrandNames(item.brand) === selectedBrand).rate : 0);
+
+        if (i === 0) {
+            minValue = tempMinValue;
+        } else {
+            minValue = tempMinValue < minValue ? tempMinValue : minValue;
+        }
+
+        return {pageName, aggregatedData, pageBrand};
+    }).map((item) => ({...item, minValue}));
 };

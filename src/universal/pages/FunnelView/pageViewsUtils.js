@@ -1,9 +1,6 @@
-import {PAGE_VIEWS_DATE_FORMAT, PAGES_LIST, LOB_LIST} from '../../constants';
+import {PAGE_VIEWS_DATE_FORMAT, PAGES_LIST, LOB_LIST, TIMEZONE_ABBR} from '../../constants';
 import moment from 'moment';
 import 'moment-timezone';
-
-const TIMEZONE_OFFSET = (new Date()).getTimezoneOffset();
-const TIMEZONE_ABBR = moment.tz.zone(moment.tz.guess()).abbr(TIMEZONE_OFFSET);
 
 export const makePageViewLoBObjects = (data = [], start, end, pageBrand = '') => {
     return PAGES_LIST.map(({name, label}) => {
@@ -34,9 +31,12 @@ export const makePageViewLoBObjects = (data = [], start, end, pageBrand = '') =>
 };
 
 export const makePageViewObjects = (data = [], start, end, pageBrand = '') => {
-    return PAGES_LIST.map(({name, label}) => {
+    let minValue;
+
+    return PAGES_LIST.map(({name, label}, i) => {
         const aggregatedData = [];
-        data.forEach(({time, pageViewsData}) => {
+
+        const tempMinValue = data.reduce((prev, {time, pageViewsData}) => {
             const currentPageViews = pageViewsData.find((item) => item.page === name);
             if (currentPageViews) {
                 const momentTime = moment(time);
@@ -49,7 +49,16 @@ export const makePageViewObjects = (data = [], start, end, pageBrand = '') => {
                     });
                 }
             }
-        });
+
+            return Math.min(prev, currentPageViews.views);
+        }, data[0] ? data[0].pageViewsData.find((item) => item.page === name).views : 0);
+
+        if (i === 0) {
+            minValue = tempMinValue;
+        } else {
+            minValue = tempMinValue < minValue ? tempMinValue : minValue;
+        }
+
         return {pageName: label, aggregatedData, pageBrand};
-    });
+    }).map((item) => ({...item, minValue}));
 };
