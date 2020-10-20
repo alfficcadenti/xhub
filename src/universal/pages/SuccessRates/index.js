@@ -224,6 +224,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             helpText={shouldShowTooltip(pageName, pageBrand)}
             formatYAxis={(value) => `${value.toFixed()}%`}
             minChartValue={minValue}
+            maxChartValue={100}
         />
     );
 

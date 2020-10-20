@@ -205,7 +205,6 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                         setError('No data found. Try refreshing the page or select another brand.');
                         return;
                     }
-
                     const widgetObjects = makePageViewObjects(fetchedPageviews, start, end, pageBrand);
                     setWidgets(widgetObjects);
                 })

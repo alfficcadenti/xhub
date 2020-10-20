@@ -56,7 +56,10 @@ const TravelerMetricsWidget = ({
     annotations = [],
     formatYAxis = (value) => value,
     selectedLoB = [],
-    minChartValue
+    minChartValue = 'auto',
+    maxChartValue = 'auto',
+    ResponsiveContainerWidth = '100%',
+    ResponsiveContainerHeight = '80%',
 }) => {
     const brandLabel = brand.replace(/\s/g, '');
     const fill = `url(#${brandLabel})`;
@@ -67,7 +70,7 @@ const TravelerMetricsWidget = ({
             {renderHeader(title, helpText)}
             {
                 data.length ?
-                    <ResponsiveContainer width="100%" height="80%">
+                    <ResponsiveContainer width={ResponsiveContainerWidth} height={ResponsiveContainerHeight}>
                         <AreaChart
                             width={100}
                             height={100}
@@ -98,7 +101,7 @@ const TravelerMetricsWidget = ({
                                 yAxisId={yAxisId}
                                 tick={{fontSize: 10}}
                                 tickFormatter={formatYAxis}
-                                domain={[minChartValue, 100]}
+                                domain={[minChartValue, maxChartValue]}
                             />
                             <CartesianGrid strokeDasharray="3 3" />
                             <Tooltip content={<CustomTooltip />} />
