@@ -50,7 +50,7 @@ export const makePageViewObjects = (data = [], start, end, pageBrand = '') => {
                 }
             }
 
-            return Math.min(prev, currentPageViews.views);
+            return Math.min(prev, currentPageViews ? currentPageViews.views : prev);
         }, data[0] ? data[0].pageViewsData.find((item) => item.page === name).views : 0);
 
         if (i === 0) {
