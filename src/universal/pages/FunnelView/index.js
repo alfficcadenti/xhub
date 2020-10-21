@@ -47,6 +47,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [isAnnotationsLoading, setIsAnnotationsIsLoading] = useState(false);
     const [isIncidentsAnnotationsLoading, setIsIncidentsAnnotationsIsLoading] = useState(false);
     const [annotationsError, setAnnotationsError] = useState('');
+    const [incidentAnnotationsError, setIncidentAnnotationsError] = useState('');
     const [pendingStart, setPendingStart] = useState(initialStart);
     const [pendingEnd, setPendingEnd] = useState(initialEnd);
     const [start, setStart] = useState(initialStart);
@@ -268,7 +269,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     setDeploymentAnnotations(adjustedAnnotations);
                 })
                 .catch((err) => {
-                    setAnnotationsError(err);
+                    setAnnotationsError('An unexpected error has occurred loading the annotations. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.');
                     // eslint-disable-next-line no-console
                     console.error(err);
                 })
@@ -306,7 +307,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     }));
                 })
                 .catch((err) => {
-                    setAnnotationsError(err);
+                    setIncidentAnnotationsError('An unexpected error has occurred loading the incidents. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.');
                     // eslint-disable-next-line no-console
                     console.error(err);
                 })
@@ -454,7 +455,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                             onChange={handleLoBChange}
                             placeholder={'Select Line of Business'}
                         />}
-                        <LoadingContainer isLoading={isAnnotationsLoading || isIncidentsAnnotationsLoading} error={annotationsError} className="annotations-filters-container">
+                        <LoadingContainer isLoading={isAnnotationsLoading || isIncidentsAnnotationsLoading} error={annotationsError || incidentAnnotationsError} className="annotations-filters-container">
                             <div className="annotations-category-filters">
                                 <h4>Annotations:</h4>
                                 <Checkbox
