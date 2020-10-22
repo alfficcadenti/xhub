@@ -4,6 +4,7 @@ import {Route, Switch} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Header from '../Header';
 import Feedback from '../Feedback';
+import ErrorBoundary from '../ErrorBoundary'
 import PAGES from '../../pages';
 import {EG_BRAND, BRANDS} from '../../constants';
 import {usePrevious} from '../../pages/hooks';
@@ -52,12 +53,14 @@ function App() {
     return (
         <Fragment>
             <Header selectedBrands={selectedBrands} onBrandChange={handleBrandChange} brands={validBrands} />
-            <Feedback />
-            <div className="main-container">
-                <Switch>
-                    {PAGES.map((p) => renderRoute(p, selectedBrands, handleBrandChange, prevSelectedBrand))}
-                </Switch>
-            </div>
+            <ErrorBoundary>
+                <Feedback />
+                <div className="main-container">
+                    <Switch>
+                        {PAGES.map((p) => renderRoute(p, selectedBrands, handleBrandChange, prevSelectedBrand))}
+                    </Switch>
+                </div>
+            </ErrorBoundary>
         </Fragment>
     );
 }
