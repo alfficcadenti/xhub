@@ -7,9 +7,10 @@ import './styles.less';
 class LoadingContainer extends React.PureComponent {
     render() {
         const {isLoading, error, children, id, className} = this.props;
+        const errorMessage = typeof error === 'string' ? error : 'Error';
         return (<div className={`loading-container ${className}`} id= {id}>
             {isLoading && !error && <LoadingOverlay />}
-            {error ? <Alert className="loading-alert" msg={error} /> : !isLoading && children}
+            {error ? <Alert className="loading-alert" msg={errorMessage} /> : !isLoading && children}
         </div>);
     }
 }
