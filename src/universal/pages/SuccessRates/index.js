@@ -39,6 +39,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [pendingTimeRange, setPendingTimeRange] = useState(initialTimeRange);
     const [isFormDisabled, setIsFormDisabled] = useState(false);
     const [isSupportedBrand, setIsSupportedBrand] = useState(false);
+    const [isZoomedIn, setIsZoomedIn] = useState(false);
 
     useQueryParamChange(selectedBrands[0], onBrandChange);
     useSelectedBrand(selectedBrands[0], onBrandChange, prevSelectedBrand);
@@ -60,7 +61,8 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         setStart,
         setEnd,
         setIsDirtyForm,
-        pendingTimeRange
+        pendingTimeRange,
+        setIsZoomedIn
     );
 
     const rttRef = useRef();
@@ -176,10 +178,14 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             setIsFormDisabled(false);
             fetchRealTimeData(selectedBrands);
             rttRef.current = setInterval(fetchRealTimeData.bind(null, selectedBrands), 60000); // refresh every minute
-            fetchSuccessRatesData(selectedBrands);
+
+            if (!isZoomedIn) {
+                fetchSuccessRatesData(selectedBrands);
+            }
         }
         return function cleanup() {
             clearInterval(rttRef.current);
+            setIsZoomedIn(false);
         };
     }, [selectedBrands, start, end]);
 

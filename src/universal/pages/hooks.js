@@ -62,7 +62,8 @@ export const useZoomAndSynced = (
     setStart,
     setEnd,
     setIsDirtyForm,
-    pendingTimeRange
+    pendingTimeRange,
+    setIsZoomedIn
 ) => {
     const [refAreaLeft, setRefAreaLeft] = useState('');
     const [refAreaRight, setRefAreaRight] = useState('');
@@ -88,6 +89,10 @@ export const useZoomAndSynced = (
         const nextWidgets = widgets.map((w) => {
             const nextWidget = w;
             nextWidget.aggregatedData = w.aggregatedData.slice(fromIdx, toIdx);
+
+            nextWidget.minValue = nextWidget.aggregatedData.reduce((prev, current) =>
+                Math.min(prev, current.value), nextWidget.aggregatedData[0].value);
+
             return nextWidget;
         });
         setRefAreaLeft('');
@@ -101,6 +106,7 @@ export const useZoomAndSynced = (
         setStart(moment(nextRefAreaLeft));
         setEnd(moment(nextRefAreaRight));
         setIsDirtyForm(false);
+        setIsZoomedIn(true);
     };
 
     const handleMouseDown = (e) => setRefAreaLeft(e.activeLabel);
