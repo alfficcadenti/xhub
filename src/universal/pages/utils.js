@@ -304,6 +304,7 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
 
         const tempMinValue = data[i].reduce((prev, {time, successRatePercentagesData}) => {
             const currentSuccessRates = successRatePercentagesData.find((item) => mapBrandNames(item.brand) === selectedBrand);
+            let localMin = prev;
 
             if (currentSuccessRates && currentSuccessRates.rate) {
                 const momentTime = moment(time);
@@ -316,9 +317,11 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
                         value: parseFloat((currentSuccessRates.rate || 0).toFixed(2))
                     });
                 }
+
+                localMin = Math.min(localMin, parseFloat((currentSuccessRates.rate || 0).toFixed(2)));
             }
 
-            return Math.min(prev, currentSuccessRates.rate ? parseFloat((currentSuccessRates.rate || 0).toFixed(2)) : prev);
+            return localMin;
         }, (data[0] && data[0][0]) ? data[0][0].successRatePercentagesData.find((item) => mapBrandNames(item.brand) === selectedBrand).rate : 0);
 
         if (i === 0) {

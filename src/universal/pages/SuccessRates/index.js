@@ -185,6 +185,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         }
         return function cleanup() {
             clearInterval(rttRef.current);
+            setIsZoomedIn(false);
         };
     }, [selectedBrands, start, end]);
 
