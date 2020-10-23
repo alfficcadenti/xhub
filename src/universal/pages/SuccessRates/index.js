@@ -1,27 +1,37 @@
+/* eslint-disable complexity */
 import React, {useEffect, useRef, useState} from 'react';
+import {useHistory, useLocation} from 'react-router-dom';
 import moment from 'moment';
 import 'moment-timezone';
+import Select from 'react-select';
 import TravelerMetricsWidget from '../../components/TravelerMetricsWidget';
 import LoadingContainer from '../../components/LoadingContainer';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import RealTimeSummaryPanel from '../../components/RealTimeSummaryPanel';
 import {useQueryParamChange, useSelectedBrand, useZoomAndSynced} from '../hooks';
 import {
+    LOB_LIST,
     EG_BRAND,
     EGENCIA_BRAND,
     EXPEDIA_PARTNER_SERVICES_BRAND,
-    HOTELS_COM_BRAND,
-    EXPEDIA_BRAND
+    HOTELS_COM_BRAND
 } from '../../constants';
 import {mapBrandNames, checkResponse, getBrand, makeSuccessRatesObjects} from '../utils';
 import HelpText from '../../components/HelpText/HelpText';
+import {SUCCESS_RATES_PAGES_LIST, METRIC_NAMES} from './constants';
+import {
+    getQueryParams,
+    getPresets,
+    getWidgetXAxisTickGap,
+    shouldShowTooltip
+} from './utils';
 import './styles.less';
 
 
 const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
-    const initialStart = moment().subtract(6, 'hours').startOf('minute');
-    const initialEnd = moment().endOf('minute');
-    const initialTimeRange = 'Last 6 hours';
+    const history = useHistory();
+    const {search, pathname} = useLocation();
+    const {initialStart, initialEnd, initialTimeRange, initialLobs} = getQueryParams(search);
 
     const [realTimeTotals, setRealTimeTotals] = useState({});
     const [isRttLoading, setIsRttLoading] = useState(true);
@@ -34,6 +44,8 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [pendingEnd, setPendingEnd] = useState(initialEnd);
     const [start, setStart] = useState(initialStart);
     const [end, setEnd] = useState(initialEnd);
+    const [pendingLobs, setPendingLobs] = useState(initialLobs);
+    const [selectedLobs, setSelectedLobs] = useState(initialLobs);
     const [isDirtyForm, setIsDirtyForm] = useState(false);
     const [currentTimeRange, setCurrentTimeRange] = useState(initialTimeRange);
     const [pendingTimeRange, setPendingTimeRange] = useState(initialTimeRange);
@@ -67,27 +79,6 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
     const rttRef = useRef();
 
-    const SUCCESS_RATES_PAGES_LIST = [
-        'Home To Search Page (SERP)',
-        'Search (SERP) To Property Page (PDP)',
-        'Property (PDP) To Checkout Page (CKO)',
-        'Checkout (CKO) To Checkout Confirmation Page'
-    ];
-    const metricNames = ['SearchSuccessRate', 'SERPSuccessRate', 'PDPSuccessRate', 'checkoutSuccessRate'];
-
-    const getNowDate = () => moment().endOf('minute').toDate();
-    const getLastDate = (value, unit) => moment().subtract(value, unit).startOf('minute').toDate();
-    const getValue = (value, unit) => ({start: getLastDate(value, unit), end: getNowDate()});
-    const getPresets = () => [
-        {text: 'Last 15 minutes', value: getValue(15, 'minutes')},
-        {text: 'Last 30 minutes', value: getValue(30, 'minutes')},
-        {text: 'Last 1 hour', value: getValue(1, 'hour')},
-        {text: 'Last 3 hours', value: getValue(3, 'hours')},
-        {text: 'Last 6 hours', value: getValue(6, 'hours')},
-        {text: 'Last 12 hours', value: getValue(12, 'hours')},
-        {text: 'Last 24 hours', value: getValue(24, 'hours')}
-    ];
-
     const fetchRealTimeData = ([selectedBrand]) => {
         setIsRttLoading(true);
         setRttError('');
@@ -96,7 +87,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         const rttEnd = moment(now).subtract(1, 'minute').startOf('minute');
         const dateQuery = `&startDate=${rttStart.utc().format()}&endDate=${rttEnd.utc().format()}`;
 
-        Promise.all(metricNames.map((metricName) => fetch(`/user-events-api/v1/funnelView?metricName=${metricName}${dateQuery}`)))
+        Promise.all(METRIC_NAMES.map((metricName) => fetch(`/user-events-api/v1/funnelView?metricName=${metricName}${dateQuery}`)))
             .then((responses) => Promise.all(responses.map(checkResponse)))
             .then((fetchedSuccessRates) => {
                 const nextRealTimeTotals = SUCCESS_RATES_PAGES_LIST.reduce((acc, label) => {
@@ -106,6 +97,10 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
                 SUCCESS_RATES_PAGES_LIST.forEach((label, i) => {
                     const currentSuccessRatesData = fetchedSuccessRates[i];
+                    if (!currentSuccessRatesData || !currentSuccessRatesData.length) {
+                        nextRealTimeTotals[label] = 'N/A';
+                        return;
+                    }
 
                     for (let counter = 1; counter <= currentSuccessRatesData.length; counter++) {
                         const {successRatePercentagesData} = currentSuccessRatesData[currentSuccessRatesData.length - counter];
@@ -143,8 +138,10 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         const dateQuery = start && end
             ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
             : '';
-
-        Promise.all(metricNames.map((metricName) => fetch(`/user-events-api/v1/funnelView?metricName=${metricName}${dateQuery}`)))
+        const lobQuery = selectedLobs.length
+            ? `&lineOfBusiness=${selectedLobs.map((lob) => lob.value).join(',')}`
+            : '';
+        Promise.all(METRIC_NAMES.map((metricName) => fetch(`/user-events-api/v1/funnelView?metricName=${metricName}${dateQuery}${lobQuery}`)))
             .then((responses) => Promise.all(responses.map(checkResponse)))
             .then((fetchedSuccessRates) => {
                 if (!fetchedSuccessRates || !fetchedSuccessRates.length) {
@@ -152,7 +149,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     return;
                 }
 
-                const widgetObjects = makeSuccessRatesObjects(fetchedSuccessRates, start, end, pageBrand, selectedBrand);
+                const widgetObjects = makeSuccessRatesObjects(fetchedSuccessRates, start, end, pageBrand, selectedBrand, selectedLobs);
                 setWidgets(widgetObjects);
             })
             .catch((err) => {
@@ -178,7 +175,11 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             setIsFormDisabled(false);
             fetchRealTimeData(selectedBrands);
             rttRef.current = setInterval(fetchRealTimeData.bind(null, selectedBrands), 60000); // refresh every minute
-
+            history.push(`${pathname}?selectedBrand=${selectedBrands[0]}`
+                + `&start=${pendingStart.format()}`
+                + `&end=${pendingEnd.format()}`
+                + `&lobs=${pendingLobs.map((l) => l.value).join(',')}`
+            );
             if (!isZoomedIn) {
                 fetchSuccessRatesData(selectedBrands);
             }
@@ -187,7 +188,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             clearInterval(rttRef.current);
             setIsZoomedIn(false);
         };
-    }, [selectedBrands, start, end]);
+    }, [selectedBrands, start, end, selectedLobs]);
 
     const handleDatetimeChange = ({start: startDateTimeStr, end: endDateTimeStr}, text) => {
         setPendingTimeRange(text || pendingTimeRange);
@@ -200,18 +201,14 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         setCurrentTimeRange(pendingTimeRange);
         setStart(pendingStart);
         setEnd(pendingEnd);
+        setSelectedLobs(pendingLobs);
         setIsDirtyForm(false);
     };
 
-    const getWidgetXAxisTickGap = (timeRange) => [
-        'Last 1 hour',
-        'Last 3 hours',
-        'Last 6 hours',
-        'Last 12 hours',
-        'Last 24 hours'
-    ].includes(timeRange) ? 20 : 5;
-
-    const shouldShowTooltip = (pageName, pageBrand) => pageBrand === EXPEDIA_BRAND && pageName === SUCCESS_RATES_PAGES_LIST[SUCCESS_RATES_PAGES_LIST.length - 1];
+    const handleLoBsChange = (lobs) => {
+        setPendingLobs(lobs || []);
+        setIsDirtyForm(true);
+    };
 
     const renderWidget = ({pageName, aggregatedData, pageBrand, minValue}) => (
         <TravelerMetricsWidget
@@ -227,10 +224,12 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             chartRight={chartRight}
             refAreaLeft={refAreaLeft}
             refAreaRight={refAreaRight}
-            helpText={shouldShowTooltip(pageName, pageBrand)}
+            helpText={shouldShowTooltip(pageName, pageBrand, selectedLobs)}
             formatYAxis={(value) => `${value.toFixed()}%`}
             minChartValue={minValue}
             maxChartValue={100}
+            selectedLoB={pageName !== SUCCESS_RATES_PAGES_LIST[0] ? selectedLobs : []}
+            stacked
         />
     );
 
@@ -247,6 +246,15 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     endDate={pendingEnd.toDate()}
                     presets={getPresets()}
                     disabled={isFormDisabled}
+                />
+                <Select
+                    isMulti
+                    classNamePrefix="lob-select"
+                    className="lob-select-container"
+                    value={pendingLobs}
+                    options={LOB_LIST.filter(({value}) => ['H', 'C'].includes(value))}
+                    onChange={handleLoBsChange}
+                    placeholder={'Select Line of Business'}
                 />
                 <button
                     className="btn btn-primary apply-btn"

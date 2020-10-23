@@ -35,7 +35,6 @@ export const makePageViewObjects = (data = [], start, end, pageBrand = '') => {
 
     return PAGES_LIST.map(({name, label}, i) => {
         const aggregatedData = [];
-
         const tempMinValue = data.reduce((prev, {time, pageViewsData}) => {
             const currentPageViews = pageViewsData.find((item) => item.page === name);
             if (currentPageViews) {

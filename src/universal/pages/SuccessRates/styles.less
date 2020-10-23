@@ -20,6 +20,8 @@
     }
 
     .success-rates-loading-container {
+        float: left;
+        width: 100%;
         margin-top: @spacing-2x;
         margin-bottom: @spacing-5x;
     }
@@ -35,19 +37,37 @@
     }
 
     .form-container {
-        margin-bottom: @spacing-3x;
+        float: left;
 
-        .preset-dropdown {
-            float: right;
-            margin-top: -@spacing-9x;
+        .datetime-range-picker {
+            height: @spacing-7x;
+            margin-bottom: @spacing-1x;
+        }
 
-            .Dropdown__toggle {
-                .dropdown-button;
+        .lob-select-container {
+            float: left;
+            width: 680px;
+            height: @spacing-7x;
+            margin-bottom: @spacing-1x;
+
+            .lob-select__control {
+                height: @spacing-7x;
+                border-color: @border-contrast;
+                border-radius: @spacing-1x;
             }
         }
 
         .apply-btn {
-            margin-left: @spacing-1x;
+            float: left;
+            height: @spacing-7x;
+            margin-left: @spacing-2x;
+            margin-bottom: @spacing-2x;
         }
+    }
+
+    .summary-container,
+    .dynamic-filters-wrapper {
+        float: left;
+        width: 100%;
     }
 }

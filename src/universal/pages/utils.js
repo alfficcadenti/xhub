@@ -282,6 +282,7 @@ export const filterNewSelectedItems = (input, key) => {
         : [];
 };
 
+// eslint-disable-next-line complexity
 export const bucketTime = (date, format, intervalStartDate, intervalEndDate) => {
     let localDate = moment.utc(date).local().isValid() ? moment.utc(date).local() : moment(date);
     if (moment().diff(intervalStartDate, 'days') >= 365) {
@@ -296,31 +297,44 @@ export const bucketTime = (date, format, intervalStartDate, intervalEndDate) => 
     return localDate.format(format);
 };
 
-export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pageBrand = '', selectedBrand = '') => {
+export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pageBrand = '', selectedBrand = '', lobs = []) => {
     let minValue;
-
+    const successRateFilter = ({brand, lineOfBusiness, rate}) => (
+        mapBrandNames(brand) === selectedBrand
+        && (!lobs.length || !lineOfBusiness || lobs.findIndex(({value}) => value === lineOfBusiness) > -1)
+        && rate
+    );
+    // eslint-disable-next-line complexity
     return SUCCESS_RATES_PAGES_LIST.map((pageName, i) => {
         const aggregatedData = [];
 
-        const tempMinValue = data[i].reduce((prev, {time, successRatePercentagesData}) => {
-            const currentSuccessRates = successRatePercentagesData.find((item) => mapBrandNames(item.brand) === selectedBrand);
+        // eslint-disable-next-line complexity
+        const tempMinValue = (
+            Array.isArray(data[i]) ? data[i] : []
+        ).reduce((prev, {time, successRatePercentagesData}) => {
             let localMin = prev;
-
-            if (currentSuccessRates && currentSuccessRates.rate) {
-                const momentTime = moment(time);
-
-                if (momentTime.isBetween(start, end, 'minutes', '[]')) {
-                    aggregatedData.push({
-                        label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
-                        time: momentTime.format(PAGE_VIEWS_DATE_FORMAT),
-                        momentTime,
-                        value: parseFloat((currentSuccessRates.rate || 0).toFixed(2))
-                    });
-                }
-
-                localMin = Math.min(localMin, parseFloat((currentSuccessRates.rate || 0).toFixed(2)));
-            }
-
+            successRatePercentagesData
+                .filter(successRateFilter)
+                // eslint-disable-next-line complexity
+                .forEach(({rate, lineOfBusiness}) => {
+                    const momentTime = moment(time);
+                    if (momentTime.isBetween(start, end, 'minutes', '[]')) {
+                        const lob = lineOfBusiness ? lobs.find(({value}) => value === lineOfBusiness) : null;
+                        const valueKey = (lob) ? lob.label : 'value';
+                        const found = aggregatedData.findIndex((d) => d.time === time);
+                        if (found > -1) {
+                            aggregatedData[found][valueKey] = parseFloat((rate || 0).toFixed(2));
+                        } else {
+                            aggregatedData.push({
+                                label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
+                                time,
+                                momentTime,
+                                [valueKey]: parseFloat((rate || 0).toFixed(2))
+                            });
+                        }
+                    }
+                    localMin = Math.min(localMin, parseFloat((rate || 0).toFixed(2)));
+                });
             return localMin;
         }, (data[0] && data[0][0]) ? data[0][0].successRatePercentagesData.find((item) => mapBrandNames(item.brand) === selectedBrand).rate : 0);
 
@@ -329,7 +343,6 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
         } else {
             minValue = tempMinValue < minValue ? tempMinValue : minValue;
         }
-
         return {pageName, aggregatedData, pageBrand};
     }).map((item) => ({...item, minValue}));
 };

@@ -2,10 +2,13 @@ import React, {useEffect, useState} from 'react';
 import moment from 'moment';
 import 'moment-timezone';
 import Select from 'react-select';
+import {Checkbox} from '@homeaway/react-form-components';
 import TravelerMetricsWidget from '../../components/TravelerMetricsWidget';
 import LoadingContainer from '../../components/LoadingContainer';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import HelpText from '../../components/HelpText/HelpText';
+import UniversalSearch from '../../components/UniversalSearch';
+import {adjustTicketProperties} from '../TicketTrends/incidentsHelper';
 import {useFetchProductMapping, useQueryParamChange, useSelectedBrand, useZoomAndSynced} from '../hooks';
 import {
     EG_BRAND,
@@ -31,10 +34,8 @@ import {
 } from '../utils';
 import {makePageViewLoBObjects, makePageViewObjects} from './pageViewsUtils';
 import './styles.less';
-import {adjustTicketProperties} from '../TicketTrends/incidentsHelper';
-import UniversalSearch from '../../components/UniversalSearch';
-import {Checkbox} from '@homeaway/react-form-components';
 
+// eslint-disable-next-line complexity
 const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const initialStart = moment().subtract(6, 'hours').startOf('minute');
     const initialEnd = moment().endOf('minute');
@@ -209,14 +210,6 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     const widgetObjects = makePageViewObjects(fetchedPageviews, start, end, pageBrand);
                     setWidgets(widgetObjects);
                 })
-                .catch((err) => {
-                    let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
-                        ? 'Query has timed out. Try refreshing the page. If the problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.'
-                        : 'An unexpected error has occurred. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.';
-                    setError(errorMessage);
-                    // eslint-disable-next-line no-console
-                    console.error(err);
-                })
                 .finally(() => setIsLoading(false));
         };
 
@@ -236,14 +229,6 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     }
                     const widgetObjects = makePageViewLoBObjects(fetchedPageviews, start, end, pageBrand);
                     setLoBWidgets(widgetObjects);
-                })
-                .catch((err) => {
-                    let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
-                        ? 'Query has timed out. Try refreshing the page. If the problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.'
-                        : 'An unexpected error has occurred. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.';
-                    setError(errorMessage);
-                    // eslint-disable-next-line no-console
-                    console.error(err);
                 })
                 .finally(() => setIsLoading(false));
         };
@@ -447,17 +432,19 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 </div>
                 {!isLoading && <>
                     <div className="dynamic-filters-wrapper">
-                        {isLoBAvailable && <Select
-                            isMulti
-                            classNamePrefix="lob-select"
-                            className="lob-select-container"
-                            options={LOB_LIST}
-                            onChange={handleLoBChange}
-                            placeholder={'Select Line of Business'}
-                        />}
+                        {isLoBAvailable && (
+                            <Select
+                                isMulti
+                                classNamePrefix="lob-select"
+                                className="lob-select-container"
+                                options={LOB_LIST}
+                                onChange={handleLoBChange}
+                                placeholder={'Select Line of Business'}
+                            />
+                        )}
                         <LoadingContainer isLoading={isAnnotationsLoading || isIncidentsAnnotationsLoading} error={annotationsError || incidentAnnotationsError} className="annotations-filters-container">
                             <div className="annotations-category-filters">
-                                <h4>Annotations:</h4>
+                                <h4>{'Annotations:'}</h4>
                                 <Checkbox
                                     name="deployment-сheckbox"
                                     label="deployments"

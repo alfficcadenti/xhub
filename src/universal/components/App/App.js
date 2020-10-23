@@ -4,7 +4,7 @@ import {Route, Switch} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Header from '../Header';
 import Feedback from '../Feedback';
-import ErrorBoundary from '../ErrorBoundary'
+import ErrorBoundary from '../ErrorBoundary';
 import PAGES from '../../pages';
 import {EG_BRAND, BRANDS} from '../../constants';
 import {usePrevious} from '../../pages/hooks';

@@ -1,4 +1,5 @@
 import {getConfig, getHandler} from './utils';
+import {getPageViewsTestData, getFunnelTestData} from './testData/userEventsTestService';
 
 const getHandlerParams = (routeKey) => ({
     routeKey,
@@ -17,14 +18,14 @@ module.exports.pageViewsLoBUserEvents = {
     method: 'GET',
     path: '/v1/pageViewsLoB/{param*}',
     config: getConfig('page-views-lob-api-v1-get'),
-    handler: getHandler(getHandlerParams('pageViewsLoB'))
+    handler: getHandler(getHandlerParams('pageViewsLoB'), getPageViewsTestData)
 };
 
 module.exports.pageViewsUserEvents = {
     method: 'GET',
     path: '/v1/pageViews/{param*}',
     config: getConfig('page-views-api-v1-get'),
-    handler: getHandler(getHandlerParams('pageViews'))
+    handler: getHandler(getHandlerParams('pageViews'), getPageViewsTestData)
 };
 
 module.exports.impulseBookingDataService = {
@@ -59,7 +60,7 @@ module.exports.funnelViewUserEvents = {
     method: 'GET',
     path: '/user-events-api/v1/funnelView/{param*}',
     config: getConfig('funnel-view-api-v1-get'),
-    handler: getHandler(getHandlerParams('funnelView'))
+    handler: getHandler(getHandlerParams('funnelView'), getFunnelTestData)
 };
 
 module.exports.csrUserEvents = {

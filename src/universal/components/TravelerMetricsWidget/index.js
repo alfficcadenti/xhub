@@ -24,7 +24,7 @@ const CustomTooltip = ({active, payload}) => {
         return (
             <div className="custom-tooltip">
                 <p className="label">{payload[0].payload.label}</p>
-                {payload && payload.map((x) => <p className="label">{`${x.dataKey} = ${x.value}`}</p>)}
+                {payload && payload.map((x) => <p key={x.dataKey} className="label">{`${x.name || x.dataKey} = ${x.value}`}</p>)}
             </div>
         );
     }
@@ -36,10 +36,11 @@ const formatXAxis = (date) => moment(date).format('MM/DD hh:mm');
 const renderHeader = (title, helpText) => (
     <h3>
         {title}
-        {helpText && <HelpText text="Only for nonNativeApps" />}
+        {helpText && <HelpText text={helpText} />}
     </h3>
 );
 
+// eslint-disable-next-line complexity
 const TravelerMetricsWidget = ({
     title = '',
     data = [],
@@ -60,6 +61,7 @@ const TravelerMetricsWidget = ({
     maxChartValue = 'auto',
     ResponsiveContainerWidth = '100%',
     ResponsiveContainerHeight = '80%',
+    stacked = false
 }) => {
     const brandLabel = brand.replace(/\s/g, '');
     const fill = `url(#${brandLabel})`;
@@ -106,11 +108,11 @@ const TravelerMetricsWidget = ({
                             <CartesianGrid strokeDasharray="3 3" />
                             <Tooltip content={<CustomTooltip />} />
                             {selectedLoB && selectedLoB.length ?
-                                selectedLoB.map((lob) =>
-                                    <Area stackId="1" type="monotone" dataKey={lob.label} stroke={color} fillOpacity={1} fill={fill} key={`area${lob.label}`} yAxisId={yAxisId} />
+                                selectedLoB.map((lob, i) =>
+                                    <Area stacked={!stacked || i} type="monotone" dataKey={lob.label} stroke={color} fillOpacity={1} fill={fill} key={`area${lob.label}`} yAxisId={yAxisId} />
                                 ) :
-                                <Area type="monotone" dataKey="value" stroke={color} fillOpacity={1} fill={fill} key={`area${brand}`} yAxisId={yAxisId} />
-                            };
+                                <Area type="monotone" dataKey="value" name="All LoBs" stroke={color} fillOpacity={1} fill={fill} key={`area${brand}`} yAxisId={yAxisId} />
+                            }
                             {
                                 annotations && annotations.map((annotation) => (
                                     <ReferenceLine
@@ -131,7 +133,7 @@ const TravelerMetricsWidget = ({
                             }
                         </AreaChart>
                     </ResponsiveContainer> :
-                    <div className="recharts-empty-container" />
+                    <div className="recharts-empty-container">{'No Data'}</div>
             }
         </div>
     );

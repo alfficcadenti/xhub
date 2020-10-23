@@ -41,8 +41,8 @@
 
     .filters-wrapper {
         display: grid;
-        grid-gap: 16px;
-        grid-template-columns: 33% 67%;
+        grid-gap: @spacing-2x;
+        grid-template-columns: 40% 60%;
         margin-bottom: @spacing-3x;
         width: 100%;
 
@@ -58,8 +58,6 @@
 
         .date-filters-wrapper {
             align-items: center;
-
-            .datetime-range-picker {}
 
             .rdt-preset-dropdown {
                 margin-top: @spacing-1x;
@@ -97,36 +95,36 @@
                     border-color: @border-color-dark;
                 }
             }
+        }
 
-            .annotations-filters-container {
-                display: flex;
-                border: @border-color 1px solid;
-                border-radius: @spacing-1x;
-                margin-top: @spacing-1x;
+        .annotations-filters-container {
+            display: flex;
+            border: @border-color 1px solid;
+            border-radius: @spacing-1x;
+            margin-top: @spacing-1x;
 
-                .annotations-category-filters,
-                .universal-search-bar {
-                    margin: @spacing-1x @spacing-2x;
+            .annotations-category-filters,
+            .universal-search-bar {
+                margin: @spacing-1x @spacing-2x;
+            }
+
+            .universal-search-bar {
+                flex-direction: column;
+                width: max-content;
+
+                .tokens-container {
+                    float: left;
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: wrap;
+                    width: 100%;
                 }
 
-                .universal-search-bar {
-                    flex-direction: column;
-                    width: max-content;
-
-                    .tokens-container {
-                        float: left;
-                        display: flex;
-                        flex-direction: row;
-                        flex-wrap: wrap;
-                        width: 100%;
-                    }
-
-                    .Token {
-                        margin: 0;
-                        width: fit-content;
-                        max-width: 300px;
-                        font-size: 85%;
-                    }
+                .Token {
+                    margin: 0;
+                    width: fit-content;
+                    max-width: 300px;
+                    font-size: 85%;
                 }
             }
         }
