@@ -63,7 +63,7 @@ export const useZoomAndSynced = (
     setEnd,
     setIsDirtyForm,
     pendingTimeRange,
-    setIsZoomedIn
+    setIsZoomedIn = null
 ) => {
     const [refAreaLeft, setRefAreaLeft] = useState('');
     const [refAreaRight, setRefAreaRight] = useState('');
@@ -106,7 +106,9 @@ export const useZoomAndSynced = (
         setStart(moment(nextRefAreaLeft));
         setEnd(moment(nextRefAreaRight));
         setIsDirtyForm(false);
-        setIsZoomedIn(true);
+        if (setIsZoomedIn) {
+            setIsZoomedIn(true);
+        }
     };
 
     const handleMouseDown = (e) => setRefAreaLeft(e.activeLabel);
