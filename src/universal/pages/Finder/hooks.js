@@ -29,7 +29,7 @@ export const useFetchCRs = (
             setLastStartDate(startDate);
             setLastEndDate(endDate);
             const url = brand && brand.changeRequests ?
-                `/change-requests-api/v1/changeDetails?startDate=${startDate}&endDate=${endDate}&platform=${brand.changeRequests}` :
+                `/change-requests-api/v1/changeDetails?startDate=${startDate}&endDate=${endDate}&brand=${brand.changeRequests}` :
                 `/change-requests-api/v1/changeDetails?startDate=${startDate}&endDate=${endDate}`;
             fetch(url)
                 .then(checkResponse)
