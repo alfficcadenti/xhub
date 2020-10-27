@@ -109,9 +109,9 @@ const TravelerMetricsWidget = ({
                             <Tooltip content={<CustomTooltip />} />
                             {selectedLoB && selectedLoB.length ?
                                 selectedLoB.map((lob, i) =>
-                                    <Area stacked={!stacked || i} type="monotone" dataKey={lob.label} stroke={color} fillOpacity={1} fill={fill} key={`area${lob.label}`} yAxisId={yAxisId} />
+                                    <Area connectNulls stacked={!stacked || i} type="monotone" dataKey={lob.label} stroke={color} fillOpacity={1} fill={fill} key={`area${lob.label}`} yAxisId={yAxisId} />
                                 ) :
-                                <Area type="monotone" dataKey="value" name="All LoBs" stroke={color} fillOpacity={1} fill={fill} key={`area${brand}`} yAxisId={yAxisId} />
+                                <Area connectNulls type="monotone" dataKey="value" name="All LoBs" stroke={color} fillOpacity={1} fill={fill} key={`area${brand}`} yAxisId={yAxisId} />
                             }
                             {
                                 annotations && annotations.map((annotation) => (

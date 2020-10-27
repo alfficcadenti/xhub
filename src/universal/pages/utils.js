@@ -299,10 +299,9 @@ export const bucketTime = (date, format, intervalStartDate, intervalEndDate) => 
 
 export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pageBrand = '', selectedBrand = '', lobs = []) => {
     let minValue;
-    const successRateFilter = ({brand, lineOfBusiness, rate}) => (
+    const successRateFilter = ({brand, lineOfBusiness}) => (
         mapBrandNames(brand) === selectedBrand
         && (!lobs.length || !lineOfBusiness || lobs.findIndex(({value}) => value === lineOfBusiness) > -1)
-        && rate
     );
     // eslint-disable-next-line complexity
     return SUCCESS_RATES_PAGES_LIST.map((pageName, i) => {
@@ -323,17 +322,18 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
                         const valueKey = (lob) ? lob.label : 'value';
                         const found = aggregatedData.findIndex((d) => d.time === time);
                         if (found > -1) {
-                            aggregatedData[found][valueKey] = parseFloat((rate || 0).toFixed(2));
+                            aggregatedData[found][valueKey] = rate === null ? null : parseFloat((rate || 0).toFixed(2));
                         } else {
+                            console.log(rate);
                             aggregatedData.push({
                                 label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
                                 time,
                                 momentTime,
-                                [valueKey]: parseFloat((rate || 0).toFixed(2))
+                                [valueKey]: rate === null ? null : parseFloat((rate || 0).toFixed(2))
                             });
                         }
                     }
-                    localMin = Math.min(localMin, parseFloat((rate || 0).toFixed(2)));
+                    localMin = rate ? Math.min(localMin, parseFloat((rate || 0).toFixed(2))) : localMin;
                 });
             return localMin;
         }, (data[0] && data[0][0]) ? data[0][0].successRatePercentagesData.find((item) => mapBrandNames(item.brand) === selectedBrand).rate : 0);
