@@ -362,6 +362,11 @@
               "path": "/mappings/products/v1.0",
               "method": "GET",
               "operation": "GET_product_mapping_api_v1"
+            },
+            "abTests": {
+              "path": "/abTests/v1.0",
+              "method": "GET",
+              "operation": "GET_ab_tests_api_v1"
             }
           }
         },
@@ -383,6 +388,11 @@
               "path": "/mappings/products/v1.0",
               "method": "GET",
               "operation": "GET_product_mapping_api_v1"
+            },
+            "abTests": {
+              "path": "/abTests/v1.0",
+              "method": "GET",
+              "operation": "GET_ab_tests_api_v1"
             }
           }
         },
@@ -404,6 +414,11 @@
               "path": "/mappings/products/v1.0",
               "method": "GET",
               "operation": "GET_product_mapping_api_v1"
+            },
+            "abTests": {
+              "path": "/abTests/v1.0",
+              "method": "GET",
+              "operation": "GET_ab_tests_api_v1"
             }
           }
         }

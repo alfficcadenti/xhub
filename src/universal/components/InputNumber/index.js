@@ -2,7 +2,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {FormInput} from '@homeaway/react-form-components';
-import h from '../../components/utils/formatString';
+import {replaceSpaces} from '../../components/utils.js';
 
 class InputNumber extends Component {
     constructor(props) {
@@ -70,7 +70,7 @@ class InputNumber extends Component {
         return (
             <FormInput
                 key={id}
-                id={h.replaceSpaces(question)}
+                id={replaceSpaces(question)}
                 label={question}
                 type="number"
                 onChange={this.checkValue}

@@ -3,8 +3,8 @@ import moment from 'moment';
 import qs from 'query-string';
 import {getBrand} from '../utils';
 import {PORTFOLIOS, PRIORITY_LABELS, P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL, NOT_PRIORITIZED_LABEL} from './constants';
-import {formatDuration} from '../../components/utils/formatDate';
 import {DATE_FORMAT} from '../../constants';
+import {formatDuration} from '../../components/utils';
 
 export const getPortfolioBrand = (selectedBrands) => {
     const selectedBrand = getBrand(selectedBrands[0], 'label');

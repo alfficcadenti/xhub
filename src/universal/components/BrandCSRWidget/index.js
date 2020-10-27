@@ -1,9 +1,9 @@
 import React from 'react';
-import brandLogoFile from '../utils/brandLogoFile';
 import {RadialProgress} from 'react-radial-progress-indicator';
 import Trend from 'react-trend';
 import {Link} from 'react-router-dom';
 import './styles.less';
+import {brandLogoFile} from '../utils';
 
 const alertThreshold = 95;
 const isNotAlert = (arrayData) => arrayData.slice(-1)[0] >= alertThreshold;
