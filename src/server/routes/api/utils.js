@@ -7,7 +7,7 @@ module.exports.getConfig = (id) => ({
 
 // eslint-disable-next-line complexity
 module.exports.getHandler = ({configKey, routeKey, serviceName, timeout = 20000, connectionTimeout = 20000, maxConnectRetry = 1, pathParam}, testData) => async (req) => {
-    if (testData && process.env.NODE_ENV !== 'production') {
+    if (testData && process.env.EXPEDIA_ENVIRONMENT !== 'prod') {
         return await testData(req);
     }
     try {
