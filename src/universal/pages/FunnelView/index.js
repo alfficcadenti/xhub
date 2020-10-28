@@ -46,6 +46,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [lobWidgets, setLoBWidgets] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
+    const [LoBError, setLoBError] = useState('');
     const [pendingStart, setPendingStart] = useState(initialStart);
     const [pendingEnd, setPendingEnd] = useState(initialEnd);
     const [start, setStart] = useState(initialStart);
@@ -243,7 +244,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         const fetchPageViewsLoBData = ([selectedBrand]) => {
             const {label: pageBrand, funnelBrand} = getBrand(selectedBrand, 'label');
             setIsLoading(true);
-            setError('');
+            setLoBError('');
             const dateQuery = start && end
                 ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
                 : '';
@@ -251,11 +252,19 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 .then(checkResponse)
                 .then((fetchedPageviews) => {
                     if (!fetchedPageviews || !fetchedPageviews.length) {
-                        setError('No data found. Try refreshing the page or select another brand.');
+                        setLoBError('No data found. Try refreshing the page or select another brand.');
                         return;
                     }
                     const widgetObjects = makePageViewLoBObjects(fetchedPageviews, start, end, pageBrand);
                     setLoBWidgets(widgetObjects);
+                })
+                .catch((err) => {
+                    let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
+                        ? 'Query has timed out. Try refreshing the page. If the problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.'
+                        : 'An unexpected error has occurred. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.';
+                    setLoBError(errorMessage);
+                    // eslint-disable-next-line no-console
+                    console.error(err);
                 })
                 .finally(() => setIsLoading(false));
         };
@@ -472,6 +481,12 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         }));
     }, [productMapping]);
 
+    const renderPageViews = (data) => (
+        <div className="page-views-widget-container">
+            {data && data.length && data.map(renderWidget)}
+        </div>
+    );
+
     return (
         <div className="funnel-views-container">
             <h1>{'Traveler Page Views'}{!isLoBAvailable && <HelpText text="Only for LOB Hotels" placement="top" />}</h1>
@@ -495,16 +510,19 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 </div>
                 {!isLoading && <>
                     <div className="dynamic-filters-wrapper">
-                        {isLoBAvailable && (
-                            <Select
-                                isMulti
-                                classNamePrefix="lob-select"
-                                className="lob-select-container"
-                                options={LOB_LIST}
-                                onChange={handleLoBChange}
-                                placeholder={'Select Line of Business'}
-                            />
-                        )}
+                        {
+                            isLoBAvailable &&
+                                <Select
+                                    isMulti
+                                    classNamePrefix="lob-select"
+                                    className="lob-select-container"
+                                    options={LOB_LIST}
+                                    onChange={handleLoBChange}
+                                    placeholder={lobWidgets.length ? 'Select Line of Business' : 'Line of Business Data not available. Try to refresh'}
+                                    isDisabled={!lobWidgets.length}
+                                />
+                        }
+
                         <LoadingContainer
                             isLoading={isDeploymentsAnnotationsLoading || isIncidentsAnnotationsLoading || isAbTestsAnnotationsLoading}
                             error={deploymentAnnotationsError || incidentAnnotationsError || abTestsAnnotationsError}
@@ -543,11 +561,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     </div>
                 </>}
             </div>
-            <LoadingContainer isLoading={isLoading} error={error} className="page-views-loading-container">
-                <div className="page-views-widget-container">
-                    {lobSelected && lobSelected.length && lobWidgets.map(renderWidget) || ''}
-                    {widgets && widgets.length && !lobSelected.length && widgets.map(renderWidget) || ''}
-                </div>
+            <LoadingContainer isLoading={isLoading} error={!lobSelected.length ? error : LoBError} className="page-views-loading-container">
+                {lobSelected && lobSelected.length && renderPageViews(lobWidgets) || renderPageViews(widgets)}
             </LoadingContainer>
         </div>
     );
