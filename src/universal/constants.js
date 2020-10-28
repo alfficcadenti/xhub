@@ -32,6 +32,7 @@ export const CHART_COLORS = ['#3366cc', '#dc3912', '#ff9900', '#109618', '#99009
 export const EG_BRAND = 'Expedia Group';
 export const DEPLOYMENT_ANNOTATION_CATEGORY = 'deployment';
 export const INCIDENT_ANNOTATION_CATEGORY = 'incident';
+export const AB_TESTS_ANNOTATION_CATEGORY = 'abTests';
 
 export const LOB_LIST = [
     {value: 'C', label: 'Cars'},

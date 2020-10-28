@@ -2,9 +2,18 @@ import React from 'react';
 import {renderToString} from 'react-dom/server';
 import moment from 'moment/moment';
 import uuid from 'uuid/v1';
-import * as h from '../../components/utils/formatDate';
-import {DATE_FORMAT, EGENCIA_BRAND, EXPEDIA_BRAND, HOTELS_COM_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, EG_BRAND, VRBO_BRAND, BRANDS} from '../../constants';
-import {isNotDuplicate, divisionToBrand, getListOfUniqueProperties, buildTicketLinks} from '../utils';
+import {
+    BRANDS,
+    DATE_FORMAT,
+    EG_BRAND,
+    EGENCIA_BRAND,
+    EXPEDIA_BRAND,
+    EXPEDIA_PARTNER_SERVICES_BRAND,
+    HOTELS_COM_BRAND,
+    VRBO_BRAND
+} from '../../constants';
+import {buildTicketLinks, divisionToBrand, getListOfUniqueProperties, isNotDuplicate} from '../utils';
+import {formatDurationForTable, formatDurationToH, formatDurationToHours} from '../../components/utils';
 
 export const getTableColumns = (selectedBrand) => {
     if (selectedBrand === EXPEDIA_PARTNER_SERVICES_BRAND) {
@@ -60,11 +69,11 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
         Division: getValue(inc, 'Division'),
         Started: moment.utc(inc.startDate).local().isValid() ? moment.utc(inc.startDate).local().format('YYYY-MM-DD HH:mm') : '-',
         Summary: getValue(inc, 'summary').trim(),
-        Duration: getValue(inc, 'duration', h.formatDurationForTable),
+        Duration: getValue(inc, 'duration', formatDurationForTable),
         rawDuration: inc.duration,
-        TTD: getValue(inc, 'timeToDetect', h.formatDurationForTable),
+        TTD: getValue(inc, 'timeToDetect', formatDurationForTable),
         rawTTD: inc.timeToDetect,
-        TTR: getValue(inc, 'timeToResolve', h.formatDurationForTable),
+        TTR: getValue(inc, 'timeToResolve', formatDurationForTable),
         rawTTR: inc.timeToResolve,
         'Resolution Notes': getValue(inc, 'rootCause'),
         'Root Cause': getValue(inc, 'rootCause'),
@@ -107,7 +116,7 @@ export const getQualityData = (filteredDefects = []) => filteredDefects
         Division: getValue(t, 'Division'),
         Opened: moment.utc(t.openDate).local().isValid() ? moment(t.openDate).local().format('YYYY-MM-DD HH:mm') : '-',
         Resolved: moment.utc(t.resolvedDate).local().isValid() ? moment(t.resolvedDate).local().format('YYYY-MM-DD HH:mm') : '-',
-        Duration: t.duration && t.resolvedDate ? h.formatDurationForTable(t.duration) : '-',
+        Duration: t.duration && t.resolvedDate ? formatDurationForTable(t.duration) : '-',
         Summary: getValue(t, 'summary'),
         Project: getValue(t, 'project'),
         rawDuration: t.duration,
@@ -133,12 +142,12 @@ export const getMeanValue = (incidents = [], property) => (sumPropertyInArrayOfO
 export const getIncMetricsByBrand = (inc = []) => getListOfUniqueProperties(inc, 'Brand')
     .map((brand) => {
         const brandIncidentsList = brandIncidents(inc, brand);
-        const brandMTTR = h.formatDurationToHours(getMeanValue(brandIncidentsList, 'timeToResolve'));
-        const brandMTTD = h.formatDurationToHours(getMeanValue(brandIncidentsList, 'timeToDetect'));
+        const brandMTTR = formatDurationToHours(getMeanValue(brandIncidentsList, 'timeToResolve'));
+        const brandMTTD = formatDurationToHours(getMeanValue(brandIncidentsList, 'timeToDetect'));
         const P1inc = brandIncidentsList.filter((incident) => incident.priority === '1-Critical').length;
         const P2inc = brandIncidentsList.filter((incident) => incident.priority === '2-High').length;
         const all = brandIncidentsList.length;
-        const brandTotalDuration = h.formatDurationToHours(sumPropertyInArrayOfObjects(brandIncidentsList, 'duration'));
+        const brandTotalDuration = formatDurationToHours(sumPropertyInArrayOfObjects(brandIncidentsList, 'duration'));
 
         return {
             'Brand': brand,
@@ -161,7 +170,7 @@ export const getWeeks = (start = '', end = '') => {
     return weeks;
 };
 
-export const getMeanHours = (incidents, date, property) => Number.parseFloat(h.formatDurationToH(
+export const getMeanHours = (incidents, date, property) => Number.parseFloat(formatDurationToH(
     getMeanValue(incidentsOfTheWeek(incidents, moment(date).week()), property)
 ));
 

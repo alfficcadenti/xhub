@@ -26,3 +26,10 @@ module.exports.productMapping = {
     config: getConfig('product-mapping-api-v1-get'),
     handler: getHandler(getHandlerParams('productMapping'))
 };
+
+module.exports.productMapping = {
+    method: 'GET',
+    path: '/abTests',
+    config: getConfig('ab-tests-api-v1-get'),
+    handler: getHandler(getHandlerParams('abTests'))
+};

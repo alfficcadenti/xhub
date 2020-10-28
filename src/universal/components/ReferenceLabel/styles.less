@@ -23,6 +23,16 @@
             border-color: green transparent transparent transparent;
         }
 
+        &.abTests {
+            border-color: #255ABC transparent transparent transparent;
+
+            .tooltip-body {
+                .tooltip-wrapper {
+                    line-height: 1.8;
+                }
+            }
+        }
+
         &.incidents-impulse {
             border-color: #ff8281 transparent transparent transparent;
         }
@@ -75,6 +85,14 @@
                 .service-name {
                     overflow: hidden;
                     text-overflow: ellipsis;
+                }
+
+                .experiment-name {
+                    .overflow-wrapper;
+                }
+
+                .experiment-owner {
+                    .overflow-wrapper;
                 }
 
                 .summary {
