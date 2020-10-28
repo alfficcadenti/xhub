@@ -14,7 +14,7 @@ export function brandLogoFile(brand) {
     const brandsArray = [VRBO_BRAND, EGENCIA_BRAND, HOTELS_COM_BRAND, EXPEDIA_BRAND];
     try {
         if (brandsArray.includes(brand)) {
-            return require(`../../img/logo-${brand.toLowerCase()}.png`).default;
+            return require(`../img/logo-${brand.toLowerCase()}.png`).default;
         }
     } catch {
         return null;
@@ -57,9 +57,7 @@ export function formatDurationToHours(duration) {
     return durationString || '';
 }
 
-export const replaceSpaces = (string) => (string.toString().replace(/ /g, '-'));
-
-export const getStrokeColor = (category) => {
+export const getAnnotationStrokeColor = (category) => {
     switch (category) {
         case DEPLOYMENT_ANNOTATION_CATEGORY:
             return 'red';

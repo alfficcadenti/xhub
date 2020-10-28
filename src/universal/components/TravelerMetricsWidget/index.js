@@ -15,7 +15,7 @@ import {v1 as uuid} from 'uuid';
 import HelpText from '../HelpText/HelpText';
 import ReferenceLabel from '../ReferenceLabel';
 import {getBrand} from '../../pages/utils';
-import {getStrokeColor} from '../utils.js';
+import {getAnnotationStrokeColor} from '../utils.js';
 import './styles.less';
 
 // eslint-disable-next-line complexity
@@ -120,7 +120,7 @@ const TravelerMetricsWidget = ({
                                         yAxisId={yAxisId}
                                         x={annotation.bucketTime}
                                         label={<ReferenceLabel annotation={annotation} />}
-                                        stroke={getStrokeColor(annotation.category)}
+                                        stroke={getAnnotationStrokeColor(annotation.category)}
                                         strokeDasharray="3 3"
                                         isFront
                                     />

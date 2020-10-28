@@ -4,7 +4,7 @@ import {
     DEPLOYMENT_ANNOTATION_CATEGORY,
     INCIDENT_ANNOTATION_CATEGORY
 } from '../constants';
-import {formatDurationForTable, formatDurationToH, formatDurationToHours, getStrokeColor} from './utils';
+import {formatDurationForTable, formatDurationToH, formatDurationToHours, getAnnotationStrokeColor} from './utils';
 
 describe('formatDurationToHours', () => {
     it('returns the duration from milliseconds in HH:mm:ss format', async () => {
@@ -24,11 +24,11 @@ describe('formatDurationForTable', () => {
     });
 });
 
-describe('getStrokeColor', () => {
+describe('getAnnotationStrokeColor', () => {
     it('returns correct color depending on annotation category', async () => {
-        expect(getStrokeColor(DEPLOYMENT_ANNOTATION_CATEGORY)).to.be.eql('red');
-        expect(getStrokeColor(INCIDENT_ANNOTATION_CATEGORY)).to.be.eql('green');
-        expect(getStrokeColor(AB_TESTS_ANNOTATION_CATEGORY)).to.be.eql('#255ABC');
-        expect(getStrokeColor()).to.be.eql('red');
+        expect(getAnnotationStrokeColor(DEPLOYMENT_ANNOTATION_CATEGORY)).to.be.eql('red');
+        expect(getAnnotationStrokeColor(INCIDENT_ANNOTATION_CATEGORY)).to.be.eql('green');
+        expect(getAnnotationStrokeColor(AB_TESTS_ANNOTATION_CATEGORY)).to.be.eql('#255ABC');
+        expect(getAnnotationStrokeColor()).to.be.eql('red');
     });
 });

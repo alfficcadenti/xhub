@@ -46,12 +46,6 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [lobWidgets, setLoBWidgets] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
-    const [isAnnotationsLoading, setIsAnnotationsIsLoading] = useState(false);
-    const [isIncidentsAnnotationsLoading, setIsIncidentsAnnotationsIsLoading] = useState(false);
-    const [isAbTestsAnnotationsIsLoading, setIsAbTestsAnnotationsIsLoading] = useState(false);
-    const [annotationsError, setAnnotationsError] = useState('');
-    const [incidentAnnotationsError, setIncidentAnnotationsError] = useState('');
-    const [abTestsAnnotationsError, setAbTestsAnnotationsError] = useState('');
     const [pendingStart, setPendingStart] = useState(initialStart);
     const [pendingEnd, setPendingEnd] = useState(initialEnd);
     const [start, setStart] = useState(initialStart);
@@ -64,6 +58,13 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [lobSelected, setLobSelected] = useState([]);
 
     // annotations state
+    const [isDeploymentsAnnotationsLoading, setIsDeploymentsAnnotationsLoading] = useState(false);
+    const [isIncidentsAnnotationsLoading, setIsIncidentsAnnotationsLoading] = useState(false);
+    const [isAbTestsAnnotationsLoading, setIsAbTestsAnnotationsLoading] = useState(false);
+    const [deploymentAnnotationsError, setDeploymentAnnotationsError] = useState('');
+    const [incidentAnnotationsError, setIncidentAnnotationsError] = useState('');
+    const [abTestsAnnotationsError, setAbTestsAnnotationsError] = useState('');
+
     const [enableAnnotations, setEnableAnnotations] = useState(false);
     const [selectedProducts, setSelectedProducts] = useState([]);
     const [selectedApplications, setSelectedApplications] = useState([]);
@@ -87,14 +88,14 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [productNameSuggestions, setProductNameSuggestions] = useState([]);
     const [serviceTierSuggestions, setServiceTierSuggestions] = useState([]);
     const [abTestsStatusSuggestions, setAbTestsStatusSuggestions] = useState([]);
+    const [suggestions, setSuggestions] = useState({});
+
+    const productMapping = useFetchProductMapping(start, end);
+
+    const [isMounted, setIsMounted] = useState(false);
 
     useQueryParamChange(selectedBrands[0], onBrandChange);
     useSelectedBrand(selectedBrands[0], onBrandChange, prevSelectedBrand);
-
-    const productMapping = useFetchProductMapping(start, end);
-    const [suggestions, setSuggestions] = useState({});
-
-    const [isMounted, setIsMounted] = useState(false);
 
     const {
         handleMouseDown,
@@ -150,9 +151,9 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     };
 
     useEffect(() => {
-        const deployments = deploymentCategory ? [...deploymentAnnotations] : [];
-        const incidents = incidentCategory ? [...incidentAnnotations] : [];
-        const abTests = abTestsCategory ? [...abTestsAnnotations] : [];
+        const deployments = deploymentCategory ? deploymentAnnotations : [];
+        const incidents = incidentCategory ? incidentAnnotations : [];
+        const abTests = abTestsCategory ? abTestsAnnotations : [];
 
         setFilteredAnnotations(filterAnnotations(deployments, incidents, abTests));
     }, [
@@ -259,8 +260,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 .finally(() => setIsLoading(false));
         };
 
-        const fetchAnnotations = () => {
-            setIsAnnotationsIsLoading(true);
+        const fetchDeploymentAnnotations = () => {
+            setIsDeploymentsAnnotationsLoading(true);
             setDeploymentAnnotations([]);
             const dateQuery = start && end
                 ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
@@ -280,15 +281,15 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     setDeploymentAnnotations(adjustedAnnotations);
                 })
                 .catch((err) => {
-                    setAnnotationsError('An unexpected error has occurred loading the annotations. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.');
+                    setDeploymentAnnotationsError('An unexpected error has occurred loading the annotations. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.');
                     // eslint-disable-next-line no-console
                     console.error(err);
                 })
-                .finally(() => setIsAnnotationsIsLoading(false));
+                .finally(() => setIsDeploymentsAnnotationsLoading(false));
         };
 
-        const fetchIncidents = () => {
-            setIsIncidentsAnnotationsIsLoading(true);
+        const fetchIncidentsAnnotations = () => {
+            setIsIncidentsAnnotationsLoading(true);
             setIncidentAnnotations([]);
             const dateQuery = start && end
                 ? `?fromDate=${moment(start).utc().format()}&toDate=${moment(end).utc().format()}`
@@ -322,11 +323,11 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     // eslint-disable-next-line no-console
                     console.error(err);
                 })
-                .finally(() => setIsIncidentsAnnotationsIsLoading(false));
+                .finally(() => setIsIncidentsAnnotationsLoading(false));
         };
 
-        const fetchAbTests = () => {
-            setIsAbTestsAnnotationsIsLoading(true);
+        const fetchAbTestsAnnotations = () => {
+            setIsAbTestsAnnotationsLoading(true);
             setAbTestsAnnotations([]);
             const dateQuery = start && end
                 ? `?startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
@@ -356,7 +357,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     // eslint-disable-next-line no-console
                     console.error(err);
                 })
-                .finally(() => setIsAbTestsAnnotationsIsLoading(false));
+                .finally(() => setIsAbTestsAnnotationsLoading(false));
         };
 
         if ([EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, VRBO_BRAND, HOTELS_COM_BRAND].includes(selectedBrands[0])) {
@@ -374,9 +375,9 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             setError(null);
             setIsFormDisabled(false);
             fetchPageViewsData(selectedBrands);
-            fetchIncidents();
-            fetchAnnotations();
-            fetchAbTests();
+            fetchIncidentsAnnotations();
+            fetchDeploymentAnnotations();
+            fetchAbTestsAnnotations();
         }
         setIsMounted(true);
     }, [selectedBrands, start, end, isMounted]);
@@ -505,8 +506,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                             />
                         )}
                         <LoadingContainer
-                            isLoading={isAnnotationsLoading || isIncidentsAnnotationsLoading || isAbTestsAnnotationsIsLoading}
-                            error={annotationsError || incidentAnnotationsError || abTestsAnnotationsError}
+                            isLoading={isDeploymentsAnnotationsLoading || isIncidentsAnnotationsLoading || isAbTestsAnnotationsLoading}
+                            error={deploymentAnnotationsError || incidentAnnotationsError || abTestsAnnotationsError}
                             className="annotations-filters-container"
                         >
                             <div className="annotations-category-filters">
