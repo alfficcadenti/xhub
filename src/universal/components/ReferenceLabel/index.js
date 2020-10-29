@@ -50,9 +50,8 @@ const ReferenceLabel = ({viewBox: {x}, annotation, isImpulse = false}) => {
                                     case AB_TESTS_ANNOTATION_CATEGORY:
                                         return (<>
                                             {buildTicketLink(number, brand)}
-                                            <a href={`https://abacus.prod.expedia.com/search?query=${abTestDetails.experimentId}`} target="_blank">{'Experiment Id'}</a>
-                                            <span className="experiment-name">{abTestDetails.experimentName}</span>
-                                            <span className="experiment-status">{abTestDetails.status}</span>
+                                            <a className="experiment-link" href={`https://egtnl.prod.expedia.com/experiment/${abTestDetails.experimentId}`} target="_blank">{abTestDetails.experimentName}</a>
+                                            <span className="experiment-status">{`status: ${abTestDetails.status}`}</span>
                                             <span className="experiment-owner">{abTestDetails.owner}</span>
                                         </>);
                                     default:
