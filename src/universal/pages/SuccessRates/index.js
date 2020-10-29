@@ -86,8 +86,9 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         const rttStart = moment(now).subtract(11, 'minute').startOf('minute');
         const rttEnd = moment(now).subtract(1, 'minute').startOf('minute');
         const dateQuery = `&startDate=${rttStart.utc().format()}&endDate=${rttEnd.utc().format()}`;
+        const {funnelBrand} = getBrand(selectedBrand, 'label');
 
-        Promise.all(METRIC_NAMES.map((metricName) => fetch(`/user-events-api/v1/funnelView?metricName=${metricName}${dateQuery}`)))
+        Promise.all(METRIC_NAMES.map((metricName) => fetch(`/user-events-api/v1/funnelView?brand=${funnelBrand}&metricName=${metricName}${dateQuery}`)))
             .then((responses) => Promise.all(responses.map(checkResponse)))
             .then((fetchedSuccessRates) => {
                 const nextRealTimeTotals = SUCCESS_RATES_PAGES_LIST.reduce((acc, label) => {
@@ -132,7 +133,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     };
 
     const fetchSuccessRatesData = ([selectedBrand]) => {
-        const {label: pageBrand} = getBrand(selectedBrand, 'label');
+        const {label: pageBrand, funnelBrand} = getBrand(selectedBrand, 'label');
         setIsLoading(true);
         setError('');
         const dateQuery = start && end
@@ -141,7 +142,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         const lobQuery = selectedLobs.length
             ? `&lineOfBusiness=${selectedLobs.map((lob) => lob.value).join(',')}`
             : '';
-        Promise.all(METRIC_NAMES.map((metricName) => fetch(`/user-events-api/v1/funnelView?metricName=${metricName}${dateQuery}${lobQuery}`)))
+        Promise.all(METRIC_NAMES.map((metricName) => fetch(`/user-events-api/v1/funnelView?brand=${funnelBrand}&metricName=${metricName}${dateQuery}${lobQuery}`)))
             .then((responses) => Promise.all(responses.map(checkResponse)))
             .then((fetchedSuccessRates) => {
                 if (!fetchedSuccessRates || !fetchedSuccessRates.length) {
