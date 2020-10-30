@@ -74,7 +74,7 @@ describe('getFunnelTestData', () => {
 
     it('formats data correctly', async () => {
         const results = await getFunnelTestData(req);
-        expect(Object.keys(results[0])).to.eql(['time', 'successRatePercentagesData']);
+        expect(Object.keys(results[0])).to.eql(['time', 'brandWiseSuccessRateData', 'successRatePercentagesData']);
         expect(Object.keys(results[0].successRatePercentagesData[0])).to.eql(['brand', 'rate', 'lineOfBusiness']);
     });
 });

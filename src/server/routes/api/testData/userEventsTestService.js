@@ -71,6 +71,7 @@ const getFunnelTestData = async (req) => {
     return getTestData(req, (time, result) => {
         result.push({
             time,
+            brandWiseSuccessRateData: {rate: 95 + (Math.random() * 5)},
             successRatePercentagesData: ['', ...LOBS].reduce((acc, lineOfBusiness) => ([
                 ...acc,
                 ...BRANDS.map((brand) => ({
