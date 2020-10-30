@@ -33,6 +33,8 @@ export const EG_BRAND = 'Expedia Group';
 export const DEPLOYMENT_ANNOTATION_CATEGORY = 'deployment';
 export const INCIDENT_ANNOTATION_CATEGORY = 'incident';
 export const AB_TESTS_ANNOTATION_CATEGORY = 'abTests';
+export const SUPPRESSED_BRANDS = ['Egencia', 'CarRentals.com', 'Hotwire', 'Vrbo'];
+export const SUPPRESSED_LOBS = ['Car', 'Rail'];
 
 export const LOB_LIST = [
     {value: 'C', label: 'Cars'},
