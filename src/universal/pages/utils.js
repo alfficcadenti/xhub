@@ -306,37 +306,61 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
     // eslint-disable-next-line complexity
     return SUCCESS_RATES_PAGES_LIST.map((pageName, i) => {
         const aggregatedData = [];
-
-        // eslint-disable-next-line complexity
-        const tempMinValue = (
-            Array.isArray(data[i]) ? data[i] : []
-        ).reduce((prev, {time, successRatePercentagesData}) => {
-            let localMin = prev;
-            successRatePercentagesData
-                .filter(successRateFilter)
-                // eslint-disable-next-line complexity
-                .forEach(({rate, lineOfBusiness}) => {
-                    const momentTime = moment(time);
-                    if (momentTime.isBetween(start, end, 'minutes', '[]')) {
-                        const lob = lineOfBusiness ? lobs.find(({value}) => value === lineOfBusiness) : null;
-                        const valueKey = (lob) ? lob.label : 'value';
-                        const found = aggregatedData.findIndex((d) => d.time === time);
-                        if (found > -1) {
-                            aggregatedData[found][valueKey] = rate === null ? null : parseFloat((rate || 0).toFixed(2));
-                        } else {
-                            console.log(rate);
-                            aggregatedData.push({
-                                label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
-                                time,
-                                momentTime,
-                                [valueKey]: rate === null ? null : parseFloat((rate || 0).toFixed(2))
-                            });
-                        }
+        let tempMinValue = 0;
+        if (!lobs.length) {
+            // eslint-disable-next-line complexity
+            tempMinValue = (
+                Array.isArray(data[i]) ? data[i] : []
+            ).reduce((prev, {time, brandWiseSuccessRateData}) => {
+                let localMin = prev;
+                const momentTime = moment(time);
+                if (momentTime.isBetween(start, end, 'minutes', '[]')) {
+                    const found = aggregatedData.findIndex((d) => d.time === time);
+                    if (found > -1) {
+                        aggregatedData[found].value = brandWiseSuccessRateData.rate === null ? null : parseFloat((brandWiseSuccessRateData.rate || 0).toFixed(2));
+                    } else {
+                        aggregatedData.push({
+                            label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
+                            time,
+                            momentTime,
+                            value: brandWiseSuccessRateData.rate === null ? null : parseFloat((brandWiseSuccessRateData.rate || 0).toFixed(2))
+                        });
                     }
-                    localMin = rate ? Math.min(localMin, parseFloat((rate || 0).toFixed(2))) : localMin;
-                });
-            return localMin;
-        }, (data[0] && data[0][0]) ? data[0][0].successRatePercentagesData.find((item) => mapBrandNames(item.brand) === selectedBrand).rate : 0);
+                }
+                localMin = brandWiseSuccessRateData.rate ? Math.min(localMin, parseFloat((brandWiseSuccessRateData.rate || 0).toFixed(2))) : localMin;
+                return localMin;
+            }, (data[0] && data[0][0]) ? data[0][0].brandWiseSuccessRateData.rate : 0);
+        } else {
+            // eslint-disable-next-line complexity
+            tempMinValue = (
+                Array.isArray(data[i]) ? data[i] : []
+            ).reduce((prev, {time, successRatePercentagesData}) => {
+                let localMin = prev;
+                successRatePercentagesData
+                    .filter(successRateFilter)
+                    // eslint-disable-next-line complexity
+                    .forEach(({rate, lineOfBusiness}) => {
+                        const momentTime = moment(time);
+                        if (momentTime.isBetween(start, end, 'minutes', '[]')) {
+                            const lob = lineOfBusiness ? lobs.find(({value}) => value === lineOfBusiness) : null;
+                            const valueKey = (lob) ? lob.label : 'value';
+                            const found = aggregatedData.findIndex((d) => d.time === time);
+                            if (found > -1) {
+                                aggregatedData[found][valueKey] = rate === null ? null : parseFloat((rate || 0).toFixed(2));
+                            } else {
+                                aggregatedData.push({
+                                    label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
+                                    time,
+                                    momentTime,
+                                    [valueKey]: rate === null ? null : parseFloat((rate || 0).toFixed(2))
+                                });
+                            }
+                        }
+                        localMin = rate ? Math.min(localMin, parseFloat((rate || 0).toFixed(2))) : localMin;
+                    });
+                return localMin;
+            }, (data[0] && data[0][0]) ? data[0][0].successRatePercentagesData.find((item) => mapBrandNames(item.brand) === selectedBrand).rate : 0);
+        }
 
         if (i === 0) {
             minValue = tempMinValue;
