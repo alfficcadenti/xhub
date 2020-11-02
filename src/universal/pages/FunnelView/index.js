@@ -348,8 +348,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     const adjustedAbTests = data.map((abTest) => ({
                         ...abTest,
                         status: abTest.abTestDetails.status,
-                        time: moment(abTest.openedAt).format(PAGE_VIEWS_DATE_FORMAT),
-                        bucketTime: moment(abTest.openedAt).format(PAGE_VIEWS_DATE_FORMAT),
+                        time: moment.utc(abTest.openedAt).local().isValid() ? moment.utc(abTest.openedAt).local().format(PAGE_VIEWS_DATE_FORMAT) : '-',
+                        bucketTime: bucketTime(abTest.openedAt, PAGE_VIEWS_DATE_FORMAT, start, end),
                         category: AB_TESTS_ANNOTATION_CATEGORY
                     }));
 
