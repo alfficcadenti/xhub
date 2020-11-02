@@ -533,10 +533,10 @@ describe('makeSuccessRatesObjects()', () => {
 
     it('creates an array with each object and the expected format', () => {
         const pageViewsMockResults = [
-            {'aggregatedData': [], 'minValue': 57.53, 'pageBrand': 'Expedia', 'pageName': 'Home To Search Page (SERP)'},
-            {'aggregatedData': [], 'minValue': 57.53, 'pageBrand': 'Expedia', 'pageName': 'Search (SERP) To Property Page (PDP)'},
-            {'aggregatedData': [], 'minValue': 57.53, 'pageBrand': 'Expedia', 'pageName': 'Property (PDP) To Checkout Page (CKO)'},
-            {'aggregatedData': [], 'minValue': 57.53, 'pageBrand': 'Expedia', 'pageName': 'Checkout (CKO) To Checkout Confirmation Page'}
+            {'aggregatedData': [], 'minValue': 92.96, 'pageBrand': 'Expedia', 'pageName': 'Home To Search Page (SERP)'},
+            {'aggregatedData': [], 'minValue': 92.96, 'pageBrand': 'Expedia', 'pageName': 'Search (SERP) To Property Page (PDP)'},
+            {'aggregatedData': [], 'minValue': 92.96, 'pageBrand': 'Expedia', 'pageName': 'Property (PDP) To Checkout Page (CKO)'},
+            {'aggregatedData': [], 'minValue': 92.96, 'pageBrand': 'Expedia', 'pageName': 'Checkout (CKO) To Checkout Confirmation Page'}
         ];
 
         expect(makeSuccessRatesObjects(successRatesMockData, start, end, EXPEDIA_BRAND, EXPEDIA_BRAND)).to.eql(pageViewsMockResults);
