@@ -7,6 +7,7 @@ import {
     EXPEDIA_PARTNER_SERVICES_BRAND,
     HOTELS_COM_BRAND,
     VRBO_BRAND,
+    SUPPRESSED_BRANDS
 } from '../../constants';
 import {useIsMount} from '../hooks';
 import {getFilters, getBrandQueryParam, getQueryString, getRevLoss} from './impulseHandler';
@@ -134,7 +135,9 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
             });
     };
     useEffect(() => {
-        if (isMount) {
+        if (SUPPRESSED_BRANDS.includes(globalBrandName)) {
+            setError(`Booking data for ${globalBrandName} is not yet available. The following brands are supported at this time: "Expedia", "Hotels.com Retail", and "Expedia Partner Solutions".`);
+        } else if (isMount) {
             getData();
             getFilter();
             getBrandsFilterData();
