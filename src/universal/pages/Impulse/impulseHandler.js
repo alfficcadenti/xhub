@@ -1,12 +1,16 @@
 import {
     ALL_BRAND_GROUP,
-    EGENCIA_BRAND
+    EGENCIA_BRAND,
+    SUPPRESSED_BRANDS,
+    SUPPRESSED_LOBS
 } from '../../constants';
 
-export const getFilters = (data = [], typeOfFilter) => data.filter((item) => item.tag === typeOfFilter).map((item) => item.values)[0].map((a) => ({
-    value: a,
-    label: a
-})).sort((A, B) => A.value.localeCompare(B.value));
+
+export const getFilters = (data = [], typeOfFilter) =>
+    data.filter((item) => item.tag === typeOfFilter).map((item) => item.values)[0].map((a) => ({
+        value: a,
+        label: a
+    })).filter((item) => (!SUPPRESSED_BRANDS.includes(item.value) && !SUPPRESSED_LOBS.includes(item.value))).sort((A, B) => A.value.localeCompare(B.value));
 
 export const getFiltersForMultiKeys = (keys = [], data = {}, typeOfFilter) => keys
     .flatMap((key) => data[key]
@@ -31,7 +35,7 @@ export const getRevLoss = (incident) => {
     if (incident.estimatedImpact === null) {
         return 'NA';
     }
-    return incident.estimatedImpact.map((impacts) => impacts.lobs.map((losses) => losses.revenueLoss !== 'NA' ? parseFloat(losses.revenueLoss) : 'NA')[0]).reduce((a, b) => a + b, 0);
+    return [].concat(...incident.estimatedImpact.map((impacts) => impacts.lobs.map((losses) => losses.revenueLoss !== 'NA' ? parseFloat(losses.revenueLoss) : 'NA'))).reduce((a, b) => a + b, 0);
 };
 
 export const getQueryString = (start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, selectedBookingTypeMulti) => {

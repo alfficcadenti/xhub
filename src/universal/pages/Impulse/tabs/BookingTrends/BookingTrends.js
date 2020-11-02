@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import {
     Area,
-    AreaChart,
+    Bar,
+    ComposedChart,
     CartesianGrid,
     Legend,
     ReferenceArea, ReferenceLine,
@@ -14,19 +15,24 @@ import './styles.less';
 import moment from 'moment';
 import ReferenceLabel from '../../../../components/ReferenceLabel';
 
-const BOOKING_CHART_COLOR = '#1478F7';
+const BOOKING_CHART_COLOR = '#1B5CAF';
 const PREDICTION_CHART_COLOR = '#c9405b';
 const PREDICTION_COUNT = 'Prediction Counts';
 const BOOKING_COUNT = 'Booking Counts';
+const AreaChartType = 'Area';
+const BarChartType = 'Bar';
+
 const IMPULSE_CHART_TYPE = [
     {
         name: BOOKING_COUNT,
         color: BOOKING_CHART_COLOR,
+        chartType: BarChartType,
         key: 'bookingChart'
     },
     {
         name: PREDICTION_COUNT,
         color: PREDICTION_CHART_COLOR,
+        chartType: AreaChartType,
         key: 'predictionChart'
     }
 ];
@@ -56,7 +62,7 @@ const BookingTrends = ({data = [], startDateTime, endDateTime, setStartDateTime,
     let [daysDifference, setDaysDifference] = useState(moment(endDateTime).diff(moment(startDateTime), 'days'));
     const getGradient = ({key, color}) => {
         const id = `color${key}`;
-        return (<linearGradient key={`${key}Gradient`} id={id} x1="0" y1="0" x2="0" y2="1">
+        return (<linearGradient key={`${key}Gradient`} id={id} x1="0" y1="0" x2="0" y2="1" spreadMethod="reflect">
             <stop offset="5%" stopColor={color} stopOpacity={key === 'bookingChart' ? 0.8 : 0.2}/>
             <stop offset="95%" stopColor={color} stopOpacity={0}/>
         </linearGradient>);
@@ -88,9 +94,9 @@ const BookingTrends = ({data = [], startDateTime, endDateTime, setStartDateTime,
         setEndDateTime(moment(nextRefAreaRight).utc());
         setChartSliced(true);
     };
-    const renderChart = ({key, color, name}) => {
+    const renderChart = ({key, color, name, chartType}) => {
         const fill = `url(#color${key})`;
-        return (<Area
+        return chartType === 'Area' ? <Area
             type="monotone"
             dataKey={name}
             stroke={color}
@@ -99,7 +105,7 @@ const BookingTrends = ({data = [], startDateTime, endDateTime, setStartDateTime,
             yAxisId={1}
             key={`area${name}`}
             animationDuration={300}
-        />);
+        /> : <Bar dataKey={name} fillOpacity={1} yAxisId={1} key={`bar${name}`} fill={fill} animationDuration={300}/>;
     };
     return (
         <div className="bookings-container-box">
@@ -114,8 +120,7 @@ const BookingTrends = ({data = [], startDateTime, endDateTime, setStartDateTime,
                 </button>
             </div>
             <ResponsiveContainer width="100%" height="70%">
-                <AreaChart
-                    syncId="pageviews-widget"
+                <ComposedChart
                     data={newData}
                     margin={{top: 10, right: 30, left: 0, bottom: 0}}
                     onMouseDown={(e) => e && setRefAreaLeft(e.activeLabel)}
@@ -150,7 +155,7 @@ const BookingTrends = ({data = [], startDateTime, endDateTime, setStartDateTime,
                             : null
                     }
                     <Legend/>
-                </AreaChart>
+                </ComposedChart>
             </ResponsiveContainer>
         </div>
     );
