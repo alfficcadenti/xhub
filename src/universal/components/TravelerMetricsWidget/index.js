@@ -120,7 +120,7 @@ const TravelerMetricsWidget = ({
                                     <ReferenceLine
                                         key={uuid()}
                                         yAxisId={yAxisId}
-                                        x={annotation.bucketTime}
+                                        x={annotation.time}
                                         label={<ReferenceLabel annotation={annotation} />}
                                         stroke={getAnnotationStrokeColor(annotation.category)}
                                         strokeDasharray="3 3"
