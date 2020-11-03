@@ -30,8 +30,7 @@ import {
     getUniqueByProperty,
     addSuggestionType,
     getAnnotationsFilter,
-    filterNewSelectedItems,
-    bucketTime
+    filterNewSelectedItems
 } from '../utils';
 import {makePageViewLoBObjects, makePageViewObjects} from './pageViewsUtils';
 import './styles.less';
@@ -283,7 +282,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                         ...annotation,
                         tags: [annotation.productName, annotation.platform],
                         time: moment(annotation.openedAt).format(PAGE_VIEWS_DATE_FORMAT),
-                        bucketTime: moment(annotation.openedAt).format(PAGE_VIEWS_DATE_FORMAT),
+                        bucketTime: moment.utc(annotation.openedAt).valueOf(),
                         category: 'deployment'
                     }));
 
@@ -310,7 +309,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     const uniqueTickets = getUniqueByProperty(data, 'id');
                     const adjustedUniqueTickets = adjustTicketProperties(uniqueTickets, INCIDENT_ANNOTATION_CATEGORY)
                         .map((incident) => {
-                            incident.bucketTime = bucketTime(incident.openDate, PAGE_VIEWS_DATE_FORMAT, start, end);
+                            incident.bucketTime = moment.utc(incident.openDate).valueOf();
                             incident.time = moment.utc(incident.openDate).local().isValid() ? moment.utc(incident.openDate).local().format(PAGE_VIEWS_DATE_FORMAT) : '-';
                             incident.category = INCIDENT_ANNOTATION_CATEGORY;
                             return incident;
@@ -349,7 +348,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                         ...abTest,
                         status: abTest.abTestDetails.status,
                         time: moment.utc(abTest.openedAt).local().isValid() ? moment.utc(abTest.openedAt).local().format(PAGE_VIEWS_DATE_FORMAT) : '-',
-                        bucketTime: bucketTime(abTest.openedAt, PAGE_VIEWS_DATE_FORMAT, start, end),
+                        bucketTime: moment.utc(abTest.openedAt).valueOf(),
                         category: AB_TESTS_ANNOTATION_CATEGORY
                     }));
 

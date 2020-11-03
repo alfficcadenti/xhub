@@ -92,6 +92,8 @@ const TravelerMetricsWidget = ({
                             <XAxis
                                 allowDataOverflow
                                 dataKey="time"
+                                type="number"
+                                scale="time"
                                 minTickGap={tickGap}
                                 tickFormatter={formatXAxis}
                                 domain={[chartLeft, chartRight]}

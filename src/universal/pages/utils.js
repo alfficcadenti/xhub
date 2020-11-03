@@ -321,7 +321,7 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
                     } else {
                         aggregatedData.push({
                             label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
-                            time,
+                            time: moment.utc(time).valueOf(),
                             momentTime,
                             value: brandWiseSuccessRateData.rate === null ? null : parseFloat((brandWiseSuccessRateData.rate || 0).toFixed(2))
                         });
@@ -350,7 +350,7 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
                             } else {
                                 aggregatedData.push({
                                     label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
-                                    time,
+                                    time: moment.utc(time).valueOf(),
                                     momentTime,
                                     [valueKey]: rate === null ? null : parseFloat((rate || 0).toFixed(2))
                                 });
