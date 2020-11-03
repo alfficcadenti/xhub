@@ -31,7 +31,7 @@ const CustomTooltip = ({active, payload}) => {
     return null;
 };
 
-const formatXAxis = (date) => moment(date).format('MM/DD hh:mm');
+const formatXAxis = (date) => moment(date).format('MM/DD HH:mm');
 
 const renderHeader = (title, helpText) => (
     <h3>

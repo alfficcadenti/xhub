@@ -43,7 +43,7 @@ const mapTickets = (t) => {
     return ({
         Ticket: `<a href="https://jira.expedia.biz/browse/${t.id}" target="_blank">${t.id}</a>`,
         Priority: t.priority,
-        Opened: !t.createdDate ? '-' : moment(t.createdDate).format('YYYY-MM-DD hh:mm'),
+        Opened: !t.createdDate ? '-' : moment(t.createdDate).format('YYYY-MM-DD HH:mm'),
         'Epic Name': t.summary,
         'Owning Org': t.owningOrganization,
         'RC Owner': t.rootCauseOwner,
