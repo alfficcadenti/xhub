@@ -1,7 +1,6 @@
 import React from 'react';
 import {expect} from 'chai';
 import {shallow} from 'enzyme';
-import 'moment-timezone';
 import moment from 'moment';
 import AnnotationsFilterPanel from '../index';
 

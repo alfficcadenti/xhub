@@ -10,6 +10,7 @@ import {formatCSRData} from './utils';
 import {checkResponse, getBrand, isNotEmptyString} from '../utils';
 import {useQueryParamChange, useSelectedBrand} from '../hooks';
 
+
 const LandingPage = (props) => {
     const selectedBrands = props.selectedBrands[0] === EG_BRAND
         ? BRANDS.map((brand) => brand.landingBrand).filter(isNotEmptyString)

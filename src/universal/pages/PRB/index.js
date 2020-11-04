@@ -3,7 +3,6 @@ import React, {useState, useEffect, useCallback} from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
 import qs from 'query-string';
 import moment from 'moment';
-import 'moment-timezone';
 import {Navigation} from '@homeaway/react-navigation';
 import {SVGIcon} from '@homeaway/react-svg';
 import {FILTER__16} from '@homeaway/svg-defs';
