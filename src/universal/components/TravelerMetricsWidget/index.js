@@ -92,6 +92,8 @@ const TravelerMetricsWidget = ({
                             <XAxis
                                 allowDataOverflow
                                 dataKey="time"
+                                type="number"
+                                scale="time"
                                 minTickGap={tickGap}
                                 tickFormatter={formatXAxis}
                                 domain={[chartLeft, chartRight]}
@@ -118,7 +120,7 @@ const TravelerMetricsWidget = ({
                                     <ReferenceLine
                                         key={uuid()}
                                         yAxisId={yAxisId}
-                                        x={annotation.bucketTime}
+                                        x={annotation.time}
                                         label={<ReferenceLabel annotation={annotation} />}
                                         stroke={getAnnotationStrokeColor(annotation.category)}
                                         strokeDasharray="3 3"

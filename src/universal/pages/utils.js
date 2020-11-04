@@ -282,21 +282,6 @@ export const filterNewSelectedItems = (input, key) => {
         : [];
 };
 
-// eslint-disable-next-line complexity
-export const bucketTime = (date, format, intervalStartDate, intervalEndDate) => {
-    let localDate = moment.utc(date).local().isValid() ? moment.utc(date).local() : moment(date);
-    if (moment().diff(intervalStartDate, 'days') >= 365) {
-        return localDate.startOf('day').format(format);
-    } else if (moment().diff(intervalStartDate, 'days') >= 90) {
-        return localDate.startOf('hour').format(format);
-    } else if (intervalEndDate.diff(intervalStartDate) >= 86459999 && intervalEndDate.diff(intervalStartDate) < 518459999) {
-        return moment.utc(date).local().set('minute', (Math.floor(moment(date).minutes() / 10) * 10)).format(format);
-    } else if (intervalEndDate.diff(intervalStartDate) >= 518459999) {
-        return localDate.startOf('hour').format(format);
-    }
-    return localDate.format(format);
-};
-
 export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pageBrand = '', selectedBrand = '', lobs = []) => {
     let minValue;
     const successRateFilter = ({brand, lineOfBusiness}) => (
@@ -321,7 +306,7 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
                     } else {
                         aggregatedData.push({
                             label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
-                            time,
+                            time: moment.utc(time).valueOf(),
                             momentTime,
                             value: brandWiseSuccessRateData.rate === null ? null : parseFloat((brandWiseSuccessRateData.rate || 0).toFixed(2))
                         });
@@ -350,7 +335,7 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
                             } else {
                                 aggregatedData.push({
                                     label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
-                                    time,
+                                    time: moment.utc(time).valueOf(),
                                     momentTime,
                                     [valueKey]: rate === null ? null : parseFloat((rate || 0).toFixed(2))
                                 });

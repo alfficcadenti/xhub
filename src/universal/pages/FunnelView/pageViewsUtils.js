@@ -20,7 +20,7 @@ export const makePageViewLoBObjects = (data = [], start, end, pageBrand = '') =>
                     aggregatedData.push({
                         ...viewsByLoB,
                         label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
-                        time: momentTime.format(PAGE_VIEWS_DATE_FORMAT),
+                        time: moment.utc(time).valueOf(),
                         momentTime: momentTime.format(),
                     });
                 }
@@ -42,7 +42,7 @@ export const makePageViewObjects = (data = [], start, end, pageBrand = '') => {
                 if (momentTime.isBetween(start, end, 'minutes', '[]')) {
                     aggregatedData.push({
                         label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
-                        time: momentTime.format(PAGE_VIEWS_DATE_FORMAT),
+                        time: moment.utc(time).valueOf(),
                         momentTime: momentTime.format(),
                         value: currentPageViews.views
                     });

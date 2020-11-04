@@ -19,8 +19,7 @@ import {
     DEPLOYMENT_ANNOTATION_CATEGORY,
     INCIDENT_ANNOTATION_CATEGORY,
     AB_TESTS_ANNOTATION_CATEGORY,
-    LOB_LIST,
-    PAGE_VIEWS_DATE_FORMAT,
+    LOB_LIST
 } from '../../constants';
 import {
     checkResponse,
@@ -30,8 +29,7 @@ import {
     getUniqueByProperty,
     addSuggestionType,
     getAnnotationsFilter,
-    filterNewSelectedItems,
-    bucketTime
+    filterNewSelectedItems
 } from '../utils';
 import {makePageViewLoBObjects, makePageViewObjects} from './pageViewsUtils';
 import './styles.less';
@@ -282,8 +280,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     const adjustedAnnotations = fetchedAnnotations.map((annotation) => ({
                         ...annotation,
                         tags: [annotation.productName, annotation.platform],
-                        time: moment(annotation.openedAt).format(PAGE_VIEWS_DATE_FORMAT),
-                        bucketTime: moment(annotation.openedAt).format(PAGE_VIEWS_DATE_FORMAT),
+                        time: moment.utc(annotation.openedAt).valueOf(),
                         category: 'deployment'
                     }));
 
@@ -310,8 +307,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     const uniqueTickets = getUniqueByProperty(data, 'id');
                     const adjustedUniqueTickets = adjustTicketProperties(uniqueTickets, INCIDENT_ANNOTATION_CATEGORY)
                         .map((incident) => {
-                            incident.bucketTime = bucketTime(incident.openDate, PAGE_VIEWS_DATE_FORMAT, start, end);
-                            incident.time = moment.utc(incident.openDate).local().isValid() ? moment.utc(incident.openDate).local().format(PAGE_VIEWS_DATE_FORMAT) : '-';
+                            incident.time = moment.utc(incident.openDate).local().isValid() ? moment.utc(incident.openDate).valueOf() : '-';
                             incident.category = INCIDENT_ANNOTATION_CATEGORY;
                             return incident;
                         });
@@ -348,8 +344,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     const adjustedAbTests = data.map((abTest) => ({
                         ...abTest,
                         status: abTest.abTestDetails.status,
-                        time: moment.utc(abTest.openedAt).local().isValid() ? moment.utc(abTest.openedAt).local().format(PAGE_VIEWS_DATE_FORMAT) : '-',
-                        bucketTime: bucketTime(abTest.openedAt, PAGE_VIEWS_DATE_FORMAT, start, end),
+                        time: moment.utc(abTest.openedAt).local().isValid() ? moment.utc(abTest.openedAt).valueOf() : '-',
                         category: AB_TESTS_ANNOTATION_CATEGORY
                     }));
 
