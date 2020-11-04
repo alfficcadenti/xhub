@@ -1,6 +1,6 @@
 import {PAGE_VIEWS_DATE_FORMAT, PAGES_LIST, LOB_LIST, TIMEZONE_ABBR} from '../../constants';
 import moment from 'moment';
-import 'moment-timezone';
+
 
 export const makePageViewLoBObjects = (data = [], start, end, pageBrand = '') => {
     return PAGES_LIST.map(({name, label}) => {
@@ -20,8 +20,7 @@ export const makePageViewLoBObjects = (data = [], start, end, pageBrand = '') =>
                     aggregatedData.push({
                         ...viewsByLoB,
                         label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
-                        time: moment.utc(time).valueOf(),
-                        momentTime: momentTime.format(),
+                        time: moment.utc(time).valueOf()
                     });
                 }
             }
@@ -43,7 +42,6 @@ export const makePageViewObjects = (data = [], start, end, pageBrand = '') => {
                     aggregatedData.push({
                         label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
                         time: moment.utc(time).valueOf(),
-                        momentTime: momentTime.format(),
                         value: currentPageViews.views
                     });
                 }

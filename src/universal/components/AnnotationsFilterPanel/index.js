@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, {useEffect, useState} from 'react';
-import 'moment-timezone';
 import './styles.less';
 import {Checkbox} from '@homeaway/react-form-components';
 import Select from 'react-select';

@@ -1,7 +1,6 @@
 /* eslint-disable no-use-before-define */
 import React, {useState, useEffect} from 'react';
 import moment from 'moment';
-import 'moment-timezone';
 import LoadingContainer from '../../components/LoadingContainer';
 import DatePicker from '../../components/DatePicker/index';
 import UniversalSearch from '../../components/UniversalSearch';

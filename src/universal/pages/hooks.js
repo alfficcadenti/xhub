@@ -2,7 +2,6 @@ import {useEffect, useRef, useState} from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
 import qs from 'query-string';
 import moment from 'moment';
-import 'moment-timezone';
 import {checkResponse} from './utils';
 
 

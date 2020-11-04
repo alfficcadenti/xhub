@@ -1,16 +1,12 @@
 import React, {PureComponent} from 'react';
-import moment from 'moment';
-import 'moment-timezone';
 import {
     AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
 import HelpText from '../../../components/HelpText/HelpText';
-import {BRANDS} from '../../../constants';
+import {BRANDS, TIMEZONE_ABBR, EG_BRAND} from '../../../constants';
 import {getBrand, isNotEmptyString} from '../../utils';
 import './styles.less';
 
-const TIMEZONE_OFFSET = (new Date()).getTimezoneOffset();
-const TIMEZONE_ABBR = moment.tz.zone(moment.tz.guess()).abbr(TIMEZONE_OFFSET);
 
 export default class TotalChart extends PureComponent {
     renderGradient = (brand) => {
@@ -38,7 +34,7 @@ export default class TotalChart extends PureComponent {
     render() {
         const {brands, data} = this.props;
         const allBrands = BRANDS.map((brand) => brand.landingBrand).filter(isNotEmptyString);
-        const selectedBrands = brands.includes('Expedia Group') ? allBrands : brands;
+        const selectedBrands = brands.includes(EG_BRAND) ? allBrands : brands;
         return (
             <div className="total-bookings-container">
                 <h2 className="total-bookings-title">

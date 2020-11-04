@@ -1,7 +1,6 @@
 /* eslint-disable no-use-before-define */
 import React, {useState, useEffect, useCallback} from 'react';
 import moment from 'moment';
-import 'moment-timezone';
 import {Divider} from '@homeaway/react-collapse';
 import {Checkbox} from '@homeaway/react-form-components';
 import {Navigation} from '@homeaway/react-navigation';

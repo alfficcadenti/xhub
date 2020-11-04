@@ -2,7 +2,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
 import moment from 'moment';
-import 'moment-timezone';
 import Select from 'react-select';
 import TravelerMetricsWidget from '../../components/TravelerMetricsWidget';
 import LoadingContainer from '../../components/LoadingContainer';

@@ -2,7 +2,6 @@ import {expect} from 'chai';
 import {makePageViewLoBObjects, makePageViewObjects} from '../pageViewsUtils';
 import {EXPEDIA_BRAND, PAGES_LIST} from '../../../constants';
 import moment from 'moment';
-import 'moment-timezone';
 import {pageViewLoBEndpoint, pageViewMockData} from '../mockData';
 import {emptyMockResults, mockResults, pageViewsMockResults, emptyPageViewsMockResults} from './mockResults';
 
