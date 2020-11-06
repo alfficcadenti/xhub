@@ -558,6 +558,11 @@
             "route": "require:./routes/pages/quality-metrics",
             "component": "require:../universal/components/App/ServerApp.js",
             "template": "templates/welcome.hbs"
+          },
+          {
+            "route": "require:./routes/pages/outage-report",
+            "component": "require:../universal/components/App/ServerApp.js",
+            "template": "templates/welcome.hbs"
           }
         ]
       }

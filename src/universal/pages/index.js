@@ -19,6 +19,14 @@ export default [
         component: require('./LandingPage'),
         hidden: true
     },
+    {
+        category: '',
+        id: 'outage-report',
+        link: '/outage-report',
+        text: 'Outage Report',
+        component: require('./OutageReport'),
+        hidden: true
+    },
     // AAT Dashboards
     {
         category: AAT,
