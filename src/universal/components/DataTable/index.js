@@ -13,6 +13,7 @@ import {Checkbox} from '@homeaway/react-form-components';
 import './DataTable.less';
 import {Dropdown, DropdownItem} from '@homeaway/react-dropdown';
 import NoResults from '../NoResults';
+import {getCellStringValue} from './utils';
 
 const sanitizeOption = {
     allowedAttributes: Object.assign(sanitizeHtml.defaults.allowedAttributes, {div: ['value']})
@@ -88,15 +89,13 @@ class DataTable extends Component {
     }
 
     getCSVData = () => this.state.data.map((row) => {
-        const csvRows = [];
         const columns = this.state.csvColumns.length > 0
             ? this.state.csvColumns
             : this.state.displayColumns;
-        columns.forEach((column) => {
-            const value = row[column];
-            csvRows.push(value ? String(value).replace(/<[^>]*>?/gm, '') : value);
-        });
-        return csvRows;
+        return columns.reduce((acc, column) => {
+            acc.push(getCellStringValue(row[column]));
+            return acc;
+        }, []);
     })
 
     onClickSort = (column) => {
