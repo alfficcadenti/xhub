@@ -1,7 +1,7 @@
 import {login, logout} from './oauth';
 import {defects, incidents, incidentsV2, epsIncidents, prbs, portfolio} from './dataService';
 import {bookingsUserEvents, pageViewsUserEvents, pageViewsLoBUserEvents, impulseBookingDataService, impulseBrandsService, impulseFiltersService, impulseRevloss, funnelViewUserEvents, csrUserEvents} from './userEventsService';
-import {changeRequests, annotations, productMapping} from './changeRequestService';
+import {changeRequests, annotations, productMapping, abTests} from './changeRequestService';
 
 const apiRoutes = [
     // oauth
@@ -27,7 +27,8 @@ const apiRoutes = [
     // change request service
     changeRequests,
     annotations,
-    productMapping
+    productMapping,
+    abTests
 ];
 
 export default apiRoutes;
