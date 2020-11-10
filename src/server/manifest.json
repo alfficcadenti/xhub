@@ -176,6 +176,11 @@
               "method": "GET",
               "operation": "GET_impulse_booking_revloss"
             },
+            "bookingsImpulseRevlossV2": {
+              "path": "/v2/bookings/revenueLoss",
+              "method": "GET",
+              "operation": "GET_impulse_booking_revlossV2"
+            },
             "funnelView": {
               "path": "/v1/funnelView",
               "method": "GET",
@@ -231,6 +236,11 @@
               "path": "/v1/bookings/revenueLoss",
               "method": "GET",
               "operation": "GET_impulse_booking_revloss"
+            },
+            "bookingsImpulseRevlossV2": {
+              "path": "/v2/bookings/revenueLoss",
+              "method": "GET",
+              "operation": "GET_impulse_booking_revlossV2"
             },
             "funnelView": {
               "path": "/v1/funnelView",
@@ -288,6 +298,11 @@
               "method": "GET",
               "operation": "GET_impulse_booking_revloss"
             },
+            "bookingsImpulseRevlossV2": {
+              "path": "/v2/bookings/revenueLoss",
+              "method": "GET",
+              "operation": "GET_impulse_booking_revlossV2"
+            },
             "funnelView": {
               "path": "/v1/funnelView",
               "method": "GET",
@@ -333,6 +348,11 @@
               "path": "/v1/bookings/revenueLoss",
               "method": "GET",
               "operation": "GET_impulse_booking_revloss"
+            },
+            "bookingsImpulseRevlossV2": {
+              "path": "/v2/bookings/revenueLoss",
+              "method": "GET",
+              "operation": "GET_impulse_booking_revlossV2"
             },
             "funnelView": {
               "path": "/v1/funnelView",

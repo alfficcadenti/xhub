@@ -1,6 +1,6 @@
 import {login, logout} from './oauth';
 import {defects, incidents, incidentsV2, epsIncidents, prbs, portfolio} from './dataService';
-import {bookingsUserEvents, pageViewsUserEvents, pageViewsLoBUserEvents, impulseBookingDataService, impulseBrandsService, impulseFiltersService, impulseRevloss, funnelViewUserEvents, csrUserEvents} from './userEventsService';
+import {bookingsUserEvents, pageViewsUserEvents, pageViewsLoBUserEvents, impulseBookingDataService, impulseBrandsService, impulseFiltersService, impulseRevloss, impulseRevlossV2, funnelViewUserEvents, csrUserEvents} from './userEventsService';
 import {changeRequests, annotations, productMapping, abTests} from './changeRequestService';
 
 const apiRoutes = [
@@ -22,6 +22,7 @@ const apiRoutes = [
     impulseBrandsService,
     impulseFiltersService,
     impulseRevloss,
+    impulseRevlossV2,
     funnelViewUserEvents,
     csrUserEvents,
     // change request service

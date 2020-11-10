@@ -55,6 +55,14 @@ module.exports.impulseRevloss = {
     config: getConfig('impulse-revloss-api-v1-get'),
     handler: getHandler(Object.assign(getHandlerParams('bookingsImpulseRevloss'), {pathParam: 'impact'}))
 };
+//This proxy is for Impulse SNow API. We will remove this proxy once we get the endpoint accessible through
+// Expedia Internet.
+module.exports.impulseRevlossV2 = {
+    method: 'GET',
+    path: '/v2/bookings/revenueLoss/{impact*}',
+    config: getConfig('impulse-revloss-api-v2-get'),
+    handler: getHandler(Object.assign(getHandlerParams('bookingsImpulseRevlossV2'), {pathParam: 'impact'}))
+};
 
 module.exports.funnelViewUserEvents = {
     method: 'GET',
