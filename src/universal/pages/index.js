@@ -47,6 +47,15 @@ export default [
     },
     {
         category: AAT,
+        id: 'fci',
+        link: '/fci',
+        text: 'FCI',
+        component: require('./Fci'),
+        brands: [EXPEDIA_BRAND],
+        hidden: true
+    },
+    {
+        category: AAT,
         id: 'funnel-view',
         link: '/funnel-view',
         text: 'Page Views',

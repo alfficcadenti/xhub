@@ -23,8 +23,8 @@ FilterDropDown.defaultProps = {
 
 FilterDropDown.propTypes = {
     id: PropTypes.string,
-    selectedValue: PropTypes.string,
-    list: PropTypes.arrayOf(PropTypes.string).isRequired,
+    selectedValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    list: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])).isRequired,
     onClickHandler: PropTypes.func.isRequired,
     className: PropTypes.string
 };

@@ -1,0 +1,76 @@
+@import '../../mixins.less';
+
+.fci-container {
+    .form-container {
+        margin-bottom: @spacing-2x;
+        background: @color-bg-contrast;
+        padding: @spacing-1x;
+        border-radius: @spacing-1x;
+
+        .datetime-range-picker {
+            height: @spacing-7x;
+            margin-bottom: @spacing-1x;
+            display: inline;
+        }
+
+        .lob-select-container {
+            width: 460px;
+            height: @spacing-7x;
+            margin-bottom: @spacing-1x;
+            display: inline-block;
+
+            .lob-select__control {
+                height: @spacing-7x;
+                border-color: @border-contrast;
+                border-radius: @spacing-1x;
+            }
+        }
+
+        .error-code-dropdown .Dropdown__toggle {
+            margin-right: @spacing-1x;
+            margin-left: @spacing-1x;
+            .dropdown-button(160px);
+        }
+
+        .Dropdown__menu {
+            max-height: 300px;
+            overflow-y: scroll;
+        }
+
+        .apply-btn {
+            margin-left: @spacing-1x;
+            height: @spacing-7x;
+        }
+    }
+
+    .flowchart-container {
+        height: 800px;
+        width: 100%;
+        border: 1px solid @border-color;
+    }
+
+    .log-link {
+        color: @color-link-default;
+        cursor: pointer;
+
+        &:hover {
+            color: @color-link-hover;
+        }
+    }
+
+    .error-cell {
+        color: @color-text-inverse;
+        background: @color-negative;
+    }
+
+    .success-cell {
+        color: @color-text-inverse;
+        background: @color-positive;
+    }
+
+    .Modal__body {
+        .Navigation {
+            height: @spacing-9x;
+        }
+    }
+}

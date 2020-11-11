@@ -1,5 +1,7 @@
 import ServiceClient from '@vrbo/service-client';
 
+const clients = {};
+
 module.exports.getConfig = (id) => ({
     id,
     log: {collect: true}
@@ -10,11 +12,15 @@ module.exports.getHandler = ({configKey, routeKey, serviceName, timeout = 20000,
     if (testData && process.env.EXPEDIA_ENVIRONMENT !== 'prod') {
         return await testData(req);
     }
-    try {
-        const {hostname, protocol, routes} = req.server.app.config.get(configKey);
+    const {hostname, protocol, routes} = req.server.app.config.get(configKey);
+    const clientKey = `${serviceName}${hostname}${protocol}`;
+    // eslint-disable-next-line complexity
+    const makeRequest = async () => {
         const {method, path, operation} = routes[routeKey];
-        const client = ServiceClient.create(serviceName, {hostname, protocol});
-        const {payload, statusCode} = await client.request({
+        if (!clients[clientKey]) {
+            clients[clientKey] = ServiceClient.create(serviceName, {hostname, protocol});
+        }
+        const {payload, statusCode} = await clients[clientKey].request({
             method,
             path: pathParam ? `${path}/${req.params[pathParam] || ''}` : path,
             operation,
@@ -28,8 +34,17 @@ module.exports.getHandler = ({configKey, routeKey, serviceName, timeout = 20000,
             return {};
         }
         return payload;
-    } catch (e) {
-        req.log('[ERROR]', e);
-        return e;
+    };
+    try {
+        return makeRequest();
+    } catch (e1) {
+        try {
+            // retry
+            clients[clientKey] = ServiceClient.create(serviceName, {hostname, protocol});
+            return makeRequest();
+        } catch (e2) {
+            req.log('[ERROR]', e2);
+            return e2;
+        }
     }
 };

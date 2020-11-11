@@ -125,6 +125,53 @@
           }
         }
       },
+      "userEventsAnalysisServiceConfig": {
+        "$filter": "env.EXPEDIA_ENVIRONMENT",
+        "$default": {
+          "hostname": "user-events-analysis-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black",
+          "protocol": "http:",
+          "routes": {
+            "fcis": {
+              "path": "/getCheckoutFailures",
+              "method": "GET",
+              "operation": "GET_user_events_analysis_api_v1"
+            }
+          }
+        },
+        "test": {
+          "hostname": "user-events-analysis-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black",
+          "protocol": "http:",
+          "routes": {
+            "fcis": {
+              "path": "/getCheckoutFailures",
+              "method": "GET",
+              "operation": "GET_user_events_analysis_api_v1"
+            }
+          }
+        },
+        "int": {
+          "hostname": "user-events-analysis-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black",
+          "protocol": "http:",
+          "routes": {
+            "fcis": {
+              "path": "/getCheckoutFailures",
+              "method": "GET",
+              "operation": "GET_user_events_analysis_api_v1"
+            }
+          }
+        },
+        "prod": {
+          "hostname": "user-events-analysis-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black",
+          "protocol": "http:",
+          "routes": {
+            "fcis": {
+              "path": "/getCheckoutFailures",
+              "method": "GET",
+              "operation": "GET_user_events_analysis_api_v1"
+            }
+          }
+        }
+      },
       "userEventsApiServiceConfig": {
         "$filter": "env.EXPEDIA_ENVIRONMENT",
         "$default": {
@@ -571,6 +618,11 @@
           },
           {
             "route": "require:./routes/pages/checkout-fci",
+            "component": "require:../universal/components/App/ServerApp.js",
+            "template": "templates/welcome.hbs"
+          },
+          {
+            "route": "require:./routes/pages/fci",
             "component": "require:../universal/components/App/ServerApp.js",
             "template": "templates/welcome.hbs"
           },
