@@ -30,16 +30,16 @@ describe('SuccessRates Util', () => {
         const end = '2020-10-22T12:20:00-05:00';
         const lobs = 'H,C,INVALID';
         const {initialStart, initialEnd, initialTimeRange, initialLobs} = getQueryParams(`?start=${start}&end=${end}&lobs=${lobs}`);
-        expect(initialStart.isSame(start, 'day')).to.equal(true);
-        expect(initialEnd.isSame(end, 'day')).to.equal(true);
+        expect(initialStart.isSame(start, 'hour')).to.equal(true);
+        expect(initialEnd.isSame(end, 'hour')).to.equal(true);
         expect(initialTimeRange).to.equal('Custom');
         expect(initialLobs.map(({value}) => value)).to.eql(['H', 'C']);
     });
 
     it('getQueryParams - default', () => {
         const {initialStart, initialEnd, initialTimeRange, initialLobs} = getQueryParams('');
-        expect(initialStart.isSame(moment(), 'day')).to.equal(true);
-        expect(initialEnd.isSame(moment().subtract(6, 'hours'), 'day')).to.equal(true);
+        expect(initialStart.isSame(moment().subtract(6, 'hours'), 'hour')).to.equal(true);
+        expect(initialEnd.isSame(moment(), 'hour')).to.equal(true);
         expect(initialTimeRange).to.equal('Last 6 Hours');
         expect(initialLobs.map(({value}) => value)).to.eql([]);
     });

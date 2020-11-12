@@ -162,7 +162,7 @@
         },
         "prod": {
           "hostname": "user-events-analysis-service-egdp-prod-us-east-1.eglocal.exp-prod.net",
-          "protocol": "https:",
+          "protocol": "http:",
           "routes": {
             "fcis": {
               "path": "/getCheckoutFailures",
