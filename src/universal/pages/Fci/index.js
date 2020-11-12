@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
 import Select from 'react-select';
 import moment from 'moment';
@@ -30,6 +30,7 @@ const Fci = ({selectedBrands}) => {
     const [pendingTimeRange, setPendingTimeRange] = useState(initialTimeRange);
     const [pendingLobs, setPendingLobs] = useState(initialLobs);
     const [pendingErrorCode, setPendingErrorCode] = useState(initialErrorCode);
+    const [prev, setPrev] = useState({start: null, end: null, data: []});
     const [errorCodes, setErrorCodes] = useState([]);
 
     const [lineChartData, setLineChartData] = useState([]);
@@ -49,28 +50,40 @@ const Fci = ({selectedBrands}) => {
         setIsModalOpen(true);
     };
 
+    const processData = useCallback((data) => {
+        const filteredData = data.filter(({timestamp}) => moment(timestamp).isBetween(start, end, '[]', 'minute'));
+        const chart = getLineChartData(start, end, filteredData, selectedErrorCode);
+        setLineChartData(chart.data);
+        setLineChartKeys(chart.keys);
+        setTableData(getTableData(filteredData, chart.keys, handleOpenTraceLog));
+        setErrorCodes(getErrorCodes(filteredData));
+    }, [start, end, selectedErrorCode]);
+
     useEffect(() => {
         setIsLoading(true);
         setError(null);
         const query = getQueryString(start, end, selectedLobs, selectedErrorCode);
-        fetch(`/getCheckoutFailures?${query}`)
-            .then(checkResponse)
-            .then((data) => {
-                const chart = getLineChartData(start, end, data, selectedErrorCode);
-                setLineChartData(chart.data);
-                setLineChartKeys(chart.keys);
-                setTableData(getTableData(data, chart.keys, handleOpenTraceLog));
-                setErrorCodes(getErrorCodes(data));
-                history.push(`${pathname}?selectedBrand=${selectedBrands[0]}&${query}`);
-            })
-            .catch((err) => {
-                setError('Failed to retrieve FCI data. Try refreshing the page. '
-                    + 'If the problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.');
-                // eslint-disable-next-line no-console
-                console.error(err);
-            })
-            .finally(() => setIsLoading(false));
-    }, [start, end, selectedLobs, selectedErrorCode, history, pathname, selectedBrands]);
+        if (!prev.start || !prev.end || start.isBefore(prev.start) || end.isAfter(prev.end)) {
+            fetch(`/getCheckoutFailures?${query}`)
+                .then(checkResponse)
+                .then((data) => {
+                    setPrev({start, end, data});
+                    processData(data);
+                    history.push(`${pathname}?selectedBrand=${selectedBrands[0]}&${query}`);
+                })
+                .catch((err) => {
+                    setError('Failed to retrieve FCI data. Try refreshing the page. '
+                        + 'If the problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.');
+                    // eslint-disable-next-line no-console
+                    console.error(err);
+                })
+                .finally(() => setIsLoading(false));
+        } else {
+            processData(prev.data);
+            setIsLoading(false);
+            history.push(`${pathname}?selectedBrand=${selectedBrands[0]}&${query}`);
+        }
+    }, [start, end, selectedLobs, selectedErrorCode, history, pathname, selectedBrands, prev, processData]);
 
     const handleModalClose = () => {
         setIsModalOpen(false);

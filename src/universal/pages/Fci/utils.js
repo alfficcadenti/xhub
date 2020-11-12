@@ -185,12 +185,11 @@ export const getTableData = (data, keys, onOpenTraceLog) => {
 };
 
 export const getErrorCodes = (data) => {
-    const errorCodes = data.reduce((acc, {errorCode}) => {
-        if (!acc.includes(errorCode)) {
-            acc.push(`${errorCode}`);
-        }
-        return acc.sort();
-    }, []);
+    const errorCodeSet = data.reduce((acc, {errorCode}) => {
+        acc.add(String(errorCode));
+        return acc;
+    }, new Set());
+    const errorCodes = Array.from(errorCodeSet).sort();
     return [ALL_ERROR_CODES, TOP_10_ERROR_CODES, TOP_20_ERROR_CODES, ...errorCodes];
 };
 

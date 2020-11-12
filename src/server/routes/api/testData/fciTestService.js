@@ -108,10 +108,10 @@ const getFciTestData = async (req) => {
     const defaultEnd = moment().toISOString();
     const defaultLobs = [];
     if (!req.url || !req.url.query) {
-        req.url = {query: {start: defaultStart, end: defaultEnd, lobs: defaultLobs, error: null}};
+        req.url = {query: {from: defaultStart, to: defaultEnd, lobs: defaultLobs, error: null}};
     }
-    const start = req.url.query.start || defaultStart;
-    const end = req.url.query.end || defaultEnd;
+    const start = req.url.query.from || defaultStart;
+    const end = req.url.query.to || defaultEnd;
     const lobs = req.url.query.lobs ? req.url.query.lobs.split(',') : defaultLobs;
     return (new Array(52))
         .fill(0)

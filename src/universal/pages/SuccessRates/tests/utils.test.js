@@ -29,7 +29,7 @@ describe('SuccessRates Util', () => {
         const start = '2020-10-22T12:15:00-05:00';
         const end = '2020-10-22T12:20:00-05:00';
         const lobs = 'H,C,INVALID';
-        const {initialStart, initialEnd, initialTimeRange, initialLobs} = getQueryParams(`?start=${start}&end=${end}&lobs=${lobs}`);
+        const {initialStart, initialEnd, initialTimeRange, initialLobs} = getQueryParams(`?from=${start}&to=${end}&lobs=${lobs}`);
         expect(initialStart.isSame(start, 'hour')).to.equal(true);
         expect(initialEnd.isSame(end, 'hour')).to.equal(true);
         expect(initialTimeRange).to.equal('Custom');
