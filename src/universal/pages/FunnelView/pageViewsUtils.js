@@ -1,6 +1,16 @@
 import {PAGE_VIEWS_DATE_FORMAT, PAGES_LIST, LOB_LIST, TIMEZONE_ABBR} from '../../constants';
 import moment from 'moment';
 
+export const buildPageViewsApiQueryString = (start, end, brand, lob = false) => {
+    const dateQuery = start && end
+        ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
+        : '';
+    const baseUrl = lob ? '/v1/pageViewsLoB' : '/v1/pageViews';
+    if (brand === 'eps') {
+        return `${baseUrl}/eps?timeInterval=1${dateQuery}`;
+    }
+    return `${baseUrl}?brand=${brand}&timeInterval=1${dateQuery}`;
+};
 
 export const makePageViewLoBObjects = (data = [], start, end, pageBrand = '') => {
     return PAGES_LIST.map(({name, label}) => {

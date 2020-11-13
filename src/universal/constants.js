@@ -121,7 +121,7 @@ export const BRANDS = [
         label: EXPEDIA_PARTNER_SERVICES_BRAND,
         retailLabel: EXPEDIA_PARTNER_SERVICES_BRAND,
         psrBrand: '',
-        funnelBrand: '',
+        funnelBrand: 'eps',
         landingBrand: EXPEDIA_PARTNER_SERVICES_BRAND,
         portfolioBrand: '',
         color: '#FFC72C'

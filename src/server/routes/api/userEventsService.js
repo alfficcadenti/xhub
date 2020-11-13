@@ -14,6 +14,20 @@ module.exports.bookingsUserEvents = {
     handler: getHandler(getHandlerParams('bookings'))
 };
 
+module.exports.epsPageViewsLoBUserEvents = {
+    method: 'GET',
+    path: '/v1/pageViewsLoB/eps/{param*}',
+    config: getConfig('eps-page-views-lob-api-v1-get'),
+    handler: getHandler(getHandlerParams('epsPageViewsLoB'))
+};
+
+module.exports.epsPageViewsUserEvents = {
+    method: 'GET',
+    path: '/v1/pageViews/eps/{param*}',
+    config: getConfig('eps-page-views-api-v1-get'),
+    handler: getHandler(getHandlerParams('epsPageViews'))
+};
+
 module.exports.pageViewsLoBUserEvents = {
     method: 'GET',
     path: '/v1/pageViewsLoB/{param*}',

@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {makePageViewLoBObjects, makePageViewObjects} from '../pageViewsUtils';
+import {makePageViewLoBObjects, makePageViewObjects, buildPageViewsApiQueryString} from '../pageViewsUtils';
 import {EXPEDIA_BRAND, PAGES_LIST} from '../../../constants';
 import moment from 'moment';
 import {pageViewLoBEndpoint, pageViewMockData} from '../mockData';
@@ -46,3 +46,28 @@ describe('makePageViewObjects()', () => {
         expect(makePageViewObjects(pageViewMockData, start, end, EXPEDIA_BRAND)).to.eql(pageViewsMockResults);
     });
 });
+
+describe('buildPageViewsApiQueryString()', () => {
+    const start = moment('2020-11-12T11:27:00Z');
+    const end = moment('2020-11-12T16:27:00Z');
+    const baseUrl = '/v1/pageViews';
+    const baseLoBUrl = '/v1/pageViewsLoB';
+    const expectedExpediaURL = '?brand=expedia&timeInterval=1&startDate=2020-11-12T11:27:00Z&endDate=2020-11-12T16:27:00Z';
+    const expectedEpsURL = '/eps?timeInterval=1&startDate=2020-11-12T11:27:00Z&endDate=2020-11-12T16:27:00Z';
+    it('returns endpoint for eps', () => {
+        expect(buildPageViewsApiQueryString(start, end, 'eps')).to.be.eql(`${baseUrl}${expectedEpsURL}`);
+    });
+
+    it('returns endpoint for any other brand', () => {
+        expect(buildPageViewsApiQueryString(start, end, 'expedia')).to.be.eql(`${baseUrl}${expectedExpediaURL}`);
+    });
+
+    it('returns lob endpoint for eps', () => {
+        expect(buildPageViewsApiQueryString(start, end, 'eps', true)).to.be.eql(`${baseLoBUrl}${expectedEpsURL}`);
+    });
+
+    it('returns lob endpoint for any other brand', () => {
+        expect(buildPageViewsApiQueryString(start, end, 'expedia', true)).to.be.eql(`${baseLoBUrl}${expectedExpediaURL}`);
+    });
+});
+

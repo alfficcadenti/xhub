@@ -188,6 +188,16 @@
               "method": "GET",
               "operation": "GET_user_events_csr_api_v1"
             },
+            "epsPageViews": {
+              "path": "/v1/pageViews/eps",
+              "method": "GET",
+              "operation": "GET_user_events_eps_pageviews_api_v1"
+            },
+            "epsPageViewsLoB": {
+              "path": "/v1/pageViewsLoB/eps",
+              "method": "GET",
+              "operation": "GET_user_events_eps_pageviews_lob_api_v1"
+            },
             "pageViews": {
               "path": "/v1/pageViews",
               "method": "GET",
@@ -254,6 +264,16 @@
               "method": "GET",
               "operation": "GET_user_events_csr_api_v1"
             },
+            "epsPageViews": {
+              "path": "/v1/pageViews/eps",
+              "method": "GET",
+              "operation": "GET_user_events_eps_pageviews_api_v1"
+            },
+            "epsPageViewsLoB": {
+              "path": "/v1/pageViewsLoB/eps",
+              "method": "GET",
+              "operation": "GET_user_events_eps_pageviews_lob_api_v1"
+            },
             "pageViews": {
               "path": "/v1/pageViews",
               "method": "GET",
@@ -315,6 +335,16 @@
               "method": "GET",
               "operation": "GET_user_events_csr_api_v1"
             },
+            "epsPageViews": {
+              "path": "/v1/pageViews/eps",
+              "method": "GET",
+              "operation": "GET_user_events_eps_pageviews_api_v1"
+            },
+            "epsPageViewsLoB": {
+              "path": "/v1/pageViewsLoB/eps",
+              "method": "GET",
+              "operation": "GET_user_events_eps_pageviews_lob_api_v1"
+            },
             "pageViews": {
               "path": "/v1/pageViews",
               "method": "GET",
@@ -365,6 +395,16 @@
               "path": "/v1/bookings",
               "method": "GET",
               "operation": "GET_user_events_bookings_api_v1"
+            },
+            "epsPageViews": {
+              "path": "/v1/pageViews/eps",
+              "method": "GET",
+              "operation": "GET_user_events_eps_pageviews_api_v1"
+            },
+            "epsPageViewsLoB": {
+              "path": "/v1/pageViewsLoB/eps",
+              "method": "GET",
+              "operation": "GET_user_events_eps_pageviews_lob_api_v1"
             },
             "pageViews": {
               "path": "/v1/pageViews",

@@ -1,4 +1,4 @@
-import {EXPEDIA_BRAND, HOTELS_COM_BRAND, VRBO_BRAND} from '../constants';
+import {EXPEDIA_BRAND, HOTELS_COM_BRAND, VRBO_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../constants';
 const AAT = 'Availability & Trends';
 const PHAR = 'Platform Health & Resiliency';
 
@@ -60,7 +60,7 @@ export default [
         link: '/funnel-view',
         text: 'Page Views',
         component: require('./FunnelView'),
-        brands: [EXPEDIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND]
+        brands: [EXPEDIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND]
     },
     {
         category: AAT,

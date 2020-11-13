@@ -14,7 +14,6 @@ import {
     VRBO_BRAND,
     HOTELS_COM_BRAND,
     EGENCIA_BRAND,
-    EXPEDIA_PARTNER_SERVICES_BRAND,
     DEPLOYMENT_ANNOTATION_CATEGORY,
     INCIDENT_ANNOTATION_CATEGORY,
     AB_TESTS_ANNOTATION_CATEGORY,
@@ -30,7 +29,7 @@ import {
     getAnnotationsFilter,
     filterNewSelectedItems
 } from '../utils';
-import {makePageViewLoBObjects, makePageViewObjects} from './pageViewsUtils';
+import {makePageViewLoBObjects, makePageViewObjects, buildPageViewsApiQueryString} from './pageViewsUtils';
 import './styles.less';
 
 // eslint-disable-next-line complexity
@@ -222,10 +221,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             const {label: pageBrand, funnelBrand} = getBrand(selectedBrand, 'label');
             setIsLoading(true);
             setError('');
-            const dateQuery = start && end
-                ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
-                : '';
-            fetch(`/v1/pageViews?brand=${funnelBrand}&timeInterval=1${dateQuery}`)
+            const endpoint = buildPageViewsApiQueryString(start, end, funnelBrand, false);
+            fetch(endpoint)
                 .then(checkResponse)
                 .then((fetchedPageviews) => {
                     if (!fetchedPageviews || !fetchedPageviews.length) {
@@ -242,10 +239,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             const {label: pageBrand, funnelBrand} = getBrand(selectedBrand, 'label');
             setIsLoading(true);
             setLoBError('');
-            const dateQuery = start && end
-                ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
-                : '';
-            fetch(`/v1/pageViewsLoB?brand=${funnelBrand}&timeInterval=1${dateQuery}`)
+            const endpoint = buildPageViewsApiQueryString(start, end, funnelBrand, true);
+            fetch(endpoint)
                 .then(checkResponse)
                 .then((fetchedPageviews) => {
                     if (!fetchedPageviews || !fetchedPageviews.length) {
@@ -363,13 +358,13 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 .finally(() => setIsAbTestsAnnotationsLoading(false));
         };
 
-        if ([EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, VRBO_BRAND, HOTELS_COM_BRAND].includes(selectedBrands[0])) {
+        if ([EG_BRAND, EGENCIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND].includes(selectedBrands[0])) {
             setIsLoBAvailable(false);
         } else if (isMounted) {
             fetchPageViewsLoBData(selectedBrands);
         }
 
-        if ([EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND].includes(selectedBrands[0])) {
+        if ([EG_BRAND, EGENCIA_BRAND].includes(selectedBrands[0])) {
             setError(`Page views for ${selectedBrands} is not yet available.
                 The following brands are supported at this time: "Expedia", "Hotels.com Retail", and "Vrbo Retail".
                 If you have any questions, please ping #dpi-reo-opex-all or leave a comment via our Feedback form.`);
