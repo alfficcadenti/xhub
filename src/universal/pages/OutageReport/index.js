@@ -3,8 +3,9 @@ import {RadioButton, RadioGroup} from '@homeaway/react-form-components';
 import Iframe from 'react-iframe';
 import './styles.less';
 
-const weeklyReportUrl = 'https://tableau.sea.corp.expecn.com/#/redirect_to_view/138057';
-const monthlyReportUrl = 'https://tableau.sea.corp.expecn.com/#/views/MonthlyOutageScorecard/Scorecard?:iid=1';
+const weeklyReportUrl = 'WeeklyOutageScorecard_15843878097700';
+const monthlyReportUrl = 'MonthlyOutageScorecard';
+
 
 const OutageReport = () => {
     const [isWeekly, setIsWeekly] = useState(true);
@@ -27,10 +28,11 @@ const OutageReport = () => {
                 />
             </RadioGroup>
             <div className="outage-report">
-                <Iframe url={isWeekly ? weeklyReportUrl : monthlyReportUrl}
+                <Iframe
+                    url={`https://tableau.sea.corp.expecn.com/views/${isWeekly ? weeklyReportUrl : monthlyReportUrl}/Scorecard?:embed=y&:showVizHome=no&:host_url=https%3A%2F%2Ftableau.sea.corp.expecn.com%2F&:embed_code_version=3&:tabs=yes&:toolbar=yes&:showAppBanner=false&:display_spinner=no&:loadOrderID=0`}
                     key={'iframe'}
-                    width="100%"
-                    height="800px"
+                    width="1600px"
+                    height="950px"
                     id={'outage-report'}
                     className="iframe"
                     position="relative"
