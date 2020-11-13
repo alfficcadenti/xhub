@@ -472,7 +472,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
     const renderPageViews = (data) => (
         <div className="page-views-widget-container">
-            {data && data.length && data.map(renderWidget)}
+            {data && data.length && data.map(renderWidget) || ''}
         </div>
     );
 

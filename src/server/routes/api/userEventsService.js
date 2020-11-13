@@ -18,14 +18,14 @@ module.exports.epsPageViewsLoBUserEvents = {
     method: 'GET',
     path: '/v1/pageViewsLoB/eps/{param*}',
     config: getConfig('eps-page-views-lob-api-v1-get'),
-    handler: getHandler(getHandlerParams('epsPageViewsLoB'))
+    handler: getHandler(getHandlerParams('epsPageViewsLoB'), getPageViewsTestData)
 };
 
 module.exports.epsPageViewsUserEvents = {
     method: 'GET',
     path: '/v1/pageViews/eps/{param*}',
     config: getConfig('eps-page-views-api-v1-get'),
-    handler: getHandler(getHandlerParams('epsPageViews'))
+    handler: getHandler(getHandlerParams('epsPageViews'), getPageViewsTestData)
 };
 
 module.exports.pageViewsLoBUserEvents = {
