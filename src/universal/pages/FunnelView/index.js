@@ -514,7 +514,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
                         <LoadingContainer
                             isLoading={isDeploymentsAnnotationsLoading || isIncidentsAnnotationsLoading || isAbTestsAnnotationsLoading}
-                            error={deploymentAnnotationsError || incidentAnnotationsError || abTestsAnnotationsError}
+                            error={deploymentAnnotationsError && incidentAnnotationsError && abTestsAnnotationsError}
                             className="annotations-filters-container"
                         >
                             <div className="annotations-category-filters">
@@ -525,6 +525,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                                     checked={deploymentCategory}
                                     onChange={() => setDeploymentCategory(!deploymentCategory)}
                                     size="sm"
+                                    disabled={deploymentAnnotationsError}
                                 />
                                 <Checkbox
                                     name="incident-сheckbox"
@@ -532,6 +533,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                                     checked={incidentCategory}
                                     onChange={() => setIncidentCategory(!incidentCategory)}
                                     size="sm"
+                                    disabled={incidentAnnotationsError}
                                 />
                                 <Checkbox
                                     name="incident-сheckbox"
@@ -539,6 +541,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                                     checked={abTestsCategory}
                                     onChange={() => setAbTestsCategory(!abTestsCategory)}
                                     size="sm"
+                                    disabled={abTestsAnnotationsError}
                                 />
                             </div>
                             <UniversalSearch
