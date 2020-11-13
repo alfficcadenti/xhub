@@ -43,6 +43,38 @@
         }
     }
 
+    .table-search-input {
+        float: right;
+        margin-bottom: 0;
+        margin-right: @spacing-1x;
+        padding: 0;
+
+        input {
+            padding: 0 @spacing-1x @spacing-1x @spacing-3x;
+            height: @spacing-4x;
+            margin-top: @spacing-1x;
+            font-size: 14px;
+        }
+
+        &.form-group.floating-label.has-icon .form-control {
+            padding-left: @spacing-4x;
+        }
+
+        .search-input {
+            top: @spacing-1x;
+        }
+
+        &.form-group.floating-label.has-icon label ~ .form-control-icon {
+            top: -4px;
+            left: @spacing-1x;
+        }
+    }
+
+    .checkbox-column {
+        float: left;
+        width: 25%;
+    }
+
     .data-table__download {
         float: right;
         font-weight: 400;

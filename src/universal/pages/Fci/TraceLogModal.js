@@ -16,7 +16,7 @@ const TraceLogModal = ({data, isOpen, onClose}) => {
 
     const renderTable = () => (
         <DataTable
-            data={data.data || []}
+            data={(data.data || []).sort((a, b) => String(b.Error).localeCompare(a.Error))}
             columns={TRACE_TABLE_COLUMNS}
             rules={[{column: 'Error', setClass: (val) => val === 'true' ? 'error-cell' : 'success-cell'}]}
             // expandableColumns={['Traces']}

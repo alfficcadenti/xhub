@@ -216,6 +216,8 @@ const Fci = ({selectedBrands}) => {
                     columns={FCI_TABLE_COLUMNS}
                     columnsInfo={{LoB: <div>{'Line of Business'}</div>}}
                     paginated
+                    enableColumnDisplaySettings
+                    enableTextSearch
                 />
             </LoadingContainer>
             <TraceLogModal

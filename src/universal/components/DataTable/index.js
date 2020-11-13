@@ -1,4 +1,5 @@
 import React, {Component, Fragment, isValidElement} from 'react';
+import {FormInput} from '@homeaway/react-form-components';
 import PropTypes from 'prop-types';
 import {CSVLink} from 'react-csv';
 import {v1 as uuid} from 'uuid';
@@ -6,7 +7,7 @@ import sanitizeHtml from 'sanitize-html';
 import Tooltip from '@homeaway/react-tooltip';
 import {SVGIcon} from '@homeaway/react-svg';
 import {
-    INFO__16, DOWNLOAD__16, GEAR__24, CHEVRON_DOWN__12, CHEVRON_UP__12
+    INFO__16, DOWNLOAD__16, GEAR__24, CHEVRON_DOWN__12, CHEVRON_UP__12, SEARCH__16
 } from '@homeaway/svg-defs';
 import {Divider} from '@homeaway/react-collapse';
 import {Checkbox} from '@homeaway/react-form-components';
@@ -184,13 +185,17 @@ class DataTable extends Component {
 
     renderTableBody = () => {
         const {
-            data, paginated, currPageIndex, pageSize
+            data, paginated, currPageIndex, pageSize, enableTextSearch, searchText
         } = this.state;
+        const findSearchText = (t) => String(t).includes(searchText);
+        const filteredData = enableTextSearch && searchText
+            ? data.filter((d) => Object.values(d).findIndex(findSearchText) > -1)
+            : data;
         if (!paginated) {
-            return data.map(this.renderRow);
+            return filteredData.map(this.renderRow);
         }
         const start = currPageIndex * pageSize;
-        return data.slice(start, start + pageSize).map(this.renderRow);
+        return filteredData.slice(start, start + pageSize).map(this.renderRow);
     }
 
     renderInfoTooltip = (content) => (
@@ -349,7 +354,7 @@ class DataTable extends Component {
         <Checkbox
             key={`column-${c.text}`}
             size="sm"
-            className="checkbox-column col-xs-3"
+            className="checkbox-column"
             name={c.text}
             label={c.text}
             checked={c.checked}
@@ -400,12 +405,24 @@ class DataTable extends Component {
         </button>
     )
 
+    renderSearchInput = () => (
+        <FormInput
+            id="search-input"
+            name="searchInput"
+            className="table-search-input"
+            leftContent={<SVGIcon useFill inlineFlex markup={SEARCH__16}/>}
+            onChange={(event) => this.setState({searchText: event.target.value})}
+            value={this.state.searchText}
+        />
+    )
+
     // eslint-disable-next-line complexity
     renderToolbar = (title, info) => (
         <>
             <h3 className="data-table__title">{title}{info && this.renderInfoTooltip(info)}</h3>
             {this.state.enableColumnDisplaySettings && this.renderColumnDisplaySettings()}
             {this.state.enableCSVDownload && this.renderDownloadLink()}
+            {this.state.enableTextSearch && this.renderSearchInput()}
             <Divider heading="Settings" id="settings-divider" className="settings-divider" expanded={this.state.showSettings}>
                 <form>
                     {this.state.columnCheckboxes && this.state.columnCheckboxes.length > 1
