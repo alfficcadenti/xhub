@@ -14,6 +14,10 @@ export const FCI_TABLE_COLUMNS = [
     'SiteID',
     'Traces'
 ];
+export const FCI_HIDDEN_TABLE_COLUMNS = [
+    'Session',
+    'SiteID'
+];
 export const TRACE_TABLE_COLUMNS = [
     'Service',
     'Operation',
@@ -22,4 +26,9 @@ export const TRACE_TABLE_COLUMNS = [
     'External Description',
     'Event Category',
     'Event Description'
+];
+export const SITES = [
+    'travel.americanexpress.com',
+    'travel.chase.com',
+    'travel.rbcrewards.com'
 ];

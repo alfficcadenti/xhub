@@ -3,7 +3,7 @@ import moment from 'moment';
 import qs from 'query-string';
 import DataTable from '../../components/DataTable';
 import {LOB_LIST} from '../../constants';
-import {ALL_ERROR_CODES, TOP_10_ERROR_CODES, TOP_20_ERROR_CODES, TRACE_TABLE_COLUMNS} from './constants';
+import {ALL_ERROR_CODES, TOP_10_ERROR_CODES, TOP_20_ERROR_CODES, TRACE_TABLE_COLUMNS, SITES} from './constants';
 
 export const getNowDate = () => moment().endOf('minute').toDate();
 
@@ -33,27 +33,32 @@ export const validDateRange = (start, end) => {
 
 // eslint-disable-next-line complexity
 export const getQueryValues = (search) => {
-    const {from, to, lobs, errorCode} = qs.parse(search);
-    const initialLobs = lobs
-        ? lobs.split(',').map((l) => LOB_LIST.find(({value}) => value === l)).filter((l) => l)
-        : [];
+    const {from, to, lobs, errorCode, siteName} = qs.parse(search);
     const isValidDateRange = validDateRange(from, to);
     return {
         initialStart: isValidDateRange ? moment(from) : moment().subtract(1, 'hours').startOf('minute'),
         initialEnd: isValidDateRange ? moment(to) : moment(),
         initialTimeRange: isValidDateRange ? 'Custom' : 'Last 1 Hour',
-        initialLobs,
-        initialErrorCode: errorCode || TOP_20_ERROR_CODES
+        initialLobs: lobs
+            ? lobs.split(',').map((l) => LOB_LIST.find(({value}) => value === l)).filter((l) => l)
+            : [],
+        initialErrorCode: errorCode || TOP_20_ERROR_CODES,
+        initialSite: SITES.includes(siteName)
+            ? siteName
+            : 'travel.chase.com'
     };
 };
 
-export const getQueryString = (start, end, selectedLobs, selectedErrorCode) => {
+export const getQueryString = (start, end, selectedLobs, selectedErrorCode, selectedSite) => {
     const dateQuery = `from=${start.toISOString()}&to=${end.toISOString()}`;
     const lobQuery = selectedLobs.length
         ? `&lobs=${selectedLobs.map((lob) => lob.value).join(',')}`
         : '';
-    const errorQuery = `&errorCode=${selectedErrorCode}`;
-    return `${dateQuery}${lobQuery}${errorQuery}`;
+    const errorQuery = selectedErrorCode !== TOP_20_ERROR_CODES
+        ? `&errorCode=${selectedErrorCode}`
+        : '';
+    const siteQuery = `&siteName=${selectedSite}`;
+    return `${dateQuery}${lobQuery}${errorQuery}${siteQuery}`;
 };
 
 const initTimeKeys = (start, end) => {

@@ -22,6 +22,7 @@ describe('Fci Utils', () => {
         expect(result.initialTimeRange).to.be.eql('Last 1 Hour');
         expect(result.initialLobs).to.be.eql([]);
         expect(result.initialErrorCode).to.be.eql(TOP_20_ERROR_CODES);
+        expect(result.initialSite).to.be.eql('travel.chase.com');
     });
 
     it('getQueryValues - custom', () => {
@@ -29,12 +30,14 @@ describe('Fci Utils', () => {
         const end = '2020-02-02';
         const lob = 'H';
         const errorCode = '500';
-        const result = getQueryValues(`?from=${start}&to=${end}&lobs=${lob}&errorCode=${errorCode}`);
+        const site = 'travel.rbcrewards.com';
+        const result = getQueryValues(`?from=${start}&to=${end}&lobs=${lob}&errorCode=${errorCode}&siteName=${site}`);
         expect(result.initialStart.isSame(start, 'day')).to.be.eql(true);
         expect(result.initialEnd.isSame(end, 'day')).to.be.eql(true);
         expect(result.initialTimeRange).to.be.eql('Custom');
         expect(result.initialLobs[0].value).to.be.eql(lob);
         expect(result.initialErrorCode).to.be.eql(errorCode);
+        expect(result.initialSite).to.be.eql(site);
     });
 
     it('getLineChartData', () => {

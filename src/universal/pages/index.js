@@ -51,7 +51,7 @@ export default [
         link: '/fci',
         text: 'FCI',
         component: require('./Fci'),
-        brands: [EXPEDIA_BRAND],
+        brands: [EXPEDIA_PARTNER_SERVICES_BRAND],
         hidden: true
     },
     {

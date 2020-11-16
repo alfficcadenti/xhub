@@ -409,6 +409,7 @@ class DataTable extends Component {
         <FormInput
             id="search-input"
             name="searchInput"
+            label=""
             className="table-search-input"
             leftContent={<SVGIcon useFill inlineFlex markup={SEARCH__16}/>}
             onChange={(event) => this.setState({searchText: event.target.value})}

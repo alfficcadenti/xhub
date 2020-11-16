@@ -2,6 +2,11 @@ const moment = require('moment');
 
 const MAX_TRACE_DEPTH = 2;
 const LOBS = ['C', 'F', 'H', 'P'];
+const SITES = [
+    'travel.americanexpress.com',
+    'travel.rbcrewards.com',
+    'travel.chase.com'
+];
 const ALPHANUMERIC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
 const ENABLE_SUB_TRACES = false;
@@ -79,7 +84,7 @@ const getTrace = (depth) => ({
         : []
 });
 
-const getFci = (start, end, lobs) => {
+const getFci = (start, end, lobs, site) => {
     const momentEnd = moment(end);
     const dateTimeRange = momentEnd.diff(start, 'minutes');
     const timestamp = momentEnd.subtract(getRandomInt(dateTimeRange), 'minutes').toISOString();
@@ -89,7 +94,7 @@ const getFci = (start, end, lobs) => {
         traceId: generateTraceId(),
         failure: 'CheckoutError',
         errorCode: 500 + getRandomInt(5),
-        site: 'www.expedia.com',
+        site: site || SITES[getRandomInt(SITES.length)],
         tpId: getRandomInt(10),
         eapId: getRandomInt(10),
         siteId: getRandomInt(10),
@@ -108,14 +113,15 @@ const getFciTestData = async (req) => {
     const defaultEnd = moment().toISOString();
     const defaultLobs = [];
     if (!req.url || !req.url.query) {
-        req.url = {query: {from: defaultStart, to: defaultEnd, lobs: defaultLobs, error: null}};
+        req.url = {query: {from: defaultStart, to: defaultEnd, lobs: defaultLobs}};
     }
     const start = req.url.query.from || defaultStart;
     const end = req.url.query.to || defaultEnd;
     const lobs = req.url.query.lobs ? req.url.query.lobs.split(',') : defaultLobs;
+    const site = req.url.query.site;
     return (new Array(52))
         .fill(0)
-        .map(() => getFci(start, end, lobs));
+        .map(() => getFci(start, end, lobs, site));
 };
 
 module.exports = {

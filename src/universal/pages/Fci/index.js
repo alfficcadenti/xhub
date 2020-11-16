@@ -8,30 +8,34 @@ import DataTable from '../../components/DataTable';
 import LoadingContainer from '../../components/LoadingContainer';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import {checkResponse} from '../utils';
-import {LOB_LIST} from '../../constants';
+import {EXPEDIA_PARTNER_SERVICES_BRAND, LOB_LIST} from '../../constants';
 import {getQueryValues, getQueryString, getPresets, getLineChartData, getTableData, getErrorCodes} from './utils';
 import TraceLogModal from './TraceLogModal';
-import {FCI_TABLE_COLUMNS} from './constants';
+import {FCI_TABLE_COLUMNS, FCI_HIDDEN_TABLE_COLUMNS, SITES} from './constants';
 import './styles.less';
 
 const Fci = ({selectedBrands}) => {
     const SHOW_FILTERS = false;
     const history = useHistory();
     const {search, pathname} = useLocation();
-    const {initialStart, initialEnd, initialTimeRange, initialLobs, initialErrorCode} = getQueryValues(search);
+    const {initialStart, initialEnd, initialTimeRange, initialLobs, initialErrorCode, initialSite} = getQueryValues(search);
     const [isDirtyForm, setIsDirtyForm] = useState(false);
 
     const [start, setStart] = useState(initialStart);
     const [end, setEnd] = useState(initialEnd);
     const [selectedLobs, setSelectedLobs] = useState(initialLobs);
     const [selectedErrorCode, setSelectedErrorCode] = useState(initialErrorCode);
+    const [selectedSite, setSelectedSite] = useState(initialSite);
     const [pendingStart, setPendingStart] = useState(initialStart);
     const [pendingEnd, setPendingEnd] = useState(initialEnd);
     const [pendingTimeRange, setPendingTimeRange] = useState(initialTimeRange);
     const [pendingLobs, setPendingLobs] = useState(initialLobs);
     const [pendingErrorCode, setPendingErrorCode] = useState(initialErrorCode);
+    const [pendingSite, setPendingSite] = useState(initialSite);
     const [prev, setPrev] = useState({start: null, end: null, data: []});
     const [errorCodes, setErrorCodes] = useState([]);
+
+    const [isSupportedBrand, setIsSupportedBrand] = useState(false);
 
     const [lineChartData, setLineChartData] = useState([]);
     const [lineChartKeys, setLineChartKeys] = useState([]);
@@ -59,15 +63,23 @@ const Fci = ({selectedBrands}) => {
         setErrorCodes(getErrorCodes(filteredData));
     }, [start, end, selectedErrorCode]);
 
+    // eslint-disable-next-line complexity
     useEffect(() => {
+        if (selectedBrands[0] !== EXPEDIA_PARTNER_SERVICES_BRAND) {
+            setIsSupportedBrand(false);
+            setError(`FCIs for ${selectedBrands[0]} is not yet available. For now only ${EXPEDIA_PARTNER_SERVICES_BRAND} is supported.
+                If you have any questions, please ping #dpi-reo-opex-all or leave a comment via our Feedback form.`);
+            return;
+        }
         setIsLoading(true);
+        setIsSupportedBrand(true);
         setError(null);
-        const query = getQueryString(start, end, selectedLobs, selectedErrorCode);
-        if (!prev.start || !prev.end || start.isBefore(prev.start) || end.isAfter(prev.end)) {
+        const query = getQueryString(start, end, selectedLobs, selectedErrorCode, selectedSite);
+        if (!prev.start || !prev.end || !prev.selectedSite || start.isBefore(prev.start) || end.isAfter(prev.end) || prev.selectedSite !== selectedSite) {
             fetch(`/getCheckoutFailures?${query}`)
                 .then(checkResponse)
                 .then((data) => {
-                    setPrev({start, end, data});
+                    setPrev({start, end, data, selectedSite});
                     processData(data);
                     history.push(`${pathname}?selectedBrand=${selectedBrands[0]}&${query}`);
                 })
@@ -83,7 +95,7 @@ const Fci = ({selectedBrands}) => {
             setIsLoading(false);
             history.push(`${pathname}?selectedBrand=${selectedBrands[0]}&${query}`);
         }
-    }, [start, end, selectedLobs, selectedErrorCode, history, pathname, selectedBrands, prev, processData]);
+    }, [start, end, selectedLobs, selectedErrorCode, selectedSite, history, pathname, selectedBrands, prev, processData]);
 
     const handleModalClose = () => {
         setIsModalOpen(false);
@@ -94,6 +106,7 @@ const Fci = ({selectedBrands}) => {
         setEnd(pendingEnd);
         setSelectedLobs(pendingLobs);
         setSelectedErrorCode(pendingErrorCode);
+        setSelectedSite(pendingSite);
         setIsDirtyForm(false);
     };
 
@@ -111,6 +124,11 @@ const Fci = ({selectedBrands}) => {
 
     const handleErrorCodeChange = (e) => {
         setPendingErrorCode(e);
+        setIsDirtyForm(true);
+    };
+
+    const handleSiteChange = (e) => {
+        setPendingSite(e);
         setIsDirtyForm(true);
     };
 
@@ -174,6 +192,13 @@ const Fci = ({selectedBrands}) => {
                     selectedValue={pendingErrorCode}
                     onClickHandler={handleErrorCodeChange}
                 />
+                <FilterDropDown
+                    id="site-dropdown"
+                    className="site-dropdown"
+                    list={SITES}
+                    selectedValue={pendingSite}
+                    onClickHandler={handleSiteChange}
+                />
                 {SHOW_FILTERS && (
                     <>
                         <Select
@@ -197,23 +222,26 @@ const Fci = ({selectedBrands}) => {
                 </button>
             </div>
             <LoadingContainer isLoading={isLoading} error={error} className="fci-loading-container">
-                <LineChartWrapper
-                    title="Errors over Time"
-                    helpText="Error codes bucketed by 15 minute intervals"
-                    data={lineChartData}
-                    keys={lineChartKeys}
-                    onDotClick={handleDotClick}
-                    onMouseUp={handleMouseUp}
-                    onMouseDown={handleMouseDown}
-                    onMouseMove={handleMouseMove}
-                    refAreaLeft={refAreaLeft}
-                    refAreaRight={refAreaRight}
-                    enableLineHiding
-                />
+                {isSupportedBrand && (
+                    <LineChartWrapper
+                        title="Errors over Time"
+                        helpText="Error codes bucketed by 15 minute intervals"
+                        data={lineChartData}
+                        keys={lineChartKeys}
+                        onDotClick={handleDotClick}
+                        onMouseUp={handleMouseUp}
+                        onMouseDown={handleMouseDown}
+                        onMouseMove={handleMouseMove}
+                        refAreaLeft={refAreaLeft}
+                        refAreaRight={refAreaRight}
+                        enableLineHiding
+                    />
+                )}
                 <DataTable
                     title={`FCIs (${tableData.length} results)`}
                     data={tableData}
                     columns={FCI_TABLE_COLUMNS}
+                    hiddenColumns={FCI_HIDDEN_TABLE_COLUMNS}
                     columnsInfo={{LoB: <div>{'Line of Business'}</div>}}
                     paginated
                     enableColumnDisplaySettings
