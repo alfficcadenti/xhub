@@ -172,7 +172,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
             getData(startTime(), endTime());
             fetchIncidents(startTime(), endTime());
-            // getBrandsFilterData();
         } else if (chartSliced || isApplyClicked) {
             getData();
             fetchIncidents();
