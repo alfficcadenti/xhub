@@ -3,6 +3,7 @@ import moment from 'moment';
 import {LOB_LIST} from '../../constants';
 import {EXPEDIA_BRAND} from '../../constants';
 import {SUCCESS_RATES_PAGES_LIST} from './constants';
+import {mapBrandNames} from '../utils';
 
 // eslint-disable-next-line complexity
 export const validDateRange = (start, end) => {
@@ -64,4 +65,38 @@ export const shouldShowTooltip = (pageName, pageBrand, selectedLobs = []) => {
         return 'Only aggregated view is available for search';
     }
     return null;
+};
+
+export const successRatesRealTimeObject = (fetchedSuccessRates = [], selectedLobs = [], selectedBrand) => {
+    const nextRealTimeTotals = SUCCESS_RATES_PAGES_LIST.reduce((acc, label) => {
+        acc[label] = 0;
+        return acc;
+    }, {});
+
+    SUCCESS_RATES_PAGES_LIST.forEach((label, i) => {
+        const currentSuccessRatesData = fetchedSuccessRates[i];
+        if (!currentSuccessRatesData || !currentSuccessRatesData.length) {
+            nextRealTimeTotals[label] = 'N/A';
+            return;
+        }
+
+        for (let counter = 1; counter <= currentSuccessRatesData.length; counter++) {
+            const {successRatePercentagesData, brandWiseSuccessRateData} = currentSuccessRatesData[currentSuccessRatesData.length - counter];
+            const currentSuccessRates = selectedLobs.length !== 1 || label === 'Home To Search Page (SERP)' ?
+                brandWiseSuccessRateData :
+                successRatePercentagesData.find((item) => mapBrandNames(item.brand) === selectedBrand && item.lineOfBusiness === selectedLobs[0].value);
+
+            if (currentSuccessRates && currentSuccessRates.rate !== null) {
+                nextRealTimeTotals[label] = currentSuccessRates.rate.toFixed(2);
+                break;
+            }
+
+            if (counter === currentSuccessRatesData.length) {
+                nextRealTimeTotals[label] = 0;
+                break;
+            }
+        }
+    });
+
+    return nextRealTimeTotals;
 };

@@ -15,14 +15,15 @@ import {
     EXPEDIA_PARTNER_SERVICES_BRAND,
     HOTELS_COM_BRAND
 } from '../../constants';
-import {mapBrandNames, checkResponse, getBrand, makeSuccessRatesObjects} from '../utils';
+import {checkResponse, getBrand, makeSuccessRatesObjects} from '../utils';
 import HelpText from '../../components/HelpText/HelpText';
 import {SUCCESS_RATES_PAGES_LIST, METRIC_NAMES} from './constants';
 import {
     getQueryParams,
     getPresets,
     getWidgetXAxisTickGap,
-    shouldShowTooltip
+    shouldShowTooltip,
+    successRatesRealTimeObject
 } from './utils';
 import './styles.less';
 
@@ -89,37 +90,8 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
         Promise.all(METRIC_NAMES.map((metricName) => fetch(`/user-events-api/v1/funnelView?brand=${funnelBrand}&metricName=${metricName}${dateQuery}`)))
             .then((responses) => Promise.all(responses.map(checkResponse)))
-            .then((fetchedSuccessRates) => {
-                const nextRealTimeTotals = SUCCESS_RATES_PAGES_LIST.reduce((acc, label) => {
-                    acc[label] = 0;
-                    return acc;
-                }, {});
-
-                SUCCESS_RATES_PAGES_LIST.forEach((label, i) => {
-                    const currentSuccessRatesData = fetchedSuccessRates[i];
-                    if (!currentSuccessRatesData || !currentSuccessRatesData.length) {
-                        nextRealTimeTotals[label] = 'N/A';
-                        return;
-                    }
-
-                    for (let counter = 1; counter <= currentSuccessRatesData.length; counter++) {
-                        const {successRatePercentagesData} = currentSuccessRatesData[currentSuccessRatesData.length - counter];
-                        const currentSuccessRates = successRatePercentagesData.find((item) => mapBrandNames(item.brand) === selectedBrand);
-
-                        if (currentSuccessRates.rate !== null) {
-                            nextRealTimeTotals[label] = currentSuccessRates.rate.toFixed(2);
-                            break;
-                        }
-
-                        if (counter === currentSuccessRatesData.length) {
-                            nextRealTimeTotals[label] = 0;
-                            break;
-                        }
-                    }
-                });
-
-                setRealTimeTotals(nextRealTimeTotals);
-            })
+            .then((fetchedSuccessRates) => successRatesRealTimeObject(fetchedSuccessRates, selectedLobs, selectedBrand))
+            .then((realTimeData) => setRealTimeTotals(realTimeData))
             .catch((err) => {
                 let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
                     ? 'Query has timed out. Try refreshing the page. If the problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.'

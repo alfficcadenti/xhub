@@ -5,8 +5,10 @@ import {SUCCESS_RATES_PAGES_LIST} from '../constants';
 import {
     validDateRange,
     getQueryParams,
-    shouldShowTooltip
+    shouldShowTooltip,
+    successRatesRealTimeObject
 } from '../utils';
+import {successRateRealTimeMock} from '../mockData';
 
 describe('SuccessRates Util', () => {
     it('validDateRange - valid start date and after date', () => {
@@ -48,5 +50,27 @@ describe('SuccessRates Util', () => {
         expect(shouldShowTooltip(SUCCESS_RATES_PAGES_LIST[3], EXPEDIA_BRAND, [])).to.equal('Only for nonNativeApps');
         expect(shouldShowTooltip(SUCCESS_RATES_PAGES_LIST[0], null, [{value: 'H', label: 'Hotels'}])).to.equal('Only aggregated view is available for search');
         expect(shouldShowTooltip()).to.eql(null);
+    });
+});
+
+describe('successRatesRealTimeObject()', () => {
+    it('render object with N/A if fetched data is missing', () => {
+        const expectedResult = {'Checkout (CKO) To Checkout Confirmation Page': 'N/A', 'Home To Search Page (SERP)': 'N/A', 'Property (PDP) To Checkout Page (CKO)': 'N/A', 'Search (SERP) To Property Page (PDP)': 'N/A'};
+        expect(successRatesRealTimeObject()).to.eql(expectedResult);
+    });
+
+    it('render object with real time success rate from fetched data', () => {
+        const expectedResult = {'Checkout (CKO) To Checkout Confirmation Page': '78.92', 'Home To Search Page (SERP)': '77.92', 'Property (PDP) To Checkout Page (CKO)': '75.92', 'Search (SERP) To Property Page (PDP)': '76.92'};
+        expect(successRatesRealTimeObject(successRateRealTimeMock)).to.eql(expectedResult);
+    });
+
+    it('render object with LoB selected real time success rate from fetched data', () => {
+        const expectedResult = {'Checkout (CKO) To Checkout Confirmation Page': '79.25', 'Home To Search Page (SERP)': '77.92', 'Property (PDP) To Checkout Page (CKO)': '69.25', 'Search (SERP) To Property Page (PDP)': '59.25'};
+        expect(successRatesRealTimeObject(successRateRealTimeMock, [{value: 'H', label: 'Hotels'}], 'Expedia')).to.eql(expectedResult);
+    });
+
+    it('render object with brand values if multiple LoB are selected', () => {
+        const expectedResult = {'Checkout (CKO) To Checkout Confirmation Page': '78.92', 'Home To Search Page (SERP)': '77.92', 'Property (PDP) To Checkout Page (CKO)': '75.92', 'Search (SERP) To Property Page (PDP)': '76.92'};
+        expect(successRatesRealTimeObject(successRateRealTimeMock, [{value: 'H', label: 'Hotels'}, {value: 'C', label: 'Cars'}], 'Expedia')).to.eql(expectedResult);
     });
 });
