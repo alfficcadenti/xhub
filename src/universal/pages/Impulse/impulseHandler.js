@@ -4,6 +4,7 @@ import {
     SUPPRESSED_BRANDS,
     SUPPRESSED_LOBS
 } from '../../constants';
+import moment from 'moment';
 
 
 export const getFilters = (data = [], typeOfFilter) =>
@@ -38,13 +39,14 @@ export const getRevLoss = (incident) => {
     return [].concat(...incident.estimatedImpact.map((impacts) => impacts.lobs.map((losses) => losses.revenueLoss !== 'NA' ? parseFloat(losses.revenueLoss) : 'NA'))).reduce((a, b) => a + b, 0);
 };
 
-export const getQueryString = (start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, selectedBookingTypeMulti) => {
+export const getQueryString = (start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti) => {
     let query = `?startDate=${start.format('YYYY-MM-DDTHH:mm:ss')}Z&endDate=${end.format('YYYY-MM-DDTHH:mm:ss')}Z`;
     query += getQueryParamMulti('egSiteUrl', selectedSiteURLMulti, selectedSiteURLMulti.length !== 0);
     query += getQueryParamMulti('lob', selectedLobMulti, selectedLobMulti.length !== 0);
     query += getQueryParamMulti('brand', selectedBrandMulti, selectedBrandMulti.length !== 0);
     query += getQueryParamMulti('deviceType', selectedDeviceTypeMulti, selectedDeviceTypeMulti.length !== 0);
-    query += getQueryParamMulti('bookingType', selectedBookingTypeMulti, selectedBookingTypeMulti.length !== 0);
     query += getBrandQueryParam(IMPULSE_MAPPING, globalBrandName);
     return query;
 };
+export const startTime = () => moment().utc().subtract(3, 'days').startOf('minute');
+export const endTime = () => moment().utc().endOf('minute');

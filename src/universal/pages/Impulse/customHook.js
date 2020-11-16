@@ -10,7 +10,7 @@ import {
     SUPPRESSED_BRANDS
 } from '../../constants';
 import {useIsMount} from '../hooks';
-import {getFilters, getBrandQueryParam, getQueryString, getRevLoss} from './impulseHandler';
+import {getFilters, getBrandQueryParam, getQueryString, getRevLoss, startTime, endTime} from './impulseHandler';
 import {checkResponse} from '../utils';
 import moment from 'moment';
 
@@ -24,8 +24,10 @@ const IMPULSE_MAPPING = [
     {globalFilter: EGENCIA_BRAND, impulseFilter: EGENCIA_BRAND},
     {globalFilter: VRBO_BRAND, impulseFilter: 'VRBO'}
 ];
+const bookingTimeInterval = 300000;
+const incidentTimeInterval = 900000;
 
-export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, endDate, globalBrandName, prevBrand, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, selectedBookingTypeMulti, chartSliced, setChartSliced) => {
+export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTime, endDateTime, globalBrandName, prevBrand, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, chartSliced, setChartSliced, isAutoRefresh) => {
     const [res, setRes] = useState([]);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(true);
@@ -33,7 +35,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
     const [lobsMulti, setLobsMulti] = useState({});
     const [brandsMulti, setBrandMulti] = useState({});
     const [deviceTypeMulti, setDeviceTypesMulti] = useState({});
-    const [bookingTypeMulti, setBookingTypesMulti] = useState({});
     const [incidentMulti, setIncidentMulti] = useState({});
     const [brandsFilterData, setBrandsFilterData] = useState({});
     const [filterData, setFilterData] = useState({});
@@ -57,7 +58,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
             label: '2-High'
         }];
     const getFilter = () => {
-        fetch(`/v1/bookings/filters?filter=lob,brand,egSiteUrl,deviceType,bookingType,brandGroupName${getBrandQueryParam(IMPULSE_MAPPING, globalBrandName)}`)
+        fetch(`/v1/bookings/filters?filter=lob,brand,egSiteUrl,deviceType,brandGroupName${getBrandQueryParam(IMPULSE_MAPPING, globalBrandName)}`)
             .then(checkResponse)
             .then((respJson) => {
                 setFilterData(respJson);
@@ -65,7 +66,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
                 setLobsMulti(getFilters(respJson, 'lob'));
                 setBrandMulti(getFilters(respJson, 'brand'));
                 setDeviceTypesMulti(getFilters(respJson, 'deviceType'));
-                setBookingTypesMulti(getFilters(respJson, 'bookingType'));
             })
             .catch((err) => {
                 // eslint-disable-next-line no-console
@@ -84,8 +84,8 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
             });
     };
 
-    const fetchIncidents = () => {
-        const queryString = `fromDate=${moment(startDate).utc().format('YYYY-MM-DD')}&toDate=${moment(endDate).utc().format('YYYY-MM-DD')}`;
+    const fetchIncidents = (start = startDateTime, end = endDateTime) => {
+        const queryString = `fromDate=${moment(start).utc().format('YYYY-MM-DD')}&toDate=${moment(end).utc().format('YYYY-MM-DD')}`;
         fetch(`/v1/incidents/impulse?${queryString}`)
             .then(checkResponse)
             .then((incidents) => {
@@ -105,26 +105,47 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
             });
     };
 
-    const getData = () => {
-        setIsLoading(true);
-        fetch(`/v1/bookings/count${getQueryString(startDate, endDate, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, selectedBookingTypeMulti)}`)
-            .then((result) => {
-                return result.json();
-            })
-            .then((respJson) => {
-                const chartData = respJson.map((item) => {
-                    return {
-                        time: moment.utc(item.time).valueOf(),
-                        [BOOKING_COUNT]: item.count,
-                        [PREDICTION_COUNT]: item.prediction.weightedCount
-                    };
-                });
-                return chartData;
-            })
+    const fetchCall = (start, end) => fetch(`/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`)
+        .then((result) => {
+            return result.json();
+        })
+        .then((respJson) => {
+            const chartData = respJson.map((item) => {
+                return {
+                    time: moment.utc(item.time).valueOf(),
+                    [BOOKING_COUNT]: item.count,
+                    [PREDICTION_COUNT]: item.prediction.weightedCount
+                };
+            });
+            return chartData;
+        });
+    const getRealTimeData = () => {
+        fetchCall(startTime(), endTime())
             .then((chartData) => {
                 setError('');
                 setRes(chartData);
                 setChartSliced(false);
+            })
+            .catch((err) => {
+                setError('No data found for this selection.');
+                // eslint-disable-next-line no-console
+                console.error(err);
+            });
+    };
+    const setIntervalForRealTimeData = (timeInterval, type) => setInterval(() => {
+        if (type === 'bookingData') {
+            getRealTimeData();
+        } else if (type === 'incidents') {
+            fetchIncidents();
+        }
+    }, timeInterval);
+
+    const getData = (start = startDateTime, end = endDateTime) => {
+        setIsLoading(true);
+        fetchCall(start, end)
+            .then((chartData) => {
+                setError('');
+                setRes(chartData);
                 setIsLoading(false);
             })
             .catch((err) => {
@@ -135,13 +156,23 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
             });
     };
     useEffect(() => {
+        let intervalForCharts;
+        let intervalForAnnotations = null;
         if (SUPPRESSED_BRANDS.includes(globalBrandName)) {
             setError(`Booking data for ${globalBrandName} is not yet available. The following brands are supported at this time: "Expedia", "Hotels.com Retail", and "Expedia Partner Solutions".`);
-        } else if (isMount) {
+        } else if (isMount) { // when render it first time
             getData();
             getFilter();
             getBrandsFilterData();
             fetchIncidents();
+            intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
+            intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
+        } else if (!chartSliced && isAutoRefresh && (moment(endDateTime).diff(moment(startDateTime), 'days') === 3)) {
+            intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
+            intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
+            getData(startTime(), endTime());
+            fetchIncidents(startTime(), endTime());
+            // getBrandsFilterData();
         } else if (chartSliced || isApplyClicked) {
             getData();
             fetchIncidents();
@@ -149,8 +180,11 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
         }
         return () => {
             setIsApplyClicked(false);
+            clearInterval(intervalForCharts);
+            clearInterval(intervalForAnnotations);
         };
-    }, [isApplyClicked, startDate, endDate, globalBrandName]);
+    }, [isApplyClicked, startDateTime, endDateTime, globalBrandName, isAutoRefresh]);
+
     return [
         isLoading,
         res,
@@ -162,8 +196,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDate, e
         brandsMulti,
         deviceTypeMulti,
         setDeviceTypesMulti,
-        bookingTypeMulti,
-        setBookingTypesMulti,
         incidentMulti,
         filterData,
         brandsFilterData,
