@@ -288,6 +288,7 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
         mapBrandNames(brand) === selectedBrand
         && (!lobs.length || !lineOfBusiness || lobs.findIndex(({value}) => value === lineOfBusiness) > -1)
     );
+    const formatRate = (rate) => parseFloat((Number(rate) || 0).toFixed(2));
     // eslint-disable-next-line complexity
     return SUCCESS_RATES_PAGES_LIST.map((pageName, i) => {
         const aggregatedData = [];
@@ -300,19 +301,18 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
                 let localMin = prev;
                 const momentTime = moment(time);
                 if (momentTime.isBetween(start, end, 'minutes', '[]')) {
-                    const found = aggregatedData.findIndex((d) => d.time === time);
+                    const found = aggregatedData.findIndex((d) => d.time === moment.utc(time).valueOf());
                     if (found > -1) {
-                        aggregatedData[found].value = brandWiseSuccessRateData.rate === null ? null : parseFloat((brandWiseSuccessRateData.rate || 0).toFixed(2));
+                        aggregatedData[found].value = brandWiseSuccessRateData.rate === null ? null : formatRate(brandWiseSuccessRateData.rate);
                     } else {
                         aggregatedData.push({
                             label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
                             time: moment.utc(time).valueOf(),
-                            momentTime,
-                            value: brandWiseSuccessRateData.rate === null ? null : parseFloat((brandWiseSuccessRateData.rate || 0).toFixed(2))
+                            value: brandWiseSuccessRateData.rate === null ? null : formatRate(brandWiseSuccessRateData.rate)
                         });
                     }
                 }
-                localMin = brandWiseSuccessRateData.rate ? Math.min(localMin, parseFloat((brandWiseSuccessRateData.rate || 0).toFixed(2))) : localMin;
+                localMin = brandWiseSuccessRateData.rate ? Math.min(localMin, formatRate(brandWiseSuccessRateData.rate)) : localMin;
                 return localMin;
             }, (data[0] && data[0][0]) ? data[0][0].brandWiseSuccessRateData.rate : 0);
         } else {
@@ -329,19 +329,18 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
                         if (momentTime.isBetween(start, end, 'minutes', '[]')) {
                             const lob = lineOfBusiness ? lobs.find(({value}) => value === lineOfBusiness) : null;
                             const valueKey = (lob) ? lob.label : 'value';
-                            const found = aggregatedData.findIndex((d) => d.time === time);
+                            const found = aggregatedData.findIndex((d) => d.time === moment.utc(time).valueOf());
                             if (found > -1) {
-                                aggregatedData[found][valueKey] = rate === null ? null : parseFloat((rate || 0).toFixed(2));
+                                aggregatedData[found][valueKey] = rate === null ? null : formatRate(rate);
                             } else {
                                 aggregatedData.push({
                                     label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
                                     time: moment.utc(time).valueOf(),
-                                    momentTime,
-                                    [valueKey]: rate === null ? null : parseFloat((rate || 0).toFixed(2))
+                                    [valueKey]: rate === null ? null : formatRate(rate)
                                 });
                             }
                         }
-                        localMin = rate ? Math.min(localMin, parseFloat((rate || 0).toFixed(2))) : localMin;
+                        localMin = rate ? Math.min(localMin, formatRate(rate)) : localMin;
                     });
                 return localMin;
             }, (data[0] && data[0][0]) ? data[0][0].successRatePercentagesData.find((item) => mapBrandNames(item.brand) === selectedBrand).rate : 0);
