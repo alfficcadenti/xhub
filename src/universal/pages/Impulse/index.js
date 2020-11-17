@@ -84,7 +84,9 @@ const Impulse = (props) => {
         selectedLobMulti,
         selectedBrandMulti,
         selectedDeviceTypeMulti,
-        chartSliced, setChartSliced, isAutoRefresh);
+        chartSliced,
+        setChartSliced,
+        isAutoRefresh);
     const modifyFilters = (newValuesOnChange) => {
         setSelectedLobMulti([]);
         setSelectedDeviceTypeMulti([]);

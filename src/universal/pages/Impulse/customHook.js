@@ -106,9 +106,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
     };
 
     const fetchCall = (start, end) => fetch(`/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`)
-        .then((result) => {
-            return result.json();
-        })
+        .then(checkResponse)
         .then((respJson) => {
             const chartData = respJson.map((item) => {
                 return {
