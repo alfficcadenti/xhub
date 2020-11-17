@@ -303,7 +303,7 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
                 if (momentTime.isBetween(start, end, 'minutes', '[]')) {
                     const found = aggregatedData.findIndex((d) => d.time === moment.utc(time).valueOf());
                     if (found > -1) {
-                        aggregatedData[found].value = rate === null ? null : formatRate(brandWiseSuccessRateData.rate);
+                        aggregatedData[found].value = brandWiseSuccessRateData.rate === null ? null : formatRate(brandWiseSuccessRateData.rate);
                     } else {
                         aggregatedData.push({
                             label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
