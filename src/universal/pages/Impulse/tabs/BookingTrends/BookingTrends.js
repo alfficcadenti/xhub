@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Area,
     Bar,
@@ -14,6 +14,7 @@ import {
 import './styles.less';
 import moment from 'moment';
 import ReferenceLabel from '../../../../components/ReferenceLabel';
+import {startTime, endTime} from '../../impulseHandler';
 
 const BOOKING_CHART_COLOR = '#1B5CAF';
 const PREDICTION_CHART_COLOR = '#c9405b';
@@ -53,13 +54,12 @@ const CustomTooltip = ({active, payload}) => {
     }
     return null;
 };
-const BookingTrends = ({data = [], startDateTime, endDateTime, setStartDateTime, setEndDateTime, setChartSliced, annotations, defaultStartDate, defaultEndDate}) => {
+const BookingTrends = ({data = [], setStartDateTime, setEndDateTime, setChartSliced, annotations, daysDifference, setDaysDifference}) => {
     let [refAreaLeft, setRefAreaLeft] = useState('');
     let [refAreaRight, setRefAreaRight] = useState('');
     let [newData, setNewData] = useState(data);
     let [left, setLeft] = useState('dataMin');
     let [right, setRight] = useState('dataMax');
-    let [daysDifference, setDaysDifference] = useState(moment(endDateTime).diff(moment(startDateTime), 'days'));
     const getGradient = ({key, color}) => {
         const id = `color${key}`;
         return (<linearGradient key={`${key}Gradient`} id={id} x1="0" y1="0" x2="0" y2="1" spreadMethod="reflect">
@@ -68,11 +68,14 @@ const BookingTrends = ({data = [], startDateTime, endDateTime, setStartDateTime,
         </linearGradient>);
     };
     const resetGraphToDefault = () => {
-        setStartDateTime(defaultStartDate);
-        setEndDateTime(defaultEndDate);
-        setChartSliced(true);
+        setStartDateTime(startTime());
+        setEndDateTime(endTime());
+        setChartSliced(false);
         setDaysDifference(3);
     };
+    useEffect(() => {
+        setNewData(data);
+    }, [data]);
     const zoomIn = () => {
         if (refAreaLeft === refAreaRight || refAreaRight === '') {
             setRefAreaLeft('');
@@ -93,6 +96,7 @@ const BookingTrends = ({data = [], startDateTime, endDateTime, setStartDateTime,
         setStartDateTime(moment(nextRefAreaLeft).utc());
         setEndDateTime(moment(nextRefAreaRight).utc());
         setChartSliced(true);
+        setDaysDifference(moment(nextRefAreaRight).utc().diff(moment(nextRefAreaLeft).utc(), 'days'));
     };
     const renderChart = ({key, color, name, chartType}) => {
         const fill = `url(#color${key})`;
@@ -113,7 +117,7 @@ const BookingTrends = ({data = [], startDateTime, endDateTime, setStartDateTime,
                 <button
                     type="button"
                     className={'btn btn-default reset-btn'}
-                    disabled={daysDifference >= 3}
+                    disabled={daysDifference === 3}
                     onClick={() => resetGraphToDefault()}
                 >
                     {'Reset Graph'}

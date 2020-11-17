@@ -11,12 +11,12 @@ import {Divider} from '@homeaway/react-collapse';
 import {SVGIcon} from '@homeaway/react-svg';
 import {FILTER__16} from '@homeaway/svg-defs';
 import './styles.less';
-import {ALL_LOB, ALL_POS, ALL_BRANDS, ALL_DEVICES, ALL_BOOKING_TYPES, ALL_INCIDENTS} from '../../constants';
-import {getFilters, getFiltersForMultiKeys} from './impulseHandler';
-import {Checkbox} from '@homeaway/react-form-components';
+import {ALL_LOB, ALL_POS, ALL_BRANDS, ALL_DEVICES, ALL_INCIDENTS} from '../../constants';
+import {getFilters, getFiltersForMultiKeys, startTime, endTime} from './impulseHandler';
+import {Checkbox, Switch} from '@homeaway/react-form-components';
 
-const startDateDefaultValue = moment().utc().subtract(3, 'days').startOf('minute');
-const endDateDefaultValue = moment().utc().endOf('minute');
+const startDateDefaultValue = startTime;
+const endDateDefaultValue = endTime;
 
 const activeIndex = 0;
 const navLinks = [
@@ -53,14 +53,13 @@ const Impulse = (props) => {
     const [selectedLobMulti, setSelectedLobMulti] = useState([]);
     const [selectedBrandMulti, setSelectedBrandMulti] = useState([]);
     const [selectedDeviceTypeMulti, setSelectedDeviceTypeMulti] = useState([]);
-    const [selectedBookingTypeMulti, setSelectedBookingTypeMulti] = useState([]);
     const [selectedIncidentMulti, setSelectedIncidentMulti] = useState([]);
     const [enableIncidents, setEnableIncidents] = useState(true);
     const [chartSliced, setChartSliced] = useState(false);
+    const [isAutoRefresh, setAutoRefresh] = useState(true);
+    const [daysDifference, setDaysDifference] = useState(moment(endDateTime).diff(moment(startDateTime), 'days'));
     useQueryParamChange(newBrand, props.onBrandChange);
     useSelectedBrand(newBrand, props.onBrandChange, props.prevSelectedBrand);
-
-
     const [isLoading,
         res,
         error,
@@ -71,8 +70,6 @@ const Impulse = (props) => {
         brandsMulti,
         deviceTypesMulti,
         setDeviceTypesMulti,
-        bookingTypesMulti,
-        setBookingTypesMulti,
         incidentMulti,
         filterData,
         brandsFilterData,
@@ -87,22 +84,20 @@ const Impulse = (props) => {
         selectedLobMulti,
         selectedBrandMulti,
         selectedDeviceTypeMulti,
-        selectedBookingTypeMulti,
-        chartSliced, setChartSliced);
+        chartSliced,
+        setChartSliced,
+        isAutoRefresh);
     const modifyFilters = (newValuesOnChange) => {
         setSelectedLobMulti([]);
         setSelectedDeviceTypeMulti([]);
-        setSelectedBookingTypeMulti([]);
         setSelectedSiteURLMulti([]);
         if (typeof newValuesOnChange !== 'undefined' && brandsFilterData !== null && newValuesOnChange.length > 0) {
             setLobsMulti(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'lob'));
             setDeviceTypesMulti(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'deviceType'));
-            setBookingTypesMulti(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'bookingType'));
             setEgSiteURLMulti(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'egSiteUrl'));
         } else {
             setLobsMulti(getFilters(filterData, 'lob'));
             setDeviceTypesMulti(getFilters(filterData, 'deviceType'));
-            setBookingTypesMulti(getFilters(filterData, 'bookingType'));
             setEgSiteURLMulti(getFilters(filterData, 'egSiteUrl'));
         }
     };
@@ -124,8 +119,6 @@ const Impulse = (props) => {
             setSelectedBrandMulti(newValuesOnChange);
         } else if (handler === 'deviceType') {
             setSelectedDeviceTypeMulti(newValuesOnChange);
-        } else if (handler === 'bookingType') {
-            setSelectedBookingTypeMulti(newValuesOnChange);
         } else if (handler === 'egSiteUrl') {
             setSelectedSiteURLMulti(newValuesOnChange);
         } else if (handler === 'incidentCategory') {
@@ -162,9 +155,23 @@ const Impulse = (props) => {
     const renderTabs = () => {
         switch (activeIndex) {
             case 0:
-                return <BookingTrends data={allData} startDateTime={startDateTime} endDateTime={endDateTime} setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime} setChartSliced={setChartSliced} annotations={enableIncidents ? annotationsMulti : []} defaultStartDate={startDateDefaultValue} defaultEndDate={endDateDefaultValue}/>;
+                return (<BookingTrends
+                    data={allData}
+                    setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
+                    setChartSliced={setChartSliced}
+                    annotations={enableIncidents ? annotationsMulti : []}
+                    setDaysDifference={setDaysDifference}
+                    daysDifference={daysDifference}
+                />);
             default:
-                return <BookingTrends data={allData} startDateTime={startDateTime} endDateTime={endDateTime} setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime} setChartSliced={setChartSliced} annotations={enableIncidents ? annotationsMulti : []} defaultStartDate={startDateDefaultValue} defaultEndDate={endDateDefaultValue}/>;
+                return (<BookingTrends
+                    data={allData}
+                    setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
+                    setChartSliced={setChartSliced}
+                    annotations={enableIncidents ? annotationsMulti : []}
+                    setDaysDifference={setDaysDifference}
+                    daysDifference={daysDifference}
+                />);
         }
     };
     const renderMultiSelectFilters = (value, options, key, placeholder, className) => {
@@ -184,15 +191,24 @@ const Impulse = (props) => {
             <form className="search-form search-form__more">
                 <div className="filter-option">
                     {renderMultiSelectFilters(selectedDeviceTypeMulti, deviceTypesMulti, 'deviceType', ALL_DEVICES, filterSelectionClass)}
-                    {renderMultiSelectFilters(selectedBookingTypeMulti, bookingTypesMulti, 'bookingType', ALL_BOOKING_TYPES, filterSelectionClass)}
                 </div>
             </form>
         </Divider>
     );
     return (
         <div className="impulse-container">
-            <div>
+            <div className="heading-container">
                 <h1 className="page-title">{'Impulse Dashboard'}</h1>
+                {!chartSliced && daysDifference === 3 ? <div className="refresh-switch">
+                    <Switch
+                        id="switch-example-small"
+                        name="autoRefresh"
+                        label="Auto Refresh"
+                        checked={isAutoRefresh}
+                        onChange={() => setAutoRefresh(!isAutoRefresh)}
+                        size="sm"
+                    />
+                </div> : ''}
             </div>
             <div className="impulse-filters-wrapper">
                 <DatetimeRangePicker
@@ -210,6 +226,7 @@ const Impulse = (props) => {
                         className="apply-button btn btn-primary active"
                         onClick={() => {
                             setIsApplyClicked(true);
+                            setDaysDifference(moment(endDateTime).diff(moment(startDateTime), 'days'));
                         }}
                     >
                         {'Submit'}
