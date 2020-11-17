@@ -297,22 +297,22 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
             // eslint-disable-next-line complexity
             tempMinValue = (
                 Array.isArray(data[i]) ? data[i] : []
-            ).reduce((prev, {time, brandWiseSuccessRateData: rate}) => {
+            ).reduce((prev, {time, brandWiseSuccessRateData}) => {
                 let localMin = prev;
                 const momentTime = moment(time);
                 if (momentTime.isBetween(start, end, 'minutes', '[]')) {
                     const found = aggregatedData.findIndex((d) => d.time === moment.utc(time).valueOf());
                     if (found > -1) {
-                        aggregatedData[found].value = rate === null ? null : formatRate(rate);
+                        aggregatedData[found].value = rate === null ? null : formatRate(brandWiseSuccessRateData.rate);
                     } else {
                         aggregatedData.push({
                             label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
                             time: moment.utc(time).valueOf(),
-                            value: rate === null ? null : formatRate(rate)
+                            value: brandWiseSuccessRateData.rate === null ? null : formatRate(brandWiseSuccessRateData.rate)
                         });
                     }
                 }
-                localMin = rate ? Math.min(localMin, formatRate(rate)) : localMin;
+                localMin = brandWiseSuccessRateData.rate ? Math.min(localMin, formatRate(brandWiseSuccessRateData.rate)) : localMin;
                 return localMin;
             }, (data[0] && data[0][0]) ? data[0][0].brandWiseSuccessRateData.rate : 0);
         } else {
