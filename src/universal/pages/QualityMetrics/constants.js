@@ -5,15 +5,15 @@ export const PORTFOLIOS = [
     {
         text: 'Checkout',
         value: 'checkout',
-        projects: ['COPB', 'EPOCH', 'CCAT', 'HBILL', 'HPAY', 'CKOCLD', 'COLT', 'CXP', 'PLT', 'ROCK', 'SCOUTS', 'HCKOSUP', 'HCOMCOP']
+        projects: ['COPB', 'EPOCH', 'CCAT', 'HBILL', 'HPAY', 'CKOCLD', 'COLT', 'CXP', 'ROCK', 'SCOUTS', 'HCKOSUP', 'SKYNET']
     }, {
         text: 'Core Services',
         value: 'coreservices',
-        projects: ['BANK', 'BUD', 'PRIME', 'ONEAPI', 'MOB', 'HCR', 'HK']
+        projects: ['BANK', 'PRIME', 'ONEAPI', 'MOB', 'HK', 'NUCLEO']
     }, {
         text: 'Customer',
         value: 'customer',
-        projects: ['LOYD', 'CRTC', 'CARTA', 'CRTC', 'CRTR', 'CMLTD']
+        projects: ['LOYD', 'CARTA', 'CRTR', 'LORD', 'CRUISE']
     }, {
         text: 'H4P',
         value: 'h4p',
@@ -25,15 +25,20 @@ export const PORTFOLIOS = [
     }, {
         text: 'Landing',
         value: 'landing',
-        projects: ['LAPLAT', 'FIGS', 'LASER', 'PANDA', 'VIKING', 'COLOSSEO']
+        projects: ['LAPLAT', 'FIGS', 'LASER', 'PANDA', 'HCOMLAND']
     }, {
         text: 'Mobile',
         value: 'mobile',
-        projects: ['AND', 'ENG', 'IOS', 'RVN']
+        projects: ['AND', 'ENG', 'RVN']
     }, {
         text: 'Shopping',
         value: 'shopping',
-        projects: ['ALO', 'HLR', 'PDI', 'SHP', 'INCREDIBLE']
+        projects: ['ALO', 'SHP']
+    },
+    {
+        text: 'Pricing',
+        value: 'pricing',
+        projects: ['PDI', 'DMI', 'HCR']
     }
 ];
 
