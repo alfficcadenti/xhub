@@ -523,7 +523,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 <div className="dynamic-filters-wrapper">
                     <LoadingContainer
                         isLoading={isDeploymentsAnnotationsLoading || isIncidentsAnnotationsLoading || isAbTestsAnnotationsLoading}
-                        error={deploymentAnnotationsError && incidentAnnotationsError && abTestsAnnotationsError}
+                        error={incidentAnnotationsError && abTestsAnnotationsError && deploymentAnnotationsError}
                         className="annotations-filters-container"
                     >
                         <div className="annotations-category-filters">
