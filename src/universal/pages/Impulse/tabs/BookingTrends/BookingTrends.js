@@ -16,7 +16,7 @@ import moment from 'moment';
 import ReferenceLabel from '../../../../components/ReferenceLabel';
 import {startTime, endTime} from '../../impulseHandler';
 
-const BOOKING_CHART_COLOR = '#1B5CAF';
+const BOOKING_CHART_COLOR = '#336BFF';
 const PREDICTION_CHART_COLOR = '#c9405b';
 const PREDICTION_COUNT = 'Prediction Counts';
 const BOOKING_COUNT = 'Booking Counts';
