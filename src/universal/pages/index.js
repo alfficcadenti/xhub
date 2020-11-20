@@ -1,6 +1,7 @@
 import {EXPEDIA_BRAND, HOTELS_COM_BRAND, VRBO_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../constants';
 const AAT = 'Availability & Trends';
 const PHAR = 'Platform Health & Resiliency';
+const OR = 'Outage Report';
 
 export default [
     {
@@ -17,14 +18,6 @@ export default [
         link: '/landing-page',
         text: 'Landing Page',
         component: require('./LandingPage'),
-        hidden: true
-    },
-    {
-        category: '',
-        id: 'outage-report',
-        link: '/outage-report',
-        text: 'Outage Report',
-        component: require('./OutageReport'),
         hidden: true
     },
     // AAT Dashboards
@@ -110,5 +103,13 @@ export default [
         link: '/finder',
         text: 'Change Finder',
         component: require('./Finder')
+    },
+    // OR Dashboards
+    {
+        category: OR,
+        id: 'outage-report',
+        link: '/outage-report',
+        text: 'Outage Report',
+        component: require('./OutageReport')
     }
 ];
