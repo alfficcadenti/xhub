@@ -34,6 +34,32 @@ export const INCIDENT_ANNOTATION_CATEGORY = 'incident';
 export const AB_TESTS_ANNOTATION_CATEGORY = 'abTests';
 export const SUPPRESSED_BRANDS = ['Egencia', 'CarRentals.com', 'Hotwire', 'Vrbo'];
 export const SUPPRESSED_LOBS = ['Car', 'Rail'];
+export const EPS_PARTNERS = [
+    {
+        value: 'orbitz',
+        label: 'Orbitz'
+    },
+    {
+        value: 'expedia',
+        label: 'Expedia'
+    },
+    {
+        value: 'gps',
+        label: 'GPS'
+    },
+    {
+        value: 'hawaiianairlines',
+        label: 'Hawaiian Airlines'
+    },
+    {
+        value: 'hotels',
+        label: 'Hotels'
+    },
+    {
+        value: 'nike',
+        label: 'Nike'
+    }
+];
 
 export const LOB_LIST = [
     {value: 'C', label: 'Cars'},

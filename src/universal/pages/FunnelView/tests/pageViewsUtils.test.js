@@ -53,21 +53,30 @@ describe('buildPageViewsApiQueryString()', () => {
     const baseUrl = '/v1/pageViews';
     const baseLoBUrl = '/v1/pageViewsLoB';
     const expectedExpediaURL = '?brand=expedia&timeInterval=1&startDate=2020-11-12T11:27:00Z&endDate=2020-11-12T16:27:00Z';
-    const expectedEpsURL = '/eps?timeInterval=1&startDate=2020-11-12T11:27:00Z&endDate=2020-11-12T16:27:00Z';
+    const expectedEpsURL = '/eps?timeInterval=1&startDate=2020-11-12T11:27:00Z&endDate=2020-11-12T16:27:00Z&partner=';
+    const EPSPartner = 'orbitz';
     it('returns endpoint for eps', () => {
-        expect(buildPageViewsApiQueryString(start, end, 'eps')).to.be.eql(`${baseUrl}${expectedEpsURL}`);
+        expect(buildPageViewsApiQueryString({start, end, brand: 'eps'})).to.be.eql(`${baseUrl}${expectedEpsURL}`);
+    });
+
+    it('returns endpoint for eps with partner', () => {
+        expect(buildPageViewsApiQueryString({start, end, brand: 'eps', EPSPartner})).to.be.eql(`${baseUrl}${expectedEpsURL}${EPSPartner}`);
     });
 
     it('returns endpoint for any other brand', () => {
-        expect(buildPageViewsApiQueryString(start, end, 'expedia')).to.be.eql(`${baseUrl}${expectedExpediaURL}`);
+        expect(buildPageViewsApiQueryString({start, end, brand: 'expedia'})).to.be.eql(`${baseUrl}${expectedExpediaURL}`);
     });
 
     it('returns lob endpoint for eps', () => {
-        expect(buildPageViewsApiQueryString(start, end, 'eps', true)).to.be.eql(`${baseLoBUrl}${expectedEpsURL}`);
+        expect(buildPageViewsApiQueryString({start, end, brand: 'eps', lob: true})).to.be.eql(`${baseLoBUrl}${expectedEpsURL}`);
+    });
+
+    it('returns lob endpoint for eps with partner', () => {
+        expect(buildPageViewsApiQueryString({start, end, brand: 'eps', lob: true, EPSPartner})).to.be.eql(`${baseLoBUrl}${expectedEpsURL}${EPSPartner}`);
     });
 
     it('returns lob endpoint for any other brand', () => {
-        expect(buildPageViewsApiQueryString(start, end, 'expedia', true)).to.be.eql(`${baseLoBUrl}${expectedExpediaURL}`);
+        expect(buildPageViewsApiQueryString({start, end, brand: 'expedia', lob: true})).to.be.eql(`${baseLoBUrl}${expectedExpediaURL}`);
     });
 });
 

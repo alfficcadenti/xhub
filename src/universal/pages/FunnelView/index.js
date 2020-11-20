@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import moment from 'moment';
 import Select from 'react-select';
-import {Checkbox} from '@homeaway/react-form-components';
 import TravelerMetricsWidget from '../../components/TravelerMetricsWidget';
 import LoadingContainer from '../../components/LoadingContainer';
-import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
+import DateFiltersWrapper from './DateFiltersWrapper';
+import Annotations from './Annotations';
 import HelpText from '../../components/HelpText/HelpText';
-import UniversalSearch from '../../components/UniversalSearch';
 import {adjustTicketProperties} from '../TicketTrends/incidentsHelper';
 import {useFetchProductMapping, useQueryParamChange, useSelectedBrand, useZoomAndSynced} from '../hooks';
 import {
@@ -17,7 +16,8 @@ import {
     DEPLOYMENT_ANNOTATION_CATEGORY,
     INCIDENT_ANNOTATION_CATEGORY,
     AB_TESTS_ANNOTATION_CATEGORY,
-    LOB_LIST
+    LOB_LIST,
+    EPS_PARTNERS
 } from '../../constants';
 import {
     checkResponse,
@@ -58,9 +58,9 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [isDeploymentsAnnotationsLoading, setIsDeploymentsAnnotationsLoading] = useState(false);
     const [isIncidentsAnnotationsLoading, setIsIncidentsAnnotationsLoading] = useState(false);
     const [isAbTestsAnnotationsLoading, setIsAbTestsAnnotationsLoading] = useState(false);
-    const [deploymentAnnotationsError, setDeploymentAnnotationsError] = useState('');
-    const [incidentAnnotationsError, setIncidentAnnotationsError] = useState('');
-    const [abTestsAnnotationsError, setAbTestsAnnotationsError] = useState('');
+    const [deploymentAnnotationsError, setDeploymentAnnotationsError] = useState(false);
+    const [incidentAnnotationsError, setIncidentAnnotationsError] = useState(false);
+    const [abTestsAnnotationsError, setAbTestsAnnotationsError] = useState(false);
 
     const [enableAnnotations, setEnableAnnotations] = useState(false);
     const [selectedProducts, setSelectedProducts] = useState([]);
@@ -86,6 +86,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [serviceTierSuggestions, setServiceTierSuggestions] = useState([]);
     const [abTestsStatusSuggestions, setAbTestsStatusSuggestions] = useState([]);
     const [suggestions, setSuggestions] = useState({});
+
+    const [selectedEPSPartner, setSelectedEPSPartner] = useState('');
 
     const productMapping = useFetchProductMapping(start, end);
 
@@ -113,19 +115,6 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         setIsDirtyForm,
         pendingTimeRange
     );
-
-    const getNowDate = () => moment().endOf('minute').toDate();
-    const getLastDate = (value, unit) => moment().subtract(value, unit).startOf('minute').toDate();
-    const getValue = (value, unit) => ({start: getLastDate(value, unit), end: getNowDate()});
-    const getPresets = () => [
-        {text: 'Last 15 minutes', value: getValue(15, 'minutes')},
-        {text: 'Last 30 minutes', value: getValue(30, 'minutes')},
-        {text: 'Last 1 hour', value: getValue(1, 'hour')},
-        {text: 'Last 3 hours', value: getValue(3, 'hours')},
-        {text: 'Last 6 hours', value: getValue(6, 'hours')},
-        {text: 'Last 12 hours', value: getValue(12, 'hours')},
-        {text: 'Last 24 hours', value: getValue(24, 'hours')}
-    ];
 
     const filterAnnotations = (deployments, incidents, abTests) => {
         const filteredDeployments = deployments
@@ -221,7 +210,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             const {label: pageBrand, funnelBrand} = getBrand(selectedBrand, 'label');
             setIsLoading(true);
             setError('');
-            const endpoint = buildPageViewsApiQueryString(start, end, funnelBrand, false);
+            const endpoint = buildPageViewsApiQueryString({start, end, brand: funnelBrand, lob: false, EPSPartner: selectedEPSPartner});
             fetch(endpoint)
                 .then(checkResponse)
                 .then((fetchedPageviews) => {
@@ -239,7 +228,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             const {label: pageBrand, funnelBrand} = getBrand(selectedBrand, 'label');
             setIsLoading(true);
             setLoBError('');
-            const endpoint = buildPageViewsApiQueryString(start, end, funnelBrand, true);
+            const endpoint = buildPageViewsApiQueryString({start, end, brand: funnelBrand, lob: true, EPSPartner: selectedEPSPartner});
             fetch(endpoint)
                 .then(checkResponse)
                 .then((fetchedPageviews) => {
@@ -281,7 +270,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     setDeploymentAnnotations(adjustedAnnotations);
                 })
                 .catch((err) => {
-                    setDeploymentAnnotationsError('An unexpected error has occurred loading the annotations. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.');
+                    setDeploymentAnnotationsError(true);
                     // eslint-disable-next-line no-console
                     console.error(err);
                 })
@@ -318,7 +307,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     }));
                 })
                 .catch((err) => {
-                    setIncidentAnnotationsError('An unexpected error has occurred loading the incidents. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.');
+                    setIncidentAnnotationsError(true);
                     // eslint-disable-next-line no-console
                     console.error(err);
                 })
@@ -351,7 +340,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     }));
                 })
                 .catch((err) => {
-                    setAbTestsAnnotationsError('An unexpected error has occurred loading the a/b tests. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.');
+                    setAbTestsAnnotationsError(true);
                     // eslint-disable-next-line no-console
                     console.error(err);
                 })
@@ -378,7 +367,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             fetchAbTestsAnnotations();
         }
         setIsMounted(true);
-    }, [selectedBrands, start, end, isMounted]);
+    }, [selectedBrands, start, end, isMounted, selectedEPSPartner]);
 
     useEffect(() => {
         const allAnnotations = [...deploymentAnnotations, ...incidentAnnotations];
@@ -450,6 +439,10 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
     const handleLoBChange = (lobValue) => setLobSelected(lobValue || []);
 
+    const handleEPSPartnerChange = (epsPartner) => {
+        setSelectedEPSPartner(epsPartner.value);
+    };
+
     useEffect(() => {
         const adjustedProducts = productMapping.map(({productName}) => productName);
 
@@ -480,78 +473,56 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         <div className="funnel-views-container">
             <h1>{'Traveler Page Views'}{!isLoBAvailable && <HelpText text="Only for LOB Hotels" placement="top" />}</h1>
             <div className="filters-wrapper">
-                <div className="date-filters-wrapper">
-                    <DatetimeRangePicker
-                        onChange={handleDatetimeChange}
-                        startDate={pendingStart.toDate()}
-                        endDate={pendingEnd.toDate()}
-                        presets={getPresets()}
-                        disabled={isFormDisabled}
-                    />
-                    <button
-                        className="btn btn-primary apply-btn"
-                        type="button"
-                        onClick={handleApplyFilters}
-                        disabled={!isDirtyForm}
-                    >
-                        {'Apply'}
-                    </button>
-                </div>
-                {!isLoading && <>
-                    <div className="dynamic-filters-wrapper">
-                        {
-                            isLoBAvailable &&
-                                <Select
-                                    isMulti
-                                    classNamePrefix="lob-select"
-                                    className="lob-select-container"
-                                    options={LOB_LIST}
-                                    onChange={handleLoBChange}
-                                    placeholder={lobWidgets.length ? 'Select Line of Business' : 'Line of Business Data not available. Try to refresh'}
-                                    isDisabled={!lobWidgets.length}
-                                />
-                        }
-
-                        <LoadingContainer
-                            isLoading={isDeploymentsAnnotationsLoading || isIncidentsAnnotationsLoading || isAbTestsAnnotationsLoading}
-                            error={deploymentAnnotationsError && incidentAnnotationsError && abTestsAnnotationsError}
-                            className="annotations-filters-container"
-                        >
-                            <div className="annotations-category-filters">
-                                <h4>{'Annotations:'}</h4>
-                                <Checkbox
-                                    name="deployment-сheckbox"
-                                    label="deployments"
-                                    checked={deploymentCategory}
-                                    onChange={() => setDeploymentCategory(!deploymentCategory)}
-                                    size="sm"
-                                    disabled={deploymentAnnotationsError}
-                                />
-                                <Checkbox
-                                    name="incident-сheckbox"
-                                    label="incidents"
-                                    checked={incidentCategory}
-                                    onChange={() => setIncidentCategory(!incidentCategory)}
-                                    size="sm"
-                                    disabled={incidentAnnotationsError}
-                                />
-                                <Checkbox
-                                    name="incident-сheckbox"
-                                    label="a/b tests"
-                                    checked={abTestsCategory}
-                                    onChange={() => setAbTestsCategory(!abTestsCategory)}
-                                    size="sm"
-                                    disabled={abTestsAnnotationsError}
-                                />
-                            </div>
-                            <UniversalSearch
-                                suggestions={suggestions}
-                                suggestionMapping={productMapping}
-                                onFilterChange={onFilterChange}
+                {
+                    selectedBrands[0] === 'Expedia Partner Solutions' ?
+                        <div className="eps-partner-select-wrapper">
+                            <Select
+                                classNamePrefix="eps-partner-select"
+                                className="eps-partner-select-container"
+                                options={EPS_PARTNERS}
+                                onChange={handleEPSPartnerChange}
                             />
-                        </LoadingContainer>
-                    </div>
-                </>}
+                        </div> : ''
+                }
+                <div className="dynamic-filters-wrapper">
+                    {
+                        isLoBAvailable &&
+                            <Select
+                                isMulti
+                                classNamePrefix="lob-select"
+                                className="lob-select-container"
+                                options={LOB_LIST}
+                                onChange={handleLoBChange}
+                                placeholder={lobWidgets.length ? 'Select Line of Business' : 'Line of Business Data not available. Try to refresh'}
+                                isDisabled={!lobWidgets.length}
+                            />
+                    }
+                    <Annotations
+                        isDeploymentsAnnotationsLoading={isDeploymentsAnnotationsLoading}
+                        isIncidentsAnnotationsLoading={isIncidentsAnnotationsLoading}
+                        isAbTestsAnnotationsLoading={isAbTestsAnnotationsLoading}
+                        deploymentAnnotationsError={deploymentAnnotationsError}
+                        incidentAnnotationsError={incidentAnnotationsError}
+                        abTestsAnnotationsError={abTestsAnnotationsError}
+                        deploymentCategory={deploymentCategory}
+                        incidentCategory={incidentCategory}
+                        abTestsCategory={abTestsCategory}
+                        setDeploymentCategory={setDeploymentCategory}
+                        setIncidentCategory={setIncidentCategory}
+                        setAbTestsCategory={setAbTestsCategory}
+                        suggestions={suggestions}
+                        productMapping={productMapping}
+                        onFilterChange={onFilterChange}
+                    />
+                </div>
+                <DateFiltersWrapper
+                    isFormDisabled={isFormDisabled}
+                    pendingStart={pendingStart}
+                    pendingEnd={pendingEnd}
+                    handleApplyFilters={handleApplyFilters}
+                    handleDatetimeChange={handleDatetimeChange}
+                    isDirtyForm={isDirtyForm}
+                />
             </div>
             <LoadingContainer isLoading={isLoading} error={!lobSelected.length ? error : LoBError} className="page-views-loading-container">
                 {lobSelected && lobSelected.length && renderPageViews(lobWidgets) || renderPageViews(widgets)}
