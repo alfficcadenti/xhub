@@ -17,7 +17,7 @@ import {
     INCIDENT_ANNOTATION_CATEGORY,
     AB_TESTS_ANNOTATION_CATEGORY,
     LOB_LIST,
-    EPS_PARTNERS
+    EPS_PARTNER_SITENAMES
 } from '../../constants';
 import {
     checkResponse,
@@ -479,7 +479,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                             <Select
                                 classNamePrefix="eps-partner-select"
                                 className="eps-partner-select-container"
-                                options={EPS_PARTNERS}
+                                options={EPS_PARTNER_SITENAMES}
                                 onChange={handleEPSPartnerChange}
                             />
                         </div> : ''
