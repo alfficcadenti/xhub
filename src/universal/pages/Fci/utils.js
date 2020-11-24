@@ -229,3 +229,7 @@ export const getElements = (data, height = 0, breadth = 0, parent = null) => {
     }, []);
     return elements;
 };
+
+export const getFilteredTraceData = (data, showOnlyErrors) => (
+    (data.data || []).filter((row) => !showOnlyErrors || row.Error === 'true')
+);
