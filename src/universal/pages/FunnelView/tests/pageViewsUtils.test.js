@@ -2,8 +2,8 @@ import {expect} from 'chai';
 import {makePageViewLoBObjects, makePageViewObjects, buildPageViewsApiQueryString} from '../pageViewsUtils';
 import {EXPEDIA_BRAND, PAGES_LIST} from '../../../constants';
 import moment from 'moment';
-import {pageViewLoBEndpoint, pageViewMockData} from '../mockData';
-import {emptyMockResults, mockResults, pageViewsMockResults, emptyPageViewsMockResults} from './mockResults';
+import {pageViewLoBEndpoint, pageViewMockData, pageViewMockDataWithMissingValues} from '../mockData';
+import {emptyMockResults, mockResults, pageViewsMockResults, emptyPageViewsMockResults, pageViewsMockResultsWithMissingData} from './mockResults';
 
 describe('makePageViewLoBObjects component testing', () => {
     const start = moment('2020-08-10');
@@ -45,6 +45,10 @@ describe('makePageViewObjects()', () => {
     it('creates an array with each object and the expected format', () => {
         expect(makePageViewObjects(pageViewMockData, start, end, EXPEDIA_BRAND)).to.eql(pageViewsMockResults);
     });
+
+    it('creates an array with each object and the expected format also with partial data', () => {
+        expect(makePageViewObjects(pageViewMockDataWithMissingValues, start, end, EXPEDIA_BRAND)).to.eql(pageViewsMockResultsWithMissingData);
+    });
 });
 
 describe('buildPageViewsApiQueryString()', () => {
@@ -53,7 +57,7 @@ describe('buildPageViewsApiQueryString()', () => {
     const baseUrl = '/v1/pageViews';
     const baseLoBUrl = '/v1/pageViewsLoB';
     const expectedExpediaURL = '?brand=expedia&timeInterval=1&startDate=2020-11-12T11:27:00Z&endDate=2020-11-12T16:27:00Z';
-    const expectedEpsURL = '/eps?timeInterval=1&startDate=2020-11-12T11:27:00Z&endDate=2020-11-12T16:27:00Z&partner=';
+    const expectedEpsURL = '/eps?timeInterval=1&startDate=2020-11-12T11:27:00Z&endDate=2020-11-12T16:27:00Z&sitename=';
     const EPSPartner = 'orbitz';
     it('returns endpoint for eps', () => {
         expect(buildPageViewsApiQueryString({start, end, brand: 'eps'})).to.be.eql(`${baseUrl}${expectedEpsURL}`);
