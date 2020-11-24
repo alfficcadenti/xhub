@@ -17,7 +17,7 @@ import {
     INCIDENT_ANNOTATION_CATEGORY,
     AB_TESTS_ANNOTATION_CATEGORY,
     LOB_LIST,
-    EPS_PARTNERS
+    EPS_PARTNER_SITENAMES
 } from '../../constants';
 import {
     checkResponse,
@@ -440,7 +440,11 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const handleLoBChange = (lobValue) => setLobSelected(lobValue || []);
 
     const handleEPSPartnerChange = (epsPartner) => {
-        setSelectedEPSPartner(epsPartner.value);
+        if (epsPartner === null) {
+            setSelectedEPSPartner('');
+        } else {
+            setSelectedEPSPartner(epsPartner.value);
+        }
     };
 
     useEffect(() => {
@@ -465,7 +469,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
     const renderPageViews = (data) => (
         <div className="page-views-widget-container">
-            {data && data.length && data.map(renderWidget) || ''}
+            {data && data.length && data.map(renderWidget) || 'No Data. Try selecting a different time frame or refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.'}
         </div>
     );
 
@@ -479,8 +483,10 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                             <Select
                                 classNamePrefix="eps-partner-select"
                                 className="eps-partner-select-container"
-                                options={EPS_PARTNERS}
+                                options={EPS_PARTNER_SITENAMES}
                                 onChange={handleEPSPartnerChange}
+                                isClearable
+                                isSearchable
                             />
                         </div> : ''
                 }

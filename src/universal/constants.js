@@ -34,31 +34,43 @@ export const INCIDENT_ANNOTATION_CATEGORY = 'incident';
 export const AB_TESTS_ANNOTATION_CATEGORY = 'abTests';
 export const SUPPRESSED_BRANDS = ['Egencia', 'CarRentals.com', 'Hotwire', 'Vrbo'];
 export const SUPPRESSED_LOBS = ['Car', 'Rail'];
-export const EPS_PARTNERS = [
-    {
-        value: 'orbitz',
-        label: 'Orbitz'
-    },
-    {
-        value: 'expedia',
-        label: 'Expedia'
-    },
-    {
-        value: 'gps',
-        label: 'GPS'
-    },
-    {
-        value: 'hawaiianairlines',
-        label: 'Hawaiian Airlines'
-    },
-    {
-        value: 'hotels',
-        label: 'Hotels'
-    },
-    {
-        value: 'nike',
-        label: 'Nike'
-    }
+export const EPS_PARTNER_SITENAMES = [
+    {label: 'axtraweb.poweredbygps.com', value: 'axtraweb.poweredbygps.com'},
+    {label: 'barcelo.poweredbygps.co.uk', value: 'barcelo.poweredbygps.co.uk'},
+    {label: 'barcelo.poweredbygps.com', value: 'barcelo.poweredbygps.com'},
+    {label: 'd-travel.poweredbygps.co.jp', value: 'd-travel.poweredbygps.co.jp'},
+    {label: 'expedia.virginaustralia.com', value: 'expedia.virginaustralia.com'},
+    {label: 'flyswoop.poweredbygps.com', value: 'flyswoop.poweredbygps.com'},
+    {label: 'hawaiian.poweredbygps.co.jp', value: 'hawaiian.poweredbygps.co.jp'},
+    {label: 'hawaiian.poweredbygps.co.kr', value: 'hawaiian.poweredbygps.co.kr'},
+    {label: 'hawaiian.poweredbygps.co.nz', value: 'hawaiian.poweredbygps.co.nz'},
+    {label: 'hawaiian.poweredbygps.com', value: 'hawaiian.poweredbygps.com'},
+    {label: 'hawaiian.poweredbygps.com.au', value: 'hawaiian.poweredbygps.com.au'},
+    {label: 'hotels.airnewzealand.ca', value: 'hotels.airnewzealand.ca'},
+    {label: 'hotels.airnewzealand.co.jp', value: 'hotels.airnewzealand.co.jp'},
+    {label: 'hotels.airnewzealand.co.nz', value: 'hotels.airnewzealand.co.nz'},
+    {label: 'hotels.airnewzealand.com', value: 'hotels.airnewzealand.com'},
+    {label: 'hotels.airnewzealand.com.au', value: 'hotels.airnewzealand.com.au'},
+    {label: 'hotels.airnewzealand.com.hk', value: 'hotels.airnewzealand.com.hk'},
+    {label: 'hotels.airnewzealand.com.sg', value: 'hotels.airnewzealand.com.sg'},
+    {label: 'iberostarvacations.poweredbygps.com', value: 'iberostarvacations.poweredbygps.com'},
+    {label: 'lacoleccion.poweredbygps.com', value: 'lacoleccion.poweredbygps.com'},
+    {label: 'marriottholidays.poweredbygps.co.uk', value: 'marriottholidays.poweredbygps.co.uk'},
+    {label: 'marriottholidays.poweredbygps.de', value: 'marriottholidays.poweredbygps.de'},
+    {label: 'meliapackages.poweredbygps.com', value: 'meliapackages.poweredbygps.com'},
+    {label: 'riuvacations.poweredbygps.com', value: 'riuvacations.poweredbygps.com'},
+    {label: 'travel.ca.hotels.com', value: 'travel.ca.hotels.com'},
+    {label: 'travel.chase.com', value: 'travel.chase.com'},
+    {label: 'travel.fr.hotels.com', value: 'travel.fr.hotels.com'},
+    {label: 'travel.hotels.com', value: 'travel.hotels.com'},
+    {label: 'travel.jp.hotels.com', value: 'travel.jp.hotels.com'},
+    {label: 'travel.no.hotels.com', value: 'travel.no.hotels.com'},
+    {label: 'travel.rbcrewards.com', value: 'travel.rbcrewards.com'},
+    {label: 'travel.se.hotels.com', value: 'travel.se.hotels.com'},
+    {label: 'travel.uk.hotels.com', value: 'travel.uk.hotels.com'},
+    {label: 'vacationsbymgmresorts.poweredbygps.com', value: 'vacationsbymgmresorts.poweredbygps.com'},
+    {label: 'www.expedia-aarp.com', value: 'www.expedia-aarp.com'},
+    {label: 'www.expediafortd.com', value: 'www.expediafortd.com'}
 ];
 
 export const LOB_LIST = [

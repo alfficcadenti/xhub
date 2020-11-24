@@ -7,7 +7,7 @@ export const buildPageViewsApiQueryString = ({start, end, brand, lob = false, EP
         : '';
     const baseUrl = lob ? '/v1/pageViewsLoB' : '/v1/pageViews';
     if (brand === 'eps') {
-        return `${baseUrl}/eps?timeInterval=1${dateQuery}&partner=${EPSPartner}`;
+        return `${baseUrl}/eps?timeInterval=1${dateQuery}&sitename=${EPSPartner}`;
     }
     return `${baseUrl}?brand=${brand}&timeInterval=1${dateQuery}`;
 };
@@ -58,7 +58,7 @@ export const makePageViewObjects = (data = [], start, end, pageBrand = '') => {
             }
 
             return Math.min(prev, currentPageViews ? currentPageViews.views : prev);
-        }, data[0] ? data[0].pageViewsData.find((item) => item.page === name).views : 0);
+        }, data[0] && data[0].pageViewsData ? data[0].pageViewsData.find((item) => item.page === name) && data[0].pageViewsData.find((item) => item.page === name).views || 0 : 0);
 
         if (i === 0) {
             minValue = tempMinValue;
