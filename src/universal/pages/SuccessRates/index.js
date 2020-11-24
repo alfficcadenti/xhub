@@ -1,19 +1,21 @@
 /* eslint-disable complexity */
 import React, {useEffect, useRef, useState} from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
-import moment from 'moment';
 import Select from 'react-select';
+import moment from 'moment';
 import TravelerMetricsWidget from '../../components/TravelerMetricsWidget';
 import LoadingContainer from '../../components/LoadingContainer';
-import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import RealTimeSummaryPanel from '../../components/RealTimeSummaryPanel';
 import {useFetchProductMapping, useQueryParamChange, useSelectedBrand, useZoomAndSynced} from '../hooks';
 import {
-    LOB_LIST,
     EG_BRAND,
     EGENCIA_BRAND,
     EXPEDIA_PARTNER_SERVICES_BRAND,
-    HOTELS_COM_BRAND, DEPLOYMENT_ANNOTATION_CATEGORY, INCIDENT_ANNOTATION_CATEGORY, AB_TESTS_ANNOTATION_CATEGORY
+    HOTELS_COM_BRAND,
+    DEPLOYMENT_ANNOTATION_CATEGORY,
+    INCIDENT_ANNOTATION_CATEGORY,
+    AB_TESTS_ANNOTATION_CATEGORY,
+    LOB_LIST
 } from '../../constants';
 import {
     addSuggestionType,
@@ -28,15 +30,14 @@ import HelpText from '../../components/HelpText/HelpText';
 import {SUCCESS_RATES_PAGES_LIST, METRIC_NAMES} from './constants';
 import {
     getQueryParams,
-    getPresets,
     getWidgetXAxisTickGap,
     shouldShowTooltip,
     successRatesRealTimeObject
 } from './utils';
 import './styles.less';
-import {Checkbox} from '@homeaway/react-form-components';
-import UniversalSearch from '../../components/UniversalSearch';
 import {adjustTicketProperties} from '../TicketTrends/incidentsHelper';
+import Annotations from '../../components/Annotations/Annotations';
+import DateFiltersWrapper from '../../components/DateFiltersWrapper/DateFiltersWrapper';
 
 
 const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
@@ -202,7 +203,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     setDeploymentAnnotations(adjustedAnnotations);
                 })
                 .catch((err) => {
-                    setDeploymentAnnotationsError('An unexpected error has occurred loading the annotations. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.');
+                    setDeploymentAnnotationsError(true);
                     // eslint-disable-next-line no-console
                     console.error(err);
                 })
@@ -239,7 +240,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     }));
                 })
                 .catch((err) => {
-                    setIncidentAnnotationsError('An unexpected error has occurred loading the incidents. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.');
+                    setIncidentAnnotationsError(true);
                     // eslint-disable-next-line no-console
                     console.error(err);
                 })
@@ -272,7 +273,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     }));
                 })
                 .catch((err) => {
-                    setAbTestsAnnotationsError('An unexpected error has occurred loading the a/b tests. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.');
+                    setAbTestsAnnotationsError(true);
                     // eslint-disable-next-line no-console
                     console.error(err);
                 })
@@ -494,72 +495,42 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 <HelpText text="Only for LOB Hotels" placement="top" />
             </h1>
             <div className="filters-wrapper">
-                <div className="date-filters-wrapper">
-                    <DatetimeRangePicker
-                        onChange={handleDatetimeChange}
-                        startDate={pendingStart.toDate()}
-                        endDate={pendingEnd.toDate()}
-                        presets={getPresets()}
-                        disabled={isFormDisabled}
-                    />
+                <div className="dynamic-filters-wrapper">
                     <Select
                         isMulti
                         classNamePrefix="lob-select"
                         className="lob-select-container"
-                        value={pendingLobs}
                         options={LOB_LIST.filter(({value}) => ['H', 'C'].includes(value))}
-                        onChange={handleLoBsChange}
                         placeholder={'Select Line of Business'}
+                        onChange={handleLoBsChange}
+                        value={pendingLobs}
                     />
-                    <button
-                        className="btn btn-primary apply-btn"
-                        type="button"
-                        onClick={handleApplyFilters}
-                        disabled={!isDirtyForm}
-                    >
-                        {'Apply'}
-                    </button>
+                    <Annotations
+                        isDeploymentsAnnotationsLoading={isDeploymentsAnnotationsLoading}
+                        isIncidentsAnnotationsLoading={isIncidentsAnnotationsLoading}
+                        isAbTestsAnnotationsLoading={isAbTestsAnnotationsLoading}
+                        deploymentAnnotationsError={deploymentAnnotationsError}
+                        incidentAnnotationsError={incidentAnnotationsError}
+                        abTestsAnnotationsError={abTestsAnnotationsError}
+                        deploymentCategory={deploymentCategory}
+                        incidentCategory={incidentCategory}
+                        abTestsCategory={abTestsCategory}
+                        setDeploymentCategory={setDeploymentCategory}
+                        setIncidentCategory={setIncidentCategory}
+                        setAbTestsCategory={setAbTestsCategory}
+                        suggestions={suggestions}
+                        productMapping={productMapping}
+                        onFilterChange={onFilterChange}
+                    />
                 </div>
-                <div className="dynamic-filters-wrapper">
-                    <LoadingContainer
-                        isLoading={isDeploymentsAnnotationsLoading || isIncidentsAnnotationsLoading || isAbTestsAnnotationsLoading}
-                        error={incidentAnnotationsError && abTestsAnnotationsError && deploymentAnnotationsError}
-                        className="annotations-filters-container"
-                    >
-                        <div className="annotations-category-filters">
-                            <h4>{'Annotations:'}</h4>
-                            <Checkbox
-                                name="deployment-сheckbox"
-                                label="deployments"
-                                checked={deploymentCategory}
-                                onChange={() => setDeploymentCategory(!deploymentCategory)}
-                                size="sm"
-                                disabled={deploymentAnnotationsError}
-                            />
-                            <Checkbox
-                                name="incident-сheckbox"
-                                label="incidents"
-                                checked={incidentCategory}
-                                onChange={() => setIncidentCategory(!incidentCategory)}
-                                size="sm"
-                                disabled={incidentAnnotationsError}
-                            />
-                            <Checkbox
-                                name="incident-сheckbox"
-                                label="a/b tests"
-                                checked={abTestsCategory}
-                                onChange={() => setAbTestsCategory(!abTestsCategory)}
-                                size="sm"
-                                disabled={abTestsAnnotationsError}
-                            />
-                        </div>
-                        <UniversalSearch
-                            suggestions={suggestions}
-                            suggestionMapping={productMapping}
-                            onFilterChange={onFilterChange}
-                        />
-                    </LoadingContainer>
-                </div>
+                <DateFiltersWrapper
+                    isFormDisabled={isFormDisabled}
+                    pendingStart={pendingStart}
+                    pendingEnd={pendingEnd}
+                    handleApplyFilters={handleApplyFilters}
+                    handleDatetimeChange={handleDatetimeChange}
+                    isDirtyForm={isDirtyForm}
+                />
             </div>
             {isSupportedBrand && (
                 <RealTimeSummaryPanel

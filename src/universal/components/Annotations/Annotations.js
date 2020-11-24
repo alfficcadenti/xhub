@@ -1,9 +1,10 @@
 import React, {useState, useRef, useEffect, Fragment} from 'react';
-import UniversalSearch from '../../components/UniversalSearch';
+import UniversalSearch from '../UniversalSearch';
 import {SVGIcon} from '@homeaway/react-svg';
 import {FILTER__16} from '@homeaway/svg-defs';
 import {Checkbox} from '@homeaway/react-form-components';
-import LoadingContainer from '../../components/LoadingContainer';
+import LoadingContainer from '../LoadingContainer';
+import './styles.less';
 
 
 const Annotations = ({isDeploymentsAnnotationsLoading,

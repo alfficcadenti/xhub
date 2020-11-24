@@ -43,36 +43,9 @@
         width: 100%;
         display: inline-flex;
 
-        .date-filters-wrapper,
         .dynamic-filters-wrapper,
         .eps-partner-select-container {
             padding: @spacing-1x @spacing-1x 0 @spacing-1x;
-        }
-
-        .date-filters-wrapper {
-            display: flex;
-            position: relative;
-            min-width: 250px;
-            padding-bottom: 0;
-
-            .datetime-range-picker-container {
-                width: 550px;
-                right: 0;
-            }
-
-            .rdt-preset-dropdown {
-                margin-top: @spacing-1x;
-                margin-left: 0;
-            }
-
-            .preset-dropdown {
-                float: right;
-                margin-top: -@spacing-9x;
-
-                .Dropdown__toggle {
-                    .dropdown-button;
-                }
-            }
         }
 
         .dynamic-filters-wrapper {
@@ -82,113 +55,24 @@
             display: inline-flex;
             position: relative;
 
-            .annotations-wrapper {
-                min-width: 600px;
-                width: 100%;
-            }
-
             .lob-select-container {
                 min-width: 300px;
                 width: 90%;
                 z-index: 99;
-
             }
         }
 
-        .datetime-range-picker-container, .annotations-wrapper {
-            position: absolute;
-            top: @filter-size + @spacing-1x ;
-            z-index: 100;
-            background-color: @color-bg-accent;
-            border: @border-color-dark 1px solid;
-            border-radius: @spacing-1x;
-            padding: @spacing-1x;
-        }
-
-        .lob-select__control, .eps-partner-select__control, .dates-button {
+        .lob-select__control, .eps-partner-select__control {
             min-height: @filter-size;
             border-radius: @spacing-1x;
             border-color: @border-color-dark;
         }
 
-        .apply-btn {
-            height: fit-content;
-            vertical-align: text-top;
-            margin-top: @spacing-1x;
-            margin-left: @spacing-1x;
-        }
-
         .eps-partner-select-wrapper {
             min-width: 250px;
+
             .eps-partner-select-container {
                 min-height: @filter-size;
-            }
-        }
-
-        .dates-button {
-            border-radius: @spacing-1x @spacing-1x 0 0;
-            border: @border-color-dark 1px solid;
-            width: 100%;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-
-            span {
-                margin: 0 @spacing-1x;
-            }
-            .dates>div {
-                text-align: left;
-            }
-        }
-
-        .dates-button:hover {
-            background: @color-bg-accent;
-        }
-
-        .display-annotations-btn {
-            margin: 0 @spacing-1x 0 @spacing-1x;
-        }
-        
-        .display-annotations-btn, .dates-button {
-            min-height: @spacing-7x;
-            font-size: 12px;
-            line-height: @spacing-2x;
-            box-shadow: none;
-            border-radius: @spacing-1x;
-    
-            &.active {
-              background: @color-bg-accent;
-              border-radius: @spacing-1x @spacing-1x 0 0;
-              border: @border-color-dark 1px solid;
-            }
-        }
-
-        .annotations-filters-container {
-            display: flex;
-
-            .annotations-category-filters,
-            .universal-search-bar {
-                margin: @spacing-1x @spacing-2x;
-            }
-
-            .universal-search-bar {
-                flex-direction: column;
-                max-width: 80%;
-
-                .tokens-container {
-                    float: left;
-                    display: flex;
-                    flex-direction: row;
-                    flex-wrap: wrap;
-                    width: 100%;
-                }
-
-                .Token {
-                    margin: 0;
-                    width: fit-content;
-                    max-width: 300px;
-                    font-size: 85%;
-                }
             }
         }
     }
