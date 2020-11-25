@@ -121,7 +121,7 @@ const getTagValue = (tags, property) => {
 };
 
 // eslint-disable-next-line complexity
-const mapTrace = (t) => {
+export const mapTrace = (t) => {
     const tags = t.tags || [];
     const errorIdx = tags.findIndex(({key}) => key === 'error');
     const Error = errorIdx > -1 ? tags[errorIdx].value : '-';
@@ -134,7 +134,6 @@ const mapTrace = (t) => {
         'External Description': '-',
         'Event Category': '-',
         'Event Description': '-',
-        Tags: '-',
         traces: t.traces,
         Traces: !t.traces || !t.traces.length ? null : (
             <DataTable
@@ -147,7 +146,7 @@ const mapTrace = (t) => {
         )
     };
     if (hasError) {
-        result['Error Code'] = getTagValue(tags, 'externalerrorcode');
+        result['External Error Code'] = getTagValue(tags, 'externalerrorcode');
         result['External Description'] = getTagValue(tags, 'externalerrordescription');
         result['Event Category'] = getTagValue(tags, 'EventCategory');
         result['Event Description'] = getTagValue(tags, 'EventDescription');
@@ -230,3 +229,7 @@ export const getElements = (data, height = 0, breadth = 0, parent = null) => {
     }, []);
     return elements;
 };
+
+export const getFilteredTraceData = (data, showOnlyErrors) => (
+    (data.data || []).filter((row) => !showOnlyErrors || row.Error === 'true')
+);

@@ -1,6 +1,6 @@
 import moment from 'moment';
 import {expect} from 'chai';
-import {validDateRange, getQueryValues, getLineChartData, getErrorCodes} from '../utils';
+import {validDateRange, getQueryValues, getLineChartData, getErrorCodes, mapTrace, getFilteredTraceData} from '../utils';
 import {ALL_ERROR_CODES, TOP_10_ERROR_CODES, TOP_20_ERROR_CODES} from '../constants';
 
 describe('Fci Utils', () => {
@@ -48,5 +48,71 @@ describe('Fci Utils', () => {
     it('getErrorCodes', () => {
         expect(getErrorCodes([{errorCode: 400}, {errorCode: 401}]))
             .to.be.eql([ALL_ERROR_CODES, TOP_10_ERROR_CODES, TOP_20_ERROR_CODES, '400', '401']);
+    });
+
+    it('getFilteredTraceData', () => {
+        const data = {
+            data: [
+                {Error: 'true', Operation: 'A'},
+                {Error: 'false', Operation: 'B'}
+            ]
+        };
+        const errorLogs = getFilteredTraceData(data, true);
+        expect(errorLogs).to.eql([
+            {Error: 'true', Operation: 'A'}
+        ]);
+        const allLogs = getFilteredTraceData(data, false);
+        expect(allLogs).to.eql([
+            {Error: 'true', Operation: 'A'},
+            {Error: 'false', Operation: 'B'}
+        ]);
+    });
+
+    it('mapTrace - no error', () => {
+        const data = {
+            serviceName: 'Service Name',
+            operationName: 'Operation Name',
+            tags: [{key: 'externalerrorcode_1_1', value: 'none'}],
+            traces: []
+        };
+        const trace = mapTrace(data);
+        expect(trace.Service).to.eql(data.serviceName);
+        expect(trace.Operation).to.eql(data.operationName);
+        expect(trace.Error).to.eql('-');
+        expect(trace['External Error Code']).to.eql('-');
+        expect(trace['External Description']).to.eql('-');
+        expect(trace['Event Category']).to.eql('-');
+        expect(trace['Event Description']).to.eql('-');
+        expect(trace.traces).to.eql(data.traces);
+    });
+
+    it('mapTrace - has error', () => {
+        const extErrorCode = '502';
+        const extErrorDescription = 'Error Description';
+        const eventCategory = 'Event Category';
+        const eventDescription = 'Event Description';
+        const data = {
+            serviceName: 'Service Name',
+            operationName: 'Operation Name',
+            tags: [
+                {key: 'error', value: 'true'},
+                {key: 'externalerrorcode_1_1', value: extErrorCode},
+                {key: 'externalerrordescription_1_1', value: extErrorDescription},
+                {key: 'EventCategory', value: eventCategory},
+                {key: 'EventDescription', value: eventDescription},
+            ],
+            traces: [
+                {serviceName: 'Service Name', operationName: 'Operation Name', tags: [], traces: []}
+            ]
+        };
+        const trace = mapTrace(data);
+        expect(trace.Service).to.eql(data.serviceName);
+        expect(trace.Operation).to.eql(data.operationName);
+        expect(trace.Error).to.eql('true');
+        expect(trace['External Error Code']).to.eql(extErrorCode);
+        expect(trace['External Description']).to.eql(extErrorDescription);
+        expect(trace['Event Category']).to.eql(eventCategory);
+        expect(trace['Event Description']).to.eql(eventDescription);
+        expect(trace.traces).to.eql(data.traces);
     });
 });

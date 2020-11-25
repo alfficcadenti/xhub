@@ -6,7 +6,8 @@ import {
     validDateRange,
     getQueryParams,
     shouldShowTooltip,
-    successRatesRealTimeObject
+    successRatesRealTimeObject,
+    getTimeInterval
 } from '../utils';
 import {successRateRealTimeMock} from '../mockData';
 
@@ -72,5 +73,31 @@ describe('successRatesRealTimeObject()', () => {
     it('render object with brand values if multiple LoB are selected', () => {
         const expectedResult = {'Checkout (CKO) To Checkout Confirmation Page': '78.92', 'Home To Search Page (SERP)': '77.92', 'Property (PDP) To Checkout Page (CKO)': '75.92', 'Search (SERP) To Property Page (PDP)': '76.92'};
         expect(successRatesRealTimeObject(successRateRealTimeMock, [{value: 'H', label: 'Hotels'}, {value: 'C', label: 'Cars'}], 'Expedia')).to.eql(expectedResult);
+    });
+});
+
+describe('getTimeInterval', () => {
+    it('defaults to 1 minute given no params', () => {
+        expect(getTimeInterval()).to.eql(5);
+    });
+    it('sets interval to 1 day if start date is over 365 days ago', () => {
+        expect(getTimeInterval(moment().subtract(366, 'days').toISOString(), moment().toISOString()))
+            .to.eql(2880);
+    });
+    it('sets interval to 2 hours if start date is over 90 days ago', () => {
+        expect(getTimeInterval(moment().subtract(91, 'days').toISOString(), moment().toISOString()))
+            .to.eql(120);
+    });
+    it('sets interval to 2 hours if start date more than 7 days from end date', () => {
+        expect(getTimeInterval(moment().subtract(8, 'days'), moment().toISOString()))
+            .to.eql(120);
+    });
+    it('sets interval to 1 hours if start date more than 24 hours from end date', () => {
+        expect(getTimeInterval(moment().subtract(25, 'hours').toISOString(), moment().toISOString()))
+            .to.eql(60);
+    });
+    it('sets interval to 1 min if start date within 24 hours ago', () => {
+        expect(getTimeInterval(moment().subtract(23, 'hours').toISOString(), moment().toISOString()))
+            .to.eql(5);
     });
 });
