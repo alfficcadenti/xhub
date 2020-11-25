@@ -339,33 +339,33 @@ export const makeSuccessRatesLOBObjects = (data = [[], [], [], []], start, end, 
         tempMinValue = (
             Array.isArray(data[i]) ? data[i] : []
         ).reduce((prev, {time, successRatePercentagesData}) => {
-                let localMin = prev;
-                successRatePercentagesData
-                    .filter(successRateFilter)
-                    // eslint-disable-next-line complexity
-                    .forEach(({rate, lineOfBusiness}) => {
-                        const momentTime = moment(time);
+            let localMin = prev;
+            successRatePercentagesData
+                .filter(successRateFilter)
+            // eslint-disable-next-line complexity
+                .forEach(({rate, lineOfBusiness}) => {
+                    const momentTime = moment(time);
 
-                        if (momentTime.isBetween(start, end, 'minutes', '[]')) {
-                            const lob = lineOfBusiness ? lobs.find(({value}) => value === lineOfBusiness) : null;
-                            const valueKey = lob ? lob.label : 'value';
-                            const found = aggregatedData.findIndex((d) => d.time === moment.utc(time).valueOf());
+                    if (momentTime.isBetween(start, end, 'minutes', '[]')) {
+                        const lob = lineOfBusiness ? lobs.find(({value}) => value === lineOfBusiness) : null;
+                        const valueKey = lob ? lob.label : 'value';
+                        const found = aggregatedData.findIndex((d) => d.time === moment.utc(time).valueOf());
 
-                            if (found > -1) {
-                                aggregatedData[found][valueKey] = rate === null ? null : formatRate(rate);
-                            } else {
-                                aggregatedData.push({
-                                    label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
-                                    time: moment.utc(time).valueOf(),
-                                    [valueKey]: rate === null ? null : formatRate(rate)
-                                });
-                            }
+                        if (found > -1) {
+                            aggregatedData[found][valueKey] = rate === null ? null : formatRate(rate);
+                        } else {
+                            aggregatedData.push({
+                                label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
+                                time: moment.utc(time).valueOf(),
+                                [valueKey]: rate === null ? null : formatRate(rate)
+                            });
                         }
+                    }
 
-                        localMin = rate ? Math.min(localMin, formatRate(rate)) : localMin;
-                    });
-                return localMin;
-            }, (data[0] && data[0][0]) ? data[0][0].successRatePercentagesData.find((item) => mapBrandNames(item.brand) === selectedBrand).rate : 0);
+                    localMin = rate ? Math.min(localMin, formatRate(rate)) : localMin;
+                });
+            return localMin;
+        }, (data[0] && data[0][0]) ? data[0][0].successRatePercentagesData.find((item) => mapBrandNames(item.brand) === selectedBrand).rate : 0);
 
         if (i === 0) {
             minValue = tempMinValue;

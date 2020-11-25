@@ -15,7 +15,8 @@ import {
     DEPLOYMENT_ANNOTATION_CATEGORY,
     INCIDENT_ANNOTATION_CATEGORY,
     AB_TESTS_ANNOTATION_CATEGORY,
-    LOB_LIST
+    LOB_LIST,
+    VRBO_BRAND
 } from '../../constants';
 import {
     addSuggestionType,
@@ -45,7 +46,7 @@ import DateFiltersWrapper from '../../components/DateFiltersWrapper/DateFiltersW
 const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const history = useHistory();
     const {search, pathname} = useLocation();
-    const {initialStart, initialEnd, initialTimeRange, initialLobs} = getQueryParams(search);
+    const {initialStart, initialEnd, initialTimeRange} = getQueryParams(search);
 
     const [realTimeTotals, setRealTimeTotals] = useState({});
     const [isRttLoading, setIsRttLoading] = useState(true);
@@ -54,6 +55,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [widgets, setWidgets] = useState([]);
     const [lobWidgets, setLoBWidgets] = useState([]);
     const [currentWidgets, setCurrentWidgets] = useState([]);
+    const [isLoBAvailable, setIsLoBAvailable] = useState(true);
 
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
@@ -178,9 +180,9 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
                 const successRatesLOBs = LOB_LIST.filter(({value}) => ['H', 'C'].includes(value));
 
-                // const widgetObjects = makeSuccessRatesObjects(fetchedSuccessRates, start, end, pageBrand, selectedBrand, selectedLobs);
                 const widgetObjects = makeSuccessRatesObjects(fetchedSuccessRates, start, end, pageBrand);
                 const widgetLOBObjects = makeSuccessRatesLOBObjects(fetchedSuccessRates, start, end, pageBrand, selectedBrand, successRatesLOBs);
+
                 setWidgets(widgetObjects);
                 setLoBWidgets(widgetLOBObjects);
             })
@@ -293,6 +295,10 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 .finally(() => setIsAbTestsAnnotationsLoading(false));
         };
 
+        if ([EG_BRAND, EGENCIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND].includes(selectedBrands[0])) {
+            setIsLoBAvailable(false);
+        }
+
         if ([EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, HOTELS_COM_BRAND].includes(selectedBrands[0])) {
             setIsSupportedBrand(false);
             setError(`Success rates for ${selectedBrands} is not yet available.
@@ -328,7 +334,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         } else {
             setCurrentWidgets(lobWidgets);
         }
-    }, [selectedLobs]);
+    }, [selectedLobs, widgets]);
 
     const filterAnnotations = (deployments, incidents, abTests) => {
         const filteredDeployments = deployments
@@ -511,18 +517,22 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         <div className="success-rates-container">
             <h1>
                 {'Success Rates'}
-                <HelpText text="Only for LOB Hotels" placement="top" />
+                {!isLoBAvailable && <HelpText text="Only for LOB Hotels" placement="top" />}
             </h1>
             <div className="filters-wrapper">
                 <div className="dynamic-filters-wrapper">
-                    <Select
-                        isMulti
-                        classNamePrefix="lob-select"
-                        className="lob-select-container"
-                        options={LOB_LIST.filter(({value}) => ['H', 'C'].includes(value))}
-                        placeholder={'Select Line of Business'}
-                        onChange={handleLoBChange}
-                    />
+                    {
+                        isLoBAvailable &&
+                            <Select
+                                isMulti
+                                classNamePrefix="lob-select"
+                                className="lob-select-container"
+                                options={LOB_LIST.filter(({value}) => ['H', 'C'].includes(value))}
+                                onChange={handleLoBChange}
+                                placeholder={lobWidgets.length ? 'Select Line of Business' : 'Line of Business Data not available. Try to refresh'}
+                                isDisabled={!lobWidgets.length}
+                            />
+                    }
                     <Annotations
                         isDeploymentsAnnotationsLoading={isDeploymentsAnnotationsLoading}
                         isIncidentsAnnotationsLoading={isIncidentsAnnotationsLoading}
