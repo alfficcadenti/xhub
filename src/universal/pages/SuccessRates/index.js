@@ -56,6 +56,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [lobWidgets, setLoBWidgets] = useState([]);
     const [currentWidgets, setCurrentWidgets] = useState([]);
     const [isLoBAvailable, setIsLoBAvailable] = useState(true);
+    const [selectedLobs, setSelectedLobs] = useState([]);
 
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
@@ -63,9 +64,6 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [pendingEnd, setPendingEnd] = useState(initialEnd);
     const [start, setStart] = useState(initialStart);
     const [end, setEnd] = useState(initialEnd);
-
-    // const [selectedLobs, setSelectedLobs] = useState(initialLobs);
-    const [selectedLobs, setSelectedLobs] = useState([]);
 
     const [isDirtyForm, setIsDirtyForm] = useState(false);
     const [currentTimeRange, setCurrentTimeRange] = useState(initialTimeRange);
