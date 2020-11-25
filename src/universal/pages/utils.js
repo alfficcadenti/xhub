@@ -282,7 +282,48 @@ export const filterNewSelectedItems = (input, key) => {
         : [];
 };
 
-export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pageBrand = '', selectedBrand = '', lobs = []) => {
+export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pageBrand = '') => {
+    let minValue;
+
+    const formatRate = (rate) => parseFloat((Number(rate) || 0).toFixed(2));
+    // eslint-disable-next-line complexity
+    return SUCCESS_RATES_PAGES_LIST.map((pageName, i) => {
+        const aggregatedData = [];
+        let tempMinValue = 0;
+
+        // eslint-disable-next-line complexity
+        tempMinValue = (
+            Array.isArray(data[i]) ? data[i] : []
+        ).reduce((prev, {time, brandWiseSuccessRateData}) => {
+            let localMin = prev;
+            const momentTime = moment(time);
+            if (momentTime.isBetween(start, end, 'minutes', '[]')) {
+                const found = aggregatedData.findIndex((d) => d.time === moment.utc(time).valueOf());
+                if (found > -1) {
+                    aggregatedData[found].value = brandWiseSuccessRateData.rate === null ? null : formatRate(brandWiseSuccessRateData.rate);
+                } else {
+                    aggregatedData.push({
+                        label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
+                        time: moment.utc(time).valueOf(),
+                        value: brandWiseSuccessRateData.rate === null ? null : formatRate(brandWiseSuccessRateData.rate)
+                    });
+                }
+            }
+            localMin = brandWiseSuccessRateData.rate ? Math.min(localMin, formatRate(brandWiseSuccessRateData.rate)) : localMin;
+            return localMin;
+        }, (data[0] && data[0][0]) ? data[0][0].brandWiseSuccessRateData.rate : 0);
+
+        if (i === 0) {
+            minValue = tempMinValue;
+        } else {
+            minValue = tempMinValue < minValue ? tempMinValue : minValue;
+        }
+
+        return {pageName, aggregatedData, pageBrand};
+    }).map((item) => ({...item, minValue}));
+};
+
+export const makeSuccessRatesLOBObjects = (data = [[], [], [], []], start, end, pageBrand = '', selectedBrand = '', lobs = []) => {
     let minValue;
     const successRateFilter = ({brand, lineOfBusiness}) => (
         mapBrandNames(brand) === selectedBrand
@@ -293,43 +334,23 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
     return SUCCESS_RATES_PAGES_LIST.map((pageName, i) => {
         const aggregatedData = [];
         let tempMinValue = 0;
-        if (!lobs.length) {
-            // eslint-disable-next-line complexity
-            tempMinValue = (
-                Array.isArray(data[i]) ? data[i] : []
-            ).reduce((prev, {time, brandWiseSuccessRateData}) => {
-                let localMin = prev;
-                const momentTime = moment(time);
-                if (momentTime.isBetween(start, end, 'minutes', '[]')) {
-                    const found = aggregatedData.findIndex((d) => d.time === moment.utc(time).valueOf());
-                    if (found > -1) {
-                        aggregatedData[found].value = brandWiseSuccessRateData.rate === null ? null : formatRate(brandWiseSuccessRateData.rate);
-                    } else {
-                        aggregatedData.push({
-                            label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
-                            time: moment.utc(time).valueOf(),
-                            value: brandWiseSuccessRateData.rate === null ? null : formatRate(brandWiseSuccessRateData.rate)
-                        });
-                    }
-                }
-                localMin = brandWiseSuccessRateData.rate ? Math.min(localMin, formatRate(brandWiseSuccessRateData.rate)) : localMin;
-                return localMin;
-            }, (data[0] && data[0][0]) ? data[0][0].brandWiseSuccessRateData.rate : 0);
-        } else {
-            // eslint-disable-next-line complexity
-            tempMinValue = (
-                Array.isArray(data[i]) ? data[i] : []
-            ).reduce((prev, {time, successRatePercentagesData}) => {
+
+        // eslint-disable-next-line complexity
+        tempMinValue = (
+            Array.isArray(data[i]) ? data[i] : []
+        ).reduce((prev, {time, successRatePercentagesData}) => {
                 let localMin = prev;
                 successRatePercentagesData
                     .filter(successRateFilter)
                     // eslint-disable-next-line complexity
                     .forEach(({rate, lineOfBusiness}) => {
                         const momentTime = moment(time);
+
                         if (momentTime.isBetween(start, end, 'minutes', '[]')) {
                             const lob = lineOfBusiness ? lobs.find(({value}) => value === lineOfBusiness) : null;
-                            const valueKey = (lob) ? lob.label : 'value';
+                            const valueKey = lob ? lob.label : 'value';
                             const found = aggregatedData.findIndex((d) => d.time === moment.utc(time).valueOf());
+
                             if (found > -1) {
                                 aggregatedData[found][valueKey] = rate === null ? null : formatRate(rate);
                             } else {
@@ -340,17 +361,18 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
                                 });
                             }
                         }
+
                         localMin = rate ? Math.min(localMin, formatRate(rate)) : localMin;
                     });
                 return localMin;
             }, (data[0] && data[0][0]) ? data[0][0].successRatePercentagesData.find((item) => mapBrandNames(item.brand) === selectedBrand).rate : 0);
-        }
 
         if (i === 0) {
             minValue = tempMinValue;
         } else {
             minValue = tempMinValue < minValue ? tempMinValue : minValue;
         }
+
         return {pageName, aggregatedData, pageBrand};
     }).map((item) => ({...item, minValue}));
 };

@@ -24,7 +24,8 @@ import {
     filterNewSelectedItems,
     getAnnotationsFilter,
     getBrand, getListOfUniqueProperties, getUniqueByProperty,
-    makeSuccessRatesObjects
+    makeSuccessRatesObjects,
+    makeSuccessRatesLOBObjects
 } from '../utils';
 import HelpText from '../../components/HelpText/HelpText';
 import {SUCCESS_RATES_PAGES_LIST, METRIC_NAMES} from './constants';
@@ -50,14 +51,19 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [rttError, setRttError] = useState('');
 
     const [widgets, setWidgets] = useState([]);
+    const [lobWidgets, setLoBWidgets] = useState([]);
+    const [currentWidgets, setCurrentWidgets] = useState([]);
+
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
     const [pendingStart, setPendingStart] = useState(initialStart);
     const [pendingEnd, setPendingEnd] = useState(initialEnd);
     const [start, setStart] = useState(initialStart);
     const [end, setEnd] = useState(initialEnd);
-    const [pendingLobs, setPendingLobs] = useState(initialLobs);
-    const [selectedLobs, setSelectedLobs] = useState(initialLobs);
+
+    // const [selectedLobs, setSelectedLobs] = useState(initialLobs);
+    const [selectedLobs, setSelectedLobs] = useState([]);
+
     const [isDirtyForm, setIsDirtyForm] = useState(false);
     const [currentTimeRange, setCurrentTimeRange] = useState(initialTimeRange);
     const [pendingTimeRange, setPendingTimeRange] = useState(initialTimeRange);
@@ -135,7 +141,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         const dateQuery = `&startDate=${rttStart.utc().format()}&endDate=${rttEnd.utc().format()}`;
         const {funnelBrand} = getBrand(selectedBrand, 'label');
 
-        Promise.all(METRIC_NAMES.map((metricName) => fetch(`/user-events-api/v1/funnelView?brand=${funnelBrand}&metricName=${metricName}${dateQuery}`)))
+        Promise.all(METRIC_NAMES.map((metricName) => fetch(`https://localhost:8085/v1/funnelView?brand=${funnelBrand}&metricName=${metricName}${dateQuery}`)))
             .then((responses) => Promise.all(responses.map(checkResponse)))
             .then((fetchedSuccessRates) => successRatesRealTimeObject(fetchedSuccessRates, selectedLobs, selectedBrand))
             .then((realTimeData) => setRealTimeTotals(realTimeData))
@@ -160,7 +166,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         const lobQuery = selectedLobs.length
             ? `&lineOfBusiness=${selectedLobs.map((lob) => lob.value).join(',')}`
             : '';
-        Promise.all(METRIC_NAMES.map((metricName) => fetch(`/user-events-api/v1/funnelView?brand=${funnelBrand}&metricName=${metricName}${dateQuery}${lobQuery}`)))
+        Promise.all(METRIC_NAMES.map((metricName) => fetch(`https://localhost:8085/v1/funnelView?brand=${funnelBrand}&metricName=${metricName}${dateQuery}${lobQuery}`)))
             .then((responses) => Promise.all(responses.map(checkResponse)))
             .then((fetchedSuccessRates) => {
                 if (!fetchedSuccessRates || !fetchedSuccessRates.length) {
@@ -168,8 +174,13 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     return;
                 }
 
-                const widgetObjects = makeSuccessRatesObjects(fetchedSuccessRates, start, end, pageBrand, selectedBrand, selectedLobs);
+                const successRatesLOBs = LOB_LIST.filter(({value}) => ['H', 'C'].includes(value));
+
+                // const widgetObjects = makeSuccessRatesObjects(fetchedSuccessRates, start, end, pageBrand, selectedBrand, selectedLobs);
+                const widgetObjects = makeSuccessRatesObjects(fetchedSuccessRates, start, end, pageBrand);
+                const widgetLOBObjects = makeSuccessRatesLOBObjects(fetchedSuccessRates, start, end, pageBrand, selectedBrand, successRatesLOBs);
                 setWidgets(widgetObjects);
+                setLoBWidgets(widgetLOBObjects);
             })
             .catch((err) => {
                 let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
@@ -294,7 +305,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             history.push(`${pathname}?selectedBrand=${selectedBrands[0]}`
                 + `&start=${pendingStart.format()}`
                 + `&end=${pendingEnd.format()}`
-                + `&lobs=${pendingLobs.map((l) => l.value).join(',')}`
+                + `&lobs=${selectedLobs.map((l) => l.value).join(',')}`
             );
             if (!isZoomedIn) {
                 fetchSuccessRatesData(selectedBrands);
@@ -307,7 +318,15 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             clearInterval(rttRef.current);
             setIsZoomedIn(false);
         };
-    }, [selectedBrands, start, end, selectedLobs]);
+    }, [selectedBrands, start, end]);
+
+    useEffect(() => {
+        if (!selectedLobs.length) {
+            setCurrentWidgets(widgets);
+        } else {
+            setCurrentWidgets(lobWidgets);
+        }
+    }, [selectedLobs]);
 
     const filterAnnotations = (deployments, incidents, abTests) => {
         const filteredDeployments = deployments
@@ -444,13 +463,11 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         setCurrentTimeRange(pendingTimeRange);
         setStart(pendingStart);
         setEnd(pendingEnd);
-        setSelectedLobs(pendingLobs);
         setIsDirtyForm(false);
     };
 
-    const handleLoBsChange = (lobs) => {
-        setPendingLobs(lobs || []);
-        setIsDirtyForm(true);
+    const handleLoBChange = (lobs) => {
+        setSelectedLobs(lobs || []);
     };
 
     const renderWidget = ({pageName, aggregatedData, pageBrand, minValue}) => (
@@ -502,8 +519,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                         className="lob-select-container"
                         options={LOB_LIST.filter(({value}) => ['H', 'C'].includes(value))}
                         placeholder={'Select Line of Business'}
-                        onChange={handleLoBsChange}
-                        value={pendingLobs}
+                        onChange={handleLoBChange}
                     />
                     <Annotations
                         isDeploymentsAnnotationsLoading={isDeploymentsAnnotationsLoading}
@@ -544,7 +560,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             )}
             <LoadingContainer isLoading={isLoading} error={error} className="success-rates-loading-container">
                 <div className="success-rates-widget-container">
-                    {widgets.map(renderWidget)}
+                    {currentWidgets.map(renderWidget)}
                 </div>
             </LoadingContainer>
         </div>
