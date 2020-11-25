@@ -31,7 +31,8 @@ import {
     getPresets,
     getWidgetXAxisTickGap,
     shouldShowTooltip,
-    successRatesRealTimeObject
+    successRatesRealTimeObject,
+    getTimeInterval
 } from './utils';
 import './styles.less';
 import {Checkbox} from '@homeaway/react-form-components';
@@ -153,13 +154,14 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         const {label: pageBrand, funnelBrand} = getBrand(selectedBrand, 'label');
         setIsLoading(true);
         setError('');
+        const interval = getTimeInterval(start, end);
         const dateQuery = start && end
             ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
             : '';
         const lobQuery = selectedLobs.length
             ? `&lineOfBusiness=${selectedLobs.map((lob) => lob.value).join(',')}`
             : '';
-        Promise.all(METRIC_NAMES.map((metricName) => fetch(`/user-events-api/v1/funnelView?brand=${funnelBrand}&metricName=${metricName}${dateQuery}${lobQuery}`)))
+        Promise.all(METRIC_NAMES.map((metricName) => fetch(`/user-events-api/v1/funnelView?brand=${funnelBrand}&metricName=${metricName}${dateQuery}${lobQuery}&timeInterval=${interval}`)))
             .then((responses) => Promise.all(responses.map(checkResponse)))
             .then((fetchedSuccessRates) => {
                 if (!fetchedSuccessRates || !fetchedSuccessRates.length) {
