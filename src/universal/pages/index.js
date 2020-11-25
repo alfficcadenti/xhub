@@ -23,15 +23,6 @@ export default [
     // AAT Dashboards
     {
         category: AAT,
-        id: 'checkout-fci',
-        link: '/checkout-fci',
-        text: 'Checkout FCI',
-        component: require('./CheckoutFCI'),
-        brands: [EXPEDIA_BRAND],
-        hidden: true
-    },
-    {
-        category: AAT,
         id: 'impulse',
         link: '/impulse',
         text: 'Impulse Dashboard',
