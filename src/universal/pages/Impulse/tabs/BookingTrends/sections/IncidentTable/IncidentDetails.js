@@ -43,7 +43,7 @@ const IncidentDetails = ({data = [], setTableData}) => {
         <div className="incident-details-container">
             <h2 className="page-title">{buildTicketLink(data[0].id)} {'Details'}</h2>
             <div className="table-wrapper">
-                <span className="closeButton" onClick={() => setTableData([])}>&#10006;</span>
+                <span className="close-button" onClick={() => setTableData([])}>&#10006;</span>
                 <div className="incident-details">
                     <DataTable
                         rows={[
