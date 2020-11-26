@@ -1,6 +1,6 @@
 import React from 'react';
 import {expect} from 'chai';
-import {mount} from 'enzyme';
+import {mount} from 'enzyme/build';
 import DateFilterWrapper from '../DateFiltersWrapper';
 
 describe('DateFilterWrapper component testing', () => {

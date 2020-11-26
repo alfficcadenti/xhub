@@ -1,8 +1,10 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
+import {DatetimeRangePicker} from '../DatetimeRangePicker';
 import {CALENDAR__16} from '@homeaway/svg-defs';
 import {SVGIcon} from '@homeaway/react-svg';
-import moment from 'moment';
+import moment from 'moment/moment';
+import './styles.less';
+
 
 const DateFiltersWrapper = ({isFormDisabled, pendingStart, pendingEnd, handleApplyFilters, handleDatetimeChange, isDirtyForm}) => {
     const [openDateFilter, setOpenDateFilter] = useState(false);
@@ -39,7 +41,6 @@ const DateFiltersWrapper = ({isFormDisabled, pendingStart, pendingEnd, handleApp
         <div className="date-filters-wrapper">
             <div
                 className={`btn btn-default dates-button ${openDateFilter ? 'active' : ''}`}
-
                 onClick={() => setOpenDateFilter(!openDateFilter)}
             >
                 <span><SVGIcon usefill markup={CALENDAR__16} /></span>
