@@ -1,0 +1,43 @@
+@import '../../../../../../mixins.less';
+
+.incident-details-container {
+  width: 90%;
+
+  .table-wrapper {
+    border: 0.5px solid #c2b7b7;
+    .closeButton {
+      float:right;
+      display:inline-block;
+      padding:2px 5px;
+      cursor: pointer;
+    }
+    .closeButton:hover {
+      float: right;
+      display: inline-block;
+      padding: 2px 5px;
+      color: #a09898;
+    }
+
+    .incident-details {
+      padding-bottom: @spacing-3x;
+    }
+
+    .incident-details::after {
+      content: "";
+      width: 85%;
+      height: 0.5px;
+      background: #c2b7b7;
+      position: absolute;
+      margin-top: @spacing-3x;
+      left: @spacing-5x;
+    }
+
+    .rev-details {
+      padding-top: @spacing-3x;
+      .last-sum-row{
+        margin-top: @spacing-1x;
+      }
+    }
+  }
+
+}

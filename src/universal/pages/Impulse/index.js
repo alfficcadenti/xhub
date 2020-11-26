@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {useFetchBlipData} from './customHook';
 import {Navigation} from '@homeaway/react-navigation';
 import LoadingContainer from '../../components/LoadingContainer';
-import {BookingTrends} from './tabs/index';
+import {BookingTrends} from './tabs/BookingTrends';
 import {useQueryParamChange, useSelectedBrand} from '../hooks';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import Select from 'react-select';
@@ -14,6 +14,7 @@ import './styles.less';
 import {ALL_LOB, ALL_POS, ALL_BRANDS, ALL_DEVICES, ALL_INCIDENTS} from '../../constants';
 import {getFilters, getFiltersForMultiKeys, startTime, endTime} from './impulseHandler';
 import {Checkbox, Switch} from '@homeaway/react-form-components';
+import {IncidentDetails} from './tabs/BookingTrends';
 
 const startDateDefaultValue = startTime;
 const endDateDefaultValue = endTime;
@@ -58,6 +59,7 @@ const Impulse = (props) => {
     const [chartSliced, setChartSliced] = useState(false);
     const [isAutoRefresh, setAutoRefresh] = useState(true);
     const [daysDifference, setDaysDifference] = useState(moment(endDateTime).diff(moment(startDateTime), 'days'));
+    const [tableData, setTableData] = useState([]);
     useQueryParamChange(newBrand, props.onBrandChange);
     useSelectedBrand(newBrand, props.onBrandChange, props.prevSelectedBrand);
     const [isLoading,
@@ -162,6 +164,7 @@ const Impulse = (props) => {
                     annotations={enableIncidents ? annotationsMulti : []}
                     setDaysDifference={setDaysDifference}
                     daysDifference={daysDifference}
+                    setTableData={setTableData}
                 />);
             default:
                 return (<BookingTrends
@@ -227,6 +230,7 @@ const Impulse = (props) => {
                         onClick={() => {
                             setIsApplyClicked(true);
                             setDaysDifference(moment(endDateTime).diff(moment(startDateTime), 'days'));
+                            setTableData([]);
                         }}
                     >
                         {'Submit'}
@@ -263,6 +267,7 @@ const Impulse = (props) => {
                 <div className="impulse-chart-container">
                     <div className="impulse-bookings-container">
                         {renderTabs()}
+                        {tableData.length > 0 && <IncidentDetails data={tableData} setTableData={setTableData}/>}
                     </div>
                 </div>
             </LoadingContainer>

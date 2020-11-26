@@ -1,0 +1,24 @@
+@import '../../../../../../mixins.less';
+.bookings-container-box {
+  width: 90%;
+  height: 500px;
+  .reset-div {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: @spacing-4x;
+    .reset-btn {
+      padding: 5px;
+      margin-bottom: @spacing-2x;
+    }
+  }
+  .custom-tooltip {
+    background-color: rgba(150, 150, 151, .7);
+    border-radius: @spacing-2x;
+    vertical-align: center;
+    text-align: left;
+
+    .label {
+      color: @text-color;
+    }
+  }
+}
