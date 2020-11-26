@@ -20,7 +20,7 @@
     }
 
     .page-views-loading-container {
-        margin-top: @spacing-2x;
+        margin-top: @spacing-6x;
     }
 
     .page-views-widget-container {
@@ -46,16 +46,16 @@
         .dynamic-filters-wrapper,
         .eps-partner-select-container {
             padding: @spacing-1x @spacing-1x 0 @spacing-1x;
+
             .eps-partner-select__menu {
                 min-width: 200%;
             }
         }
 
         .dynamic-filters-wrapper {
-            float: left;
+            display: inline-flex;
             align-items: flex-start;
             width: 70%;
-            display: inline-flex;
             position: relative;
 
             .lob-select-container {
@@ -65,7 +65,8 @@
             }
         }
 
-        .lob-select__control, .eps-partner-select__control {
+        .lob-select__control,
+        .eps-partner-select__control {
             min-height: @filter-size;
             border-radius: @spacing-1x;
             border-color: @border-color-dark;
