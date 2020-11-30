@@ -16,11 +16,12 @@ export const validDateRange = (start, end) => {
 };
 
 export const getQueryParams = (search) => {
-    const {from, to, lobs} = qs.parse(search);
+    const {from, to, lobs} = qs.parse(search, {decoder: (c) => c});
     const initialLobs = lobs
         ? lobs.split(',').map((l) => LOB_LIST.find(({value}) => value === l)).filter((l) => l)
         : [];
-    return (validDateRange(from, to))
+
+    return validDateRange(from, to)
         ? {
             initialStart: moment(from),
             initialEnd: moment(to),

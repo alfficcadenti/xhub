@@ -309,8 +309,8 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             fetchRealTimeData(selectedBrands);
             rttRef.current = setInterval(fetchRealTimeData.bind(null, selectedBrands), 60000); // refresh every minute
             history.push(`${pathname}?selectedBrand=${selectedBrands[0]}`
-                + `&start=${pendingStart.format()}`
-                + `&end=${pendingEnd.format()}`
+                + `&from=${encodeURIComponent(pendingStart.format())}`
+                + `&to=${encodeURIComponent(pendingEnd.format())}`
                 + `&lobs=${selectedLobs.map((l) => l.value).join(',')}`
             );
             if (!isZoomedIn) {
