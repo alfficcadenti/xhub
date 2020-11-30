@@ -7,6 +7,8 @@
     padding: @spacing-1x @spacing-1x 0 @spacing-1x;
 
     .dates-button {
+        display: flex;
+        align-items: center;
         min-height: @spacing-7x;
         font-size: 12px;
         line-height: @spacing-2x;
@@ -14,11 +16,9 @@
         border-radius: @spacing-1x;
         border: 1px solid @border-color-dark;
         width: 100%;
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
 
-        span {
+        span,
+        .dates {
             margin: 0 8px;
             text-align: left;
         }

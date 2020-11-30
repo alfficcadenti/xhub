@@ -44,12 +44,14 @@ const DateFiltersWrapper = ({isFormDisabled, pendingStart, pendingEnd, handleApp
                 onClick={() => setOpenDateFilter(!openDateFilter)}
             >
                 <span><SVGIcon usefill markup={CALENDAR__16} /></span>
-                <span className="dates"><div>
-                    {moment(pendingStart).utc().format('MMM Do YY h:mm:ss a')}
+                <div className="dates">
+                    <div>
+                        {pendingStart.format('MMM Do YY h:mm:ss a')}
+                    </div>
+                    <div>
+                        {pendingEnd.format('MMM Do YY h:mm:ss a')}
+                    </div>
                 </div>
-                <div>
-                    {moment(pendingEnd).utc().format('MMM Do YY h:mm:ss a')}
-                </div></span>
             </div>
             {openDateFilter && <div ref={ref} className="datetime-range-picker-container">
                 <DatetimeRangePicker
