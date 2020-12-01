@@ -290,7 +290,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     const uniqueTickets = getUniqueByProperty(data, 'id');
                     const adjustedUniqueTickets = adjustTicketProperties(uniqueTickets, INCIDENT_ANNOTATION_CATEGORY)
                         .map((incident) => {
-                            incident.time = moment.utc(incident.openDate).local().isValid() ? moment.utc(incident.openDate).valueOf() : '-';
+                            incident.time = moment.utc(incident.startDate).local().isValid() ? moment.utc(incident.startDate).valueOf() : '-';
                             incident.category = INCIDENT_ANNOTATION_CATEGORY;
                             return incident;
                         });
