@@ -2,6 +2,7 @@ import React, {useEffect, useState, useCallback} from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
 import Select from 'react-select';
 import moment from 'moment';
+import {RadioGroup, RadioButton} from '@homeaway/react-form-components';
 import FilterDropDown from '../../components/FilterDropDown';
 import LineChartWrapper from '../../components/LineChartWrapper';
 import DataTable from '../../components/DataTable';
@@ -11,14 +12,22 @@ import {checkResponse} from '../utils';
 import {EXPEDIA_PARTNER_SERVICES_BRAND, LOB_LIST} from '../../constants';
 import {getQueryValues, getQueryString, getPresets, getLineChartData, getTableData, getErrorCodes} from './utils';
 import TraceLogModal from './TraceLogModal';
-import {FCI_TABLE_COLUMNS, FCI_HIDDEN_TABLE_COLUMNS, SITES} from './constants';
+import {FCI_TABLE_COLUMNS, FCI_HIDDEN_TABLE_COLUMNS, SITES, ALL_CATEGORIES, CATEGORY_OPTION, CODE_OPTION} from './constants';
 import './styles.less';
 
 const Fci = ({selectedBrands}) => {
     const SHOW_FILTERS = false;
     const history = useHistory();
     const {search, pathname} = useLocation();
-    const {initialStart, initialEnd, initialTimeRange, initialLobs, initialErrorCode, initialSite} = getQueryValues(search);
+    const {
+        initialStart,
+        initialEnd,
+        initialTimeRange,
+        initialLobs,
+        initialErrorCode,
+        initialSite,
+        initialCategories
+    } = getQueryValues(search);
     const [isDirtyForm, setIsDirtyForm] = useState(false);
 
     const [start, setStart] = useState(initialStart);
@@ -26,17 +35,21 @@ const Fci = ({selectedBrands}) => {
     const [selectedLobs, setSelectedLobs] = useState(initialLobs);
     const [selectedErrorCode, setSelectedErrorCode] = useState(initialErrorCode);
     const [selectedSite, setSelectedSite] = useState(initialSite);
+    const [selectedCategory, setSelectedCategory] = useState(initialCategories);
     const [pendingStart, setPendingStart] = useState(initialStart);
     const [pendingEnd, setPendingEnd] = useState(initialEnd);
     const [pendingTimeRange, setPendingTimeRange] = useState(initialTimeRange);
     const [pendingLobs, setPendingLobs] = useState(initialLobs);
     const [pendingErrorCode, setPendingErrorCode] = useState(initialErrorCode);
     const [pendingSite, setPendingSite] = useState(initialSite);
+    const [pendingCategory, setPendingCategory] = useState(initialCategories);
     const [prev, setPrev] = useState({start: null, end: null, data: []});
     const [errorCodes, setErrorCodes] = useState([]);
 
     const [isSupportedBrand, setIsSupportedBrand] = useState(false);
 
+    const [chartProperty, setChartProperty] = useState(CATEGORY_OPTION);
+    const [categories, setCategories] = useState([]);
     const [lineChartData, setLineChartData] = useState([]);
     const [lineChartKeys, setLineChartKeys] = useState([]);
     const [tableData, setTableData] = useState([]);
@@ -55,13 +68,30 @@ const Fci = ({selectedBrands}) => {
     };
 
     const processData = useCallback((data) => {
-        const filteredData = data.filter(({timestamp}) => moment(timestamp).isBetween(start, end, '[]', 'minute'));
-        const chart = getLineChartData(start, end, filteredData, selectedErrorCode);
+        const categorySet = new Set();
+        const filteredData = data
+            // eslint-disable-next-line complexity
+            .filter(({fci, category}) => {
+                (category || []).forEach((c) => categorySet.add(c));
+                const isWithinRange = fci && fci.timestamp && moment(fci.timestamp).isBetween(start, end, '[]', 'minute');
+                const matchesCategory = selectedCategory === ALL_CATEGORIES || (category || []).includes(selectedCategory);
+                return isWithinRange && matchesCategory;
+            })
+            .map(({fci, category}) => {
+                const result = fci;
+                result.category = (category || []).join(',');
+                return result;
+            });
+        const chart = getLineChartData(start, end, filteredData, selectedErrorCode, chartProperty);
+        setCategories([ALL_CATEGORIES, ...Array.from(categorySet).sort()]);
         setLineChartData(chart.data);
         setLineChartKeys(chart.keys);
-        setTableData(getTableData(filteredData, chart.keys, handleOpenTraceLog));
+        const {keys} = chartProperty !== CODE_OPTION
+            ? getLineChartData(start, end, filteredData, selectedErrorCode, CODE_OPTION)
+            : chart;
+        setTableData(getTableData(filteredData, keys, handleOpenTraceLog));
         setErrorCodes(getErrorCodes(filteredData));
-    }, [start, end, selectedErrorCode]);
+    }, [start, end, selectedCategory, selectedErrorCode, chartProperty]);
 
     // eslint-disable-next-line complexity
     useEffect(() => {
@@ -74,7 +104,7 @@ const Fci = ({selectedBrands}) => {
         setIsLoading(true);
         setIsSupportedBrand(true);
         setError(null);
-        const query = getQueryString(start, end, selectedLobs, selectedErrorCode, selectedSite);
+        const query = getQueryString(start, end, selectedLobs, selectedErrorCode, selectedSite, selectedCategory);
         if (!prev.start || !prev.end || !prev.selectedSite || start.isBefore(prev.start) || end.isAfter(prev.end) || prev.selectedSite !== selectedSite) {
             fetch(`/getCheckoutFailures?${query}`)
                 .then(checkResponse)
@@ -95,7 +125,7 @@ const Fci = ({selectedBrands}) => {
             setIsLoading(false);
             history.push(`${pathname}?selectedBrand=${selectedBrands[0]}&${query}`);
         }
-    }, [start, end, selectedLobs, selectedErrorCode, selectedSite, history, pathname, selectedBrands, prev, processData]);
+    }, [start, end, selectedLobs, selectedErrorCode, selectedSite, history, pathname, selectedBrands, prev, processData, selectedCategory]);
 
     const handleModalClose = () => {
         setIsModalOpen(false);
@@ -107,6 +137,7 @@ const Fci = ({selectedBrands}) => {
         setSelectedLobs(pendingLobs);
         setSelectedErrorCode(pendingErrorCode);
         setSelectedSite(pendingSite);
+        setSelectedCategory(pendingCategory);
         setIsDirtyForm(false);
     };
 
@@ -132,11 +163,21 @@ const Fci = ({selectedBrands}) => {
         setIsDirtyForm(true);
     };
 
+    const handleCategoryChange = (e) => {
+        setPendingCategory(e);
+        setIsDirtyForm(true);
+    };
+
     const handleDotClick = (selected) => {
         if (selected && selected.dataKey) {
-            const errorCode = selected.dataKey;
-            setPendingErrorCode(errorCode);
-            setSelectedErrorCode(errorCode);
+            const value = selected.dataKey;
+            if (chartProperty === CODE_OPTION) {
+                setPendingErrorCode(value);
+                setSelectedErrorCode(value);
+            } else if (chartProperty === CATEGORY_OPTION) {
+                setPendingCategory(value);
+                setSelectedCategory(value);
+            }
         }
     };
 
@@ -175,6 +216,12 @@ const Fci = ({selectedBrands}) => {
         setIsDirtyForm(false);
     };
 
+    const handleChoiceChange = (event) => {
+        if (event && event.target && event.target.value) {
+            setChartProperty(event.target.value);
+        }
+    };
+
     return (
         <div className="fci-container">
             <h1>{'Failed Customer Interactions (FCI)'}</h1>
@@ -198,6 +245,13 @@ const Fci = ({selectedBrands}) => {
                     list={SITES}
                     selectedValue={pendingSite}
                     onClickHandler={handleSiteChange}
+                />
+                <FilterDropDown
+                    id="category-dropdown"
+                    className="category-dropdown"
+                    list={categories}
+                    selectedValue={pendingCategory}
+                    onClickHandler={handleCategoryChange}
                 />
                 {SHOW_FILTERS && (
                     <>
@@ -223,19 +277,37 @@ const Fci = ({selectedBrands}) => {
             </div>
             <LoadingContainer isLoading={isLoading} error={error} className="fci-loading-container">
                 {isSupportedBrand && (
-                    <LineChartWrapper
-                        title="Errors over Time"
-                        helpText="Error codes bucketed by 15 minute intervals"
-                        data={lineChartData}
-                        keys={lineChartKeys}
-                        onDotClick={handleDotClick}
-                        onMouseUp={handleMouseUp}
-                        onMouseDown={handleMouseDown}
-                        onMouseMove={handleMouseMove}
-                        refAreaLeft={refAreaLeft}
-                        refAreaRight={refAreaRight}
-                        enableLineHiding
-                    />
+                    <>
+                        <RadioGroup name="chart-choice" ariaLabel="Chart filter">
+                            <RadioButton
+                                className="chart-option"
+                                label="Error Code"
+                                value={CODE_OPTION}
+                                checked={chartProperty === CODE_OPTION}
+                                onChange={handleChoiceChange}
+                            />
+                            <RadioButton
+                                className="chart-option"
+                                label="Category"
+                                value={CATEGORY_OPTION}
+                                checked={chartProperty === CATEGORY_OPTION}
+                                onChange={handleChoiceChange}
+                            />
+                        </RadioGroup>
+                        <LineChartWrapper
+                            title="Errors over Time"
+                            helpText="Bucketed by 15 minute intervals"
+                            data={lineChartData}
+                            keys={lineChartKeys}
+                            onDotClick={handleDotClick}
+                            onMouseUp={handleMouseUp}
+                            onMouseDown={handleMouseDown}
+                            onMouseMove={handleMouseMove}
+                            refAreaLeft={refAreaLeft}
+                            refAreaRight={refAreaRight}
+                            enableLineHiding
+                        />
+                    </>
                 )}
                 <DataTable
                     title={`FCIs (${tableData.length} results)`}

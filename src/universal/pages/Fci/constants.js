@@ -12,6 +12,7 @@ export const FCI_TABLE_COLUMNS = [
     'TPID',
     'EAPID',
     'SiteID',
+    'Category',
     'Traces'
 ];
 export const FCI_HIDDEN_TABLE_COLUMNS = [
@@ -32,3 +33,6 @@ export const SITES = [
     'travel.chase.com',
     'travel.rbcrewards.com'
 ];
+export const ALL_CATEGORIES = 'All Categories';
+export const CATEGORY_OPTION = 'category';
+export const CODE_OPTION = 'errorCode';

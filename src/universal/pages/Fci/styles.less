@@ -4,13 +4,13 @@
     .form-container {
         margin-bottom: @spacing-2x;
         background: @color-bg-contrast;
-        padding: @spacing-1x;
+        padding: @spacing-2x;
         border-radius: @spacing-1x;
 
         .datetime-range-picker {
             height: @spacing-7x;
             margin-bottom: @spacing-1x;
-            display: inline;
+            display: block;
         }
 
         .lob-select-container {
@@ -28,11 +28,15 @@
 
         .error-code-dropdown .Dropdown__toggle {
             margin-right: @spacing-1x;
-            margin-left: @spacing-1x;
             .dropdown-button(160px);
         }
 
         .site-dropdown .Dropdown__toggle {
+            margin-right: @spacing-1x;
+            .dropdown-button(160px);
+        }
+
+        .category-dropdown .Dropdown__toggle {
             margin-right: @spacing-1x;
             .dropdown-button(160px);
         }
@@ -46,6 +50,15 @@
             margin-left: @spacing-1x;
             height: @spacing-7x;
         }
+    }
+
+    .chart-option {
+        float: right;
+        margin-left: @spacing-2x;
+    }
+
+    .recharts-responsive-container {
+        margin-bottom: @spacing-2x;
     }
 
     .flowchart-container {
