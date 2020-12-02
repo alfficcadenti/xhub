@@ -24,9 +24,7 @@ export const TRACE_TABLE_COLUMNS = [
     'Operation',
     'Error',
     'External Error Code',
-    'External Description',
-    'Event Category',
-    'Event Description'
+    'External Description'
 ];
 export const SITES = [
     'travel.americanexpress.com',

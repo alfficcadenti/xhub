@@ -62,8 +62,8 @@ const Fci = ({selectedBrands}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalData, setModalData] = useState({title: '', data: []});
 
-    const handleOpenTraceLog = (id, data) => {
-        setModalData({title: `Trace Log (ID=${id})`, data});
+    const handleOpenTraceLog = (traceId, data) => {
+        setModalData({traceId, data});
         setIsModalOpen(true);
     };
 

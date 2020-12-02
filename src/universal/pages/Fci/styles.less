@@ -86,14 +86,24 @@
         background: @color-positive;
     }
 
-    .Modal__body {
-        .CRB--radio {
+    .Modal__dialog .Modal__content .Modal__body {
+        margin-top: 0;
+
+        .haystack-link {
             float: right;
-            margin-left: @spacing-2x;
+        }
+
+        .CRB--radio {
+            display: inline-block;
+            margin-right: @spacing-2x;
         }
 
         .Navigation {
             height: @spacing-9x;
+        }
+
+        .no-results-wrapper {
+            margin-top: @spacing-2x;
         }
     }
 }

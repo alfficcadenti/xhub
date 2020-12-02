@@ -3,6 +3,8 @@ import React, {useState, useEffect} from 'react';
 import {RadioGroup, RadioButton} from '@homeaway/react-form-components';
 import Modal from '@homeaway/react-modal';
 import {Navigation} from '@homeaway/react-navigation';
+import {SVGIcon} from '@homeaway/react-svg';
+import {NEW_WINDOW__16} from '@homeaway/svg-defs';
 import DataTable from '../../components/DataTable';
 import {getFilteredTraceData} from './utils';
 import {TRACE_TABLE_COLUMNS} from './constants';
@@ -28,17 +30,20 @@ const TraceLogModal = ({data, isOpen, onClose}) => {
 
     const renderTable = () => (
         <>
+            <a target="_blank" rel="noopener noreferrer" className="haystack-link" href={`https://bex.haystack.exp-prod.net/search?query_1.traceId=${data.traceId}`}>
+                {'Haystack'} <SVGIcon usefill markup={NEW_WINDOW__16} />
+            </a>
             <RadioGroup name="choice" ariaLabel="Table filter">
-                <RadioButton
-                    label="Full Log"
-                    value="false"
-                    checked={!showOnlyErrors}
-                    onChange={handleChoiceChange}
-                />
                 <RadioButton
                     label="Errors Only"
                     value="true"
                     checked={showOnlyErrors}
+                    onChange={handleChoiceChange}
+                />
+                <RadioButton
+                    label="Full Log"
+                    value="false"
+                    checked={!showOnlyErrors}
                     onChange={handleChoiceChange}
                 />
             </RadioGroup>
@@ -68,7 +73,7 @@ const TraceLogModal = ({data, isOpen, onClose}) => {
 
     return (
         <Modal
-            title={data.title}
+            title={`Trace Log (ID=${data.traceId})`}
             id="chart-modal"
             className="chart-modal"
             isOpen={isOpen}
