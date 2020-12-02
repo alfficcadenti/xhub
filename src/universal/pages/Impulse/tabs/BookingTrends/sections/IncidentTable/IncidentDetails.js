@@ -1,14 +1,13 @@
 import React from 'react';
-import DataTable from '@homeaway/react-data-table';
+import DataTable from '../../../../../../components/DataTable';
 import './styles.less';
-import moment from 'moment';
 import {buildTicketLink} from '../../../../../utils';
+import {
+    INCIDENT_TABLE_COLUMN_HEADERS,
+    INCIDENT_TABLE_COLUMNS
+} from './constants';
 
 const IncidentDetails = ({data = [], setTableData}) => {
-    const renderIncidentDetails = (header, key) => {
-        return [<div><strong>{header}</strong></div>,
-            <div>{key === 'startDate' || key === 'endDate' ? moment(data[0][key]).format('MM/DD HH:mm') : data[0][key]}</div>];
-    };
     const setStorageMap = (loss, storedLoss) => {
         return loss !== 'NA' ? [...(storedLoss && storedLoss), loss].filter((item) => typeof item !== 'undefined') : [];
     };
@@ -46,17 +45,9 @@ const IncidentDetails = ({data = [], setTableData}) => {
                 <span className="close-button" onClick={() => setTableData([])}>&#10006;</span>
                 <div className="incident-details">
                     <DataTable
-                        rows={[
-                            {cols: renderIncidentDetails('Summary', 'summary')},
-                            {cols: renderIncidentDetails('Root Cause', 'rootCause')},
-                            {cols: renderIncidentDetails('Brand', 'brand')},
-                            {cols: renderIncidentDetails('Start Date', 'startDate')},
-                            {cols: renderIncidentDetails('End Date', 'endDate')},
-                            {cols: renderIncidentDetails('Status', 'status')},
-                            {cols: renderIncidentDetails('Priority', 'priority')},
-                            {cols: renderIncidentDetails('Booking Impact', 'bookingImpact')},
-                        ]}
-                        tableConfig={{compact: true}}
+                        columns={INCIDENT_TABLE_COLUMNS}
+                        columnHeaders={INCIDENT_TABLE_COLUMN_HEADERS}
+                        data={data}
                     />
                 </div>
                 <div className="rev-details">
