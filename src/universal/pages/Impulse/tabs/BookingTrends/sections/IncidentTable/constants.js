@@ -1,11 +1,12 @@
-export const INCIDENT_TABLE_COLUMN_HEADERS = ['Summary',
-    'Root Cause',
-    'Brand',
-    'Start Date',
-    'End Date',
-    'Status',
-    'Priority',
-    'Booking Impact'];
+export const INCIDENT_TABLE_COLUMN_HEADERS = {
+    summary: 'Summary',
+    rootCause: 'Root Cause',
+    brand: 'Brand',
+    startDate: 'Start Date',
+    endDate: 'End Date',
+    status: 'Status',
+    priority: 'Priority',
+    bookingImpact: 'Booking Impact'};
 
 export const INCIDENT_TABLE_COLUMNS = ['summary',
     'rootCause',
@@ -16,11 +17,12 @@ export const INCIDENT_TABLE_COLUMNS = ['summary',
     'priority',
     'bookingImpact'];
 
-export const REVLOSS_TABLE_COLUMN_HEADERS = ['Brand',
-    'LOB',
-    'Rev Loss',
-    'GBV Loss',
-    'Order Loss'];
+export const REVLOSS_TABLE_COLUMN_HEADERS = {
+    brand: 'Brand',
+    lob: 'LOB',
+    revloss: 'Rev Loss',
+    gbvloss: 'GBV Loss',
+    orderloss: 'Order Loss'};
 
 export const REVLOSS_TABLE_COLUMNS = ['brand',
     'lob',
