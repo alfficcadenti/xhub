@@ -1,39 +1,7 @@
-import qs from 'query-string';
 import moment from 'moment';
-import {LOB_LIST} from '../../constants';
 import {EXPEDIA_BRAND} from '../../constants';
 import {SUCCESS_RATES_PAGES_LIST} from './constants';
 import {mapBrandNames} from '../utils';
-
-// eslint-disable-next-line complexity
-export const validDateRange = (start, end) => {
-    if (!start || !end) {
-        return false;
-    }
-    const startMoment = moment(start);
-    const endMoment = moment(end);
-    return startMoment.isValid() && endMoment.isValid() && startMoment.isBefore(new Date()) && endMoment.isAfter(startMoment);
-};
-
-export const getQueryParams = (search) => {
-    const {from, to, lobs} = qs.parse(search, {decoder: (c) => c});
-    const initialLobs = lobs
-        ? lobs.split(',').map((l) => LOB_LIST.find(({value}) => value === l)).filter((l) => l)
-        : [];
-
-    return validDateRange(from, to)
-        ? {
-            initialStart: moment(from),
-            initialEnd: moment(to),
-            initialTimeRange: 'Custom',
-            initialLobs
-        } : {
-            initialStart: moment().subtract(6, 'hours').startOf('minute'),
-            initialEnd: moment(),
-            initialTimeRange: 'Last 6 Hours',
-            initialLobs
-        };
-};
 
 export const getNowDate = () => moment().endOf('minute').toDate();
 

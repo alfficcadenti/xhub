@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import {useLocation} from 'react-router-dom';
 import moment from 'moment';
 import Select from 'react-select';
 import TravelerMetricsWidget from '../../components/TravelerMetricsWidget';
@@ -7,7 +8,7 @@ import DateFiltersWrapper from '../../components/DateFiltersWrapper/DateFiltersW
 import Annotations from '../../components/Annotations/Annotations';
 import HelpText from '../../components/HelpText/HelpText';
 import {adjustTicketProperties} from '../TicketTrends/incidentsHelper';
-import {useFetchProductMapping, useQueryParamChange, useSelectedBrand, useZoomAndSynced} from '../hooks';
+import {useAddToUrl, useFetchProductMapping, useQueryParamChange, useSelectedBrand, useZoomAndSynced} from '../hooks';
 import {
     EG_BRAND,
     VRBO_BRAND,
@@ -27,16 +28,16 @@ import {
     getUniqueByProperty,
     addSuggestionType,
     getAnnotationsFilter,
-    filterNewSelectedItems
+    filterNewSelectedItems,
+    getQueryParams
 } from '../utils';
 import {makePageViewLoBObjects, makePageViewObjects, buildPageViewsApiQueryString} from './pageViewsUtils';
 import './styles.less';
 
 // eslint-disable-next-line complexity
 const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
-    const initialStart = moment().subtract(6, 'hours').startOf('minute');
-    const initialEnd = moment().endOf('minute');
-    const initialTimeRange = 'Last 6 hours';
+    const {search} = useLocation();
+    const {initialStart, initialEnd, initialTimeRange, initialLobs} = getQueryParams(search);
 
     const [widgets, setWidgets] = useState([]);
     const [lobWidgets, setLoBWidgets] = useState([]);
@@ -52,7 +53,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [pendingTimeRange, setPendingTimeRange] = useState(initialTimeRange);
     const [isFormDisabled, setIsFormDisabled] = useState(false);
     const [isLoBAvailable, setIsLoBAvailable] = useState(true);
-    const [selectedLobs, setSelectedLobs] = useState([]);
+    const [selectedLobs, setSelectedLobs] = useState(initialLobs);
 
     // annotations state
     const [isDeploymentsAnnotationsLoading, setIsDeploymentsAnnotationsLoading] = useState(false);
@@ -369,6 +370,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         setIsMounted(true);
     }, [selectedBrands, start, end, isMounted, selectedEPSPartner]);
 
+    useAddToUrl(selectedBrands, start, end, selectedLobs, pendingStart, pendingEnd);
+
     useEffect(() => {
         const allAnnotations = [...deploymentAnnotations, ...incidentAnnotations];
         filterCategories(allAnnotations);
@@ -501,6 +504,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                                 onChange={handleLoBChange}
                                 placeholder={lobWidgets.length ? 'Select Line of Business' : 'Line of Business Data not available. Try to refresh'}
                                 isDisabled={!lobWidgets.length}
+                                defaultValue={selectedLobs}
                             />
                     }
                     <Annotations

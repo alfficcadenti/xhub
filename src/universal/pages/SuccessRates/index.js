@@ -1,12 +1,12 @@
 /* eslint-disable complexity */
 import React, {useEffect, useRef, useState} from 'react';
-import {useHistory, useLocation} from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 import Select from 'react-select';
 import moment from 'moment';
 import TravelerMetricsWidget from '../../components/TravelerMetricsWidget';
 import LoadingContainer from '../../components/LoadingContainer';
 import RealTimeSummaryPanel from '../../components/RealTimeSummaryPanel';
-import {useFetchProductMapping, useQueryParamChange, useSelectedBrand, useZoomAndSynced} from '../hooks';
+import {useFetchProductMapping, useQueryParamChange, useSelectedBrand, useZoomAndSynced, useAddToUrl} from '../hooks';
 import {
     EG_BRAND,
     EGENCIA_BRAND,
@@ -26,12 +26,12 @@ import {
     getAnnotationsFilter,
     getBrand, getListOfUniqueProperties, getUniqueByProperty,
     makeSuccessRatesObjects,
-    makeSuccessRatesLOBObjects
+    makeSuccessRatesLOBObjects,
+    getQueryParams
 } from '../utils';
 import HelpText from '../../components/HelpText/HelpText';
 import {SUCCESS_RATES_PAGES_LIST, METRIC_NAMES} from './constants';
 import {
-    getQueryParams,
     getWidgetXAxisTickGap,
     shouldShowTooltip,
     successRatesRealTimeObject,
@@ -44,9 +44,8 @@ import DateFiltersWrapper from '../../components/DateFiltersWrapper/DateFiltersW
 
 
 const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
-    const history = useHistory();
-    const {search, pathname} = useLocation();
-    const {initialStart, initialEnd, initialTimeRange} = getQueryParams(search);
+    const {search} = useLocation();
+    const {initialStart, initialEnd, initialTimeRange, initialLobs} = getQueryParams(search);
 
     const [realTimeTotals, setRealTimeTotals] = useState({});
     const [isRttLoading, setIsRttLoading] = useState(true);
@@ -56,7 +55,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [lobWidgets, setLoBWidgets] = useState([]);
     const [currentWidgets, setCurrentWidgets] = useState([]);
     const [isLoBAvailable, setIsLoBAvailable] = useState(true);
-    const [selectedLobs, setSelectedLobs] = useState([]);
+    const [selectedLobs, setSelectedLobs] = useState(initialLobs);
 
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
@@ -308,11 +307,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             setIsFormDisabled(false);
             fetchRealTimeData(selectedBrands);
             rttRef.current = setInterval(fetchRealTimeData.bind(null, selectedBrands), 60000); // refresh every minute
-            history.push(`${pathname}?selectedBrand=${selectedBrands[0]}`
-                + `&from=${encodeURIComponent(pendingStart.format())}`
-                + `&to=${encodeURIComponent(pendingEnd.format())}`
-                + `&lobs=${selectedLobs.map((l) => l.value).join(',')}`
-            );
+
             if (!isZoomedIn) {
                 fetchSuccessRatesData(selectedBrands);
                 fetchIncidentsAnnotations();
@@ -332,7 +327,9 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         } else {
             setCurrentWidgets(lobWidgets);
         }
-    }, [selectedLobs, widgets]);
+    }, [selectedLobs, widgets, lobWidgets]);
+
+    useAddToUrl(selectedBrands, start, end, selectedLobs, pendingStart, pendingEnd);
 
     const filterAnnotations = (deployments, incidents, abTests) => {
         const filteredDeployments = deployments
@@ -472,9 +469,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         setIsDirtyForm(false);
     };
 
-    const handleLoBChange = (lobs) => {
-        setSelectedLobs(lobs || []);
-    };
+    const handleLoBChange = (lobs) => setSelectedLobs(lobs || []);
 
     const renderWidget = ({pageName, aggregatedData, pageBrand, minValue}) => (
         <TravelerMetricsWidget
@@ -529,6 +524,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                                 onChange={handleLoBChange}
                                 placeholder={lobWidgets.length ? 'Select Line of Business' : 'Line of Business Data not available. Try to refresh'}
                                 isDisabled={!lobWidgets.length}
+                                defaultValue={selectedLobs}
                             />
                     }
                     <Annotations
