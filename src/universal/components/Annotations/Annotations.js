@@ -56,7 +56,7 @@ const Annotations = ({isDeploymentsAnnotationsLoading,
             >
                 <SVGIcon usefill markup={FILTER__16} />{' Display Annotations'}
             </button>
-            {openAdvancedFilter && <div className="annotations-wrapper" ref={ref}>
+            <div className={`${openAdvancedFilter ? 'open' : 'closed'} annotations-wrapper`} ref={ref}>
                 <LoadingContainer
                     isLoading={isDeploymentsAnnotationsLoading || isIncidentsAnnotationsLoading || isAbTestsAnnotationsLoading}
                     error={displayError}
@@ -97,7 +97,7 @@ const Annotations = ({isDeploymentsAnnotationsLoading,
                         />
                     }
                 </LoadingContainer>
-            </div>}
+            </div>
         </Fragment>
     );
 };
