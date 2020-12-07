@@ -45,6 +45,8 @@ export const mapBrandNames = (brandName) => {
             return EXPEDIA_BRAND;
         case 'vrbo':
             return VRBO_BRAND;
+        case null:
+            return EXPEDIA_PARTNER_SERVICES_BRAND;
         default:
             return brandName;
     }
@@ -332,6 +334,10 @@ export const makeSuccessRatesLOBObjects = (data = [[], [], [], []], start, end, 
         mapBrandNames(brand) === selectedBrand
         && (!lobs.length || !lineOfBusiness || lobs.findIndex(({value}) => value === lineOfBusiness) > -1)
     );
+
+    const successRateEPSFilter = ({lineOfBusiness}) => (
+        (!lobs.length || !lineOfBusiness || lobs.findIndex(({value}) => value === lineOfBusiness) > -1)
+    );
     const formatRate = (rate) => parseFloat((Number(rate) || 0).toFixed(2));
     // eslint-disable-next-line complexity
     return SUCCESS_RATES_PAGES_LIST.map((pageName, i) => {
@@ -344,7 +350,7 @@ export const makeSuccessRatesLOBObjects = (data = [[], [], [], []], start, end, 
         ).reduce((prev, {time, successRatePercentagesData}) => {
             let localMin = prev;
             successRatePercentagesData
-                .filter(successRateFilter)
+                .filter(selectedBrand === 'eps' ? successRateEPSFilter : successRateFilter)
             // eslint-disable-next-line complexity
                 .forEach(({rate, lineOfBusiness}) => {
                     const momentTime = moment(time);
@@ -353,7 +359,6 @@ export const makeSuccessRatesLOBObjects = (data = [[], [], [], []], start, end, 
                         const lob = lineOfBusiness ? lobs.find(({value}) => value === lineOfBusiness) : null;
                         const valueKey = lob ? lob.label : 'value';
                         const found = aggregatedData.findIndex((d) => d.time === moment.utc(time).valueOf());
-
                         if (found > -1) {
                             aggregatedData[found][valueKey] = rate === null ? null : formatRate(rate);
                         } else {

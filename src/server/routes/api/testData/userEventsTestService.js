@@ -83,9 +83,24 @@ const getFunnelTestData = async (req) => {
     });
 };
 
+const getEPSFunnelTestData = async (req) => {
+    return getTestData(req, (time, result) => {
+        result.push({
+            time,
+            brandWiseSuccessRateData: {rate: 95 + (Math.random() * 5)},
+            successRatePercentagesData: ['', ...LOBS].reduce((acc, lineOfBusiness) => ([
+                ...acc,
+                {brand: null, rate: 95 + (Math.random() * 5), lineOfBusiness}
+            ]), [])
+        });
+        return result;
+    });
+};
+
 module.exports = {
     getTimeInterval,
     getTestData,
     getPageViewsTestData,
-    getFunnelTestData
+    getFunnelTestData,
+    getEPSFunnelTestData
 };

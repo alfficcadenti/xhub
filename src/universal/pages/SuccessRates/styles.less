@@ -45,6 +45,15 @@
         display: inline-flex;
         margin-bottom: @spacing-4x;
 
+        .dynamic-filters-wrapper,
+        .eps-partner-select-container {
+            padding: @spacing-1x @spacing-1x 0 @spacing-1x;
+
+            .eps-partner-select__menu {
+                z-index: 999;
+            }
+        }
+
         .dynamic-filters-wrapper {
             display: inline-flex;
             align-items: flex-start;
@@ -62,6 +71,21 @@
                     border-radius: @spacing-1x;
                     border-color: @border-color-dark;
                 }
+            }
+        }
+
+        .lob-select__control,
+        .eps-partner-select__control {
+            min-height: @filter-size;
+            border-radius: @spacing-1x;
+            border-color: @border-color-dark;
+        }
+
+        .eps-partner-select-wrapper {
+            min-width: 320px;
+
+            .eps-partner-select-container {
+                min-height: @filter-size;
             }
         }
     }

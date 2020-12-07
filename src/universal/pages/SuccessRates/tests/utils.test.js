@@ -5,7 +5,8 @@ import {SUCCESS_RATES_PAGES_LIST} from '../constants';
 import {
     shouldShowTooltip,
     successRatesRealTimeObject,
-    getTimeInterval
+    getTimeInterval,
+    buildSuccessRateApiQueryString
 } from '../utils';
 import {successRateRealTimeMock} from '../mockData';
 
@@ -63,5 +64,30 @@ describe('getTimeInterval', () => {
     it('sets interval to 1 min if start date within 24 hours ago', () => {
         expect(getTimeInterval(moment().subtract(23, 'hours').toISOString(), moment().toISOString()))
             .to.eql(5);
+    });
+});
+
+describe('buildSuccessRateApiQueryString()', () => {
+    const start = moment('2020-11-12T11:27:00Z');
+    const end = moment('2020-11-12T16:27:00Z');
+    const baseUrl = '/user-events-api/v1/funnelView';
+    const expectedExpediaURL = '?brand=expedia&timeInterval=1&startDate=2020-11-12T11:27:00Z&endDate=2020-11-12T16:27:00Z';
+    const expectedEpsURL = '/eps?timeInterval=1&startDate=2020-11-12T11:27:00Z&endDate=2020-11-12T16:27:00Z&tpid=';
+    const expectedTimeInterval = '?brand=expedia&timeInterval=5&startDate=2020-11-12T11:27:00Z&endDate=2020-11-12T16:27:00Z';
+    const EPSPartner = 'orbitz';
+    it('returns endpoint for eps', () => {
+        expect(buildSuccessRateApiQueryString({start, end, brand: 'eps', interval: 1})).to.be.eql(`${baseUrl}${expectedEpsURL}`);
+    });
+
+    it('returns endpoint for eps with partner', () => {
+        expect(buildSuccessRateApiQueryString({start, end, brand: 'eps', EPSPartner, interval: 1})).to.be.eql(`${baseUrl}${expectedEpsURL}${EPSPartner}`);
+    });
+
+    it('returns endpoint for any other brand', () => {
+        expect(buildSuccessRateApiQueryString({start, end, brand: 'expedia', interval: 1})).to.be.eql(`${baseUrl}${expectedExpediaURL}`);
+    });
+
+    it('returns time interval = 5 as default', () => {
+        expect(buildSuccessRateApiQueryString({start, end, brand: 'expedia'})).to.be.eql(`${baseUrl}${expectedTimeInterval}`);
     });
 });
