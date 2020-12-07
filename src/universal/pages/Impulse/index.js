@@ -267,7 +267,7 @@ const Impulse = (props) => {
                 <div className="impulse-chart-container">
                     <div className="impulse-bookings-container">
                         {renderTabs()}
-                        {tableData.length && <IncidentDetails data={tableData} setTableData={setTableData}/>}
+                        { (tableData.length !== 0) && <IncidentDetails data={tableData} setTableData={setTableData}/> }
                     </div>
                 </div>
             </LoadingContainer>
