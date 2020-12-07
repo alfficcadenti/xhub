@@ -23,11 +23,12 @@ import {
     getQueryParams
 } from '../utils';
 import HelpText from '../../components/HelpText/HelpText';
-import {SUCCESS_RATES_PAGES_LIST, METRIC_NAMES} from './constants';
+import {SUCCESS_RATES_PAGES_LIST, METRIC_NAMES, EPS_PARTNER_TPIDS} from './constants';
 import {
     getWidgetXAxisTickGap,
     shouldShowTooltip,
     successRatesRealTimeObject,
+    buildSuccessRateApiQueryString,
     getTimeInterval
 } from './utils';
 import './styles.less';
@@ -67,6 +68,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [enableAnnotations, setEnableAnnotations] = useState(false);
     const [filteredAnnotations, setFilteredAnnotations] = useState([]);
 
+    const [selectedEPSPartner, setSelectedEPSPartner] = useState('');
     const productMapping = useFetchProductMapping(start, end);
 
     const [isMounted, setIsMounted] = useState(false);
@@ -100,13 +102,12 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const fetchRealTimeData = ([selectedBrand]) => {
         setIsRttLoading(true);
         setRttError('');
-        const now = moment();
-        const rttStart = moment(now).subtract(11, 'minute').startOf('minute');
-        const rttEnd = moment(now).subtract(1, 'minute').startOf('minute');
-        const dateQuery = `&startDate=${rttStart.utc().format()}&endDate=${rttEnd.utc().format()}`;
+        const rttStart = moment().utc().subtract(11, 'minute').startOf('minute').format();
+        const rttEnd = moment().utc().subtract(1, 'minute').startOf('minute').format();
         const {funnelBrand} = getBrand(selectedBrand, 'label');
+        const endpoint = buildSuccessRateApiQueryString({rttStart, rttEnd, brand: funnelBrand, EPSPartner: selectedEPSPartner, interval: 1});
 
-        Promise.all(METRIC_NAMES.map((metricName) => fetch(`/user-events-api/v1/funnelView?brand=${funnelBrand}&metricName=${metricName}${dateQuery}`)))
+        Promise.all(METRIC_NAMES.map((metricName) => fetch(`${endpoint}&metricName=${metricName}`)))
             .then((responses) => Promise.all(responses.map(checkResponse)))
             .then((fetchedSuccessRates) => successRatesRealTimeObject(fetchedSuccessRates, selectedLobs, selectedBrand))
             .then((realTimeData) => setRealTimeTotals(realTimeData))
@@ -126,13 +127,8 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         setIsLoading(true);
         setError('');
         const interval = getTimeInterval(start, end);
-        const dateQuery = start && end
-            ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
-            : '';
-        const lobQuery = selectedLobs.length
-            ? `&lineOfBusiness=${selectedLobs.map((lob) => lob.value).join(',')}`
-            : '';
-        Promise.all(METRIC_NAMES.map((metricName) => fetch(`/user-events-api/v1/funnelView?brand=${funnelBrand}&metricName=${metricName}${dateQuery}${lobQuery}&timeInterval=${interval}`)))
+        const endpoint = buildSuccessRateApiQueryString({start, end, brand: funnelBrand, EPSPartner: selectedEPSPartner, interval});
+        Promise.all(METRIC_NAMES.map((metricName) => fetch(`${endpoint}&metricName=${metricName}`)))
             .then((responses) => Promise.all(responses.map(checkResponse)))
             .then((fetchedSuccessRates) => {
                 if (!fetchedSuccessRates || !fetchedSuccessRates.length) {
@@ -141,10 +137,8 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 }
 
                 const successRatesLOBs = LOB_LIST.filter(({value}) => ['H', 'C'].includes(value));
-
                 const widgetObjects = makeSuccessRatesObjects(fetchedSuccessRates, start, end, pageBrand);
                 const widgetLOBObjects = makeSuccessRatesLOBObjects(fetchedSuccessRates, start, end, pageBrand, selectedBrand, successRatesLOBs);
-
                 setWidgets(widgetObjects);
                 setLoBWidgets(widgetLOBObjects);
             })
@@ -164,7 +158,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             setIsLoBAvailable(false);
         }
 
-        if ([EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, HOTELS_COM_BRAND].includes(selectedBrands[0])) {
+        if ([EG_BRAND, EGENCIA_BRAND, HOTELS_COM_BRAND].includes(selectedBrands[0])) {
             setIsSupportedBrand(false);
             setError(`Success rates for ${selectedBrands} is not yet available.
                 If you have any questions, please ping #dpi-reo-opex-all or leave a comment via our Feedback form.`);
@@ -187,7 +181,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             clearInterval(rttRef.current);
             setIsZoomedIn(false);
         };
-    }, [selectedBrands, start, end]);
+    }, [selectedBrands, start, end, selectedEPSPartner]);
 
     useEffect(() => {
         if (!selectedLobs.length) {
@@ -214,6 +208,14 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     };
 
     const handleLoBChange = (lobs) => setSelectedLobs(lobs || []);
+
+    const handleEPSPartnerChange = (epsPartner) => {
+        if (epsPartner === null) {
+            setSelectedEPSPartner('');
+        } else {
+            setSelectedEPSPartner(epsPartner.value);
+        }
+    };
 
     const renderWidget = ({pageName, aggregatedData, pageBrand, minValue}) => (
         <TravelerMetricsWidget
@@ -246,6 +248,20 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 {!isLoBAvailable && <HelpText text="Only for LOB Hotels" placement="top" />}
             </h1>
             <div className="filters-wrapper">
+                {
+                    selectedBrands[0] === EXPEDIA_PARTNER_SERVICES_BRAND &&
+                        <div className="eps-partner-select-wrapper">
+                            <Select
+                                classNamePrefix="eps-partner-select"
+                                className="eps-partner-select-container"
+                                options={EPS_PARTNER_TPIDS}
+                                onChange={handleEPSPartnerChange}
+                                placeholder="Select Partner"
+                                isClearable
+                                isSearchable
+                            />
+                        </div>
+                }
                 <div className="dynamic-filters-wrapper">
                     {
                         isLoBAvailable &&

@@ -90,3 +90,14 @@ export const getTimeInterval = (startDate, endDate) => {
     }
     return timeInterval;
 };
+
+export const buildSuccessRateApiQueryString = ({start, end, brand, EPSPartner = '', interval = 5}) => {
+    const baseUrl = '/user-events-api/v1/funnelView';
+    const dateQuery = start && end
+        ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
+        : '';
+    if (brand === 'eps') {
+        return `${baseUrl}/eps?timeInterval=${interval}${dateQuery}&tpid=${EPSPartner}`;
+    }
+    return `${baseUrl}?brand=${brand}&timeInterval=${interval}${dateQuery}`;
+};

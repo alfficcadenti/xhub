@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import moment from 'moment';
 import {
-    getTimeInterval, getTestData, getPageViewsTestData, getFunnelTestData
+    getTimeInterval, getTestData, getPageViewsTestData, getFunnelTestData, getEPSFunnelTestData
 } from '../userEventsTestService';
 
 describe('getTimeInterval', () => {
@@ -79,3 +79,14 @@ describe('getFunnelTestData', () => {
     });
 });
 
+describe('getEPSFunnelTestData', () => {
+    const startDate = moment().subtract(2, 'minute').toISOString();
+    const endDate = moment().toISOString();
+    const req = {url: {query: {startDate, endDate}}};
+
+    it('formats data correctly', async () => {
+        const results = await getEPSFunnelTestData(req);
+        expect(Object.keys(results[0])).to.eql(['time', 'brandWiseSuccessRateData', 'successRatePercentagesData']);
+        expect(Object.keys(results[0].successRatePercentagesData[0])).to.eql(['brand', 'rate', 'lineOfBusiness']);
+    });
+});

@@ -13,6 +13,7 @@ import {
     VRBO_BRAND,
     HOTELS_COM_BRAND,
     EGENCIA_BRAND,
+    EXPEDIA_PARTNER_SERVICES_BRAND,
     LOB_LIST,
     EPS_PARTNER_SITENAMES
 } from '../../constants';
@@ -207,13 +208,14 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             <h1>{'Traveler Page Views'}{!isLoBAvailable && <HelpText text="Only for LOB Hotels" placement="top" />}</h1>
             <div className="filters-wrapper">
                 {
-                    selectedBrands[0] === 'Expedia Partner Solutions' ?
+                    selectedBrands[0] === EXPEDIA_PARTNER_SERVICES_BRAND ?
                         <div className="eps-partner-select-wrapper">
                             <Select
                                 classNamePrefix="eps-partner-select"
                                 className="eps-partner-select-container"
                                 options={EPS_PARTNER_SITENAMES}
                                 onChange={handleEPSPartnerChange}
+                                placeholder="Select Partner"
                                 isClearable
                                 isSearchable
                             />
