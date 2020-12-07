@@ -69,6 +69,8 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
     const productMapping = useFetchProductMapping(start, end);
 
+    const [isMounted, setIsMounted] = useState(false);
+
     useQueryParamChange(selectedBrands[0], onBrandChange);
     useSelectedBrand(selectedBrands[0], onBrandChange, prevSelectedBrand);
 
@@ -178,6 +180,9 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 fetchSuccessRatesData(selectedBrands);
             }
         }
+
+        setIsMounted(true);
+
         return function cleanup() {
             clearInterval(rttRef.current);
             setIsZoomedIn(false);
@@ -261,7 +266,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                         setEnableAnnotations={setEnableAnnotations}
                         start={start}
                         end={end}
-                        isMounted={isZoomedIn}
+                        isMounted={isMounted}
                     />
                 </div>
                 <DateFiltersWrapper

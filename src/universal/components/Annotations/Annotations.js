@@ -157,7 +157,6 @@ const Annotations = ({
         filterSuggestions();
     }, [deploymentCategory, incidentCategory, abTestsCategory]);
 
-
     useEffect(() => {
         const fetchDeploymentAnnotations = () => {
             setIsDeploymentsAnnotationsLoading(true);
