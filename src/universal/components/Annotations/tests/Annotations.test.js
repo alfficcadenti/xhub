@@ -14,7 +14,7 @@ jest.mock('react-router-dom', () => {
             hash: '',
             search: '',
             state: ''
-        }),
+        })
     };
 });
 
@@ -22,7 +22,7 @@ describe('Annotations component testing', () => {
     let wrapper;
 
     beforeEach(() => {
-        wrapper = mount(<Annotations />);
+        wrapper = mount(<Annotations setFilteredAnnotations={jest.fn()} setEnableAnnotations={jest.fn()} productMapping={[]} isMounted={false}/>);
     });
 
     afterEach(() => {
@@ -35,18 +35,11 @@ describe('Annotations component testing', () => {
 
     it('renders .display-annotations-btn button with wrapper closed by default', () => {
         expect(wrapper.find('.display-annotations-btn')).to.have.length(1);
-        expect(wrapper.find('.annotations-wrapper')).to.have.length(0);
+        expect(wrapper.find('.annotations-wrapper.closed')).to.have.length(1);
     });
 
     it('open .annotations-wrapper when clicks on .display-annotations-btn', () => {
         wrapper.find('.display-annotations-btn').simulate('click');
         expect(wrapper.find('.annotations-wrapper')).to.have.length(1);
-    });
-
-    it('display error message if deploymentAnnotationsError && incidentAnnotationsError && abTestsAnnotationsError are true', () => {
-        const wrapperError = mount(<Annotations deploymentAnnotationsError incidentAnnotationsError abTestsAnnotationsError/>);
-        wrapperError.find('.display-annotations-btn').simulate('click');
-        expect(wrapperError.find('.annotations-wrapper')).to.have.length(1);
-        expect(wrapperError.find('p').text()).to.be.eql('An unexpected error has occurred loading the annotations. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.');
     });
 });
