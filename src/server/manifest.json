@@ -67,7 +67,7 @@
           "protocol": "https:",
           "routes": {
             "correctiveActions": {
-              "path": "/v1/corrective-actions/business-owner-type/l1",
+              "path": "/v1/corrective-actions/business-owner-type",
               "method": "GET",
               "operation": "GET_CORRECTIVE_ACTIONS_V1"
             },
@@ -113,7 +113,7 @@
           "protocol": "https:",
           "routes": {
             "correctiveActions": {
-              "path": "/v1/corrective-actions/business-owner-type/l1",
+              "path": "/v1/corrective-actions/business-owner-type",
               "method": "GET",
               "operation": "GET_CORRECTIVE_ACTIONS_V1"
             },
