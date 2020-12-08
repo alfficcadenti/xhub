@@ -20,7 +20,8 @@ import {
     getBrand,
     makeSuccessRatesObjects,
     makeSuccessRatesLOBObjects,
-    getQueryParams
+    getQueryParams,
+    getLobPlaceholder
 } from '../utils';
 import HelpText from '../../components/HelpText/HelpText';
 import {SUCCESS_RATES_PAGES_LIST, METRIC_NAMES, EPS_PARTNER_TPIDS} from './constants';
@@ -271,7 +272,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                                 className="lob-select-container"
                                 options={LOB_LIST.filter(({value}) => ['H', 'C'].includes(value))}
                                 onChange={handleLoBChange}
-                                placeholder={lobWidgets.length ? 'Select Line of Business' : 'Line of Business Data not available. Try to refresh'}
+                                placeholder={getLobPlaceholder(isLoading, lobWidgets.length)}
                                 isDisabled={!lobWidgets.length}
                                 defaultValue={selectedLobs}
                             />
