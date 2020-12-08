@@ -20,7 +20,8 @@ import {
 import {
     checkResponse,
     getBrand,
-    getQueryParams
+    getQueryParams,
+    getLobPlaceholder
 } from '../utils';
 import {makePageViewLoBObjects, makePageViewObjects, buildPageViewsApiQueryString} from './pageViewsUtils';
 import './styles.less';
@@ -33,6 +34,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [widgets, setWidgets] = useState([]);
     const [lobWidgets, setLoBWidgets] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [isLoBLoading, setIsLoBLoading] = useState(false);
     const [error, setError] = useState('');
     const [LoBError, setLoBError] = useState('');
     const [pendingStart, setPendingStart] = useState(initialStart);
@@ -100,7 +102,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
         const fetchPageViewsLoBData = ([selectedBrand]) => {
             const {label: pageBrand, funnelBrand} = getBrand(selectedBrand, 'label');
-            setIsLoading(true);
+            setIsLoBLoading(true);
             setLoBError('');
             const endpoint = buildPageViewsApiQueryString({start, end, brand: funnelBrand, lob: true, EPSPartner: selectedEPSPartner});
             fetch(endpoint)
@@ -121,7 +123,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     // eslint-disable-next-line no-console
                     console.error(err);
                 })
-                .finally(() => setIsLoading(false));
+                .finally(() => setIsLoBLoading(false));
         };
 
         if ([EG_BRAND, EGENCIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND].includes(selectedBrands[0])) {
@@ -230,7 +232,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                                 className="lob-select-container"
                                 options={LOB_LIST}
                                 onChange={handleLoBChange}
-                                placeholder={lobWidgets.length ? 'Select Line of Business' : 'Line of Business Data not available. Try to refresh'}
+                                placeholder={getLobPlaceholder(isLoBLoading, lobWidgets.length)}
                                 isDisabled={!lobWidgets.length}
                                 defaultValue={selectedLobs}
                             />

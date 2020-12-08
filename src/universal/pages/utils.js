@@ -414,3 +414,17 @@ export const getQueryParams = (search) => {
             initialLobs
         };
 };
+
+export const getLobPlaceholder = (isLoading, lobWidgetsLength = 0) => {
+    let placeholder;
+
+    if (isLoading) {
+        placeholder = 'Line of Business is loading';
+    } else if (lobWidgetsLength) {
+        placeholder = 'Select Line of Business';
+    } else {
+        placeholder = 'Line of Business Data not available. Try to refresh';
+    }
+
+    return placeholder;
+};

@@ -20,7 +20,8 @@ import {
     filterNewSelectedItems,
     makeSuccessRatesObjects,
     getQueryParams,
-    validDateRange
+    validDateRange,
+    getLobPlaceholder
 } from './utils';
 import {
     EG_BRAND,
@@ -534,5 +535,19 @@ describe('validDateRange()', () => {
 
     it('validDateRange - invalid end date', () => {
         expect(validDateRange(moment('2020-01-01', 'asdfasdf'))).to.be.eql(false);
+    });
+});
+
+describe('getLobPlaceholder()', () => {
+    it('getLobPlaceholder should return Line of Business is loading when isLoading true', () => {
+        expect(getLobPlaceholder(true)).to.be.eql('Line of Business is loading');
+    });
+
+    it('getLobPlaceholder should return Select Line of Business when isLoading false and lobWidgetsLength is true', () => {
+        expect(getLobPlaceholder(false, 2)).to.be.eql('Select Line of Business');
+    });
+
+    it('getLobPlaceholder should return Select Line of Business when isLoading & lobWidgetsLength false', () => {
+        expect(getLobPlaceholder(false, 0)).to.be.eql('Line of Business Data not available. Try to refresh');
     });
 });
