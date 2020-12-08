@@ -1,8 +1,10 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
+import {DatetimeRangePicker} from '../DatetimeRangePicker';
 import {CALENDAR__16} from '@homeaway/svg-defs';
 import {SVGIcon} from '@homeaway/react-svg';
-import moment from 'moment';
+import moment from 'moment/moment';
+import './styles.less';
+
 
 const DateFiltersWrapper = ({isFormDisabled, pendingStart, pendingEnd, handleApplyFilters, handleDatetimeChange, isDirtyForm}) => {
     const [openDateFilter, setOpenDateFilter] = useState(false);
@@ -39,16 +41,17 @@ const DateFiltersWrapper = ({isFormDisabled, pendingStart, pendingEnd, handleApp
         <div className="date-filters-wrapper">
             <div
                 className={`btn btn-default dates-button ${openDateFilter ? 'active' : ''}`}
-
                 onClick={() => setOpenDateFilter(!openDateFilter)}
             >
                 <span><SVGIcon usefill markup={CALENDAR__16} /></span>
-                <span className="dates"><div>
-                    {moment(pendingStart).utc().format('MMM Do YY h:mm:ss a')}
+                <div className="dates">
+                    <div>
+                        {pendingStart.format('MMM Do YY h:mm:ss a')}
+                    </div>
+                    <div>
+                        {pendingEnd.format('MMM Do YY h:mm:ss a')}
+                    </div>
                 </div>
-                <div>
-                    {moment(pendingEnd).utc().format('MMM Do YY h:mm:ss a')}
-                </div></span>
             </div>
             {openDateFilter && <div ref={ref} className="datetime-range-picker-container">
                 <DatetimeRangePicker

@@ -1,7 +1,7 @@
 import moment from 'moment';
 import {expect} from 'chai';
-import {validDateRange, getQueryValues, getLineChartData, getErrorCodes, mapTrace, getFilteredTraceData} from '../utils';
-import {ALL_ERROR_CODES, TOP_10_ERROR_CODES, TOP_20_ERROR_CODES} from '../constants';
+import {validDateRange, getQueryValues, getLineChartData, getErrorCodes, getPropValue, mapTrace, getFilteredTraceData} from '../utils';
+import {ALL_ERROR_CODES, TOP_10_ERROR_CODES, TOP_20_ERROR_CODES, CODE_OPTION, CATEGORY_OPTION} from '../constants';
 
 describe('Fci Utils', () => {
     it('validDateRange - invalid dates', () => {
@@ -40,9 +40,14 @@ describe('Fci Utils', () => {
         expect(result.initialSite).to.be.eql(site);
     });
 
-    it('getLineChartData', () => {
-        expect(getLineChartData(moment('2020-01-01T12:00:000Z'), moment('2020-01-01T12:59:000Z'), [{errorCode: 400}, {errorCode: 401}], ALL_ERROR_CODES).keys)
+    it('getLineChartData - errorCode', () => {
+        expect(getLineChartData(moment('2020-01-01T12:00:000Z'), moment('2020-01-01T12:59:000Z'), [{errorCode: 400}, {errorCode: 401}], ALL_ERROR_CODES, CODE_OPTION).keys)
             .to.be.eql(['400', '401']);
+    });
+
+    it('getLineChartData - category', () => {
+        expect(getLineChartData(moment('2020-01-01T12:00:000Z'), moment('2020-01-01T12:59:000Z'), [{category: ['a']}, {category: ['b']}], ALL_ERROR_CODES, CATEGORY_OPTION).keys)
+            .to.be.eql(['a', 'b']);
     });
 
     it('getErrorCodes', () => {
@@ -66,6 +71,15 @@ describe('Fci Utils', () => {
             {Error: 'true', Operation: 'A'},
             {Error: 'false', Operation: 'B'}
         ]);
+    });
+
+    it('getPropValue', () => {
+        const item = {a: 'aa', b: 'bb'};
+        expect(getPropValue(item, 'a')).to.equal('aa');
+        expect(getPropValue(item, 'b')).to.equal('bb');
+        expect(getPropValue(item, 'c')).to.equal('-');
+        expect(getPropValue(null, 'a')).to.equal('-');
+        expect(getPropValue(item, null)).to.equal('-');
     });
 
     it('mapTrace - no error', () => {

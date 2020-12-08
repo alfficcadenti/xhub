@@ -1,19 +1,22 @@
 /* eslint-disable complexity */
 import React, {useEffect, useRef, useState} from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
-import moment from 'moment';
 import Select from 'react-select';
+import moment from 'moment';
 import TravelerMetricsWidget from '../../components/TravelerMetricsWidget';
 import LoadingContainer from '../../components/LoadingContainer';
-import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import RealTimeSummaryPanel from '../../components/RealTimeSummaryPanel';
 import {useFetchProductMapping, useQueryParamChange, useSelectedBrand, useZoomAndSynced} from '../hooks';
 import {
-    LOB_LIST,
     EG_BRAND,
     EGENCIA_BRAND,
     EXPEDIA_PARTNER_SERVICES_BRAND,
-    HOTELS_COM_BRAND, DEPLOYMENT_ANNOTATION_CATEGORY, INCIDENT_ANNOTATION_CATEGORY, AB_TESTS_ANNOTATION_CATEGORY
+    HOTELS_COM_BRAND,
+    DEPLOYMENT_ANNOTATION_CATEGORY,
+    INCIDENT_ANNOTATION_CATEGORY,
+    AB_TESTS_ANNOTATION_CATEGORY,
+    LOB_LIST,
+    VRBO_BRAND
 } from '../../constants';
 import {
     addSuggestionType,
@@ -22,42 +25,46 @@ import {
     filterNewSelectedItems,
     getAnnotationsFilter,
     getBrand, getListOfUniqueProperties, getUniqueByProperty,
-    makeSuccessRatesObjects
+    makeSuccessRatesObjects,
+    makeSuccessRatesLOBObjects
 } from '../utils';
 import HelpText from '../../components/HelpText/HelpText';
 import {SUCCESS_RATES_PAGES_LIST, METRIC_NAMES} from './constants';
 import {
     getQueryParams,
-    getPresets,
     getWidgetXAxisTickGap,
     shouldShowTooltip,
     successRatesRealTimeObject,
     getTimeInterval
 } from './utils';
 import './styles.less';
-import {Checkbox} from '@homeaway/react-form-components';
-import UniversalSearch from '../../components/UniversalSearch';
 import {adjustTicketProperties} from '../TicketTrends/incidentsHelper';
+import Annotations from '../../components/Annotations/Annotations';
+import DateFiltersWrapper from '../../components/DateFiltersWrapper/DateFiltersWrapper';
 
 
 const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const history = useHistory();
     const {search, pathname} = useLocation();
-    const {initialStart, initialEnd, initialTimeRange, initialLobs} = getQueryParams(search);
+    const {initialStart, initialEnd, initialTimeRange} = getQueryParams(search);
 
     const [realTimeTotals, setRealTimeTotals] = useState({});
     const [isRttLoading, setIsRttLoading] = useState(true);
     const [rttError, setRttError] = useState('');
 
     const [widgets, setWidgets] = useState([]);
+    const [lobWidgets, setLoBWidgets] = useState([]);
+    const [currentWidgets, setCurrentWidgets] = useState([]);
+    const [isLoBAvailable, setIsLoBAvailable] = useState(true);
+    const [selectedLobs, setSelectedLobs] = useState([]);
+
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
     const [pendingStart, setPendingStart] = useState(initialStart);
     const [pendingEnd, setPendingEnd] = useState(initialEnd);
     const [start, setStart] = useState(initialStart);
     const [end, setEnd] = useState(initialEnd);
-    const [pendingLobs, setPendingLobs] = useState(initialLobs);
-    const [selectedLobs, setSelectedLobs] = useState(initialLobs);
+
     const [isDirtyForm, setIsDirtyForm] = useState(false);
     const [currentTimeRange, setCurrentTimeRange] = useState(initialTimeRange);
     const [pendingTimeRange, setPendingTimeRange] = useState(initialTimeRange);
@@ -169,8 +176,13 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     return;
                 }
 
-                const widgetObjects = makeSuccessRatesObjects(fetchedSuccessRates, start, end, pageBrand, selectedBrand, selectedLobs);
+                const successRatesLOBs = LOB_LIST.filter(({value}) => ['H', 'C'].includes(value));
+
+                const widgetObjects = makeSuccessRatesObjects(fetchedSuccessRates, start, end, pageBrand);
+                const widgetLOBObjects = makeSuccessRatesLOBObjects(fetchedSuccessRates, start, end, pageBrand, selectedBrand, successRatesLOBs);
+
                 setWidgets(widgetObjects);
+                setLoBWidgets(widgetLOBObjects);
             })
             .catch((err) => {
                 let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
@@ -204,7 +216,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     setDeploymentAnnotations(adjustedAnnotations);
                 })
                 .catch((err) => {
-                    setDeploymentAnnotationsError('An unexpected error has occurred loading the annotations. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.');
+                    setDeploymentAnnotationsError(true);
                     // eslint-disable-next-line no-console
                     console.error(err);
                 })
@@ -224,7 +236,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     const uniqueTickets = getUniqueByProperty(data, 'id');
                     const adjustedUniqueTickets = adjustTicketProperties(uniqueTickets, INCIDENT_ANNOTATION_CATEGORY)
                         .map((incident) => {
-                            incident.time = moment.utc(incident.openDate).local().isValid() ? moment.utc(incident.openDate).valueOf() : '-';
+                            incident.time = moment.utc(incident.startDate).local().isValid() ? moment.utc(incident.startDate).valueOf() : '-';
                             incident.category = INCIDENT_ANNOTATION_CATEGORY;
                             return incident;
                         });
@@ -241,7 +253,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     }));
                 })
                 .catch((err) => {
-                    setIncidentAnnotationsError('An unexpected error has occurred loading the incidents. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.');
+                    setIncidentAnnotationsError(true);
                     // eslint-disable-next-line no-console
                     console.error(err);
                 })
@@ -274,12 +286,16 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     }));
                 })
                 .catch((err) => {
-                    setAbTestsAnnotationsError('An unexpected error has occurred loading the a/b tests. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.');
+                    setAbTestsAnnotationsError(true);
                     // eslint-disable-next-line no-console
                     console.error(err);
                 })
                 .finally(() => setIsAbTestsAnnotationsLoading(false));
         };
+
+        if ([EG_BRAND, EGENCIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND].includes(selectedBrands[0])) {
+            setIsLoBAvailable(false);
+        }
 
         if ([EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, HOTELS_COM_BRAND].includes(selectedBrands[0])) {
             setIsSupportedBrand(false);
@@ -293,9 +309,9 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             fetchRealTimeData(selectedBrands);
             rttRef.current = setInterval(fetchRealTimeData.bind(null, selectedBrands), 60000); // refresh every minute
             history.push(`${pathname}?selectedBrand=${selectedBrands[0]}`
-                + `&start=${pendingStart.format()}`
-                + `&end=${pendingEnd.format()}`
-                + `&lobs=${pendingLobs.map((l) => l.value).join(',')}`
+                + `&from=${encodeURIComponent(pendingStart.format())}`
+                + `&to=${encodeURIComponent(pendingEnd.format())}`
+                + `&lobs=${selectedLobs.map((l) => l.value).join(',')}`
             );
             if (!isZoomedIn) {
                 fetchSuccessRatesData(selectedBrands);
@@ -308,7 +324,15 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             clearInterval(rttRef.current);
             setIsZoomedIn(false);
         };
-    }, [selectedBrands, start, end, selectedLobs]);
+    }, [selectedBrands, start, end]);
+
+    useEffect(() => {
+        if (!selectedLobs.length) {
+            setCurrentWidgets(widgets);
+        } else {
+            setCurrentWidgets(lobWidgets);
+        }
+    }, [selectedLobs, widgets]);
 
     const filterAnnotations = (deployments, incidents, abTests) => {
         const filteredDeployments = deployments
@@ -445,13 +469,11 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         setCurrentTimeRange(pendingTimeRange);
         setStart(pendingStart);
         setEnd(pendingEnd);
-        setSelectedLobs(pendingLobs);
         setIsDirtyForm(false);
     };
 
-    const handleLoBsChange = (lobs) => {
-        setPendingLobs(lobs || []);
-        setIsDirtyForm(true);
+    const handleLoBChange = (lobs) => {
+        setSelectedLobs(lobs || []);
     };
 
     const renderWidget = ({pageName, aggregatedData, pageBrand, minValue}) => (
@@ -493,75 +515,48 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         <div className="success-rates-container">
             <h1>
                 {'Success Rates'}
-                <HelpText text="Only for LOB Hotels" placement="top" />
+                {!isLoBAvailable && <HelpText text="Only for LOB Hotels" placement="top" />}
             </h1>
             <div className="filters-wrapper">
-                <div className="date-filters-wrapper">
-                    <DatetimeRangePicker
-                        onChange={handleDatetimeChange}
-                        startDate={pendingStart.toDate()}
-                        endDate={pendingEnd.toDate()}
-                        presets={getPresets()}
-                        disabled={isFormDisabled}
-                    />
-                    <Select
-                        isMulti
-                        classNamePrefix="lob-select"
-                        className="lob-select-container"
-                        value={pendingLobs}
-                        options={LOB_LIST.filter(({value}) => ['H', 'C'].includes(value))}
-                        onChange={handleLoBsChange}
-                        placeholder={'Select Line of Business'}
-                    />
-                    <button
-                        className="btn btn-primary apply-btn"
-                        type="button"
-                        onClick={handleApplyFilters}
-                        disabled={!isDirtyForm}
-                    >
-                        {'Apply'}
-                    </button>
-                </div>
                 <div className="dynamic-filters-wrapper">
-                    <LoadingContainer
-                        isLoading={isDeploymentsAnnotationsLoading || isIncidentsAnnotationsLoading || isAbTestsAnnotationsLoading}
-                        error={incidentAnnotationsError && abTestsAnnotationsError && deploymentAnnotationsError}
-                        className="annotations-filters-container"
-                    >
-                        <div className="annotations-category-filters">
-                            <h4>{'Annotations:'}</h4>
-                            <Checkbox
-                                name="deployment-сheckbox"
-                                label="deployments"
-                                checked={deploymentCategory}
-                                onChange={() => setDeploymentCategory(!deploymentCategory)}
-                                size="sm"
-                                disabled={deploymentAnnotationsError}
+                    {
+                        isLoBAvailable &&
+                            <Select
+                                isMulti
+                                classNamePrefix="lob-select"
+                                className="lob-select-container"
+                                options={LOB_LIST.filter(({value}) => ['H', 'C'].includes(value))}
+                                onChange={handleLoBChange}
+                                placeholder={lobWidgets.length ? 'Select Line of Business' : 'Line of Business Data not available. Try to refresh'}
+                                isDisabled={!lobWidgets.length}
                             />
-                            <Checkbox
-                                name="incident-сheckbox"
-                                label="incidents"
-                                checked={incidentCategory}
-                                onChange={() => setIncidentCategory(!incidentCategory)}
-                                size="sm"
-                                disabled={incidentAnnotationsError}
-                            />
-                            <Checkbox
-                                name="incident-сheckbox"
-                                label="a/b tests"
-                                checked={abTestsCategory}
-                                onChange={() => setAbTestsCategory(!abTestsCategory)}
-                                size="sm"
-                                disabled={abTestsAnnotationsError}
-                            />
-                        </div>
-                        <UniversalSearch
-                            suggestions={suggestions}
-                            suggestionMapping={productMapping}
-                            onFilterChange={onFilterChange}
-                        />
-                    </LoadingContainer>
+                    }
+                    <Annotations
+                        isDeploymentsAnnotationsLoading={isDeploymentsAnnotationsLoading}
+                        isIncidentsAnnotationsLoading={isIncidentsAnnotationsLoading}
+                        isAbTestsAnnotationsLoading={isAbTestsAnnotationsLoading}
+                        deploymentAnnotationsError={deploymentAnnotationsError}
+                        incidentAnnotationsError={incidentAnnotationsError}
+                        abTestsAnnotationsError={abTestsAnnotationsError}
+                        deploymentCategory={deploymentCategory}
+                        incidentCategory={incidentCategory}
+                        abTestsCategory={abTestsCategory}
+                        setDeploymentCategory={setDeploymentCategory}
+                        setIncidentCategory={setIncidentCategory}
+                        setAbTestsCategory={setAbTestsCategory}
+                        suggestions={suggestions}
+                        productMapping={productMapping}
+                        onFilterChange={onFilterChange}
+                    />
                 </div>
+                <DateFiltersWrapper
+                    isFormDisabled={isFormDisabled}
+                    pendingStart={pendingStart}
+                    pendingEnd={pendingEnd}
+                    handleApplyFilters={handleApplyFilters}
+                    handleDatetimeChange={handleDatetimeChange}
+                    isDirtyForm={isDirtyForm}
+                />
             </div>
             {isSupportedBrand && (
                 <RealTimeSummaryPanel
@@ -575,7 +570,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             )}
             <LoadingContainer isLoading={isLoading} error={error} className="success-rates-loading-container">
                 <div className="success-rates-widget-container">
-                    {widgets.map(renderWidget)}
+                    {currentWidgets.map(renderWidget)}
                 </div>
             </LoadingContainer>
         </div>

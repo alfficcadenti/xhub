@@ -3,8 +3,8 @@ import moment from 'moment';
 import Select from 'react-select';
 import TravelerMetricsWidget from '../../components/TravelerMetricsWidget';
 import LoadingContainer from '../../components/LoadingContainer';
-import DateFiltersWrapper from './DateFiltersWrapper';
-import Annotations from './Annotations';
+import DateFiltersWrapper from '../../components/DateFiltersWrapper/DateFiltersWrapper';
+import Annotations from '../../components/Annotations/Annotations';
 import HelpText from '../../components/HelpText/HelpText';
 import {adjustTicketProperties} from '../TicketTrends/incidentsHelper';
 import {useFetchProductMapping, useQueryParamChange, useSelectedBrand, useZoomAndSynced} from '../hooks';
@@ -52,7 +52,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [pendingTimeRange, setPendingTimeRange] = useState(initialTimeRange);
     const [isFormDisabled, setIsFormDisabled] = useState(false);
     const [isLoBAvailable, setIsLoBAvailable] = useState(true);
-    const [lobSelected, setLobSelected] = useState([]);
+    const [selectedLobs, setSelectedLobs] = useState([]);
 
     // annotations state
     const [isDeploymentsAnnotationsLoading, setIsDeploymentsAnnotationsLoading] = useState(false);
@@ -290,7 +290,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     const uniqueTickets = getUniqueByProperty(data, 'id');
                     const adjustedUniqueTickets = adjustTicketProperties(uniqueTickets, INCIDENT_ANNOTATION_CATEGORY)
                         .map((incident) => {
-                            incident.time = moment.utc(incident.openDate).local().isValid() ? moment.utc(incident.openDate).valueOf() : '-';
+                            incident.time = moment.utc(incident.startDate).local().isValid() ? moment.utc(incident.startDate).valueOf() : '-';
                             incident.category = INCIDENT_ANNOTATION_CATEGORY;
                             return incident;
                         });
@@ -421,7 +421,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             refAreaLeft={refAreaLeft}
             refAreaRight={refAreaRight}
             annotations={enableAnnotations ? filteredAnnotations : []}
-            selectedLoB={lobSelected}
+            selectedLoB={selectedLobs}
             minChartValue={minValue}
         />
     );
@@ -437,7 +437,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         setSelectedAbTestsStatuses(filterNewSelectedItems(adjustedInputValue, 'abTestsStatus'));
     };
 
-    const handleLoBChange = (lobValue) => setLobSelected(lobValue || []);
+    const handleLoBChange = (lobValue) => setSelectedLobs(lobValue || []);
 
     const handleEPSPartnerChange = (epsPartner) => {
         if (epsPartner === null) {
@@ -530,8 +530,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     isDirtyForm={isDirtyForm}
                 />
             </div>
-            <LoadingContainer isLoading={isLoading} error={!lobSelected.length ? error : LoBError} className="page-views-loading-container">
-                {lobSelected && lobSelected.length && renderPageViews(lobWidgets) || renderPageViews(widgets)}
+            <LoadingContainer isLoading={isLoading} error={!selectedLobs.length ? error : LoBError} className="page-views-loading-container">
+                {selectedLobs && selectedLobs.length && renderPageViews(lobWidgets) || renderPageViews(widgets)}
             </LoadingContainer>
         </div>
     );

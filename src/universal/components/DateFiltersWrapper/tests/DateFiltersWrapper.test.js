@@ -1,13 +1,17 @@
 import React from 'react';
 import {expect} from 'chai';
-import {mount} from 'enzyme';
+import {mount} from 'enzyme/build';
 import DateFilterWrapper from '../DateFiltersWrapper';
+import moment from 'moment';
+
+const initialStart = moment().subtract(6, 'hours').startOf('minute');
+const initialEnd = moment().endOf('minute');
 
 describe('DateFilterWrapper component testing', () => {
     let wrapper;
 
     beforeEach(() => {
-        wrapper = mount(<DateFilterWrapper />);
+        wrapper = mount(<DateFilterWrapper pendingStart={initialStart} pendingEnd={initialEnd} />);
     });
 
     afterEach(() => {

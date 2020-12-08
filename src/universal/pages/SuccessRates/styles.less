@@ -20,7 +20,7 @@
     }
 
     .success-rates-loading-container {
-        margin-top: @spacing-2x;
+        margin-top: @spacing-3x;
         margin-bottom: @spacing-5x;
     }
 
@@ -41,81 +41,26 @@
     }
 
     .filters-wrapper {
-        display: grid;
-        grid-gap: @spacing-2x;
-        grid-template-columns: 52% 48%;
-        margin-bottom: @spacing-3x;
         width: 100%;
+        display: inline-flex;
+        margin-bottom: @spacing-4x;
 
-        .date-filters-wrapper,
         .dynamic-filters-wrapper {
-            width: 100%;
-            padding: @spacing-1x;
-            border: @border-color 1px solid;
-            border-radius: @spacing-1x;
-            background: @color-bg-contrast;
-        }
-
-        .date-filters-wrapper {
-            .datetime-range-picker {
-                height: @spacing-7x;
-                margin-bottom: @spacing-1x;
-            }
+            display: inline-flex;
+            align-items: flex-start;
+            width: 70%;
+            position: relative;
+            padding: @spacing-1x @spacing-1x 0 @spacing-1x;
 
             .lob-select-container {
-                float: left;
-                width: 680px;
-                height: @spacing-7x;
-                margin-bottom: @spacing-1x;
+                min-width: 300px;
+                width: 90%;
+                z-index: 99;
 
                 .lob-select__control {
-                    height: @spacing-7x;
-                    border-color: @border-contrast;
+                    min-height: @filter-size;
                     border-radius: @spacing-1x;
-                }
-            }
-
-            .apply-btn {
-                float: left;
-                height: @spacing-7x;
-                margin-left: @spacing-2x;
-                margin-bottom: @spacing-2x;
-            }
-        }
-
-        .dynamic-filters-wrapper {
-            float: left;
-            align-items: flex-start;
-        }
-
-        .annotations-filters-container {
-            display: flex;
-            border: @border-color 1px solid;
-            border-radius: @spacing-1x;
-            margin-top: @spacing-1x;
-
-            .annotations-category-filters,
-            .universal-search-bar {
-                margin: @spacing-1x @spacing-2x;
-            }
-
-            .universal-search-bar {
-                flex-direction: column;
-                width: max-content;
-
-                .tokens-container {
-                    float: left;
-                    display: flex;
-                    flex-direction: row;
-                    flex-wrap: wrap;
-                    width: 100%;
-                }
-
-                .Token {
-                    margin: 0;
-                    width: fit-content;
-                    max-width: 300px;
-                    font-size: 85%;
+                    border-color: @border-color-dark;
                 }
             }
         }

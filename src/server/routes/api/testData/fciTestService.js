@@ -7,6 +7,7 @@ const SITES = [
     'travel.rbcrewards.com',
     'travel.chase.com'
 ];
+const CATEGORIES = ['Payments CC', 'User Error', 'Expedia Error', 'Supply Error', 'Inventory Unavailable'];
 const ALPHANUMERIC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
 const ENABLE_SUB_TRACES = false;
@@ -88,7 +89,7 @@ const getFci = (start, end, lobs, site) => {
     const momentEnd = moment(end);
     const dateTimeRange = momentEnd.diff(start, 'minutes');
     const timestamp = momentEnd.subtract(getRandomInt(dateTimeRange), 'minutes').toISOString();
-    const result = {
+    const fci = {
         timestamp,
         sessionId: generateSessionId(),
         traceId: generateTraceId(),
@@ -104,7 +105,13 @@ const getFci = (start, end, lobs, site) => {
         isIntentional: getRandomInt(13) % 3 === 1,
         traces: (new Array(getRandomInt(3) + 2).fill(0)).map(() => getTrace(0))
     };
-    return result;
+    const category = getRandomInt(10) % 3 === 1
+        ? []
+        : [CATEGORIES[getRandomInt(CATEGORIES.length)]];
+    return {
+        fci,
+        category
+    };
 };
 
 // eslint-disable-next-line complexity

@@ -1,0 +1,69 @@
+@import '../../mixins.less';
+
+.date-filters-wrapper {
+    display: flex;
+    position: relative;
+    min-width: 250px;
+    padding: @spacing-1x @spacing-1x 0 @spacing-1x;
+
+    .dates-button {
+        display: flex;
+        align-items: center;
+        min-height: @spacing-7x;
+        font-size: 12px;
+        line-height: @spacing-2x;
+        box-shadow: none;
+        border-radius: @spacing-1x;
+        border: 1px solid @border-color-dark;
+        width: 100%;
+
+        span,
+        .dates {
+            margin: 0 8px;
+            text-align: left;
+        }
+
+        &.active {
+            background: @color-bg-accent;
+            border-radius: @spacing-1x @spacing-1x 0 0;
+            border: @border-color-dark 1px solid;
+        }
+
+        &:hover {
+            background: @color-bg-accent;
+        }
+    }
+
+    .datetime-range-picker-container {
+        position: absolute;
+        right: 0;
+        width: 550px;
+        top: @filter-size + @spacing-1x ;
+        z-index: 100;
+        background-color: @color-bg-accent;
+        border: @border-color-dark 1px solid;
+        border-radius: @spacing-1x;
+        padding: @spacing-1x;
+
+        .apply-btn {
+            height: fit-content;
+            vertical-align: text-top;
+            margin-top: @spacing-1x;
+            margin-left: @spacing-1x;
+        }
+    }
+
+    .rdt-preset-dropdown {
+        margin-top: @spacing-1x;
+        margin-left: 0;
+    }
+
+    .preset-dropdown {
+        float: right;
+        margin-top: -@spacing-9x;
+
+        .Dropdown__toggle {
+            .dropdown-button;
+        }
+    }
+}

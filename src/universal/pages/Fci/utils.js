@@ -3,7 +3,7 @@ import moment from 'moment';
 import qs from 'query-string';
 import DataTable from '../../components/DataTable';
 import {LOB_LIST} from '../../constants';
-import {ALL_ERROR_CODES, TOP_10_ERROR_CODES, TOP_20_ERROR_CODES, TRACE_TABLE_COLUMNS, SITES} from './constants';
+import {ALL_ERROR_CODES, TOP_10_ERROR_CODES, TOP_20_ERROR_CODES, TRACE_TABLE_COLUMNS, SITES, ALL_CATEGORIES, CODE_OPTION} from './constants';
 
 export const getNowDate = () => moment().endOf('minute').toDate();
 
@@ -33,7 +33,7 @@ export const validDateRange = (start, end) => {
 
 // eslint-disable-next-line complexity
 export const getQueryValues = (search) => {
-    const {from, to, lobs, errorCode, siteName} = qs.parse(search);
+    const {from, to, lobs, errorCode, siteName, category} = qs.parse(search);
     const isValidDateRange = validDateRange(from, to);
     return {
         initialStart: isValidDateRange ? moment(from) : moment().subtract(1, 'hours').startOf('minute'),
@@ -45,11 +45,12 @@ export const getQueryValues = (search) => {
         initialErrorCode: errorCode || TOP_20_ERROR_CODES,
         initialSite: SITES.includes(siteName)
             ? siteName
-            : 'travel.chase.com'
+            : 'travel.chase.com',
+        initialCategories: category || ALL_CATEGORIES
     };
 };
 
-export const getQueryString = (start, end, selectedLobs, selectedErrorCode, selectedSite) => {
+export const getQueryString = (start, end, selectedLobs, selectedErrorCode, selectedSite, selectedCategory) => {
     const dateQuery = `from=${start.toISOString()}&to=${end.toISOString()}`;
     const lobQuery = selectedLobs.length
         ? `&lobs=${selectedLobs.map((lob) => lob.value).join(',')}`
@@ -58,7 +59,10 @@ export const getQueryString = (start, end, selectedLobs, selectedErrorCode, sele
         ? `&errorCode=${selectedErrorCode}`
         : '';
     const siteQuery = `&siteName=${selectedSite}`;
-    return `${dateQuery}${lobQuery}${errorQuery}${siteQuery}`;
+    const categoryQuery = selectedCategory !== ALL_CATEGORIES
+        ? `&category=${selectedCategory}`
+        : '';
+    return `${dateQuery}${lobQuery}${errorQuery}${siteQuery}${categoryQuery}`;
 };
 
 const initTimeKeys = (start, end) => {
@@ -73,41 +77,46 @@ const initTimeKeys = (start, end) => {
     return keys;
 };
 
-export const getLineChartData = (start, end, rows, selectedErrorCode) => {
+export const getLineChartData = (start, end, rows, selectedErrorCode, chartProperty) => {
     const filteredRows = [ALL_ERROR_CODES, TOP_10_ERROR_CODES, TOP_20_ERROR_CODES].includes(selectedErrorCode)
         ? rows
         : rows.filter(({errorCode}) => Number(errorCode) === Number(selectedErrorCode));
-    const errorCodes = filteredRows.reduce((acc, curr) => {
-        acc[curr.errorCode] = 0;
+    const initialCounts = filteredRows.reduce((acc, curr) => {
+        if (curr[chartProperty]) {
+            acc[curr[chartProperty]] = 0;
+        }
         return acc;
     }, {});
     const counter = initTimeKeys(start, end).reduce((acc, curr) => {
-        acc[curr] = JSON.parse(JSON.stringify(errorCodes));
+        acc[curr] = JSON.parse(JSON.stringify(initialCounts));
         return acc;
     }, {});
-    const errorTotals = {};
-    filteredRows.forEach(({timestamp, errorCode}) => {
-        const date = moment(timestamp);
+    const totals = {};
+    filteredRows.forEach((row) => {
+        const date = moment(row.timestamp);
         const roundedMinutes = Math.floor(date.minute() / 15) * 15;
         const key = date.clone().minute(roundedMinutes).second(0).format('YYYY-MM-DD HH:mm');
         if (counter[key]) {
-            errorTotals[errorCode] = (errorTotals[errorCode] || 0) + 1;
-            counter[key][errorCode]++;
+            const propValue = row[chartProperty];
+            totals[propValue] = (totals[propValue] || 0) + 1;
+            counter[key][propValue]++;
         }
     });
-    const topErrors = Object.entries(errorTotals)
+    const topValues = Object.entries(totals)
         .sort((a, b) => b.count - a.count)
         .map(([key]) => key);
     const data = Object.entries(counter)
         .map(([date, counts]) => Object.assign({name: date}, counts))
         .sort((a, b) => b.counts - a.counts);
-    const keys = Object.keys(errorCodes);
-    if (selectedErrorCode === TOP_10_ERROR_CODES) {
-        const top10Errors = topErrors.slice(0, 10);
-        return {keys: keys.filter((key) => top10Errors.includes(key)), data};
-    } else if (selectedErrorCode === TOP_20_ERROR_CODES) {
-        const top20Errors = topErrors.slice(0, 20);
-        return {keys: keys.filter((key) => top20Errors.includes(key)), data};
+    const keys = Object.keys(initialCounts);
+    if (chartProperty === CODE_OPTION) {
+        if (selectedErrorCode === TOP_10_ERROR_CODES) {
+            const top10Errors = topValues.slice(0, 10);
+            return {keys: keys.filter((key) => top10Errors.includes(key)), data};
+        } else if (selectedErrorCode === TOP_20_ERROR_CODES) {
+            const top20Errors = topValues.slice(0, 20);
+            return {keys: keys.filter((key) => top20Errors.includes(key)), data};
+        }
     }
     return {keys, data};
 };
@@ -120,6 +129,8 @@ const getTagValue = (tags, property) => {
     return '-';
 };
 
+export const getPropValue = (item, property) => item && property ? (item[property] || '-') : '-';
+
 // eslint-disable-next-line complexity
 export const mapTrace = (t) => {
     const tags = t.tags || [];
@@ -127,8 +138,8 @@ export const mapTrace = (t) => {
     const Error = errorIdx > -1 ? tags[errorIdx].value : '-';
     const hasError = Error === 'true';
     const result = {
-        Service: t.serviceName,
-        Operation: t.operationName,
+        Service: getPropValue(t, 'serviceName'),
+        Operation: getPropValue(t, 'operationName'),
         Error,
         'External Error Code': '-',
         'External Description': '-',
@@ -160,16 +171,17 @@ export const getTableData = (data, keys, onOpenTraceLog) => {
         .map((row) => {
             const clickHandler = () => onOpenTraceLog(row.traceId, (row.traces || []).map(mapTrace));
             return {
-                Created: moment(row.timestamp).format('YYYY-MM-DD HH:mm'),
-                Session: row.sessionId,
-                Trace: row.traceId,
-                Failure: row.failure,
-                'Intentional': row.isIntentional,
-                'Error Code': row.errorCode,
-                Site: row.site,
-                TPID: row.tpId,
-                EAPID: row.eapId,
-                'SiteID': row.siteId,
+                Created: row.timestamp ? moment(row.timestamp).format('YYYY-MM-DD HH:mm') : '-',
+                Session: getPropValue(row, 'sessionId'),
+                Trace: getPropValue(row, 'traceId'),
+                Failure: getPropValue(row, 'failure'),
+                'Intentional': getPropValue(row, 'isIntentional'),
+                'Error Code': getPropValue(row, 'errorCode'),
+                Site: getPropValue(row, 'site'),
+                TPID: getPropValue(row, 'tpId'),
+                EAPID: getPropValue(row, 'eapId'),
+                'SiteID': getPropValue(row, 'siteId'),
+                Category: getPropValue(row, 'category'),
                 LoB: (LOB_LIST.find((l) => l.value === row.lineOfBusiness) || {label: '-'}).label,
                 Traces: (
                     <div
