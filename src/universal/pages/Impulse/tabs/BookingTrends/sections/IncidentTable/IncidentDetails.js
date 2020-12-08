@@ -17,10 +17,10 @@ const IncidentDetails = ({data = [], setTableData}) => {
         let totalRevenueLoss = 0;
         let totalGbvLoss = 0;
         // eslint-disable-next-line no-console
-        console.log(`data: ${data}`);
+        console.log(`data: ${JSON.stringify(data)}`);
         const estimatedImpact = data[0].estimatedImpact;
         // eslint-disable-next-line no-console
-        console.log(`estimatedImpact: ${estimatedImpact}`);
+        console.log(`estimatedImpact: ${JSON.stringify(estimatedImpact)}`);
         finalRevLossObj.revDetails = estimatedImpact.flatMap((impact) => {
             let lobsArr = impact.lobs;
             return lobsArr.map((obj) => ({...obj, brand: impact.brand}));
