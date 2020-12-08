@@ -28,7 +28,7 @@ const CorrectiveActions = ({
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        const dateQuery = `from=${start.toISOString()}&to=${end.toISOString()}`;
+        const dateQuery = `fromDate=${start.format('YYYY-MM-DD')}&toDate=${end.format('YYYY-MM-DD')}`;
         setIsLoading(true);
         Promise.all([
             fetch(`/v1/corrective-actions/business-owner-type/l1?${dateQuery}`),
