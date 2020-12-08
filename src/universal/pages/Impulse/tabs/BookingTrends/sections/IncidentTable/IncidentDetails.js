@@ -11,7 +11,6 @@ import {
 import moment from 'moment';
 
 const IncidentDetails = ({data = [], setTableData}) => {
-
     const getRevenueDetailsData = () => {
         let finalRevLossObj = {};
         let totalOrderLoss = 0;
