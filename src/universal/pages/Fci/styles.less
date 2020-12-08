@@ -31,9 +31,21 @@
             .dropdown-button(160px);
         }
 
-        .site-dropdown .Dropdown__toggle {
+        .site-dropdown {
+            vertical-align: bottom;
+            display: inline-block;
+            width: 250px;
             margin-right: @spacing-1x;
-            .dropdown-button(160px);
+
+            .site-dropdown__control {
+                min-height: @filter-size;
+                border-radius: @spacing-1x;
+                border-color: @border-color-dark;
+            }
+
+            .site-dropdown__menu {
+                z-index: 999;
+            }
         }
 
         .category-dropdown .Dropdown__toggle {

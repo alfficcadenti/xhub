@@ -21,6 +21,8 @@ export const getPresets = () => [
     {text: 'Last 24 hours', value: getValue(24, 'hours')}
 ];
 
+export const getBrandSites = (brand) => SITES[brand] || ['travel.chase.com'];
+
 // eslint-disable-next-line complexity
 export const validDateRange = (start, end) => {
     if (!start || !end) {
@@ -33,7 +35,7 @@ export const validDateRange = (start, end) => {
 
 // eslint-disable-next-line complexity
 export const getQueryValues = (search) => {
-    const {from, to, lobs, errorCode, siteName, category} = qs.parse(search);
+    const {from, to, lobs, errorCode, siteName, category, selectedBrand} = qs.parse(search);
     const isValidDateRange = validDateRange(from, to);
     return {
         initialStart: isValidDateRange ? moment(from) : moment().subtract(1, 'hours').startOf('minute'),
@@ -43,9 +45,9 @@ export const getQueryValues = (search) => {
             ? lobs.split(',').map((l) => LOB_LIST.find(({value}) => value === l)).filter((l) => l)
             : [],
         initialErrorCode: errorCode || TOP_20_ERROR_CODES,
-        initialSite: SITES.includes(siteName)
+        initialSite: getBrandSites(selectedBrand).includes(siteName)
             ? siteName
-            : 'travel.chase.com',
+            : getBrandSites(selectedBrand)[0],
         initialCategories: category || ALL_CATEGORIES
     };
 };

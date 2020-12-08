@@ -9,10 +9,10 @@ import DataTable from '../../components/DataTable';
 import LoadingContainer from '../../components/LoadingContainer';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import {checkResponse} from '../utils';
-import {EXPEDIA_PARTNER_SERVICES_BRAND, LOB_LIST} from '../../constants';
-import {getQueryValues, getQueryString, getPresets, getLineChartData, getTableData, getErrorCodes} from './utils';
+import {EXPEDIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, LOB_LIST} from '../../constants';
+import {getQueryValues, getQueryString, getPresets, getLineChartData, getTableData, getErrorCodes, getBrandSites} from './utils';
 import TraceLogModal from './TraceLogModal';
-import {FCI_TABLE_COLUMNS, FCI_HIDDEN_TABLE_COLUMNS, SITES, ALL_CATEGORIES, CATEGORY_OPTION, CODE_OPTION} from './constants';
+import {FCI_TABLE_COLUMNS, FCI_HIDDEN_TABLE_COLUMNS, ALL_CATEGORIES, CATEGORY_OPTION, CODE_OPTION} from './constants';
 import './styles.less';
 
 const Fci = ({selectedBrands}) => {
@@ -95,9 +95,9 @@ const Fci = ({selectedBrands}) => {
 
     // eslint-disable-next-line complexity
     useEffect(() => {
-        if (selectedBrands[0] !== EXPEDIA_PARTNER_SERVICES_BRAND) {
+        if (![EXPEDIA_PARTNER_SERVICES_BRAND, EXPEDIA_BRAND].includes(selectedBrands[0])) {
             setIsSupportedBrand(false);
-            setError(`FCIs for ${selectedBrands[0]} is not yet available. For now only ${EXPEDIA_PARTNER_SERVICES_BRAND} is supported.
+            setError(`FCIs for ${selectedBrands[0]} is not yet available. For now only ${EXPEDIA_PARTNER_SERVICES_BRAND} and ${EXPEDIA_BRAND} is supported.
                 If you have any questions, please ping #dpi-reo-opex-all or leave a comment via our Feedback form.`);
             return;
         }
@@ -159,7 +159,7 @@ const Fci = ({selectedBrands}) => {
     };
 
     const handleSiteChange = (e) => {
-        setPendingSite(e);
+        setPendingSite(e && e.value);
         setIsDirtyForm(true);
     };
 
@@ -225,7 +225,7 @@ const Fci = ({selectedBrands}) => {
     return (
         <div className="fci-container">
             <h1>{'Failed Customer Interactions (FCI)'}</h1>
-            <div className="form-container">
+            {isSupportedBrand && <div className="form-container">
                 <DatetimeRangePicker
                     onChange={handleDatetimeChange}
                     startDate={pendingStart.toDate()}
@@ -239,12 +239,13 @@ const Fci = ({selectedBrands}) => {
                     selectedValue={pendingErrorCode}
                     onClickHandler={handleErrorCodeChange}
                 />
-                <FilterDropDown
-                    id="site-dropdown"
+                <Select
+                    classNamePrefix="site-dropdown"
                     className="site-dropdown"
-                    list={SITES}
-                    selectedValue={pendingSite}
-                    onClickHandler={handleSiteChange}
+                    options={getBrandSites(selectedBrands[0]).map((x) => ({label: x, value: x}))}
+                    onChange={handleSiteChange}
+                    placeholder={pendingSite}
+                    isSearchable
                 />
                 <FilterDropDown
                     id="category-dropdown"
@@ -274,7 +275,7 @@ const Fci = ({selectedBrands}) => {
                 >
                     {'Apply'}
                 </button>
-            </div>
+            </div>}
             <LoadingContainer isLoading={isLoading} error={error} className="fci-loading-container">
                 {isSupportedBrand && (
                     <>

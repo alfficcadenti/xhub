@@ -1,7 +1,7 @@
 import moment from 'moment';
 import {expect} from 'chai';
-import {validDateRange, getQueryValues, getLineChartData, getErrorCodes, getPropValue, traceHasError, getTraceCounts, mapTrace, getFilteredTraceData} from '../utils';
-import {ALL_ERROR_CODES, TOP_10_ERROR_CODES, TOP_20_ERROR_CODES, CODE_OPTION, CATEGORY_OPTION} from '../constants';
+import {validDateRange, getQueryValues, getLineChartData, getErrorCodes, getPropValue, traceHasError, getTraceCounts, mapTrace, getFilteredTraceData, getBrandSites} from '../utils';
+import {ALL_ERROR_CODES, TOP_10_ERROR_CODES, TOP_20_ERROR_CODES, CODE_OPTION, CATEGORY_OPTION, SITES} from '../constants';
 
 describe('Fci Utils', () => {
     it('validDateRange - invalid dates', () => {
@@ -31,7 +31,8 @@ describe('Fci Utils', () => {
         const lob = 'H';
         const errorCode = '500';
         const site = 'travel.rbcrewards.com';
-        const result = getQueryValues(`?from=${start}&to=${end}&lobs=${lob}&errorCode=${errorCode}&siteName=${site}`);
+        const brand = 'Expedia Partner Solutions';
+        const result = getQueryValues(`?from=${start}&to=${end}&lobs=${lob}&errorCode=${errorCode}&siteName=${site}&selectedBrand=${brand}`);
         expect(result.initialStart.isSame(start, 'day')).to.be.eql(true);
         expect(result.initialEnd.isSame(end, 'day')).to.be.eql(true);
         expect(result.initialTimeRange).to.be.eql('Custom');
@@ -145,5 +146,20 @@ describe('Fci Utils', () => {
         expect(trace['External Error Code']).to.eql(extErrorCode);
         expect(trace['External Description']).to.eql(extErrorDescription);
         expect(trace.traces).to.eql(data.traces);
+    });
+
+    it('getBrandSites - returns list of sites per Expedia', () => {
+        const brandSites = getBrandSites('Expedia');
+        expect(brandSites).to.eql(SITES.Expedia);
+    });
+
+    it('getBrandSites - returns list of sites per Expedia Partner Solution', () => {
+        const brandSites = getBrandSites('Expedia Partner Solutions');
+        expect(brandSites).to.eql(SITES['Expedia Partner Solutions']);
+    });
+
+    it('getBrandSites - returns array with travel.chase.com as per API fallback if input is missing or not a brand', () => {
+        const brandSites = getBrandSites();
+        expect(brandSites).to.eql(['travel.chase.com']);
     });
 });
