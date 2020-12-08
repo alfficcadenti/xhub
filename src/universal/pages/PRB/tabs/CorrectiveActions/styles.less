@@ -1,0 +1,129 @@
+@import '../../../../mixins.less';
+
+.corrective-actions-container {
+    .form-container {
+        margin-bottom: @spacing-2x;
+        background: @color-bg-contrast;
+        padding: @spacing-2x;
+        border-radius: @spacing-1x;
+
+        .datetime-range-picker {
+            height: @spacing-7x;
+            margin-bottom: @spacing-1x;
+            display: inline;
+        }
+
+        .apply-btn {
+            margin-left: @spacing-1x;
+            height: @spacing-7x;
+        }
+    }
+
+    .loading-container {
+        min-height: 50vh;
+        margin-bottom: @spacing-9x;
+    }
+
+    .l1-table,
+    .l2-table,
+    .l3-table {
+        position: relative;
+        padding: @spacing-2x;
+        float: left;
+        width: 32%;
+        border: 1px solid @border-color-dark;
+
+        h3 {
+            float: left;
+        }
+
+        .close-btn {
+            cursor: pointer;
+            float: right;
+        }
+
+        .l-row {
+            float: left;
+            padding: @spacing-1x;
+            width: 100%;
+
+            .name {
+                float: left;
+                width: 50%;
+            }
+
+            .count {
+                float: left;
+                width: 20%;
+                margin-left: 25%;
+                color: @color-link-default;
+                cursor: pointer;
+
+                &:hover {
+                    color: @color-link-hover;
+                }
+            }
+
+            .arrow {
+                cursor: pointer;
+                float: left;
+                width: 5%;
+                opacity: .8;
+
+                &.hover {
+                    cursor: pointer;
+                    color: @color-text-default;
+                    background: @color-bg-contrast;
+                    opacity: 1;
+                }
+            }
+        }
+    }
+
+    .l1-table {
+        z-index: 2;
+
+        .l-row.selected {
+            color: @color-text-default;
+            background: @color-bg-contrast;
+
+            .arrow {
+                opacity: 1;
+            }
+        }
+    }
+
+    .l2-table {
+        z-index: 1;
+        background: @color-bg-contrast;
+
+        .l-row.selected {
+            background: @color-bg-hover;
+
+            .arrow {
+                opacity: 1;
+            }
+        }
+    }
+
+    .l3-table {
+        z-index: 0;
+        background: @color-bg-hover;
+    }
+
+    .l2-table,
+    .l3-table {
+        margin-left: -2%;
+        opacity: 0;
+        transition: all .2s ease;
+
+        &.active {
+            margin-left: 2%;
+            opacity: 1;
+        }
+    }
+
+    .Modal__dialog {
+        width: 90%;
+    }
+}

@@ -86,8 +86,8 @@ export const useFetchTickets = (
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
     const [allTickets, setAllTickets] = useState([]);
-    const [lastStartDate, setLastStartDate] = useState('');
-    const [lastEndDate, setLastEndDate] = useState('');
+    const [lastStartDate, setLastStartDate] = useState();
+    const [lastEndDate, setLastEndDate] = useState();
     const [isMounted, setIsMounted] = useState(false);
 
 
@@ -121,7 +121,7 @@ export const useFetchTickets = (
         if (isMounted) {
             fetchTickets();
         } else if (isApplyClicked) {
-            if (lastStartDate !== startDate || lastEndDate !== endDate) {
+            if (!startDate.isSame(lastStartDate) || !endDate.isSame(lastEndDate)) {
                 fetchTickets();
             } else {
                 applyFilters();

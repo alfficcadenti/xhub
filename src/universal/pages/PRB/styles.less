@@ -3,6 +3,11 @@
 .pm-container {
     text-align: left;
 
+    .datetime-range-picker,
+    .filter-dropdown {
+        margin: 0 @spacing-1x @spacing-1x 0;
+    }
+
     .filters-wrapper {
         display: flex;
         flex-wrap: wrap;
@@ -10,18 +15,7 @@
         font-weight: 400;
         vertical-align: middle;
         width: 100%;
-        border-radius: 5px;
-
-        .date-range {
-            .date-range-filter;
-        }
-
-        .date-range,
-        .Dropdown,
-        .CRB--checkbox,
-        .apply-button {
-            margin: 5px;
-        }
+        border-radius: @spacing-1x;
 
         .CRB--checkbox {
             align-items: center;
@@ -60,10 +54,6 @@
         margin-bottom: @spacing-7x;
     }
 
-    .filter-dropdown {
-        margin: 5px;
-    }
-
     .more-filters-btn {
         margin-left: 5px;
         margin-bottom: -1px;
@@ -91,6 +81,10 @@
             background: @color-bg-accent;
             border-radius: 0 0 @spacing-1x @spacing-1x;
         }
+    }
+
+    .Navigation {
+        margin-bottom: @spacing-3x;
     }
 
     .details-container {

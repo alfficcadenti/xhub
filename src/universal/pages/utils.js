@@ -22,8 +22,8 @@ export const getVisiblePages = (selectedBrands, pages = [...ALL_PAGES]) => {
     ));
 };
 
-export const getPieData = (filteredDefects, property) => {
-    const counts = filteredDefects
+export const getPieData = (items = [], property) => {
+    const counts = items
         .reduce((acc, curr) => {
             const key = curr[property];
             if (!acc[key]) {

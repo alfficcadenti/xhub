@@ -20,6 +20,16 @@
           "hostname": "opxhub-data-service.us-west-2.test.expedia.com",
           "protocol": "https:",
           "routes": {
+            "correctiveActions": {
+              "path": "/v1/corrective-actions/business-owner-type",
+              "method": "GET",
+              "operation": "GET_CORRECTIVE_ACTIONS_V1"
+            },
+            "correctiveActionsDetails": {
+              "path": "/v1/corrective-actions-details",
+              "method": "GET",
+              "operation": "GET_CORRECTIVE_ACTIONS_DETAILS_V1"
+            },
             "defects": {
               "path": "/v1/defects",
               "method": "GET",
@@ -56,6 +66,16 @@
           "hostname": "opxhub-data-service.us-west-2.test.expedia.com",
           "protocol": "https:",
           "routes": {
+            "correctiveActions": {
+              "path": "/v1/corrective-actions/business-owner-type/l1",
+              "method": "GET",
+              "operation": "GET_CORRECTIVE_ACTIONS_V1"
+            },
+            "correctiveActionsDetails": {
+              "path": "/v1/corrective-actions-details",
+              "method": "GET",
+              "operation": "GET_CORRECTIVE_ACTIONS_DETAILS_V1"
+            },
             "defects": {
               "path": "/v1/defects",
               "method": "GET",
@@ -92,6 +112,16 @@
           "hostname": "opxhub-data-service.us-east-1.prod.expedia.com",
           "protocol": "https:",
           "routes": {
+            "correctiveActions": {
+              "path": "/v1/corrective-actions/business-owner-type/l1",
+              "method": "GET",
+              "operation": "GET_CORRECTIVE_ACTIONS_V1"
+            },
+            "correctiveActionsDetails": {
+              "path": "/v1/corrective-actions-details",
+              "method": "GET",
+              "operation": "GET_CORRECTIVE_ACTIONS_DETAILS_V1"
+            },
             "defects": {
               "path": "/v1/defects",
               "method": "GET",
