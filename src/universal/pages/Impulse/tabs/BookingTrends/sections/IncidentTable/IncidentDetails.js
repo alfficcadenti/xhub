@@ -16,15 +16,11 @@ const IncidentDetails = ({data = [], setTableData}) => {
         let totalOrderLoss = 0;
         let totalRevenueLoss = 0;
         let totalGbvLoss = 0;
-        // eslint-disable-next-line no-console
-        console.log(`data: ${JSON.stringify(data)}`);
         const estimatedImpact = data[0].estimatedImpact;
-        // eslint-disable-next-line no-console
-        console.log(`estimatedImpact: ${JSON.stringify(estimatedImpact)}`);
-        finalRevLossObj.revDetails = estimatedImpact.flatMap((impact) => {
+        finalRevLossObj.revDetails = estimatedImpact.map((impact) => {
             let lobsArr = impact.lobs;
             return lobsArr.map((obj) => ({...obj, brand: impact.brand}));
-        }).filter((lob) => lob.orderLoss !== 'NA').map((lobObj) => {
+        }).flat(1).filter((lob) => lob.orderLoss !== 'NA').map((lobObj) => {
             totalOrderLoss += Number(lobObj.orderLoss);
             totalRevenueLoss += Number(lobObj.revenueLoss);
             totalGbvLoss += Number(lobObj.gbvLoss);
