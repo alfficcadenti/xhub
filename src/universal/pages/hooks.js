@@ -3,7 +3,7 @@ import {useHistory, useLocation} from 'react-router-dom';
 import qs from 'query-string';
 import moment from 'moment';
 import {checkResponse} from './utils';
-import {EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, HOTELS_COM_BRAND} from '../constants';
+import {EG_BRAND, EGENCIA_BRAND, HOTELS_COM_BRAND} from '../constants';
 
 
 export const useIsMount = () => {
@@ -166,7 +166,7 @@ export const useAddToUrl = (
     const {pathname} = useLocation();
 
     useEffect(() => {
-        if (![EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, HOTELS_COM_BRAND].includes(selectedBrands[0])) {
+        if (![EG_BRAND, EGENCIA_BRAND, HOTELS_COM_BRAND].includes(selectedBrands[0])) {
             history.push(`${pathname}?selectedBrand=${selectedBrands[0]}`
                 + `&from=${encodeURIComponent(pendingStart.format())}`
                 + `&to=${encodeURIComponent(pendingEnd.format())}`
