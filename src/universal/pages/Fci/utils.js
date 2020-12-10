@@ -35,7 +35,7 @@ export const validDateRange = (start, end) => {
 
 // eslint-disable-next-line complexity
 export const getQueryValues = (search) => {
-    const {from, to, lobs, errorCode, siteName, category, selectedBrand} = qs.parse(search);
+    const {from, to, lobs, errorCode, siteName, category, selectedBrand, hideIntentionalCheck} = qs.parse(search);
     const isValidDateRange = validDateRange(from, to);
     return {
         initialStart: isValidDateRange ? moment(from) : moment().subtract(1, 'hours').startOf('minute'),
@@ -48,11 +48,12 @@ export const getQueryValues = (search) => {
         initialSite: getBrandSites(selectedBrand).includes(siteName)
             ? siteName
             : getBrandSites(selectedBrand)[0],
-        initialCategories: category || ALL_CATEGORIES
+        initialCategories: category || ALL_CATEGORIES,
+        initialHideIntentionalCheck: hideIntentionalCheck === 'true'
     };
 };
 
-export const getQueryString = (start, end, selectedLobs, selectedErrorCode, selectedSite, selectedCategory) => {
+export const getQueryString = (start, end, selectedLobs, selectedErrorCode, selectedSite, selectedCategory, hideIntentionalCheck) => {
     const dateQuery = `from=${start.toISOString()}&to=${end.toISOString()}`;
     const lobQuery = selectedLobs.length
         ? `&lobs=${selectedLobs.map((lob) => lob.value).join(',')}`
@@ -64,7 +65,8 @@ export const getQueryString = (start, end, selectedLobs, selectedErrorCode, sele
     const categoryQuery = selectedCategory !== ALL_CATEGORIES
         ? `&category=${selectedCategory}`
         : '';
-    return `${dateQuery}${lobQuery}${errorQuery}${siteQuery}${categoryQuery}`;
+    const hideIntentionalCheckQuery = `&hideIntentionalCheck=${hideIntentionalCheck}`;
+    return `${dateQuery}${lobQuery}${errorQuery}${siteQuery}${categoryQuery}${hideIntentionalCheckQuery}`;
 };
 
 const initTimeKeys = (start, end) => {

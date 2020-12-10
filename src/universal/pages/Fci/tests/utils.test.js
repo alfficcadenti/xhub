@@ -23,6 +23,7 @@ describe('Fci Utils', () => {
         expect(result.initialLobs).to.be.eql([]);
         expect(result.initialErrorCode).to.be.eql(TOP_20_ERROR_CODES);
         expect(result.initialSite).to.be.eql('travel.chase.com');
+        expect(result.initialHideIntentionalCheck).to.be.eql(false);
     });
 
     it('getQueryValues - custom', () => {
@@ -32,13 +33,15 @@ describe('Fci Utils', () => {
         const errorCode = '500';
         const site = 'travel.rbcrewards.com';
         const brand = 'Expedia Partner Solutions';
-        const result = getQueryValues(`?from=${start}&to=${end}&lobs=${lob}&errorCode=${errorCode}&siteName=${site}&selectedBrand=${brand}`);
+        const intentional = true;
+        const result = getQueryValues(`?from=${start}&to=${end}&lobs=${lob}&errorCode=${errorCode}&siteName=${site}&selectedBrand=${brand}&hideIntentionalCheck=${intentional}`);
         expect(result.initialStart.isSame(start, 'day')).to.be.eql(true);
         expect(result.initialEnd.isSame(end, 'day')).to.be.eql(true);
         expect(result.initialTimeRange).to.be.eql('Custom');
         expect(result.initialLobs[0].value).to.be.eql(lob);
         expect(result.initialErrorCode).to.be.eql(errorCode);
         expect(result.initialSite).to.be.eql(site);
+        expect(result.initialHideIntentionalCheck).to.be.eql(intentional);
     });
 
     it('getLineChartData - errorCode', () => {
