@@ -1,6 +1,5 @@
 import React, {useState, useRef} from 'react';
-import {Link, withRouter} from 'react-router-dom';
-import {Redirect} from 'react-router';
+import {Link, withRouter, useHistory} from 'react-router-dom';
 import {Dropdown} from '@homeaway/react-dropdown';
 import BrandSelector from './BrandSelector';
 import Help from './Help';
@@ -19,10 +18,10 @@ const DEFAULT_PAGE_INFO = {
 };
 
 const Header = ({selectedBrands, onBrandChange, brands}) => {
-    const [redirectLink, setRedirectLink] = useState(null);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [selectedPages, setSelectedPages] = useState([]);
     const searchInput = useRef(null);
+    const history = useHistory();
 
     const BRAND_QUERY = `?selectedBrand=${selectedBrands[0]}`;
     const VISIBLE_PAGES = getVisiblePages(selectedBrands);
@@ -37,7 +36,7 @@ const Header = ({selectedBrands, onBrandChange, brands}) => {
     const handleOnSearch = ({value}) => {
         if (value) {
             handleOnBlur();
-            setRedirectLink(`${value}${BRAND_QUERY}`);
+            history.push(`${value}${BRAND_QUERY}`);
         }
     };
 
@@ -68,7 +67,6 @@ const Header = ({selectedBrands, onBrandChange, brands}) => {
 
     return (
         <div className="header">
-            {redirectLink && <Redirect push to={redirectLink} />}
             <Link to={`/impulse${BRAND_QUERY}`} className="header--logo" >
                 {'OpXHub'}
             </Link>
