@@ -4,12 +4,12 @@ import {SearchableList} from '@homeaway/react-searchable-list';
 import {Token} from '@homeaway/react-input-tokenize';
 import {adjustInputValue} from '../../pages/utils';
 
-const UniversalSearch = ({onFilterChange, suggestionMapping, suggestions}) => {
+const UniversalSearch = ({onFilterChange, suggestionMapping, suggestions, defaultSelection}) => {
     const [keyTags, setKeyTags] = useState([]);
     const [selected, setSelected] = useState([]);
     const [typeaheadList, setTypeaheadList] = useState(keyTags);
     const [isKeySelection, setIsKeySelection] = useState(true);
-    const [fieldSelection, setFieldSelection] = useState([]);
+    const [fieldSelection, setFieldSelection] = useState(defaultSelection || []);
     const [clear, setClear] = useState(false);
     const [label, setLabel] = useState('Select the field to search');
     const [valueToggle, setValueToggle] = useState(false);
@@ -114,7 +114,9 @@ const UniversalSearch = ({onFilterChange, suggestionMapping, suggestions}) => {
             }
         };
         verifyKeySelection();
-        onFilterChange(fieldSelection);
+        if (typeof onFilterChange === 'function') {
+            onFilterChange(fieldSelection);
+        }
     }, [fieldSelection]);
 
     useEffect(() => {
@@ -127,7 +129,9 @@ const UniversalSearch = ({onFilterChange, suggestionMapping, suggestions}) => {
     }, [selected]);
 
     useEffect(() => {
-        onFilterChange(fieldSelection);
+        if (typeof onFilterChange === 'function') {
+            onFilterChange(fieldSelection);
+        }
     }, [valueToggle]);
 
     useEffect(() => {

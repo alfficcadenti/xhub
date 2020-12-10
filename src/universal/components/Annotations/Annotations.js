@@ -37,7 +37,7 @@ const Annotations = ({
 
     const [selectedProducts, setSelectedProducts] = useState([]);
     const [selectedApplications, setSelectedApplications] = useState([]);
-    const [selectedServiceTiers, setSelectedServiceTiers] = useState([]);
+    const [selectedServiceTiers, setSelectedServiceTiers] = useState(['Tier 1']);
     const [selectedStatuses, setSelectedStatuses] = useState([]);
     const [selectedPriorities, setSelectedPriorities] = useState([]);
     const [selectedAbTestsStatuses, setSelectedAbTestsStatuses] = useState([]);
@@ -369,6 +369,7 @@ const Annotations = ({
                             suggestions={suggestions}
                             suggestionMapping={productMapping}
                             onFilterChange={onFilterChange}
+                            defaultSelection={[{key: 'serviceTier', value: 'Tier 1'}]}
                         />
                     }
                 </LoadingContainer>
