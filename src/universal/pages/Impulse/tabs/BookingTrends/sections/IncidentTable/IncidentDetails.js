@@ -17,15 +17,17 @@ const IncidentDetails = ({data = [], setTableData}) => {
         let totalRevenueLoss = 0;
         let totalGbvLoss = 0;
         const estimatedImpact = data[0].estimatedImpact;
-        finalRevLossObj.revDetails = [].concat.apply([], estimatedImpact.map((impact) => {
+        finalRevLossObj.revDetails = [].concat(...estimatedImpact.map((impact) => {
             let lobsArr = impact.lobs;
             return lobsArr.map((obj) => ({...obj, brand: impact.brand}));
-        })).filter((lob) => lob.orderLoss !== 'NA').map((lobObj) => {
+        })).filter((lob) => lob.orderLoss !== 'NA');
+
+        finalRevLossObj.revDetails.forEach((lobObj) => {
             totalOrderLoss += Number(lobObj.orderLoss);
             totalRevenueLoss += Number(lobObj.revenueLoss);
             totalGbvLoss += Number(lobObj.gbvLoss);
-            return lobObj;
         });
+
         finalRevLossObj.totalOrderLoss = totalOrderLoss;
         finalRevLossObj.totalReveueLoss = totalRevenueLoss;
         finalRevLossObj.totalgbvLoss = totalGbvLoss;
