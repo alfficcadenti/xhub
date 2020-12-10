@@ -25,11 +25,6 @@
               "method": "GET",
               "operation": "GET_CORRECTIVE_ACTIONS_V1"
             },
-            "correctiveActionsDetails": {
-              "path": "/v1/corrective-actions-details",
-              "method": "GET",
-              "operation": "GET_CORRECTIVE_ACTIONS_DETAILS_V1"
-            },
             "defects": {
               "path": "/v1/defects",
               "method": "GET",
@@ -71,11 +66,6 @@
               "method": "GET",
               "operation": "GET_CORRECTIVE_ACTIONS_V1"
             },
-            "correctiveActionsDetails": {
-              "path": "/v1/corrective-actions-details",
-              "method": "GET",
-              "operation": "GET_CORRECTIVE_ACTIONS_DETAILS_V1"
-            },
             "defects": {
               "path": "/v1/defects",
               "method": "GET",
@@ -116,11 +106,6 @@
               "path": "/v1/corrective-actions/business-owner-type",
               "method": "GET",
               "operation": "GET_CORRECTIVE_ACTIONS_V1"
-            },
-            "correctiveActionsDetails": {
-              "path": "/v1/corrective-actions-details",
-              "method": "GET",
-              "operation": "GET_CORRECTIVE_ACTIONS_DETAILS_V1"
             },
             "defects": {
               "path": "/v1/defects",

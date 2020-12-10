@@ -5,7 +5,7 @@ import {Navigation} from '@homeaway/react-navigation';
 import {SVGIcon} from '@homeaway/react-svg';
 import {FILTER__16} from '@homeaway/svg-defs';
 import {Divider} from '@homeaway/react-collapse';
-import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
+import {DateRangePicker} from '@homeaway/react-date-pickers';
 import LoadingContainer from '../../components/LoadingContainer';
 import FilterDropDown from '../../components/FilterDropDown';
 import HelpText from '../../components/HelpText/HelpText';
@@ -140,9 +140,9 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         updateHistory();
     }, [selectedL1, selectedL2, selectedCA, activeIndex]);
 
-    const handleDatetimeChange = ({start: startDateTimeStr, end: endDateTimeStr}) => {
-        setStartDate(moment(startDateTimeStr));
-        setEndDate(moment(endDateTimeStr));
+    const handleDateRangeChange = (start, end) => {
+        setStartDate(moment(start));
+        setEndDate(moment(end));
         setIsDirtyForm(true);
     };
 
@@ -239,11 +239,15 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
     const renderFilters = () => (
         <div className="filters-wrapper">
-            <DatetimeRangePicker
-                onChange={handleDatetimeChange}
-                startDate={startDate.toDate()}
-                endDate={endDate.toDate()}
-                hidePresets
+            <DateRangePicker
+                id="prb-daterangepicker"
+                startDate={startDate.format('YYYY-MM-DD')}
+                endDate={endDate.format('YYYY-MM-DD')}
+                onDateRangeChange={handleDateRangeChange}
+                inputLabel1="Start"
+                inputLabel2="End"
+                inputName1="start"
+                inputName2="end"
             />
             <FilterDropDown
                 id="org-dropdown"

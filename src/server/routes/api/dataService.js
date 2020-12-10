@@ -13,13 +13,6 @@ module.exports.correctiveActions = {
     handler: getHandler(Object.assign(getHandlerParams('correctiveActions'), {pathParam: 'businessOwnerType'}))
 };
 
-module.exports.correctiveActionsDetails = {
-    method: 'GET',
-    path: '/v1/corrective-actions-details',
-    config: getConfig('corrective-actions-details-get'),
-    handler: getHandler(getHandlerParams('correctiveActionsDetails'))
-};
-
 module.exports.defects = {
     method: 'GET',
     path: '/v1/defects/{param*}',

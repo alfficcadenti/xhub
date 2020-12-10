@@ -3,9 +3,27 @@
 .pm-container {
     text-align: left;
 
-    .datetime-range-picker,
+    .date-range,
     .filter-dropdown {
         margin: 0 @spacing-1x @spacing-1x 0;
+    }
+
+    .date-range.form-combined {
+        width: 400px;
+
+        .form-combined-row {
+            margin-bottom: 0;
+        }
+
+        .form-combined-row .form-group {
+            .form-control.form-control--arrival {
+                border-radius: @spacing-1x 0 0 @spacing-1x;
+            }
+
+            .form-control.form-control--departure {
+                border-radius: 0 @spacing-1x @spacing-1x 0;
+            }
+        }
     }
 
     .filters-wrapper {

@@ -5,9 +5,9 @@ import Modal from '@homeaway/react-modal';
 import {checkResponse} from '../../../utils';
 import DataTable from '../../../../components/DataTable';
 import LoadingContainer from '../../../../components/LoadingContainer';
+import {mapDetails, checkIsRowSelected} from './utils';
 import './styles.less';
 
-// eslint-disable-next-line complexity
 const CorrectiveActions = ({
     tickets,
     start,
@@ -19,52 +19,34 @@ const CorrectiveActions = ({
     onL1Change,
     onL2Change
 }) => {
+    const dateQuery = `fromDate=${start.format('YYYY-MM-DD')}&toDate=${end.format('YYYY-MM-DD')}`;
     const [l1Data, setL1Data] = useState([]);
     const [l2Data, setL2Data] = useState([]);
     const [detailsData, setDetailsData] = useState([]);
-    const [modalKey, setModalKey] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [error, setError] = useState();
     const [isLoading, setIsLoading] = useState(false);
 
+    const initData = (response, initialValue, setData, onLChange) => {
+        if (!response || !response.data) {
+            throw Error();
+        }
+        setData(response.data);
+        if (initialValue) {
+            const found = response.data.find(({name}) => name === initialValue);
+            if (found) {
+                onLChange(found);
+            }
+        }
+    };
+
     useEffect(() => {
-        const dateQuery = `fromDate=${start.format('YYYY-MM-DD')}&toDate=${end.format('YYYY-MM-DD')}`;
         setIsLoading(true);
-        Promise.all([
-            fetch(`/v1/corrective-actions/business-owner-type/l1?${dateQuery}`),
-            fetch(`/v1/corrective-actions/business-owner-type/l2?${dateQuery}`),
-            fetch(`/v1/corrective-actions-details?${dateQuery}`),
-        ])
+        Promise.all(['l1', 'l2'].map((l) => fetch(`/v1/corrective-actions/business-owner-type/${l}?${dateQuery}`)))
             .then((responses) => Promise.all(responses.map(checkResponse)))
-            // eslint-disable-next-line complexity
-            .then(([l1Response, l2Response, detailsResponse]) => {
-                if (l1Response && l1Response.data) {
-                    setL1Data(l1Response.data);
-                    if (initialL1) {
-                        const found = l1Response.data.find(({name}) => name === initialL1);
-                        if (found) {
-                            onL1Change(found);
-                        }
-                    }
-                } else {
-                    throw Error();
-                }
-                if (l2Response && l2Response.data) {
-                    setL2Data(l2Response.data);
-                    if (initialL1 && initialL2) {
-                        const found = l2Response.data.find(({name}) => name === initialL2);
-                        if (found) {
-                            onL2Change(found);
-                        }
-                    }
-                } else {
-                    throw Error();
-                }
-                if (detailsResponse) {
-                    setDetailsData(detailsResponse);
-                } else {
-                    throw Error();
-                }
+            .then(([l1Response, l2Response]) => {
+                initData(l1Response, initialL1, setL1Data, onL1Change);
+                initData(l2Response, initialL2, setL2Data, onL2Change);
             })
             .catch((err) => {
                 setError('Failed to retrieve data. Try refreshing the page. '
@@ -88,19 +70,21 @@ const CorrectiveActions = ({
         }
     };
 
-    // eslint-disable-next-line complexity
+    const fetchDetails = (businessOwnerType, businessOwnerValue) => {
+        fetch(`/v1/corrective-actions/business-owner-type/${businessOwnerType}/${businessOwnerValue}/details?${dateQuery}`)
+            .then(checkResponse)
+            .then((response) => {
+                if (response && response.length) {
+                    setDetailsData(response.map(mapDetails));
+                    setIsModalOpen(true);
+                }
+            });
+    };
+
     const renderRow = (row) => {
         const {name, businessOwnerType, ticketsCount} = row;
-        const isSelected = (businessOwnerType === 'l1' && selectedL1 && selectedL1.name === name)
-            || (businessOwnerType === 'l2' && selectedL2 && selectedL2.name === name);
-        const handleCountClick = () => {
-            setModalKey({
-                l1: businessOwnerType === 'l1' ? row : selectedL1,
-                l2: businessOwnerType === 'l2' ? row : null,
-                l3: businessOwnerType === 'l3' ? row : null,
-            });
-            setIsModalOpen(true);
-        };
+        const isSelected = checkIsRowSelected(businessOwnerType, selectedL1, selectedL2);
+        const handleCountClick = () => fetchDetails(businessOwnerType, name);
         return (
             <div
                 key={`${businessOwnerType}-${name}`}
@@ -140,73 +124,65 @@ const CorrectiveActions = ({
         onL2Change({name: null, subOrgDetails: []});
     };
 
-    // eslint-disable-next-line complexity
-    const filterDetails = ({l1, l2, l3}) => (
-        (!modalKey.l1 || modalKey.l1.name === l1)
-        && (!modalKey.l2 || modalKey.l2.name === l2)
-        && (!modalKey.l3 || modalKey.l3.name === l3)
-    );
-
     const renderDetailsTable = () => {
-        const data = detailsData
-            .filter(filterDetails)
-            .map((row) => ({
-                ID: <a href={row.url} target="_blank" rel="noop">{row.id}</a>,
-                Assignee: row.assignee,
-                Project: row.projectName,
-                Summary: row.summary,
-                Status: row.status,
-                Priority: row.priority || '-',
-                Department: row.department,
-                Created: row.createdDate,
-                Resolved: row.resolvedDate || '-',
-                Updated: row.updatedDateTime,
-            }));
         return (
             <DataTable
-                title={`Corrective Actions (${data.length} ${data.length === 1 ? 'result' : 'results'})`}
-                data={data}
+                title={`Corrective Actions (${detailsData.length} ${detailsData.length === 1 ? 'result' : 'results'})`}
+                data={detailsData}
                 columns={['ID', 'L1', 'L2', 'L3', 'Assignee', 'Project', 'Summary', 'Status', 'Priority', 'Department', 'Created', 'Resolved', 'Updated']}
                 hiddenColumns={['L1', 'L2', 'L3', 'Department']}
                 enableColumnDisplaySettings
                 enableCSVDownload
+                paginated
             />
         );
     };
 
+    const renderL1Table = () => (
+        <div className="l1-table">
+            <h3>{'L1'}</h3>
+            {l1Data.map(renderRow)}
+        </div>
+    );
+
+    const renderL2Table = () => (
+        <div className={`l2-table ${selectedL1 && selectedL1.name ? 'active' : ''}`}>
+            <h3>{'L2'}</h3>
+            <div
+                className="close-btn"
+                onClick={handleL1Close}
+                onKeyUp={handleL1Close}
+                role="button"
+                tabIndex="0"
+            >
+                <SVGIcon usefill markup={CLOSE__24} />
+            </div>
+            {(selectedL1 || {subOrgDetails: []}).subOrgDetails.map(renderRow)}
+        </div>
+    );
+
+    const renderL3Table = () => (
+        <div className={`l3-table ${selectedL1 && selectedL2 && selectedL2.name ? 'active' : ''}`}>
+            <h3>{'L3'}</h3>
+            <div
+                className="close-btn"
+                onClick={handleL2Close}
+                onKeyUp={handleL2Close}
+                role="button"
+                tabIndex="0"
+            >
+                <SVGIcon usefill markup={CLOSE__24} />
+            </div>
+            {(selectedL2 || {subOrgDetails: []}).subOrgDetails.map(renderRow)}
+        </div>
+    );
+
     return (
         <div className="corrective-actions-container">
             <LoadingContainer isLoading={isLoading} error={error} className="loading-container">
-                <div className="l1-table">
-                    <h3>{'L1'}</h3>
-                    {l1Data.map(renderRow)}
-                </div>
-                <div className={`l2-table ${selectedL1 && selectedL1.name ? 'active' : ''}`}>
-                    <h3>{'L2'}</h3>
-                    <div
-                        className="close-btn"
-                        onClick={handleL1Close}
-                        onKeyUp={handleL1Close}
-                        role="button"
-                        tabIndex="0"
-                    >
-                        <SVGIcon usefill markup={CLOSE__24} />
-                    </div>
-                    {(selectedL1 || {subOrgDetails: []}).subOrgDetails.map(renderRow)}
-                </div>
-                <div className={`l3-table ${selectedL1 && selectedL2 && selectedL2.name ? 'active' : ''}`}>
-                    <h3>{'L3'}</h3>
-                    <div
-                        className="close-btn"
-                        onClick={handleL2Close}
-                        onKeyUp={handleL2Close}
-                        role="button"
-                        tabIndex="0"
-                    >
-                        <SVGIcon usefill markup={CLOSE__24} />
-                    </div>
-                    {(selectedL2 || {subOrgDetails: []}).subOrgDetails.map(renderRow)}
-                </div>
+                {renderL1Table()}
+                {renderL2Table()}
+                {renderL3Table()}
             </LoadingContainer>
             <Modal
                 id="corrective-actions-modal"
