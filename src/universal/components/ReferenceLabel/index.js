@@ -7,7 +7,7 @@ import {DEPLOYMENT_ANNOTATION_CATEGORY, AB_TESTS_ANNOTATION_CATEGORY} from '../.
 import './styles.less';
 
 
-const ReferenceLabel = ({viewBox: {x}, annotation, isImpulse = false}) => {
+const ReferenceLabel = ({viewBox: {x}, annotation, isImpulse = false, setTableData}) => {
     const {
         time,
         number,
@@ -66,6 +66,7 @@ const ReferenceLabel = ({viewBox: {x}, annotation, isImpulse = false}) => {
                                                         <span>{'Revenue Loss:'}</span>
                                                         <span>{typeof revLoss === 'string' ? 'NA' : `$${revLoss}`}</span>
                                                     </div>
+                                                    <a href="#" onClick={() => setTableData([annotation])}>{'More Details'}</a>
                                                 </div>
                                                 : buildTicketLink(id, brand)
                                             }

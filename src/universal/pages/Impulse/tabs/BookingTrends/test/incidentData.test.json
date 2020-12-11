@@ -1,0 +1,43 @@
+[
+  {
+    "id": "INC5297982",
+    "rootCause": "Support teams Migrated all traffic from us-east-1 to us-west 2 to mitigate impact caused by an AWS outage in that region",
+    "duration": "2520000",
+    "timeToDetect": "540000",
+    "timeToResolve": "1980000",
+    "brand": "Total Retail",
+    "summary": "Multiple Points of Sale Air Degraded\t",
+    "executiveSummary": "AWS experienced issues on their end with traffic region US-EAST-1, this caused errors with air and all traffic was migrated to us-west 2 to resolve our impact untill AWS issues are fixed.",
+    "status": "Done",
+    "openDate": "2020-11-25 14:54:13.0000000",
+    "priority": "1-Critical",
+    "resolvedDate": "2020-11-25 16:02:36.0000000",
+    "bookingImpact": "Moderate Booking Impact",
+    "url": "https://expedia.service-now.com/go.do?id=INC5297982",
+    "resolution": "",
+    "estimatedImpact": [
+      {
+        "brand": null,
+        "lobs": [
+          {
+            "revenueLoss": "NA",
+            "gbvLoss": "NA",
+            "orderLoss": "NA",
+            "lob": null
+          }
+        ]
+      }
+    ],
+    "labels": [
+      ""
+    ],
+    "tag": null,
+    "rootCauseOwner": "EWE - Air Development",
+    "startDate": "2020-11-25 14:41:00.0000000",
+    "endDate": "2020-11-25 15:23:00.0000000",
+    "incidentTime": 1606315260000,
+    "category": "incidents",
+    "time": 1606315260000,
+    "revLoss": "0NA"
+  }
+]

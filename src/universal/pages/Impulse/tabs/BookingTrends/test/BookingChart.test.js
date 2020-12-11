@@ -1,4 +1,4 @@
-import BookingTrends from '../BookingTrends';
+import BookingTrends from '../sections/BookingChart/BookingChart';
 import {render, shallow} from 'enzyme';
 import React from 'react';
 import chai, {expect} from 'chai';
