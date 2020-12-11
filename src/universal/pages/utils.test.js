@@ -18,7 +18,10 @@ import {
     addSuggestionType,
     getAnnotationsFilter,
     filterNewSelectedItems,
-    makeSuccessRatesObjects
+    makeSuccessRatesObjects,
+    getQueryParams,
+    validDateRange,
+    getLobPlaceholder
 } from './utils';
 import {
     EG_BRAND,
@@ -31,6 +34,7 @@ import {
 } from '../constants';
 import moment from 'moment';
 import {successRatesMockData} from './SuccessRates/mockData';
+
 
 describe('divisionToBrand', () => {
     it('returns Egencia when the input value is EGENCIA - CONSOLIDATED', () => {
@@ -492,5 +496,58 @@ describe('makeSuccessRatesObjects()', () => {
         ];
 
         expect(makeSuccessRatesObjects(successRatesMockData, start, end, EXPEDIA_BRAND, EXPEDIA_BRAND)).to.eql(pageViewsMockResults);
+    });
+});
+
+describe('getQueryParams()', () => {
+    it('getQueryParams - valid date range', () => {
+        const start = '2020-10-22T12:15:00-05:00';
+        const end = '2020-10-22T12:20:00-05:00';
+        const lobs = 'H,C,INVALID';
+        const {initialStart, initialEnd, initialTimeRange, initialLobs} = getQueryParams(`?from=${start}&to=${end}&lobs=${lobs}`);
+        expect(initialStart.isSame(start, 'hour')).to.equal(true);
+        expect(initialEnd.isSame(end, 'hour')).to.equal(true);
+        expect(initialTimeRange).to.equal('Custom');
+        expect(initialLobs.map(({value}) => value)).to.eql(['H', 'C']);
+    });
+
+    it('getQueryParams - default', () => {
+        const {initialStart, initialEnd, initialTimeRange, initialLobs} = getQueryParams('');
+        expect(initialStart.isSame(moment().subtract(6, 'hours'), 'hour')).to.equal(true);
+        expect(initialEnd.isSame(moment(), 'hour')).to.equal(true);
+        expect(initialTimeRange).to.equal('Last 6 Hours');
+        expect(initialLobs.map(({value}) => value)).to.eql([]);
+    });
+});
+
+describe('validDateRange()', () => {
+    it('validDateRange - valid start date and after date', () => {
+        expect(validDateRange('2020-01-01', '2020-01-02')).to.be.eql(true);
+    });
+
+    it('validDateRange - invalid start date after now', () => {
+        expect(validDateRange(moment().add(1, 'day').format(), moment().add(2, 'day').format())).to.be.eql(false);
+    });
+
+    it('validDateRange - invalid start date', () => {
+        expect(validDateRange(moment('asdfasdf', '2020-01-01'))).to.be.eql(false);
+    });
+
+    it('validDateRange - invalid end date', () => {
+        expect(validDateRange(moment('2020-01-01', 'asdfasdf'))).to.be.eql(false);
+    });
+});
+
+describe('getLobPlaceholder()', () => {
+    it('getLobPlaceholder should return Line of Business is loading when isLoading true', () => {
+        expect(getLobPlaceholder(true)).to.be.eql('Line of Business is loading');
+    });
+
+    it('getLobPlaceholder should return Select Line of Business when isLoading false and lobWidgetsLength is true', () => {
+        expect(getLobPlaceholder(false, 2)).to.be.eql('Select Line of Business');
+    });
+
+    it('getLobPlaceholder should return Select Line of Business when isLoading & lobWidgetsLength false', () => {
+        expect(getLobPlaceholder(false, 0)).to.be.eql('Line of Business Data not available. Try to refresh');
     });
 });

@@ -61,16 +61,14 @@ export default [
         id: 'incident-trends',
         link: '/incident-trends',
         text: 'Incident Trends',
-        component: require('./TicketTrends/IncidentTrendsDashboard'),
-        main: 'Platform Health & Resiliency'
+        component: require('./TicketTrends/IncidentTrendsDashboard')
     },
     {
         category: PHAR,
         id: 'defect-trends',
         link: '/defect-trends',
         text: 'Quality Trends',
-        component: require('./TicketTrends/DefectTrendsDashboard'),
-        main: 'Platform Health & Resiliency'
+        component: require('./TicketTrends/DefectTrendsDashboard')
     },
     {
         category: PHAR,
@@ -78,7 +76,6 @@ export default [
         link: '/quality-metrics',
         text: 'Quality Metrics',
         component: require('./QualityMetrics'),
-        main: 'Platform Health & Resiliency',
         brands: [HOTELS_COM_BRAND]
     },
     {

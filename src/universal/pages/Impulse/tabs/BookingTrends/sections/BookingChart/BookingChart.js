@@ -64,7 +64,7 @@ const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSlic
         const id = `color${key}`;
         return (<linearGradient key={`${key}Gradient`} id={id} x1="0" y1="0" x2="0" y2="1" spreadMethod="reflect">
             <stop offset="5%" stopColor={color} stopOpacity={key === 'bookingChart' ? 0.8 : 0.2}/>
-            <stop offset="95%" stopColor={color} stopOpacity={0}/>
+            <stop offset="95%" stopColor={color} stopOpacity={key === 'bookingChart' ? 0.4 : 0}/>
         </linearGradient>);
     };
     const resetGraphToDefault = () => {

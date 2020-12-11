@@ -2,17 +2,17 @@ import React, {useEffect, useState, useCallback} from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
 import Select from 'react-select';
 import moment from 'moment';
-import {RadioGroup, RadioButton} from '@homeaway/react-form-components';
+import {Checkbox, RadioGroup, RadioButton} from '@homeaway/react-form-components';
 import FilterDropDown from '../../components/FilterDropDown';
 import LineChartWrapper from '../../components/LineChartWrapper';
 import DataTable from '../../components/DataTable';
 import LoadingContainer from '../../components/LoadingContainer';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import {checkResponse} from '../utils';
-import {EXPEDIA_PARTNER_SERVICES_BRAND, LOB_LIST} from '../../constants';
-import {getQueryValues, getQueryString, getPresets, getLineChartData, getTableData, getErrorCodes} from './utils';
+import {EXPEDIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, LOB_LIST} from '../../constants';
+import {getQueryValues, getQueryString, getPresets, getLineChartData, getTableData, getErrorCodes, getBrandSites} from './utils';
 import TraceLogModal from './TraceLogModal';
-import {FCI_TABLE_COLUMNS, FCI_HIDDEN_TABLE_COLUMNS, SITES, ALL_CATEGORIES, CATEGORY_OPTION, CODE_OPTION} from './constants';
+import {FCI_TABLE_COLUMNS, FCI_HIDDEN_TABLE_COLUMNS, ALL_CATEGORIES, CATEGORY_OPTION, CODE_OPTION} from './constants';
 import './styles.less';
 
 const Fci = ({selectedBrands}) => {
@@ -26,7 +26,8 @@ const Fci = ({selectedBrands}) => {
         initialLobs,
         initialErrorCode,
         initialSite,
-        initialCategories
+        initialCategories,
+        initialHideIntentionalCheck
     } = getQueryValues(search);
     const [isDirtyForm, setIsDirtyForm] = useState(false);
 
@@ -36,6 +37,7 @@ const Fci = ({selectedBrands}) => {
     const [selectedErrorCode, setSelectedErrorCode] = useState(initialErrorCode);
     const [selectedSite, setSelectedSite] = useState(initialSite);
     const [selectedCategory, setSelectedCategory] = useState(initialCategories);
+    const [hideIntentionalCheck, setHideIntentionalCheck] = useState(initialHideIntentionalCheck);
     const [pendingStart, setPendingStart] = useState(initialStart);
     const [pendingEnd, setPendingEnd] = useState(initialEnd);
     const [pendingTimeRange, setPendingTimeRange] = useState(initialTimeRange);
@@ -43,6 +45,7 @@ const Fci = ({selectedBrands}) => {
     const [pendingErrorCode, setPendingErrorCode] = useState(initialErrorCode);
     const [pendingSite, setPendingSite] = useState(initialSite);
     const [pendingCategory, setPendingCategory] = useState(initialCategories);
+    const [pendingHideIntentionalCheck, setPendingHideIntentionalCheck] = useState(initialHideIntentionalCheck);
     const [prev, setPrev] = useState({start: null, end: null, data: []});
     const [errorCodes, setErrorCodes] = useState([]);
 
@@ -62,8 +65,8 @@ const Fci = ({selectedBrands}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalData, setModalData] = useState({title: '', data: []});
 
-    const handleOpenTraceLog = (id, data) => {
-        setModalData({title: `Trace Log (ID=${id})`, data});
+    const handleOpenTraceLog = (traceId, data) => {
+        setModalData({traceId, data});
         setIsModalOpen(true);
     };
 
@@ -73,9 +76,10 @@ const Fci = ({selectedBrands}) => {
             // eslint-disable-next-line complexity
             .filter(({fci, category}) => {
                 (category || []).forEach((c) => categorySet.add(c));
+                const hideIntentionalCheckMatch = !hideIntentionalCheck || (fci && !fci.isIntentional);
                 const isWithinRange = fci && fci.timestamp && moment(fci.timestamp).isBetween(start, end, '[]', 'minute');
                 const matchesCategory = selectedCategory === ALL_CATEGORIES || (category || []).includes(selectedCategory);
-                return isWithinRange && matchesCategory;
+                return isWithinRange && matchesCategory && hideIntentionalCheckMatch;
             })
             .map(({fci, category}) => {
                 const result = fci;
@@ -91,20 +95,20 @@ const Fci = ({selectedBrands}) => {
             : chart;
         setTableData(getTableData(filteredData, keys, handleOpenTraceLog));
         setErrorCodes(getErrorCodes(filteredData));
-    }, [start, end, selectedCategory, selectedErrorCode, chartProperty]);
+    }, [start, end, selectedCategory, selectedErrorCode, chartProperty, hideIntentionalCheck]);
 
     // eslint-disable-next-line complexity
     useEffect(() => {
-        if (selectedBrands[0] !== EXPEDIA_PARTNER_SERVICES_BRAND) {
+        if (![EXPEDIA_PARTNER_SERVICES_BRAND, EXPEDIA_BRAND].includes(selectedBrands[0])) {
             setIsSupportedBrand(false);
-            setError(`FCIs for ${selectedBrands[0]} is not yet available. For now only ${EXPEDIA_PARTNER_SERVICES_BRAND} is supported.
+            setError(`FCIs for ${selectedBrands[0]} is not yet available. For now only ${EXPEDIA_PARTNER_SERVICES_BRAND} and ${EXPEDIA_BRAND} is supported.
                 If you have any questions, please ping #dpi-reo-opex-all or leave a comment via our Feedback form.`);
             return;
         }
         setIsLoading(true);
         setIsSupportedBrand(true);
         setError(null);
-        const query = getQueryString(start, end, selectedLobs, selectedErrorCode, selectedSite, selectedCategory);
+        const query = getQueryString(start, end, selectedLobs, selectedErrorCode, selectedSite, selectedCategory, hideIntentionalCheck);
         if (!prev.start || !prev.end || !prev.selectedSite || start.isBefore(prev.start) || end.isAfter(prev.end) || prev.selectedSite !== selectedSite) {
             fetch(`/getCheckoutFailures?${query}`)
                 .then(checkResponse)
@@ -125,7 +129,7 @@ const Fci = ({selectedBrands}) => {
             setIsLoading(false);
             history.push(`${pathname}?selectedBrand=${selectedBrands[0]}&${query}`);
         }
-    }, [start, end, selectedLobs, selectedErrorCode, selectedSite, history, pathname, selectedBrands, prev, processData, selectedCategory]);
+    }, [start, end, selectedLobs, selectedErrorCode, selectedSite, history, pathname, selectedBrands, hideIntentionalCheck, prev, processData, selectedCategory]);
 
     const handleModalClose = () => {
         setIsModalOpen(false);
@@ -138,6 +142,7 @@ const Fci = ({selectedBrands}) => {
         setSelectedErrorCode(pendingErrorCode);
         setSelectedSite(pendingSite);
         setSelectedCategory(pendingCategory);
+        setHideIntentionalCheck(pendingHideIntentionalCheck);
         setIsDirtyForm(false);
     };
 
@@ -159,12 +164,17 @@ const Fci = ({selectedBrands}) => {
     };
 
     const handleSiteChange = (e) => {
-        setPendingSite(e);
+        setPendingSite(e && e.value);
         setIsDirtyForm(true);
     };
 
     const handleCategoryChange = (e) => {
         setPendingCategory(e);
+        setIsDirtyForm(true);
+    };
+
+    const handleHideIntentionalCheck = (e) => {
+        setPendingHideIntentionalCheck(e && e.target && e.target.checked);
         setIsDirtyForm(true);
     };
 
@@ -225,7 +235,7 @@ const Fci = ({selectedBrands}) => {
     return (
         <div className="fci-container">
             <h1>{'Failed Customer Interactions (FCI)'}</h1>
-            <div className="form-container">
+            {isSupportedBrand && <div className="form-container">
                 <DatetimeRangePicker
                     onChange={handleDatetimeChange}
                     startDate={pendingStart.toDate()}
@@ -239,12 +249,13 @@ const Fci = ({selectedBrands}) => {
                     selectedValue={pendingErrorCode}
                     onClickHandler={handleErrorCodeChange}
                 />
-                <FilterDropDown
-                    id="site-dropdown"
+                <Select
+                    classNamePrefix="site-dropdown"
                     className="site-dropdown"
-                    list={SITES}
-                    selectedValue={pendingSite}
-                    onClickHandler={handleSiteChange}
+                    options={getBrandSites(selectedBrands[0]).map((x) => ({label: x, value: x}))}
+                    onChange={handleSiteChange}
+                    placeholder={pendingSite}
+                    isSearchable
                 />
                 <FilterDropDown
                     id="category-dropdown"
@@ -252,6 +263,14 @@ const Fci = ({selectedBrands}) => {
                     list={categories}
                     selectedValue={pendingCategory}
                     onClickHandler={handleCategoryChange}
+                />
+                <Checkbox
+                    name="intentional-сheckbox"
+                    label="Hide Intentional Errors"
+                    checked={pendingHideIntentionalCheck}
+                    onChange={handleHideIntentionalCheck}
+                    size="sm"
+                    className="intentional-сheckbox"
                 />
                 {SHOW_FILTERS && (
                     <>
@@ -274,7 +293,7 @@ const Fci = ({selectedBrands}) => {
                 >
                     {'Apply'}
                 </button>
-            </div>
+            </div>}
             <LoadingContainer isLoading={isLoading} error={error} className="fci-loading-container">
                 {isSupportedBrand && (
                     <>

@@ -30,6 +30,7 @@
     border-radius: @spacing-1x;
     padding: @spacing-1x;
     z-index: 100;
+    display: none;
 
     .annotations-filters-container {
         display: flex;
@@ -57,5 +58,9 @@
                 font-size: 85%;
             }
         }
+    }
+
+    &.annotations-wrapper.open {
+        display: block;
     }
 }

@@ -31,9 +31,25 @@
             .dropdown-button(160px);
         }
 
-        .site-dropdown .Dropdown__toggle {
+        .site-dropdown {
+            vertical-align: bottom;
+            display: inline-block;
+            width: 250px;
             margin-right: @spacing-1x;
-            .dropdown-button(160px);
+
+            .site-dropdown__control {
+                min-height: @filter-size;
+                border-radius: @spacing-1x;
+                border-color: @border-color-dark;
+            }
+
+            .site-dropdown__menu {
+                z-index: 999;
+            }
+        }
+
+        .intentional-сheckbox {
+            display: inline-block;
         }
 
         .category-dropdown .Dropdown__toggle {
@@ -86,14 +102,24 @@
         background: @color-positive;
     }
 
-    .Modal__body {
-        .CRB--radio {
+    .Modal__dialog .Modal__content .Modal__body {
+        margin-top: 0;
+
+        .haystack-link {
             float: right;
-            margin-left: @spacing-2x;
+        }
+
+        .CRB--radio {
+            display: inline-block;
+            margin-right: @spacing-2x;
         }
 
         .Navigation {
             height: @spacing-9x;
+        }
+
+        .no-results-wrapper {
+            margin-top: @spacing-2x;
         }
     }
 }

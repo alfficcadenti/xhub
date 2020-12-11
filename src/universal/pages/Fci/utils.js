@@ -21,6 +21,8 @@ export const getPresets = () => [
     {text: 'Last 24 hours', value: getValue(24, 'hours')}
 ];
 
+export const getBrandSites = (brand) => SITES[brand] || ['travel.chase.com'];
+
 // eslint-disable-next-line complexity
 export const validDateRange = (start, end) => {
     if (!start || !end) {
@@ -33,7 +35,7 @@ export const validDateRange = (start, end) => {
 
 // eslint-disable-next-line complexity
 export const getQueryValues = (search) => {
-    const {from, to, lobs, errorCode, siteName, category} = qs.parse(search);
+    const {from, to, lobs, errorCode, siteName, category, selectedBrand, hideIntentionalCheck} = qs.parse(search);
     const isValidDateRange = validDateRange(from, to);
     return {
         initialStart: isValidDateRange ? moment(from) : moment().subtract(1, 'hours').startOf('minute'),
@@ -43,14 +45,15 @@ export const getQueryValues = (search) => {
             ? lobs.split(',').map((l) => LOB_LIST.find(({value}) => value === l)).filter((l) => l)
             : [],
         initialErrorCode: errorCode || TOP_20_ERROR_CODES,
-        initialSite: SITES.includes(siteName)
+        initialSite: getBrandSites(selectedBrand).includes(siteName)
             ? siteName
-            : 'travel.chase.com',
-        initialCategories: category || ALL_CATEGORIES
+            : getBrandSites(selectedBrand)[0],
+        initialCategories: category || ALL_CATEGORIES,
+        initialHideIntentionalCheck: hideIntentionalCheck === 'true'
     };
 };
 
-export const getQueryString = (start, end, selectedLobs, selectedErrorCode, selectedSite, selectedCategory) => {
+export const getQueryString = (start, end, selectedLobs, selectedErrorCode, selectedSite, selectedCategory, hideIntentionalCheck) => {
     const dateQuery = `from=${start.toISOString()}&to=${end.toISOString()}`;
     const lobQuery = selectedLobs.length
         ? `&lobs=${selectedLobs.map((lob) => lob.value).join(',')}`
@@ -62,7 +65,8 @@ export const getQueryString = (start, end, selectedLobs, selectedErrorCode, sele
     const categoryQuery = selectedCategory !== ALL_CATEGORIES
         ? `&category=${selectedCategory}`
         : '';
-    return `${dateQuery}${lobQuery}${errorQuery}${siteQuery}${categoryQuery}`;
+    const hideIntentionalCheckQuery = `&hideIntentionalCheck=${hideIntentionalCheck}`;
+    return `${dateQuery}${lobQuery}${errorQuery}${siteQuery}${categoryQuery}${hideIntentionalCheckQuery}`;
 };
 
 const initTimeKeys = (start, end) => {
@@ -131,20 +135,31 @@ const getTagValue = (tags, property) => {
 
 export const getPropValue = (item, property) => item && property ? (item[property] || '-') : '-';
 
-// eslint-disable-next-line complexity
-export const mapTrace = (t) => {
+export const traceHasError = (t) => {
     const tags = t.tags || [];
     const errorIdx = tags.findIndex(({key}) => key === 'error');
     const Error = errorIdx > -1 ? tags[errorIdx].value : '-';
-    const hasError = Error === 'true';
+    return Error === 'true';
+};
+
+export const getTraceCounts = (traces) => traces.reduce((acc, curr) => {
+    if (traceHasError(curr)) {
+        acc.errors++;
+    }
+    acc.total++;
+    return acc;
+}, {errors: 0, total: 0});
+
+// eslint-disable-next-line complexity
+export const mapTrace = (t) => {
+    const tags = t.tags || [];
+    const hasError = traceHasError(t);
     const result = {
         Service: getPropValue(t, 'serviceName'),
         Operation: getPropValue(t, 'operationName'),
-        Error,
+        Error: String(hasError),
         'External Error Code': '-',
         'External Description': '-',
-        'Event Category': '-',
-        'Event Description': '-',
         traces: t.traces,
         Traces: !t.traces || !t.traces.length ? null : (
             <DataTable
@@ -159,8 +174,6 @@ export const mapTrace = (t) => {
     if (hasError) {
         result['External Error Code'] = getTagValue(tags, 'externalerrorcode');
         result['External Description'] = getTagValue(tags, 'externalerrordescription');
-        result['Event Category'] = getTagValue(tags, 'EventCategory');
-        result['Event Description'] = getTagValue(tags, 'EventDescription');
     }
     return result;
 };
@@ -169,7 +182,9 @@ export const getTableData = (data, keys, onOpenTraceLog) => {
     const result = data
         .filter(({errorCode}) => keys.includes(`${errorCode}`))
         .map((row) => {
-            const clickHandler = () => onOpenTraceLog(row.traceId, (row.traces || []).map(mapTrace));
+            const traces = row.traces || [];
+            const clickHandler = () => onOpenTraceLog(row.traceId, traces.map(mapTrace));
+            const traceCounts = getTraceCounts(traces);
             return {
                 Created: row.timestamp ? moment(row.timestamp).format('YYYY-MM-DD HH:mm') : '-',
                 Session: getPropValue(row, 'sessionId'),
@@ -191,7 +206,7 @@ export const getTableData = (data, keys, onOpenTraceLog) => {
                         onClick={clickHandler}
                         onKeyUp={clickHandler}
                     >
-                        {'Open Log'}
+                        {`Open Log (${traceCounts.errors} error${traceCounts.errors === 1 ? '' : 's'})`}
                     </div>
                 )
             };

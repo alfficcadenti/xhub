@@ -1,80 +1,63 @@
-/* eslint-disable no-use-before-define */
 import React, {useState, useEffect, useCallback} from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
-import qs from 'query-string';
 import moment from 'moment';
 import {Navigation} from '@homeaway/react-navigation';
 import {SVGIcon} from '@homeaway/react-svg';
 import {FILTER__16} from '@homeaway/svg-defs';
 import {Divider} from '@homeaway/react-collapse';
-import PieChart from '../../components/PieChart';
+import {DateRangePicker} from '@homeaway/react-date-pickers';
 import LoadingContainer from '../../components/LoadingContainer';
 import FilterDropDown from '../../components/FilterDropDown';
-import DatePicker from '../../components/DatePicker';
-import DataTable from '../../components/DataTable';
 import HelpText from '../../components/HelpText/HelpText';
+import Overview from './tabs/Overview';
+import Tickets from './tabs/Tickets';
+import CorrectiveActions from './tabs/CorrectiveActions';
 import {
-    DATE_FORMAT, ALL_STATUSES_OPTION,
+    ALL_STATUSES_OPTION,
     ALL_PRIORITIES_OPTION,
-    ALL_TYPES_OPTION, ALL_ORGS_OPTION,
-    ALL_RC_OWNERS_OPTION, ALL_RC_CATEGORIES_OPTION,
-    EPIC_ISSUE_TYPE
+    ALL_TYPES_OPTION,
+    ALL_ORGS_OPTION,
+    ALL_RC_OWNERS_OPTION,
+    ALL_RC_CATEGORIES_OPTION
 } from '../../constants';
-import {getPieData} from '../utils';
 import {useFetchTickets} from './hooks';
 import {useQueryParamChange, useSelectedBrand} from '../hooks';
+import {navLinks} from './constants';
+import {getQueryValues, generateUrl, getActiveIndex, filterType} from './utils';
 import './styles.less';
-
-const statusDefaultValue = ALL_STATUSES_OPTION;
-const typeDefaultValue = ALL_TYPES_OPTION;
-const priorityDefaultValue = ALL_PRIORITIES_OPTION;
-const orgDefaultValue = ALL_ORGS_OPTION;
-const rcOwnerDefaultValue = ALL_RC_OWNERS_OPTION;
-const rcCategoryDefaultValue = ALL_RC_CATEGORIES_OPTION;
-const startDateDefaultValue = moment().subtract(30, 'days').format(DATE_FORMAT);
-const endDateDefaultValue = moment().format(DATE_FORMAT);
-const minDate = moment('2019-01-01').toDate();
-const navLinks = [
-    {
-        id: 'overview',
-        label: 'Overview',
-        href: '/prb'
-    },
-    {
-        id: 'Tickets',
-        label: 'Tickets',
-        href: '/prb'
-    }
-];
-
-const getActiveIndex = (pathname, history) => {
-    if (pathname.includes('prb/overview')) {
-        return 0;
-    }
-    if (pathname.includes('prb/tickets')) {
-        return 1;
-    }
-    history.push('/prb/overview');
-    return 0;
-};
 
 // eslint-disable-next-line complexity
 const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const history = useHistory();
     const {pathname, search} = useLocation();
-    const query = qs.parse(search); // query params from url
-
-    const [activeIndex, setActiveIndex] = useState(getActiveIndex(pathname, history));
+    const [activeIndex, setActiveIndex] = useState(getActiveIndex(pathname));
     const [showMoreFilters, setShowMoreFilters] = useState(false);
 
-    const [startDate, setStartDate] = useState(query.start || startDateDefaultValue);
-    const [endDate, setEndDate] = useState(query.end || endDateDefaultValue);
-    const [selectedType, setSelectedType] = useState(query.type || typeDefaultValue);
-    const [selectedStatus, setSelectedStatus] = useState(query.status || statusDefaultValue);
-    const [selectedPriority, setSelectedPriority] = useState(query.priority || priorityDefaultValue);
-    const [selectedOrg, setSelectedOrg] = useState(query.org || orgDefaultValue);
-    const [selectedRcOwner, setSelectedRcOwner] = useState(query.rcowner || rcOwnerDefaultValue);
-    const [selectedRcCategory, setSelectedRcCategory] = useState(query.rccategory || rcCategoryDefaultValue);
+    const {
+        initialStart,
+        initialEnd,
+        initialType,
+        initialStatus,
+        initialPriority,
+        initialOrg,
+        initialRcOwner,
+        initialRcCategory,
+        initialL1,
+        initialL2,
+        initialCA
+    } = getQueryValues(search);
+
+    const [startDate, setStartDate] = useState(initialStart);
+    const [endDate, setEndDate] = useState(initialEnd);
+    const [selectedType, setSelectedType] = useState(initialType);
+    const [selectedStatus, setSelectedStatus] = useState(initialStatus);
+    const [selectedPriority, setSelectedPriority] = useState(initialPriority);
+    const [selectedOrg, setSelectedOrg] = useState(initialOrg);
+    const [selectedRcOwner, setSelectedRcOwner] = useState(initialRcOwner);
+    const [selectedRcCategory, setSelectedRcCategory] = useState(initialRcCategory);
+    const [selectedL1, setSelectedL1] = useState(null);
+    const [selectedL2, setSelectedL2] = useState(null);
+    const [selectedCA, setSelectedCA] = useState(null);
     const [isDirtyForm, setIsDirtyForm] = useState(false);
 
     const [isApplyClicked, setIsApplyClicked] = useState(false);
@@ -95,6 +78,7 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         isApplyClicked,
         startDate,
         endDate,
+        // eslint-disable-next-line no-use-before-define
         applyFilters,
         setIsApplyClicked,
         setCurrentPriorities,
@@ -107,60 +91,13 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     useQueryParamChange(selectedBrands[0], onBrandChange);
     useSelectedBrand(selectedBrands[0], onBrandChange, prevSelectedBrand);
 
-    function renderDetail(label, value) {
-        return (
-            <>
-                <div className="details-label">{label}</div>
-                <div className="details-value">{value || '-'}</div>
-            </>
-        );
-    }
-
-    const matchesType = (i) => selectedType === typeDefaultValue || !i['Issue Type'].localeCompare(selectedType);
-
-    function filterType(tickets) {
-        let result = [];
-        // eslint-disable-next-line complexity
-        tickets.forEach((t) => {
-            const ticket = t;
-            const {linkedIssues = [], brandsAffected = [], linesOfBusinessImpacted} = ticket;
-            const filteredLinkedIssues = linkedIssues.filter(matchesType);
-            if (selectedType !== EPIC_ISSUE_TYPE && filteredLinkedIssues.length > 0) {
-                ticket['Linked Issues'] = (
-                    <>
-                        <h3>{'Details'}</h3>
-                        <div className="details-container">
-                            {renderDetail('Brands Affected:', brandsAffected.join(', '))}
-                            {renderDetail('Lines of Business Impacted:', linesOfBusinessImpacted)}
-                        </div>
-                        <h3>
-                            {'Linked Issues'}
-                            <HelpText className="page-info" text="Each PRB has a number of follow-up items and other correlations that are tracked through other Jira ticket types" />
-                        </h3>
-                        <DataTable
-                            className="linked-issues__table"
-                            data={filteredLinkedIssues}
-                            columns={['Ticket', 'Summary', 'Issue Type', 'Status', 'Assignee']}
-                            expandableColumns={['Linked Issues']}
-                        />
-                    </>
-                );
-                result.push(ticket);
-            } else if (selectedType === typeDefaultValue || selectedType === 'Epic') {
-                ticket['Linked Issues'] = null;
-                result.push(ticket);
-            }
-        });
-        return result;
-    }
-
     // Filters
-    const matchesDate = (t) => t.Opened >= (startDate || startDateDefaultValue) && t.Opened <= (endDate || endDateDefaultValue);
-    const matchesPriority = (t) => selectedPriority === priorityDefaultValue || t.Priority === selectedPriority;
-    const matchesStatus = (t) => selectedStatus === statusDefaultValue || t.Status === selectedStatus;
-    const matchesOrg = (t) => selectedOrg === orgDefaultValue || t['Owning Org'] === selectedOrg;
-    const matchesRcOwner = (t) => selectedRcOwner === rcOwnerDefaultValue || t['RC Owner'] === selectedRcOwner;
-    const matchesRcCategory = (t) => selectedRcCategory === rcCategoryDefaultValue || t['RC Category'] === selectedRcCategory;
+    const matchesDate = (t) => startDate.isSameOrBefore(t.Opened) && endDate.isSameOrAfter(t.Opened);
+    const matchesPriority = (t) => selectedPriority === ALL_PRIORITIES_OPTION || t.Priority === selectedPriority;
+    const matchesStatus = (t) => selectedStatus === ALL_STATUSES_OPTION || t.Status === selectedStatus;
+    const matchesOrg = (t) => selectedOrg === ALL_ORGS_OPTION || t['Owning Org'] === selectedOrg;
+    const matchesRcOwner = (t) => selectedRcOwner === ALL_RC_OWNERS_OPTION || t['RC Owner'] === selectedRcOwner;
+    const matchesRcCategory = (t) => selectedRcCategory === ALL_RC_CATEGORIES_OPTION || t['RC Category'] === selectedRcCategory;
 
     // eslint-disable-next-line complexity
     const filterTickets = (t) => (
@@ -172,26 +109,26 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         && matchesRcCategory(t)
     );
 
-    function getUrlParm(label, value, defaultValue) {
-        return value && value !== defaultValue
-            ? `&${label}=${value}`
-            : '';
-    }
+    const updateHistory = () => history.push(generateUrl(
+        pathname,
+        activeIndex,
+        selectedBrands,
+        startDate,
+        endDate,
+        selectedType,
+        selectedStatus,
+        selectedPriority,
+        selectedOrg,
+        selectedRcOwner,
+        selectedRcCategory,
+        selectedL1 || {name: initialL1},
+        selectedL2 || {name: initialL2},
+        selectedCA || {name: initialCA}));
 
     function applyFilters() {
-        const result = filterType(allTickets).filter(filterTickets);
+        const result = filterType(allTickets, selectedType).filter(filterTickets);
         setFilteredTickets(result);
-        history.push(`${pathname}`
-            + `?selectedBrand=${selectedBrands[0]}`
-            + `&start=${startDate}`
-            + `&end=${endDate}`
-            + `${getUrlParm('type', selectedType, typeDefaultValue)}`
-            + `${getUrlParm('status', selectedStatus, statusDefaultValue)}`
-            + `${getUrlParm('priority', selectedPriority, priorityDefaultValue)}`
-            + `${getUrlParm('org', selectedOrg, orgDefaultValue)}`
-            + `${getUrlParm('rcowner', selectedRcOwner, rcOwnerDefaultValue)}`
-            + `${getUrlParm('rccategory', selectedRcCategory, rcCategoryDefaultValue)}`
-        );
+        updateHistory();
         setIsDirtyForm(false);
     }
 
@@ -199,15 +136,13 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         applyFilters();
     }, [allTickets]);
 
-    const handleDateRangeChange = (start, end) => {
-        setStartDate(start || startDate);
-        setEndDate(end || endDate);
-        setIsDirtyForm(true);
-    };
+    useEffect(() => {
+        updateHistory();
+    }, [selectedL1, selectedL2, selectedCA, activeIndex]);
 
-    const handleClearDates = () => {
-        setStartDate('');
-        setEndDate('');
+    const handleDateRangeChange = (start, end) => {
+        setStartDate(moment(start));
+        setEndDate(moment(end));
         setIsDirtyForm(true);
     };
 
@@ -255,83 +190,83 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         setIsApplyClicked(true);
     };
 
-    const renderOverview = () => (
-        <div className="overview-charts">
-            <PieChart
-                data={getPieData(filteredTickets, 'Owning Org')}
-                title="Owning Org"
-                onChartClick={generateChartClickHandler(handleOrgChange)}
-            />
-            <PieChart
-                data={getPieData(filteredTickets, 'Status')}
-                title="Status"
-                onChartClick={generateChartClickHandler(handleStatusChange)}
-            />
-            <PieChart
-                data={getPieData(filteredTickets, 'Priority')}
-                title="Priority"
-                handlePriorityChange={handlePriorityChange}
-                onChartClick={generateChartClickHandler(handlePriorityChange)}
-            />
-        </div>
-    );
+    const handleL1Change = (l1) => {
+        setSelectedL1(l1);
+    };
 
-    // eslint-disable-next-line complexity
-    const renderTable = () => (
-        <DataTable
-            title={`Tickets (${filteredTickets.length} ${filteredTickets.length === 1 ? 'result' : 'results'})`}
-            data={filteredTickets || []}
-            columns={['Ticket', 'Priority', 'Owning Org', 'Opened', 'Epic Name', 'RC Owner', 'RC Category', 'Status']}
-            expandableColumns={['Linked Issues']}
-            columnsInfo={{
-                Ticket: (
-                    <div>
-                        <b>{'Ticket'}</b><br />
-                        {'Main Epic Jira ticket for a PRB follow-up ticket'}
-                    </div>
-                )
-            }}
-        />
-    );
+    const handleL2Change = (l2) => {
+        setSelectedL2(l2);
+    };
+
+    const handleCAChange = (ca) => {
+        setSelectedCA(ca);
+    };
 
     const renderTabs = () => {
         switch (activeIndex) {
             case 0:
-                return renderOverview();
+                return (
+                    <Overview
+                        tickets={filteredTickets}
+                        generateChartClickHandler={generateChartClickHandler}
+                        onOrgChange={handleOrgChange}
+                        onStatusChange={handleStatusChange}
+                        onPriorityChange={handlePriorityChange}
+                    />);
             case 1:
-                return renderTable();
+                return <Tickets tickets={filteredTickets} />;
+            case 2:
+                return (
+                    <CorrectiveActions
+                        tickets={allTickets}
+                        start={startDate}
+                        end={endDate}
+                        initialL1={initialL1}
+                        initialL2={initialL2}
+                        initialCA={initialCA}
+                        onL1Change={handleL1Change}
+                        onL2Change={handleL2Change}
+                        selectedL1={selectedL1}
+                        selectedL2={selectedL2}
+                        selectedCA={selectedCA}
+                        onCAChange={handleCAChange}
+                    />
+                );
             default:
-                return renderTable();
+                return <Tickets tickets={filteredTickets} />;
         }
     };
 
     const renderFilters = () => (
         <div className="filters-wrapper">
-            <DatePicker
-                startDate={startDate}
-                endDate={endDate}
-                minDate={minDate}
-                handleDateRangeChange={handleDateRangeChange}
-                handleClearDates={handleClearDates}
+            <DateRangePicker
+                id="prb-daterangepicker"
+                startDate={startDate.format('YYYY-MM-DD')}
+                endDate={endDate.format('YYYY-MM-DD')}
+                onDateRangeChange={handleDateRangeChange}
+                inputLabel1="Start"
+                inputLabel2="End"
+                inputName1="start"
+                inputName2="end"
             />
             <FilterDropDown
                 id="org-dropdown"
                 className="filter-dropdown org-dropdown"
-                list={[orgDefaultValue, ...currentOrgs]}
+                list={[ALL_ORGS_OPTION, ...currentOrgs]}
                 selectedValue={selectedOrg}
                 onClickHandler={handleOrgChange}
             />
             <FilterDropDown
                 id="priority-dropdown"
                 className="filter-dropdown priority-dropdown"
-                list={[priorityDefaultValue, ...currentPriorities]}
+                list={[ALL_PRIORITIES_OPTION, ...currentPriorities]}
                 selectedValue={selectedPriority}
                 onClickHandler={handlePriorityChange}
             />
             <FilterDropDown
                 id="type-dropdown"
                 className="filter-dropdown type-dropdown"
-                list={[typeDefaultValue, ...currentTypes]}
+                list={[ALL_TYPES_OPTION, ...currentTypes]}
                 selectedValue={selectedType}
                 onClickHandler={handleTypeChange}
             />
@@ -361,21 +296,21 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 <FilterDropDown
                     id="status-dropdown"
                     className="filter-dropdown status-dropdown"
-                    list={[statusDefaultValue, ...currentStatuses]}
+                    list={[ALL_STATUSES_OPTION, ...currentStatuses]}
                     selectedValue={selectedStatus}
                     onClickHandler={handleStatusChange}
                 />
                 <FilterDropDown
                     id="rc-owner-dropdown"
                     className="filter-dropdown rc-owner-dropdown"
-                    list={[rcOwnerDefaultValue, ...currentRcOwners]}
+                    list={[ALL_RC_OWNERS_OPTION, ...currentRcOwners]}
                     selectedValue={selectedRcOwner}
                     onClickHandler={handleRcOwnerChange}
                 />
                 <FilterDropDown
                     id="rcCategory-dropdown"
                     className="filter-dropdown rcCategory-dropdown"
-                    list={[rcCategoryDefaultValue, ...currentRcCategories]}
+                    list={[ALL_RC_CATEGORIES_OPTION, ...currentRcCategories]}
                     selectedValue={selectedRcCategory}
                     onClickHandler={handleRcCategoryChange}
                 />

@@ -1,52 +1,45 @@
 /* eslint-disable complexity */
 import React, {useEffect, useRef, useState} from 'react';
-import {useHistory, useLocation} from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 import Select from 'react-select';
 import moment from 'moment';
 import TravelerMetricsWidget from '../../components/TravelerMetricsWidget';
 import LoadingContainer from '../../components/LoadingContainer';
 import RealTimeSummaryPanel from '../../components/RealTimeSummaryPanel';
-import {useFetchProductMapping, useQueryParamChange, useSelectedBrand, useZoomAndSynced} from '../hooks';
+import {useFetchProductMapping, useQueryParamChange, useSelectedBrand, useZoomAndSynced, useAddToUrl} from '../hooks';
 import {
     EG_BRAND,
     EGENCIA_BRAND,
     EXPEDIA_PARTNER_SERVICES_BRAND,
     HOTELS_COM_BRAND,
-    DEPLOYMENT_ANNOTATION_CATEGORY,
-    INCIDENT_ANNOTATION_CATEGORY,
-    AB_TESTS_ANNOTATION_CATEGORY,
     LOB_LIST,
     VRBO_BRAND
 } from '../../constants';
 import {
-    addSuggestionType,
-    adjustInputValue,
     checkResponse,
-    filterNewSelectedItems,
-    getAnnotationsFilter,
-    getBrand, getListOfUniqueProperties, getUniqueByProperty,
+    getBrand,
     makeSuccessRatesObjects,
-    makeSuccessRatesLOBObjects
+    makeSuccessRatesLOBObjects,
+    getQueryParams,
+    getLobPlaceholder
 } from '../utils';
 import HelpText from '../../components/HelpText/HelpText';
-import {SUCCESS_RATES_PAGES_LIST, METRIC_NAMES} from './constants';
+import {SUCCESS_RATES_PAGES_LIST, METRIC_NAMES, EPS_PARTNER_TPIDS} from './constants';
 import {
-    getQueryParams,
     getWidgetXAxisTickGap,
     shouldShowTooltip,
     successRatesRealTimeObject,
+    buildSuccessRateApiQueryString,
     getTimeInterval
 } from './utils';
 import './styles.less';
-import {adjustTicketProperties} from '../TicketTrends/incidentsHelper';
 import Annotations from '../../components/Annotations/Annotations';
 import DateFiltersWrapper from '../../components/DateFiltersWrapper/DateFiltersWrapper';
 
 
 const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
-    const history = useHistory();
-    const {search, pathname} = useLocation();
-    const {initialStart, initialEnd, initialTimeRange} = getQueryParams(search);
+    const {search} = useLocation();
+    const {initialStart, initialEnd, initialTimeRange, initialLobs} = getQueryParams(search);
 
     const [realTimeTotals, setRealTimeTotals] = useState({});
     const [isRttLoading, setIsRttLoading] = useState(true);
@@ -56,7 +49,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [lobWidgets, setLoBWidgets] = useState([]);
     const [currentWidgets, setCurrentWidgets] = useState([]);
     const [isLoBAvailable, setIsLoBAvailable] = useState(true);
-    const [selectedLobs, setSelectedLobs] = useState([]);
+    const [selectedLobs, setSelectedLobs] = useState(initialLobs);
 
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
@@ -73,39 +66,13 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [isZoomedIn, setIsZoomedIn] = useState(false);
 
     // annotations state
-    const [isDeploymentsAnnotationsLoading, setIsDeploymentsAnnotationsLoading] = useState(false);
-    const [isIncidentsAnnotationsLoading, setIsIncidentsAnnotationsLoading] = useState(false);
-    const [isAbTestsAnnotationsLoading, setIsAbTestsAnnotationsLoading] = useState(false);
-    const [deploymentAnnotationsError, setDeploymentAnnotationsError] = useState('');
-    const [incidentAnnotationsError, setIncidentAnnotationsError] = useState('');
-    const [abTestsAnnotationsError, setAbTestsAnnotationsError] = useState('');
-
     const [enableAnnotations, setEnableAnnotations] = useState(false);
-    const [selectedProducts, setSelectedProducts] = useState([]);
-    const [selectedApplications, setSelectedApplications] = useState([]);
-    const [selectedServiceTiers, setSelectedServiceTiers] = useState([]);
-    const [selectedStatuses, setSelectedStatuses] = useState([]);
-    const [selectedPriorities, setSelectedPriorities] = useState([]);
-    const [selectedAbTestsStatuses, setSelectedAbTestsStatuses] = useState([]);
-
-    const [deploymentAnnotations, setDeploymentAnnotations] = useState([]);
-    const [incidentAnnotations, setIncidentAnnotations] = useState([]);
-    const [abTestsAnnotations, setAbTestsAnnotations] = useState([]);
     const [filteredAnnotations, setFilteredAnnotations] = useState([]);
 
-    const [deploymentCategory, setDeploymentCategory] = useState(false);
-    const [incidentCategory, setIncidentCategory] = useState(false);
-    const [abTestsCategory, setAbTestsCategory] = useState(false);
-
-    const [incidentPrioritySuggestions, setIncidentPrioritySuggestions] = useState([]);
-    const [incidentStatusSuggestions, setIncidentStatusSuggestions] = useState([]);
-    const [applicationNameSuggestions, setApplicationNameSuggestions] = useState([]);
-    const [productNameSuggestions, setProductNameSuggestions] = useState([]);
-    const [serviceTierSuggestions, setServiceTierSuggestions] = useState([]);
-    const [abTestsStatusSuggestions, setAbTestsStatusSuggestions] = useState([]);
-    const [suggestions, setSuggestions] = useState({});
-
+    const [selectedEPSPartner, setSelectedEPSPartner] = useState('');
     const productMapping = useFetchProductMapping(start, end);
+
+    const [isMounted, setIsMounted] = useState(false);
 
     useQueryParamChange(selectedBrands[0], onBrandChange);
     useSelectedBrand(selectedBrands[0], onBrandChange, prevSelectedBrand);
@@ -136,13 +103,12 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const fetchRealTimeData = ([selectedBrand]) => {
         setIsRttLoading(true);
         setRttError('');
-        const now = moment();
-        const rttStart = moment(now).subtract(11, 'minute').startOf('minute');
-        const rttEnd = moment(now).subtract(1, 'minute').startOf('minute');
-        const dateQuery = `&startDate=${rttStart.utc().format()}&endDate=${rttEnd.utc().format()}`;
+        const rttStart = moment().utc().subtract(11, 'minute').startOf('minute').format();
+        const rttEnd = moment().utc().subtract(1, 'minute').startOf('minute').format();
         const {funnelBrand} = getBrand(selectedBrand, 'label');
+        const endpoint = buildSuccessRateApiQueryString({rttStart, rttEnd, brand: funnelBrand, EPSPartner: selectedEPSPartner, interval: 1});
 
-        Promise.all(METRIC_NAMES.map((metricName) => fetch(`/user-events-api/v1/funnelView?brand=${funnelBrand}&metricName=${metricName}${dateQuery}`)))
+        Promise.all(METRIC_NAMES.map((metricName) => fetch(`${endpoint}&metricName=${metricName}`)))
             .then((responses) => Promise.all(responses.map(checkResponse)))
             .then((fetchedSuccessRates) => successRatesRealTimeObject(fetchedSuccessRates, selectedLobs, selectedBrand))
             .then((realTimeData) => setRealTimeTotals(realTimeData))
@@ -162,13 +128,8 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         setIsLoading(true);
         setError('');
         const interval = getTimeInterval(start, end);
-        const dateQuery = start && end
-            ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
-            : '';
-        const lobQuery = selectedLobs.length
-            ? `&lineOfBusiness=${selectedLobs.map((lob) => lob.value).join(',')}`
-            : '';
-        Promise.all(METRIC_NAMES.map((metricName) => fetch(`/user-events-api/v1/funnelView?brand=${funnelBrand}&metricName=${metricName}${dateQuery}${lobQuery}&timeInterval=${interval}`)))
+        const endpoint = buildSuccessRateApiQueryString({start, end, brand: funnelBrand, EPSPartner: selectedEPSPartner, interval});
+        Promise.all(METRIC_NAMES.map((metricName) => fetch(`${endpoint}&metricName=${metricName}`)))
             .then((responses) => Promise.all(responses.map(checkResponse)))
             .then((fetchedSuccessRates) => {
                 if (!fetchedSuccessRates || !fetchedSuccessRates.length) {
@@ -177,10 +138,8 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 }
 
                 const successRatesLOBs = LOB_LIST.filter(({value}) => ['H', 'C'].includes(value));
-
                 const widgetObjects = makeSuccessRatesObjects(fetchedSuccessRates, start, end, pageBrand);
                 const widgetLOBObjects = makeSuccessRatesLOBObjects(fetchedSuccessRates, start, end, pageBrand, selectedBrand, successRatesLOBs);
-
                 setWidgets(widgetObjects);
                 setLoBWidgets(widgetLOBObjects);
             })
@@ -196,108 +155,11 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     };
 
     useEffect(() => {
-        const fetchDeploymentAnnotations = () => {
-            setIsDeploymentsAnnotationsLoading(true);
-            setDeploymentAnnotations([]);
-            const dateQuery = start && end
-                ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
-                : '';
-
-            fetch(`/annotations?${dateQuery}`)
-                .then(checkResponse)
-                .then((fetchedAnnotations) => {
-                    const adjustedAnnotations = fetchedAnnotations.map((annotation) => ({
-                        ...annotation,
-                        tags: [annotation.productName, annotation.platform],
-                        time: moment.utc(annotation.openedAt).valueOf(),
-                        category: 'deployment'
-                    }));
-
-                    setDeploymentAnnotations(adjustedAnnotations);
-                })
-                .catch((err) => {
-                    setDeploymentAnnotationsError(true);
-                    // eslint-disable-next-line no-console
-                    console.error(err);
-                })
-                .finally(() => setIsDeploymentsAnnotationsLoading(false));
-        };
-
-        const fetchIncidentsAnnotations = () => {
-            setIsIncidentsAnnotationsLoading(true);
-            setIncidentAnnotations([]);
-            const dateQuery = start && end
-                ? `?fromDate=${moment(start).utc().format()}&toDate=${moment(end).utc().format()}`
-                : '';
-
-            fetch(`/v2/incidents${dateQuery}`)
-                .then(checkResponse)
-                .then((data) => {
-                    const uniqueTickets = getUniqueByProperty(data, 'id');
-                    const adjustedUniqueTickets = adjustTicketProperties(uniqueTickets, INCIDENT_ANNOTATION_CATEGORY)
-                        .map((incident) => {
-                            incident.time = moment.utc(incident.startDate).local().isValid() ? moment.utc(incident.startDate).valueOf() : '-';
-                            incident.category = INCIDENT_ANNOTATION_CATEGORY;
-                            return incident;
-                        });
-
-                    const incidentPriority = getListOfUniqueProperties(adjustedUniqueTickets, 'priority').sort();
-                    const incidentStatus = getListOfUniqueProperties(adjustedUniqueTickets, 'status').sort();
-                    setIncidentPrioritySuggestions(incidentPriority);
-                    setIncidentStatusSuggestions(incidentStatus);
-                    setIncidentAnnotations(adjustedUniqueTickets);
-                    setSuggestions((prevSuggestions) => ({
-                        ...prevSuggestions,
-                        incidentPriority,
-                        incidentStatus
-                    }));
-                })
-                .catch((err) => {
-                    setIncidentAnnotationsError(true);
-                    // eslint-disable-next-line no-console
-                    console.error(err);
-                })
-                .finally(() => setIsIncidentsAnnotationsLoading(false));
-        };
-
-        const fetchAbTestsAnnotations = () => {
-            setIsAbTestsAnnotationsLoading(true);
-            setAbTestsAnnotations([]);
-            const dateQuery = start && end
-                ? `?startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
-                : '';
-
-            fetch(`/abTests${dateQuery}`)
-                .then(checkResponse)
-                .then((data) => {
-                    const adjustedAbTests = data.map((abTest) => ({
-                        ...abTest,
-                        status: abTest.abTestDetails.status,
-                        time: moment.utc(abTest.openedAt).local().isValid() ? moment.utc(abTest.openedAt).valueOf() : '-',
-                        category: AB_TESTS_ANNOTATION_CATEGORY
-                    }));
-
-                    setAbTestsAnnotations(adjustedAbTests);
-                    const abTestsStatus = getListOfUniqueProperties(adjustedAbTests.map((item) => item.abTestDetails), 'status').sort();
-                    setAbTestsStatusSuggestions(abTestsStatus);
-                    setSuggestions((prevSuggestions) => ({
-                        ...prevSuggestions,
-                        abTestsStatus
-                    }));
-                })
-                .catch((err) => {
-                    setAbTestsAnnotationsError(true);
-                    // eslint-disable-next-line no-console
-                    console.error(err);
-                })
-                .finally(() => setIsAbTestsAnnotationsLoading(false));
-        };
-
         if ([EG_BRAND, EGENCIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND].includes(selectedBrands[0])) {
             setIsLoBAvailable(false);
         }
 
-        if ([EG_BRAND, EGENCIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, HOTELS_COM_BRAND].includes(selectedBrands[0])) {
+        if ([EG_BRAND, EGENCIA_BRAND, HOTELS_COM_BRAND].includes(selectedBrands[0])) {
             setIsSupportedBrand(false);
             setError(`Success rates for ${selectedBrands} is not yet available.
                 If you have any questions, please ping #dpi-reo-opex-all or leave a comment via our Feedback form.`);
@@ -308,23 +170,19 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             setIsFormDisabled(false);
             fetchRealTimeData(selectedBrands);
             rttRef.current = setInterval(fetchRealTimeData.bind(null, selectedBrands), 60000); // refresh every minute
-            history.push(`${pathname}?selectedBrand=${selectedBrands[0]}`
-                + `&from=${encodeURIComponent(pendingStart.format())}`
-                + `&to=${encodeURIComponent(pendingEnd.format())}`
-                + `&lobs=${selectedLobs.map((l) => l.value).join(',')}`
-            );
+
             if (!isZoomedIn) {
                 fetchSuccessRatesData(selectedBrands);
-                fetchIncidentsAnnotations();
-                fetchDeploymentAnnotations();
-                fetchAbTestsAnnotations();
             }
         }
+
+        setIsMounted(true);
+
         return function cleanup() {
             clearInterval(rttRef.current);
             setIsZoomedIn(false);
         };
-    }, [selectedBrands, start, end]);
+    }, [selectedBrands, start, end, selectedEPSPartner]);
 
     useEffect(() => {
         if (!selectedLobs.length) {
@@ -332,131 +190,9 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         } else {
             setCurrentWidgets(lobWidgets);
         }
-    }, [selectedLobs, widgets]);
+    }, [selectedLobs, widgets, lobWidgets]);
 
-    const filterAnnotations = (deployments, incidents, abTests) => {
-        const filteredDeployments = deployments
-            .filter(getAnnotationsFilter(selectedProducts, 'productName'))
-            .filter(getAnnotationsFilter(selectedApplications, 'serviceName', true))
-            .filter(getAnnotationsFilter(selectedServiceTiers, 'serviceTier'));
-
-        const filteredIncidents = incidents
-            .filter(getAnnotationsFilter(selectedStatuses, 'status'))
-            .filter(getAnnotationsFilter(selectedPriorities, 'priority'));
-
-        const filteredAbTests = abTests
-            .filter(getAnnotationsFilter(selectedAbTestsStatuses, 'status'));
-
-        return [
-            ...filteredDeployments,
-            ...filteredIncidents,
-            ...filteredAbTests
-        ];
-    };
-
-    useEffect(() => {
-        const deployments = deploymentCategory ? deploymentAnnotations : [];
-        const incidents = incidentCategory ? incidentAnnotations : [];
-        const abTests = abTestsCategory ? abTestsAnnotations : [];
-
-        setFilteredAnnotations(filterAnnotations(deployments, incidents, abTests));
-    }, [
-        selectedProducts,
-        selectedApplications,
-        selectedServiceTiers,
-        selectedStatuses,
-        selectedPriorities,
-        selectedAbTestsStatuses
-    ]);
-
-    const filterCategories = (annotationsToFilter) => {
-        const categoryOptions = [];
-
-        if (deploymentCategory) {
-            categoryOptions.push(DEPLOYMENT_ANNOTATION_CATEGORY);
-        }
-
-        if (incidentCategory) {
-            categoryOptions.push(INCIDENT_ANNOTATION_CATEGORY);
-        }
-
-        if (abTestsCategory) {
-            categoryOptions.push(AB_TESTS_ANNOTATION_CATEGORY);
-        }
-
-        const filteredRawAnnotations = annotationsToFilter.filter(({category}) => categoryOptions.includes(category));
-        setFilteredAnnotations(filteredRawAnnotations);
-    };
-
-    const filterSuggestions = () => {
-        let filteredRawSuggestions = {...suggestions};
-
-        if (deploymentCategory) {
-            addSuggestionType(filteredRawSuggestions, 'productName', productNameSuggestions);
-            addSuggestionType(filteredRawSuggestions, 'serviceTier', serviceTierSuggestions);
-            addSuggestionType(filteredRawSuggestions, 'applicationName', applicationNameSuggestions);
-        } else {
-            delete filteredRawSuggestions.applicationName;
-            delete filteredRawSuggestions.productName;
-            delete filteredRawSuggestions.serviceTier;
-        }
-
-        if (incidentCategory) {
-            addSuggestionType(filteredRawSuggestions, 'incidentPriority', incidentPrioritySuggestions);
-            addSuggestionType(filteredRawSuggestions, 'incidentStatus', incidentStatusSuggestions);
-        } else {
-            delete filteredRawSuggestions.incidentPriority;
-            delete filteredRawSuggestions.incidentStatus;
-        }
-
-        if (abTestsCategory) {
-            addSuggestionType(filteredRawSuggestions, 'abTestsStatus', abTestsStatusSuggestions);
-        } else {
-            delete filteredRawSuggestions.abTestsStatus;
-        }
-
-        setSuggestions(filteredRawSuggestions);
-    };
-
-    useEffect(() => {
-        filterCategories(filterAnnotations(deploymentAnnotations, incidentAnnotations, abTestsAnnotations));
-        filterSuggestions();
-    }, [deploymentCategory, incidentCategory, abTestsCategory]);
-
-    useEffect(() => {
-        const allAnnotations = [...deploymentAnnotations, ...incidentAnnotations];
-        filterCategories(allAnnotations);
-        filterSuggestions();
-    }, [deploymentAnnotations, incidentAnnotations]);
-
-    useEffect(() => {
-        if (deploymentCategory || incidentCategory || abTestsCategory) {
-            setEnableAnnotations(true);
-        }
-        if (!deploymentCategory && !incidentCategory && !abTestsCategory) {
-            setEnableAnnotations(false);
-        }
-    }, [deploymentCategory, incidentCategory, abTestsCategory]);
-
-    useEffect(() => {
-        const adjustedProducts = productMapping.map(({productName}) => productName);
-
-        const adjustedApplications = productMapping.reduce((acc, current) => {
-            return [...acc, ...current.applicationNames];
-        }, []);
-        const serviceTier = ['Tier 1', 'Tier 2', 'Tier 3'];
-
-        setProductNameSuggestions(adjustedProducts);
-        setApplicationNameSuggestions(adjustedApplications);
-        setServiceTierSuggestions(serviceTier);
-
-        setSuggestions((prevSuggestions) => ({
-            ...prevSuggestions,
-            productName: adjustedProducts,
-            applicationName: adjustedApplications,
-            serviceTier
-        }));
-    }, [productMapping]);
+    useAddToUrl(selectedBrands, start, end, selectedLobs, pendingStart, pendingEnd);
 
     const handleDatetimeChange = ({start: startDateTimeStr, end: endDateTimeStr}, text) => {
         setPendingTimeRange(text || pendingTimeRange);
@@ -472,8 +208,14 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         setIsDirtyForm(false);
     };
 
-    const handleLoBChange = (lobs) => {
-        setSelectedLobs(lobs || []);
+    const handleLoBChange = (lobs) => setSelectedLobs(lobs || []);
+
+    const handleEPSPartnerChange = (epsPartner) => {
+        if (epsPartner === null) {
+            setSelectedEPSPartner('');
+        } else {
+            setSelectedEPSPartner(epsPartner.value);
+        }
     };
 
     const renderWidget = ({pageName, aggregatedData, pageBrand, minValue}) => (
@@ -500,17 +242,6 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         />
     );
 
-    const onFilterChange = (value) => {
-        const adjustedInputValue = adjustInputValue(value);
-
-        setSelectedProducts(filterNewSelectedItems(adjustedInputValue, 'productName'));
-        setSelectedApplications(filterNewSelectedItems(adjustedInputValue, 'applicationName'));
-        setSelectedServiceTiers(filterNewSelectedItems(adjustedInputValue, 'serviceTier'));
-        setSelectedStatuses(filterNewSelectedItems(adjustedInputValue, 'incidentStatus'));
-        setSelectedPriorities(filterNewSelectedItems(adjustedInputValue, 'incidentPriority'));
-        setSelectedAbTestsStatuses(filterNewSelectedItems(adjustedInputValue, 'abTestsStatus'));
-    };
-
     return (
         <div className="success-rates-container">
             <h1>
@@ -518,6 +249,20 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 {!isLoBAvailable && <HelpText text="Only for LOB Hotels" placement="top" />}
             </h1>
             <div className="filters-wrapper">
+                {
+                    selectedBrands[0] === EXPEDIA_PARTNER_SERVICES_BRAND &&
+                        <div className="eps-partner-select-wrapper">
+                            <Select
+                                classNamePrefix="eps-partner-select"
+                                className="eps-partner-select-container"
+                                options={EPS_PARTNER_TPIDS}
+                                onChange={handleEPSPartnerChange}
+                                placeholder="Select Partner"
+                                isClearable
+                                isSearchable
+                            />
+                        </div>
+                }
                 <div className="dynamic-filters-wrapper">
                     {
                         isLoBAvailable &&
@@ -527,26 +272,18 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                                 className="lob-select-container"
                                 options={LOB_LIST.filter(({value}) => ['H', 'C'].includes(value))}
                                 onChange={handleLoBChange}
-                                placeholder={lobWidgets.length ? 'Select Line of Business' : 'Line of Business Data not available. Try to refresh'}
+                                placeholder={getLobPlaceholder(isLoading, lobWidgets.length)}
                                 isDisabled={!lobWidgets.length}
+                                defaultValue={selectedLobs}
                             />
                     }
                     <Annotations
-                        isDeploymentsAnnotationsLoading={isDeploymentsAnnotationsLoading}
-                        isIncidentsAnnotationsLoading={isIncidentsAnnotationsLoading}
-                        isAbTestsAnnotationsLoading={isAbTestsAnnotationsLoading}
-                        deploymentAnnotationsError={deploymentAnnotationsError}
-                        incidentAnnotationsError={incidentAnnotationsError}
-                        abTestsAnnotationsError={abTestsAnnotationsError}
-                        deploymentCategory={deploymentCategory}
-                        incidentCategory={incidentCategory}
-                        abTestsCategory={abTestsCategory}
-                        setDeploymentCategory={setDeploymentCategory}
-                        setIncidentCategory={setIncidentCategory}
-                        setAbTestsCategory={setAbTestsCategory}
-                        suggestions={suggestions}
                         productMapping={productMapping}
-                        onFilterChange={onFilterChange}
+                        setFilteredAnnotations={setFilteredAnnotations}
+                        setEnableAnnotations={setEnableAnnotations}
+                        start={start}
+                        end={end}
+                        isMounted={isMounted}
                     />
                 </div>
                 <DateFiltersWrapper

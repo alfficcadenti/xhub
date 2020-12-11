@@ -3,50 +3,15 @@ import moment from 'moment';
 import {EXPEDIA_BRAND} from '../../../constants';
 import {SUCCESS_RATES_PAGES_LIST} from '../constants';
 import {
-    validDateRange,
-    getQueryParams,
     shouldShowTooltip,
     successRatesRealTimeObject,
-    getTimeInterval
+    getTimeInterval,
+    buildSuccessRateApiQueryString
 } from '../utils';
 import {successRateRealTimeMock} from '../mockData';
 
+
 describe('SuccessRates Util', () => {
-    it('validDateRange - valid start date and after date', () => {
-        expect(validDateRange('2020-01-01', '2020-01-02')).to.be.eql(true);
-    });
-
-    it('validDateRange - invalid start date after now', () => {
-        expect(validDateRange(moment().add(1, 'day').format(), moment().add(2, 'day').format())).to.be.eql(false);
-    });
-
-    it('validDateRange - invalid start date', () => {
-        expect(validDateRange(moment('asdfasdf', '2020-01-01'))).to.be.eql(false);
-    });
-
-    it('validDateRange - invalid end date', () => {
-        expect(validDateRange(moment('2020-01-01', 'asdfasdf'))).to.be.eql(false);
-    });
-
-    it('getQueryParams - valid date range', () => {
-        const start = '2020-10-22T12:15:00-05:00';
-        const end = '2020-10-22T12:20:00-05:00';
-        const lobs = 'H,C,INVALID';
-        const {initialStart, initialEnd, initialTimeRange, initialLobs} = getQueryParams(`?from=${start}&to=${end}&lobs=${lobs}`);
-        expect(initialStart.isSame(start, 'hour')).to.equal(true);
-        expect(initialEnd.isSame(end, 'hour')).to.equal(true);
-        expect(initialTimeRange).to.equal('Custom');
-        expect(initialLobs.map(({value}) => value)).to.eql(['H', 'C']);
-    });
-
-    it('getQueryParams - default', () => {
-        const {initialStart, initialEnd, initialTimeRange, initialLobs} = getQueryParams('');
-        expect(initialStart.isSame(moment().subtract(6, 'hours'), 'hour')).to.equal(true);
-        expect(initialEnd.isSame(moment(), 'hour')).to.equal(true);
-        expect(initialTimeRange).to.equal('Last 6 Hours');
-        expect(initialLobs.map(({value}) => value)).to.eql([]);
-    });
-
     it('shouldShowTooltip', () => {
         expect(shouldShowTooltip(SUCCESS_RATES_PAGES_LIST[3], EXPEDIA_BRAND, [])).to.equal('Only for nonNativeApps');
         expect(shouldShowTooltip(SUCCESS_RATES_PAGES_LIST[0], null, [{value: 'H', label: 'Hotels'}])).to.equal('Only aggregated view is available for search');
@@ -99,5 +64,30 @@ describe('getTimeInterval', () => {
     it('sets interval to 1 min if start date within 24 hours ago', () => {
         expect(getTimeInterval(moment().subtract(23, 'hours').toISOString(), moment().toISOString()))
             .to.eql(5);
+    });
+});
+
+describe('buildSuccessRateApiQueryString()', () => {
+    const start = moment('2020-11-12T11:27:00Z');
+    const end = moment('2020-11-12T16:27:00Z');
+    const baseUrl = '/user-events-api/v1/funnelView';
+    const expectedExpediaURL = '?brand=expedia&timeInterval=1&startDate=2020-11-12T11:27:00Z&endDate=2020-11-12T16:27:00Z';
+    const expectedEpsURL = '/eps?timeInterval=1&startDate=2020-11-12T11:27:00Z&endDate=2020-11-12T16:27:00Z&tpid=';
+    const expectedTimeInterval = '?brand=expedia&timeInterval=5&startDate=2020-11-12T11:27:00Z&endDate=2020-11-12T16:27:00Z';
+    const EPSPartner = 'orbitz';
+    it('returns endpoint for eps', () => {
+        expect(buildSuccessRateApiQueryString({start, end, brand: 'eps', interval: 1})).to.be.eql(`${baseUrl}${expectedEpsURL}`);
+    });
+
+    it('returns endpoint for eps with partner', () => {
+        expect(buildSuccessRateApiQueryString({start, end, brand: 'eps', EPSPartner, interval: 1})).to.be.eql(`${baseUrl}${expectedEpsURL}${EPSPartner}`);
+    });
+
+    it('returns endpoint for any other brand', () => {
+        expect(buildSuccessRateApiQueryString({start, end, brand: 'expedia', interval: 1})).to.be.eql(`${baseUrl}${expectedExpediaURL}`);
+    });
+
+    it('returns time interval = 5 as default', () => {
+        expect(buildSuccessRateApiQueryString({start, end, brand: 'expedia'})).to.be.eql(`${baseUrl}${expectedTimeInterval}`);
     });
 });

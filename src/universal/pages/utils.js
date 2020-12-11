@@ -5,13 +5,16 @@ import {
     EXPEDIA_BRAND,
     EXPEDIA_PARTNER_SERVICES_BRAND,
     HOTELS_COM_BRAND,
+    LOB_LIST,
     PAGE_VIEWS_DATE_FORMAT,
-    VRBO_BRAND,
+    SUCCESS_RATES_PAGES_LIST,
     TIMEZONE_ABBR,
-    SUCCESS_RATES_PAGES_LIST
+    VRBO_BRAND
 } from '../constants';
 import ALL_PAGES from './index';
+import qs from 'query-string';
 import moment from 'moment';
+
 
 export const getVisiblePages = (selectedBrands, pages = [...ALL_PAGES]) => {
     return pages.filter(({hidden, brands}) => (
@@ -19,8 +22,8 @@ export const getVisiblePages = (selectedBrands, pages = [...ALL_PAGES]) => {
     ));
 };
 
-export const getPieData = (filteredDefects, property) => {
-    const counts = filteredDefects
+export const getPieData = (items = [], property) => {
+    const counts = items
         .reduce((acc, curr) => {
             const key = curr[property];
             if (!acc[key]) {
@@ -42,6 +45,8 @@ export const mapBrandNames = (brandName) => {
             return EXPEDIA_BRAND;
         case 'vrbo':
             return VRBO_BRAND;
+        case null:
+            return EXPEDIA_PARTNER_SERVICES_BRAND;
         default:
             return brandName;
     }
@@ -329,6 +334,10 @@ export const makeSuccessRatesLOBObjects = (data = [[], [], [], []], start, end, 
         mapBrandNames(brand) === selectedBrand
         && (!lobs.length || !lineOfBusiness || lobs.findIndex(({value}) => value === lineOfBusiness) > -1)
     );
+
+    const successRateEPSFilter = ({lineOfBusiness}) => (
+        (!lobs.length || !lineOfBusiness || lobs.findIndex(({value}) => value === lineOfBusiness) > -1)
+    );
     const formatRate = (rate) => parseFloat((Number(rate) || 0).toFixed(2));
     // eslint-disable-next-line complexity
     return SUCCESS_RATES_PAGES_LIST.map((pageName, i) => {
@@ -341,7 +350,7 @@ export const makeSuccessRatesLOBObjects = (data = [[], [], [], []], start, end, 
         ).reduce((prev, {time, successRatePercentagesData}) => {
             let localMin = prev;
             successRatePercentagesData
-                .filter(successRateFilter)
+                .filter(selectedBrand === 'eps' ? successRateEPSFilter : successRateFilter)
             // eslint-disable-next-line complexity
                 .forEach(({rate, lineOfBusiness}) => {
                     const momentTime = moment(time);
@@ -350,7 +359,6 @@ export const makeSuccessRatesLOBObjects = (data = [[], [], [], []], start, end, 
                         const lob = lineOfBusiness ? lobs.find(({value}) => value === lineOfBusiness) : null;
                         const valueKey = lob ? lob.label : 'value';
                         const found = aggregatedData.findIndex((d) => d.time === moment.utc(time).valueOf());
-
                         if (found > -1) {
                             aggregatedData[found][valueKey] = rate === null ? null : formatRate(rate);
                         } else {
@@ -375,4 +383,48 @@ export const makeSuccessRatesLOBObjects = (data = [[], [], [], []], start, end, 
 
         return {pageName, aggregatedData, pageBrand};
     }).map((item) => ({...item, minValue}));
+};
+
+// eslint-disable-next-line complexity
+export const validDateRange = (start, end) => {
+    if (!start || !end) {
+        return false;
+    }
+    const startMoment = moment(start);
+    const endMoment = moment(end);
+    return startMoment.isValid() && endMoment.isValid() && startMoment.isBefore(new Date()) && endMoment.isAfter(startMoment);
+};
+
+export const getQueryParams = (search) => {
+    const {from, to, lobs} = qs.parse(search, {decoder: (c) => c});
+    const initialLobs = lobs
+        ? lobs.split(',').map((l) => LOB_LIST.find(({value}) => value === l)).filter((l) => l)
+        : [];
+
+    return validDateRange(from, to)
+        ? {
+            initialStart: moment(from),
+            initialEnd: moment(to),
+            initialTimeRange: 'Custom',
+            initialLobs
+        } : {
+            initialStart: moment().subtract(6, 'hours').startOf('minute'),
+            initialEnd: moment(),
+            initialTimeRange: 'Last 6 Hours',
+            initialLobs
+        };
+};
+
+export const getLobPlaceholder = (isLoading, lobWidgetsLength = 0) => {
+    let placeholder;
+
+    if (isLoading) {
+        placeholder = 'Line of Business is loading';
+    } else if (lobWidgetsLength) {
+        placeholder = 'Select Line of Business';
+    } else {
+        placeholder = 'Line of Business Data not available. Try to refresh';
+    }
+
+    return placeholder;
 };

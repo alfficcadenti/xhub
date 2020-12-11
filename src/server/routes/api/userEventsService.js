@@ -1,5 +1,5 @@
 import {getConfig, getHandler} from './utils';
-import {getPageViewsTestData, getFunnelTestData} from './testData/userEventsTestService';
+import {getPageViewsTestData, getFunnelTestData, getEPSFunnelTestData} from './testData/userEventsTestService';
 
 const getHandlerParams = (routeKey) => ({
     routeKey,
@@ -76,6 +76,13 @@ module.exports.impulseRevlossV2 = {
     path: '/v2/bookings/revenueLoss/{impact*}',
     config: getConfig('impulse-revloss-api-v2-get'),
     handler: getHandler(Object.assign(getHandlerParams('bookingsImpulseRevlossV2'), {pathParam: 'impact'}))
+};
+
+module.exports.epsFunnelViewUserEvents = {
+    method: 'GET',
+    path: '/user-events-api/v1/funnelView/eps/{param*}',
+    config: getConfig('eps-funnel-view-api-v1-get'),
+    handler: getHandler(getHandlerParams('epsFunnelView'), getEPSFunnelTestData)
 };
 
 module.exports.funnelViewUserEvents = {
