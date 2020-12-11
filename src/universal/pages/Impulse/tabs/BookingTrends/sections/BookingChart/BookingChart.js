@@ -13,8 +13,8 @@ import {
 } from 'recharts';
 import './styles.less';
 import moment from 'moment';
-import ReferenceLabel from '../../../../components/ReferenceLabel';
-import {startTime, endTime} from '../../impulseHandler';
+import ReferenceLabel from '../../../../../../components/ReferenceLabel';
+import {startTime, endTime} from '../../../../impulseHandler';
 
 const BOOKING_CHART_COLOR = '#336BFF';
 const PREDICTION_CHART_COLOR = '#c9405b';
@@ -54,7 +54,7 @@ const CustomTooltip = ({active, payload}) => {
     }
     return null;
 };
-const BookingTrends = ({data = [], setStartDateTime, setEndDateTime, setChartSliced, annotations, daysDifference, setDaysDifference}) => {
+const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSliced, annotations, daysDifference, setDaysDifference, setTableData}) => {
     let [refAreaLeft, setRefAreaLeft] = useState('');
     let [refAreaRight, setRefAreaRight] = useState('');
     let [newData, setNewData] = useState(data);
@@ -97,6 +97,7 @@ const BookingTrends = ({data = [], setStartDateTime, setEndDateTime, setChartSli
         setEndDateTime(moment(nextRefAreaRight).utc());
         setChartSliced(true);
         setDaysDifference(moment(nextRefAreaRight).utc().diff(moment(nextRefAreaLeft).utc(), 'days'));
+        setTableData([]);
     };
     const renderChart = ({key, color, name, chartType}) => {
         const fill = `url(#color${key})`;
@@ -146,7 +147,7 @@ const BookingTrends = ({data = [], setStartDateTime, setEndDateTime, setChartSli
                                 key={Math.random()}
                                 yAxisId={1}
                                 x={annotation.incidentTime}
-                                label={<ReferenceLabel annotation={annotation} isImpulse/>}
+                                label={<ReferenceLabel annotation={annotation} isImpulse setTableData={setTableData}/>}
                                 stroke={'red'}
                                 strokeDasharray="3 3"
                                 isFront
@@ -165,4 +166,4 @@ const BookingTrends = ({data = [], setStartDateTime, setEndDateTime, setChartSli
     );
 };
 
-export default React.memo(BookingTrends);
+export default React.memo(BookingChart);
