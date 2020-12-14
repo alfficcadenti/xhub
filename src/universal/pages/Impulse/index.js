@@ -165,6 +165,8 @@ const Impulse = (props) => {
                     setDaysDifference={setDaysDifference}
                     daysDifference={daysDifference}
                     setTableData={setTableData}
+                    selectedBrandMulti = {selectedBrandMulti}
+                    isApplyClicked = {isApplyClicked}
                 />);
             default:
                 return (<BookingTrends
@@ -174,6 +176,8 @@ const Impulse = (props) => {
                     annotations={enableIncidents ? annotationsMulti : []}
                     setDaysDifference={setDaysDifference}
                     daysDifference={daysDifference}
+                    selectedBrandMulti = {selectedBrandMulti}
+                    isApplyClicked = {isApplyClicked}
                 />);
         }
     };

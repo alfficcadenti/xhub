@@ -54,7 +54,7 @@ const CustomTooltip = ({active, payload}) => {
     }
     return null;
 };
-const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSliced, annotations, daysDifference, setDaysDifference, setTableData}) => {
+const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSliced, annotations, daysDifference, setDaysDifference, setTableData, selectedBrandMulti, isApplyClicked}) => {
     let [refAreaLeft, setRefAreaLeft] = useState('');
     let [refAreaRight, setRefAreaRight] = useState('');
     let [newData, setNewData] = useState(data);
@@ -112,6 +112,22 @@ const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSlic
             animationDuration={300}
         /> : <Bar dataKey={name} fillOpacity={1} yAxisId={1} key={`bar${name}`} fill={fill} animationDuration={300}/>;
     };
+    const compareData = (annotation) => {
+        let estimatedImpact = annotation.estimatedImpact;
+        let brandsAffIncident = estimatedImpact.map((estimatedImpactObj) => estimatedImpactObj.brand);
+        if (brandsAffIncident.includes(null)) {
+            return true;
+        }
+        let toShowIncident = false;
+        toShowIncident = selectedBrandMulti.some((selectedBrand) => {
+            return brandsAffIncident.includes(selectedBrand);
+        });
+        return toShowIncident;
+    };
+
+    const filterIncidents = (annotation) => {
+        return selectedBrandMulti.length === 0 ? true : compareData(annotation);
+    };
     return (
         <div className="bookings-container-box">
             <div className="reset-div">
@@ -143,6 +159,7 @@ const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSlic
                     {IMPULSE_CHART_TYPE.map(renderChart)}
                     {
                         annotations && annotations.map((annotation) => (
+                            filterIncidents(annotation) &&
                             <ReferenceLine
                                 key={Math.random()}
                                 yAxisId={1}
