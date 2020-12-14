@@ -92,7 +92,7 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     useSelectedBrand(selectedBrands[0], onBrandChange, prevSelectedBrand);
 
     // Filters
-    const matchesDate = (t) => startDate.isSameOrBefore(t.Opened) && endDate.isSameOrAfter(t.Opened);
+    const matchesDate = (t) => startDate.isSameOrBefore(t.Opened, 'day') && endDate.isSameOrAfter(t.Opened, 'day');
     const matchesPriority = (t) => selectedPriority === ALL_PRIORITIES_OPTION || t.Priority === selectedPriority;
     const matchesStatus = (t) => selectedStatus === ALL_STATUSES_OPTION || t.Status === selectedStatus;
     const matchesOrg = (t) => selectedOrg === ALL_ORGS_OPTION || t['Owning Org'] === selectedOrg;
