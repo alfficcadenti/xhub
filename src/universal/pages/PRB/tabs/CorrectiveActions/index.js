@@ -19,7 +19,7 @@ const CorrectiveActions = ({
     onL1Change,
     onL2Change
 }) => {
-    const dateQuery = `fromDate=${start.format('YYYY-MM-DD')}&toDate=${end.format('YYYY-MM-DD')}`;
+    const dateQuery = `fromDate=${start}&toDate=${end}`;
     const [l1Data, setL1Data] = useState([]);
     const [l2Data, setL2Data] = useState([]);
     const [detailsData, setDetailsData] = useState([]);

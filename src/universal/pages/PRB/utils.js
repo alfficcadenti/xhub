@@ -42,8 +42,12 @@ export const getQueryValues = (search) => {
     } = qs.parse(search);
     const isValidDateRange = validDateRange(start, end);
     return {
-        initialStart: isValidDateRange ? moment(start) : moment().subtract(30, 'days').startOf('minute'),
-        initialEnd: isValidDateRange ? moment(end) : moment(),
+        initialStart: isValidDateRange
+            ? moment(start).format('YYYY-MM-DD')
+            : moment().subtract(30, 'days').startOf('minute').format('YYYY-MM-DD'),
+        initialEnd: isValidDateRange
+            ? moment(end).format('YYYY-MM-DD')
+            : moment().format('YYYY-MM-DD'),
         initialType: type || ALL_TYPES_OPTION,
         initialStatus: status || ALL_STATUSES_OPTION,
         initialPriority: priority || ALL_PRIORITIES_OPTION,

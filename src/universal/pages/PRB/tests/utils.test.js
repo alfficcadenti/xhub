@@ -20,8 +20,8 @@ describe('PRB Utils', () => {
         const end = '2020-02-02';
         const l1 = 'business';
         const result = getQueryValues(`?start=${start}&end=${end}&l1=${l1}`);
-        expect(result.initialStart.isSame(start, 'day')).to.be.eql(true);
-        expect(result.initialEnd.isSame(end, 'day')).to.be.eql(true);
+        expect(result.initialStart).to.be.eql(start);
+        expect(result.initialEnd).to.be.eql(end);
         expect(result.initialType).to.be.eql(ALL_TYPES_OPTION);
         expect(result.initialStatus).to.be.eql(ALL_STATUSES_OPTION);
         expect(result.initialPriority).to.be.eql(ALL_PRIORITIES_OPTION);
@@ -49,8 +49,8 @@ describe('PRB Utils', () => {
             + `&rcowner=${rcOwner}`
             + `&rccategory=${rcCategory}`
             + `&l1=${l1}`);
-        expect(result.initialStart.isSame(start, 'day')).to.be.eql(true);
-        expect(result.initialEnd.isSame(end, 'day')).to.be.eql(true);
+        expect(result.initialStart).to.be.eql(start);
+        expect(result.initialEnd).to.be.eql(end);
         expect(result.initialType).to.be.eql(type);
         expect(result.initialStatus).to.be.eql(status);
         expect(result.initialPriority).to.be.eql(priority);
