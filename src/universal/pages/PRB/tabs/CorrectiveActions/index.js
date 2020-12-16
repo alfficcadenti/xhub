@@ -83,7 +83,7 @@ const CorrectiveActions = ({
 
     const renderRow = (row) => {
         const {name, businessOwnerType, ticketsCount} = row;
-        const isSelected = checkIsRowSelected(businessOwnerType, selectedL1, selectedL2);
+        const isSelected = checkIsRowSelected(businessOwnerType, selectedL1, selectedL2, name);
         const handleCountClick = () => fetchDetails(businessOwnerType, name);
         return (
             <div
