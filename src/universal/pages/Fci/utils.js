@@ -183,7 +183,7 @@ export const getTableData = (data, keys, onOpenTraceLog) => {
         .filter(({errorCode}) => keys.includes(`${errorCode}`))
         .map((row) => {
             const traces = row.traces || [];
-            const clickHandler = () => onOpenTraceLog(row.traceId, traces.map(mapTrace));
+            const clickHandler = () => onOpenTraceLog(row.traceId, row.recordedSessionUrl, traces.map(mapTrace));
             const traceCounts = getTraceCounts(traces);
             return {
                 Created: row.timestamp ? moment(row.timestamp).format('YYYY-MM-DD HH:mm') : '-',

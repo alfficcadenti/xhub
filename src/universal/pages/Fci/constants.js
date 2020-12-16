@@ -17,6 +17,8 @@ export const FCI_TABLE_COLUMNS = [
 ];
 export const FCI_HIDDEN_TABLE_COLUMNS = [
     'Session',
+    'TPID',
+    'EAPID',
     'SiteID'
 ];
 export const TRACE_TABLE_COLUMNS = [
