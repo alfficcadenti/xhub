@@ -24,18 +24,18 @@ const renderTable = (abTests = []) => {
     );
 };
 
-const ABTests = ({filteredCR, selectedBrand}) => (
+const ABTests = ({filteredABTests, selectedBrand}) => (
     <div data-wdio="cr-table">
         {
-            filteredCR.length
-                ? renderTable(filteredCR, selectedBrand)
+            filteredABTests.length
+                ? renderTable(filteredABTests, selectedBrand)
                 : <NoResults />
         }
     </div>
 );
 
 ABTests.propTypes = {
-    filteredCR: PropTypes.arrayOf(PropTypes.shape()).isRequired
+    filteredABTests: PropTypes.arrayOf(PropTypes.shape()).isRequired
 };
 
 export default React.memo(ABTests);

@@ -4,7 +4,7 @@ import {SearchableList} from '@homeaway/react-searchable-list';
 import {Token} from '@homeaway/react-input-tokenize';
 import {adjustInputValue} from '../../pages/utils';
 
-const UniversalSearch = ({onFilterChange, suggestionMapping, suggestions, defaultSelection}) => {
+const UniversalSearch = ({onFilterChange, suggestionMapping, suggestions, defaultSelection, resetSelection}) => {
     const [keyTags, setKeyTags] = useState([]);
     const [selected, setSelected] = useState([]);
     const [typeaheadList, setTypeaheadList] = useState(keyTags);
@@ -13,6 +13,10 @@ const UniversalSearch = ({onFilterChange, suggestionMapping, suggestions, defaul
     const [clear, setClear] = useState(false);
     const [label, setLabel] = useState('Select the field to search');
     const [valueToggle, setValueToggle] = useState(false);
+
+    useEffect(() => {
+        setFieldSelection([]);
+    }, [resetSelection]);
 
     const onClear = () => {
         setSelected([]);

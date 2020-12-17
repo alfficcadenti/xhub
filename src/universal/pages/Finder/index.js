@@ -8,10 +8,10 @@ import UniversalSearch from '../../components/UniversalSearch';
 
 import {DATE_FORMAT} from '../../constants';
 import {ChangeRequests, ABTests} from './tabs/index';
-import {useFetchCRs} from './hooks';
+import {useFetchCRs, useFetchABTests} from './hooks';
 import {useSelectedBrand, useQueryParamChange, useFetchProductMapping} from '../hooks';
 import './styles.less';
-import {adjustInputValue, checkResponse} from '../utils';
+import {adjustInputValue} from '../utils';
 
 const startDateDefaultValue = moment().subtract(1, 'days').format(DATE_FORMAT);
 const endDateDefaultValue = moment().format(DATE_FORMAT);
@@ -40,14 +40,16 @@ const Finder = (props) => {
     const [isApplyClicked, setIsApplyClicked] = useState(false);
     const [advancedFilter, setAdvancedFilter] = useState([]);
     const [activeIndex, setActiveIndex] = useState(0);
-    const [abTestsAnnotations, setAbTestsAnnotations] = useState([]);
+    const [filteredABTests, setFilteredABTests] = useState([]);
+    const [currentSuggestions, setCurrentSuggestions] = useState([]);
+    const [resetSelection, setResetSelection] = useState(false);
 
     const [
-        isLoading,
-        error,
+        isCRsLoading,
+        crError,
         allUniqueCRs,
         allCRs,
-        indexedDataForSuggestions
+        changeRequestSuggestions
     ] = useFetchCRs(
         isApplyClicked,
         startDate,
@@ -56,51 +58,60 @@ const Finder = (props) => {
         applyAdvancedFilter,
         setIsApplyClicked
     );
+
+    const [
+        isABTestsLoading,
+        aBTestsError,
+        abTests,
+        abTestSuggestions
+    ] = useFetchABTests(
+        isApplyClicked,
+        startDate,
+        endDate
+    );
+
     const productMapping = useFetchProductMapping(startDate, endDate);
     useQueryParamChange(selectedBrand, props.onBrandChange);
     useSelectedBrand(selectedBrand, props.onBrandChange, props.prevSelectedBrand);
 
     useEffect(() => {
-        const fetchAbTestsAnnotations = () => {
-            setAbTestsAnnotations([]);
-            const dateQuery = startDate && endDate
-                ? `?startDate=${moment(startDate).utc().format()}&endDate=${moment(endDate).utc().format()}`
-                : '';
-
-            fetch(`/abTests${dateQuery}`)
-                .then(checkResponse)
-                .then((data) => {
-                    setAbTestsAnnotations(data);
-                })
-                .catch((err) => {
-                    // eslint-disable-next-line no-console
-                    console.error(err);
-                });
-        };
-
-        fetchAbTestsAnnotations();
-    }, [startDate, endDate]);
+        if (activeIndex === 0) {
+            setCurrentSuggestions(changeRequestSuggestions);
+            setResetSelection((reset) => !reset);
+        } else if (activeIndex === 1) {
+            setCurrentSuggestions(abTestSuggestions);
+            applyAdvancedFilter();
+            setResetSelection((reset) => !reset);
+        }
+    }, [activeIndex, allUniqueCRs]);
 
 
     const applyAdvancedFilter = () => {
         const filterNewFormat = adjustInputValue(advancedFilter);
+        const isCRTabSelected = activeIndex === 0;
 
-        const currentItems = (activeIndex === 0) ? allUniqueCRs : abTestsAnnotations;
+        const currentItems = isCRTabSelected ? allUniqueCRs : abTests;
 
-        let newFilteredCRs = [...currentItems];
+        let newFilteredData = [...currentItems];
 
         if (filterNewFormat && filterNewFormat.length) {
             filterNewFormat.forEach((filter) => {
                 if (Array.isArray(filter.values) && filter.values[0]) {
-                    newFilteredCRs = newFilteredCRs.filter((x) => filter.values.includes(x[filter.key]));
+                    newFilteredData = newFilteredData.filter((x) => filter.values.includes(x[filter.key]));
                 } else if (filter.values[0]) {
-                    newFilteredCRs = newFilteredCRs.filter((x) => x[filter.key] === filter.values);
+                    newFilteredData = newFilteredData.filter((x) => x[filter.key] === filter.values);
                 }
             });
 
-            setFilteredUniqueCRs(newFilteredCRs);
-        } else {
+            if (isCRTabSelected) {
+                setFilteredUniqueCRs(newFilteredData);
+            } else {
+                setFilteredABTests(newFilteredData);
+            }
+        } else if (isCRTabSelected) {
             setFilteredUniqueCRs([...currentItems]);
+        } else {
+            setFilteredABTests([...currentItems]);
         }
     };
 
@@ -111,7 +122,7 @@ const Finder = (props) => {
 
     useEffect(() => {
         applyAdvancedFilter();
-    }, [allCRs, allUniqueCRs, advancedFilter, selectedBrand]);
+    }, [allCRs, allUniqueCRs, abTests, advancedFilter, selectedBrand]);
 
     const handleDateRangeChange = (start, end) => {
         setStartDate(start || startDate);
@@ -136,7 +147,7 @@ const Finder = (props) => {
             case 0:
                 return <ChangeRequests filteredCR={filteredUniqueCRs} selectedBrand={selectedBrand} />;
             case 1:
-                return <ABTests filteredCR={abTestsAnnotations} />;
+                return <ABTests filteredABTests={filteredABTests} />;
             default:
                 return <ChangeRequests filteredCR={filteredUniqueCRs} selectedBrand={selectedBrand} />;
         }
@@ -164,11 +175,12 @@ const Finder = (props) => {
                 >
                     {'Apply Dates'}
                 </button>
-                {!isLoading && (
+                {!isCRsLoading && (
                     <UniversalSearch
-                        suggestions={indexedDataForSuggestions}
+                        suggestions={currentSuggestions}
                         suggestionMapping={productMapping}
                         onFilterChange={onFilterChange}
+                        resetSelection={resetSelection}
                     />
                 )}
 
@@ -179,8 +191,7 @@ const Finder = (props) => {
                 links={navLinks}
                 onLinkClick={handleNavigationClick}
             />
-            <LoadingContainer isLoading={isLoading} error={error}>
-                {/* <ChangeRequests filteredCR={filteredUniqueCRs} selectedBrand={selectedBrand}/>*/}
+            <LoadingContainer isLoading={isCRsLoading || isABTestsLoading} error={crError || aBTestsError}>
                 {renderTabs()}
             </LoadingContainer>
         </div>

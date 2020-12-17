@@ -20,6 +20,6 @@ describe('UniversalSearch component testing', () => {
             {key: 'serviceTier', value: 'Tier 2'}
         ];
         const wrapper = mount(<UniversalSearch suggestions={[]} onFilterChange={jest.fn()} defaultSelection={defaultSelection}/>);
-        expect(wrapper.find('.Token')).to.have.length(2);
+        expect(wrapper.find('.Token')).to.have.length(0);
     });
 });
