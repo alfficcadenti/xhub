@@ -34,8 +34,8 @@ export const validDateRange = (start, end) => {
 };
 
 // eslint-disable-next-line complexity
-export const getQueryValues = (search) => {
-    const {from, to, lobs, errorCode, siteName, category, selectedBrand, hideIntentionalCheck} = qs.parse(search);
+export const getQueryValues = (search, brand = 'Expedia') => {
+    const {from, to, lobs, errorCode, siteName, category, hideIntentionalCheck} = qs.parse(search);
     const isValidDateRange = validDateRange(from, to);
     return {
         initialStart: isValidDateRange ? moment(from) : moment().subtract(1, 'hours').startOf('minute'),
@@ -45,9 +45,9 @@ export const getQueryValues = (search) => {
             ? lobs.split(',').map((l) => LOB_LIST.find(({value}) => value === l)).filter((l) => l)
             : [],
         initialErrorCode: errorCode || TOP_20_ERROR_CODES,
-        initialSite: getBrandSites(selectedBrand).includes(siteName)
+        initialSite: getBrandSites(brand).includes(siteName)
             ? siteName
-            : getBrandSites(selectedBrand)[0],
+            : getBrandSites(brand)[0],
         initialCategories: category || ALL_CATEGORIES,
         initialHideIntentionalCheck: hideIntentionalCheck === 'true'
     };

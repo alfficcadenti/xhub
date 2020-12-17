@@ -28,7 +28,7 @@ const Fci = ({selectedBrands}) => {
         initialSite,
         initialCategories,
         initialHideIntentionalCheck
-    } = getQueryValues(search);
+    } = getQueryValues(search, selectedBrands[0]);
     const [isDirtyForm, setIsDirtyForm] = useState(false);
 
     const [start, setStart] = useState(initialStart);

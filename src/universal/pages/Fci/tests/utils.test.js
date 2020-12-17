@@ -22,7 +22,7 @@ describe('Fci Utils', () => {
         expect(result.initialTimeRange).to.be.eql('Last 1 Hour');
         expect(result.initialLobs).to.be.eql([]);
         expect(result.initialErrorCode).to.be.eql(TOP_20_ERROR_CODES);
-        expect(result.initialSite).to.be.eql('travel.chase.com');
+        expect(result.initialSite).to.be.eql('www.expedia.com');
         expect(result.initialHideIntentionalCheck).to.be.eql(false);
     });
 
@@ -31,10 +31,11 @@ describe('Fci Utils', () => {
         const end = '2020-02-02';
         const lob = 'H';
         const errorCode = '500';
-        const site = 'travel.rbcrewards.com';
-        const brand = 'Expedia Partner Solutions';
+        const site = 'travel.chase.com';
+        const urlBrand = 'Expedia';
+        const appBrand = 'Expedia Partner Solutions';
         const intentional = true;
-        const result = getQueryValues(`?from=${start}&to=${end}&lobs=${lob}&errorCode=${errorCode}&siteName=${site}&selectedBrand=${brand}&hideIntentionalCheck=${intentional}`);
+        const result = getQueryValues(`?from=${start}&to=${end}&lobs=${lob}&errorCode=${errorCode}&siteName=${site}&selectedBrand=${urlBrand}&hideIntentionalCheck=${intentional}`, appBrand);
         expect(result.initialStart.isSame(start, 'day')).to.be.eql(true);
         expect(result.initialEnd.isSame(end, 'day')).to.be.eql(true);
         expect(result.initialTimeRange).to.be.eql('Custom');
