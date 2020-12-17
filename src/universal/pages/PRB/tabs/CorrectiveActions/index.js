@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {SVGIcon} from '@homeaway/react-svg';
 import {CLOSE__24, CHEVRON_RIGHT__24} from '@homeaway/svg-defs';
 import Modal from '@homeaway/react-modal';
+import {ALL_STATUSES_OPTION} from '../../../../constants';
 import {checkResponse} from '../../../utils';
 import DataTable from '../../../../components/DataTable';
 import LoadingContainer from '../../../../components/LoadingContainer';
@@ -12,6 +13,7 @@ const CorrectiveActions = ({
     tickets,
     start,
     end,
+    status,
     initialL1,
     initialL2,
     selectedL1,
@@ -20,6 +22,9 @@ const CorrectiveActions = ({
     onL2Change
 }) => {
     const dateQuery = `fromDate=${start}&toDate=${end}`;
+    const fetchQuery = status !== ALL_STATUSES_OPTION
+        ? `${dateQuery}&status=${status}`
+        : dateQuery;
     const [l1Data, setL1Data] = useState([]);
     const [l2Data, setL2Data] = useState([]);
     const [detailsData, setDetailsData] = useState([]);
@@ -42,7 +47,7 @@ const CorrectiveActions = ({
 
     useEffect(() => {
         setIsLoading(true);
-        Promise.all(['l1', 'l2'].map((l) => fetch(`/v1/corrective-actions/business-owner-type/${l}?${dateQuery}`)))
+        Promise.all(['l1', 'l2'].map((l) => fetch(`/v1/corrective-actions/business-owner-type/${l}?${fetchQuery}`)))
             .then((responses) => Promise.all(responses.map(checkResponse)))
             .then(([l1Response, l2Response]) => {
                 initData(l1Response, initialL1, setL1Data, onL1Change);
@@ -71,7 +76,7 @@ const CorrectiveActions = ({
     };
 
     const fetchDetails = (businessOwnerType, businessOwnerValue) => {
-        fetch(`/v1/corrective-actions/business-owner-type/${businessOwnerType}/${businessOwnerValue}/details?${dateQuery}`)
+        fetch(`/v1/corrective-actions/business-owner-type/${businessOwnerType}/${businessOwnerValue}/details?${fetchQuery}`)
             .then(checkResponse)
             .then((response) => {
                 if (response && response.length) {

@@ -36,6 +36,7 @@ export const getQueryValues = (search) => {
         org,
         rcowner,
         rccategory,
+        castatus,
         l1,
         l2,
         ca
@@ -54,6 +55,7 @@ export const getQueryValues = (search) => {
         initialOrg: org || ALL_ORGS_OPTION,
         initialRcOwner: rcowner || ALL_RC_OWNERS_OPTION,
         initialRcCategory: rccategory || ALL_RC_CATEGORIES_OPTION,
+        initialCAStatus: castatus || ALL_STATUSES_OPTION,
         initialL1: l1,
         initialL2: l2,
         initialCA: ca
@@ -62,7 +64,7 @@ export const getQueryValues = (search) => {
 
 export const getUrlParam = (label, value, defaultValue) => {
     return value && value !== defaultValue
-        ? `&${label}=${value}`
+        ? `&${label}=${encodeURIComponent(value)}`
         : '';
 };
 
@@ -77,7 +79,6 @@ export const mapActiveIndexToTabName = (idx) => {
 };
 
 export const generateUrl = (
-    pathname,
     activeIndex,
     selectedBrands,
     startDate,
@@ -88,6 +89,7 @@ export const generateUrl = (
     selectedOrg,
     selectedRcOwner,
     selectedRcCategory,
+    selectedCAStatus,
     selectedL1,
     selectedL2,
     selectedCA
@@ -102,6 +104,7 @@ export const generateUrl = (
         + `${getUrlParam('org', selectedOrg, ALL_ORGS_OPTION)}`
         + `${getUrlParam('rcowner', selectedRcOwner, ALL_RC_OWNERS_OPTION)}`
         + `${getUrlParam('rccategory', selectedRcCategory, ALL_RC_CATEGORIES_OPTION)}`
+        + `${getUrlParam('castatus', selectedCAStatus, ALL_STATUSES_OPTION)}`
         + `${getUrlParam('l1', (selectedL1 || {}).name, null)}`
         + `${getUrlParam('l2', (selectedL2 || {}).name, null)}`
         + `${getUrlParam('ca', (selectedCA || {}).name, null)}`;

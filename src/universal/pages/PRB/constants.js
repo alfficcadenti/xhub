@@ -1,4 +1,4 @@
-export const navLinks = [
+export const NAV_LINKS = [
     {
         id: 'overview',
         label: 'Overview',
@@ -15,3 +15,5 @@ export const navLinks = [
         href: '/prb'
     }
 ];
+
+export const CA_STATUSES = ['Done', 'In Progress', 'Blocked', 'Open'];

@@ -22,7 +22,7 @@ import {
 } from '../../constants';
 import {useFetchTickets} from './hooks';
 import {useQueryParamChange, useSelectedBrand} from '../hooks';
-import {navLinks} from './constants';
+import {NAV_LINKS, CA_STATUSES} from './constants';
 import {validDateRange, getQueryValues, generateUrl, getActiveIndex, filterType} from './utils';
 import './styles.less';
 
@@ -42,6 +42,7 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         initialOrg,
         initialRcOwner,
         initialRcCategory,
+        initialCAStatus,
         initialL1,
         initialL2,
         initialCA
@@ -55,6 +56,7 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [selectedOrg, setSelectedOrg] = useState(initialOrg);
     const [selectedRcOwner, setSelectedRcOwner] = useState(initialRcOwner);
     const [selectedRcCategory, setSelectedRcCategory] = useState(initialRcCategory);
+    const [selectedCAStatus, setSelectedCAStatus] = useState(initialCAStatus);
     const [selectedL1, setSelectedL1] = useState(null);
     const [selectedL2, setSelectedL2] = useState(null);
     const [selectedCA, setSelectedCA] = useState(null);
@@ -110,7 +112,6 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     );
 
     const updateHistory = () => history.push(generateUrl(
-        pathname,
         activeIndex,
         selectedBrands,
         startDate,
@@ -121,6 +122,7 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         selectedOrg,
         selectedRcOwner,
         selectedRcCategory,
+        selectedCAStatus,
         selectedL1 || {name: initialL1},
         selectedL2 || {name: initialL2},
         selectedCA || {name: initialCA}));
@@ -181,6 +183,11 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         setIsDirtyForm(true);
     };
 
+    const handleCAStatusChange = (status) => {
+        setSelectedCAStatus(status);
+        setIsDirtyForm(true);
+    };
+
     const handleNavigationClick = (e, activeLinkIndex) => {
         setActiveIndex(activeLinkIndex);
     };
@@ -226,6 +233,7 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                         tickets={allTickets}
                         start={startDate}
                         end={endDate}
+                        status={selectedCAStatus}
                         initialL1={initialL1}
                         initialL2={initialL2}
                         initialCA={initialCA}
@@ -242,62 +250,73 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         }
     };
 
-    const renderFilters = () => (
-        <div className="filters-wrapper">
-            <DateRangePicker
-                id="prb-daterangepicker"
-                startDate={startDate}
-                endDate={endDate}
-                minDate={moment('2019-01-01').toDate()}
-                onDateRangeChange={handleDateRangeChange}
-                inputLabel1="Start"
-                inputLabel2="End"
-                inputName1="start"
-                inputName2="end"
-            />
-            <FilterDropDown
-                id="org-dropdown"
-                className="filter-dropdown org-dropdown"
-                list={[ALL_ORGS_OPTION, ...currentOrgs]}
-                selectedValue={selectedOrg}
-                onClickHandler={handleOrgChange}
-            />
-            <FilterDropDown
-                id="priority-dropdown"
-                className="filter-dropdown priority-dropdown"
-                list={[ALL_PRIORITIES_OPTION, ...currentPriorities]}
-                selectedValue={selectedPriority}
-                onClickHandler={handlePriorityChange}
-            />
-            <FilterDropDown
-                id="type-dropdown"
-                className="filter-dropdown type-dropdown"
-                list={[ALL_TYPES_OPTION, ...currentTypes]}
-                selectedValue={selectedType}
-                onClickHandler={handleTypeChange}
-            />
-            <button
-                type="button"
-                className="apply-button btn btn-primary active"
-                onClick={() => {
-                    setIsApplyClicked(true);
-                }}
-                disabled={!isDirtyForm}
-            >
-                {'Apply'}
-            </button>
-            <button
-                type="button"
-                className={`btn btn-default more-filters-btn ${showMoreFilters ? 'active' : ''}`}
-                onClick={handleShowMoreFilters}
-            >
-                <SVGIcon usefill markup={FILTER__16} />{' More Filters'}
-            </button>
-        </div>
-    );
+    const renderFilters = () => {
+        const hideForCA = activeIndex === 2 ? 'hidden' : '';
+        const showForCA = activeIndex !== 2 ? 'hidden' : '';
+        return (
+            <div className="filters-wrapper">
+                <DateRangePicker
+                    id="prb-daterangepicker"
+                    startDate={startDate}
+                    endDate={endDate}
+                    minDate={moment('2019-01-01').toDate()}
+                    onDateRangeChange={handleDateRangeChange}
+                    inputLabel1="Start"
+                    inputLabel2="End"
+                    inputName1="start"
+                    inputName2="end"
+                />
+                <FilterDropDown
+                    id="castatus-dropdown"
+                    className={`filter-dropdown castatus-dropdown ${showForCA}`}
+                    list={[ALL_STATUSES_OPTION, ...CA_STATUSES]}
+                    selectedValue={selectedCAStatus}
+                    onClickHandler={handleCAStatusChange}
+                />
+                <FilterDropDown
+                    id="org-dropdown"
+                    className={`filter-dropdown org-dropdown ${hideForCA}`}
+                    list={[ALL_ORGS_OPTION, ...currentOrgs]}
+                    selectedValue={selectedOrg}
+                    onClickHandler={handleOrgChange}
+                />
+                <FilterDropDown
+                    id="priority-dropdown"
+                    className={`filter-dropdown priority-dropdown ${hideForCA}`}
+                    list={[ALL_PRIORITIES_OPTION, ...currentPriorities]}
+                    selectedValue={selectedPriority}
+                    onClickHandler={handlePriorityChange}
+                />
+                <FilterDropDown
+                    id="type-dropdown"
+                    className={`filter-dropdown type-dropdown ${hideForCA}`}
+                    list={[ALL_TYPES_OPTION, ...currentTypes]}
+                    selectedValue={selectedType}
+                    onClickHandler={handleTypeChange}
+                />
+                <button
+                    type="button"
+                    className="apply-button btn btn-primary active"
+                    onClick={() => {
+                        setIsApplyClicked(true);
+                    }}
+                    disabled={!isDirtyForm}
+                >
+                    {'Apply'}
+                </button>
+                <button
+                    type="button"
+                    className={`btn btn-default more-filters-btn ${showMoreFilters ? 'active' : ''} ${hideForCA}`}
+                    onClick={handleShowMoreFilters}
+                >
+                    <SVGIcon usefill markup={FILTER__16} />{' More Filters'}
+                </button>
+            </div>
+        );
+    };
 
     const renderMoreFilters = () => (
-        <Divider heading="More Filters" id="more-filters-divider" className="more-filters-divider" expanded={showMoreFilters}>
+        <Divider heading="More Filters" id="more-filters-divider" className={`more-filters-divider ${activeIndex === 2 ? 'hidden' : ''}`} expanded={showMoreFilters}>
             <form className="search-form search-form__more">
                 <FilterDropDown
                     id="status-dropdown"
@@ -335,7 +354,7 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             <Navigation
                 noMobileSelect
                 activeIndex={activeIndex}
-                links={navLinks}
+                links={NAV_LINKS}
                 onLinkClick={handleNavigationClick}
             />
             <LoadingContainer isLoading={isLoading} error={error}>

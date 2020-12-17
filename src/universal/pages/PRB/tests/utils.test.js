@@ -28,6 +28,7 @@ describe('PRB Utils', () => {
         expect(result.initialOrg).to.be.eql(ALL_ORGS_OPTION);
         expect(result.initialRcOwner).to.be.eql(ALL_RC_OWNERS_OPTION);
         expect(result.initialRcCategory).to.be.eql(ALL_RC_CATEGORIES_OPTION);
+        expect(result.initialCAStatus).to.be.eql(ALL_STATUSES_OPTION);
         expect(result.initialL1).to.be.eql(l1);
     });
 
@@ -40,7 +41,9 @@ describe('PRB Utils', () => {
         const org = 'Egencia';
         const rcOwner = 'EWE';
         const rcCategory = 'Architectural';
-        const l1 = 'business';
+        const l1 = 'businessA';
+        const l2 = 'businessB';
+        const castatus = 'Done';
         const result = getQueryValues(`?start=${start}&end=${end}`
             + `&type=${type}`
             + `&status=${status}`
@@ -48,7 +51,9 @@ describe('PRB Utils', () => {
             + `&org=${org}`
             + `&rcowner=${rcOwner}`
             + `&rccategory=${rcCategory}`
-            + `&l1=${l1}`);
+            + `&castatus=${castatus}`
+            + `&l1=${l1}`
+            + `&l2=${l2}`);
         expect(result.initialStart).to.be.eql(start);
         expect(result.initialEnd).to.be.eql(end);
         expect(result.initialType).to.be.eql(type);
@@ -57,7 +62,9 @@ describe('PRB Utils', () => {
         expect(result.initialOrg).to.be.eql(org);
         expect(result.initialRcOwner).to.be.eql(rcOwner);
         expect(result.initialRcCategory).to.be.eql(rcCategory);
+        expect(result.initialCAStatus).to.be.eql(castatus);
         expect(result.initialL1).to.be.eql(l1);
+        expect(result.initialL2).to.be.eql(l2);
     });
 
     it('getUrlParam', () => {
