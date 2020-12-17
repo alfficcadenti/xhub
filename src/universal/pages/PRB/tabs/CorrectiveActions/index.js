@@ -5,6 +5,7 @@ import Modal from '@homeaway/react-modal';
 import {ALL_STATUSES_OPTION} from '../../../../constants';
 import {checkResponse} from '../../../utils';
 import DataTable from '../../../../components/DataTable';
+import NoResults from '../../../../components/NoResults';
 import LoadingContainer from '../../../../components/LoadingContainer';
 import {mapDetails, checkIsRowSelected} from './utils';
 import './styles.less';
@@ -39,9 +40,7 @@ const CorrectiveActions = ({
         setData(response.data);
         if (initialValue) {
             const found = response.data.find(({name}) => name === initialValue);
-            if (found) {
-                onLChange(found);
-            }
+            onLChange(found);
         }
     };
 
@@ -182,12 +181,18 @@ const CorrectiveActions = ({
         </div>
     );
 
+    const renderTables = () => (
+        <>
+            {renderL1Table()}
+            {renderL2Table()}
+            {renderL3Table()}
+        </>
+    );
+
     return (
         <div className="corrective-actions-container">
             <LoadingContainer isLoading={isLoading} error={error} className="loading-container">
-                {renderL1Table()}
-                {renderL2Table()}
-                {renderL3Table()}
+                {l1Data.length ? renderTables() : <NoResults />}
             </LoadingContainer>
             <Modal
                 id="corrective-actions-modal"
