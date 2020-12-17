@@ -121,7 +121,7 @@ export const useFetchTickets = (
         if (isMounted) {
             fetchTickets();
         } else if (isApplyClicked) {
-            if (!startDate.isSame(lastStartDate) || !endDate.isSame(lastEndDate)) {
+            if (!moment(startDate).isSame(lastStartDate) || !moment(endDate).isSame(lastEndDate)) {
                 fetchTickets();
             } else {
                 applyFilters();

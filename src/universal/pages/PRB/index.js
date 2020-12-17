@@ -23,7 +23,7 @@ import {
 import {useFetchTickets} from './hooks';
 import {useQueryParamChange, useSelectedBrand} from '../hooks';
 import {navLinks} from './constants';
-import {getQueryValues, generateUrl, getActiveIndex, filterType} from './utils';
+import {validDateRange, getQueryValues, generateUrl, getActiveIndex, filterType} from './utils';
 import './styles.less';
 
 // eslint-disable-next-line complexity
@@ -92,7 +92,7 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     useSelectedBrand(selectedBrands[0], onBrandChange, prevSelectedBrand);
 
     // Filters
-    const matchesDate = (t) => startDate.isSameOrBefore(t.Opened, 'day') && endDate.isSameOrAfter(t.Opened, 'day');
+    const matchesDate = (t) => moment(startDate).isSameOrBefore(t.Opened, 'day') && moment(endDate).isSameOrAfter(t.Opened, 'day');
     const matchesPriority = (t) => selectedPriority === ALL_PRIORITIES_OPTION || t.Priority === selectedPriority;
     const matchesStatus = (t) => selectedStatus === ALL_STATUSES_OPTION || t.Status === selectedStatus;
     const matchesOrg = (t) => selectedOrg === ALL_ORGS_OPTION || t['Owning Org'] === selectedOrg;
@@ -126,6 +126,11 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         selectedCA || {name: initialCA}));
 
     function applyFilters() {
+        if (!validDateRange(startDate, endDate)) {
+            const values = getQueryValues(search);
+            setStartDate(values.initialStart);
+            setEndDate(values.initialEnd);
+        }
         const result = filterType(allTickets, selectedType).filter(filterTickets);
         setFilteredTickets(result);
         updateHistory();
@@ -141,8 +146,8 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     }, [selectedL1, selectedL2, selectedCA, activeIndex]);
 
     const handleDateRangeChange = (start, end) => {
-        setStartDate(moment(start));
-        setEndDate(moment(end));
+        setStartDate(start);
+        setEndDate(end);
         setIsDirtyForm(true);
     };
 
@@ -241,8 +246,9 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         <div className="filters-wrapper">
             <DateRangePicker
                 id="prb-daterangepicker"
-                startDate={startDate.format('YYYY-MM-DD')}
-                endDate={endDate.format('YYYY-MM-DD')}
+                startDate={startDate}
+                endDate={endDate}
+                minDate={moment('2019-01-01').toDate()}
                 onDateRangeChange={handleDateRangeChange}
                 inputLabel1="Start"
                 inputLabel2="End"

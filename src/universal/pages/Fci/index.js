@@ -65,8 +65,8 @@ const Fci = ({selectedBrands}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalData, setModalData] = useState({title: '', data: []});
 
-    const handleOpenTraceLog = (traceId, data) => {
-        setModalData({traceId, data});
+    const handleOpenTraceLog = (traceId, recordedSessionUrl, data) => {
+        setModalData({traceId, recordedSessionUrl, data});
         setIsModalOpen(true);
     };
 
@@ -81,9 +81,10 @@ const Fci = ({selectedBrands}) => {
                 const matchesCategory = selectedCategory === ALL_CATEGORIES || (category || []).includes(selectedCategory);
                 return isWithinRange && matchesCategory && hideIntentionalCheckMatch;
             })
-            .map(({fci, category}) => {
+            .map(({fci, category, recordedSessionUrl}) => {
                 const result = fci;
                 result.category = (category || []).join(',');
+                result.recordedSessionUrl = recordedSessionUrl;
                 return result;
             });
         const chart = getLineChartData(start, end, filteredData, selectedErrorCode, chartProperty);

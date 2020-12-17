@@ -6,6 +6,7 @@ import {Navigation} from '@homeaway/react-navigation';
 import {SVGIcon} from '@homeaway/react-svg';
 import {NEW_WINDOW__16} from '@homeaway/svg-defs';
 import DataTable from '../../components/DataTable';
+import HelpText from '../../components/HelpText/HelpText';
 import {getFilteredTraceData} from './utils';
 import {TRACE_TABLE_COLUMNS} from './constants';
 
@@ -30,10 +31,14 @@ const TraceLogModal = ({data, isOpen, onClose}) => {
 
     const renderTable = () => (
         <>
-            <a target="_blank" rel="noopener noreferrer" className="haystack-link" href={`https://bex.haystack.exp-prod.net/search?query_1.traceId=${data.traceId}`}>
+            <a target="_blank" rel="noopener noreferrer" className="ext-link" href={`https://bex.haystack.exp-prod.net/search?query_1.traceId=${data.traceId}`}>
                 {'Haystack'} <SVGIcon usefill markup={NEW_WINDOW__16} />
             </a>
-            <RadioGroup name="choice" ariaLabel="Table filter">
+            <a target="_blank" rel="noopener noreferrer" className="ext-link" href={data.recordedSessionUrl}>
+                {'Glassbox'} <SVGIcon usefill markup={NEW_WINDOW__16} />
+            </a>
+            <HelpText className="help-text" text={'Not all sessions are recorded'} placement="bottom" />
+            <RadioGroup name="error-filter" ariaLabel="Table filter">
                 <RadioButton
                     label="Errors Only"
                     value="true"

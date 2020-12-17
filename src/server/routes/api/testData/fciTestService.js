@@ -89,13 +89,14 @@ const getFci = (start, end, lobs, site) => {
     const momentEnd = moment(end);
     const dateTimeRange = momentEnd.diff(start, 'minutes');
     const timestamp = momentEnd.subtract(getRandomInt(dateTimeRange), 'minutes').toISOString();
+    const siteName = site || SITES[getRandomInt(SITES.length)];
     const fci = {
         timestamp,
         sessionId: generateSessionId(),
         traceId: generateTraceId(),
         failure: 'CheckoutError',
         errorCode: 500 + getRandomInt(5),
-        site: site || SITES[getRandomInt(SITES.length)],
+        site: siteName,
         tpId: getRandomInt(10),
         eapId: getRandomInt(10),
         siteId: getRandomInt(10),
@@ -103,14 +104,17 @@ const getFci = (start, end, lobs, site) => {
             ? lobs[getRandomInt(lobs.length)]
             : LOBS[getRandomInt(LOBS.length)],
         isIntentional: getRandomInt(13) % 3 === 1,
+        xdId: `${generateTraceId()}|${getRandomInt(1000000000)}|${siteName}`,
         traces: (new Array(getRandomInt(3) + 2).fill(0)).map(() => getTrace(0))
     };
     const category = getRandomInt(10) % 3 === 1
         ? []
         : [CATEGORIES[getRandomInt(CATEGORIES.length)]];
+    const recordedSessionUrl = `https://console-eu.bex.glassboxdigital.io/webinterface/webui/#/sessions/Cross_Domain_ID_XDID_cookie:unknown/replay/web?from=${start}&till=${end}`;
     return {
         fci,
-        category
+        category,
+        recordedSessionUrl
     };
 };
 
