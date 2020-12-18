@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
 import moment from 'moment';
+import Select from 'react-select';
 import {Navigation} from '@homeaway/react-navigation';
 import {SVGIcon} from '@homeaway/react-svg';
 import {FILTER__16} from '@homeaway/svg-defs';
@@ -22,7 +23,7 @@ import {
 } from '../../constants';
 import {useFetchTickets} from './hooks';
 import {useQueryParamChange, useSelectedBrand} from '../hooks';
-import {NAV_LINKS, CA_STATUSES} from './constants';
+import {NAV_LINKS, CA_STATUS_LIST} from './constants';
 import {validDateRange, getQueryValues, generateUrl, getActiveIndex, filterType} from './utils';
 import './styles.less';
 
@@ -42,7 +43,7 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         initialOrg,
         initialRcOwner,
         initialRcCategory,
-        initialCAStatus,
+        initialCAStatuses,
         initialL1,
         initialL2,
         initialCA
@@ -56,7 +57,7 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [selectedOrg, setSelectedOrg] = useState(initialOrg);
     const [selectedRcOwner, setSelectedRcOwner] = useState(initialRcOwner);
     const [selectedRcCategory, setSelectedRcCategory] = useState(initialRcCategory);
-    const [selectedCAStatus, setSelectedCAStatus] = useState(initialCAStatus);
+    const [selectedCAStatuses, setSelectedCAStatuses] = useState(initialCAStatuses);
     const [selectedL1, setSelectedL1] = useState(null);
     const [selectedL2, setSelectedL2] = useState(null);
     const [selectedCA, setSelectedCA] = useState(null);
@@ -122,7 +123,7 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         selectedOrg,
         selectedRcOwner,
         selectedRcCategory,
-        selectedCAStatus,
+        selectedCAStatuses,
         selectedL1 || {name: initialL1},
         selectedL2 || {name: initialL2},
         selectedCA || {name: initialCA}));
@@ -184,7 +185,7 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     };
 
     const handleCAStatusChange = (status) => {
-        setSelectedCAStatus(status);
+        setSelectedCAStatuses(status || []);
         setIsDirtyForm(true);
     };
 
@@ -233,7 +234,7 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                         tickets={allTickets}
                         start={startDate}
                         end={endDate}
-                        status={selectedCAStatus}
+                        statuses={selectedCAStatuses}
                         initialL1={initialL1}
                         initialL2={initialL2}
                         initialCA={initialCA}
@@ -266,12 +267,14 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     inputName1="start"
                     inputName2="end"
                 />
-                <FilterDropDown
-                    id="castatus-dropdown"
-                    className={`filter-dropdown castatus-dropdown ${showForCA}`}
-                    list={[ALL_STATUSES_OPTION, ...CA_STATUSES]}
-                    selectedValue={selectedCAStatus}
-                    onClickHandler={handleCAStatusChange}
+                <Select
+                    isMulti
+                    classNamePrefix="status-select"
+                    className={`status-select-container ${showForCA}`}
+                    value={selectedCAStatuses}
+                    options={CA_STATUS_LIST}
+                    onChange={handleCAStatusChange}
+                    placeholder={'Select Status'}
                 />
                 <FilterDropDown
                     id="org-dropdown"

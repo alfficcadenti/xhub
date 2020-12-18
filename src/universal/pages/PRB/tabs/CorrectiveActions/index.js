@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {SVGIcon} from '@homeaway/react-svg';
 import {CLOSE__24, CHEVRON_RIGHT__24} from '@homeaway/svg-defs';
 import Modal from '@homeaway/react-modal';
-import {ALL_STATUSES_OPTION} from '../../../../constants';
 import {checkResponse} from '../../../utils';
 import DataTable from '../../../../components/DataTable';
 import NoResults from '../../../../components/NoResults';
@@ -14,7 +13,7 @@ const CorrectiveActions = ({
     tickets,
     start,
     end,
-    status,
+    statuses,
     initialL1,
     initialL2,
     selectedL1,
@@ -23,8 +22,8 @@ const CorrectiveActions = ({
     onL2Change
 }) => {
     const dateQuery = `fromDate=${start}&toDate=${end}`;
-    const fetchQuery = status !== ALL_STATUSES_OPTION
-        ? `${dateQuery}&status=${status}`
+    const fetchQuery = statuses && statuses.length
+        ? `${dateQuery}&${statuses.map(({value}) => `status=${value}`).join('&')}`
         : dateQuery;
     const [l1Data, setL1Data] = useState([]);
     const [l2Data, setL2Data] = useState([]);
@@ -88,7 +87,6 @@ const CorrectiveActions = ({
     const renderRow = (row) => {
         const {name, businessOwnerType, ticketsCount} = row;
         const isSelected = checkIsRowSelected(businessOwnerType, selectedL1, selectedL2, name);
-        const handleCountClick = () => fetchDetails(businessOwnerType, name);
         return (
             <div
                 key={`${businessOwnerType}-${name}`}
@@ -97,8 +95,8 @@ const CorrectiveActions = ({
                 <div className="name">{name}</div>
                 <div
                     className="count"
-                    onClick={handleCountClick}
-                    onKeyUp={handleCountClick}
+                    onClick={() => fetchDetails(businessOwnerType, name)}
+                    onKeyUp={(e) => e.key === 'Enter' && fetchDetails(businessOwnerType, name)}
                     role="button"
                     tabIndex="0"
                 >

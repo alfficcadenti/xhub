@@ -16,4 +16,9 @@ export const NAV_LINKS = [
     }
 ];
 
-export const CA_STATUSES = ['Done', 'In Progress', 'Blocked', 'Open'];
+export const CA_STATUS_LIST = [
+    {value: 'Done', label: 'Done'},
+    {value: 'In Progress', label: 'In Progress'},
+    {value: 'Blocked', label: 'Blocked'},
+    {value: 'Open', label: 'Open'}
+];

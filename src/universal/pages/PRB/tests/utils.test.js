@@ -28,7 +28,7 @@ describe('PRB Utils', () => {
         expect(result.initialOrg).to.be.eql(ALL_ORGS_OPTION);
         expect(result.initialRcOwner).to.be.eql(ALL_RC_OWNERS_OPTION);
         expect(result.initialRcCategory).to.be.eql(ALL_RC_CATEGORIES_OPTION);
-        expect(result.initialCAStatus).to.be.eql(ALL_STATUSES_OPTION);
+        expect(result.initialCAStatuses).to.be.eql([]);
         expect(result.initialL1).to.be.eql(l1);
     });
 
@@ -62,7 +62,7 @@ describe('PRB Utils', () => {
         expect(result.initialOrg).to.be.eql(org);
         expect(result.initialRcOwner).to.be.eql(rcOwner);
         expect(result.initialRcCategory).to.be.eql(rcCategory);
-        expect(result.initialCAStatus).to.be.eql(castatus);
+        expect(result.initialCAStatuses).to.be.eql([{label: castatus, value: castatus}]);
         expect(result.initialL1).to.be.eql(l1);
         expect(result.initialL2).to.be.eql(l2);
     });

@@ -12,6 +12,7 @@ import {
     ALL_RC_CATEGORIES_OPTION,
     EPIC_ISSUE_TYPE
 } from '../../constants';
+import {CA_STATUS_LIST} from './constants';
 
 
 // eslint-disable-next-line complexity
@@ -55,7 +56,9 @@ export const getQueryValues = (search) => {
         initialOrg: org || ALL_ORGS_OPTION,
         initialRcOwner: rcowner || ALL_RC_OWNERS_OPTION,
         initialRcCategory: rccategory || ALL_RC_CATEGORIES_OPTION,
-        initialCAStatus: castatus || ALL_STATUSES_OPTION,
+        initialCAStatuses: castatus
+            ? castatus.split(',').map((l) => CA_STATUS_LIST.find(({value}) => value === l)).filter((l) => l)
+            : [],
         initialL1: l1,
         initialL2: l2,
         initialCA: ca
@@ -89,7 +92,7 @@ export const generateUrl = (
     selectedOrg,
     selectedRcOwner,
     selectedRcCategory,
-    selectedCAStatus,
+    selectedCAStatuses,
     selectedL1,
     selectedL2,
     selectedCA
@@ -104,7 +107,7 @@ export const generateUrl = (
         + `${getUrlParam('org', selectedOrg, ALL_ORGS_OPTION)}`
         + `${getUrlParam('rcowner', selectedRcOwner, ALL_RC_OWNERS_OPTION)}`
         + `${getUrlParam('rccategory', selectedRcCategory, ALL_RC_CATEGORIES_OPTION)}`
-        + `${getUrlParam('castatus', selectedCAStatus, ALL_STATUSES_OPTION)}`
+        + `${getUrlParam('castatus', selectedCAStatuses.map(({value}) => value).join(','), [])}`
         + `${getUrlParam('l1', (selectedL1 || {}).name, null)}`
         + `${getUrlParam('l2', (selectedL2 || {}).name, null)}`
         + `${getUrlParam('ca', (selectedCA || {}).name, null)}`;
