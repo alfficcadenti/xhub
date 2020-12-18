@@ -42,10 +42,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
     const isMount = useIsMount();
     const incidentMultiOptions = [
         {
-            value: 'All',
-            label: 'All'
-        },
-        {
             value: '0-Code Red',
             label: '0-Code Red'
         },
