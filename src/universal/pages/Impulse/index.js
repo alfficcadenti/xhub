@@ -41,7 +41,7 @@ const getPresets = () => [
 
 const filterSelectionClass = 'filter-option-selection';
 const filterExpandClass = 'filter-option-expand';
-let filteredDataOnPage = [];
+let filteredAnnotationsOnBrand = [];
 
 const Impulse = (props) => {
     const newBrand = props.selectedBrands[0];
@@ -105,37 +105,42 @@ const Impulse = (props) => {
         }
     };
     const filterAnnotations = (newValuesOnChange) => {
-        if (selectedBrandMulti.length > 0) {
-            if (typeof newValuesOnChange !== 'undefined' && newValuesOnChange !== null && newValuesOnChange.length > 0) {
-                const filteredAnnotations = filteredDataOnPage.filter((annotation) => newValuesOnChange.includes(annotation.priority));
+        if (typeof newValuesOnChange !== 'undefined' && newValuesOnChange !== null && newValuesOnChange.length > 0) {
+            if (selectedBrandMulti.length > 0) {
+                const filteredAnnotations = filteredAnnotationsOnBrand.filter((annotation) => newValuesOnChange.includes(annotation.priority));
                 setAnnotationsMulti(filteredAnnotations);
             } else {
-                setAnnotationsMulti(filteredDataOnPage);
+                const filteredAnnotations = annotations.filter((annotation) => newValuesOnChange.includes(annotation.priority));
+                setAnnotationsMulti(filteredAnnotations);
             }
-        } else if (typeof newValuesOnChange !== 'undefined' && newValuesOnChange !== null && newValuesOnChange.length > 0) {
-            const filteredAnnotations = annotations.filter((annotation) => newValuesOnChange.includes(annotation.priority));
-            setAnnotationsMulti(filteredAnnotations);
         } else {
-            setAnnotationsMulti(annotations);
+            if (selectedBrandMulti.length > 0) {
+                setAnnotationsMulti(filteredAnnotationsOnBrand);
+            } else {
+                setAnnotationsMulti(annotations);
+            }
         }
     };
-    const filterAnnotationsOnBrandSelect = () => {
+    const filterAnnotationsOnBrand = () => {
         if (selectedBrandMulti.length > 0) {
-            setSelectedIncidentMulti([]);
-            const filteredAnnotationsOnBrandSelect = annotations.filter((annotation) => {
+            filteredAnnotationsOnBrand = annotations.filter((annotation) => {
                 let estimatedImpact = annotation.estimatedImpact;
-                let brandsAffByIncident = estimatedImpact.map((estimatedImpactObj) => estimatedImpactObj.brand);
-                if (brandsAffByIncident.includes(null)) {
+                let impactedBrands = estimatedImpact.map((estimatedImpactObj) => estimatedImpactObj.brand);
+                if (impactedBrands.includes(null)) {
                     return true;
                 }
                 let toShowIncident = false;
                 toShowIncident = selectedBrandMulti.some((selectedBrand) => {
-                    return brandsAffByIncident.includes(selectedBrand);
+                    return impactedBrands.includes(selectedBrand);
                 });
                 return toShowIncident;
             });
-            filteredDataOnPage = filteredAnnotationsOnBrandSelect;
-            setAnnotationsMulti(filteredAnnotationsOnBrandSelect);
+            if (typeof selectedIncidentMulti !== 'undefined' && selectedIncidentMulti !== null && selectedIncidentMulti.length > 0) {
+                const filteredAnnotations = filteredAnnotationsOnBrand.filter((annotation) => selectedIncidentMulti.includes(annotation.priority));
+                setAnnotationsMulti(filteredAnnotations);
+            } else {
+                setAnnotationsMulti(filteredAnnotationsOnBrand);
+            }
         } else if (typeof selectedIncidentMulti !== 'undefined' && selectedIncidentMulti !== null && selectedIncidentMulti.length > 0) {
             const filteredAnnotations = annotations.filter((annotation) => selectedIncidentMulti.includes(annotation.priority));
             setAnnotationsMulti(filteredAnnotations);
@@ -163,7 +168,7 @@ const Impulse = (props) => {
         setFilterAllData([...res]);
 
         setAnnotationsMulti(annotations);
-        filterAnnotationsOnBrandSelect();
+        filterAnnotationsOnBrand();
     }, [res, annotations]);
     const customStyles = {
         control: (base) => ({
@@ -185,7 +190,7 @@ const Impulse = (props) => {
         setEnableIncidents(!enableIncidents);
         setSelectedIncidentMulti([]);
         if (selectedBrandMulti.length > 0) {
-            setAnnotationsMulti(filteredDataOnPage);
+            setAnnotationsMulti(filteredAnnotationsOnBrand);
         } else {
             setAnnotationsMulti(annotations);
         }
