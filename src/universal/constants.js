@@ -100,8 +100,7 @@ export const SUCCESS_RATES_PAGES_LIST = [
     'Checkout (CKO) To Checkout Confirmation Page'
 ];
 
-const TIMEZONE_OFFSET = (new Date()).getTimezoneOffset();
-export const TIMEZONE_ABBR = moment.tz.zone(moment.tz.guess()).abbr(TIMEZONE_OFFSET);
+export const TIMEZONE_ABBR = moment().tz(moment.tz.guess()).format('z');
 
 export const BRANDS = [
     {
