@@ -41,6 +41,7 @@ const getPresets = () => [
 
 const filterSelectionClass = 'filter-option-selection';
 const filterExpandClass = 'filter-option-expand';
+let filteredAnnotationsOnBrand = [];
 
 const Impulse = (props) => {
     const newBrand = props.selectedBrands[0];
@@ -104,14 +105,49 @@ const Impulse = (props) => {
         }
     };
     const filterAnnotations = (newValuesOnChange) => {
-        if (typeof newValuesOnChange !== 'undefined' && newValuesOnChange !== null && newValuesOnChange.length > 0 && !newValuesOnChange.includes('All')) {
-            const filteredAnnotations = annotations.filter((annotation) => newValuesOnChange.includes(annotation.priority));
+        if (typeof newValuesOnChange !== 'undefined' && newValuesOnChange !== null && newValuesOnChange.length > 0) {
+            if (selectedBrandMulti.length > 0) {
+                const filteredAnnotations = filteredAnnotationsOnBrand.filter((annotation) => newValuesOnChange.includes(annotation.priority));
+                setAnnotationsMulti(filteredAnnotations);
+            } else {
+                const filteredAnnotations = annotations.filter((annotation) => newValuesOnChange.includes(annotation.priority));
+                setAnnotationsMulti(filteredAnnotations);
+            }
+        } else {
+            if (selectedBrandMulti.length > 0) {
+                setAnnotationsMulti(filteredAnnotationsOnBrand);
+            } else {
+                setAnnotationsMulti(annotations);
+            }
+        }
+    };
+    const filterAnnotationsOnBrand = () => {
+        if (selectedBrandMulti.length > 0) {
+            filteredAnnotationsOnBrand = annotations.filter((annotation) => {
+                let estimatedImpact = annotation.estimatedImpact;
+                let impactedBrands = estimatedImpact.map((estimatedImpactObj) => estimatedImpactObj.brand);
+                if (impactedBrands.includes(null)) {
+                    return true;
+                }
+                let toShowIncident = false;
+                toShowIncident = selectedBrandMulti.some((selectedBrand) => {
+                    return impactedBrands.includes(selectedBrand);
+                });
+                return toShowIncident;
+            });
+            if (typeof selectedIncidentMulti !== 'undefined' && selectedIncidentMulti !== null && selectedIncidentMulti.length > 0) {
+                const filteredAnnotations = filteredAnnotationsOnBrand.filter((annotation) => selectedIncidentMulti.includes(annotation.priority));
+                setAnnotationsMulti(filteredAnnotations);
+            } else {
+                setAnnotationsMulti(filteredAnnotationsOnBrand);
+            }
+        } else if (typeof selectedIncidentMulti !== 'undefined' && selectedIncidentMulti !== null && selectedIncidentMulti.length > 0) {
+            const filteredAnnotations = annotations.filter((annotation) => selectedIncidentMulti.includes(annotation.priority));
             setAnnotationsMulti(filteredAnnotations);
         } else {
             setAnnotationsMulti(annotations);
         }
     };
-    // eslint-disable-next-line complexity
     const handleMultiChange = (event, handler) => {
         const newValuesOnChange = (event || []).map((item) => item.value);
         if (handler === 'lob') {
@@ -130,8 +166,9 @@ const Impulse = (props) => {
     };
     useEffect(() => {
         setFilterAllData([...res]);
+
         setAnnotationsMulti(annotations);
-        filterAnnotations(selectedIncidentMulti);
+        filterAnnotationsOnBrand();
     }, [res, annotations]);
     const customStyles = {
         control: (base) => ({
@@ -152,7 +189,11 @@ const Impulse = (props) => {
     const handleEnableIncidentChange = () => {
         setEnableIncidents(!enableIncidents);
         setSelectedIncidentMulti([]);
-        setAnnotationsMulti(annotations);
+        if (selectedBrandMulti.length > 0) {
+            setAnnotationsMulti(filteredAnnotationsOnBrand);
+        } else {
+            setAnnotationsMulti(annotations);
+        }
     };
     const renderTabs = () => {
         switch (activeIndex) {
