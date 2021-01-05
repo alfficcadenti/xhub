@@ -150,7 +150,9 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
     const handleDateRangeChange = (start, end) => {
         setStartDate(start);
-        setEndDate(end);
+        if (!!end || (!end && moment(start).isAfter(endDate))) {
+            setEndDate(end);
+        }
         setIsDirtyForm(true);
     };
 
