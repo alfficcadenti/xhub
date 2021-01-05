@@ -1,3 +1,4 @@
+import moment from 'moment';
 import {expect} from 'chai';
 import {
     getQueryValues,
@@ -16,10 +17,10 @@ import {
 
 describe('PRB Utils', () => {
     it('getQueryValues - default', () => {
-        const start = '2020-01-01';
-        const end = '2020-02-02';
+        const start = moment().subtract(1, 'years').startOf('minute').format('YYYY-MM-DD');
+        const end = moment().format('YYYY-MM-DD');
         const l1 = 'business';
-        const result = getQueryValues(`?start=${start}&end=${end}&l1=${l1}`);
+        const result = getQueryValues(`?l1=${l1}`);
         expect(result.initialStart).to.be.eql(start);
         expect(result.initialEnd).to.be.eql(end);
         expect(result.initialType).to.be.eql(ALL_TYPES_OPTION);

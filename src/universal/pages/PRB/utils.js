@@ -46,7 +46,7 @@ export const getQueryValues = (search) => {
     return {
         initialStart: isValidDateRange
             ? moment(start).format('YYYY-MM-DD')
-            : moment().subtract(30, 'days').startOf('minute').format('YYYY-MM-DD'),
+            : moment().subtract(1, 'years').startOf('minute').format('YYYY-MM-DD'),
         initialEnd: isValidDateRange
             ? moment(end).format('YYYY-MM-DD')
             : moment().format('YYYY-MM-DD'),
