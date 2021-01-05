@@ -58,7 +58,7 @@ export const getQueryValues = (search) => {
         initialRcCategory: rccategory || ALL_RC_CATEGORIES_OPTION,
         initialCAStatuses: castatus
             ? castatus.split(',').map((l) => CA_STATUS_LIST.find(({value}) => value === l)).filter((l) => l)
-            : [],
+            : CA_STATUS_LIST.filter(({value}) => ['In Progress', 'Open', 'Blocked'].includes(value)),
         initialL1: l1,
         initialL2: l2,
         initialCA: ca

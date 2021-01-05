@@ -28,7 +28,11 @@ describe('PRB Utils', () => {
         expect(result.initialOrg).to.be.eql(ALL_ORGS_OPTION);
         expect(result.initialRcOwner).to.be.eql(ALL_RC_OWNERS_OPTION);
         expect(result.initialRcCategory).to.be.eql(ALL_RC_CATEGORIES_OPTION);
-        expect(result.initialCAStatuses).to.be.eql([]);
+        expect(result.initialCAStatuses).to.be.eql([
+            {label: 'In Progress', value: 'In Progress'},
+            {label: 'Blocked', value: 'Blocked'},
+            {label: 'Open', value: 'Open'}
+        ]);
         expect(result.initialL1).to.be.eql(l1);
     });
 
