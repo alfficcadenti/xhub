@@ -34,6 +34,7 @@ export const validDateRange = (start, end) => {
 };
 
 // eslint-disable-next-line complexity
+
 export const getQueryValues = (search, brand = 'Expedia') => {
     const {from, to, lobs, errorCode, siteName, category, hideIntentionalCheck} = qs.parse(search);
     const isValidDateRange = validDateRange(from, to);

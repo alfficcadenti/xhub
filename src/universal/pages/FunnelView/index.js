@@ -47,6 +47,12 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [isFormDisabled, setIsFormDisabled] = useState(false);
     const [isLoBAvailable, setIsLoBAvailable] = useState(true);
     const [selectedLobs, setSelectedLobs] = useState(initialLobs);
+    const [isZoomedIn, setIsZoomedIn] = useState(false);
+
+    const [refAreaLeft, setRefAreaLeft] = useState('');
+    const [refAreaRight, setRefAreaRight] = useState('');
+    const [chartLeft, setChartLeft] = useState('dataMin');
+    const [chartRight, setChartRight] = useState('dataMax');
 
     // annotations state
     const [enableAnnotations, setEnableAnnotations] = useState(false);
@@ -64,11 +70,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const {
         handleMouseDown,
         handleMouseMove,
-        handleMouseUp,
-        chartLeft,
-        chartRight,
-        refAreaLeft,
-        refAreaRight
+        handleMouseUp
     } = useZoomAndSynced(
         widgets,
         setWidgets,
@@ -78,7 +80,14 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         setStart,
         setEnd,
         setIsDirtyForm,
-        pendingTimeRange
+        pendingTimeRange,
+        setIsZoomedIn,
+        setRefAreaLeft,
+        setRefAreaRight,
+        setChartLeft,
+        setChartRight,
+        refAreaLeft,
+        refAreaRight
     );
 
     useEffect(() => {
@@ -129,7 +138,9 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         if ([EG_BRAND, EGENCIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND].includes(selectedBrands[0])) {
             setIsLoBAvailable(false);
         } else if (isMounted) {
-            fetchPageViewsLoBData(selectedBrands);
+            if (!isZoomedIn) {
+                fetchPageViewsLoBData(selectedBrands);
+            }
         }
 
         if ([EG_BRAND, EGENCIA_BRAND].includes(selectedBrands[0])) {
@@ -140,8 +151,11 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         } else if (isMounted) {
             setError(null);
             setIsFormDisabled(false);
-            fetchPageViewsData(selectedBrands);
+            if (!isZoomedIn) {
+                fetchPageViewsData(selectedBrands);
+            }
         }
+
         setIsMounted(true);
     }, [selectedBrands, start, end, isMounted, selectedEPSPartner]);
 
@@ -199,6 +213,20 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         }
     };
 
+    const resetGraphToDefault = () => {
+        const defaultStart = moment().utc().subtract(6, 'hour');
+        const defaultEnd = moment().utc();
+        setChartLeft('dataMin');
+        setChartRight('dataMax');
+        setRefAreaLeft('');
+        setRefAreaRight('');
+        setStart(defaultStart.format());
+        setEnd(defaultEnd.format());
+        setPendingStart(defaultStart);
+        setPendingEnd(defaultEnd);
+        setIsZoomedIn(false);
+    };
+
     const renderPageViews = (data) => (
         <div className="page-views-widget-container">
             {data && data.length && data.map(renderWidget) || 'No Data. Try selecting a different time frame or refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.'}
@@ -254,6 +282,14 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     handleDatetimeChange={handleDatetimeChange}
                     isDirtyForm={isDirtyForm}
                 />
+                <button
+                    type="button"
+                    disabled={moment(end).diff(moment(start), 'hour') === 6}
+                    className={'btn btn-default reset-btn'}
+                    onClick={() => resetGraphToDefault()}
+                >
+                    {'Set to last 6 hours'}
+                </button>
             </div>
             <LoadingContainer isLoading={isLoading} error={!selectedLobs.length ? error : LoBError} className="page-views-loading-container">
                 {selectedLobs && selectedLobs.length && renderPageViews(lobWidgets) || renderPageViews(widgets)}

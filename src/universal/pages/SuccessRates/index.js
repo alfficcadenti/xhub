@@ -65,6 +65,11 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [isSupportedBrand, setIsSupportedBrand] = useState(false);
     const [isZoomedIn, setIsZoomedIn] = useState(false);
 
+    const [refAreaLeft, setRefAreaLeft] = useState('');
+    const [refAreaRight, setRefAreaRight] = useState('');
+    const [chartLeft, setChartLeft] = useState('dataMin');
+    const [chartRight, setChartRight] = useState('dataMax');
+
     // annotations state
     const [enableAnnotations, setEnableAnnotations] = useState(false);
     const [filteredAnnotations, setFilteredAnnotations] = useState([]);
@@ -80,14 +85,10 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const {
         handleMouseDown,
         handleMouseMove,
-        handleMouseUp,
-        chartLeft,
-        chartRight,
-        refAreaLeft,
-        refAreaRight
+        handleMouseUp
     } = useZoomAndSynced(
-        widgets,
-        setWidgets,
+        currentWidgets,
+        setCurrentWidgets,
         setPendingStart,
         setPendingEnd,
         setCurrentTimeRange,
@@ -95,7 +96,13 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         setEnd,
         setIsDirtyForm,
         pendingTimeRange,
-        setIsZoomedIn
+        setIsZoomedIn,
+        setRefAreaLeft,
+        setRefAreaRight,
+        setChartLeft,
+        setChartRight,
+        refAreaLeft,
+        refAreaRight
     );
 
     const rttRef = useRef();
@@ -180,7 +187,6 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
         return function cleanup() {
             clearInterval(rttRef.current);
-            setIsZoomedIn(false);
         };
     }, [selectedBrands, start, end, selectedEPSPartner]);
 
@@ -206,6 +212,20 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         setStart(pendingStart);
         setEnd(pendingEnd);
         setIsDirtyForm(false);
+    };
+
+    const resetGraphToDefault = () => {
+        const defaultStart = moment().utc().subtract(6, 'hour');
+        const defaultEnd = moment().utc();
+        setChartLeft('dataMin');
+        setChartRight('dataMax');
+        setRefAreaLeft('');
+        setRefAreaRight('');
+        setStart(defaultStart.format());
+        setEnd(defaultEnd.format());
+        setPendingStart(defaultStart);
+        setPendingEnd(defaultEnd);
+        setIsZoomedIn(false);
     };
 
     const handleLoBChange = (lobs) => setSelectedLobs(lobs || []);
@@ -294,6 +314,14 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     handleDatetimeChange={handleDatetimeChange}
                     isDirtyForm={isDirtyForm}
                 />
+                <button
+                    type="button"
+                    disabled={moment(end).diff(moment(start), 'hour') === 6}
+                    className={'btn btn-default reset-btn'}
+                    onClick={() => resetGraphToDefault()}
+                >
+                    {'Set to last 6 hours'}
+                </button>
             </div>
             {isSupportedBrand && (
                 <RealTimeSummaryPanel

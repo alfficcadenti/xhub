@@ -55,7 +55,7 @@ export const useQueryParamChange = (selectedBrand, setSelectedBrands) => {
 
 export const useZoomAndSynced = (
     widgets,
-    setWidgets,
+    setCurrentWidgets,
     setPendingStart,
     setPendingEnd,
     setCurrentTimeRange,
@@ -63,19 +63,21 @@ export const useZoomAndSynced = (
     setEnd,
     setIsDirtyForm,
     pendingTimeRange,
-    setIsZoomedIn = null
+    setIsZoomedIn,
+    setRefAreaLeft,
+    setRefAreaRight,
+    setChartLeft,
+    setChartRight,
+    refAreaLeft,
+    refAreaRight
 ) => {
-    const [refAreaLeft, setRefAreaLeft] = useState('');
-    const [refAreaRight, setRefAreaRight] = useState('');
-    const [chartLeft, setChartLeft] = useState('dataMin');
-    const [chartRight, setChartRight] = useState('dataMax');
-
     const handleMouseUp = () => {
         if (refAreaLeft === refAreaRight || refAreaRight === '') {
             setRefAreaLeft('');
             setRefAreaRight('');
             return;
         }
+
         // xAxis domain
         let nextRefAreaLeft = refAreaLeft;
         let nextRefAreaRight = refAreaRight;
@@ -97,7 +99,7 @@ export const useZoomAndSynced = (
         });
         setRefAreaLeft('');
         setRefAreaRight('');
-        setWidgets(nextWidgets.slice());
+        setCurrentWidgets(nextWidgets.slice());
         setChartLeft(nextRefAreaLeft);
         setChartRight(nextRefAreaRight);
         setPendingStart(moment(nextRefAreaLeft));
@@ -106,7 +108,9 @@ export const useZoomAndSynced = (
         setStart(moment(nextRefAreaLeft));
         setEnd(moment(nextRefAreaRight));
         setIsDirtyForm(false);
-        if (setIsZoomedIn) {
+        setIsZoomedIn(true);
+
+        if (typeof setIsZoomedIn === 'function') {
             setIsZoomedIn(true);
         }
     };
@@ -114,15 +118,10 @@ export const useZoomAndSynced = (
     const handleMouseDown = (e) => setRefAreaLeft(e.activeLabel);
     const handleMouseMove = (e) => refAreaLeft && setRefAreaRight(e.activeLabel);
 
-
     return {
         handleMouseDown,
         handleMouseMove,
         handleMouseUp,
-        chartLeft,
-        chartRight,
-        refAreaLeft,
-        refAreaRight
     };
 };
 
