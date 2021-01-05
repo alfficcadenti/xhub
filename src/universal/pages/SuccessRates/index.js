@@ -158,8 +158,8 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         if ([EG_BRAND, EGENCIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND].includes(selectedBrands[0])) {
             setIsLoBAvailable(false);
         }
-
-        if ([EG_BRAND, EGENCIA_BRAND, HOTELS_COM_BRAND].includes(selectedBrands[0])) {
+        
+        if ([EG_BRAND, EGENCIA_BRAND].includes(selectedBrands[0])) {
             setIsSupportedBrand(false);
             setError(`Success rates for ${selectedBrands} is not yet available.
                 If you have any questions, please ping #dpi-reo-opex-all or leave a comment via our Feedback form.`);

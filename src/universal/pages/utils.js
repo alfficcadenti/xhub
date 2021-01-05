@@ -45,6 +45,8 @@ export const mapBrandNames = (brandName) => {
             return EXPEDIA_BRAND;
         case 'vrbo':
             return VRBO_BRAND;
+        case 'hcom':
+            return HOTELS_COM_BRAND;
         case null:
             return EXPEDIA_PARTNER_SERVICES_BRAND;
         default:
