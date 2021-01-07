@@ -32,8 +32,8 @@ export const EG_BRAND = 'Expedia Group';
 export const DEPLOYMENT_ANNOTATION_CATEGORY = 'deployment';
 export const INCIDENT_ANNOTATION_CATEGORY = 'incident';
 export const AB_TESTS_ANNOTATION_CATEGORY = 'abTests';
-export const SUPPRESSED_BRANDS = ['Egencia', 'CarRentals.com', 'Hotwire', 'Vrbo'];
-export const SUPPRESSED_LOBS = ['Car', 'Rail'];
+export const SUPPRESSED_BRANDS = ['Egencia', 'Hotwire', 'Vrbo'];
+export const SUPPRESSED_LOBS = ['Rail'];
 export const EPS_PARTNER_SITENAMES = [
     {label: 'axtraweb.poweredbygps.com', value: 'axtraweb.poweredbygps.com'},
     {label: 'barcelo.poweredbygps.co.uk', value: 'barcelo.poweredbygps.co.uk'},
