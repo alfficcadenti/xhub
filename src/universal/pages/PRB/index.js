@@ -95,7 +95,6 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     useSelectedBrand(selectedBrands[0], onBrandChange, prevSelectedBrand);
 
     // Filters
-    const matchesDate = (t) => moment(startDate).isSameOrBefore(t.Opened, 'day') && moment(endDate).isSameOrAfter(t.Opened, 'day');
     const matchesPriority = (t) => selectedPriority === ALL_PRIORITIES_OPTION || t.Priority === selectedPriority;
     const matchesStatus = (t) => selectedStatus === ALL_STATUSES_OPTION || t.Status === selectedStatus;
     const matchesOrg = (t) => selectedOrg === ALL_ORGS_OPTION || t['Owning Org'] === selectedOrg;
@@ -104,8 +103,7 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
     // eslint-disable-next-line complexity
     const filterTickets = (t) => (
-        matchesDate(t)
-        && matchesPriority(t)
+        matchesPriority(t)
         && matchesStatus(t)
         && matchesOrg(t)
         && matchesRcOwner(t)
