@@ -4,7 +4,6 @@ A [Catalyst](https://pages.github.expedia.biz/Catalyst/information/guide/introdu
 
 See our official documentation [here](https://pages.github.expedia.biz/eg-reo-opex/eg-reo-opex-docs/guide/products/availability_and_trends/opxhub_ui/)
 
-
 ## App URL
 
 | Environment | Endpoints                                                                                      |
@@ -15,22 +14,19 @@ See our official documentation [here](https://pages.github.expedia.biz/eg-reo-op
 
 Kumo: https://console.kumo.expedia.biz/apps/opxhub-ui
 
-
 ## Logs
 
 | Environment | Endpoints                                                                                                                                                                                                |
 | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Test        | [https://splunk.test.egmonitoring.expedia.com/en-US/app/eg-opex-opxhub/opxhub_status_code_dashboard](https://splunk.test.egmonitoring.expedia.com/en-US/app/eg-opex-opxhub/opxhub_status_code_dashboard)  |
+| Test        | [https://splunk.test.egmonitoring.expedia.com/en-US/app/eg-opex-opxhub/opxhub_status_code_dashboard](https://splunk.test.egmonitoring.expedia.com/en-US/app/eg-opex-opxhub/opxhub_status_code_dashboard) |
 | Prod        | [https://splunk.prod.egmonitoring.expedia.com/en-US/app/eg-opex-opxhub/opxhub_status_code_dashboard](https://splunk.prod.egmonitoring.expedia.com/en-US/app/eg-opex-opxhub/opxhub_status_code_dashboard) |
-
 
 ## Monitoring
 
-  | Environment | Endpoints |
-  | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-  | Test | [https://grafana.test.expedia.com/d/ZPlMgQyZz/opxhub-ui-monitoring-dashboard?orgId=1&from=now-1d&to=now](https://grafana.test.expedia.com/d/ZPlMgQyZz/opxhub-ui-monitoring-dashboard?orgId=1&from=now-1d&to=now) |
-  | Prod | [https://grafana.prod.expedia.com/d/rGyxu1mGz/opxhub-ui-monitoring-dashboard?orgId=1&from=now-1d&to=now](https://grafana.prod.expedia.com/d/rGyxu1mGz/opxhub-ui-monitoring-dashboard?orgId=1&from=now-1d&to=now) |
-
+| Environment | Endpoints                                                                                                                                                                                                        |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Test        | [https://grafana.test.expedia.com/d/ZPlMgQyZz/opxhub-ui-monitoring-dashboard?orgId=1&from=now-1d&to=now](https://grafana.test.expedia.com/d/ZPlMgQyZz/opxhub-ui-monitoring-dashboard?orgId=1&from=now-1d&to=now) |
+| Prod        | [https://grafana.prod.expedia.com/d/rGyxu1mGz/opxhub-ui-monitoring-dashboard?orgId=1&from=now-1d&to=now](https://grafana.prod.expedia.com/d/rGyxu1mGz/opxhub-ui-monitoring-dashboard?orgId=1&from=now-1d&to=now) |
 
 ## Development
 
@@ -65,7 +61,6 @@ Kumo: https://console.kumo.expedia.biz/apps/opxhub-ui
    ```
 
 5. Navigate to `localhost:8080`
-
 
 ## Contributing
 

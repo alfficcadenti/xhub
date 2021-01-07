@@ -12,6 +12,18 @@
             "Effect": "Allow",
             "Action": ["s3:GetObject"],
             "Resource": ["arn:aws:s3:::iota-dash/covid_19/*"]
+          },
+          {
+            "Effect": "Allow",
+            "Action":[
+              "s3:Get*",
+              "s3:List*",
+              "s3:PutObject"
+           ],
+           "Resource":[
+              "arn:aws:s3:::reo-opex-forecast", 
+              "arn:aws:s3:::reo-opex-forecast/*" 
+           ]
           }
         ],
         "managed_policies": ["AmazonS3ReadOnlyAccess"],
@@ -23,7 +35,8 @@
                 "ecs-tasks.amazonaws.com",
                 "rds.amazonaws.com",
                 "lambda.amazonaws.com",
-                "ec2.amazonaws.com"
+                "ec2.amazonaws.com",
+                "forecast.amazonaws.com"
               ]
             },
             "Action": "sts:AssumeRole"
