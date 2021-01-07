@@ -203,8 +203,8 @@ const Annotations = ({
                             return incident;
                         });
 
-                    const incidentPriority = getListOfUniqueProperties(adjustedUniqueTickets, 'priority').sort();
-                    const incidentStatus = getListOfUniqueProperties(adjustedUniqueTickets, 'status').sort();
+                    const incidentPriority = getListOfUniqueProperties(adjustedUniqueTickets, 'priority');
+                    const incidentStatus = getListOfUniqueProperties(adjustedUniqueTickets, 'status');
                     setIncidentPrioritySuggestions(incidentPriority);
                     setIncidentStatusSuggestions(incidentStatus);
                     setIncidentAnnotations(adjustedUniqueTickets);
@@ -240,7 +240,7 @@ const Annotations = ({
                     }));
 
                     setAbTestsAnnotations(adjustedAbTests);
-                    const abTestsStatus = getListOfUniqueProperties(adjustedAbTests.map((item) => item.abTestDetails), 'status').sort();
+                    const abTestsStatus = getListOfUniqueProperties(adjustedAbTests.map((item) => item.abTestDetails), 'status');
                     setAbTestsStatusSuggestions(abTestsStatus);
                     setSuggestions((prevSuggestions) => ({
                         ...prevSuggestions,

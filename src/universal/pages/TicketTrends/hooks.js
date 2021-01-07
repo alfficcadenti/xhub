@@ -62,7 +62,7 @@ export const useFetchTickets = (
                         : sortArrayByMostRecentDate([...ticketsData, ...epsTickets], 'openDate');
                     const uniqueTickets = consolidateTicketsById(tickets);
                     const adjustedUniqueTickets = adjustTicketProperties(uniqueTickets, isIncidents ? 'incident' : 'defect');
-                    const ticketPriorities = getListOfUniqueProperties(adjustedUniqueTickets, 'priority').sort();
+                    const ticketPriorities = getListOfUniqueProperties(adjustedUniqueTickets, 'priority');
                     const ticketStatuses = getListOfUniqueProperties(adjustedUniqueTickets, 'Status');
                     const ticketPartners = getListOfUniqueProperties(adjustedUniqueTickets, 'impactedPartners');
 

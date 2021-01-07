@@ -19,7 +19,7 @@ const OngoingIncidents = ({selectedBrands}) => {
     const [allIncidents, setAllIncidents] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    const isOngoingIncident = (incident) => (incident.status === 'In Progress' || incident.status === 'Escalated') && (incident.priority === '1-Critical' || incident.priority === '0-Code Red' || incident.priority === '2-High');
+    const isOngoingIncident = (incident) => (incident.status === 'In Progress' || incident.status === 'Escalated') && (incident.priority === '1-Critical' || incident.priority === '2-High');
     const filterByBrand = (incident) => divisionToBrand(incident.brand) === selectedBrand;
     const filterOngoingIncidents = (incidents) =>
         (selectedBrand === EG_BRAND ? incidents : incidents.filter(filterByBrand))

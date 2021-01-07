@@ -85,7 +85,6 @@ describe('Quality Metrics Util', () => {
     });
 
     it('mapPriority', () => {
-        expect(mapPriority('0-Code Red')).to.eql(P1_LABEL);
         expect(mapPriority('1-High')).to.eql(P1_LABEL);
         expect(mapPriority('P2')).to.eql(P2_LABEL);
         expect(mapPriority('3')).to.eql(P3_LABEL);

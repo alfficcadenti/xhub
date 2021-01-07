@@ -7,7 +7,8 @@ import {isNotEmptyString, isNotDuplicate, checkResponse, sortArrayByMostRecentDa
 const getListOfUniqueProperties = (tickets = [], prop) => tickets
     .map((ticket) => ticket[prop])
     .filter(isNotDuplicate)
-    .filter(isNotEmptyString);
+    .filter(isNotEmptyString)
+    .sort();
 
 const mapLinkedIssues = (i) => {
     const linkedIssues = (i.linkedIssues || []).map((l) => ({
@@ -131,7 +132,7 @@ export const useFetchTickets = (
 
         return () => {
             setIsApplyClicked(false);
-            setCurrentPriorities(['0-Code Red', '1-Critical', '2-High', '3-Medium', '4-Low']); // TODO hardcoded
+            setCurrentPriorities(['1-Critical', '2-High', '3-Medium', '4-Low']); // TODO hardcoded
             setCurrentStatuses(['To Do', 'In Progress', 'Done', 'Resolved', 'Testing', 'Closed']); // TODO hardcoded
             setCurrentTypes(['Corrective Action', 'Epic', 'Incident', 'Post Mortem', 'Resiliency Validation']); // TODO hardcoded
             setCurrentOrgs(['Egencia', 'Platform & Marketplaces']); // TODO hardcoded

@@ -64,7 +64,7 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [isDirtyForm, setIsDirtyForm] = useState(false);
 
     const [isApplyClicked, setIsApplyClicked] = useState(false);
-    const [currentPriorities, setCurrentPriorities] = useState(['0-Code Red', '1-Critical', '2-High', '3-Medium', '4-Low']);
+    const [currentPriorities, setCurrentPriorities] = useState(['1-Critical', '2-High', '3-Medium', '4-Low']);
     const [currentStatuses, setCurrentStatuses] = useState(['To Do', 'In Progress', 'Done', 'Resolved', 'Testing', 'Closed']);
     const [currentTypes, setCurrentTypes] = useState(['Corrective Action', 'Epic', 'Incident', 'Post Mortem', 'Resiliency Validation']);
     const [currentOrgs, setCurrentOrgs] = useState(['Egencia', 'Platform & Marketplaces']);

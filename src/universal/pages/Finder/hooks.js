@@ -39,13 +39,13 @@ export const useFetchCRs = (
                     const crs = sortArrayByMostRecentDate(filteredCR, 'openedAt');
                     const uniqueCRs = getUniqueByProperty(crs, 'number');
                     const adjustedUniqueCRs = adjustCRsProperties(uniqueCRs);
-                    const dataProducts = getListOfUniqueProperties(adjustedUniqueCRs, 'productName').sort();
-                    const dataApplications = getListOfUniqueProperties(adjustedUniqueCRs, 'applicationName').sort();
-                    const dataCRnumbers = getListOfUniqueProperties(adjustedUniqueCRs, 'number').sort();
-                    const dataPlatforms = getListOfUniqueProperties(adjustedUniqueCRs, 'platform').sort();
-                    const dataTeams = getListOfUniqueProperties(adjustedUniqueCRs, 'team').sort();
-                    const dataBusinessReasons = getListOfUniqueProperties(adjustedUniqueCRs, 'businessReason').sort();
-                    const dataStatuses = getListOfUniqueProperties(adjustedUniqueCRs, 'status').sort();
+                    const dataProducts = getListOfUniqueProperties(adjustedUniqueCRs, 'productName');
+                    const dataApplications = getListOfUniqueProperties(adjustedUniqueCRs, 'applicationName');
+                    const dataCRnumbers = getListOfUniqueProperties(adjustedUniqueCRs, 'number');
+                    const dataPlatforms = getListOfUniqueProperties(adjustedUniqueCRs, 'platform');
+                    const dataTeams = getListOfUniqueProperties(adjustedUniqueCRs, 'team');
+                    const dataBusinessReasons = getListOfUniqueProperties(adjustedUniqueCRs, 'businessReason');
+                    const dataStatuses = getListOfUniqueProperties(adjustedUniqueCRs, 'status');
 
                     setChangeRequestSuggestions({
                         productName: dataProducts,
@@ -128,7 +128,7 @@ export const useFetchABTests = (
                         status: abTest.abTestDetails.status
                     }));
 
-                    const dataStatuses = getListOfUniqueProperties(adjustedAbTests, 'status').sort();
+                    const dataStatuses = getListOfUniqueProperties(adjustedAbTests, 'status');
                     setAbTestSuggestions({
                         status: dataStatuses
                     });

@@ -113,12 +113,10 @@ const Impulse = (props) => {
                 const filteredAnnotations = annotations.filter((annotation) => newValuesOnChange.includes(annotation.priority));
                 setAnnotationsMulti(filteredAnnotations);
             }
+        } else if (selectedBrandMulti.length > 0) {
+            setAnnotationsMulti(filteredAnnotationsOnBrand);
         } else {
-            if (selectedBrandMulti.length > 0) {
-                setAnnotationsMulti(filteredAnnotationsOnBrand);
-            } else {
-                setAnnotationsMulti(annotations);
-            }
+            setAnnotationsMulti(annotations);
         }
     };
     const filterAnnotationsOnBrand = () => {
