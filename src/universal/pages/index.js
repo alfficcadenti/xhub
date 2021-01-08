@@ -35,8 +35,8 @@ export default [
         link: '/fci',
         text: 'FCI',
         component: require('./Fci'),
-        brands: [EXPEDIA_PARTNER_SERVICES_BRAND],
-        hidden: true
+        brands: [EXPEDIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND],
+        hidden: false
     },
     {
         category: AAT,
@@ -52,8 +52,8 @@ export default [
         link: '/success-rates',
         text: 'Success Rates',
         component: require('./SuccessRates'),
-        brands: [EXPEDIA_BRAND, VRBO_BRAND],
-        hidden: true
+        brands: [EXPEDIA_BRAND, HOTELS_COM_BRAND, VRBO_BRAND],
+        hidden: false
     },
     // PHAR Dashboards
     {
