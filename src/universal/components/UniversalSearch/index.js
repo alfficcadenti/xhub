@@ -15,7 +15,9 @@ const UniversalSearch = ({onFilterChange, suggestionMapping, suggestions, defaul
     const [valueToggle, setValueToggle] = useState(false);
 
     useEffect(() => {
-        setFieldSelection([]);
+        if (resetSelection) {
+            setFieldSelection([]);
+        }
     }, [resetSelection]);
 
     const onClear = () => {

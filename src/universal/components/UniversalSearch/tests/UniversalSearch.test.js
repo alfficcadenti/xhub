@@ -19,7 +19,16 @@ describe('UniversalSearch component testing', () => {
             {key: 'serviceTier', value: 'Tier 1'},
             {key: 'serviceTier', value: 'Tier 2'}
         ];
-        const wrapper = mount(<UniversalSearch suggestions={[]} onFilterChange={jest.fn()} defaultSelection={defaultSelection}/>);
+        const wrapper = mount(<UniversalSearch suggestions={[]} onFilterChange={jest.fn()} defaultSelection={defaultSelection} resetSelection={false}/>);
+        expect(wrapper.find('.Token')).to.have.length(2);
+    });
+
+    it('reset UniversalSearch selection if reset is true', () => {
+        const defaultSelection = [
+            {key: 'serviceTier', value: 'Tier 1'},
+            {key: 'serviceTier', value: 'Tier 2'}
+        ];
+        const wrapper = mount(<UniversalSearch suggestions={[]} onFilterChange={jest.fn()} defaultSelection={defaultSelection} resetSelection/>);
         expect(wrapper.find('.Token')).to.have.length(0);
     });
 });
