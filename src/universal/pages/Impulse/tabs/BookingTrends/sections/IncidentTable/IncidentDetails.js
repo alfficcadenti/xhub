@@ -35,8 +35,8 @@ const IncidentDetails = ({data = [], setTableData}) => {
     };
 
     const formatIncidentData = () => {
-        data[0].startDate = moment.utc(data[0].startDate).local().format('MM/DD HH:mm');
-        data[0].endDate = moment.utc(data[0].endDate).local().format('MM/DD HH:mm');
+        data[0].startDateIST = moment.utc(data[0].startDate).local().format('MM/DD HH:mm');
+        data[0].endDateIST = moment.utc(data[0].endDate).local().format('MM/DD HH:mm');
         return data;
     };
 

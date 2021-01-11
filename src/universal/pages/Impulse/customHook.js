@@ -161,7 +161,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             fetchIncidents();
             intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
             intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
-        } else if (!chartSliced && isAutoRefresh && (moment(endDateTime).diff(moment(startDateTime), 'days') === 3)) {
+        } else if (!chartSliced && isAutoRefresh && (moment(endDateTime).diff(moment(startDateTime), 'days') === 3) && (moment().diff(moment(endDateTime), 'days') === 0)) {
             intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
             intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
             getData(startTime(), endTime());
