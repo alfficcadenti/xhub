@@ -370,6 +370,7 @@ const Annotations = ({
                             suggestionMapping={productMapping}
                             onFilterChange={onFilterChange}
                             defaultSelection={[{key: 'serviceTier', value: 'Tier 1'}]}
+                            resetSelection={false}
                         />
                     }
                 </LoadingContainer>
