@@ -61,7 +61,7 @@ const Feedback = () => {
                 },
                 body: `{
                 "channel": "#opxhub-feedback",
-                "text": "Overall Experience: ${thumbsUp ? 'positive' : 'negative'}; Comment Type: ${commentType}; Feedback: ${feedbackComment}; Email: ${email}"
+                "text": "Overall Experience: ${thumbsUp ? 'positive' : 'negative'}; Comment Type: ${commentType}; Feedback: ${feedbackComment}; Url: ${window.location.href}; Email: ${email}"
             }`
             }).then((resp) => {
                 if (!resp.ok) {
@@ -139,7 +139,7 @@ const Feedback = () => {
                         />
                     </div>
                     <div className="footer-section">
-                        <Button label="Submit" onClick={handleSendFeedback} />
+                        <Button label="Submit" className="submit-feedback" onClick={handleSendFeedback} />
                     </div>
                 </form>
             </Modal>
