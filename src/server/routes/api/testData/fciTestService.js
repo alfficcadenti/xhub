@@ -104,6 +104,7 @@ const getFci = (start, end, lobs, site) => {
             ? lobs[getRandomInt(lobs.length)]
             : LOBS[getRandomInt(LOBS.length)],
         isIntentional: getRandomInt(13) % 3 === 1,
+        duaId: generateTraceId(),
         xdId: `${generateTraceId()}|${getRandomInt(1000000000)}|${siteName}`,
         traces: (new Array(getRandomInt(3) + 2).fill(0)).map(() => getTrace(0))
     };

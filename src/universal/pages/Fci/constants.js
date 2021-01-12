@@ -12,6 +12,7 @@ export const FCI_TABLE_COLUMNS = [
     'TPID',
     'EAPID',
     'SiteID',
+    'Device User Agent ID',
     'Category',
     'Traces'
 ];
@@ -19,7 +20,8 @@ export const FCI_HIDDEN_TABLE_COLUMNS = [
     'Session',
     'TPID',
     'EAPID',
-    'SiteID'
+    'SiteID',
+    'Device User Agent ID'
 ];
 export const TRACE_TABLE_COLUMNS = [
     'Service',

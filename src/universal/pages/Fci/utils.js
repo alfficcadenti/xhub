@@ -199,6 +199,7 @@ export const getTableData = (data, keys, onOpenTraceLog) => {
                 'SiteID': getPropValue(row, 'siteId'),
                 Category: getPropValue(row, 'category'),
                 LoB: (LOB_LIST.find((l) => l.value === row.lineOfBusiness) || {label: '-'}).label,
+                'Device User Agent ID': getPropValue(row, 'duaId'),
                 Traces: (
                     <div
                         className="log-link"
