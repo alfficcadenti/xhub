@@ -241,7 +241,7 @@ const Impulse = (props) => {
         <div className="impulse-container">
             <div className="heading-container">
                 <h1 className="page-title">{'Impulse Dashboard'}</h1>
-                {!chartSliced && daysDifference === 3 ? <div className="refresh-switch">
+                {!chartSliced && daysDifference === 3 && (moment().diff(moment(endDateTime), 'days') === 0) ? <div className="refresh-switch">
                     <Switch
                         id="switch-example-small"
                         name="autoRefresh"

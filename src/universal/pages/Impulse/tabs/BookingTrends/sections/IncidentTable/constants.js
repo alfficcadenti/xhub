@@ -2,8 +2,8 @@ export const INCIDENT_TABLE_COLUMN_HEADERS = {
     summary: 'Summary',
     rootCause: 'Root Cause',
     brand: 'Brand',
-    startDate: 'Start Date',
-    endDate: 'End Date',
+    zoneStartDate: 'Start Date',
+    zoneEndDate: 'End Date',
     status: 'Status',
     priority: 'Priority',
     bookingImpact: 'Booking Impact'};
@@ -11,8 +11,8 @@ export const INCIDENT_TABLE_COLUMN_HEADERS = {
 export const INCIDENT_TABLE_COLUMNS = ['summary',
     'rootCause',
     'brand',
-    'startDate',
-    'endDate',
+    'zoneStartDate',
+    'zoneEndDate',
     'status',
     'priority',
     'bookingImpact'];
