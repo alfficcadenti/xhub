@@ -163,3 +163,5 @@ export const BRANDS = [
         color: '#FFC72C'
     }
 ];
+
+export const OPXHUB_SUPPORT_CHANNEL = '#opxhub-support';

@@ -7,6 +7,7 @@ import DataTable from '../../../../components/DataTable';
 import NoResults from '../../../../components/NoResults';
 import LoadingContainer from '../../../../components/LoadingContainer';
 import {mapDetails, checkIsRowSelected} from './utils';
+import {OPXHUB_SUPPORT_CHANNEL} from '../../../../constants';
 import './styles.less';
 
 const CorrectiveActions = ({
@@ -53,7 +54,7 @@ const CorrectiveActions = ({
             })
             .catch((err) => {
                 setError('Failed to retrieve data. Try refreshing the page. '
-                    + 'If the problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.');
+                    + `If the problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`);
                 // eslint-disable-next-line no-console
                 console.error(err);
             })

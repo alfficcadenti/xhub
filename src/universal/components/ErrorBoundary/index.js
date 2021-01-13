@@ -1,4 +1,5 @@
 import React from 'react';
+import {OPXHUB_SUPPORT_CHANNEL} from './../../constants';
 
 class ErrorBoundary extends React.Component {
     constructor(props) {
@@ -14,7 +15,7 @@ class ErrorBoundary extends React.Component {
         if (this.state.hasError) {
             return (<div id="app-error">
                 <h1>Something went wrong.</h1>
-                <p>An unexpected error has occurred. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all</p>
+                <p>{`An unexpected error has occurred. Try refreshing the page. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL}`}</p>
             </div>);
         }
 

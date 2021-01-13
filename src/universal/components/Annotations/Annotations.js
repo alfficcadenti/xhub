@@ -16,7 +16,7 @@ import moment from 'moment';
 import {adjustTicketProperties} from '../../pages/TicketTrends/incidentsHelper';
 import {
     AB_TESTS_ANNOTATION_CATEGORY, DEPLOYMENT_ANNOTATION_CATEGORY,
-    INCIDENT_ANNOTATION_CATEGORY
+    INCIDENT_ANNOTATION_CATEGORY, OPXHUB_SUPPORT_CHANNEL
 } from '../../constants';
 
 
@@ -316,7 +316,7 @@ const Annotations = ({
     });
 
     useEffect(() => {
-        const annotationError = 'An unexpected error has occurred loading the annotations. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.';
+        const annotationError = `An unexpected error has occurred loading the annotations. Try refreshing the page. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`;
         if (deploymentAnnotationsError && incidentAnnotationsError && abTestsAnnotationsError) {
             setDisplayError(annotationError);
         }

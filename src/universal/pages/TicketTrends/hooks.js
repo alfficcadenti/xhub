@@ -8,7 +8,8 @@ import {
     EG_BRAND,
     EXPEDIA_PARTNER_SERVICES_BRAND,
     ALL_PARTNERS_OPTION,
-    ALL_RC_OWNERS_OPTION
+    ALL_RC_OWNERS_OPTION,
+    OPXHUB_SUPPORT_CHANNEL
 } from '../../constants';
 import {checkResponse, getListOfUniqueProperties, consolidateTicketsById, sortArrayByMostRecentDate, mapEpsData} from '../utils';
 
@@ -51,7 +52,7 @@ export const useFetchTickets = (
                 // eslint-disable-next-line no-console
                 console.error(JSON.stringify(err, null, 4));
                 setIsLoading(false);
-                setError('Not all incidents and/or defects are available. Check your VPN or refresh the page to try again. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.');
+                setError(`Not all incidents and/or defects are available. Check your VPN or refresh the page to try again. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`);
             };
             Promise.all(paths.map((path) => fetch(path).catch(handleFetchError)))
                 .then((responses) => Promise.all(responses.map(checkResponse)))
@@ -78,7 +79,7 @@ export const useFetchTickets = (
                     // eslint-disable-next-line no-console
                     console.error(JSON.stringify(err, null, 4));
                     setIsLoading(false);
-                    setError('Error occurred when reading tickets. Please try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.');
+                    setError(`Error occurred when reading tickets. Please try refreshing the page. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`);
                 });
         };
 

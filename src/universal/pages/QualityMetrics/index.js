@@ -5,6 +5,7 @@ import {QUESTION__16} from '@homeaway/svg-defs';
 import {Checkbox} from '@homeaway/react-form-components';
 import LoadingContainer from '../../components/LoadingContainer';
 import HelpText from '../../components/HelpText/HelpText';
+import {OPXHUB_SUPPORT_CHANNEL} from '../../constants';
 import {DurationPanel, TwoDimensionalPanel, CreatedVsResolvedPanel, PiePanel} from './Panels';
 import {PORTFOLIOS, P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL} from './constants';
 import {getQueryValues, getPortfolioBrand, getPanelDataUrl} from './utils';
@@ -239,7 +240,7 @@ const QualityMetrics = ({selectedBrands}) => {
                 ? renderBody()
                 : <div className="messaged">{`Quality Metrics for ${selectedBrands} is not yet available.
                     The following brands are supported at this time: "Hotels.com Retail".
-                    If you have any questions, please ping #dpi-reo-opex-all or leave a comment via our Feedback form.`}</div>
+                    If you have any questions, please ping ${OPXHUB_SUPPORT_CHANNEL} or leave a comment via our Feedback form.`}</div>
             }
         </div>
     );

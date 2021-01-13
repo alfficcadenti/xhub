@@ -15,7 +15,8 @@ import {
     EGENCIA_BRAND,
     EXPEDIA_PARTNER_SERVICES_BRAND,
     LOB_LIST,
-    EPS_PARTNER_SITENAMES
+    EPS_PARTNER_SITENAMES,
+    OPXHUB_SUPPORT_CHANNEL
 } from '../../constants';
 import {
     checkResponse,
@@ -126,8 +127,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 })
                 .catch((err) => {
                     let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
-                        ? 'Query has timed out. Try refreshing the page. If the problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.'
-                        : 'An unexpected error has occurred. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.';
+                        ? `Query has timed out. Try refreshing the page. If the problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`
+                        : `An unexpected error has occurred. Try refreshing the page. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`;
                     setLoBError(errorMessage);
                     // eslint-disable-next-line no-console
                     console.error(err);
@@ -146,7 +147,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         if ([EG_BRAND, EGENCIA_BRAND].includes(selectedBrands[0])) {
             setError(`Page views for ${selectedBrands} is not yet available.
                 The following brands are supported at this time: "Expedia", "Hotels.com Retail", and "Vrbo Retail".
-                If you have any questions, please ping #dpi-reo-opex-all or leave a comment via our Feedback form.`);
+                If you have any questions, please ping ${OPXHUB_SUPPORT_CHANNEL} or leave a comment via our Feedback form.`);
             setIsFormDisabled(true);
         } else if (isMounted) {
             setError(null);
@@ -229,7 +230,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
     const renderPageViews = (data) => (
         <div className="page-views-widget-container">
-            {data && data.length && data.map(renderWidget) || 'No Data. Try selecting a different time frame or refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.'}
+            {data && data.length && data.map(renderWidget) || `No Data. Try selecting a different time frame or refreshing the page. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`}
         </div>
     );
 

@@ -13,7 +13,8 @@ import {
     EXPEDIA_PARTNER_SERVICES_BRAND,
     HOTELS_COM_BRAND,
     LOB_LIST,
-    VRBO_BRAND
+    VRBO_BRAND,
+    OPXHUB_SUPPORT_CHANNEL
 } from '../../constants';
 import {
     checkResponse,
@@ -121,8 +122,8 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             .then((realTimeData) => setRealTimeTotals(realTimeData))
             .catch((err) => {
                 let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
-                    ? 'Query has timed out. Try refreshing the page. If the problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.'
-                    : 'An unexpected error has occurred. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.';
+                    ? `Query has timed out. Try refreshing the page. If the problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`
+                    : `An unexpected error has occurred. Try refreshing the page. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`;
                 setRttError(errorMessage);
                 // eslint-disable-next-line no-console
                 console.error(err);
@@ -152,8 +153,8 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             })
             .catch((err) => {
                 let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
-                    ? 'Query has timed out. Try refreshing the page. If the problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.'
-                    : 'An unexpected error has occurred. Try refreshing the page. If this problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.';
+                    ? `Query has timed out. Try refreshing the page. If the problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`
+                    : `An unexpected error has occurred. Try refreshing the page. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`;
                 setError(errorMessage);
                 // eslint-disable-next-line no-console
                 console.error(err);
@@ -169,7 +170,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         if ([EG_BRAND, EGENCIA_BRAND].includes(selectedBrands[0])) {
             setIsSupportedBrand(false);
             setError(`Success rates for ${selectedBrands} is not yet available.
-                If you have any questions, please ping #dpi-reo-opex-all or leave a comment via our Feedback form.`);
+                If you have any questions, please ping ${OPXHUB_SUPPORT_CHANNEL} or leave a comment via our Feedback form.`);
             setIsFormDisabled(true);
         } else {
             setIsSupportedBrand(true);

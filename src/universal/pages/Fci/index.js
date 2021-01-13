@@ -9,7 +9,7 @@ import DataTable from '../../components/DataTable';
 import LoadingContainer from '../../components/LoadingContainer';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import {checkResponse} from '../utils';
-import {EXPEDIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, LOB_LIST} from '../../constants';
+import {EXPEDIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, LOB_LIST, OPXHUB_SUPPORT_CHANNEL} from '../../constants';
 import {getQueryValues, getQueryString, getPresets, getLineChartData, getTableData, getErrorCodes, getBrandSites} from './utils';
 import TraceLogModal from './TraceLogModal';
 import {FCI_TABLE_COLUMNS, FCI_HIDDEN_TABLE_COLUMNS, ALL_CATEGORIES, CATEGORY_OPTION, CODE_OPTION} from './constants';
@@ -103,7 +103,7 @@ const Fci = ({selectedBrands}) => {
         if (![EXPEDIA_PARTNER_SERVICES_BRAND, EXPEDIA_BRAND].includes(selectedBrands[0])) {
             setIsSupportedBrand(false);
             setError(`FCIs for ${selectedBrands[0]} is not yet available. For now only ${EXPEDIA_PARTNER_SERVICES_BRAND} and ${EXPEDIA_BRAND} is supported.
-                If you have any questions, please ping #dpi-reo-opex-all or leave a comment via our Feedback form.`);
+                If you have any questions, please ping ${OPXHUB_SUPPORT_CHANNEL} or leave a comment via our Feedback form.`);
             return;
         }
         setIsLoading(true);
@@ -120,7 +120,7 @@ const Fci = ({selectedBrands}) => {
                 })
                 .catch((err) => {
                     setError('Failed to retrieve FCI data. Try refreshing the page. '
-                        + 'If the problem persists, please message #dpi-reo-opex-all or fill out our Feedback form.');
+                        + `If the problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`);
                     // eslint-disable-next-line no-console
                     console.error(err);
                 })

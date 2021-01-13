@@ -19,7 +19,7 @@ describe('FeedbackModal component testing', () => {
         expect(wrapper).toHaveLength(1);
     });
 
-    it('check fetch params', done => {
+    it('check fetch params', (done) => {
         const mockSuccessResponse = {};
         const mockJsonPromise = Promise.resolve(mockSuccessResponse);
         const mockFetchPromise = Promise.resolve({
@@ -34,15 +34,15 @@ describe('FeedbackModal component testing', () => {
 
         const url = 'https://hooks.slack.com/services/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';
         const body = {
-            "body": `{
+            'body': `{
                 "channel": "#opxhub-feedback",
                 "text": "Overall Experience: positive; Comment Type: Suggestion; Feedback: ; Url: ${window.location.href}; Email: undefined"
             }`,
-            "headers": {
-                "Accept": "application/json",
-                "Content-Type": "text/plain; charset=UTF-8"
+            'headers': {
+                'Accept': 'application/json',
+                'Content-Type': 'text/plain; charset=UTF-8'
             },
-            "method": "POST"
+            'method': 'POST'
         };
 
         expect(global.fetch).toHaveBeenCalledWith(
