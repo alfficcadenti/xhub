@@ -110,13 +110,13 @@ const Fci = ({selectedBrands}) => {
         setIsSupportedBrand(true);
         setError(null);
         const query = getQueryString(start, end, selectedLobs, selectedErrorCode, selectedSite, selectedCategory, hideIntentionalCheck);
+        history.push(`${pathname}?selectedBrand=${selectedBrands[0]}&${query}`);
         if (!prev.start || !prev.end || !prev.selectedSite || start.isBefore(prev.start) || end.isAfter(prev.end) || prev.selectedSite !== selectedSite) {
             fetch(`/getCheckoutFailures?${query}`)
                 .then(checkResponse)
                 .then((data) => {
                     setPrev({start, end, data, selectedSite});
                     processData(data);
-                    history.push(`${pathname}?selectedBrand=${selectedBrands[0]}&${query}`);
                 })
                 .catch((err) => {
                     setError('Failed to retrieve FCI data. Try refreshing the page. '
@@ -128,7 +128,6 @@ const Fci = ({selectedBrands}) => {
         } else {
             processData(prev.data);
             setIsLoading(false);
-            history.push(`${pathname}?selectedBrand=${selectedBrands[0]}&${query}`);
         }
     }, [start, end, selectedLobs, selectedErrorCode, selectedSite, history, pathname, selectedBrands, hideIntentionalCheck, prev, processData, selectedCategory]);
 
