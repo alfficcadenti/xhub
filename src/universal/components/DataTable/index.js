@@ -435,7 +435,6 @@ class DataTable extends Component {
 
     renderTable = () => (
         <>
-            {this.renderToolbar(this.state.title, this.state.info)}
             <table className="data-table">
                 <thead className="data-table-header">{this.renderTableHeader()}</thead>
                 <tbody className="data-table-body">{this.renderTableBody()}</tbody>
@@ -448,6 +447,7 @@ class DataTable extends Component {
     render() {
         return (
             <div className={`data-table__container ${this.props.className}`}>
+                {this.renderToolbar(this.state.title, this.state.info)}
                 {this.state.data.length ? this.renderTable() : <NoResults />}
             </div>
         );

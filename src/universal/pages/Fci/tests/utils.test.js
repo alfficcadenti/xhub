@@ -67,14 +67,9 @@ describe('Fci Utils', () => {
                 {Error: 'false', Operation: 'B'}
             ]
         };
-        const errorLogs = getFilteredTraceData(data, true);
+        const errorLogs = getFilteredTraceData(data);
         expect(errorLogs).to.eql([
             {Error: 'true', Operation: 'A'}
-        ]);
-        const allLogs = getFilteredTraceData(data, false);
-        expect(allLogs).to.eql([
-            {Error: 'true', Operation: 'A'},
-            {Error: 'false', Operation: 'B'}
         ]);
     });
 

@@ -34,7 +34,6 @@ export const validDateRange = (start, end) => {
 };
 
 // eslint-disable-next-line complexity
-
 export const getQueryValues = (search, brand = 'Expedia') => {
     const {from, to, lobs, errorCode, siteName, category, hideIntentionalCheck} = qs.parse(search);
     const isValidDateRange = validDateRange(from, to);
@@ -226,39 +225,6 @@ export const getErrorCodes = (data) => {
     return [ALL_ERROR_CODES, TOP_10_ERROR_CODES, TOP_20_ERROR_CODES, ...errorCodes];
 };
 
-export const getElements = (data, height = 0, breadth = 0, parent = null) => {
-    const type = !parent ? 'input' : 'default';
-    // eslint-disable-next-line complexity
-    const elements = data.reduce((acc, fci, depth) => {
-        const id = `${String(fci.Trace || fci.traceId)}`;
-        const hasChildren = fci.traces && fci.traces.length;
-        acc.push({
-            id,
-            type: hasChildren ? type : 'output',
-            data: {
-                label: `id=${id},
-                    service=${fci.Service || fci.serviceName},
-                    operation=${fci.Operation || fci.operationName},
-                    error=${fci.tags ? fci.tags[0].value : fci.Error}`
-            },
-            sourcePosition: 'right',
-            targetPosition: 'left',
-            position: {x: 16 + (breadth * 200), y: 16 + ((height + depth) * 152)}
-        });
-        if (fci.traces && fci.traces.length) {
-            acc = [...acc, ...fci.traces.map((t) => ({
-                id: `edge-${t.traceId}`,
-                source: id,
-                target: t.traceId,
-                arrowHeadType: 'arrowclosed'
-            }))];
-            acc = [...acc, ...getElements(fci.traces, height + data.length + depth, breadth + 1, id)];
-        }
-        return acc;
-    }, []);
-    return elements;
-};
-
-export const getFilteredTraceData = (data, showOnlyErrors) => (
-    (data.data || []).filter((row) => !showOnlyErrors || row.Error === 'true')
+export const getFilteredTraceData = (data) => (
+    (data.data || []).filter(({Error}) => Error === 'true')
 );
