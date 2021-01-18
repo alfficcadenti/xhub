@@ -36,22 +36,17 @@ describe('getTestData', () => {
         expect(await getTestData({url: {}})).to.eql([]);
     });
 
-    it('handles non-empty query arams correctly', async () => {
-        const startDate = '2020-10-19T18:55:00Z';
-        const endDate = '2020-10-19T18:59:00Z';
+    it('handles non-empty query params correctly', async () => {
+        const startDate = moment().utc().startOf('minute').subtract(5, 'minute').format();
+        const endDate = moment().utc().startOf('minute').format();
+        const expectedArray = Array.from({length: 6}, (v, i) => moment().utc().startOf('minute').subtract(i, 'minutes').format()).reverse();
         expect(await getTestData(
             {url: {query: {startDate, endDate}}},
             (time, result) => {
                 result.push(time);
                 return result;
             }
-        )).to.eql([
-            '2020-10-19T18:55:00Z',
-            '2020-10-19T18:56:00Z',
-            '2020-10-19T18:57:00Z',
-            '2020-10-19T18:58:00Z',
-            '2020-10-19T18:59:00Z'
-        ]);
+        )).to.eql(expectedArray);
     });
 });
 
