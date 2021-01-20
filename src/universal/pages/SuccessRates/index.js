@@ -172,7 +172,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             setError(`Success rates for ${selectedBrands} is not yet available.
                 If you have any questions, please ping ${OPXHUB_SUPPORT_CHANNEL} or leave a comment via our Feedback form.`);
             setIsFormDisabled(true);
-        } else {
+        } else if (isMounted) {
             setIsSupportedBrand(true);
             setError(null);
             setIsFormDisabled(false);
@@ -189,7 +189,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         return function cleanup() {
             clearInterval(rttRef.current);
         };
-    }, [selectedBrands, start, end, selectedEPSPartner]);
+    }, [selectedBrands, start, end, isMounted, selectedEPSPartner]);
 
     useEffect(() => {
         if (!selectedLobs.length) {

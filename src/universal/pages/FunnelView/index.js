@@ -138,10 +138,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
         if ([EG_BRAND, EGENCIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND].includes(selectedBrands[0])) {
             setIsLoBAvailable(false);
-        } else if (isMounted) {
-            if (!isZoomedIn) {
-                fetchPageViewsLoBData(selectedBrands);
-            }
+        } else if (isMounted && !isZoomedIn) {
+            fetchPageViewsLoBData(selectedBrands);
         }
 
         if ([EG_BRAND, EGENCIA_BRAND].includes(selectedBrands[0])) {
