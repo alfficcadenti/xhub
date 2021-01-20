@@ -1,6 +1,6 @@
 
 module.exports = function authHandler(request, h, template, body, context, requireDevAuth = false) {
-    if (!requireDevAuth || process.env.EXPEDIA_ENVIRONMENT !== 'prod') {
+    if (process.env.IS_OKTA_DISABLED || !requireDevAuth || process.env.EXPEDIA_ENVIRONMENT !== 'prod') {
         return h.view(template, {body, ...context});
     }
     if ('code' in request.query) {
