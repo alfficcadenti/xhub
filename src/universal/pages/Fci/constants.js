@@ -14,14 +14,39 @@ export const FCI_TABLE_COLUMNS = [
     'SiteID',
     'Device User Agent ID',
     'Category',
-    'Traces'
+    'Comment',
+    'Is FCI',
+    'Traces',
+    'Edit'
+];
+export const FCI_DETAIL_COLUMNS = [
+    'Created',
+    'Session',
+    'Trace',
+    'Failure',
+    'Error Code',
+    'Intentional',
+    'Site',
+    'TPID',
+    'EAPID',
+    'SiteID',
+    'Device User Agent ID',
+    'Category'
 ];
 export const FCI_HIDDEN_TABLE_COLUMNS = [
     'Session',
     'TPID',
     'EAPID',
     'SiteID',
-    'Device User Agent ID'
+    'Device User Agent ID',
+    // 'Comment',
+    // 'Is FCI'
+];
+export const COMMENT_TABLE_COLUMNS = [
+    'Created',
+    'Author',
+    'Comment',
+    'Is FCI'
 ];
 export const TRACE_TABLE_COLUMNS = [
     'Service',

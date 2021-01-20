@@ -1,6 +1,8 @@
 import React from 'react';
 import moment from 'moment';
 import qs from 'query-string';
+import {SVGIcon} from '@homeaway/react-svg';
+import {EDIT__16} from '@homeaway/svg-defs';
 import DataTable from '../../components/DataTable';
 import {LOB_LIST} from '../../constants';
 import {ALL_ERROR_CODES, TOP_10_ERROR_CODES, TOP_20_ERROR_CODES, TRACE_TABLE_COLUMNS, SITES, ALL_CATEGORIES, CODE_OPTION} from './constants';
@@ -178,39 +180,63 @@ export const mapTrace = (t) => {
     return result;
 };
 
-export const getTableData = (data, keys, onOpenTraceLog) => {
+export const mapComment = (row) => ({
+    Created: getPropValue(row, 'timestamp'),
+    Author: getPropValue(row, 'author'),
+    Comment: getPropValue(row, 'comment'),
+    'Is FCI': String(row.isFci)
+});
+
+export const mapFci = (row) => ({
+    Created: row.timestamp ? moment(row.timestamp).format('YYYY-MM-DD HH:mm') : '-',
+    Session: getPropValue(row, 'sessionId'),
+    Trace: getPropValue(row, 'traceId'),
+    Failure: getPropValue(row, 'failure'),
+    'Intentional': getPropValue(row, 'isIntentional'),
+    'Error Code': getPropValue(row, 'errorCode'),
+    Site: getPropValue(row, 'site'),
+    TPID: getPropValue(row, 'tpId'),
+    EAPID: getPropValue(row, 'eapId'),
+    'SiteID': getPropValue(row, 'siteId'),
+    Category: getPropValue(row, 'category'),
+    LoB: (LOB_LIST.find((l) => l.value === row.lineOfBusiness) || {label: '-'}).label,
+    'Device User Agent ID': getPropValue(row, 'duaId'),
+    Comment: getPropValue(row, 'comment'),
+    'Is FCI': String(row.isFci),
+});
+
+export const getTableData = (data, keys, onOpenTraceLog, onOpenEdit) => {
     const result = data
         .filter(({errorCode}) => keys.includes(`${errorCode}`))
         .map((row) => {
+            const fci = mapFci(row);
             const traces = row.traces || [];
-            const clickHandler = () => onOpenTraceLog(row.traceId, row.recordedSessionUrl, traces.map(mapTrace));
+            const logClickHandler = () => onOpenTraceLog(row.traceId, row.recordedSessionUrl, traces.map(mapTrace));
+            const editClickHandler = () => onOpenEdit(row.traceId, fci);
             const traceCounts = getTraceCounts(traces);
-            return {
-                Created: row.timestamp ? moment(row.timestamp).format('YYYY-MM-DD HH:mm') : '-',
-                Session: getPropValue(row, 'sessionId'),
-                Trace: getPropValue(row, 'traceId'),
-                Failure: getPropValue(row, 'failure'),
-                'Intentional': getPropValue(row, 'isIntentional'),
-                'Error Code': getPropValue(row, 'errorCode'),
-                Site: getPropValue(row, 'site'),
-                TPID: getPropValue(row, 'tpId'),
-                EAPID: getPropValue(row, 'eapId'),
-                'SiteID': getPropValue(row, 'siteId'),
-                Category: getPropValue(row, 'category'),
-                LoB: (LOB_LIST.find((l) => l.value === row.lineOfBusiness) || {label: '-'}).label,
-                'Device User Agent ID': getPropValue(row, 'duaId'),
-                Traces: (
-                    <div
-                        className="log-link"
-                        role="button"
-                        tabIndex={0}
-                        onClick={clickHandler}
-                        onKeyUp={clickHandler}
-                    >
-                        {`Open Log (${traceCounts.errors} error${traceCounts.errors === 1 ? '' : 's'})`}
-                    </div>
-                )
-            };
+            fci.Traces = (
+                <div
+                    className="modal-link"
+                    role="button"
+                    tabIndex={0}
+                    onClick={logClickHandler}
+                    onKeyUp={logClickHandler}
+                >
+                    {`Open Log (${traceCounts.errors} error${traceCounts.errors === 1 ? '' : 's'})`}
+                </div>
+            );
+            fci.Edit = (
+                <div
+                    className="modal-link"
+                    role="button"
+                    tabIndex={0}
+                    onClick={editClickHandler}
+                    onKeyUp={editClickHandler}
+                >
+                    <SVGIcon usefill markup={EDIT__16} />
+                </div>
+            );
+            return fci;
         });
     result.sort((a, b) => b.Created.localeCompare(a.Created));
     return result;
@@ -226,5 +252,5 @@ export const getErrorCodes = (data) => {
 };
 
 export const getFilteredTraceData = (data) => (
-    (data.data || []).filter(({Error}) => Error === 'true')
+    (data || []).filter(({Error}) => Error === 'true')
 );

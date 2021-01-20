@@ -1,6 +1,19 @@
 import moment from 'moment';
 import {expect} from 'chai';
-import {validDateRange, getQueryValues, getLineChartData, getErrorCodes, getPropValue, traceHasError, getTraceCounts, mapTrace, getFilteredTraceData, getBrandSites} from '../utils';
+import {
+    validDateRange,
+    getQueryValues,
+    getLineChartData,
+    getErrorCodes,
+    getPropValue,
+    traceHasError,
+    getTraceCounts,
+    mapTrace,
+    mapComment,
+    mapFci,
+    getFilteredTraceData,
+    getBrandSites
+} from '../utils';
 import {ALL_ERROR_CODES, TOP_10_ERROR_CODES, TOP_20_ERROR_CODES, CODE_OPTION, CATEGORY_OPTION, SITES} from '../constants';
 
 describe('Fci Utils', () => {
@@ -61,12 +74,10 @@ describe('Fci Utils', () => {
     });
 
     it('getFilteredTraceData', () => {
-        const data = {
-            data: [
-                {Error: 'true', Operation: 'A'},
-                {Error: 'false', Operation: 'B'}
-            ]
-        };
+        const data = [
+            {Error: 'true', Operation: 'A'},
+            {Error: 'false', Operation: 'B'}
+        ];
         const errorLogs = getFilteredTraceData(data);
         expect(errorLogs).to.eql([
             {Error: 'true', Operation: 'A'}
@@ -147,9 +158,88 @@ describe('Fci Utils', () => {
         expect(trace.traces).to.eql(data.traces);
     });
 
-    it('getBrandSites - returns list of sites per Expedia', () => {
-        const brandSites = getBrandSites('Expedia');
-        expect(brandSites).to.eql(SITES.Expedia);
+    it('mapComment', () => {
+        const row = {
+            traceId: 'traceId',
+            timestamp: '2021-01-15T16:36:00.000Z',
+            author: 'author',
+            comment: 'comment',
+            isFci: false
+        };
+        expect(mapComment(row)).to.eql({
+            Created: '2021-01-15T16:36:00.000Z',
+            Author: row.author,
+            Comment: row.comment,
+            'Is FCI': String(row.isFci)
+        });
+    });
+
+    it('mapComment - null values', () => {
+        const BLANK = '-';
+        expect(mapComment({})).to.eql({
+            Created: BLANK,
+            Author: BLANK,
+            Comment: BLANK,
+            'Is FCI': 'undefined'
+        });
+    });
+
+    it('mapFci', () => {
+        const row = {
+            timestamp: '2021-01-15T16:36:00.000Z',
+            sessionId: 'sessionId',
+            traceId: 'traceId',
+            failure: 'failure',
+            isIntentional: 'true',
+            errorCode: 'errorCode',
+            site: 'site',
+            tpId: 'tpId',
+            eapId: 'eapId',
+            siteId: 'siteId',
+            category: 'category',
+            lineOfBusiness: 'F',
+            duaId: 'duaId',
+            comment: 'comment',
+            isFci: true
+        };
+        expect(mapFci(row)).to.eql({
+            Created: moment(row.timestamp).format('YYYY-MM-DD HH:mm'),
+            Session: row.sessionId,
+            Trace: row.traceId,
+            Failure: row.failure,
+            Intentional: row.isIntentional,
+            'Error Code': row.errorCode,
+            Site: row.site,
+            TPID: row.tpId,
+            EAPID: row.eapId,
+            'SiteID': row.siteId,
+            Category: row.category,
+            LoB: 'Flights',
+            'Device User Agent ID': row.duaId,
+            Comment: row.comment,
+            'Is FCI': String(row.isFci)
+        });
+    });
+
+    it('mapFci - null values', () => {
+        const BLANK = '-';
+        expect(mapFci({})).to.eql({
+            Created: BLANK,
+            Session: BLANK,
+            Trace: BLANK,
+            Failure: BLANK,
+            Intentional: BLANK,
+            'Error Code': BLANK,
+            Site: BLANK,
+            TPID: BLANK,
+            EAPID: BLANK,
+            'SiteID': BLANK,
+            Category: BLANK,
+            LoB: BLANK,
+            'Device User Agent ID': BLANK,
+            Comment: BLANK,
+            'Is FCI': 'undefined'
+        });
     });
 
     it('getBrandSites - returns list of sites per Expedia Partner Solution', () => {

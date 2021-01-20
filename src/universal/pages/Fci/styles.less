@@ -48,7 +48,7 @@
             }
         }
 
-        .intentional-сheckbox {
+        .intent-cbox {
             display: inline-block;
         }
 
@@ -83,13 +83,17 @@
         border: 1px solid @border-color;
     }
 
-    .log-link {
+    .modal-link {
         color: @color-link-default;
         cursor: pointer;
 
         &:hover {
             color: @color-link-hover;
         }
+    }
+
+    .fci-checkbox .CRB--checkbox {
+        margin: 0;
     }
 
     .error-cell {
@@ -102,9 +106,11 @@
         background: @color-positive;
     }
 
-    .Modal__dialog .Modal__content .Modal__body {
-        margin-top: -@spacing-2x;
+    .Modal__dialog {
+        min-width: 85%;
+    }
 
+    .Modal__dialog .Modal__content .Modal__body {
         .ext-link {
             float: right;
             margin: @spacing-3x 0 0 @spacing-3x;
@@ -115,6 +121,51 @@
             margin: @spacing-3x -@spacing-2x 0 0;
         }
 
+        .no-results-wrapper {
+            margin-top: @spacing-2x;
+        }
+    }
+
+    .details-container {
+        .details-table {
+            display: inline-block;
+            padding: @spacing-2x;
+            border-radius: @spacing-1x;
+            background: @color-bg-contrast;
+
+            .detail-row {
+                float: left;
+                width: 48%;
+                margin: 0 2% @spacing-1x 0;
+
+                .detail-label {
+                    float: left;
+                    width: 50%;
+                    font-weight: 800;
+                }
+
+                .detail-value {
+                    float: left;
+                    width: 50%;
+                    white-space: nowrap;
+                    font-size: @font-size-small;
+                    overflow-x: scroll;
+                }
+            }
+
+            .save-btn {
+                float: right;
+            }
+        }
+
+        .comments-container {
+            margin-top: @spacing-2x;
+        }
+    }
+
+    .log-container {
+        margin-top: -@spacing-2x;
+
         #error-filter {
             float: left;
         }
@@ -122,14 +173,6 @@
         .CRB--radio {
             display: inline-block;
             margin-right: @spacing-2x;
-        }
-
-        .Navigation {
-            height: @spacing-9x;
-        }
-
-        .no-results-wrapper {
-            margin-top: @spacing-2x;
         }
     }
 }

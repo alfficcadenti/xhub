@@ -150,6 +150,16 @@
               "path": "/getCheckoutFailures",
               "method": "GET",
               "operation": "GET_user_events_analysis_api_v1"
+            },
+            "getFciComments": {
+              "path": "/getComments",
+              "method": "GET",
+              "operation": "GET_user_events_analysis_comments_api_v1"
+            },
+            "postFciComment": {
+              "path": "/addComment",
+              "method": "POST",
+              "operation": "POST_user_events_analysis_comments_api_v1"
             }
           }
         },
@@ -161,6 +171,16 @@
               "path": "/getCheckoutFailures",
               "method": "GET",
               "operation": "GET_user_events_analysis_api_v1"
+            },
+            "getFciComments": {
+              "path": "/getComments",
+              "method": "GET",
+              "operation": "GET_user_events_analysis_comments_api_v1"
+            },
+            "postFciComment": {
+              "path": "/addComment",
+              "method": "POST",
+              "operation": "POST_user_events_analysis_comments_api_v1"
             }
           }
         },
@@ -172,6 +192,16 @@
               "path": "/getCheckoutFailures",
               "method": "GET",
               "operation": "GET_user_events_analysis_api_v1"
+            },
+            "getFciComments": {
+              "path": "/getComments",
+              "method": "GET",
+              "operation": "GET_user_events_analysis_comments_api_v1"
+            },
+            "postFciComment": {
+              "path": "/addComment",
+              "method": "POST",
+              "operation": "POST_user_events_analysis_comments_api_v1"
             }
           }
         },
@@ -183,6 +213,16 @@
               "path": "/getCheckoutFailures",
               "method": "GET",
               "operation": "GET_user_events_analysis_api_v1"
+            },
+            "getFciComments": {
+              "path": "/getComments",
+              "method": "GET",
+              "operation": "GET_user_events_analysis_comments_api_v1"
+            },
+            "postFciComment": {
+              "path": "/addComment",
+              "method": "POST",
+              "operation": "POST_user_events_analysis_comments_api_v1"
             }
           }
         }

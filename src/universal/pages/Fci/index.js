@@ -11,7 +11,7 @@ import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import {checkResponse} from '../utils';
 import {EXPEDIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, LOB_LIST, OPXHUB_SUPPORT_CHANNEL} from '../../constants';
 import {getQueryValues, getQueryString, getPresets, getLineChartData, getTableData, getErrorCodes, getBrandSites} from './utils';
-import TraceLogModal from './TraceLogModal';
+import FciModal from './FciModal';
 import {FCI_TABLE_COLUMNS, FCI_HIDDEN_TABLE_COLUMNS, ALL_CATEGORIES, CATEGORY_OPTION, CODE_OPTION} from './constants';
 import './styles.less';
 
@@ -66,7 +66,24 @@ const Fci = ({selectedBrands}) => {
     const [modalData, setModalData] = useState({title: '', data: []});
 
     const handleOpenTraceLog = (traceId, recordedSessionUrl, data) => {
-        setModalData({traceId, recordedSessionUrl, data});
+        setModalData({
+            traceId,
+            recordedSessionUrl,
+            data,
+            details: {},
+            editMode: false
+        });
+        setIsModalOpen(true);
+    };
+
+    const handleOpenEdit = (traceId, details) => {
+        setModalData({
+            traceId,
+            recordedSessionUrl: '',
+            data: [],
+            details,
+            editMode: true
+        });
         setIsModalOpen(true);
     };
 
@@ -94,7 +111,7 @@ const Fci = ({selectedBrands}) => {
         const {keys} = chartProperty !== CODE_OPTION
             ? getLineChartData(start, end, filteredData, selectedErrorCode, CODE_OPTION)
             : chart;
-        setTableData(getTableData(filteredData, keys, handleOpenTraceLog));
+        setTableData(getTableData(filteredData, keys, handleOpenTraceLog, handleOpenEdit));
         setErrorCodes(getErrorCodes(filteredData));
     }, [start, end, selectedCategory, selectedErrorCode, chartProperty, hideIntentionalCheck]);
 
@@ -265,12 +282,12 @@ const Fci = ({selectedBrands}) => {
                     onClickHandler={handleCategoryChange}
                 />
                 <Checkbox
-                    name="intentional-сheckbox"
+                    name="intent-cbox"
                     label="Hide Intentional Errors"
                     checked={pendingHideIntentionalCheck}
                     onChange={handleHideIntentionalCheck}
                     size="sm"
-                    className="intentional-сheckbox"
+                    className="intent-cbox"
                 />
                 {SHOW_FILTERS && (
                     <>
@@ -339,7 +356,7 @@ const Fci = ({selectedBrands}) => {
                     enableTextSearch
                 />
             </LoadingContainer>
-            <TraceLogModal
+            <FciModal
                 data={modalData}
                 isOpen={isModalOpen}
                 onClose={handleModalClose}
