@@ -14,7 +14,7 @@ import {
     getFilteredTraceData,
     getBrandSites
 } from '../utils';
-import {ALL_ERROR_CODES, TOP_10_ERROR_CODES, TOP_20_ERROR_CODES, CODE_OPTION, CATEGORY_OPTION, SITES} from '../constants';
+import {ALL_ERROR_CODES, TOP_10_ERROR_CODES, TOP_20_ERROR_CODES, CODE_OPTION, CATEGORY_OPTION, SITES, ALL_SITES} from '../constants';
 
 describe('Fci Utils', () => {
     it('validDateRange - invalid dates', () => {
@@ -35,7 +35,7 @@ describe('Fci Utils', () => {
         expect(result.initialTimeRange).to.be.eql('Last 1 Hour');
         expect(result.initialLobs).to.be.eql([]);
         expect(result.initialErrorCode).to.be.eql(TOP_20_ERROR_CODES);
-        expect(result.initialSite).to.be.eql('www.expedia.com');
+        expect(result.initialSite).to.be.eql(ALL_SITES);
         expect(result.initialHideIntentionalCheck).to.be.eql(false);
     });
 

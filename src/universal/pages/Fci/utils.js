@@ -5,7 +5,7 @@ import {SVGIcon} from '@homeaway/react-svg';
 import {EDIT__16} from '@homeaway/svg-defs';
 import DataTable from '../../components/DataTable';
 import {LOB_LIST} from '../../constants';
-import {ALL_ERROR_CODES, TOP_10_ERROR_CODES, TOP_20_ERROR_CODES, TRACE_TABLE_COLUMNS, SITES, ALL_CATEGORIES, CODE_OPTION} from './constants';
+import {ALL_ERROR_CODES, TOP_10_ERROR_CODES, TOP_20_ERROR_CODES, TRACE_TABLE_COLUMNS, SITES, ALL_CATEGORIES, CODE_OPTION, ALL_SITES} from './constants';
 
 export const getNowDate = () => moment().endOf('minute').toDate();
 
@@ -63,7 +63,9 @@ export const getQueryString = (start, end, selectedLobs, selectedErrorCode, sele
     const errorQuery = selectedErrorCode !== TOP_20_ERROR_CODES
         ? `&errorCode=${selectedErrorCode}`
         : '';
-    const siteQuery = `&siteName=${selectedSite}`;
+    const siteQuery = selectedSite !== ALL_SITES
+        ? `&siteName=${selectedSite}`
+        : '';
     const categoryQuery = selectedCategory !== ALL_CATEGORIES
         ? `&category=${selectedCategory}`
         : '';
