@@ -32,6 +32,7 @@ const makeRequest = async (option, testData, req, refreshClient) => {
         path: pathParam ? `${path}/${req.params[pathParam] || ''}` : path,
         operation,
         queryParams: req.url.query ? req.url.query : {},
+        payload: req.payload,
         timeout,
         connectionTimeout,
         maxConnectRetry
