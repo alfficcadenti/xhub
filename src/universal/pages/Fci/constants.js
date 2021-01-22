@@ -57,11 +57,13 @@ export const TRACE_TABLE_COLUMNS = [
 ];
 
 export const ALL_CATEGORIES = 'All Categories';
+export const ALL_SITES = 'All Sites';
 export const CATEGORY_OPTION = 'category';
 export const CODE_OPTION = 'errorCode';
 
 export const SITES = {
     'Expedia': [
+        ALL_SITES,
         'www.expedia.com',
         'axtraweb.poweredbygps.com',
         'barcelo.poweredbygps.com',
@@ -149,6 +151,7 @@ export const SITES = {
     ],
 
     'Expedia Partner Solutions': [
+        ALL_SITES,
         'travel.chase.com',
         'travel.americanexpress.com',
         'travel.rbcrewards.com'
