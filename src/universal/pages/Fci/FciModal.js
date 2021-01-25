@@ -13,7 +13,7 @@ import {checkResponse} from '../utils';
 import {getFilteredTraceData, mapComment} from './utils';
 import {FCI_DETAIL_COLUMNS, COMMENT_TABLE_COLUMNS, TRACE_TABLE_COLUMNS} from './constants';
 
-const FciModal = ({data, isOpen, onClose}) => {
+const FciModal = ({data, isOpen, onClose, onSaveComment}) => {
     const {
         traceId,
         recordedSessionUrl,
@@ -91,6 +91,7 @@ const FciModal = ({data, isOpen, onClose}) => {
                 "isFci": ${isFci}
             }`
         });
+        onSaveComment(traceId, comment, isFci);
         const nextComments = JSON.parse(JSON.stringify(comments));
         nextComments.unshift({
             Created: timestamp,

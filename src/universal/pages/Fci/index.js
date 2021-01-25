@@ -148,6 +148,14 @@ const Fci = ({selectedBrands}) => {
         }
     }, [start, end, selectedLobs, selectedErrorCode, selectedSite, history, pathname, selectedBrands, hideIntentionalCheck, prev, processData, selectedCategory]);
 
+    const handleSaveComment = (traceId, comment, isFci) => {
+        const found = tableData.findIndex(({Trace}) => Trace === traceId);
+        if (found > -1) {
+            tableData[found].Comment = comment;
+            tableData[found]['Is FCI'] = isFci;
+        }
+    };
+
     const handleModalClose = () => {
         setIsModalOpen(false);
     };
@@ -360,6 +368,7 @@ const Fci = ({selectedBrands}) => {
                 data={modalData}
                 isOpen={isModalOpen}
                 onClose={handleModalClose}
+                onSaveComment={handleSaveComment}
             />
         </div>
     );
