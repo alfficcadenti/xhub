@@ -1,4 +1,5 @@
 import React from 'react';
+import {withRouter} from 'react-router-dom';
 import Iframe from 'react-iframe';
 import './styles.less';
 
@@ -22,4 +23,4 @@ const OutageReport = () => {
     );
 };
 
-export default OutageReport;
+export default withRouter(OutageReport);

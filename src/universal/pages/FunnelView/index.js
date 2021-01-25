@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useLocation} from 'react-router-dom';
+import {useLocation, withRouter} from 'react-router-dom';
 import moment from 'moment';
 import Select from 'react-select';
 import TravelerMetricsWidget from '../../components/TravelerMetricsWidget';
@@ -29,6 +29,7 @@ import './styles.less';
 
 // eslint-disable-next-line complexity
 const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
+    const selectedBrand = selectedBrands[0];
     const {search} = useLocation();
     const {initialStart, initialEnd, initialTimeRange, initialLobs} = getQueryParams(search);
 
@@ -63,10 +64,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
     const productMapping = useFetchProductMapping(start, end);
 
-    const [isMounted, setIsMounted] = useState(false);
-
-    useQueryParamChange(selectedBrands[0], onBrandChange);
-    useSelectedBrand(selectedBrands[0], onBrandChange, prevSelectedBrand);
+    useQueryParamChange(selectedBrand, onBrandChange);
+    useSelectedBrand(selectedBrand, onBrandChange, prevSelectedBrand);
 
     const {
         handleMouseDown,
@@ -92,8 +91,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     );
 
     useEffect(() => {
-        const fetchPageViewsData = ([selectedBrand]) => {
-            const {label: pageBrand, funnelBrand} = getBrand(selectedBrand, 'label');
+        const fetchPageViewsData = (brand) => {
+            const {label: pageBrand, funnelBrand} = getBrand(brand, 'label');
             setIsLoading(true);
             setError('');
             const endpoint = buildPageViewsApiQueryString({start, end, brand: funnelBrand, lob: false, EPSPartner: selectedEPSPartner});
@@ -110,8 +109,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 .finally(() => setIsLoading(false));
         };
 
-        const fetchPageViewsLoBData = ([selectedBrand]) => {
-            const {label: pageBrand, funnelBrand} = getBrand(selectedBrand, 'label');
+        const fetchPageViewsLoBData = (brand) => {
+            const {label: pageBrand, funnelBrand} = getBrand(brand, 'label');
             setIsLoBLoading(true);
             setLoBError('');
             const endpoint = buildPageViewsApiQueryString({start, end, brand: funnelBrand, lob: true, EPSPartner: selectedEPSPartner});
@@ -136,27 +135,25 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                 .finally(() => setIsLoBLoading(false));
         };
 
-        if ([EG_BRAND, EGENCIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND].includes(selectedBrands[0])) {
+        if ([EG_BRAND, EGENCIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND].includes(selectedBrand)) {
             setIsLoBAvailable(false);
-        } else if (isMounted && !isZoomedIn) {
-            fetchPageViewsLoBData(selectedBrands);
+        } else if (!isZoomedIn) {
+            fetchPageViewsLoBData(selectedBrand);
         }
 
-        if ([EG_BRAND, EGENCIA_BRAND].includes(selectedBrands[0])) {
-            setError(`Page views for ${selectedBrands} is not yet available.
+        if ([EG_BRAND, EGENCIA_BRAND].includes(selectedBrand)) {
+            setError(`Page views for ${selectedBrand} is not yet available.
                 The following brands are supported at this time: "Expedia", "Hotels.com Retail", and "Vrbo Retail".
                 If you have any questions, please ping ${OPXHUB_SUPPORT_CHANNEL} or leave a comment via our Feedback form.`);
             setIsFormDisabled(true);
-        } else if (isMounted) {
+        } else {
             setError(null);
             setIsFormDisabled(false);
             if (!isZoomedIn) {
-                fetchPageViewsData(selectedBrands);
+                fetchPageViewsData(selectedBrand);
             }
         }
-
-        setIsMounted(true);
-    }, [selectedBrands, start, end, isMounted, selectedEPSPartner]);
+    }, [selectedBrand, start, end, selectedEPSPartner]);
 
     useAddToUrl(selectedBrands, start, end, selectedLobs, pendingStart, pendingEnd);
 
@@ -237,7 +234,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             <h1>{'Traveler Page Views'}{!isLoBAvailable && <HelpText text="Only for LOB Hotels" placement="top" />}</h1>
             <div className="filters-wrapper">
                 {
-                    selectedBrands[0] === EXPEDIA_PARTNER_SERVICES_BRAND ?
+                    selectedBrand === EXPEDIA_PARTNER_SERVICES_BRAND ?
                         <div className="eps-partner-select-wrapper">
                             <Select
                                 classNamePrefix="eps-partner-select"
@@ -270,7 +267,6 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                         setEnableAnnotations={setEnableAnnotations}
                         start={start}
                         end={end}
-                        isMounted={isMounted}
                     />
                 </div>
                 <DateFiltersWrapper
@@ -297,4 +293,4 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     );
 };
 
-export default FunnelView;
+export default withRouter(FunnelView);

@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useCallback} from 'react';
-import {useHistory, useLocation} from 'react-router-dom';
+import {useHistory, useLocation, withRouter} from 'react-router-dom';
 import Select from 'react-select';
 import moment from 'moment';
 import {Checkbox, RadioGroup, RadioButton} from '@homeaway/react-form-components';
@@ -365,4 +365,4 @@ const Fci = ({selectedBrands}) => {
     );
 };
 
-export default Fci;
+export default withRouter(Fci);

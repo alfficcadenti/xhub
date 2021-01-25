@@ -1,6 +1,6 @@
 /* eslint-disable complexity */
 import React, {useEffect, useRef, useState} from 'react';
-import {useLocation} from 'react-router-dom';
+import {useLocation, withRouter} from 'react-router-dom';
 import Select from 'react-select';
 import moment from 'moment';
 import TravelerMetricsWidget from '../../components/TravelerMetricsWidget';
@@ -39,6 +39,7 @@ import DateFiltersWrapper from '../../components/DateFiltersWrapper/DateFiltersW
 
 
 const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
+    const selectedBrand = selectedBrands[0];
     const {search} = useLocation();
     const {initialStart, initialEnd, initialTimeRange, initialLobs} = getQueryParams(search);
 
@@ -78,10 +79,8 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [selectedEPSPartner, setSelectedEPSPartner] = useState('');
     const productMapping = useFetchProductMapping(start, end);
 
-    const [isMounted, setIsMounted] = useState(false);
-
-    useQueryParamChange(selectedBrands[0], onBrandChange);
-    useSelectedBrand(selectedBrands[0], onBrandChange, prevSelectedBrand);
+    useQueryParamChange(selectedBrand, onBrandChange);
+    useSelectedBrand(selectedBrand, onBrandChange, prevSelectedBrand);
 
     const {
         handleMouseDown,
@@ -108,17 +107,17 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
     const rttRef = useRef();
 
-    const fetchRealTimeData = ([selectedBrand]) => {
+    const fetchRealTimeData = (brand) => {
         setIsRttLoading(true);
         setRttError('');
         const rttStart = moment().utc().subtract(11, 'minute').startOf('minute').format();
         const rttEnd = moment().utc().subtract(1, 'minute').startOf('minute').format();
-        const {funnelBrand} = getBrand(selectedBrand, 'label');
+        const {funnelBrand} = getBrand(brand, 'label');
         const endpoint = buildSuccessRateApiQueryString({rttStart, rttEnd, brand: funnelBrand, EPSPartner: selectedEPSPartner, interval: 1});
 
         Promise.all(METRIC_NAMES.map((metricName) => fetch(`${endpoint}&metricName=${metricName}`)))
             .then((responses) => Promise.all(responses.map(checkResponse)))
-            .then((fetchedSuccessRates) => successRatesRealTimeObject(fetchedSuccessRates, selectedLobs, selectedBrand))
+            .then((fetchedSuccessRates) => successRatesRealTimeObject(fetchedSuccessRates, selectedLobs, brand))
             .then((realTimeData) => setRealTimeTotals(realTimeData))
             .catch((err) => {
                 let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
@@ -131,8 +130,8 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             .finally(() => setIsRttLoading(false));
     };
 
-    const fetchSuccessRatesData = ([selectedBrand]) => {
-        const {label: pageBrand, funnelBrand} = getBrand(selectedBrand, 'label');
+    const fetchSuccessRatesData = (brand) => {
+        const {label: pageBrand, funnelBrand} = getBrand(brand, 'label');
         setIsLoading(true);
         setError('');
         const interval = getTimeInterval(start, end);
@@ -147,7 +146,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
                 const successRatesLOBs = LOB_LIST.filter(({value}) => ['H', 'C'].includes(value));
                 const widgetObjects = makeSuccessRatesObjects(fetchedSuccessRates, start, end, pageBrand);
-                const widgetLOBObjects = makeSuccessRatesLOBObjects(fetchedSuccessRates, start, end, pageBrand, selectedBrand, successRatesLOBs);
+                const widgetLOBObjects = makeSuccessRatesLOBObjects(fetchedSuccessRates, start, end, pageBrand, brand, successRatesLOBs);
                 setWidgets(widgetObjects);
                 setLoBWidgets(widgetLOBObjects);
             })
@@ -163,33 +162,31 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     };
 
     useEffect(() => {
-        if ([EG_BRAND, EGENCIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND].includes(selectedBrands[0])) {
+        if ([EG_BRAND, EGENCIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND].includes(selectedBrand)) {
             setIsLoBAvailable(false);
         }
 
-        if ([EG_BRAND, EGENCIA_BRAND].includes(selectedBrands[0])) {
+        if ([EG_BRAND, EGENCIA_BRAND].includes(selectedBrand)) {
             setIsSupportedBrand(false);
-            setError(`Success rates for ${selectedBrands} is not yet available.
+            setError(`Success rates for ${selectedBrand} is not yet available.
                 If you have any questions, please ping ${OPXHUB_SUPPORT_CHANNEL} or leave a comment via our Feedback form.`);
             setIsFormDisabled(true);
-        } else if (isMounted) {
+        } else {
             setIsSupportedBrand(true);
             setError(null);
             setIsFormDisabled(false);
-            fetchRealTimeData(selectedBrands);
-            rttRef.current = setInterval(fetchRealTimeData.bind(null, selectedBrands), 60000); // refresh every minute
+            fetchRealTimeData(selectedBrand);
+            rttRef.current = setInterval(fetchRealTimeData.bind(null, selectedBrand), 60000); // refresh every minute
 
             if (!isZoomedIn) {
-                fetchSuccessRatesData(selectedBrands);
+                fetchSuccessRatesData(selectedBrand);
             }
         }
-
-        setIsMounted(true);
 
         return function cleanup() {
             clearInterval(rttRef.current);
         };
-    }, [selectedBrands, start, end, isMounted, selectedEPSPartner]);
+    }, [selectedBrand, start, end, selectedEPSPartner]);
 
     useEffect(() => {
         if (!selectedLobs.length) {
@@ -271,7 +268,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             </h1>
             <div className="filters-wrapper">
                 {
-                    selectedBrands[0] === EXPEDIA_PARTNER_SERVICES_BRAND &&
+                    selectedBrand === EXPEDIA_PARTNER_SERVICES_BRAND &&
                         <div className="eps-partner-select-wrapper">
                             <Select
                                 classNamePrefix="eps-partner-select"
@@ -304,7 +301,6 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                         setEnableAnnotations={setEnableAnnotations}
                         start={start}
                         end={end}
-                        isMounted={isMounted}
                     />
                 </div>
                 <DateFiltersWrapper
@@ -343,4 +339,4 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     );
 };
 
-export default SuccessRates;
+export default withRouter(SuccessRates);

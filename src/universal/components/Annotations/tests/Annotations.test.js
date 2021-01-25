@@ -1,6 +1,6 @@
 import React from 'react';
 import {expect} from 'chai';
-import {mount} from 'enzyme/build';
+import {shallow} from 'enzyme';
 import Annotations from '../Annotations';
 
 jest.mock('react-router-dom', () => {
@@ -22,7 +22,7 @@ describe('Annotations component testing', () => {
     let wrapper;
 
     beforeEach(() => {
-        wrapper = mount(<Annotations setFilteredAnnotations={jest.fn()} setEnableAnnotations={jest.fn()} productMapping={[]} isMounted={false}/>);
+        wrapper = shallow(<Annotations setFilteredAnnotations={jest.fn()} setEnableAnnotations={jest.fn()} productMapping={[]} />);
     });
 
     afterEach(() => {

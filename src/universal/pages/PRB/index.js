@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {useHistory, useLocation} from 'react-router-dom';
+import {useHistory, useLocation, withRouter} from 'react-router-dom';
 import moment from 'moment';
 import Select from 'react-select';
 import {Navigation} from '@homeaway/react-navigation';
@@ -367,4 +367,4 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     );
 };
 
-export default PRB;
+export default withRouter(PRB);

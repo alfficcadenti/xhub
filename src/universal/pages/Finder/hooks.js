@@ -21,7 +21,6 @@ export const useFetchCRs = (
     const [lastEndDate, setLastEndDate] = useState('');
 
     const [changeRequestSuggestions, setChangeRequestSuggestions] = useState({});
-    const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
         const fetchCRs = () => {
@@ -68,7 +67,7 @@ export const useFetchCRs = (
                 });
         };
 
-        if (isMounted && !isLoading) {
+        if (!isLoading) {
             fetchCRs();
         } else if (isApplyClicked) {
             if (lastStartDate !== startDate || lastEndDate !== endDate) {
@@ -77,12 +76,11 @@ export const useFetchCRs = (
                 applyAdvancedFilter();
             }
         }
-        setIsMounted(true);
 
         return () => {
             setIsApplyClicked(false);
         };
-    }, [isApplyClicked, isMounted]);
+    }, [isApplyClicked]);
 
     return [
         isLoading,
@@ -107,7 +105,6 @@ export const useFetchABTests = (
     const [lastEndDate, setLastEndDate] = useState('');
 
     const [abTestSuggestions, setAbTestSuggestions] = useState({});
-    const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
         const fetchAbTestsAnnotations = () => {
@@ -143,16 +140,14 @@ export const useFetchABTests = (
                 });
         };
 
-        if (isMounted && !isLoading) {
+        if (!isLoading) {
             fetchAbTestsAnnotations();
         } else if (isApplyClicked) {
             if (lastStartDate !== startDate || lastEndDate !== endDate) {
                 fetchAbTestsAnnotations();
             }
         }
-
-        setIsMounted(true);
-    }, [isApplyClicked, isMounted]);
+    }, [isApplyClicked]);
 
     return [
         isLoading,

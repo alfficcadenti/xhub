@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import {withRouter} from 'react-router-dom';
 import {useFetchBlipData} from './customHook';
 import {Navigation} from '@homeaway/react-navigation';
 import LoadingContainer from '../../components/LoadingContainer';
@@ -314,4 +315,4 @@ const Impulse = (props) => {
     );
 };
 
-export default Impulse;
+export default withRouter(Impulse);
