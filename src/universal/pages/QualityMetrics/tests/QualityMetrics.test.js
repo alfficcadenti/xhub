@@ -1,6 +1,6 @@
 import React from 'react';
 import {expect} from 'chai';
-import {mount} from 'enzyme';
+import {shallow} from 'enzyme';
 import QualityMetrics from '../index';
 
 jest.mock('react-router-dom', () => {
@@ -22,7 +22,7 @@ describe('<QualityMetrics>', () => {
     const location = {pathname: '/quality-metrics/'};
     let wrapper;
     beforeEach(() => {
-        wrapper = mount(<QualityMetrics selectedBrands={['Hotels.com Retail']} match="" history={history} location={location} />);
+        wrapper = shallow(<QualityMetrics selectedBrands={['Hotels.com Retail']} match="" history={history} location={location} />);
     });
 
     it('renders successfully with default portfolio given base url', () => {

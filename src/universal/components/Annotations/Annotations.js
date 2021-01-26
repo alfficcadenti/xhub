@@ -25,8 +25,7 @@ const Annotations = ({
     setFilteredAnnotations,
     setEnableAnnotations,
     start,
-    end,
-    isMounted
+    end
 }) => {
     const [isDeploymentsAnnotationsLoading, setIsDeploymentsAnnotationsLoading] = useState(false);
     const [isIncidentsAnnotationsLoading, setIsIncidentsAnnotationsLoading] = useState(false);
@@ -255,12 +254,10 @@ const Annotations = ({
                 .finally(() => setIsAbTestsAnnotationsLoading(false));
         };
 
-        if (isMounted) {
-            fetchIncidentsAnnotations();
-            fetchDeploymentAnnotations();
-            fetchAbTestsAnnotations();
-        }
-    }, [start, end, isMounted]);
+        fetchIncidentsAnnotations();
+        fetchDeploymentAnnotations();
+        fetchAbTestsAnnotations();
+    }, [start, end]);
 
     useEffect(() => {
         const allAnnotations = [...deploymentAnnotations, ...incidentAnnotations];

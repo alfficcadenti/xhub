@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {useHistory, useLocation} from 'react-router-dom';
+import {useHistory, useLocation, withRouter} from 'react-router-dom';
 import {SVGIcon} from '@homeaway/react-svg';
 import {QUESTION__16} from '@homeaway/svg-defs';
 import {Checkbox} from '@homeaway/react-form-components';
@@ -246,4 +246,4 @@ const QualityMetrics = ({selectedBrands}) => {
     );
 };
 
-export default QualityMetrics;
+export default withRouter(QualityMetrics);

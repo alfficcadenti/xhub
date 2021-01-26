@@ -1,4 +1,18 @@
+import SuccessRates from './SuccessRates';
+import Fci from './Fci';
+import Finder from './Finder';
+import FunnelView from './FunnelView';
+import Home from './Home';
+import Impulse from './Impulse';
+import LandingPage from './LandingPage';
+import OutageReport from './OutageReport';
+import PRB from './PRB';
+import QualityMetrics from './QualityMetrics';
+import IncidentTrendsDashboard from './TicketTrends/IncidentTrendsDashboard';
+import DefectTrendsDashboard from './TicketTrends/DefectTrendsDashboard';
 import {EXPEDIA_BRAND, HOTELS_COM_BRAND, VRBO_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../constants';
+
+
 const AAT = 'Availability & Trends';
 const PHAR = 'Platform Health & Resiliency';
 const OR = 'Outage Report';
@@ -9,7 +23,7 @@ export default [
         id: 'home',
         link: '/home',
         text: 'Home',
-        component: require('./Home'),
+        component: Home,
         hidden: true
     },
     {
@@ -17,7 +31,7 @@ export default [
         id: 'landing-page',
         link: '/landing-page',
         text: 'Landing Page',
-        component: require('./LandingPage'),
+        component: LandingPage,
         hidden: true
     },
     // AAT Dashboards
@@ -26,7 +40,7 @@ export default [
         id: 'impulse',
         link: '/impulse',
         text: 'Impulse Dashboard',
-        component: require('./Impulse'),
+        component: Impulse,
         hidden: false
     },
     {
@@ -34,7 +48,7 @@ export default [
         id: 'fci',
         link: '/fci',
         text: 'FCI',
-        component: require('./Fci'),
+        component: Fci,
         brands: [EXPEDIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND],
         hidden: false
     },
@@ -43,7 +57,7 @@ export default [
         id: 'funnel-view',
         link: '/funnel-view',
         text: 'Page Views',
-        component: require('./FunnelView'),
+        component: FunnelView,
         brands: [EXPEDIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND]
     },
     {
@@ -51,7 +65,7 @@ export default [
         id: 'success-rates',
         link: '/success-rates',
         text: 'Success Rates',
-        component: require('./SuccessRates'),
+        component: SuccessRates,
         brands: [EXPEDIA_BRAND, HOTELS_COM_BRAND, VRBO_BRAND],
         hidden: false
     },
@@ -61,21 +75,21 @@ export default [
         id: 'incident-trends',
         link: '/incident-trends',
         text: 'Incident Trends',
-        component: require('./TicketTrends/IncidentTrendsDashboard')
+        component: IncidentTrendsDashboard
     },
     {
         category: PHAR,
         id: 'defect-trends',
         link: '/defect-trends',
         text: 'Quality Trends',
-        component: require('./TicketTrends/DefectTrendsDashboard')
+        component: DefectTrendsDashboard
     },
     {
         category: PHAR,
         id: 'quality-metrics',
         link: '/quality-metrics',
         text: 'Quality Metrics',
-        component: require('./QualityMetrics'),
+        component: QualityMetrics,
         brands: [HOTELS_COM_BRAND]
     },
     {
@@ -83,14 +97,14 @@ export default [
         id: 'prb',
         link: '/prb',
         text: 'Problem Management',
-        component: require('./PRB')
+        component: PRB
     },
     {
         category: PHAR,
         id: 'finder',
         link: '/finder',
         text: 'Change Finder',
-        component: require('./Finder')
+        component: Finder
     },
     // OR Dashboards
     {
@@ -98,6 +112,6 @@ export default [
         id: 'outage-report',
         link: '/outage-report',
         text: 'Outage Report',
-        component: require('./OutageReport')
+        component: OutageReport
     }
 ];

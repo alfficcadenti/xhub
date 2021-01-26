@@ -89,8 +89,6 @@ export const useFetchTickets = (
     const [allTickets, setAllTickets] = useState([]);
     const [lastStartDate, setLastStartDate] = useState();
     const [lastEndDate, setLastEndDate] = useState();
-    const [isMounted, setIsMounted] = useState(false);
-
 
     useEffect(() => {
         const fetchTickets = () => {
@@ -119,16 +117,15 @@ export const useFetchTickets = (
                 });
         };
 
-        if (isMounted) {
-            fetchTickets();
-        } else if (isApplyClicked) {
+        if (isApplyClicked) {
             if (!moment(startDate).isSame(lastStartDate) || !moment(endDate).isSame(lastEndDate)) {
                 fetchTickets();
             } else {
                 applyFilters();
             }
+        } else {
+            fetchTickets(); // trigger fetch on a first page load when no apply is clicked
         }
-        setIsMounted(true);
 
         return () => {
             setIsApplyClicked(false);
@@ -139,7 +136,7 @@ export const useFetchTickets = (
             setCurrentRcOwners(['EWE - Air Development', 'Egencia - Hotel Shopping']); // TODO hardcoded
             setCurrentRcCategories(['Architectural']);
         };
-    }, [isApplyClicked, isMounted]);
+    }, [isApplyClicked]);
 
     return [
         isLoading,

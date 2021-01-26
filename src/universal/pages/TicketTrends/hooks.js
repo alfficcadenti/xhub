@@ -36,7 +36,6 @@ export const useFetchTickets = (
     const [statuses, setStatuses] = useState([]);
     const [tags, setTags] = useState([]);
     const [partners, setPartners] = useState([]);
-    const [isMounted, setIsMounted] = useState(false);
     const isIncidents = url === 'incidents';
 
     useEffect(() => {
@@ -83,21 +82,20 @@ export const useFetchTickets = (
                 });
         };
 
-        if (isMounted) {
-            fetchTickets();
-        } else if (isApplyClicked) {
+        if (isApplyClicked) {
             if (lastStartDate !== startDate || lastEndDate !== endDate) {
                 fetchTickets();
             } else {
                 applyFilters();
             }
+        } else {
+            fetchTickets(); // trigger fetch on a first page load when no apply is clicked
         }
-        setIsMounted(true);
 
         return () => {
             setIsApplyClicked(false);
         };
-    }, [isApplyClicked, isMounted]);
+    }, [isApplyClicked]);
 
     return [
         isLoading,

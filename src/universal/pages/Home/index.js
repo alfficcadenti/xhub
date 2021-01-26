@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import {getVisiblePages} from '../utils';
 import './styles.less';
 import {useSelectedBrand, useQueryParamChange} from '../hooks';
@@ -26,4 +26,4 @@ const Home = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     );
 };
 
-export default Home;
+export default withRouter(Home);

@@ -1,15 +1,21 @@
 import React from 'react';
-import {shallow} from 'enzyme';
+import {mount} from 'enzyme';
 import {expect} from 'chai';
+import {BrowserRouter as Router} from 'react-router-dom';
 import Impulse from '../index';
 import {EG_BRAND} from '../../../constants';
+
+global.fetch = require('node-fetch');
+
 const selectedBrands = [EG_BRAND];
 jest.mock('react-router-dom', () => {
     const originalModule = jest.requireActual('react-router-dom');
 
     return {
         ...originalModule,
-        useHistory: jest.fn(),
+        useHistory: () => ({
+            push: jest.fn(),
+        }),
         useLocation: () => ({
             pathname: '/test',
             hash: '',
@@ -20,7 +26,10 @@ jest.mock('react-router-dom', () => {
 });
 
 describe('<Impulse />', () => {
-    const wrapper = shallow(<Impulse selectedBrands={selectedBrands}/>);
+    const wrapper = mount(<Router>
+        <Impulse selectedBrands={selectedBrands}/>
+    </Router>);
+
     it('renders successfully', () => {
         expect(wrapper).to.have.length(1);
     });

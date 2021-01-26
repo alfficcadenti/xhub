@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import {withRouter} from 'react-router-dom';
 import OngoingIncidents from '../../components/OngoingIncidents';
 import BrandCSRWidget from '../../components/BrandCSRWidget';
 import TotalChart from './TotalBookingsChart';
@@ -111,4 +112,4 @@ LandingPage.defaultProps = {
     selectedBrands: ['Expedia Group']
 };
 
-export default LandingPage;
+export default withRouter(LandingPage);

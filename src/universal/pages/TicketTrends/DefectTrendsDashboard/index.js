@@ -1,5 +1,6 @@
 /* eslint-disable no-use-before-define */
 import React, {useState, useEffect, useCallback} from 'react';
+import {withRouter} from 'react-router-dom';
 import moment from 'moment/moment';
 import LoadingContainer from '../../../components/LoadingContainer';
 import FilterDropDown from '../../../components/FilterDropDown';
@@ -108,9 +109,7 @@ const IncidentTrendsDashboard = (props) => {
                 <button
                     type="button"
                     className="apply-button btn btn-primary active"
-                    onClick={() => {
-                        setIsApplyClicked(true);
-                    }}
+                    onClick={() => setIsApplyClicked(true)}
                     disabled={!isDirtyForm}
                 >
                     {'Apply'}
@@ -130,4 +129,4 @@ const IncidentTrendsDashboard = (props) => {
     );
 };
 
-export default IncidentTrendsDashboard;
+export default withRouter(IncidentTrendsDashboard);

@@ -127,7 +127,6 @@ export const useZoomAndSynced = (
 
 export const useFetchProductMapping = (startDate, endDate) => {
     const [productMapping, setProductMapping] = useState([]);
-    const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
         const fetchProductMapping = () => {
@@ -144,11 +143,9 @@ export const useFetchProductMapping = (startDate, endDate) => {
                     console.error(err);
                 });
         };
-        if (isMounted) {
-            fetchProductMapping();
-        }
-        setIsMounted(true);
-    }, [startDate, endDate, isMounted]);
+
+        fetchProductMapping();
+    }, [startDate, endDate]);
 
     return productMapping;
 };

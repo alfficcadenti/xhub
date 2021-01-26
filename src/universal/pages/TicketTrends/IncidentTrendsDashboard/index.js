@@ -1,5 +1,6 @@
 /* eslint-disable no-use-before-define */
 import React, {useState, useEffect, useCallback} from 'react';
+import {withRouter} from 'react-router-dom';
 import moment from 'moment';
 import {Divider} from '@homeaway/react-collapse';
 import {Checkbox} from '@homeaway/react-form-components';
@@ -306,4 +307,4 @@ const IncidentTrendsDashboard = (props) => {
     );
 };
 
-export default IncidentTrendsDashboard;
+export default withRouter(IncidentTrendsDashboard);

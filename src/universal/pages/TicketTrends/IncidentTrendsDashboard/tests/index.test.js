@@ -1,17 +1,22 @@
 import React from 'react';
-import {shallow} from 'enzyme/build';
+import {mount} from 'enzyme';
+import {BrowserRouter as Router} from 'react-router-dom';
 import IncidentTrendsDashboard from '../index';
 import {DATE_FORMAT} from '../../../../constants';
 import {EG_BRAND} from '../../../../constants';
 import moment from 'moment/moment';
+import {expect} from 'chai';
 
+global.fetch = require('node-fetch');
 
 jest.mock('react-router-dom', () => {
     const originalModule = jest.requireActual('react-router-dom');
 
     return {
         ...originalModule,
-        useHistory: jest.fn(),
+        useHistory: () => ({
+            push: jest.fn(),
+        }),
         useLocation: () => ({
             pathname: '/test',
             hash: '',
@@ -22,10 +27,12 @@ jest.mock('react-router-dom', () => {
 });
 
 describe('<IncidentTrendsDashboard/>', () => {
-    const wrapper = shallow(<IncidentTrendsDashboard selectedBrands={[EG_BRAND]} />);
+    const wrapper = mount(<Router>
+        <IncidentTrendsDashboard selectedBrands={[EG_BRAND]} />
+    </Router>);
 
     it('renders successfully', () => {
-        shallow(<IncidentTrendsDashboard selectedBrands={[EG_BRAND]}/>);
+        expect(wrapper).to.have.length(1);
     });
 
     it('sets correctly default start and end dates', async () => {
@@ -33,31 +40,30 @@ describe('<IncidentTrendsDashboard/>', () => {
         const endDateDefaultValue = moment().format(DATE_FORMAT);
 
         const props = wrapper.find('DatePicker').props();
-        expect(props.startDate).toBe(startDateDefaultValue);
-        expect(props.endDate).toBe(endDateDefaultValue);
+        expect(props.startDate).equal(startDateDefaultValue);
+        expect(props.endDate).equal(endDateDefaultValue);
     });
 
     it('Navigation tab has correct tabs', async () => {
         const props = wrapper.find('Navigation').props();
-        expect(props.links[0].id).toBe('overview');
-        expect(props.links[1].id).toBe('incidents');
-        expect(props.links[2].id).toBe('top5');
-        // expect(props.links[3].id).toBe('financialImpact');
+        expect(props.links[0].id).equal('overview');
+        expect(props.links[1].id).equal('incidents');
+        expect(props.links[2].id).equal('top5');
     });
 
     it('Navigation receives active index 1 by default', async () => {
         const props = wrapper.find('Navigation').props();
-        expect(props.activeIndex).toBe(1);
+        expect(props.activeIndex).equal(1);
     });
 
     it('FilterDropDown render default priority value', async () => {
         const props = wrapper.find('FilterDropDown').first().props();
-        expect(props.selectedValue).toBe('All Priorities');
+        expect(props.selectedValue).equal('All Priorities');
     });
 
     it('LoadingContainer should have right props', async () => {
         const props = wrapper.find('LoadingContainer').props();
-        expect(props.isLoading).toEqual(true);
-        expect(props.error).toEqual('');
+        expect(props.isLoading).equal(true);
+        expect(props.error).equal('');
     });
 });

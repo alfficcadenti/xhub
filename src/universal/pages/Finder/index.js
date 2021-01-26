@@ -1,5 +1,6 @@
 /* eslint-disable no-use-before-define */
 import React, {useState, useEffect} from 'react';
+import {withRouter} from 'react-router-dom';
 import moment from 'moment';
 import {Navigation} from '@homeaway/react-navigation';
 import LoadingContainer from '../../components/LoadingContainer';
@@ -198,4 +199,4 @@ const Finder = (props) => {
     );
 };
 
-export default Finder;
+export default withRouter(Finder);
