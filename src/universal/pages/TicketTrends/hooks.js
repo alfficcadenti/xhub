@@ -38,58 +38,60 @@ export const useFetchTickets = (
     const [partners, setPartners] = useState([]);
     const isIncidents = url === 'incidents';
 
-    useEffect(() => {
-        const fetchTickets = () => {
-            setIsLoading(true);
-            setLastStartDate(startDate);
-            setLastEndDate(endDate);
-            const paths = [`/v1/${url}?fromDate=${startDate}&toDate=${endDate}`];
-            if ([EXPEDIA_PARTNER_SERVICES_BRAND, EG_BRAND].includes(selectedBrand) && isIncidents) {
-                paths.push(`https://opxhub-data-service.us-west-2.test.expedia.com/v1/eps/${url}?fromDate=${startDate}&toDate=${endDate}`);
-            }
-            const handleFetchError = (err) => {
-                // eslint-disable-next-line no-console
+    const fetchTickets = () => {
+        setIsLoading(true);
+        setLastStartDate(startDate);
+        setLastEndDate(endDate);
+        const paths = [`/v1/${url}?fromDate=${startDate}&toDate=${endDate}`];
+        if ([EXPEDIA_PARTNER_SERVICES_BRAND, EG_BRAND].includes(selectedBrand) && isIncidents) {
+            paths.push(`https://opxhub-data-service.us-west-2.test.expedia.com/v1/eps/${url}?fromDate=${startDate}&toDate=${endDate}`);
+        }
+        const handleFetchError = (err) => {
+            // eslint-disable-next-line no-console
+            console.error(JSON.stringify(err, null, 4));
+            setIsLoading(false);
+            setError(`Not all incidents and/or defects are available. Check your VPN or refresh the page to try again. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`);
+        };
+        Promise.all(paths.map((path) => fetch(path).catch(handleFetchError)))
+            .then((responses) => Promise.all(responses.map(checkResponse)))
+            .then(([ticketsData, epsTicketsData = []]) => {
+                const epsTickets = epsTicketsData.map(mapEpsData);
+                const tickets = (isIncidents)
+                    ? sortArrayByMostRecentDate([...ticketsData, ...epsTickets], 'startDate')
+                    : sortArrayByMostRecentDate([...ticketsData, ...epsTickets], 'openDate');
+                const uniqueTickets = consolidateTicketsById(tickets);
+                const adjustedUniqueTickets = adjustTicketProperties(uniqueTickets, isIncidents ? 'incident' : 'defect');
+                const ticketPriorities = getListOfUniqueProperties(adjustedUniqueTickets, 'priority');
+                const ticketStatuses = getListOfUniqueProperties(adjustedUniqueTickets, 'Status');
+                const ticketPartners = getListOfUniqueProperties(adjustedUniqueTickets, 'impactedPartners');
+
+                setPriorities([ALL_PRIORITIES_OPTION, ...ticketPriorities]);
+                setStatuses([ALL_STATUSES_OPTION, ...ticketStatuses]);
+                setTags([ALL_TAGS_OPTION, ...ALL_TAGS]);
+                setPartners([ALL_PARTNERS_OPTION, ...ticketPartners]);
+
+                setAllUniqueTickets(adjustedUniqueTickets);
+                setAllTickets(tickets);
+                setIsLoading(false);
+            }).catch((err) => {
+            // eslint-disable-next-line no-console
                 console.error(JSON.stringify(err, null, 4));
                 setIsLoading(false);
-                setError(`Not all incidents and/or defects are available. Check your VPN or refresh the page to try again. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`);
-            };
-            Promise.all(paths.map((path) => fetch(path).catch(handleFetchError)))
-                .then((responses) => Promise.all(responses.map(checkResponse)))
-                .then(([ticketsData, epsTicketsData = []]) => {
-                    const epsTickets = epsTicketsData.map(mapEpsData);
-                    const tickets = (isIncidents)
-                        ? sortArrayByMostRecentDate([...ticketsData, ...epsTickets], 'startDate')
-                        : sortArrayByMostRecentDate([...ticketsData, ...epsTickets], 'openDate');
-                    const uniqueTickets = consolidateTicketsById(tickets);
-                    const adjustedUniqueTickets = adjustTicketProperties(uniqueTickets, isIncidents ? 'incident' : 'defect');
-                    const ticketPriorities = getListOfUniqueProperties(adjustedUniqueTickets, 'priority');
-                    const ticketStatuses = getListOfUniqueProperties(adjustedUniqueTickets, 'Status');
-                    const ticketPartners = getListOfUniqueProperties(adjustedUniqueTickets, 'impactedPartners');
+                setError(`Error occurred when reading tickets. Please try refreshing the page. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`);
+            });
+    };
 
-                    setPriorities([ALL_PRIORITIES_OPTION, ...ticketPriorities]);
-                    setStatuses([ALL_STATUSES_OPTION, ...ticketStatuses]);
-                    setTags([ALL_TAGS_OPTION, ...ALL_TAGS]);
-                    setPartners([ALL_PARTNERS_OPTION, ...ticketPartners]);
+    useEffect(() => {
+        fetchTickets();
+    }, []);
 
-                    setAllUniqueTickets(adjustedUniqueTickets);
-                    setAllTickets(tickets);
-                    setIsLoading(false);
-                }).catch((err) => {
-                    // eslint-disable-next-line no-console
-                    console.error(JSON.stringify(err, null, 4));
-                    setIsLoading(false);
-                    setError(`Error occurred when reading tickets. Please try refreshing the page. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`);
-                });
-        };
-
+    useEffect(() => {
         if (isApplyClicked) {
             if (lastStartDate !== startDate || lastEndDate !== endDate) {
                 fetchTickets();
             } else {
                 applyFilters();
             }
-        } else {
-            fetchTickets(); // trigger fetch on a first page load when no apply is clicked
         }
 
         return () => {

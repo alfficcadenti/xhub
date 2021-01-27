@@ -90,41 +90,43 @@ export const useFetchTickets = (
     const [lastStartDate, setLastStartDate] = useState();
     const [lastEndDate, setLastEndDate] = useState();
 
-    useEffect(() => {
-        const fetchTickets = () => {
-            setIsLoading(true);
-            setLastStartDate(startDate);
-            setLastEndDate(endDate);
-            // TODO: replace incidents API call with problem management tickets API call
-            fetch(`/v1/prbs?fromDate=${startDate}&toDate=${endDate}`)
-                .then(checkResponse)
-                .then((data) => {
-                    const tickets = sortArrayByMostRecentDate(data, 'createdDate');
-                    // TODO: temporarily ignore data and replace with mockData
-                    setAllTickets(tickets.map(mapTickets));
-                    setCurrentOrgs(getListOfUniqueProperties(tickets, 'owningOrganization'));
-                    setCurrentRcOwners(getListOfUniqueProperties(tickets, 'rootCauseOwner'));
-                    setCurrentPriorities(getListOfUniqueProperties(tickets, 'priority'));
-                    setCurrentStatuses(getListOfUniqueProperties(tickets, 'status'));
-                    setCurrentRcCategories(getListOfUniqueProperties(tickets, 'rootCauseCategory'));
-                    setIsLoading(false);
-                })
-                .catch((err) => {
-                    setIsLoading(false);
-                    setError('Could not retrieve all problem management tickets. Refresh the page to try again.');
-                    // eslint-disable-next-line no-console
-                    console.error(err);
-                });
-        };
+    const fetchTickets = () => {
+        setIsLoading(true);
+        setLastStartDate(startDate);
+        setLastEndDate(endDate);
+        // TODO: replace incidents API call with problem management tickets API call
+        fetch(`/v1/prbs?fromDate=${startDate}&toDate=${endDate}`)
+            .then(checkResponse)
+            .then((data) => {
+                const tickets = sortArrayByMostRecentDate(data, 'createdDate');
+                // TODO: temporarily ignore data and replace with mockData
+                setAllTickets(tickets.map(mapTickets));
+                setCurrentOrgs(getListOfUniqueProperties(tickets, 'owningOrganization'));
+                setCurrentRcOwners(getListOfUniqueProperties(tickets, 'rootCauseOwner'));
+                setCurrentPriorities(getListOfUniqueProperties(tickets, 'priority'));
+                setCurrentStatuses(getListOfUniqueProperties(tickets, 'status'));
+                setCurrentRcCategories(getListOfUniqueProperties(tickets, 'rootCauseCategory'));
+                setIsLoading(false);
+            })
+            .catch((err) => {
+                setIsLoading(false);
+                setError('Could not retrieve all problem management tickets. Refresh the page to try again.');
+                // eslint-disable-next-line no-console
+                console.error(err);
+            });
+    };
 
+    useEffect(() => {
+        fetchTickets();
+    }, []);
+
+    useEffect(() => {
         if (isApplyClicked) {
             if (!moment(startDate).isSame(lastStartDate) || !moment(endDate).isSame(lastEndDate)) {
                 fetchTickets();
             } else {
                 applyFilters();
             }
-        } else {
-            fetchTickets(); // trigger fetch on a first page load when no apply is clicked
         }
 
         return () => {
