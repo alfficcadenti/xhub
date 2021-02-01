@@ -99,6 +99,10 @@ export const useFetchTickets = (
         };
     }, [isApplyClicked]);
 
+    useEffect(() => {
+        applyFilters();
+    }, [selectedBrand]);
+
     return [
         isLoading,
         error,
