@@ -5,17 +5,6 @@ import moment from 'moment';
 import {checkResponse} from './utils';
 import {EG_BRAND, EGENCIA_BRAND} from '../constants';
 
-
-export const useIsMount = () => {
-    const isMountRef = useRef(true);
-
-    useEffect(() => {
-        isMountRef.current = false;
-    }, []);
-
-    return isMountRef.current;
-};
-
 export const usePrevious = (value) => {
     const ref = useRef();
 

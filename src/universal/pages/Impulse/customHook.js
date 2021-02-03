@@ -26,6 +26,8 @@ const IMPULSE_MAPPING = [
 const bookingTimeInterval = 300000;
 const incidentTimeInterval = 900000;
 let initialMount = false;
+let intervalForCharts;
+let intervalForAnnotations = null;
 
 export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTime, endDateTime, globalBrandName, prevBrand, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, chartSliced, setChartSliced, isAutoRefresh) => {
     const [res, setRes] = useState([]);
@@ -149,17 +151,18 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             });
     };
     useEffect(() => {
+        if (SUPPRESSED_BRANDS.includes(globalBrandName)) {
+            setError(`Booking data for ${globalBrandName} is not yet available. The following brands are supported at this time: "Expedia", "Hotels.com Retail", and "Expedia Partner Solutions".`);
+        }
         getData();
         getFilter();
         getBrandsFilterData();
         fetchIncidents();
-        setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
-        setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
+        intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
+        intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
     }, []);
 
     useEffect(() => {
-        let intervalForCharts;
-        let intervalForAnnotations = null;
         if (initialMount) {
             if (SUPPRESSED_BRANDS.includes(globalBrandName)) {
                 setError(`Booking data for ${globalBrandName} is not yet available. The following brands are supported at this time: "Expedia", "Hotels.com Retail", and "Expedia Partner Solutions".`);
