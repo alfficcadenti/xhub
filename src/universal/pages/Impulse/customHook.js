@@ -150,41 +150,74 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 console.error(err);
             });
     };
+    const checkDefaultRange = () => {
+        if ((moment(endDateTime).diff(moment(startDateTime), 'days') === 3) && (moment().diff(moment(endDateTime), 'days') === 0)) {
+            intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
+            intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
+        }
+    };
     useEffect(() => {
         if (SUPPRESSED_BRANDS.includes(globalBrandName)) {
             setError(`Booking data for ${globalBrandName} is not yet available. The following brands are supported at this time: "Expedia", "Hotels.com Retail", and "Expedia Partner Solutions".`);
+        } else {
+            getData();
+            getFilter();
+            getBrandsFilterData();
+            fetchIncidents();
+            intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
+            intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
         }
-        getData();
-        getFilter();
-        getBrandsFilterData();
-        fetchIncidents();
-        intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
-        intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
     }, []);
 
     useEffect(() => {
         if (initialMount) {
             if (SUPPRESSED_BRANDS.includes(globalBrandName)) {
                 setError(`Booking data for ${globalBrandName} is not yet available. The following brands are supported at this time: "Expedia", "Hotels.com Retail", and "Expedia Partner Solutions".`);
-            } else if (!chartSliced && isAutoRefresh && (moment(endDateTime).diff(moment(startDateTime), 'days') === 3) && (moment().diff(moment(endDateTime), 'days') === 0)) {
-                intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
-                intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
-                getData(startTime(), endTime());
-                fetchIncidents(startTime(), endTime());
-            } else if (chartSliced || isApplyClicked) {
+            } else {
                 getData();
                 fetchIncidents();
+                getFilter();
                 getBrandsFilterData();
+                checkDefaultRange();
             }
-        } else {
-            initialMount = true;
+        }
+        return () => {
+            clearInterval(intervalForCharts);
+            clearInterval(intervalForAnnotations);
+        };
+    }, [globalBrandName]);
+
+
+    useEffect(() => {
+        if (chartSliced || isApplyClicked) {
+            getData();
+            fetchIncidents();
+            getBrandsFilterData();
+            checkDefaultRange();
         }
         return () => {
             setIsApplyClicked(false);
             clearInterval(intervalForCharts);
             clearInterval(intervalForAnnotations);
         };
-    }, [isApplyClicked, startDateTime, endDateTime, globalBrandName, isAutoRefresh]);
+    }, [isApplyClicked, startDateTime, endDateTime]);
+
+    useEffect(() => {
+        if (initialMount) {
+            if (!chartSliced && isAutoRefresh && (moment(endDateTime).diff(moment(startDateTime), 'days') === 3) && (moment().diff(moment(endDateTime), 'days') === 0)) {
+                intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
+                intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
+                getData(startTime(), endTime());
+                fetchIncidents(startTime(), endTime());
+            }
+        } else {
+            initialMount = true;
+        }
+        return () => {
+            clearInterval(intervalForCharts);
+            clearInterval(intervalForAnnotations);
+        };
+    }, [isAutoRefresh, startDateTime, endDateTime]);
 
     return [
         isLoading,
