@@ -5,20 +5,20 @@
   "name": "opxhub-ui",
   "owner": "aficcadenti",
   "steps": [{
-    "action": {
-      "name": "primerBuildsJenkins"
+      "action": {
+        "name": "primerBuildsJenkins"
+      },
+      "actionId": "opxhub-ui-master",
+      "description": null,
+      "disabled": false,
+      "ignoreResult": false,
+      "name": "Build_opxhub-ui",
+      "params": {
+        "token": "masterBuild"
+      },
+      "successChildren": ["Deploy_To_Test"],
+      "triggerType": "automatic"
     },
-    "actionId": "opxhub-ui-master",
-    "description": null,
-    "disabled": false,
-    "ignoreResult": false,
-    "name": "Build_opxhub-ui",
-    "params": {
-      "token": "masterBuild"
-    },
-    "successChildren": ["Deploy_To_Test"],
-    "triggerType": "automatic"
-  },
     {
       "action": {
         "name": "ewedeployJenkins"
