@@ -37,12 +37,6 @@
             border-color: #ff8281 transparent transparent transparent;
         }
 
-        &:hover .tooltip-body {
-            visibility: visible;
-            opacity: .9;
-            display: block;
-        }
-
         .tooltip-body {
             display: none;
             visibility: hidden;
@@ -104,4 +98,15 @@
             }
         }
   }
+
+    &:hover .annotation-tooltip .tooltip-body {
+        visibility: visible;
+        opacity: .9;
+        display: block;
+    }
+
+    &:hover  {
+        height: 120px !important;
+        y: -115px
+    }
 }
