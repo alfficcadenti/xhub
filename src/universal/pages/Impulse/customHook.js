@@ -9,7 +9,6 @@ import {
     VRBO_BRAND,
     SUPPRESSED_BRANDS
 } from '../../constants';
-import {useIsMount} from '../hooks';
 import {getFilters, getBrandQueryParam, getQueryString, getRevLoss, startTime, endTime} from './impulseHandler';
 import {checkResponse} from '../utils';
 import moment from 'moment';
@@ -26,6 +25,9 @@ const IMPULSE_MAPPING = [
 ];
 const bookingTimeInterval = 300000;
 const incidentTimeInterval = 900000;
+let initialMount = false;
+let intervalForCharts;
+let intervalForAnnotations = null;
 
 export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTime, endDateTime, globalBrandName, prevBrand, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, chartSliced, setChartSliced, isAutoRefresh) => {
     const [res, setRes] = useState([]);
@@ -39,7 +41,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
     const [brandsFilterData, setBrandsFilterData] = useState({});
     const [filterData, setFilterData] = useState({});
     const [annotations, setAnnotations] = useState([]);
-    const isMount = useIsMount();
     const incidentMultiOptions = [
         {
             value: '0-Code Red',
@@ -149,34 +150,74 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 console.error(err);
             });
     };
+    const checkDefaultRange = () => {
+        if ((moment(endDateTime).diff(moment(startDateTime), 'days') === 3) && (moment().diff(moment(endDateTime), 'days') === 0)) {
+            intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
+            intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
+        }
+    };
     useEffect(() => {
-        let intervalForCharts;
-        let intervalForAnnotations = null;
         if (SUPPRESSED_BRANDS.includes(globalBrandName)) {
             setError(`Booking data for ${globalBrandName} is not yet available. The following brands are supported at this time: "Expedia", "Hotels.com Retail", and "Expedia Partner Solutions".`);
-        } else if (isMount) { // when render it first time
+        } else {
             getData();
             getFilter();
             getBrandsFilterData();
             fetchIncidents();
             intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
             intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
-        } else if (!chartSliced && isAutoRefresh && (moment(endDateTime).diff(moment(startDateTime), 'days') === 3) && (moment().diff(moment(endDateTime), 'days') === 0)) {
-            intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
-            intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
-            getData(startTime(), endTime());
-            fetchIncidents(startTime(), endTime());
-        } else if (chartSliced || isApplyClicked) {
+        }
+    }, []);
+
+    useEffect(() => {
+        if (initialMount) {
+            if (SUPPRESSED_BRANDS.includes(globalBrandName)) {
+                setError(`Booking data for ${globalBrandName} is not yet available. The following brands are supported at this time: "Expedia", "Hotels.com Retail", and "Expedia Partner Solutions".`);
+            } else {
+                getData();
+                fetchIncidents();
+                getFilter();
+                getBrandsFilterData();
+                checkDefaultRange();
+            }
+        }
+        return () => {
+            clearInterval(intervalForCharts);
+            clearInterval(intervalForAnnotations);
+        };
+    }, [globalBrandName]);
+
+
+    useEffect(() => {
+        if (chartSliced || isApplyClicked) {
             getData();
             fetchIncidents();
             getBrandsFilterData();
+            checkDefaultRange();
         }
         return () => {
             setIsApplyClicked(false);
             clearInterval(intervalForCharts);
             clearInterval(intervalForAnnotations);
         };
-    }, [isApplyClicked, startDateTime, endDateTime, globalBrandName, isAutoRefresh]);
+    }, [isApplyClicked, startDateTime, endDateTime]);
+
+    useEffect(() => {
+        if (initialMount) {
+            if (!chartSliced && isAutoRefresh && (moment(endDateTime).diff(moment(startDateTime), 'days') === 3) && (moment().diff(moment(endDateTime), 'days') === 0)) {
+                intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
+                intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
+                getData(startTime(), endTime());
+                fetchIncidents(startTime(), endTime());
+            }
+        } else {
+            initialMount = true;
+        }
+        return () => {
+            clearInterval(intervalForCharts);
+            clearInterval(intervalForAnnotations);
+        };
+    }, [isAutoRefresh, startDateTime, endDateTime]);
 
     return [
         isLoading,

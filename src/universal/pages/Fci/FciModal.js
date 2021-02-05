@@ -33,7 +33,7 @@ const FciModal = ({data, isOpen, onClose, onSaveComment}) => {
 
     useEffect(() => {
         if (!editMode) {
-            setFilteredData(getFilteredTraceData(data.tableData));
+            setFilteredData(getFilteredTraceData(data.data));
         } else {
             setIsLoading(true);
             setError();
