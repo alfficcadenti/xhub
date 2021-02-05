@@ -28,9 +28,9 @@ const ReferenceLabel = ({viewBox: {x}, annotation, isImpulse = false, setTableDa
         <foreignObject
             className="foreign-object"
             x={x - 5.5}
-            y={-115}
+            y={-5}
             width={10}
-            height={120}
+            height={10}
         >
             <div className={`annotation-tooltip ${isImpulse ? 'incidents-impulse' : category}`}>
                 <div className="tooltip-body">
