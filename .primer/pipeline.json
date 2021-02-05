@@ -5,20 +5,20 @@
   "name": "opxhub-ui",
   "owner": "aficcadenti",
   "steps": [{
-      "action": {
-        "name": "primerBuildsJenkins"
-      },
-      "actionId": "opxhub-ui-master",
-      "description": null,
-      "disabled": false,
-      "ignoreResult": false,
-      "name": "Build_opxhub-ui",
-      "params": {
-        "token": "masterBuild"
-      },
-      "successChildren": ["Deploy_To_Test"],
-      "triggerType": "automatic"
+    "action": {
+      "name": "primerBuildsJenkins"
     },
+    "actionId": "opxhub-ui-master",
+    "description": null,
+    "disabled": false,
+    "ignoreResult": false,
+    "name": "Build_opxhub-ui",
+    "params": {
+      "token": "masterBuild"
+    },
+    "successChildren": ["Deploy_To_Test"],
+    "triggerType": "automatic"
+  },
     {
       "action": {
         "name": "ewedeployJenkins"
@@ -54,9 +54,101 @@
         "token": "ewetestReleaseDockerEcs"
       },
       "successChildren": [
-        "Deploy-To-USE1-Prod"
+        "Deploy-To-USE1-Prod",
+        "perf-test-Lighthouse-landing-page",
+        "perf-test-Lighthouse-success-rates",
+        "perf-test-Lighthouse-incident-trends",
+        "perf-test-Lighthouse-funnel-view"
       ],
       "triggerType": "automatic"
+    },
+    {
+      "params": {
+        "jobParameters": {
+          "NAME": "opxhub-ui",
+          "URL": "https://opxhub-ui.us-west-2.test.expedia.com/landing-page",
+          "PerformanceGoal": "30",
+          "BestPracticesGoal": "70",
+          "AccessibilityGoal": "70"
+        },
+        "token": "perfPrimerAutomationToken"
+      },
+      "name": "perf-test-Lighthouse-landing-page",
+      "action": {
+        "name": "eweperfJenkins"
+      },
+      "actionId": "Primer-Lighthouse-Template",
+      "disabled": false,
+      "triggerType": "automatic",
+      "description": null,
+      "ignoreResult": false,
+      "successChildren": []
+    },
+    {
+      "params": {
+        "jobParameters": {
+          "NAME": "opxhub-ui",
+          "URL": "https://opxhub-ui.us-west-2.test.expedia.com/funnel-view?selectedBrand=Expedia",
+          "PerformanceGoal": "30",
+          "BestPracticesGoal": "70",
+          "AccessibilityGoal": "70"
+        },
+        "token": "perfPrimerAutomationToken"
+      },
+      "name": "perf-test-Lighthouse-funnel-view",
+      "action": {
+        "name": "eweperfJenkins"
+      },
+      "actionId": "Primer-Lighthouse-Template",
+      "disabled": false,
+      "triggerType": "automatic",
+      "description": "Funnel View Lighthouse Test",
+      "ignoreResult": false,
+      "successChildren": []
+    },
+    {
+      "params": {
+        "jobParameters": {
+          "NAME": "opxhub-ui",
+          "URL": "https://opxhub-ui.us-west-2.test.expedia.com/success-rates?selectedBrand=Expedia",
+          "PerformanceGoal": "30",
+          "BestPracticesGoal": "70",
+          "AccessibilityGoal": "70"
+        },
+        "token": "perfPrimerAutomationToken"
+      },
+      "name": "perf-test-Lighthouse-success-rates",
+      "action": {
+        "name": "eweperfJenkins"
+      },
+      "actionId": "Primer-Lighthouse-Template",
+      "disabled": false,
+      "triggerType": "automatic",
+      "description": "Success Rate Lighthouse Test",
+      "ignoreResult": false,
+      "successChildren": []
+    },
+    {
+      "params": {
+        "jobParameters": {
+          "NAME": "opxhub-ui",
+          "URL": "https://opxhub-ui.us-west-2.test.expedia.com/incident-trends",
+          "PerformanceGoal": "30",
+          "BestPracticesGoal": "70",
+          "AccessibilityGoal": "70"
+        },
+        "token": "perfPrimerAutomationToken"
+      },
+      "name": "perf-test-Lighthouse-incident-trends",
+      "action": {
+        "name": "eweperfJenkins"
+      },
+      "actionId": "Primer-Lighthouse-Template",
+      "disabled": false,
+      "triggerType": "automatic",
+      "description": "Incident Trends Lighthouse Test",
+      "ignoreResult": false,
+      "successChildren": []
     },
     {
       "action": {

@@ -28,5 +28,3 @@ These files include:
 
 **For more information**
 - Post questions in the #kumo-communitysupport Slack channel or on https://go/ask
-
-
