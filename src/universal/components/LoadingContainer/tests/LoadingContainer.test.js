@@ -20,7 +20,6 @@ describe('<LoadingContainer />', () => {
 
     it('renders correctly and display alert message', () => {
         wrapper = render(<LoadingContainer isLoading error={'test'}/>);
-        console.log(wrapper.text());
         expect(wrapper.text()).to.be.eql('test');
     });
 

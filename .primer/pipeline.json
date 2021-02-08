@@ -82,7 +82,9 @@
       "triggerType": "automatic",
       "description": null,
       "ignoreResult": false,
-      "successChildren": []
+      "successChildren": [
+        "Deploy-To-USE1-Prod"
+      ]
     },
     {
       "params": {
