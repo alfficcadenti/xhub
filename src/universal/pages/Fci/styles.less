@@ -26,35 +26,43 @@
             }
         }
 
-        .error-code-dropdown .Dropdown__toggle {
-            margin-right: @spacing-1x;
-            .dropdown-button(160px);
-        }
-
-        .site-dropdown {
+        .error-code-dropdown,
+        .site-dropdown,
+        .category-dropdown {
             vertical-align: bottom;
             display: inline-block;
             width: 250px;
             margin-right: @spacing-1x;
 
+            .error-code-dropdown__control,
+            .category-dropdown__control,
             .site-dropdown__control {
                 min-height: @filter-size;
                 border-radius: @spacing-1x;
                 border-color: @border-color-dark;
             }
 
+            .error-code-dropdown__menu,
+            .category-dropdown__menu,
             .site-dropdown__menu {
                 z-index: 999;
             }
         }
 
-        .intent-cbox {
-            display: inline-block;
+        .error-code-dropdown {
+            width: 205px;
         }
 
-        .category-dropdown .Dropdown__toggle {
-            margin-right: @spacing-1x;
-            .dropdown-button(160px);
+        .site-dropdown {
+            width: 250px;
+        }
+
+        .category-dropdown {
+            width: 220px;
+        }
+
+        .intent-cbox {
+            display: inline-block;
         }
 
         .Dropdown__menu {

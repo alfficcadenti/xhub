@@ -3,7 +3,6 @@ import {useHistory, useLocation, withRouter} from 'react-router-dom';
 import Select from 'react-select';
 import moment from 'moment';
 import {Checkbox, RadioGroup, RadioButton} from '@homeaway/react-form-components';
-import FilterDropDown from '../../components/FilterDropDown';
 import LineChartWrapper from '../../components/LineChartWrapper';
 import DataTable from '../../components/DataTable';
 import LoadingContainer from '../../components/LoadingContainer';
@@ -184,7 +183,7 @@ const Fci = ({selectedBrands}) => {
     };
 
     const handleErrorCodeChange = (e) => {
-        setPendingErrorCode(e);
+        setPendingErrorCode(e && e.value);
         setIsDirtyForm(true);
     };
 
@@ -194,7 +193,7 @@ const Fci = ({selectedBrands}) => {
     };
 
     const handleCategoryChange = (e) => {
-        setPendingCategory(e);
+        setPendingCategory(e && e.value);
         setIsDirtyForm(true);
     };
 
@@ -267,12 +266,13 @@ const Fci = ({selectedBrands}) => {
                     endDate={pendingEnd.toDate()}
                     presets={getPresets()}
                 />
-                <FilterDropDown
-                    id="error-code-dropdown"
+                <Select
+                    classNamePrefix="error-code-dropdown"
                     className="error-code-dropdown"
-                    list={errorCodes}
-                    selectedValue={pendingErrorCode}
-                    onClickHandler={handleErrorCodeChange}
+                    options={errorCodes.map((x) => ({label: x, value: x}))}
+                    onChange={handleErrorCodeChange}
+                    placeholder={pendingErrorCode}
+                    isSearchable
                 />
                 <Select
                     classNamePrefix="site-dropdown"
@@ -282,12 +282,13 @@ const Fci = ({selectedBrands}) => {
                     placeholder={pendingSite}
                     isSearchable
                 />
-                <FilterDropDown
-                    id="category-dropdown"
+                <Select
+                    classNamePrefix="category-dropdown"
                     className="category-dropdown"
-                    list={categories}
-                    selectedValue={pendingCategory}
-                    onClickHandler={handleCategoryChange}
+                    options={categories.map((x) => ({label: x, value: x}))}
+                    onChange={handleCategoryChange}
+                    placeholder={pendingCategory}
+                    isSearchable
                 />
                 <Checkbox
                     name="intent-cbox"
