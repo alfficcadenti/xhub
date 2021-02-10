@@ -65,9 +65,9 @@ const IncidentDetails = ({data = [], setTableData}) => {
                         columnHeaders = {REVLOSS_TABLE_COLUMN_HEADERS}
                         data = {revDetailsData.revDetails}
                     />
-                    {revDetailsData.revDetails.length !== 0 && <span style ={{paddingLeft: '35%'}}><strong>{'Total Order Loss : '}</strong>{revDetailsData.totalOrderLoss}</span>}
-                    {revDetailsData.revDetails.length !== 0 && <span style={{paddingLeft: '5%'}}><strong> {'Total Revenue Loss : '}</strong>{revDetailsData.totalReveueLoss}</span>}
-                    {revDetailsData.revDetails.length !== 0 && <span style ={{paddingLeft: '5%'}}><strong>{'Total Gbv Loss : '}</strong>{revDetailsData.totalgbvLoss}</span>}
+                    {revDetailsData.revDetails.length !== 0 && <span style ={{paddingLeft: '35%'}}><strong>{'Total Order Loss: '}</strong>{revDetailsData.totalOrderLoss}</span>}
+                    {revDetailsData.revDetails.length !== 0 && <span style={{paddingLeft: '5%'}}><strong> {'Total Revenue Loss: '}</strong>{revDetailsData.totalReveueLoss}</span>}
+                    {revDetailsData.revDetails.length !== 0 && <span style ={{paddingLeft: '5%'}}><strong>{'Total Gbv Loss: '}</strong>{revDetailsData.totalgbvLoss}</span>}
                 </div>
             </div>
         </div>);
