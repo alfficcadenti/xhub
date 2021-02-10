@@ -81,8 +81,8 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             });
     };
 
-    const fetchIncidents = (start = startDateTime, end = endDateTime) => {
-        const queryString = `fromDate=${moment(start).utc().format('YYYY-MM-DD')}&toDate=${moment(end).utc().format('YYYY-MM-DD')}`;
+    const fetchIncidents = (start = startDateTime, end = endDateTime, revLossSource = 'snow') => {
+        const queryString = `fromDate=${moment(start).utc().format('YYYY-MM-DD')}&toDate=${moment(end).utc().format('YYYY-MM-DD')}&revLossSource=${revLossSource}`;
         fetch(`/v1/incidents/impulse?${queryString}`)
             .then(checkResponse)
             .then((incidents) => {
