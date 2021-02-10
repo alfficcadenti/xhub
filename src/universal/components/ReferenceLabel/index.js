@@ -64,7 +64,7 @@ const ReferenceLabel = ({viewBox: {x}, annotation, isImpulse = false, setTableDa
                                                     {buildTicketLink(id, null, url)}
                                                     <div>
                                                         <span>{'Revenue Loss:'}</span>
-                                                        <span>{typeof revLoss === 'string' ? 'NA' : `$${revLoss}`}</span>
+                                                        <span>{typeof revLoss === 'string' ? 'NA' : `$${revLoss.toLocaleString()}`}</span>
                                                     </div>
                                                     <a href="#" onClick={() => setTableData([annotation])}>{'More Details'}</a>
                                                 </div>
