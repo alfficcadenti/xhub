@@ -26,11 +26,13 @@ const IncidentDetails = ({data = [], setTableData}) => {
             totalOrderLoss += Number(lobObj.orderLoss);
             totalRevenueLoss += Number(lobObj.revenueLoss);
             totalGbvLoss += Number(lobObj.gbvLoss);
+            lobObj.revenueLoss = `$${Math.round(lobObj.revenueLoss).toLocaleString()}`;
+            lobObj.gbvLoss = `$${Math.round(lobObj.gbvLoss).toLocaleString()}`;
         });
 
-        finalRevLossObj.totalOrderLoss = totalOrderLoss;
-        finalRevLossObj.totalReveueLoss = totalRevenueLoss;
-        finalRevLossObj.totalgbvLoss = totalGbvLoss;
+        finalRevLossObj.totalOrderLoss = totalOrderLoss.toLocaleString();
+        finalRevLossObj.totalReveueLoss = `$${totalRevenueLoss.toLocaleString()}`;
+        finalRevLossObj.totalgbvLoss = `$${totalGbvLoss.toLocaleString()}`;
         return finalRevLossObj;
     };
 
@@ -55,17 +57,17 @@ const IncidentDetails = ({data = [], setTableData}) => {
                 </div>
             </div>
             <br/>
-            <h3 className="page-title"> {'Revenue Details'}</h3>
             <div className="table-wrapper">
                 <div className="rev-details">
+                    <strong>{'Revenue Details'}</strong>
                     <DataTable
                         columns={REVLOSS_TABLE_COLUMNS}
                         columnHeaders = {REVLOSS_TABLE_COLUMN_HEADERS}
                         data = {revDetailsData.revDetails}
                     />
-                    {revDetailsData.revDetails.length !== 0 && <span style={{paddingLeft: '35%'}}><strong> {'Total Revenue Loss :'}</strong> {`$${revDetailsData.totalReveueLoss.toLocaleString()}`}</span>}
-                    {revDetailsData.revDetails.length !== 0 && <span style = {{paddingLeft: '5%'}}><strong>{'Total Gbv Loss :'}</strong>{`$${revDetailsData.totalgbvLoss.toLocaleString()}`}</span>}
-                    {revDetailsData.revDetails.length !== 0 && <span style = {{paddingLeft: '5%'}}><strong>{'Total Order Loss :'}</strong>{`$${revDetailsData.totalOrderLoss.toLocaleString()}`}</span>}
+                    {revDetailsData.revDetails.length !== 0 && <span style ={{paddingLeft: '35%'}}><strong>{'Total Order Loss : '}</strong>{revDetailsData.totalOrderLoss}</span>}
+                    {revDetailsData.revDetails.length !== 0 && <span style={{paddingLeft: '5%'}}><strong> {'Total Revenue Loss : '}</strong>{revDetailsData.totalReveueLoss}</span>}
+                    {revDetailsData.revDetails.length !== 0 && <span style ={{paddingLeft: '5%'}}><strong>{'Total Gbv Loss : '}</strong>{revDetailsData.totalgbvLoss}</span>}
                 </div>
             </div>
         </div>);
