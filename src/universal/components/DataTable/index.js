@@ -319,6 +319,17 @@ class DataTable extends Component {
         const MAX_PAGES = Math.ceil(data.length / pageSize);
         const showNext = currPageIndex < MAX_PAGES - 1;
         const showPrev = currPageIndex > 0 && MAX_PAGES > 1;
+
+        const onPageSizeClick = (n) => {
+            const maxPages = Math.floor(data.length / n);
+            const shouldSetCurrPageIndex = maxPages < currPageIndex;
+
+            this.setState({
+                pageSize: n,
+                currPageIndex: shouldSetCurrPageIndex ? (maxPages - 1) : currPageIndex
+            });
+        };
+
         return (
             <div className="pagination text-center">
                 <div className="btn-group">
@@ -327,8 +338,8 @@ class DataTable extends Component {
                     {this.renderNextButton(showNext)}
                 </div>
                 {'Page Size:'}
-                <Dropdown id="pagesize-dropdown" label={this.state.pageSize} className="pagesize-dropdown" closeAfterContentClick>
-                    {[25, 50, 75, 100].map((n) => <DropdownItem key={`page-${n}`} link="#" text={n} onClick={() => this.setState({pageSize: n})} />)}
+                <Dropdown id="pagesize-dropdown" label={pageSize} className="pagesize-dropdown" closeAfterContentClick>
+                    {[25, 50, 75, 100].map((n) => <DropdownItem key={`page-${n}`} link="#" text={n} onClick={() => onPageSizeClick(n)} />)}
                 </Dropdown>
             </div>
         );
