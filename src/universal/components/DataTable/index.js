@@ -321,12 +321,12 @@ class DataTable extends Component {
         const showPrev = currPageIndex > 0 && MAX_PAGES > 1;
 
         const onPageSizeClick = (n) => {
-            const maxPages = Math.round(data.length / n);
+            const maxPages = Math.floor(data.length / n);
             const shouldSetCurrPageIndex = maxPages < currPageIndex;
 
             this.setState({
                 pageSize: n,
-                currPageIndex: shouldSetCurrPageIndex ? maxPages : currPageIndex
+                currPageIndex: shouldSetCurrPageIndex ? (maxPages - 1) : currPageIndex
             });
         };
 
