@@ -61,7 +61,10 @@ export const useZoomAndSynced = (
     refAreaRight
 ) => {
     const handleMouseUp = () => {
-        if (refAreaLeft === refAreaRight || refAreaRight === '') {
+        const diff = refAreaRight - refAreaLeft;
+        const minRangeWidth = 200000;
+
+        if (refAreaLeft === refAreaRight || refAreaRight === '' || diff < minRangeWidth) {
             setRefAreaLeft('');
             setRefAreaRight('');
             return;
@@ -104,8 +107,17 @@ export const useZoomAndSynced = (
         }
     };
 
-    const handleMouseDown = (e) => setRefAreaLeft(e.activeLabel);
-    const handleMouseMove = (e) => refAreaLeft && setRefAreaRight(e.activeLabel);
+    const handleMouseDown = (e) => {
+        if (e && e.activeLabel) {
+            setRefAreaLeft(e.activeLabel);
+        }
+    };
+
+    const handleMouseMove = (e) => {
+        if (refAreaLeft && e && e.activeLabel) {
+            setRefAreaRight(e.activeLabel);
+        }
+    };
 
     return {
         handleMouseDown,
