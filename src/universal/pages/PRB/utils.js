@@ -13,6 +13,7 @@ import {
     EPIC_ISSUE_TYPE
 } from '../../constants';
 import {CA_STATUS_LIST} from './constants';
+import {DATE_FORMAT} from '../../constants';
 
 
 // eslint-disable-next-line complexity
@@ -45,11 +46,11 @@ export const getQueryValues = (search) => {
     const isValidDateRange = validDateRange(start, end);
     return {
         initialStart: isValidDateRange
-            ? moment(start).format('YYYY-MM-DD')
-            : moment().subtract(1, 'years').startOf('minute').format('YYYY-MM-DD'),
+            ? moment(start).format(DATE_FORMAT)
+            : moment().subtract(1, 'years').startOf('minute').format(DATE_FORMAT),
         initialEnd: isValidDateRange
-            ? moment(end).format('YYYY-MM-DD')
-            : moment().format('YYYY-MM-DD'),
+            ? moment(end).format(DATE_FORMAT)
+            : moment().format(DATE_FORMAT),
         initialType: type || ALL_TYPES_OPTION,
         initialStatus: status || ALL_STATUSES_OPTION,
         initialPriority: priority || ALL_PRIORITIES_OPTION,
