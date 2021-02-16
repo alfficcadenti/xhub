@@ -3,7 +3,7 @@ import {mount} from 'enzyme';
 import {BrowserRouter as Router} from 'react-router-dom';
 import IncidentTrendsDashboard from '../index';
 import {DATE_FORMAT} from '../../../../constants';
-import {EG_BRAND} from '../../../../constants';
+import {EG_BRAND, ALL_PRIORITIES_OPTION} from '../../../../constants';
 import moment from 'moment/moment';
 import {expect} from 'chai';
 
@@ -58,7 +58,7 @@ describe('<IncidentTrendsDashboard/>', () => {
 
     it('FilterDropDown render default priority value', async () => {
         const props = wrapper.find('FilterDropDown').first().props();
-        expect(props.selectedValue).equal('All Priorities');
+        expect(props.selectedValue).equal(ALL_PRIORITIES_OPTION);
     });
 
     it('LoadingContainer should have right props', async () => {
