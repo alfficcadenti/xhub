@@ -11,7 +11,6 @@ import {OPXHUB_SUPPORT_CHANNEL} from '../../../../constants';
 import './styles.less';
 
 const CorrectiveActions = ({
-    tickets,
     start,
     end,
     statuses,
@@ -20,7 +19,8 @@ const CorrectiveActions = ({
     selectedL1,
     selectedL2,
     onL1Change,
-    onL2Change
+    onL2Change,
+    isApplyClicked
 }) => {
     const dateQuery = `fromDate=${start}&toDate=${end}`;
     const fetchQuery = statuses && statuses.length
@@ -31,7 +31,10 @@ const CorrectiveActions = ({
     const [detailsData, setDetailsData] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [error, setError] = useState();
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+
+    const [lastStartDate, setLastStartDate] = useState('');
+    const [lastEndDate, setLastEndDate] = useState('');
 
     const initData = (response, initialValue, setData, onLChange) => {
         if (!response || !response.data) {
@@ -44,8 +47,11 @@ const CorrectiveActions = ({
         }
     };
 
-    useEffect(() => {
+    const fetchLData = () => {
         setIsLoading(true);
+        setLastStartDate(start);
+        setLastEndDate(end);
+
         Promise.all(['l1', 'l2'].map((l) => fetch(`/v1/corrective-actions/business-owner-type/${l}?${fetchQuery}`)))
             .then((responses) => Promise.all(responses.map(checkResponse)))
             .then(([l1Response, l2Response]) => {
@@ -59,7 +65,18 @@ const CorrectiveActions = ({
                 console.error(err);
             })
             .finally(() => setIsLoading(false));
-    }, [tickets]);
+    };
+
+    useEffect(() => {
+        fetchLData();
+    }, []);
+
+    useEffect(() => {
+        const areDatesChanged = (lastStartDate === start) && (lastEndDate === end);
+        if (isApplyClicked && areDatesChanged) {
+            fetchLData();
+        }
+    }, [isApplyClicked]);
 
     const handleRowClick = (row) => {
         if (row) {
@@ -190,7 +207,7 @@ const CorrectiveActions = ({
 
     return (
         <div className="corrective-actions-container">
-            <LoadingContainer isLoading={isLoading} error={error} className="loading-container">
+            <LoadingContainer isLoading={isLoading} error={error}>
                 {l1Data.length ? renderTables() : <NoResults />}
             </LoadingContainer>
             <Modal

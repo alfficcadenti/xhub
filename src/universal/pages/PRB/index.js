@@ -231,7 +231,6 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             case 2:
                 return (
                     <CorrectiveActions
-                        tickets={allTickets}
                         start={startDate}
                         end={endDate}
                         statuses={selectedCAStatuses}
@@ -244,6 +243,7 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                         selectedL2={selectedL2}
                         selectedCA={selectedCA}
                         onCAChange={handleCAChange}
+                        isApplyClicked={isApplyClicked}
                     />
                 );
             default:
