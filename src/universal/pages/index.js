@@ -10,6 +10,7 @@ import PRB from './PRB';
 import QualityMetrics from './QualityMetrics';
 import IncidentTrendsDashboard from './TicketTrends/IncidentTrendsDashboard';
 import DefectTrendsDashboard from './TicketTrends/DefectTrendsDashboard';
+import Reservations from './Reservations';
 import {EXPEDIA_BRAND, HOTELS_COM_BRAND, VRBO_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../constants';
 
 
@@ -59,6 +60,15 @@ export default [
         text: 'Page Views',
         component: FunnelView,
         brands: [EXPEDIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND]
+    },
+    {
+        category: AAT,
+        id: 'reservations',
+        link: '/reservations',
+        text: 'Reservations',
+        component: Reservations,
+        brands: [HOTELS_COM_BRAND],
+        hidden: false
     },
     {
         category: AAT,
