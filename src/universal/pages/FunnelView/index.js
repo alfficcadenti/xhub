@@ -194,7 +194,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             refAreaLeft={refAreaLeft}
             refAreaRight={refAreaRight}
             annotations={enableAnnotations ? filteredAnnotations : []}
-            selectedLoB={selectedLobs}
+            selectedLoBs={selectedLobs}
             minChartValue={minValue}
         />
     );

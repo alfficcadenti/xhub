@@ -254,7 +254,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             formatYAxis={(value) => `${value.toFixed()}%`}
             minChartValue={minValue}
             maxChartValue={100}
-            selectedLoB={pageName !== SUCCESS_RATES_PAGES_LIST[0] ? selectedLobs : []}
+            selectedLoBs={pageName !== SUCCESS_RATES_PAGES_LIST[0] ? selectedLobs : []}
             annotations={enableAnnotations ? filteredAnnotations : []}
             stacked
         />
