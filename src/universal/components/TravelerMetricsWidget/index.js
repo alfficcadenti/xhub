@@ -69,19 +69,7 @@ const TravelerMetricsWidget = ({
     const yAxisId = `yAxis-${title}`;
 
     const doesChartHaveLoBs = (chartData, lobs) => {
-        return lobs.length ? lobs.some((lob) => !!chartData[0][lob.label]) : true;
-    };
-
-    const getNoDataLabel = (loBs, label) => {
-        let noDataLabel = '';
-
-        if (loBs.length) {
-            noDataLabel = `If a LoB is selected there is no ${label} Page data in this implementation`;
-        } else {
-            noDataLabel = 'No Data';
-        }
-
-        return noDataLabel;
+        return lobs.length ? lobs.some((lob) => chartData.some((item) => !!item[lob.label])) : true;
     };
 
     return (
@@ -152,7 +140,7 @@ const TravelerMetricsWidget = ({
                             }
                         </AreaChart>
                     </ResponsiveContainer> :
-                    <div className="recharts-empty-container">{getNoDataLabel(selectedLoBs, title)}</div>
+                    <div className="recharts-empty-container">{'There is no data available for this time period'}</div>
             }
         </div>
     );
