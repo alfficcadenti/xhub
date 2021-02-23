@@ -10,7 +10,7 @@ const Reservations = () => {
             <h1 className="page-title">{'Reservations'}</h1>
             <div className="reservations">
                 <Iframe
-                    url="https://opexhub-grafana.expedia.biz/d/5pQ0gFPMk/realtime-metrics-v2?orgId=1&from=1613655159064&to=1613741559064&var-LOCALE=All&var-MARKETINGCHANNEL=All&var-PLATFORM=All&var-POS=All&var-IsKES=All"
+                    url="https://opexhub-grafana.expedia.biz/d/5pQ0gFPMk/realtime-metrics-v2? orgId=1&var-LOCALE=All&var-MARKETINGCHANNEL=All&var-PLATFORM=All&var-POS=All&var-IsKES=All"
                     key={'iframe'}
                     width="1600px"
                     height="950px"
