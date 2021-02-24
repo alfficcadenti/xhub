@@ -56,7 +56,7 @@ const TravelerMetricsWidget = ({
     helpText,
     annotations = [],
     formatYAxis = (value) => value,
-    selectedLoB = [],
+    selectedLoBs = [],
     minChartValue = 'auto',
     maxChartValue = 'auto',
     ResponsiveContainerWidth = '100%',
@@ -67,11 +67,16 @@ const TravelerMetricsWidget = ({
     const fill = `url(#${brandLabel})`;
     const {color} = getBrand(brand, 'label');
     const yAxisId = `yAxis-${title}`;
+
+    const doesChartHaveLoBs = (chartData, lobs) => {
+        return lobs.length ? lobs.some((lob) => chartData.some((item) => !!item[lob.label])) : true;
+    };
+
     return (
         <div className="widget-card card" key={title}>
             {renderHeader(title, helpText)}
             {
-                data.length ?
+                data.length && doesChartHaveLoBs(data, selectedLoBs) ?
                     <ResponsiveContainer width={ResponsiveContainerWidth} height={ResponsiveContainerHeight}>
                         <AreaChart
                             width={100}
@@ -109,8 +114,8 @@ const TravelerMetricsWidget = ({
                             />
                             <CartesianGrid strokeDasharray="3 3" />
                             <Tooltip content={<CustomTooltip />} />
-                            {selectedLoB && selectedLoB.length ?
-                                selectedLoB.map((lob, i) =>
+                            {selectedLoBs && selectedLoBs.length ?
+                                selectedLoBs.map((lob, i) =>
                                     <Area connectNulls stacked={!stacked || i} type="monotone" dataKey={lob.label} stroke={color} fillOpacity={1} fill={fill} key={`area${lob.label}`} yAxisId={yAxisId} />
                                 ) :
                                 <Area connectNulls type="monotone" dataKey="value" name="All LoBs" stroke={color} fillOpacity={1} fill={fill} key={`area${brand}`} yAxisId={yAxisId} />
@@ -135,7 +140,7 @@ const TravelerMetricsWidget = ({
                             }
                         </AreaChart>
                     </ResponsiveContainer> :
-                    <div className="recharts-empty-container">{'No Data'}</div>
+                    <div className="recharts-empty-container">{'There is no data available for this time period'}</div>
             }
         </div>
     );
