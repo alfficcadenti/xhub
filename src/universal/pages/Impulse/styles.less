@@ -1,12 +1,29 @@
 @import '../../mixins.less';
 
 .impulse-container {
-  .heading-container{
+  .heading-container {
     display: flex;
-    .refresh-switch{
+
+    .right-header {
       margin-left: auto;
+
+      .health-check {
+        display: inline-block;
+        border-radius: 50px;
+        border-style: solid;
+        border-width: thin;
+        padding: 4px;
+        margin-right: 10px;
+        font-size: small;
+        cursor: pointer;
+      }
+
+      .refresh-switch {
+        display: inline-block;
+      }
     }
   }
+
   .impulse-filters-wrapper {
     .first-filter-spacing {
       margin-left: @spacing-1x;
@@ -16,14 +33,10 @@
     .all-filters {
       margin-left: 5px;
       height: fit-content;
-
     }
 
     .apply-button {
       margin: 5px;
-    }
-
-    .apply-button {
       height: fit-content;
     }
 
@@ -79,7 +92,6 @@
     z-index: 15;
     margin-left: @spacing-1x;
   }
-
 }
 
 

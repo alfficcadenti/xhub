@@ -43,6 +43,8 @@ const getPresets = () => [
 const filterSelectionClass = 'filter-option-selection';
 const filterExpandClass = 'filter-option-expand';
 let filteredAnnotationsOnBrand = [];
+const healthUrl = 'https://opexhub-grafana.expedia.biz/d/x8JcATVMk/opex-impulse?viewPanel=42&orgId=1&from=now-3d&to=now';
+const healthDescription = 'Performance Indicator\nGreen - Data source latency is between 3 to 60 sec\nRed - Data source latency is below 3 or above 60 sec';
 
 const Impulse = (props) => {
     const newBrand = props.selectedBrands[0];
@@ -77,7 +79,9 @@ const Impulse = (props) => {
         incidentMulti,
         filterData,
         brandsFilterData,
-        annotations] = useFetchBlipData(
+        annotations,
+        isLatencyHealthy,
+        sourceLatency] = useFetchBlipData(
         isApplyClicked,
         setIsApplyClicked,
         startDateTime,
@@ -238,20 +242,32 @@ const Impulse = (props) => {
             </form>
         </Divider>
     );
+    const renderHealthCheck = () => (
+        <a href = {healthUrl} target={'_blank'}>
+            <div title = {healthDescription}
+                 className = {'health-check'}
+                 style = {{color: isLatencyHealthy ? '#080' : '#b22'}}
+            >
+                {'TP99: '}{sourceLatency}{'s'}
+            </div></a>
+    );
     return (
         <div className="impulse-container">
             <div className="heading-container">
                 <h1 className="page-title">{'Impulse Dashboard'}</h1>
-                {!chartSliced && daysDifference === 3 && (moment().diff(moment(endDateTime), 'days') === 0) ? <div className="refresh-switch">
-                    <Switch
-                        id="switch-example-small"
-                        name="autoRefresh"
-                        label="Auto Refresh"
-                        checked={isAutoRefresh}
-                        onChange={() => setAutoRefresh(!isAutoRefresh)}
-                        size="sm"
-                    />
-                </div> : ''}
+                <div className="right-header">
+                    {sourceLatency || sourceLatency === 0 ? renderHealthCheck() : ''}
+                    {!chartSliced && daysDifference === 3 && (moment().diff(moment(endDateTime), 'days') === 0) ? <div className="refresh-switch">
+                        <Switch
+                            id="switch-example-small"
+                            name="autoRefresh"
+                            label="Auto Refresh"
+                            checked={isAutoRefresh}
+                            onChange={() => setAutoRefresh(!isAutoRefresh)}
+                            size="sm"
+                        />
+                    </div> : ''}
+                </div>
             </div>
             <div className="impulse-filters-wrapper">
                 <DatetimeRangePicker
