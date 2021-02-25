@@ -65,19 +65,19 @@ export default [
     },
     {
         category: AAT,
-        id: 'operational-tv',
-        link: '/operational-tv',
-        text: 'Operational TV',
-        component: OperationalTV,
+        id: 'operational-dashboard',
+        link: '/operational-dashboard',
+        text: 'Operational Dashboard',
+        component: OperationalDashboard,
         brands: [HOTELS_COM_BRAND],
         hidden: false
     },
     {
         category: AAT,
-        id: 'operational-dashboard',
-        link: '/operational-dashboard',
-        text: 'Operational Dashboard',
-        component: OperationalDashboard,
+        id: 'operational-tv',
+        link: '/operational-tv',
+        text: 'Operational TV',
+        component: OperationalTV,
         brands: [HOTELS_COM_BRAND],
         hidden: false
     },
