@@ -623,38 +623,6 @@
             }
           }
         },
-        "test": {
-          "hostname": "impulse-data-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black",
-          "protocol": "http:",
-          "routes": {
-            "impulseHealth": {
-              "path": "/v1/impulse/health",
-              "method": "GET",
-              "operation": "GET_impulse_health_api_v1"
-            },
-            "impulseAnomalies": {
-              "path": "/v1/impulse/anomalies",
-              "method": "GET",
-              "operation": "GET_impulse_anomalies_api_v1"
-            }
-          }
-        },
-        "dev": {
-          "hostname": "impulse-data-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black",
-          "protocol": "http:",
-          "routes": {
-            "impulseHealth": {
-              "path": "/v1/impulse/health",
-              "method": "GET",
-              "operation": "GET_impulse_health_api_v1"
-            },
-            "impulseAnomalies": {
-              "path": "/v1/impulse/anomalies",
-              "method": "GET",
-              "operation": "GET_impulse_anomalies_api_v1"
-            }
-          }
-        },
         "prod": {
           "hostname": "impulse-data-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black",
           "protocol": "http:",
