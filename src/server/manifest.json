@@ -752,6 +752,11 @@
             "template": "templates/welcome.hbs"
           },
           {
+            "route": "require:./routes/pages/operational-tv",
+            "component": "require:../universal/components/App/ServerApp.js",
+            "template": "templates/welcome.hbs"
+          },
+          {
             "route": "require:./routes/pages/operational-dashboard",
             "component": "require:../universal/components/App/ServerApp.js",
             "template": "templates/welcome.hbs"

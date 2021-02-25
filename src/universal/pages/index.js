@@ -11,6 +11,7 @@ import QualityMetrics from './QualityMetrics';
 import IncidentTrendsDashboard from './TicketTrends/IncidentTrendsDashboard';
 import DefectTrendsDashboard from './TicketTrends/DefectTrendsDashboard';
 import Reservations from './Reservations';
+import OperationalTV from './OperationalTV';
 import OperationalDashboard from './OperationalDashboard';
 import {EXPEDIA_BRAND, HOTELS_COM_BRAND, VRBO_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../constants';
 
@@ -61,6 +62,15 @@ export default [
         text: 'Page Views',
         component: FunnelView,
         brands: [EXPEDIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND]
+    },
+    {
+        category: AAT,
+        id: 'operational-tv',
+        link: '/operational-tv',
+        text: 'Operational TV',
+        component: OperationalTV,
+        brands: [HOTELS_COM_BRAND],
+        hidden: false
     },
     {
         category: AAT,
