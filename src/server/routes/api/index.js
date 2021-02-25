@@ -3,6 +3,7 @@ import {correctiveActions, defects, incidents, incidentsV2, epsIncidents, prbs, 
 import {bookingsUserEvents, epsPageViewsLoBUserEvents, epsPageViewsUserEvents, pageViewsUserEvents, pageViewsLoBUserEvents, impulseBookingDataService, impulseBrandsService, impulseFiltersService, impulseRevloss, impulseRevlossV2, epsFunnelViewUserEvents, funnelViewUserEvents, csrUserEvents} from './userEventsService';
 import {changeRequests, annotations, productMapping, abTests} from './changeRequestService';
 import {fciUserEvents, getFciComments, postFciComment} from './userEventsAnalysisService';
+import {impulseHealth, impulseAnomalies} from './impulseDataService';
 
 const apiRoutes = [
     // oauth
@@ -38,7 +39,10 @@ const apiRoutes = [
     // user events analysis service
     fciUserEvents,
     getFciComments,
-    postFciComment
+    postFciComment,
+    // impulse data service
+    impulseHealth,
+    impulseAnomalies
 ];
 
 export default apiRoutes;
