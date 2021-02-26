@@ -245,10 +245,10 @@ const Impulse = (props) => {
     const renderHealthCheck = () => (
         <a href = {healthUrl} target={'_blank'}>
             <div title = {healthDescription}
-                 className = {'health-check'}
-                 style = {{color: isLatencyHealthy ? '#080' : '#b22'}}
+                className = {'health-check'}
+                style = {{color: isLatencyHealthy ? '#080' : '#b22'}}
             >
-                {'TP99: '}{sourceLatency}{'s'}
+                {'TP99: '}{sourceLatency ? `${sourceLatency}s` : 'NA'}
             </div></a>
     );
     return (
