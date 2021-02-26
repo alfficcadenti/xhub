@@ -41,3 +41,5 @@ Thumbs.db
 config/buildInfo.js
 
 reports
+
+tests_output
