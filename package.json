@@ -30,7 +30,6 @@
     "start:prodTest": "DEBUG=catalyst*,serviceclient* BABEL_ENV=server NODE_ENV=production npm run build:prodTest && NODE_ENV=production node-dev --inspect --no-deps --respawn ./build/server/index.js | pino-pretty -ct",
     "start:server": "DEBUG=catalyst*,serviceclient* BABEL_ENV=server NODE_ENV=development node-dev --inspect --no-deps --respawn ./index.js | pino-pretty -ct",
     "start:webpack": "BABEL_ENV=client-dev webpack-dev-server --config ./tools/webpack/development.js",
-    "nightwatch": "nightwatch",
     "test": "npm run lint && npm run test:unit",
     "test:unit": "BABEL_ENV=test TZ=UTC jest --colors --verbose -u --testNamePattern",
     "test:style": "stylelint --fix src/**/*.less",
