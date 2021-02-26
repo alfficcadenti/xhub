@@ -19,3 +19,4 @@ Scenario: Use navbar to navigate
   Then select filters 6
   Then set links 6
   Then check routes 6
+  
