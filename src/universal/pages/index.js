@@ -13,6 +13,7 @@ import DefectTrendsDashboard from './TicketTrends/DefectTrendsDashboard';
 import Reservations from './Reservations';
 import OperationalTV from './OperationalTV';
 import OperationalDashboard from './OperationalDashboard';
+import CheckoutSuccessRate from './CheckoutSuccessRate';
 import {EXPEDIA_BRAND, HOTELS_COM_BRAND, VRBO_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../constants';
 
 
@@ -38,6 +39,15 @@ export default [
         hidden: true
     },
     // AAT Dashboards
+    {
+        category: AAT,
+        id: 'checkout-success-rate',
+        link: '/checkout-success-rate',
+        text: 'Checkout Success Rate',
+        component: CheckoutSuccessRate,
+        brands: [HOTELS_COM_BRAND],
+        hidden: false
+    },
     {
         category: AAT,
         id: 'impulse',
