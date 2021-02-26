@@ -36,10 +36,10 @@ Then(/^check routes 1$/, async () => {
 
 Then(/^select filters 2$/, async () => {
     await client
+        .pause(5000)
         .click('#brand-selector')
         .click('.Dropdown__menu--open li:nth-child(2)')
-        .assert.urlContains(`selectedBrand=${brands[1].url}`, `Params: Brand is ${brands[1].text}`)
-        .waitForElementVisible('.home-buttons-container');
+        .assert.urlContains(`selectedBrand=${brands[1].url}`, `Params: Brand is ${brands[1].text}`);
 });
 
 Then(/^set links 2$/, async () => {
@@ -52,10 +52,10 @@ Then(/^check routes 2$/, async () => {
 
 Then(/^select filters 3$/, async () => {
     await client
+        .pause(5000)
         .click('#brand-selector')
         .click('.Dropdown__menu--open li:nth-child(3)')
-        .assert.urlContains(`selectedBrand=${brands[2].url}`, `Params: Brand is ${brands[2].text}`)
-        .waitForElementVisible('.home-buttons-container');
+        .assert.urlContains(`selectedBrand=${brands[2].url}`, `Params: Brand is ${brands[2].text}`);
 });
 
 Then(/^set links 3$/, async () => {
@@ -68,10 +68,10 @@ Then(/^check routes 3$/, async () => {
 
 Then(/^select filters 4$/, async () => {
     await client
+        .pause(5000)
         .click('#brand-selector')
         .click('.Dropdown__menu--open li:nth-child(4)')
-        .assert.urlContains(`selectedBrand=${brands[3].url}`, `Params: Brand is ${brands[3].text}`)
-        .waitForElementVisible('.home-buttons-container');
+        .assert.urlContains(`selectedBrand=${brands[3].url}`, `Params: Brand is ${brands[3].text}`);
 });
 
 Then(/^set links 4$/, async () => {
@@ -79,15 +79,15 @@ Then(/^set links 4$/, async () => {
 });
 
 Then(/^check routes 4$/, async () => {
-    await setNav(client, links);
+    await setNav(client, links, !links[1].includes('fci'));
 });
 
 Then(/^select filters 5$/, async () => {
     await client
+        .pause(5000)
         .click('#brand-selector')
         .click('.Dropdown__menu--open li:nth-child(5)')
-        .assert.urlContains(`selectedBrand=${brands[4].url}`, `Params: Brand is ${brands[4].text}`)
-        .waitForElementVisible('.home-buttons-container');
+        .assert.urlContains(`selectedBrand=${brands[4].url}`, `Params: Brand is ${brands[4].text}`);
 });
 
 Then(/^set links 5$/, async () => {
@@ -100,10 +100,10 @@ Then(/^check routes 5$/, async () => {
 
 Then(/^select filters 6$/, async () => {
     await client
+        .pause(5000)
         .click('#brand-selector')
         .click('.Dropdown__menu--open li:nth-child(6)')
-        .assert.urlContains(`selectedBrand=${brands[5].url}`, `Params: Brand is ${brands[5].text}`)
-        .waitForElementVisible('.home-buttons-container');
+        .assert.urlContains(`selectedBrand=${brands[5].url}`, `Params: Brand is ${brands[5].text}`);
 });
 
 Then(/^set links 6$/, async () => {
@@ -112,9 +112,4 @@ Then(/^set links 6$/, async () => {
 
 Then(/^check routes 6$/, async () => {
     await setNav(client, links);
-});
-
-Then(/^save ss$/, async () => {
-    await client
-        .saveScreenshot('tests_output/click.png');
 });
