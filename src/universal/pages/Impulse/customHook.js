@@ -25,9 +25,11 @@ const IMPULSE_MAPPING = [
 ];
 const bookingTimeInterval = 300000;
 const incidentTimeInterval = 900000;
+const healthTimeInterval = 300000;
 let initialMount = false;
-let intervalForCharts;
+let intervalForCharts = null;
 let intervalForAnnotations = null;
+let intervalForHealth = null;
 
 export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTime, endDateTime, globalBrandName, prevBrand, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, chartSliced, setChartSliced, isAutoRefresh) => {
     const [res, setRes] = useState([]);
@@ -41,6 +43,8 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
     const [brandsFilterData, setBrandsFilterData] = useState({});
     const [filterData, setFilterData] = useState({});
     const [annotations, setAnnotations] = useState([]);
+    const [isLatencyHealthy, setIsLatencyHealthy] = useState(true);
+    const [sourceLatency, setSourceLatency] = useState(null);
     const incidentMultiOptions = [
         {
             value: '0-Code Red',
@@ -114,6 +118,20 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             });
             return chartData;
         });
+
+    const fetchHealth = () => {
+        fetch('/v1/impulse/health')
+            .then(checkResponse)
+            .then((respJson) => {
+                setSourceLatency(Math.round(respJson.latencyInSecs));
+                setIsLatencyHealthy(respJson.isLatencyHealthy);
+            })
+            .catch((err) => {
+                // eslint-disable-next-line no-console
+                console.error(err);
+            });
+    };
+
     const getRealTimeData = () => {
         fetchCall(startTime(), endTime())
             .then((chartData) => {
@@ -132,6 +150,8 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             getRealTimeData();
         } else if (type === 'incidents') {
             fetchIncidents();
+        } else if (type === 'health') {
+            fetchHealth();
         }
     }, timeInterval);
 
@@ -164,9 +184,14 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             getFilter();
             getBrandsFilterData();
             fetchIncidents();
+            fetchHealth();
             intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
             intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
+            intervalForHealth = setIntervalForRealTimeData(healthTimeInterval, 'health');
         }
+        return () => {
+            clearInterval(intervalForHealth);
+        };
     }, []);
 
     useEffect(() => {
@@ -179,6 +204,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 getFilter();
                 getBrandsFilterData();
                 checkDefaultRange();
+                fetchHealth();
             }
         }
         return () => {
@@ -194,6 +220,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             fetchIncidents();
             getBrandsFilterData();
             checkDefaultRange();
+            fetchHealth();
         }
         return () => {
             setIsApplyClicked(false);
@@ -209,6 +236,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
                 getData(startTime(), endTime());
                 fetchIncidents(startTime(), endTime());
+                fetchHealth();
             }
         } else {
             initialMount = true;
@@ -233,8 +261,8 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
         incidentMulti,
         filterData,
         brandsFilterData,
-        annotations
+        annotations,
+        isLatencyHealthy,
+        sourceLatency
     ];
 };
-
-

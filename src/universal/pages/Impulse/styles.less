@@ -1,12 +1,62 @@
 @import '../../mixins.less';
 
 .impulse-container {
-  .heading-container{
+  .heading-container {
     display: flex;
-    .refresh-switch{
+
+    .right-header {
       margin-left: auto;
+
+      .health-check {
+        display: inline-block;
+        border-radius: 50px;
+        border-style: solid;
+        border-width: thin;
+        padding: 4px;
+        margin-right: 10px;
+        font-size: small;
+        cursor: pointer;
+        position: relative;
+      }
+
+      .health-desc-tooltip {
+        display: none;
+        position: absolute;
+        margin-top: 10%;
+        width: max-content;
+        padding: 10%;
+        background-color: #ddddde;
+        border: thin;
+        font-size: smaller;
+        right: 0;
+
+        .health-desc {
+          color: dimgray;
+          font-weight: bold;
+        }
+
+        .healthy-desc {
+          color: #080;
+          font-weight: normal;
+        }
+
+        .unhealthy-desc {
+          color: #b22;
+          font-weight: normal;
+        }
+      }
+
+      .health-check:hover .health-desc-tooltip {
+        display: block;
+        z-index: 99;
+      }
+
+      .refresh-switch {
+        display: inline-block;
+      }
     }
   }
+
   .impulse-filters-wrapper {
     .first-filter-spacing {
       margin-left: @spacing-1x;
@@ -16,14 +66,10 @@
     .all-filters {
       margin-left: 5px;
       height: fit-content;
-
     }
 
     .apply-button {
       margin: 5px;
-    }
-
-    .apply-button {
       height: fit-content;
     }
 
@@ -79,7 +125,6 @@
     z-index: 15;
     margin-left: @spacing-1x;
   }
-
 }
 
 
