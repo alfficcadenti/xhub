@@ -51,5 +51,15 @@
       "min_count": 1,
       "max_count": 1
     }
+  },
+  "prod": {
+    "vpce_consumer": {
+      "generic_providers": [
+        {
+          "service_name": "com.amazonaws.vpce.us-east-1.vpce-svc-03cf33f51cd0295af",
+          "route53": "impulse-data-service-egdp-prod-us-east-1.eglocal.exp-prod.net"
+        }
+      ]
+    }
   }
 }
