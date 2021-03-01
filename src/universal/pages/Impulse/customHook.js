@@ -44,7 +44,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
     const [filterData, setFilterData] = useState({});
     const [annotations, setAnnotations] = useState([]);
     const [isLatencyHealthy, setIsLatencyHealthy] = useState(true);
-    const [sourceLatency, setSourceLatency] = useState();
+    const [sourceLatency, setSourceLatency] = useState(null);
     const incidentMultiOptions = [
         {
             value: '0-Code Red',

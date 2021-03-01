@@ -16,6 +16,39 @@
         margin-right: 10px;
         font-size: small;
         cursor: pointer;
+        position: relative;
+      }
+
+      .health-desc-tooltip {
+        display: none;
+        position: absolute;
+        margin-top: 10%;
+        width: max-content;
+        padding: 10%;
+        background-color: #ddddde;
+        border: thin;
+        font-size: smaller;
+        right: 0;
+
+        .health-desc {
+          color: dimgray;
+          font-weight: bold;
+        }
+
+        .healthy-desc {
+          color: #080;
+          font-weight: normal;
+        }
+
+        .unhealthy-desc {
+          color: #b22;
+          font-weight: normal;
+        }
+      }
+
+      .health-check:hover .health-desc-tooltip {
+        display: block;
+        z-index: 99;
       }
 
       .refresh-switch {

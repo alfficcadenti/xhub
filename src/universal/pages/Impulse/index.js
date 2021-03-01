@@ -44,7 +44,6 @@ const filterSelectionClass = 'filter-option-selection';
 const filterExpandClass = 'filter-option-expand';
 let filteredAnnotationsOnBrand = [];
 const healthUrl = 'https://opexhub-grafana.expedia.biz/d/x8JcATVMk/opex-impulse?viewPanel=42&orgId=1&from=now-3d&to=now';
-const healthDescription = 'Performance Indicator\nGreen - Data source latency is between 3 to 60 sec\nRed - Data source latency is below 3 or above 60 sec';
 
 const Impulse = (props) => {
     const newBrand = props.selectedBrands[0];
@@ -242,13 +241,17 @@ const Impulse = (props) => {
             </form>
         </Divider>
     );
-    const renderHealthCheck = () => (
+    const renderHealthCheck=() => (
         <a href = {healthUrl} target={'_blank'}>
-            <div title = {healthDescription}
-                className = "health-check"
+            <div className = "health-check"
                 style = {{color: isLatencyHealthy ? '#080' : '#b22'}}
             >
                 {'TP99: '}{sourceLatency ? `${sourceLatency}s` : 'NA'}
+                <span className="health-desc-tooltip">
+                    <div className="health-desc">Performance Indicator (Data Ingestion)</div>
+                    <div className="healthy-desc">Latency is between 3 to 60 sec</div>
+                    <div className="unhealthy-desc">Latency is above 60 sec or no data</div>
+                </span>
             </div></a>
     );
     return (
