@@ -27,7 +27,7 @@ const bookingTimeInterval = 300000;
 const incidentTimeInterval = 900000;
 const healthTimeInterval = 300000;
 let initialMount = false;
-let intervalForCharts;
+let intervalForCharts = null;
 let intervalForAnnotations = null;
 let intervalForHealth = null;
 
