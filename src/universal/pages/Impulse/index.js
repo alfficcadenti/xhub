@@ -241,7 +241,7 @@ const Impulse = (props) => {
             </form>
         </Divider>
     );
-    const renderHealthCheck=() => (
+    const renderHealthCheck = () => (
         <a href = {healthUrl} target={'_blank'}>
             <div className = "health-check"
                 style = {{color: isLatencyHealthy ? '#080' : '#b22'}}
