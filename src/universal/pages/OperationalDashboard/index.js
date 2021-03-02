@@ -10,7 +10,7 @@ const OperationalDashboard = () => {
             <h1 className="page-title">{'Operational Dashboard'}</h1>
             <div className="operational-dashboard">
                 <Iframe
-                    url="https://opexhub-grafana.expedia.biz/d/LNYFUKEGz/cortina?editPanel=12&orgId=1&refresh=30s&var-LOCALE=All&var-MARKETINGCHANNEL=All&var-PLATFORM=All&var-POS=All&var-IsKES=All"
+                    url="https://opexhub-grafana.expedia.biz/d/LNYFUKEGz/cortina?orgId=1&refresh=30s&var-LOCALE=All&var-MARKETINGCHANNEL=All&var-PLATFORM=All&var-POS=All&var-IsKES=All"
                     key={'iframe'}
                     width="1600px"
                     height="950px"
