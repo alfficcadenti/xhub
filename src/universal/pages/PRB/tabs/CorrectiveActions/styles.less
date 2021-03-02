@@ -23,13 +23,11 @@
         min-height: 50vh;
     }
 
-    .l1-table,
-    .l2-table,
-    .l3-table {
+    .l-table {
         position: relative;
         padding: @spacing-2x;
         float: left;
-        width: 32%;
+        width: 19%;
         border: 1px solid @border-color-dark;
 
         h3 {
@@ -48,13 +46,13 @@
 
             .name {
                 float: left;
-                width: 50%;
+                width: 70%;
             }
 
             .count {
                 float: left;
-                width: 20%;
-                margin-left: 25%;
+                width: 15%;
+                margin-left: 5%;
                 color: @color-link-default;
                 cursor: pointer;
 
@@ -66,7 +64,7 @@
             .arrow {
                 cursor: pointer;
                 float: left;
-                width: 5%;
+                width: 10%;
                 opacity: .8;
 
                 &.hover {
@@ -79,8 +77,9 @@
         }
     }
 
-    .l1-table {
-        z-index: 2;
+    .l1-table,
+    .l4-table {
+        z-index: 4;
 
         .l-row.selected {
             color: @color-text-default;
@@ -92,11 +91,17 @@
         }
     }
 
-    .l2-table {
+    .l4-table {
         z-index: 1;
+    }
+
+    .l2-table,
+    .l5-table {
+        z-index: 3;
         background: @color-bg-contrast;
 
         .l-row.selected {
+            color: @color-text-default;
             background: @color-bg-hover;
 
             .arrow {
@@ -105,19 +110,31 @@
         }
     }
 
-    .l3-table {
+    .l5-table {
         z-index: 0;
-        background: @color-bg-hover;
     }
 
-    .l2-table,
     .l3-table {
-        margin-left: -2%;
+        z-index: 2;
+        background: @color-bg-hover;
+
+        .l-row.selected {
+            color: @color-text-default;
+            background: @color-bg-contrast;
+
+            .arrow {
+                opacity: 1;
+            }
+        }
+    }
+
+    .sub-table {
+        margin-left: -1%;
         opacity: 0;
         transition: all .2s ease;
 
         &.active {
-            margin-left: 2%;
+            margin-left: 1%;
             opacity: 1;
         }
     }

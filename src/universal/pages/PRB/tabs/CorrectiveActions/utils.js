@@ -13,11 +13,18 @@ export const mapDetails = (row) => ({
     Department: getTableValue(row, 'department'),
     Created: getTableValue(row, 'createdDate'),
     Resolved: getTableValue(row, 'resolvedDate'),
-    Updated: getTableValue(row, 'updatedDateTime')
+    Updated: getTableValue(row, 'updatedDateTime'),
+    L1: getTableValue(row, 'l1'),
+    L2: getTableValue(row, 'l2'),
+    L3: getTableValue(row, 'l3'),
+    L4: getTableValue(row, 'l4'),
+    L5: getTableValue(row, 'l5')
 });
 
 // eslint-disable-next-line complexity
-export const checkIsRowSelected = (businessOwnerType, selectedL1, selectedL2, name) => (
+export const checkIsRowSelected = (businessOwnerType, selectedL1, selectedL2, selectedL3, selectedL4, name) => (
     (businessOwnerType === 'l1' && selectedL1 && selectedL1.name === name)
     || (selectedL1 && businessOwnerType === 'l2' && selectedL2 && selectedL2.name === name)
+    || (selectedL2 && businessOwnerType === 'l3' && selectedL3 && selectedL3.name === name)
+    || (selectedL3 && businessOwnerType === 'l4' && selectedL4 && selectedL4.name === name)
 );

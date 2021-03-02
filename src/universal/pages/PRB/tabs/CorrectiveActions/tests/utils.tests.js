@@ -26,10 +26,15 @@ describe('CorrectiveActions Utils', () => {
             department: 'Department',
             createdDate: '12-12-2020',
             resolvedDate: '12-13-2020',
-            updatedDateTime: '12-14-2020'
+            updatedDateTime: '12-14-2020',
+            l1: 'L1',
+            l2: 'L2',
+            l3: 'L3',
+            l4: 'L4',
+            l5: 'L5'
         };
         const {
-            Assignee, Project, Summary, Status, Priority, Department, Created, Resolved, Updated
+            Assignee, Project, Summary, Status, Priority, Department, Created, Resolved, Updated, L1, L2, L3, L4, L5
         } = mapDetails(row);
         expect(Assignee).to.be.eql(row.assignee);
         expect(Project).to.be.eql(row.projectName);
@@ -40,6 +45,11 @@ describe('CorrectiveActions Utils', () => {
         expect(Created).to.be.eql(row.createdDate);
         expect(Resolved).to.be.eql(row.resolvedDate);
         expect(Updated).to.be.eql(row.updatedDateTime);
+        expect(L1).to.be.eql(row.l1);
+        expect(L2).to.be.eql(row.l2);
+        expect(L3).to.be.eql(row.l3);
+        expect(L4).to.be.eql(row.l4);
+        expect(L5).to.be.eql(row.l5);
     });
 
 
@@ -51,5 +61,9 @@ describe('CorrectiveActions Utils', () => {
         expect(checkIsRowSelected('l2', null, {name: 'goodbye'}, 'goodbye')).to.be.eql(true);
         expect(checkIsRowSelected('l2', {name: 'hello'}, null, 'wrong')).to.be.eql(false);
         expect(checkIsRowSelected('l2', null, null, 'hello')).to.be.eql(false);
+        expect(checkIsRowSelected('l3', {name: 'hello'}, {name: 'goodbye'}, 'goodbye')).to.be.eql(true);
+        expect(checkIsRowSelected('l3', null, {name: 'goodbye'}, 'goodbye')).to.be.eql(true);
+        expect(checkIsRowSelected('l3', {name: 'hello'}, null, 'wrong')).to.be.eql(false);
+        expect(checkIsRowSelected('l3', null, null, 'hello')).to.be.eql(false);
     });
 });

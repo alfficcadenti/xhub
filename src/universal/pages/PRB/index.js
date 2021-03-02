@@ -44,9 +44,7 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         initialRcOwner,
         initialRcCategory,
         initialCAStatuses,
-        initialL1,
-        initialL2,
-        initialCA
+        initialCAOrgs
     } = getQueryValues(search);
 
     const [startDate, setStartDate] = useState(initialStart);
@@ -60,7 +58,8 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [selectedCAStatuses, setSelectedCAStatuses] = useState(initialCAStatuses);
     const [selectedL1, setSelectedL1] = useState(null);
     const [selectedL2, setSelectedL2] = useState(null);
-    const [selectedCA, setSelectedCA] = useState(null);
+    const [selectedL3, setSelectedL3] = useState(null);
+    const [selectedL4, setSelectedL4] = useState(null);
     const [isDirtyForm, setIsDirtyForm] = useState(false);
 
     const [isApplyClicked, setIsApplyClicked] = useState(false);
@@ -110,6 +109,8 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         && matchesRcCategory(t)
     );
 
+    const getInitialCAOrg = (selected, l) => (selected || {name: initialCAOrgs[l]});
+
     const updateHistory = () => history.push(generateUrl(
         activeIndex,
         selectedBrands,
@@ -122,9 +123,11 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         selectedRcOwner,
         selectedRcCategory,
         selectedCAStatuses,
-        selectedL1 || {name: initialL1},
-        selectedL2 || {name: initialL2},
-        selectedCA || {name: initialCA}));
+        getInitialCAOrg(selectedL1, 'l1'),
+        getInitialCAOrg(selectedL2, 'l2'),
+        getInitialCAOrg(selectedL3, 'l3'),
+        getInitialCAOrg(selectedL4, 'l4')
+    ));
 
     function applyFilters() {
         if (!validDateRange(startDate, endDate)) {
@@ -144,7 +147,7 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
     useEffect(() => {
         updateHistory();
-    }, [selectedL1, selectedL2, selectedCA, activeIndex]);
+    }, [selectedL1, selectedL2, selectedL3, selectedL4, activeIndex]);
 
     const handleDateRangeChange = (start, end) => {
         setStartDate(start);
@@ -211,8 +214,12 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         setSelectedL2(l2);
     };
 
-    const handleCAChange = (ca) => {
-        setSelectedCA(ca);
+    const handleL3Change = (l3) => {
+        setSelectedL3(l3);
+    };
+
+    const handleL4Change = (l4) => {
+        setSelectedL4(l4);
     };
 
     const renderTabs = () => {
@@ -234,15 +241,18 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                         start={startDate}
                         end={endDate}
                         statuses={selectedCAStatuses}
-                        initialL1={initialL1}
-                        initialL2={initialL2}
-                        initialCA={initialCA}
+                        initialL1={initialCAOrgs.l1}
+                        initialL2={initialCAOrgs.l2}
+                        initialL3={initialCAOrgs.l3}
+                        initialL4={initialCAOrgs.l4}
                         onL1Change={handleL1Change}
                         onL2Change={handleL2Change}
+                        onL3Change={handleL3Change}
+                        onL4Change={handleL4Change}
                         selectedL1={selectedL1}
                         selectedL2={selectedL2}
-                        selectedCA={selectedCA}
-                        onCAChange={handleCAChange}
+                        selectedL3={selectedL3}
+                        selectedL4={selectedL4}
                         isApplyClicked={isApplyClicked}
                     />
                 );

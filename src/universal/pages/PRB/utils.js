@@ -41,7 +41,8 @@ export const getQueryValues = (search) => {
         castatus,
         l1,
         l2,
-        ca
+        l3,
+        l4
     } = qs.parse(search);
     const isValidDateRange = validDateRange(start, end);
     return {
@@ -60,9 +61,9 @@ export const getQueryValues = (search) => {
         initialCAStatuses: castatus
             ? castatus.split(',').map((l) => CA_STATUS_LIST.find(({value}) => value === l)).filter((l) => l)
             : CA_STATUS_LIST.filter(({value}) => ['In Progress', 'Open', 'Blocked'].includes(value)),
-        initialL1: l1,
-        initialL2: l2,
-        initialCA: ca
+        initialCAOrgs: {
+            l1, l2, l3, l4
+        }
     };
 };
 
@@ -82,6 +83,8 @@ export const mapActiveIndexToTabName = (idx) => {
     return 'overview';
 };
 
+const getCAOrgName = (selectedOrg) => (selectedOrg || {}).name;
+
 export const generateUrl = (
     activeIndex,
     selectedBrands,
@@ -96,7 +99,8 @@ export const generateUrl = (
     selectedCAStatuses,
     selectedL1,
     selectedL2,
-    selectedCA
+    selectedL3,
+    selectedL4
 ) => {
     return `/prb/${mapActiveIndexToTabName(activeIndex)}`
         + `?selectedBrand=${selectedBrands[0]}`
@@ -109,9 +113,10 @@ export const generateUrl = (
         + `${getUrlParam('rcowner', selectedRcOwner, ALL_RC_OWNERS_OPTION)}`
         + `${getUrlParam('rccategory', selectedRcCategory, ALL_RC_CATEGORIES_OPTION)}`
         + `${getUrlParam('castatus', selectedCAStatuses.map(({value}) => value).join(','), [])}`
-        + `${getUrlParam('l1', (selectedL1 || {}).name, null)}`
-        + `${getUrlParam('l2', (selectedL2 || {}).name, null)}`
-        + `${getUrlParam('ca', (selectedCA || {}).name, null)}`;
+        + `${getUrlParam('l1', getCAOrgName(selectedL1), null)}`
+        + `${getUrlParam('l2', getCAOrgName(selectedL2), null)}`
+        + `${getUrlParam('l3', getCAOrgName(selectedL3), null)}`
+        + `${getUrlParam('l4', getCAOrgName(selectedL4), null)}`;
 };
 
 export const getActiveIndex = (pathname = '') => {

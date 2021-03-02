@@ -19,7 +19,7 @@ describe('PRB Utils', () => {
     it('getQueryValues - default', () => {
         const start = moment().subtract(1, 'years').startOf('minute').format('YYYY-MM-DD');
         const end = moment().format('YYYY-MM-DD');
-        const l1 = 'business';
+        const l1 = 'businessA';
         const result = getQueryValues(`?l1=${l1}`);
         expect(result.initialStart).to.be.eql(start);
         expect(result.initialEnd).to.be.eql(end);
@@ -34,7 +34,7 @@ describe('PRB Utils', () => {
             {label: 'Blocked', value: 'Blocked'},
             {label: 'Open', value: 'Open'}
         ]);
-        expect(result.initialL1).to.be.eql(l1);
+        expect(result.initialCAOrgs.l1).to.be.eql(l1);
     });
 
     it('getQueryValues - custom', () => {
@@ -48,6 +48,8 @@ describe('PRB Utils', () => {
         const rcCategory = 'Architectural';
         const l1 = 'businessA';
         const l2 = 'businessB';
+        const l3 = 'businessC';
+        const l4 = 'businessD';
         const castatus = 'Done';
         const result = getQueryValues(`?start=${start}&end=${end}`
             + `&type=${type}`
@@ -58,7 +60,9 @@ describe('PRB Utils', () => {
             + `&rccategory=${rcCategory}`
             + `&castatus=${castatus}`
             + `&l1=${l1}`
-            + `&l2=${l2}`);
+            + `&l2=${l2}`
+            + `&l3=${l3}`
+            + `&l4=${l4}`);
         expect(result.initialStart).to.be.eql(start);
         expect(result.initialEnd).to.be.eql(end);
         expect(result.initialType).to.be.eql(type);
@@ -68,8 +72,10 @@ describe('PRB Utils', () => {
         expect(result.initialRcOwner).to.be.eql(rcOwner);
         expect(result.initialRcCategory).to.be.eql(rcCategory);
         expect(result.initialCAStatuses).to.be.eql([{label: castatus, value: castatus}]);
-        expect(result.initialL1).to.be.eql(l1);
-        expect(result.initialL2).to.be.eql(l2);
+        expect(result.initialCAOrgs.l1).to.be.eql(l1);
+        expect(result.initialCAOrgs.l2).to.be.eql(l2);
+        expect(result.initialCAOrgs.l3).to.be.eql(l3);
+        expect(result.initialCAOrgs.l4).to.be.eql(l4);
     });
 
     it('getUrlParam', () => {

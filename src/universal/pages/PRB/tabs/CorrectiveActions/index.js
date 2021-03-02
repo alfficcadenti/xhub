@@ -16,10 +16,16 @@ const CorrectiveActions = ({
     statuses,
     initialL1,
     initialL2,
+    initialL3,
+    initialL4,
     selectedL1,
     selectedL2,
+    selectedL3,
+    selectedL4,
     onL1Change,
     onL2Change,
+    onL3Change,
+    onL4Change,
     isApplyClicked
 }) => {
     const dateQuery = `fromDate=${start}&toDate=${end}`;
@@ -28,13 +34,12 @@ const CorrectiveActions = ({
         : dateQuery;
     const [l1Data, setL1Data] = useState([]);
     const [l2Data, setL2Data] = useState([]);
+    const [l3Data, setL3Data] = useState([]);
+    const [l4Data, setL4Data] = useState([]);
     const [detailsData, setDetailsData] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [error, setError] = useState();
     const [isLoading, setIsLoading] = useState(true);
-
-    const [lastStartDate, setLastStartDate] = useState('');
-    const [lastEndDate, setLastEndDate] = useState('');
 
     const initData = (response, initialValue, setData, onLChange) => {
         if (!response || !response.data) {
@@ -49,14 +54,13 @@ const CorrectiveActions = ({
 
     const fetchLData = () => {
         setIsLoading(true);
-        setLastStartDate(start);
-        setLastEndDate(end);
-
-        Promise.all(['l1', 'l2'].map((l) => fetch(`/v1/corrective-actions/business-owner-type/${l}?${fetchQuery}`)))
+        Promise.all(['l1', 'l2', 'l3', 'l4'].map((l) => fetch(`/v1/corrective-actions/business-owner-type/${l}?${fetchQuery}`)))
             .then((responses) => Promise.all(responses.map(checkResponse)))
-            .then(([l1Response, l2Response]) => {
+            .then(([l1Response, l2Response, l3Response, l4Response]) => {
                 initData(l1Response, initialL1, setL1Data, onL1Change);
                 initData(l2Response, initialL2, setL2Data, onL2Change);
+                initData(l3Response, initialL3, setL3Data, onL3Change);
+                initData(l4Response, initialL4, setL4Data, onL4Change);
             })
             .catch((err) => {
                 setError('Failed to retrieve data. Try refreshing the page. '
@@ -72,21 +76,41 @@ const CorrectiveActions = ({
     }, []);
 
     useEffect(() => {
-        const areDatesChanged = (lastStartDate === start) && (lastEndDate === end);
-        if (isApplyClicked && areDatesChanged) {
+        if (isApplyClicked) {
             fetchLData();
         }
     }, [isApplyClicked]);
 
+    // eslint-disable-next-line complexity
     const handleRowClick = (row) => {
         if (row) {
-            const {businessOwnerType} = row;
-            if (businessOwnerType === 'l1') {
-                onL1Change(row);
-                onL2Change(null);
-            } else if (businessOwnerType === 'l2') {
-                const found = l2Data.find((d) => d && d.name === row.name);
-                onL2Change(found);
+            const findName = (d) => d && d.name === row.name;
+            switch (row.businessOwnerType) {
+                case 'l1':
+                    onL1Change(row);
+                    onL2Change(null);
+                    onL3Change(null);
+                    onL4Change(null);
+                    break;
+                case 'l2':
+                    const found = l2Data.find(findName);
+                    onL2Change(found);
+                    onL3Change(null);
+                    onL4Change(null);
+                    break;
+                case 'l3':
+                    onL3Change(l3Data.find(findName));
+                    onL4Change(null);
+                    break;
+                case 'l4':
+                    onL4Change(l4Data.find(findName));
+                    break;
+                default:
+                    onL1Change(null);
+                    onL2Change(null);
+                    onL3Change(null);
+                    onL4Change(null);
+                    break;
             }
         }
     };
@@ -104,7 +128,7 @@ const CorrectiveActions = ({
 
     const renderRow = (row) => {
         const {name, businessOwnerType, ticketsCount} = row;
-        const isSelected = checkIsRowSelected(businessOwnerType, selectedL1, selectedL2, name);
+        const isSelected = checkIsRowSelected(businessOwnerType, selectedL1, selectedL2, selectedL3, selectedL4, name);
         return (
             <div
                 key={`${businessOwnerType}-${name}`}
@@ -120,7 +144,7 @@ const CorrectiveActions = ({
                 >
                     {ticketsCount}
                 </div>
-                {businessOwnerType !== 'l3' && (
+                {businessOwnerType !== 'l5' && (
                     <div
                         className="arrow"
                         onClick={() => handleRowClick(row)}
@@ -138,10 +162,23 @@ const CorrectiveActions = ({
     const handleL1Close = () => {
         onL1Change({name: null, subOrgDetails: []});
         onL2Change({name: null, subOrgDetails: []});
+        onL3Change({name: null, subOrgDetails: []});
+        onL4Change({name: null, subOrgDetails: []});
     };
 
     const handleL2Close = () => {
         onL2Change({name: null, subOrgDetails: []});
+        onL3Change({name: null, subOrgDetails: []});
+        onL4Change({name: null, subOrgDetails: []});
+    };
+
+    const handleL3Close = () => {
+        onL3Change({name: null, subOrgDetails: []});
+        onL4Change({name: null, subOrgDetails: []});
+    };
+
+    const handleL4Close = () => {
+        onL4Change({name: null, subOrgDetails: []});
     };
 
     const renderDetailsTable = () => {
@@ -149,8 +186,8 @@ const CorrectiveActions = ({
             <DataTable
                 title={`Corrective Actions (${detailsData.length} ${detailsData.length === 1 ? 'result' : 'results'})`}
                 data={detailsData}
-                columns={['ID', 'L1', 'L2', 'L3', 'Assignee', 'Project', 'Summary', 'Status', 'Priority', 'Department', 'Created', 'Resolved', 'Updated']}
-                hiddenColumns={['L1', 'L2', 'L3', 'Department']}
+                columns={['ID', 'L1', 'L2', 'L3', 'L4', 'L5', 'Assignee', 'Project', 'Summary', 'Status', 'Priority', 'Department', 'Created', 'Resolved', 'Updated']}
+                hiddenColumns={['L1', 'L2', 'L3', 'L4', 'L5', 'Department']}
                 enableColumnDisplaySettings
                 enableCSVDownload
                 paginated
@@ -159,49 +196,35 @@ const CorrectiveActions = ({
     };
 
     const renderL1Table = () => (
-        <div className="l1-table">
+        <div className="l1-table l-table">
             <h3>{'L1'}</h3>
             {l1Data.map(renderRow)}
         </div>
     );
 
-    const renderL2Table = () => (
-        <div className={`l2-table ${selectedL1 && selectedL1.name ? 'active' : ''}`}>
-            <h3>{'L2'}</h3>
+    const renderLTable = (title, selectedL, onLClose) => (
+        <div className={`${String(title).toLowerCase()}-table l-table sub-table ${selectedL && selectedL.name ? 'active' : ''}`}>
+            <h3>{title}</h3>
             <div
                 className="close-btn"
-                onClick={handleL1Close}
-                onKeyUp={handleL1Close}
+                onClick={onLClose}
+                onKeyUp={onLClose}
                 role="button"
                 tabIndex="0"
             >
                 <SVGIcon usefill markup={CLOSE__24} />
             </div>
-            {(selectedL1 || {subOrgDetails: []}).subOrgDetails.map(renderRow)}
-        </div>
-    );
-
-    const renderL3Table = () => (
-        <div className={`l3-table ${selectedL1 && selectedL2 && selectedL2.name ? 'active' : ''}`}>
-            <h3>{'L3'}</h3>
-            <div
-                className="close-btn"
-                onClick={handleL2Close}
-                onKeyUp={handleL2Close}
-                role="button"
-                tabIndex="0"
-            >
-                <SVGIcon usefill markup={CLOSE__24} />
-            </div>
-            {(selectedL2 || {subOrgDetails: []}).subOrgDetails.map(renderRow)}
+            {(selectedL || {subOrgDetails: []}).subOrgDetails.map(renderRow)}
         </div>
     );
 
     const renderTables = () => (
         <>
             {renderL1Table()}
-            {renderL2Table()}
-            {renderL3Table()}
+            {renderLTable('L2', selectedL1, handleL1Close)}
+            {renderLTable('L3', selectedL2, handleL2Close)}
+            {renderLTable('L4', selectedL3, handleL3Close)}
+            {renderLTable('L5', selectedL4, handleL4Close)}
         </>
     );
 
