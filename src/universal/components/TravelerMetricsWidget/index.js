@@ -72,6 +72,20 @@ const TravelerMetricsWidget = ({
         return lobs.length ? lobs.some((lob) => chartData.some((item) => !!item[lob.label])) : true;
     };
 
+    const processChartData = (chartData, lobs) => {
+        return chartData.map((item) => {
+            const newEntry = {...item};
+
+            lobs.forEach((lob) => {
+                if (!newEntry[lob]) {
+                    newEntry[lob] = '0';
+                }
+            });
+
+            return newEntry;
+        });
+    };
+
     return (
         <div className="widget-card card" key={title}>
             {renderHeader(title, helpText)}
@@ -81,7 +95,7 @@ const TravelerMetricsWidget = ({
                         <AreaChart
                             width={100}
                             height={100}
-                            data={data}
+                            data={processChartData(data, selectedLoBs.map((item) => item.label))}
                             syncId="pageview-widget"
                             onMouseDown={onMouseDown}
                             onMouseMove={onMouseMove}
