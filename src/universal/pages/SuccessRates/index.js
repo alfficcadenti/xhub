@@ -164,6 +164,8 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     useEffect(() => {
         if ([EG_BRAND, EGENCIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND].includes(selectedBrand)) {
             setIsLoBAvailable(false);
+        } else {
+            setIsLoBAvailable(true);
         }
 
         if ([EG_BRAND, EGENCIA_BRAND].includes(selectedBrand)) {
@@ -184,6 +186,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         }
 
         return function cleanup() {
+            setIsZoomedIn(false);
             clearInterval(rttRef.current);
         };
     }, [selectedBrand, start, end, selectedEPSPartner]);

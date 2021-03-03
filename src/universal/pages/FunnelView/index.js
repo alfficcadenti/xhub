@@ -138,6 +138,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         if ([EG_BRAND, EGENCIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND].includes(selectedBrand)) {
             setIsLoBAvailable(false);
         } else if (!isZoomedIn) {
+            setIsLoBAvailable(true);
             fetchPageViewsLoBData(selectedBrand);
         }
 
@@ -149,10 +150,15 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         } else {
             setError(null);
             setIsFormDisabled(false);
+
             if (!isZoomedIn) {
                 fetchPageViewsData(selectedBrand);
             }
         }
+
+        return function cleanup() {
+            setIsZoomedIn(false);
+        };
     }, [selectedBrand, start, end, selectedEPSPartner]);
 
     useAddToUrl(selectedBrands, start, end, selectedLobs, pendingStart, pendingEnd);
