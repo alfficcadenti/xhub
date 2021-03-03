@@ -137,7 +137,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
         if ([EG_BRAND, EGENCIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND].includes(selectedBrand)) {
             setIsLoBAvailable(false);
-        } else if (!isZoomedIn) {
+        } else if (!isZoomedIn) { // we need this flag right after zoomed in so that we don't re-fetch because it filters on existing data
             setIsLoBAvailable(true);
             fetchPageViewsLoBData(selectedBrand);
         }
@@ -151,13 +151,13 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             setError(null);
             setIsFormDisabled(false);
 
-            if (!isZoomedIn) {
+            if (!isZoomedIn) { // we need this flag right after zoomed in so that we don't re-fetch because it filters on existing data
                 fetchPageViewsData(selectedBrand);
             }
         }
 
         return function cleanup() {
-            setIsZoomedIn(false);
+            setIsZoomedIn(false); // set to false so that it fetch data when changing brands
         };
     }, [selectedBrand, start, end, selectedEPSPartner]);
 
@@ -240,18 +240,16 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             <h1>{'Traveler Page Views'}{!isLoBAvailable && <HelpText text="Only for LOB Hotels" placement="top" />}</h1>
             <div className="filters-wrapper">
                 {
-                    selectedBrand === EXPEDIA_PARTNER_SERVICES_BRAND ?
-                        <div className="eps-partner-select-wrapper">
-                            <Select
-                                classNamePrefix="eps-partner-select"
-                                className="eps-partner-select-container"
-                                options={EPS_PARTNER_SITENAMES}
-                                onChange={handleEPSPartnerChange}
-                                placeholder="Select Partner"
-                                isClearable
-                                isSearchable
-                            />
-                        </div> : ''
+                    selectedBrand === EXPEDIA_PARTNER_SERVICES_BRAND &&
+                        <Select
+                            classNamePrefix="eps-partner-select"
+                            className="eps-partner-select-container"
+                            options={EPS_PARTNER_SITENAMES}
+                            onChange={handleEPSPartnerChange}
+                            placeholder="Select Partner"
+                            isClearable
+                            isSearchable
+                        />
                 }
                 <div className="dynamic-filters-wrapper">
                     {
