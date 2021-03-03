@@ -79,6 +79,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.9.2",
+    "@cucumber/cucumber": "^7.0.0",
     "@homeaway/a11y-tools": "^1.6.0",
     "@homeaway/baseline": "^5.11.1",
     "@homeaway/browserslist-config": "^1.0.0",
