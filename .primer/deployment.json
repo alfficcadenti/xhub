@@ -52,7 +52,7 @@
       "max_count": 1
     }
   },
-  "prod": {
+  "eweprod": {
     "vpce_consumer": {
       "generic_providers": [
         {
