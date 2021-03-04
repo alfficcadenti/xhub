@@ -164,6 +164,8 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     useEffect(() => {
         if ([EG_BRAND, EGENCIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND].includes(selectedBrand)) {
             setIsLoBAvailable(false);
+        } else {
+            setIsLoBAvailable(true);
         }
 
         if ([EG_BRAND, EGENCIA_BRAND].includes(selectedBrand)) {
@@ -178,12 +180,13 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             fetchRealTimeData(selectedBrand);
             rttRef.current = setInterval(fetchRealTimeData.bind(null, selectedBrand), 60000); // refresh every minute
 
-            if (!isZoomedIn) {
+            if (!isZoomedIn) { // we need this flag right after zoomed in so that we don't re-fetch because it filters on existing data
                 fetchSuccessRatesData(selectedBrand);
             }
         }
 
         return function cleanup() {
+            setIsZoomedIn(false); // set to false so that it fetch data when changing brands
             clearInterval(rttRef.current);
         };
     }, [selectedBrand, start, end, selectedEPSPartner]);
@@ -269,17 +272,15 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             <div className="filters-wrapper">
                 {
                     selectedBrand === EXPEDIA_PARTNER_SERVICES_BRAND &&
-                        <div className="eps-partner-select-wrapper">
-                            <Select
-                                classNamePrefix="eps-partner-select"
-                                className="eps-partner-select-container"
-                                options={EPS_PARTNER_TPIDS}
-                                onChange={handleEPSPartnerChange}
-                                placeholder="Select Partner"
-                                isClearable
-                                isSearchable
-                            />
-                        </div>
+                        <Select
+                            classNamePrefix="eps-partner-select"
+                            className="eps-partner-select-container"
+                            options={EPS_PARTNER_TPIDS}
+                            onChange={handleEPSPartnerChange}
+                            placeholder="Select Partner"
+                            isClearable
+                            isSearchable
+                        />
                 }
                 <div className="dynamic-filters-wrapper">
                     {
