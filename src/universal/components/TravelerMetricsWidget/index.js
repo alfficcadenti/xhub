@@ -24,7 +24,7 @@ const CustomTooltip = ({active, payload}) => {
         return (
             <div className="custom-tooltip">
                 <p className="label">{payload[0].payload.label}</p>
-                {payload && payload.map((x) => <p key={x.dataKey} className="label">{`${x.name || x.dataKey} = ${x.value}`}</p>)}
+                {payload && payload.map((x) => <p key={x.dataKey} className="label">{`${x.name || x.dataKey} = ${String(x.value)}`}</p>)}
             </div>
         );
     }
@@ -78,7 +78,7 @@ const TravelerMetricsWidget = ({
 
             lobs.forEach((lob) => {
                 if (!newEntry[lob]) {
-                    newEntry[lob] = '0';
+                    newEntry[lob] = 0;
                 }
             });
 
