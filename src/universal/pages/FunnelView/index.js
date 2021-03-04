@@ -7,6 +7,7 @@ import LoadingContainer from '../../components/LoadingContainer';
 import DateFiltersWrapper from '../../components/DateFiltersWrapper/DateFiltersWrapper';
 import Annotations from '../../components/Annotations/Annotations';
 import HelpText from '../../components/HelpText/HelpText';
+import ResetButton from '../../components/ResetButton';
 import {useAddToUrl, useFetchProductMapping, useQueryParamChange, useSelectedBrand, useZoomAndSynced} from '../hooks';
 import {
     EG_BRAND,
@@ -281,14 +282,11 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     handleDatetimeChange={handleDatetimeChange}
                     isDirtyForm={isDirtyForm}
                 />
-                <button
-                    type="button"
-                    disabled={moment(end).diff(moment(start), 'hour') === 6}
-                    className={'btn btn-default reset-btn'}
-                    onClick={() => resetGraphToDefault()}
-                >
-                    {'Set to last 6 hours'}
-                </button>
+                <ResetButton
+                    start={start}
+                    end={end}
+                    resetGraphToDefault={resetGraphToDefault}
+                />
             </div>
             <LoadingContainer isLoading={isLoading} error={!selectedLobs.length ? error : LoBError} className="page-views-loading-container">
                 {selectedLobs && selectedLobs.length && renderPageViews(lobWidgets) || renderPageViews(widgets)}

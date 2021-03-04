@@ -36,6 +36,7 @@ import {
 import './styles.less';
 import Annotations from '../../components/Annotations/Annotations';
 import DateFiltersWrapper from '../../components/DateFiltersWrapper/DateFiltersWrapper';
+import ResetButton from '../../components/ResetButton';
 
 
 const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
@@ -312,14 +313,11 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     handleDatetimeChange={handleDatetimeChange}
                     isDirtyForm={isDirtyForm}
                 />
-                <button
-                    type="button"
-                    disabled={moment(end).diff(moment(start), 'hour') === 6}
-                    className={'btn btn-default reset-btn'}
-                    onClick={() => resetGraphToDefault()}
-                >
-                    {'Set to last 6 hours'}
-                </button>
+                <ResetButton
+                    start={start}
+                    end={end}
+                    resetGraphToDefault={resetGraphToDefault}
+                />
             </div>
             {isSupportedBrand && (
                 <RealTimeSummaryPanel
