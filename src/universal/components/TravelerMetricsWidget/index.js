@@ -20,14 +20,15 @@ import './styles.less';
 
 // eslint-disable-next-line complexity
 const CustomTooltip = ({active, payload}) => {
-    if (active && payload && payload[0] && payload[0].payload && payload[0].payload.label && payload[0].value) {
+    if (active && payload && payload[0] && payload[0].payload && payload[0].payload.label) {
         return (
             <div className="custom-tooltip">
                 <p className="label">{payload[0].payload.label}</p>
-                {payload && payload.map((x) => <p key={x.dataKey} className="label">{`${x.name || x.dataKey} = ${String(x.value)}`}</p>)}
+                {payload && payload.map((x) => <p key={x.dataKey} className="label">{`${x.name || x.dataKey} = ${x.value}`}</p>)}
             </div>
         );
     }
+
     return null;
 };
 
