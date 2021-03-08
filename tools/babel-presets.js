@@ -86,5 +86,8 @@ const environments = {
 module.exports = (api) => {
     const env = api.env();
     debug('Getting babelrc for env="%s".', env);
+    if (env === "browsertest") {
+        return {presets: ["es2015"]}
+    }
     return environments[env];
 };

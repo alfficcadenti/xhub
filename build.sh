@@ -20,7 +20,7 @@ npm -v
 # Install Dependencies
 ###
 printBoxedMessage "Install"
-npm ci
+npm install
 
 ###
 # Run package building

@@ -1,21 +1,9 @@
-module.exports = {
-    'src_folders': ['tests'],
-    'page_objects_path': ['page-objects'],
+let nightWatchConfigs;
 
-    'webdriver': {
-        'start_process': true,
-        'server_path': 'node_modules/.bin/chromedriver',
-        'port': 9515
-    },
+if (process.env.isBrowserstack === 'true') {
+    nightWatchConfigs = require(`${process.env.frameworkPath}configs/browsers/browserstack.conf.js`);
+} else {
+    nightWatchConfigs = require(`${process.env.frameworkPath}configs/browsers/localBrowsers.conf.js`);
+}
 
-    'test_settings': {
-        'default': {
-            'desiredCapabilities': {
-                'browserName': 'chrome'
-            }
-        },
-        'chrome': {
-            args: ['headless', 'no-sandbox']
-        }
-    }
-};
+module.exports = nightWatchConfigs;
