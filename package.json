@@ -24,7 +24,7 @@
     "build:server": "rm -rf ./build/server && rm -rf ./build/universal && BABEL_ENV=server babel src --copy-files --source-maps --ignore='**/*.test.js,**/*.spec.js' --out-dir ./build",
     "automation": "concurrently 'npm start' 'npm run test:browser:local'",
     "build:prodTest": "bash ./generate-build-info.sh && NODE_ENV=production npm run build:server && NODE_ENV=production UPLOAD_ASSETS=false npm run build:client && npm run tool:checkAssetSize",
-    "da-reporter": "node node_modules/.bin/da-reporter -p flights-shopping-pwa -i /reports -c",
+    "da-reporter": "node node_modules/.bin/da-reporter -p opxhub-ui -i /reports -c",
     "lint": "eslint --fix src",
     "prod": "CDN_URL=\"//a.travel-assets.com\" NODE_ENV=production node . | rotate-logs --config=.log-access.js | rotate-logs --config=.log-application.js",
     "start": "concurrently --names 'HAPIJS,WBPACK' 'NODE_PORT=8081 npm run start:server' 'npm run start:webpack'",
