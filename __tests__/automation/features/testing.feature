@@ -3,7 +3,8 @@ Feature: User is in the homepage
 @acceptance @desktop
 Scenario: Use navbar to navigate
 
-  Given open localhost homepage
+  Given open homepage and set brands
+  Then set links 1
   Then check routes 1
   Then select filters 2
   Then set links 2
