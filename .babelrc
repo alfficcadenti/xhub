@@ -1,12 +1,13 @@
 {
   "presets": [
-    "module:./tools/babel-presets"
+    ["@babel/preset-env", {"targets": "maintained node versions"}]
   ],
   "plugins": [
     ["@babel/plugin-proposal-decorators", { "legacy": true }],
     ["@babel/plugin-proposal-class-properties", { "loose": true }],
     ["@babel/transform-runtime", { "regenerator": true }],
-    "@babel/plugin-syntax-dynamic-import"
-    //"add-module-exports"
+    "@babel/plugin-syntax-dynamic-import",
+    "@babel/plugin-proposal-function-bind",
+    "@babel/plugin-transform-shorthand-properties"
   ]
 }
