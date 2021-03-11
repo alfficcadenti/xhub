@@ -36,7 +36,7 @@
     "test:unit": "BABEL_ENV=test TZ=UTC jest --colors --verbose -u --testNamePattern",
     "test:style": "stylelint --fix src/**/*.less",
     "tool:checkAssetSize": "node ./tools/sizes/checkAssetSize.js",
-    "test:automation": "cucumber-js -- __tests__/automation/features"
+    "test:automation": "BABEL_ENV=browsertest cucumber-js -- __tests__/automation/features"
   },
   "jest": {
     "testMatch": [
@@ -171,13 +171,11 @@
     "nightwatch-api": "^3.0.2",
     "browsermob-proxy-api": "^0.4.0",
     "browserstack-local": "^1.4.8",
-    "common-nightwatch": "0.0.378",
-    "@babel/polyfill": "^7.12.1"
+    "common-nightwatch": "0.0.378"
   },
   "devDependencies": {
     "@babel/cli": "^7.7.7",
     "@babel/core": "^7.9.0",
-    "@babel/plugin-proposal-function-bind": "^7.12.13",
     "@babel/plugin-proposal-class-properties": "^7.7.4",
     "@babel/plugin-proposal-decorators": "^7.7.4",
     "@babel/plugin-syntax-dynamic-import": "^7.7.4",
