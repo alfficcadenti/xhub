@@ -149,37 +149,6 @@ const localBrowsersConfigs = {
                 marionette: true
             }
         },
-        autoscaleGrid_chrome: {
-            selenium_host: process.env.DA_HUB_IP,
-            selenium_port: 4444,
-            selenium: {
-                start_process: false
-            },
-            silent: true,
-            desiredCapabilities: {
-                browserName: 'chrome',
-                acceptInsecureCerts: true,
-                loggingPrefs: { browser: 'SEVERE' },
-                chromeOptions: {
-                    args: ['window-size=1280,2000']
-                },
-                proxy: proxy
-            }
-        },
-        autoscaleGrid_firefox: {
-            selenium_host: process.env.DA_HUB_IP,
-            selenium_port: 4444,
-            selenium: {
-                start_process: false
-            },
-            silent: true,
-            desiredCapabilities: {
-                browserName: 'firefox',
-                javascriptEnabled: true,
-                acceptSslCerts: true,
-                marionette: true
-            }
-        },
         appium_ios: {
             selenium_host: '127.0.0.1',
             selenium: {
@@ -193,37 +162,6 @@ const localBrowsersConfigs = {
                 platformName: 'iOS',
                 platformVersion: '12.1',
                 deviceName: 'iPhone 8'
-            }
-        },
-        dakubeGrid_Chrome: {
-            selenium_host: process.env.kube_namespace + '.hub.test.expedia.com',
-            use_ssl: true,
-            selenium: {
-                start_process: false,
-                port: 443
-            },
-            silent: true,
-            desiredCapabilities: {
-                browserName: 'chrome',
-                acceptInsecureCerts: true,
-                javascriptEnabled: true,
-                loggingPrefs: { browser: 'INFO', driver: 'INFO' },
-                'goog:chromeOptions': {
-                    args: [
-                        'window-size=1920,1080',
-                        '--no-sandbox',
-                        '--ignore-certificate-errors',
-                        '--disable-translate',
-                        '--disable-logging',
-                        '--allow-insecure-localhost',
-                        '--acceptInsecureCerts',
-                        '--disable-popup-blocking',
-                        '--no-proxy-server',
-                        '--disable-plugins'
-                    ],
-                    w3c: false
-                },
-                proxy: proxy
             }
         },
         dakubeGrid_Chrome_Segment: {
