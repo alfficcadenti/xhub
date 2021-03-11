@@ -24,6 +24,7 @@ const ReferenceLabel = ({viewBox: {x}, annotation, isImpulse = false, setTableDa
         abTestDetails
     } = annotation;
 
+
     return (
         <foreignObject
             className="foreign-object"

@@ -9,7 +9,7 @@ import {
     VRBO_BRAND,
     SUPPRESSED_BRANDS
 } from '../../constants';
-import {getFilters, getBrandQueryParam, getQueryString, getRevLoss, startTime, endTime} from './impulseHandler';
+import {getFilters, getBrandQueryParam, getQueryString, getRevLoss, startTime, endTime, getCategory} from './impulseHandler';
 import {checkResponse} from '../utils';
 import moment from 'moment';
 
@@ -26,10 +26,12 @@ const IMPULSE_MAPPING = [
 const bookingTimeInterval = 300000;
 const incidentTimeInterval = 900000;
 const healthTimeInterval = 300000;
+const anomalyTimeInterval = 900000;
 let initialMount = false;
 let intervalForCharts = null;
 let intervalForAnnotations = null;
 let intervalForHealth = null;
+let intervalForAnomalies = null;
 
 export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTime, endDateTime, globalBrandName, prevBrand, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, chartSliced, setChartSliced, isAutoRefresh) => {
     const [res, setRes] = useState([]);
@@ -45,6 +47,9 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
     const [annotations, setAnnotations] = useState([]);
     const [isLatencyHealthy, setIsLatencyHealthy] = useState(true);
     const [sourceLatency, setSourceLatency] = useState(null);
+    const [anomalyAnnotations, setAnomalyAnnotations] = useState([]);
+    const [anomaliesMulti, setAnomaliesMulti] = useState({});
+
     const incidentMultiOptions = [
         {
             value: '0-Code Red',
@@ -58,8 +63,21 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             value: '2-High',
             label: '2-High'
         }];
+    const anomalyMultiOptions = [
+        {
+            value: 'Anomaly Detected',
+            label: 'Anomaly Detected'
+        },
+        {
+            value: 'Anomaly Recovered',
+            label: 'Anomaly Recovered'
+        },
+        {
+            value: 'Upstream Unhealthy',
+            label: 'Upstream Unhealthy'
+        }];
     const getFilter = () => {
-        fetch(`/v1/bookings/filters?filter=lob,brand,egSiteUrl,deviceType,brandGroupName${getBrandQueryParam(IMPULSE_MAPPING, globalBrandName)}`)
+        fetch(`https://opxhub-ui.us-east-1.prod.expedia.com/v1/bookings/filters?filter=lob,brand,egSiteUrl,deviceType,brandGroupName${getBrandQueryParam(IMPULSE_MAPPING, globalBrandName)}`)
             .then(checkResponse)
             .then((respJson) => {
                 setFilterData(respJson);
@@ -74,7 +92,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             });
     };
     const getBrandsFilterData = () => {
-        fetch('/v1/bookings/filters/brands')
+        fetch('https://opxhub-ui.us-east-1.prod.expedia.com/v1/bookings/filters/brands')
             .then(checkResponse)
             .then((respJson) => {
                 setBrandsFilterData(respJson);
@@ -87,7 +105,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
 
     const fetchIncidents = (start = startDateTime, end = endDateTime, revLossSource = 'snow') => {
         const queryString = `fromDate=${moment(start).utc().format('YYYY-MM-DD')}&toDate=${moment(end).utc().format('YYYY-MM-DD')}&revLossSource=${revLossSource}`;
-        fetch(`/v1/incidents/impulse?${queryString}`)
+        fetch(`https://opxhub-ui.us-east-1.prod.expedia.com/v1/incidents/impulse?${queryString}`)
             .then(checkResponse)
             .then((incidents) => {
                 const annotationData = incidents.map((item) => ({
@@ -106,7 +124,25 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             });
     };
 
-    const fetchCall = (start, end) => fetch(`/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`)
+    const fetchAnomalies = (start = startDateTime, end = endDateTime) => {
+        const queryString = `start_time=${moment(start).utc().format('YYYY-MM-DDTHH:mm:ss')}Z&end_time=${moment(end).utc().format('YYYY-MM-DDTHH:mm:ss')}Z`;
+        fetch(`http://impulse-data-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black/v1/impulse/anomalies/grouped?${queryString}`)
+            .then(checkResponse)
+            .then((anomalies) => {
+                const anomalyData = anomalies.map((item) => ({
+                    ...item,
+                    time: moment.utc(item.timestamp).valueOf(),
+                    category: getCategory(item)
+                }));
+                setAnomalyAnnotations(anomalyData);
+                setAnomaliesMulti(anomalyMultiOptions);
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    };
+
+    const fetchCall = (start, end) => fetch(`https://opxhub-ui.us-east-1.prod.expedia.com/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`)
         .then(checkResponse)
         .then((respJson) => {
             const chartData = respJson.map((item) => {
@@ -152,6 +188,8 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             fetchIncidents();
         } else if (type === 'health') {
             fetchHealth();
+        } else if (type === 'anomaly') {
+            fetchAnomalies();
         }
     }, timeInterval);
 
@@ -174,6 +212,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
         if ((moment(endDateTime).diff(moment(startDateTime), 'days') === 3) && (moment().diff(moment(endDateTime), 'days') === 0)) {
             intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
             intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
+            intervalForAnomalies = setIntervalForRealTimeData(anomalyTimeInterval, 'anomaly');
         }
     };
     useEffect(() => {
@@ -185,9 +224,11 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             getBrandsFilterData();
             fetchIncidents();
             fetchHealth();
+            fetchAnomalies();
             intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
             intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
             intervalForHealth = setIntervalForRealTimeData(healthTimeInterval, 'health');
+            intervalForAnomalies = setIntervalForRealTimeData(anomalyTimeInterval, 'anomaly');
         }
         return () => {
             clearInterval(intervalForHealth);
@@ -205,11 +246,13 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 getBrandsFilterData();
                 checkDefaultRange();
                 fetchHealth();
+                fetchAnomalies();
             }
         }
         return () => {
             clearInterval(intervalForCharts);
             clearInterval(intervalForAnnotations);
+            clearInterval(intervalForAnomalies);
         };
     }, [globalBrandName]);
 
@@ -221,11 +264,13 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             getBrandsFilterData();
             checkDefaultRange();
             fetchHealth();
+            fetchAnomalies();
         }
         return () => {
             setIsApplyClicked(false);
             clearInterval(intervalForCharts);
             clearInterval(intervalForAnnotations);
+            clearInterval(intervalForAnomalies);
         };
     }, [isApplyClicked, startDateTime, endDateTime]);
 
@@ -234,9 +279,11 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             if (!chartSliced && isAutoRefresh && (moment(endDateTime).diff(moment(startDateTime), 'days') === 3) && (moment().diff(moment(endDateTime), 'days') === 0)) {
                 intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
                 intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
+                intervalForAnomalies = setIntervalForRealTimeData(anomalyTimeInterval, 'anomaly');
                 getData(startTime(), endTime());
                 fetchIncidents(startTime(), endTime());
                 fetchHealth();
+                fetchAnomalies(startTime(), endTime());
             }
         } else {
             initialMount = true;
@@ -244,6 +291,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
         return () => {
             clearInterval(intervalForCharts);
             clearInterval(intervalForAnnotations);
+            clearInterval(intervalForAnomalies);
         };
     }, [isAutoRefresh, startDateTime, endDateTime]);
 
@@ -263,6 +311,8 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
         brandsFilterData,
         annotations,
         isLatencyHealthy,
-        sourceLatency
+        sourceLatency,
+        anomaliesMulti,
+        anomalyAnnotations
     ];
 };

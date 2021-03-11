@@ -2,7 +2,10 @@ import {
     ALL_BRAND_GROUP,
     EGENCIA_BRAND,
     SUPPRESSED_BRANDS,
-    SUPPRESSED_LOBS
+    SUPPRESSED_LOBS,
+    ANOMALY_DETECTED_COLOR,
+    ANOMALY_RECOVERED_COLOR,
+    UPSTREAM_UNHEALTHY_COLOR
 } from '../../constants';
 import moment from 'moment';
 
@@ -37,6 +40,22 @@ export const getRevLoss = (incident) => {
         return 'NA';
     }
     return [].concat(...incident.estimatedImpact.map((impacts) => impacts.lobs.map((losses) => losses.revenueLoss !== 'NA' ? parseFloat(losses.revenueLoss) : 'NA'))).reduce((a, b) => a + b, 0);
+};
+
+export const getCategory = (anomaly) => {
+    if (anomaly.state === 'IMPULSE_ALERT_DETECTED') {
+        return anomaly.isLatencyHealthy ? 'Anomaly Detected' : 'Upstream Unhealthy';
+    }
+    return 'Anomaly Recovered';
+};
+
+export const getColor = (anomaly) => {
+    if (anomaly.category === 'Anomaly Detected') {
+        return ANOMALY_DETECTED_COLOR;
+    } else if (anomaly.category === 'Anomaly Recovered') {
+        return ANOMALY_RECOVERED_COLOR;
+    }
+    return UPSTREAM_UNHEALTHY_COLOR;
 };
 
 export const getQueryString = (start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti) => {

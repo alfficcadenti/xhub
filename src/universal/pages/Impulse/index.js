@@ -12,10 +12,11 @@ import {Divider} from '@homeaway/react-collapse';
 import {SVGIcon} from '@homeaway/react-svg';
 import {FILTER__16} from '@homeaway/svg-defs';
 import './styles.less';
-import {ALL_LOB, ALL_POS, ALL_BRANDS, ALL_DEVICES, ALL_INCIDENTS} from '../../constants';
+import {ALL_LOB, ALL_POS, ALL_BRANDS, ALL_DEVICES, ALL_INCIDENTS, ALL_ANOMALIES} from '../../constants';
 import {getFilters, getFiltersForMultiKeys, startTime, endTime} from './impulseHandler';
 import {Checkbox, Switch} from '@homeaway/react-form-components';
 import {IncidentDetails} from './tabs/BookingTrends';
+import AnomalyDetails from './tabs/BookingTrends/sections/AnomalyTable/AnomalyDetails';
 
 const startDateDefaultValue = startTime;
 const endDateDefaultValue = endTime;
@@ -63,6 +64,10 @@ const Impulse = (props) => {
     const [isAutoRefresh, setAutoRefresh] = useState(true);
     const [daysDifference, setDaysDifference] = useState(moment(endDateTime).diff(moment(startDateTime), 'days'));
     const [tableData, setTableData] = useState([]);
+    const [anomaliesData, setAnomaliesData] = useState([]);
+    const [enableAnomalies, setEnableAnomalies] = useState(true);
+    const [selectedAnomaliesMulti, setSelectedAnomaliesMulti] = useState([]);
+    const [anomalyTableData, setAnomalyTableData] = useState([]);
     useQueryParamChange(newBrand, props.onBrandChange);
     useSelectedBrand(newBrand, props.onBrandChange, props.prevSelectedBrand);
     const [isLoading,
@@ -80,7 +85,9 @@ const Impulse = (props) => {
         brandsFilterData,
         annotations,
         isLatencyHealthy,
-        sourceLatency] = useFetchBlipData(
+        sourceLatency,
+        anomaliesMulti,
+        anomalies] = useFetchBlipData(
         isApplyClicked,
         setIsApplyClicked,
         startDateTime,
@@ -123,6 +130,16 @@ const Impulse = (props) => {
             setAnnotationsMulti(annotations);
         }
     };
+
+    const filterAnomalies = (newValuesOnChange) => {
+        if (typeof newValuesOnChange !== 'undefined' && newValuesOnChange !== null && newValuesOnChange.length > 0) {
+            const filteredAnomalies = anomalies.filter((anomaly) => newValuesOnChange.includes(anomaly.category));
+            setAnomaliesData(filteredAnomalies);
+        } else {
+            setAnomaliesData(anomalies);
+        }
+    };
+
     const filterAnnotationsOnBrand = () => {
         if (selectedBrandMulti.length > 0) {
             filteredAnnotationsOnBrand = annotations.filter((annotation) => {
@@ -164,6 +181,9 @@ const Impulse = (props) => {
         } else if (handler === 'incidentCategory') {
             filterAnnotations(newValuesOnChange);
             setSelectedIncidentMulti(newValuesOnChange);
+        } else if (handler === 'anomaliesCategory') {
+            filterAnomalies(newValuesOnChange);
+            setSelectedAnomaliesMulti(newValuesOnChange);
         }
     };
     useEffect(() => {
@@ -171,7 +191,10 @@ const Impulse = (props) => {
 
         setAnnotationsMulti(annotations);
         filterAnnotationsOnBrand();
-    }, [res, annotations]);
+
+        setAnomaliesData(anomalies);
+        filterAnomalies(selectedAnomaliesMulti);
+    }, [res, annotations, anomalies]);
     const customStyles = {
         control: (base) => ({
             ...base,
@@ -197,6 +220,11 @@ const Impulse = (props) => {
             setAnnotationsMulti(annotations);
         }
     };
+    const handleEnableAnomalyChange = () => {
+        setEnableAnomalies(!enableAnomalies);
+        setSelectedAnomaliesMulti([]);
+        setAnomaliesData(anomalies);
+    };
     const renderTabs = () => {
         switch (activeIndex) {
             case 0:
@@ -208,6 +236,8 @@ const Impulse = (props) => {
                     setDaysDifference={setDaysDifference}
                     daysDifference={daysDifference}
                     setTableData={setTableData}
+                    anomalies={enableAnomalies ? anomaliesData : []}
+                    setAnomalyTableData={setAnomalyTableData}
                 />);
             default:
                 return (<BookingTrends
@@ -314,6 +344,17 @@ const Impulse = (props) => {
                     <div className="filter-option" onClick={() => setShowMoreFilters(false)}>
                         {enableIncidents ? renderMultiSelectFilters(selectedIncidentMulti, incidentMulti, 'incidentCategory', ALL_INCIDENTS, filterSelectionClass) : null}
                     </div>
+                    <Checkbox
+                        name="Anomalies-сheckbox"
+                        label="Booking Impacting Anomalies"
+                        checked={enableAnomalies}
+                        onChange={handleEnableAnomalyChange}
+                        size="sm"
+                        className="incidents-сheckbox"
+                    />
+                    <div className="filter-option" onClick={() => setShowMoreFilters(false)}>
+                        {enableAnomalies ? renderMultiSelectFilters(selectedAnomaliesMulti, anomaliesMulti, 'anomaliesCategory', ALL_ANOMALIES, filterSelectionClass) : null}
+                    </div>
                 </div>
             </div>
             {renderMoreFilters()}
@@ -327,6 +368,7 @@ const Impulse = (props) => {
                     <div className="impulse-bookings-container">
                         {renderTabs()}
                         { (tableData.length !== 0) && <IncidentDetails data={tableData} setTableData={setTableData}/> }
+                        { (anomalyTableData.length !== 0) && <AnomalyDetails data={anomalyTableData} setAnomalyTableData={setAnomalyTableData}/>}
                     </div>
                 </div>
             </LoadingContainer>
