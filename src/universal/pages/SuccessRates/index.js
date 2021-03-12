@@ -146,7 +146,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     return;
                 }
 
-                const successRatesLOBs = LOB_LIST.filter(({value}) => ['H', 'C'].includes(value));
+                const successRatesLOBs = LOB_LIST.filter(({value}) => ['H', 'C', 'F'].includes(value));
                 const widgetObjects = makeSuccessRatesObjects(fetchedSuccessRates, start, end, pageBrand);
                 const widgetLOBObjects = makeSuccessRatesLOBObjects(fetchedSuccessRates, start, end, pageBrand, brand, successRatesLOBs);
                 setWidgets(widgetObjects);
@@ -302,7 +302,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                                 isMulti
                                 classNamePrefix="lob-select"
                                 className="lob-select-container"
-                                options={LOB_LIST.filter(({value}) => ['H', 'C'].includes(value))}
+                                options={LOB_LIST.filter(({value}) => ['H', 'C', 'F'].includes(value))}
                                 onChange={handleLoBChange}
                                 placeholder={getLobPlaceholder(isLoading, lobWidgets.length)}
                                 isDisabled={!lobWidgets.length}
