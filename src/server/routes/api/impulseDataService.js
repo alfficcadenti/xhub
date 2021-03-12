@@ -19,3 +19,11 @@ module.exports.impulseAnomalies = {
     config: getConfig('impulse-anomalies-get'),
     handler: getHandler(Object.assign(getHandlerParams('impulseAnomalies')))
 };
+
+module.exports.impulseAnomaliesGrouped = {
+    method: 'GET',
+    path: '/v1/impulse/anomalies/grouped',
+    config: getConfig('impulse-anomalies-grouped-get'),
+    handler: getHandler(Object.assign(getHandlerParams('impulseAnomaliesGrouped')))
+};
+

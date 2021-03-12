@@ -620,6 +620,11 @@
               "path": "/v1/impulse/anomalies",
               "method": "GET",
               "operation": "GET_impulse_anomalies_api_v1"
+            },
+            "impulseAnomaliesGrouped": {
+              "path": "/v1/impulse/anomalies/grouped",
+              "method": "GET",
+              "operation": "GET_impulse_anomalies_grouped_api_v1"
             }
           }
         },
@@ -636,6 +641,11 @@
               "path": "/v1/impulse/anomalies",
               "method": "GET",
               "operation": "GET_impulse_anomalies_api_v1"
+            },
+            "impulseAnomaliesGrouped": {
+              "path": "/v1/impulse/anomalies/grouped",
+              "method": "GET",
+              "operation": "GET_impulse_anomalies_grouped_api_v1"
             }
           }
         }
