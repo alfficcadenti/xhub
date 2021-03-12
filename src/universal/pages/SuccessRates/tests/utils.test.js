@@ -1,7 +1,6 @@
 import {expect} from 'chai';
 import moment from 'moment';
-import {EXPEDIA_BRAND} from '../../../constants';
-import {SUCCESS_RATES_PAGES_LIST} from '../constants';
+import {EXPEDIA_BRAND, SUCCESS_RATES_PAGES_LIST} from '../../../constants';
 import {
     shouldShowTooltip,
     successRatesRealTimeObject,

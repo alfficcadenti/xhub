@@ -14,7 +14,8 @@ import {
     HOTELS_COM_BRAND,
     LOB_LIST,
     VRBO_BRAND,
-    OPXHUB_SUPPORT_CHANNEL
+    OPXHUB_SUPPORT_CHANNEL,
+    SUCCESS_RATES_PAGES_LIST
 } from '../../constants';
 import {
     checkResponse,
@@ -25,7 +26,7 @@ import {
     getLobPlaceholder
 } from '../utils';
 import HelpText from '../../components/HelpText/HelpText';
-import {SUCCESS_RATES_PAGES_LIST, METRIC_NAMES, EPS_PARTNER_TPIDS} from './constants';
+import {METRIC_NAMES, EPS_PARTNER_TPIDS} from './constants';
 import {
     getWidgetXAxisTickGap,
     shouldShowTooltip,
@@ -193,6 +194,17 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     }, [selectedBrand, start, end, selectedEPSPartner]);
 
     useEffect(() => {
+        clearInterval(rttRef.current);
+
+        fetchRealTimeData(selectedBrand);
+        rttRef.current = setInterval(fetchRealTimeData.bind(null, selectedBrand), 60000); // refresh every minute
+
+        return function cleanup() {
+            clearInterval(rttRef.current);
+        };
+    }, [selectedLobs]);
+
+    useEffect(() => {
         if (!selectedLobs.length) {
             setCurrentWidgets(widgets);
         } else {
@@ -326,7 +338,6 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     rttError={rttError}
                     tooltipLabel={'Latest real time success rate. Refreshes every minute.'}
                     label={'Real Time Success Rates'}
-                    showPercentageSign
                 />
             )}
             <LoadingContainer isLoading={isLoading} error={error} className="success-rates-loading-container">
