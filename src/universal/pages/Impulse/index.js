@@ -346,7 +346,7 @@ const Impulse = (props) => {
                     </div>
                     <Checkbox
                         name="Anomalies-сheckbox"
-                        label="Booking Impacting Anomalies"
+                        label="Anomalies"
                         checked={enableAnomalies}
                         onChange={handleEnableAnomalyChange}
                         size="sm"

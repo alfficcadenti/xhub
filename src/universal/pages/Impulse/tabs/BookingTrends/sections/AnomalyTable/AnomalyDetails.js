@@ -27,7 +27,7 @@ const AnomalyDetails = ({data = [], setAnomalyTableData}) => {
 
     return (
         <div className="incident-details-container">
-            <h3 className="page-title">{'Anomaly Details'}</h3>
+            <h5 className="page-title">{'Anomaly Impact'}</h5>
             <div className="table-wrapper">
                 <span className="close-button" onClick={() => setAnomalyTableData([])}>&#10006;</span>
                 <div className="incident-details">
