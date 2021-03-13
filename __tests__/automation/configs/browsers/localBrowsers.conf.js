@@ -1,18 +1,6 @@
-import { getProxyPort } from '../../utils/browsermob_helpers';
-
-const HOST_NAME = process.env.DA_HUB_IP || 'localhost';
 const seleniumServer = require('selenium-server');
 const chromedriver = require('chromedriver');
 const geckodriver = require('geckodriver');
-const NETWORK_LOGGING_ENABLED = process.env.NETWORK_LOGGING_ENABLED === 'true';
-const port = NETWORK_LOGGING_ENABLED ? getProxyPort() : undefined;
-const proxy = NETWORK_LOGGING_ENABLED
-    ? {
-        proxyType: 'manual',
-        httpProxy: `${HOST_NAME}:${port}`,
-        sslProxy: `${HOST_NAME}:${port}`
-    }
-    : undefined;
 
 const localBrowsersConfigs = {
     output_folder: './reports',
@@ -66,7 +54,6 @@ const localBrowsersConfigs = {
                     args: ['--window-size=1920,1080'],
                     w3c: false
                 },
-                proxy: proxy
             }
         },
         chromeGalaxyS5: {
@@ -81,7 +68,6 @@ const localBrowsersConfigs = {
                         deviceName: 'Galaxy S5'
                     }
                 },
-                proxy: proxy
             }
         },
         chromeIphoneX: {
@@ -96,7 +82,6 @@ const localBrowsersConfigs = {
                         deviceName: 'iPhone X'
                     }
                 },
-                proxy: proxy
             }
         },
         chromeIpad: {
@@ -111,7 +96,6 @@ const localBrowsersConfigs = {
                         deviceName: 'iPad'
                     }
                 },
-                proxy: proxy
             }
         },
         safari: {
@@ -192,7 +176,6 @@ const localBrowsersConfigs = {
                     ],
                     w3c: false
                 },
-                proxy: proxy
             }
         },
         dakubeGrid_ChromeIphoneX: {
@@ -226,7 +209,6 @@ const localBrowsersConfigs = {
                     },
                     w3c: false
                 },
-                proxy: proxy
             }
         },
         dakubeGrid_ChromeGalaxyS5: {
@@ -260,7 +242,6 @@ const localBrowsersConfigs = {
                     },
                     w3c: false
                 },
-                proxy: proxy
             }
         },
         dakubeGrid_ChromeIpad: {
@@ -294,7 +275,6 @@ const localBrowsersConfigs = {
                     },
                     w3c: false
                 },
-                proxy: proxy
             }
         }
     }
