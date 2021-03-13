@@ -1,5 +1,6 @@
 module.exports = {
-    url: 'http://localhost:8080/home?selectedBrand=Expedia%20Group',
-    elements: {},
-    commands: []
+    url: 'https://opxhub-ui.us-west-2.test.expedia.com/home?selectedBrand=Expedia%20Group',
+    elements: {
+        body: 'body',
+    },
 };
