@@ -5,13 +5,30 @@ import HelpText from '../HelpText/HelpText';
 import './styles.less';
 
 
-const RealTimeSummaryPanel = ({realTimeTotals, isRttLoading, rttError, tooltipLabel, label, showPercentageSign = false}) => {
-    const renderRealTimeTotal = ([rttLabel, value]) => (
-        <div key={`rtt-${rttLabel}`} className="card real-time-card">
-            <div className="rtt-label">{rttLabel}</div>
-            <div className="rtt-value">{`${value}${showPercentageSign ? '%' : ''}`}</div>
-        </div>
-    );
+const RealTimeSummaryPanel = ({realTimeTotals, isRttLoading, rttError, tooltipLabel, label}) => {
+    const renderRealTimeTotal = ([rttLabel, value]) => {
+        const showPercentageSign = (rttValue) => rttValue !== 'N/A';
+        const renderLOBs = (lobData) => {
+            return lobData.map((lob) => {
+                return (
+                    <div className="rtt-lob-item">{`${lob.label} : ${lob.rate}${showPercentageSign(lob.rate) ? '%' : ''}`}</div>
+                );
+            });
+        };
+
+        return (
+            <div key={`rtt-${rttLabel}`} className="card real-time-card">
+                <div className="rtt-label">{rttLabel}</div>
+                {
+
+                    Array.isArray(value) ?
+                        <div className="rtt-lob-wrapper">{renderLOBs(value)}</div> :
+                        (<div className="rtt-summed-value">{`${value}${showPercentageSign(value) ? '%' : ''}`}</div>)
+                }
+
+            </div>
+        );
+    };
 
     return (
         <div className="summary-container">

@@ -1,7 +1,6 @@
 import {expect} from 'chai';
 import moment from 'moment';
-import {EXPEDIA_BRAND} from '../../../constants';
-import {SUCCESS_RATES_PAGES_LIST} from '../constants';
+import {EXPEDIA_BRAND, SUCCESS_RATES_PAGES_LIST} from '../../../constants';
 import {
     shouldShowTooltip,
     successRatesRealTimeObject,
@@ -31,12 +30,12 @@ describe('successRatesRealTimeObject()', () => {
     });
 
     it('render object with LoB selected real time success rate from fetched data', () => {
-        const expectedResult = {'Checkout (CKO) To Checkout Confirmation Page': '79.25', 'Home To Search Page (SERP)': '77.92', 'Property (PDP) To Checkout Page (CKO)': '69.25', 'Search (SERP) To Property Page (PDP)': '59.25'};
+        const expectedResult =  {"Checkout (CKO) To Checkout Confirmation Page": [{"label": "Hotels", "rate": "79.25"}], "Home To Search Page (SERP)": "77.92", "Property (PDP) To Checkout Page (CKO)": [{"label": "Hotels", "rate": "69.25"}], "Search (SERP) To Property Page (PDP)": [{"label": "Hotels", "rate": "59.25"}]};
         expect(successRatesRealTimeObject(successRateRealTimeMock, [{value: 'H', label: 'Hotels'}], 'Expedia')).to.eql(expectedResult);
     });
 
     it('render object with brand values if multiple LoB are selected', () => {
-        const expectedResult = {'Checkout (CKO) To Checkout Confirmation Page': '78.92', 'Home To Search Page (SERP)': '77.92', 'Property (PDP) To Checkout Page (CKO)': '75.92', 'Search (SERP) To Property Page (PDP)': '76.92'};
+        const expectedResult =  {"Checkout (CKO) To Checkout Confirmation Page": [{"label": "Cars", "rate": "52.73"}, {"label": "Hotels", "rate": "79.25"}], "Home To Search Page (SERP)": "77.92", "Property (PDP) To Checkout Page (CKO)": [{"label": "Cars", "rate": "42.73"}, {"label": "Hotels", "rate": "69.25"}], "Search (SERP) To Property Page (PDP)": [{"label": "Cars", "rate": "32.73"}, {"label": "Hotels", "rate": "59.25"}]};
         expect(successRatesRealTimeObject(successRateRealTimeMock, [{value: 'H', label: 'Hotels'}, {value: 'C', label: 'Cars'}], 'Expedia')).to.eql(expectedResult);
     });
 });
