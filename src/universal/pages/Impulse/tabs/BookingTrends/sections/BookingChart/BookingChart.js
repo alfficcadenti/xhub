@@ -14,7 +14,8 @@ import {
 import './styles.less';
 import moment from 'moment';
 import ReferenceLabel from '../../../../../../components/ReferenceLabel';
-import {startTime, endTime} from '../../../../impulseHandler';
+import {startTime, endTime, getColor} from '../../../../impulseHandler';
+import AnomalyLabel from './AnomalyLabel';
 
 const BOOKING_CHART_COLOR = '#336BFF';
 const PREDICTION_CHART_COLOR = '#c9405b';
@@ -54,7 +55,8 @@ const CustomTooltip = ({active, payload}) => {
     }
     return null;
 };
-const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSliced, annotations, daysDifference, setDaysDifference, setTableData}) => {
+
+const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSliced, annotations, daysDifference, setDaysDifference, setTableData, anomalies, setAnomalyTableData}) => {
     let [refAreaLeft, setRefAreaLeft] = useState('');
     let [refAreaRight, setRefAreaRight] = useState('');
     let [newData, setNewData] = useState(data);
@@ -149,6 +151,19 @@ const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSlic
                                 x={annotation.incidentTime}
                                 label={<ReferenceLabel annotation={annotation} isImpulse setTableData={setTableData}/>}
                                 stroke={'red'}
+                                strokeDasharray="3 3"
+                                isFront
+                            />
+                        ))
+                    }
+                    {
+                        anomalies && anomalies.map((anomaly) => (
+                            <ReferenceLine
+                                key={Math.random()}
+                                yAxisId={1}
+                                x={anomaly.time}
+                                label={<AnomalyLabel anomaly={anomaly} setAnomalyTableData={setAnomalyTableData} category={anomaly.category}/>}
+                                stroke={getColor(anomaly)}
                                 strokeDasharray="3 3"
                                 isFront
                             />

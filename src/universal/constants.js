@@ -15,6 +15,7 @@ export const ALL_BRANDS = 'All Brands';
 export const ALL_POS = 'All POS';
 export const ALL_DEVICES = 'All Devices';
 export const ALL_INCIDENTS = 'All Incidents';
+export const ALL_ANOMALIES = 'All Anomalies';
 export const ALL_BRAND_GROUP = 'All Brand Group';
 export const ALL_TYPES_OPTION = 'All Types';
 export const ALL_ORGS_OPTION = 'All Owning Orgs';
@@ -34,6 +35,9 @@ export const INCIDENT_ANNOTATION_CATEGORY = 'incident';
 export const AB_TESTS_ANNOTATION_CATEGORY = 'abTests';
 export const SUPPRESSED_BRANDS = ['Egencia', 'Hotwire', 'Vrbo'];
 export const SUPPRESSED_LOBS = ['Rail'];
+export const ANOMALY_DETECTED_COLOR = '#CD5C5C';
+export const ANOMALY_RECOVERED_COLOR = '#3CB371';
+export const UPSTREAM_UNHEALTHY_COLOR = '#FFA500';
 export const EPS_PARTNER_SITENAMES = [
     {label: 'axtraweb.poweredbygps.com', value: 'axtraweb.poweredbygps.com'},
     {label: 'barcelo.poweredbygps.co.uk', value: 'barcelo.poweredbygps.co.uk'},
