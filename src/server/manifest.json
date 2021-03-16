@@ -625,6 +625,26 @@
               "path": "/v1/impulse/anomalies/grouped",
               "method": "GET",
               "operation": "GET_impulse_anomalies_grouped_api_v1"
+            },
+            "alertSubscription": {
+              "path": "/v1/alert/subscription",
+              "method": "POST",
+              "operation": "POST_alert_subscription_api_v1"
+            },
+            "alertSubscriptionUpdate": {
+              "path": "/v1/alert/subscription/update",
+              "method": "PUT",
+              "operation": "PUT_alert_subscription_update_api_v1"
+            },
+            "alertSubscriptionGet": {
+              "path": "/v1/alert/subscription",
+              "method": "GET",
+              "operation": "GET_alert_subscription_api_v1"
+            },
+            "alertSubscriptionsGet": {
+              "path": "/v1/alert/subscriptions",
+              "method": "GET",
+              "operation": "GET_alert_subscriptions_api_v1"
             }
           }
         },
@@ -646,6 +666,26 @@
               "path": "/v1/impulse/anomalies/grouped",
               "method": "GET",
               "operation": "GET_impulse_anomalies_grouped_api_v1"
+            },
+            "alertSubscription": {
+              "path": "/v1/alert/subscription",
+              "method": "POST",
+              "operation": "POST_alert_subscription_api_v1"
+            },
+            "alertSubscriptionUpdate": {
+              "path": "/v1/alert/subscription/update",
+              "method": "PUT",
+              "operation": "PUT_alert_subscription_update_api_v1"
+            },
+            "alertSubscriptionGet": {
+              "path": "/v1/alert/subscription",
+              "method": "GET",
+              "operation": "GET_alert_subscription_api_v1"
+            },
+            "alertSubscriptionsGet": {
+              "path": "/v1/alert/subscriptions",
+              "method": "GET",
+              "operation": "GET_alert_subscriptions_api_v1"
             }
           }
         }

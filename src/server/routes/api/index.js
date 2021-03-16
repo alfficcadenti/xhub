@@ -43,7 +43,11 @@ const apiRoutes = [
     // impulse data service
     impulseHealth,
     impulseAnomalies,
-    impulseAnomaliesGrouped
+    impulseAnomaliesGrouped,
+    alertSubscription,
+    alertSubscriptionUpdate,
+    alertSubscriptionGet,
+    alertSubscriptionsGet
 ];
 
 export default apiRoutes;
