@@ -18,5 +18,8 @@
 * */
 
 export const dropdownAndLinks = {
-    'Availability & Trends-dropdown': 'availabilityTrendsDropdown',
+    'Availability & Trends Button': 'availabilityTrendsButton',
+    'Platform Health & Resiliency Button': 'platformHealthResiliencyButton',
+    'Outage Report Button': 'outageReportButton',
+    'Brands Filter Button': 'brandsFilterButton'
 };

@@ -1,6 +1,8 @@
 export const selectedBrand = {
-    ExpediaGroup: 'Expedia%20Group',
-    Expedia: 'Expedia',
     Egencia: 'Egencia',
-    HcomRetail: 'Hotels.com'
+    Expedia: 'Expedia',
+    ExpediaGroup: 'Expedia%20Group',
+    ExpediaPartnerSolutions: 'Expedia%20Partner%20Solutions',
+    Hotelscom: 'Hotels.com',
+    Vrbo: 'Vrbo'
 };
