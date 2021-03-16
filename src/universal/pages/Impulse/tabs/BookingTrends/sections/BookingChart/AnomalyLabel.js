@@ -2,7 +2,6 @@ import React from 'react';
 import moment from 'moment';
 
 const AnomalyLabel = ({viewBox: {x}, anomaly, setAnomalyTableData, category}) => {
-
     const getAnomalyType = () => {
         if (category === 'Anomaly Detected') {
             return 'detected';
