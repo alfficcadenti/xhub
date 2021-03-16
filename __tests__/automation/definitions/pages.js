@@ -26,7 +26,7 @@ Then(/^user go ahead and clicks on the (.*)/, async element => {
 });
 
 Then(/^wait for data load/, async () => {
-    await waitForElement(pageElements, '@loader', 'not visible')
+    await waitForElement(pageElements, '@loader', 'not present')
 });
 
 Then(/^the current page title contain (.*)/, async title => {
