@@ -284,7 +284,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
     return (
         <div className="success-rates-container">
-            <h1>
+            <h1 className="page-title">
                 {'Success Rates'}
                 {!isLoBAvailable && <HelpText text="Only for LOB Hotels" placement="top" />}
             </h1>
