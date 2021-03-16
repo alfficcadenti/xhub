@@ -3,7 +3,7 @@ import { TIMEOUT_NEW_PAGE } from '../utils/consts';
 
 export const navigateToHomepage = async (browser, brand) => {
     const brandName = selectedBrand[brand]
-    const completeUrl = `http://localhost:8080/home?selectedBrand=${brandName}`;
+    const completeUrl = `https://opxhub-ui.us-west-2.test.expedia.com/home?selectedBrand=${brandName}`;
     console.info(`[info] Navigate to: ${completeUrl}`);
     await browser.navigate(completeUrl);
 };
