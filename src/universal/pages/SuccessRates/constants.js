@@ -4,3 +4,5 @@ export const EPS_PARTNER_TPIDS = [
     {label: 'RBC', value: '70205'},
     {label: 'Chase', value: '70501'}
 ];
+
+export const AVAILABLE_LOBS = ['H', 'C', 'F'];
