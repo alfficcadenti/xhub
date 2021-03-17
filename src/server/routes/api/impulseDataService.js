@@ -27,30 +27,3 @@ module.exports.impulseAnomaliesGrouped = {
     handler: getHandler(Object.assign(getHandlerParams('impulseAnomaliesGrouped')))
 };
 
-module.exports.alertSubscription = {
-    method: 'POST',
-    path: '/v1/alert/subscription',
-    config: getConfig('alert-subscription-post'),
-    handler: getHandler(Object.assign(getHandlerParams('alertSubscription')))
-};
-
-module.exports.alertSubscriptionUpdate = {
-    method: 'PUT',
-    path: '/v1/alert/subscription/update',
-    config: getConfig('alert-subscription-update-put'),
-    handler: getHandler(Object.assign(getHandlerParams('alertSubscriptionUpdate')))
-};
-
-module.exports.alertSubscriptionGet = {
-    method: 'GET',
-    path: '/v1/alert/subscription/{param*}',
-    config: getConfig('alert-subscription-get'),
-    handler: getHandler(Object.assign(getHandlerParams('alertSubscriptionGet')))
-};
-
-module.exports.alertSubscriptionsGet = {
-    method: 'GET',
-    path: '/v1/alert/subscriptions',
-    config: getConfig('alert-subscriptions-get'),
-    handler: getHandler(Object.assign(getHandlerParams('alertSubscriptionsGet')))
-};
