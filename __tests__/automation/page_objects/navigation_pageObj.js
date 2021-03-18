@@ -66,6 +66,9 @@ module.exports = {
         brandsFilterDropdown: {
             selector: '#brand-selector--container'
         },
+        brandsFilterLink1: {
+            selector: '#brand-selector--container li:nth-child(1) a'
+        },
         brandsFilterLink2: {
             selector: '#brand-selector--container li:nth-child(2) a'
         },
