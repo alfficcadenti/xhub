@@ -132,7 +132,6 @@ export const buildSuccessRateApiQueryString = ({start, end, brand, EPSPartner = 
     return `${baseUrl}?brand=${brand}&timeInterval=${interval}${dateQuery}`;
 };
 
-
 export const getAllAvailableLOBs = (availableLOBs = []) => {
     return LOB_LIST.filter(({value}) => availableLOBs.includes(value));
 };
