@@ -38,6 +38,7 @@ export const SUPPRESSED_LOBS = ['Rail'];
 export const ANOMALY_DETECTED_COLOR = '#CD5C5C';
 export const ANOMALY_RECOVERED_COLOR = '#3CB371';
 export const UPSTREAM_UNHEALTHY_COLOR = '#FFA500';
+export const INCIDENT_TOOLTIP_COLOR = '#ff8281';
 export const EPS_PARTNER_SITENAMES = [
     {label: 'axtraweb.poweredbygps.com', value: 'axtraweb.poweredbygps.com'},
     {label: 'barcelo.poweredbygps.co.uk', value: 'barcelo.poweredbygps.co.uk'},

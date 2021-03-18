@@ -14,8 +14,8 @@ const AnomalyLabel = ({viewBox: {x}, anomaly, setAnomalyTableData, category}) =>
     return (
         <foreignObject
             className="foreign-object"
-            x={x - 5.5}
-            y={-5}
+            x={x - 4}
+            y={-15}
             width={10}
             height={10}
         >
