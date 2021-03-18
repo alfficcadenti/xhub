@@ -238,7 +238,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
     return (
         <div className="funnel-views-container">
-            <h1>{'Traveler Page Views'}{!isLoBAvailable && <HelpText text="Only for LOB Hotels" placement="top" />}</h1>
+            <h1 className="page-title">{'Traveler Page Views'}{!isLoBAvailable && <HelpText text="Only for LOB Hotels" placement="top" />}</h1>
             <div className="filters-wrapper">
                 {
                     selectedBrand === EXPEDIA_PARTNER_SERVICES_BRAND &&

@@ -14,7 +14,8 @@ import {
     HOTELS_COM_BRAND,
     LOB_LIST,
     VRBO_BRAND,
-    OPXHUB_SUPPORT_CHANNEL
+    OPXHUB_SUPPORT_CHANNEL,
+    SUCCESS_RATES_PAGES_LIST
 } from '../../constants';
 import {
     checkResponse,
@@ -25,7 +26,7 @@ import {
     getLobPlaceholder
 } from '../utils';
 import HelpText from '../../components/HelpText/HelpText';
-import {SUCCESS_RATES_PAGES_LIST, METRIC_NAMES, EPS_PARTNER_TPIDS} from './constants';
+import {METRIC_NAMES, EPS_PARTNER_TPIDS} from './constants';
 import {
     getWidgetXAxisTickGap,
     shouldShowTooltip,
@@ -107,18 +108,19 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     );
 
     const rttRef = useRef();
+    const didMount = useRef(false);
 
-    const fetchRealTimeData = (brand) => {
+    const fetchRealTimeData = () => {
         setIsRttLoading(true);
         setRttError('');
         const rttStart = moment().utc().subtract(11, 'minute').startOf('minute').format();
         const rttEnd = moment().utc().subtract(1, 'minute').startOf('minute').format();
-        const {funnelBrand} = getBrand(brand, 'label');
+        const {funnelBrand} = getBrand(selectedBrand, 'label');
         const endpoint = buildSuccessRateApiQueryString({rttStart, rttEnd, brand: funnelBrand, EPSPartner: selectedEPSPartner, interval: 1});
 
         Promise.all(METRIC_NAMES.map((metricName) => fetch(`${endpoint}&metricName=${metricName}`)))
             .then((responses) => Promise.all(responses.map(checkResponse)))
-            .then((fetchedSuccessRates) => successRatesRealTimeObject(fetchedSuccessRates, selectedLobs, brand))
+            .then((fetchedSuccessRates) => successRatesRealTimeObject(fetchedSuccessRates, selectedLobs, selectedBrand))
             .then((realTimeData) => setRealTimeTotals(realTimeData))
             .catch((err) => {
                 let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
@@ -165,6 +167,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     useEffect(() => {
         if ([EG_BRAND, EGENCIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND].includes(selectedBrand)) {
             setIsLoBAvailable(false);
+            setSelectedLobs([]);
         } else {
             setIsLoBAvailable(true);
         }
@@ -178,8 +181,8 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             setIsSupportedBrand(true);
             setError(null);
             setIsFormDisabled(false);
-            fetchRealTimeData(selectedBrand);
-            rttRef.current = setInterval(fetchRealTimeData.bind(null, selectedBrand), 60000); // refresh every minute
+            fetchRealTimeData();
+            rttRef.current = setInterval(fetchRealTimeData, 60000); // refresh every minute
 
             if (!isZoomedIn) { // we need this flag right after zoomed in so that we don't re-fetch because it filters on existing data
                 fetchSuccessRatesData(selectedBrand);
@@ -191,6 +194,21 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             clearInterval(rttRef.current);
         };
     }, [selectedBrand, start, end, selectedEPSPartner]);
+
+    useEffect(() => {
+        if (didMount.current) {
+            clearInterval(rttRef.current);
+
+            fetchRealTimeData();
+            rttRef.current = setInterval(fetchRealTimeData, 60000); // refresh every minute
+        } else {
+            didMount.current = true;
+        }
+
+        return function cleanup() {
+            clearInterval(rttRef.current);
+        };
+    }, [selectedLobs]);
 
     useEffect(() => {
         if (!selectedLobs.length) {
@@ -266,7 +284,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
     return (
         <div className="success-rates-container">
-            <h1>
+            <h1 className="page-title">
                 {'Success Rates'}
                 {!isLoBAvailable && <HelpText text="Only for LOB Hotels" placement="top" />}
             </h1>
@@ -326,7 +344,6 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     rttError={rttError}
                     tooltipLabel={'Latest real time success rate. Refreshes every minute.'}
                     label={'Real Time Success Rates'}
-                    showPercentageSign
                 />
             )}
             <LoadingContainer isLoading={isLoading} error={error} className="success-rates-loading-container">
