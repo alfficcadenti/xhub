@@ -1,6 +1,8 @@
 import moment from 'moment';
 import {EXPEDIA_BRAND, SUCCESS_RATES_PAGES_LIST, LOB_LIST} from '../../constants';
-import {mapBrandNames} from '../utils';
+import {AVAILABLE_LOBS} from './constants';
+import {mapBrandNames, validDateRange} from '../utils';
+import qs from 'query-string';
 
 export const getNowDate = () => moment().endOf('minute').toDate();
 
@@ -122,8 +124,34 @@ export const buildSuccessRateApiQueryString = ({start, end, brand, EPSPartner = 
     const dateQuery = start && end
         ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
         : '';
+
     if (brand === 'eps') {
         return `${baseUrl}/eps?timeInterval=${interval}${dateQuery}&tpid=${EPSPartner}`;
     }
+
     return `${baseUrl}?brand=${brand}&timeInterval=${interval}${dateQuery}`;
+};
+
+export const getAllAvailableLOBs = (availableLOBs = []) => {
+    return LOB_LIST.filter(({value}) => availableLOBs.includes(value));
+};
+
+export const getQueryParams = (search) => {
+    const {from, to, lobs} = qs.parse(search, {decoder: (c) => c});
+    const initialLobs = lobs
+        ? lobs.split(',').map((l) => LOB_LIST.find(({value}) => value === l)).filter((l) => l)
+        : getAllAvailableLOBs(AVAILABLE_LOBS);
+
+    return validDateRange(from, to)
+        ? {
+            initialStart: moment(from),
+            initialEnd: moment(to),
+            initialTimeRange: 'Custom',
+            initialLobs
+        } : {
+            initialStart: moment().subtract(6, 'hours').startOf('minute'),
+            initialEnd: moment(),
+            initialTimeRange: 'Last 6 Hours',
+            initialLobs
+        };
 };

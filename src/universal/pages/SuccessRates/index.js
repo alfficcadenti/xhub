@@ -12,7 +12,6 @@ import {
     EGENCIA_BRAND,
     EXPEDIA_PARTNER_SERVICES_BRAND,
     HOTELS_COM_BRAND,
-    LOB_LIST,
     VRBO_BRAND,
     OPXHUB_SUPPORT_CHANNEL,
     SUCCESS_RATES_PAGES_LIST
@@ -22,17 +21,18 @@ import {
     getBrand,
     makeSuccessRatesObjects,
     makeSuccessRatesLOBObjects,
-    getQueryParams,
     getLobPlaceholder
 } from '../utils';
 import HelpText from '../../components/HelpText/HelpText';
-import {METRIC_NAMES, EPS_PARTNER_TPIDS} from './constants';
+import {METRIC_NAMES, EPS_PARTNER_TPIDS, AVAILABLE_LOBS} from './constants';
 import {
     getWidgetXAxisTickGap,
     shouldShowTooltip,
     successRatesRealTimeObject,
     buildSuccessRateApiQueryString,
-    getTimeInterval
+    getTimeInterval,
+    getAllAvailableLOBs,
+    getQueryParams
 } from './utils';
 import './styles.less';
 import Annotations from '../../components/Annotations/Annotations';
@@ -147,7 +147,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     return;
                 }
 
-                const successRatesLOBs = LOB_LIST.filter(({value}) => ['H', 'C', 'F'].includes(value));
+                const successRatesLOBs = getAllAvailableLOBs(AVAILABLE_LOBS);
                 const widgetObjects = makeSuccessRatesObjects(fetchedSuccessRates, start, end, pageBrand);
                 const widgetLOBObjects = makeSuccessRatesLOBObjects(fetchedSuccessRates, start, end, pageBrand, brand, successRatesLOBs);
                 setWidgets(widgetObjects);
@@ -170,8 +170,17 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             setSelectedLobs([]);
         } else {
             setIsLoBAvailable(true);
-        }
 
+            if (didMount.current) {
+                setSelectedLobs(getAllAvailableLOBs(AVAILABLE_LOBS));
+            } else {
+                setSelectedLobs(initialLobs);
+                didMount.current = true;
+            }
+        }
+    }, [selectedBrand]);
+
+    useEffect(() => {
         if ([EG_BRAND, EGENCIA_BRAND].includes(selectedBrand)) {
             setIsSupportedBrand(false);
             setError(`Success rates for ${selectedBrand} is not yet available.
@@ -181,8 +190,6 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             setIsSupportedBrand(true);
             setError(null);
             setIsFormDisabled(false);
-            fetchRealTimeData();
-            rttRef.current = setInterval(fetchRealTimeData, 60000); // refresh every minute
 
             if (!isZoomedIn) { // we need this flag right after zoomed in so that we don't re-fetch because it filters on existing data
                 fetchSuccessRatesData(selectedBrand);
@@ -191,18 +198,13 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
         return function cleanup() {
             setIsZoomedIn(false); // set to false so that it fetch data when changing brands
-            clearInterval(rttRef.current);
         };
     }, [selectedBrand, start, end, selectedEPSPartner]);
 
     useEffect(() => {
-        if (didMount.current) {
-            clearInterval(rttRef.current);
-
+        if (![EG_BRAND, EGENCIA_BRAND].includes(selectedBrand)) {
             fetchRealTimeData();
             rttRef.current = setInterval(fetchRealTimeData, 60000); // refresh every minute
-        } else {
-            didMount.current = true;
         }
 
         return function cleanup() {
@@ -308,7 +310,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                                 isMulti
                                 classNamePrefix="lob-select"
                                 className="lob-select-container"
-                                options={LOB_LIST.filter(({value}) => ['H', 'C', 'F'].includes(value))}
+                                options={getAllAvailableLOBs(AVAILABLE_LOBS)}
                                 onChange={handleLoBChange}
                                 placeholder={getLobPlaceholder(isLoading, lobWidgets.length)}
                                 isDisabled={!lobWidgets.length}
