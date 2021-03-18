@@ -25,8 +25,8 @@ Then(/^user go ahead and clicks on the (.*)/, async element => {
     await clickOnHomePageLink (pages, `@${element}`);
 });
 
-Then(/^wait for data load/, async () => {
-    await waitForElement(pageElements, '@loader', 'not present')
+Then(/^user wait for the data to load/, async () => {
+    await waitForElement(pageElements, '@successRatesWidget', 'visible')
 });
 
 Then(/^the current page title contain (.*)/, async title => {

@@ -8,6 +8,7 @@ Feature: Verify user is able to navigate around Success Rates
     Then user clicks on the Availability & Trends Button
     Then user verify availabilityTrendsDropdown exist
     Then user go ahead and clicks on the <link>
+    Then user wait for the data to load
     Then the current page title contain Success Rates
 
     Examples:
