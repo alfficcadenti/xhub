@@ -1,4 +1,4 @@
-Feature: Verify user is able to navigate around Checkout Success Rates
+Feature: Verify user is able to navigate around Success Rates
 
   @acceptance @desktop
   Scenario Outline: User is able to use the nav bar to navigate
@@ -8,8 +8,10 @@ Feature: Verify user is able to navigate around Checkout Success Rates
     Then user clicks on the Availability & Trends Button
     Then user verify availabilityTrendsDropdown exist
     Then user go ahead and clicks on the <link>
-    Then the current page title contain Reservations
+    Then the current page title contain Success Rates
 
     Examples:
     | brand     | link                    |
-    | Hotelscom | availabilityTrendsLink6 |
+    | Expedia   | availabilityTrendsLink4 |
+    | Hotelscom | availabilityTrendsLink7 |
+    | Vrbo      | availabilityTrendsLink3 |
