@@ -12,7 +12,7 @@ const DEFAULT_PAGE_INFO = {
     title: 'OpxHub',
     team: 'opex',
     owner: 'Ranjith Peddi',
-    slack: 'opex-reo-opxhub',
+    slack: 'opxhub-support',
     email: 'opex-opxhub-team@expediacorp.onmicrosoft.com',
     description: ''
 };
