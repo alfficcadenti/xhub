@@ -15,6 +15,7 @@ import {
     getBrandSites
 } from '../utils';
 import {ALL_ERROR_CODES, TOP_10_ERROR_CODES, TOP_20_ERROR_CODES, CODE_OPTION, CATEGORY_OPTION, SITES, ALL_SITES} from '../constants';
+import {EXPEDIA_PARTNER_SERVICES_BRAND} from '../../../constants';
 
 describe('Fci Utils', () => {
     it('validDateRange - invalid dates', () => {
@@ -46,9 +47,8 @@ describe('Fci Utils', () => {
         const errorCode = '500';
         const site = 'travel.chase.com';
         const urlBrand = 'Expedia';
-        const appBrand = 'Expedia Partner Solutions';
         const intentional = true;
-        const result = getQueryValues(`?from=${start}&to=${end}&lobs=${lob}&errorCode=${errorCode}&siteName=${site}&selectedBrand=${urlBrand}&hideIntentionalCheck=${intentional}`, appBrand);
+        const result = getQueryValues(`?from=${start}&to=${end}&lobs=${lob}&errorCode=${errorCode}&siteName=${site}&selectedBrand=${urlBrand}&hideIntentionalCheck=${intentional}`, EXPEDIA_PARTNER_SERVICES_BRAND);
         expect(result.initialStart.isSame(start, 'day')).to.be.eql(true);
         expect(result.initialEnd.isSame(end, 'day')).to.be.eql(true);
         expect(result.initialTimeRange).to.be.eql('Custom');
@@ -243,8 +243,8 @@ describe('Fci Utils', () => {
     });
 
     it('getBrandSites - returns list of sites per Expedia Partner Solution', () => {
-        const brandSites = getBrandSites('Expedia Partner Solutions');
-        expect(brandSites).to.eql(SITES['Expedia Partner Solutions']);
+        const brandSites = getBrandSites(EXPEDIA_PARTNER_SERVICES_BRAND);
+        expect(brandSites).to.eql(SITES[EXPEDIA_PARTNER_SERVICES_BRAND]);
     });
 
     it('getBrandSites - returns array with travel.chase.com as per API fallback if input is missing or not a brand', () => {
