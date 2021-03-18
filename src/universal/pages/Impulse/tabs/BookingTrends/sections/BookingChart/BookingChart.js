@@ -56,7 +56,7 @@ const LEGEND_TYPE = [
         color: BOOKING_CHART_COLOR,
     },
     {
-        value: '3 Week Avg Count',
+        value: '3 Week Avg Counts',
         type: 'line',
         color: PREDICTION_CHART_COLOR
     }
@@ -65,7 +65,7 @@ const LEGEND_TYPE2 = [
     {
         value: INCIDENT,
         type: 'triangle',
-        color: INCIDENT_TOOLTIP_COLOR
+        color: INCIDENT_TOOLTIP_COLOR,
     },
     {
         value: ANOMALY_DETECTED,

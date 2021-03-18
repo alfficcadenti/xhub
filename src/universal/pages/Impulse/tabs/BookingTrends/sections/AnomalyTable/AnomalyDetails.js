@@ -4,6 +4,7 @@ import {
     ANOMALY_TABLE_COLUMN_HEADERS,
     ANOMALY_TABLE_COLUMNS
 } from './constants';
+import moment from 'moment';
 
 const AnomalyDetails = ({data = [], setAnomalyTableData}) => {
     const getPercentage = (impactObj) => {
@@ -15,7 +16,8 @@ const AnomalyDetails = ({data = [], setAnomalyTableData}) => {
     const formatAnomalyData = () => {
         let finalAnomalyData = data[0].impact.map((impactObj) => ({
             ...impactObj,
-            changePercentage: getPercentage(impactObj)
+            changePercentage: getPercentage(impactObj),
+            timestamp: `${moment(data[0].timestamp).format('YYYY-MM-DD HH:mm')} ${moment().tz(moment.tz.guess()).format('z')}`
         }));
         finalAnomalyData.forEach((anomalyObj) => {
             if (anomalyObj.deviceType === 'null') {
@@ -27,8 +29,8 @@ const AnomalyDetails = ({data = [], setAnomalyTableData}) => {
 
     return (
         <div className="incident-details-container">
-            <h5 className="page-title">{'Anomaly Impact'}</h5>
             <div className="table-wrapper">
+                <strong>{data[0].category}</strong>
                 <span className="close-button" onClick={() => setAnomalyTableData([])}>&#10006;</span>
                 <div className="incident-details">
                     <DataTable
