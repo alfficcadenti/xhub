@@ -13,7 +13,7 @@ const renderHelpRow = (label, value, type) => {
     if (!type) {
         valueComponent = value;
     } else if (type === 'slack') {
-        valueComponent = <a href={`https://expedia.slack.com/messages/${value}`} target="_blank" rel="noopener noreferrer">{'#'}{value}</a>;
+        valueComponent = <a href={'https://expedia.slack.com/archives/C01A9U8GY2G'} target="_blank" rel="noopener noreferrer">{'#'}{value}</a>;
     } else if (type === 'email') {
         valueComponent = <a href={`mailto:${value}`}>{value}</a>;
     }
