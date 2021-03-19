@@ -26,7 +26,7 @@ Then(/^user go ahead and clicks on the (.*)/, async element => {
 });
 
 Then(/^user wait for the data to load/, async () => {
-    await waitForElement(pageElements, '@successRatesWidget', 'visible')
+    await waitForElement(pageElements, '@loader', 'not visible')
 });
 
 Then(/^the current page title contain (.*)/, async title => {

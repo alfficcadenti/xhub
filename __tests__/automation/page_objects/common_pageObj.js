@@ -3,8 +3,8 @@ module.exports = {
         pageTitle: {
             selector: '.page-title'
         },
-        successRatesWidget: {
-            selector: '.success-rates-widget-container'
+        loader: {
+            selector: '.LoadingOverlay'
         }
     }
 };
