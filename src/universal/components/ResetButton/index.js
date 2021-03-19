@@ -1,13 +1,12 @@
 import React from 'react';
 import './styles.less';
-import moment from 'moment';
 
 
-const ResetButton = ({start, end, resetGraphToDefault}) => {
+const ResetButton = ({isDisabled, resetGraphToDefault}) => {
     return (
         <button
             type="button"
-            disabled={moment(end).diff(moment(start), 'hour') === 6}
+            disabled={isDisabled}
             className={'btn btn-default reset-btn'}
             onClick={() => resetGraphToDefault()}
         >
