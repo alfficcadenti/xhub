@@ -140,7 +140,9 @@
 			"name": "nightwatch_UI_testing",
 			"type": "jenkins",
 			"refId": "8",
-			"requisiteStageRefIds": [],
+			"requisiteStageRefIds": [
+				"3"
+			],
 			"failPipeline": false,
 			"continuePipeline": false,
 			"completeOtherBranchesThenFail": true,
