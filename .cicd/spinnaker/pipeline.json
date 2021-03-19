@@ -137,9 +137,23 @@
 			}
 		},
 		{
+			"name": "nightwatch_UI_testing",
+			"type": "jenkins",
+			"refId": "8",
+			"requisiteStageRefIds": [],
+			"failPipeline": false,
+			"continuePipeline": false,
+			"completeOtherBranchesThenFail": true,
+			"master": "primer.builds.tools",
+			"job": "opxhub-nw-test-kube",
+			"parameters": {
+			  "REF": "${trigger.parameters.version}"
+			}
+		  },
+		{
 			"name": "Deploy-To-USE1-Prod",
 			"type": "manualJudgment",
-			"refId": "8",
+			"refId": "9",
 			"requisiteStageRefIds": [
 				"3",
 				"4"
@@ -171,7 +185,7 @@
 		{
 			"name": "Deploy-To-USE1-Prod_execute",
 			"type": "jenkins",
-			"refId": "9",
+			"refId": "10",
 			"requisiteStageRefIds": [
 				"8"
 			],
@@ -189,7 +203,7 @@
 		{
 			"name": "Release-To-USE1-Prod",
 			"type": "jenkins",
-			"refId": "10",
+			"refId": "11",
 			"requisiteStageRefIds": [
 				"9"
 			],
