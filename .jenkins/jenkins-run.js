@@ -37,7 +37,7 @@ runAll('clean')
   .then(() => {
     let deployedVersion;
     let browserVersion;
-    const versionFile = './reports/version.txt';
+    const versionFile = './buildVersion.txt';
     const browserVersionFile = './reports/browserVersion.txt';
     const fs = require('fs');
 
