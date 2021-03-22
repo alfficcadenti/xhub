@@ -1,0 +1,29 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
+  "extends": ["eslint:recommended", "prettier"],
+  "ignorePatterns": ["configs"],
+  "parserOptions": {
+    "ecmaVersion": 2017,
+    "sourceType": "module"
+  },
+  "rules": {
+    "arrow-parens": [2, "as-needed"],
+    "comma-dangle": ["error", "never"],
+    "indent": [
+      "error",
+      4,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "padding-line-between-statements": ["error", { "blankLine": "always", "prev": "*", "next": "return" }],
+    "no-void": ["error"],
+    "no-else-return": ["error"],
+    "quotes": ["error", "single", { "avoidEscape": true }]
+  },
+  "root": true
+}

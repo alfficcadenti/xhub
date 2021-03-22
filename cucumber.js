@@ -141,8 +141,8 @@ console.info('|--------------------------------------------|\n\n');
 
 process.env.breakpoint = arguments.breakpoint;
 process.env.usePWAendPoint = true; //change use appEndpoint? some reference in common-nightwatch as well
-process.env.appName = 'untitled-App'; //fill in the appname
-process.env.appSegment = 'untitled-Segment'; //fill in the segment info
+process.env.appName = 'opxhub-ui'; //fill in the appname
+process.env.appSegment = 'opxhub-Segment'; //fill in the segment info
 process.env.testEndpoint = arguments.environment;
 process.env.isRealDevice = false;
 

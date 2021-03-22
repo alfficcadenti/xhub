@@ -1,18 +1,6 @@
-import { getProxyPort } from '../../utils/browsermob_helpers';
-
-const HOST_NAME = process.env.DA_HUB_IP || 'localhost';
 const seleniumServer = require('selenium-server');
 const chromedriver = require('chromedriver');
 const geckodriver = require('geckodriver');
-const NETWORK_LOGGING_ENABLED = process.env.NETWORK_LOGGING_ENABLED === 'true';
-const port = NETWORK_LOGGING_ENABLED ? getProxyPort() : undefined;
-const proxy = NETWORK_LOGGING_ENABLED
-    ? {
-        proxyType: 'manual',
-        httpProxy: `${HOST_NAME}:${port}`,
-        sslProxy: `${HOST_NAME}:${port}`
-    }
-    : undefined;
 
 const localBrowsersConfigs = {
     output_folder: './reports',
@@ -66,7 +54,6 @@ const localBrowsersConfigs = {
                     args: ['--window-size=1920,1080'],
                     w3c: false
                 },
-                proxy: proxy
             }
         },
         chromeGalaxyS5: {
@@ -81,7 +68,6 @@ const localBrowsersConfigs = {
                         deviceName: 'Galaxy S5'
                     }
                 },
-                proxy: proxy
             }
         },
         chromeIphoneX: {
@@ -96,7 +82,6 @@ const localBrowsersConfigs = {
                         deviceName: 'iPhone X'
                     }
                 },
-                proxy: proxy
             }
         },
         chromeIpad: {
@@ -111,7 +96,6 @@ const localBrowsersConfigs = {
                         deviceName: 'iPad'
                     }
                 },
-                proxy: proxy
             }
         },
         safari: {
@@ -149,37 +133,6 @@ const localBrowsersConfigs = {
                 marionette: true
             }
         },
-        autoscaleGrid_chrome: {
-            selenium_host: process.env.DA_HUB_IP,
-            selenium_port: 4444,
-            selenium: {
-                start_process: false
-            },
-            silent: true,
-            desiredCapabilities: {
-                browserName: 'chrome',
-                acceptInsecureCerts: true,
-                loggingPrefs: { browser: 'SEVERE' },
-                chromeOptions: {
-                    args: ['window-size=1280,2000']
-                },
-                proxy: proxy
-            }
-        },
-        autoscaleGrid_firefox: {
-            selenium_host: process.env.DA_HUB_IP,
-            selenium_port: 4444,
-            selenium: {
-                start_process: false
-            },
-            silent: true,
-            desiredCapabilities: {
-                browserName: 'firefox',
-                javascriptEnabled: true,
-                acceptSslCerts: true,
-                marionette: true
-            }
-        },
         appium_ios: {
             selenium_host: '127.0.0.1',
             selenium: {
@@ -193,37 +146,6 @@ const localBrowsersConfigs = {
                 platformName: 'iOS',
                 platformVersion: '12.1',
                 deviceName: 'iPhone 8'
-            }
-        },
-        dakubeGrid_Chrome: {
-            selenium_host: process.env.kube_namespace + '.hub.test.expedia.com',
-            use_ssl: true,
-            selenium: {
-                start_process: false,
-                port: 443
-            },
-            silent: true,
-            desiredCapabilities: {
-                browserName: 'chrome',
-                acceptInsecureCerts: true,
-                javascriptEnabled: true,
-                loggingPrefs: { browser: 'INFO', driver: 'INFO' },
-                'goog:chromeOptions': {
-                    args: [
-                        'window-size=1920,1080',
-                        '--no-sandbox',
-                        '--ignore-certificate-errors',
-                        '--disable-translate',
-                        '--disable-logging',
-                        '--allow-insecure-localhost',
-                        '--acceptInsecureCerts',
-                        '--disable-popup-blocking',
-                        '--no-proxy-server',
-                        '--disable-plugins'
-                    ],
-                    w3c: false
-                },
-                proxy: proxy
             }
         },
         dakubeGrid_Chrome_Segment: {
@@ -254,7 +176,6 @@ const localBrowsersConfigs = {
                     ],
                     w3c: false
                 },
-                proxy: proxy
             }
         },
         dakubeGrid_ChromeIphoneX: {
@@ -288,7 +209,6 @@ const localBrowsersConfigs = {
                     },
                     w3c: false
                 },
-                proxy: proxy
             }
         },
         dakubeGrid_ChromeGalaxyS5: {
@@ -322,7 +242,6 @@ const localBrowsersConfigs = {
                     },
                     w3c: false
                 },
-                proxy: proxy
             }
         },
         dakubeGrid_ChromeIpad: {
@@ -356,7 +275,6 @@ const localBrowsersConfigs = {
                     },
                     w3c: false
                 },
-                proxy: proxy
             }
         }
     }
