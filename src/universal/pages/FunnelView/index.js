@@ -107,6 +107,14 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     const widgetObjects = makePageViewObjects(fetchedPageviews, start, end, pageBrand);
                     setWidgets(widgetObjects);
                 })
+                .catch((err) => {
+                    let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
+                        ? `Query has timed out. Try refreshing the page. If the problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`
+                        : `An unexpected error has occurred. Try refreshing the page. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`;
+                    setLoBError(errorMessage);
+                    // eslint-disable-next-line no-console
+                    console.error(err);
+                })
                 .finally(() => setIsLoading(false));
         };
 
@@ -238,7 +246,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
     return (
         <div className="funnel-views-container">
-            <h1>{'Traveler Page Views'}{!isLoBAvailable && <HelpText text="Only for LOB Hotels" placement="top" />}</h1>
+            <h1 className="page-title">{'Traveler Page Views'}{!isLoBAvailable && <HelpText text="Only for LOB Hotels" placement="top" />}</h1>
             <div className="filters-wrapper">
                 {
                     selectedBrand === EXPEDIA_PARTNER_SERVICES_BRAND &&
@@ -283,8 +291,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     isDirtyForm={isDirtyForm}
                 />
                 <ResetButton
-                    start={start}
-                    end={end}
+                    isDisabled={moment(end).diff(moment(start), 'hour') === 6}
                     resetGraphToDefault={resetGraphToDefault}
                 />
             </div>

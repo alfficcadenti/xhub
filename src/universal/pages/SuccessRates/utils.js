@@ -1,7 +1,8 @@
 import moment from 'moment';
-import {EXPEDIA_BRAND} from '../../constants';
-import {SUCCESS_RATES_PAGES_LIST} from './constants';
-import {mapBrandNames} from '../utils';
+import {EXPEDIA_BRAND, SUCCESS_RATES_PAGES_LIST, LOB_LIST} from '../../constants';
+import {AVAILABLE_LOBS} from './constants';
+import {mapBrandNames, validDateRange} from '../utils';
+import qs from 'query-string';
 
 export const getNowDate = () => moment().endOf('minute').toDate();
 
@@ -43,24 +44,51 @@ export const successRatesRealTimeObject = (fetchedSuccessRates = [], selectedLob
     }, {});
 
     SUCCESS_RATES_PAGES_LIST.forEach((label, i) => {
-        const currentSuccessRatesData = fetchedSuccessRates[i];
-        if (!currentSuccessRatesData || !currentSuccessRatesData.length) {
+        const currentSuccessRates = fetchedSuccessRates[i];
+
+        if (!currentSuccessRates || !currentSuccessRates.length) {
             nextRealTimeTotals[label] = 'N/A';
             return;
         }
 
-        for (let counter = 1; counter <= currentSuccessRatesData.length; counter++) {
-            const {successRatePercentagesData, brandWiseSuccessRateData} = currentSuccessRatesData[currentSuccessRatesData.length - counter];
-            const currentSuccessRates = selectedLobs.length !== 1 || label === 'Home To Search Page (SERP)' ?
-                brandWiseSuccessRateData :
-                successRatePercentagesData.find((item) => mapBrandNames(item.brand) === selectedBrand && item.lineOfBusiness === selectedLobs[0].value);
+        for (let counter = 1; counter <= currentSuccessRates.length; counter++) {
+            const {successRatePercentagesData, brandWiseSuccessRateData} = currentSuccessRates[currentSuccessRates.length - counter];
+            const isLOBSelected = !!selectedLobs.length;
+            const isHomeToSearch = label === SUCCESS_RATES_PAGES_LIST[0];
+            let successRates;
 
-            if (currentSuccessRates && currentSuccessRates.rate !== null) {
-                nextRealTimeTotals[label] = currentSuccessRates.rate.toFixed(2);
+            if (isHomeToSearch) {
+                successRates = brandWiseSuccessRateData;
+            } else if (isLOBSelected) {
+                successRates = successRatePercentagesData.filter((item) => {
+                    const matchBrand = mapBrandNames(item.brand) === selectedBrand;
+
+                    return matchBrand && selectedLobs.map((selectedLob) => selectedLob.value).includes(item.lineOfBusiness);
+                });
+            } else {
+                successRates = brandWiseSuccessRateData;
+            }
+
+            const notEmpty = (value) => {
+                return Array.isArray(value) ?
+                    value.some((item) => item.rate !== null) :
+                    value.rate !== null;
+            };
+
+            if (successRates && notEmpty(successRates)) {
+                if (Array.isArray(successRates)) {
+                    nextRealTimeTotals[label] = successRates.map((item) => ({
+                        label: LOB_LIST.find((lob) => lob.value === item.lineOfBusiness).label,
+                        rate: item.rate.toFixed(2)
+                    }));
+                } else {
+                    nextRealTimeTotals[label] = successRates.rate.toFixed(2);
+                }
+
                 break;
             }
 
-            if (counter === currentSuccessRatesData.length) {
+            if (counter === currentSuccessRates.length) {
                 nextRealTimeTotals[label] = 0;
                 break;
             }
@@ -96,8 +124,34 @@ export const buildSuccessRateApiQueryString = ({start, end, brand, EPSPartner = 
     const dateQuery = start && end
         ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
         : '';
+
     if (brand === 'eps') {
         return `${baseUrl}/eps?timeInterval=${interval}${dateQuery}&tpid=${EPSPartner}`;
     }
+
     return `${baseUrl}?brand=${brand}&timeInterval=${interval}${dateQuery}`;
+};
+
+export const getAllAvailableLOBs = (availableLOBs = []) => {
+    return LOB_LIST.filter(({value}) => availableLOBs.includes(value));
+};
+
+export const getQueryParams = (search) => {
+    const {from, to, lobs} = qs.parse(search, {decoder: (c) => c});
+    const initialLobs = lobs
+        ? lobs.split(',').map((l) => LOB_LIST.find(({value}) => value === l)).filter((l) => l)
+        : getAllAvailableLOBs(AVAILABLE_LOBS);
+
+    return validDateRange(from, to)
+        ? {
+            initialStart: moment(from),
+            initialEnd: moment(to),
+            initialTimeRange: 'Custom',
+            initialLobs
+        } : {
+            initialStart: moment().subtract(6, 'hours').startOf('minute'),
+            initialEnd: moment(),
+            initialTimeRange: 'Last 6 Hours',
+            initialLobs
+        };
 };

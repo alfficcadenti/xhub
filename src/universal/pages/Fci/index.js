@@ -258,7 +258,7 @@ const Fci = ({selectedBrands}) => {
 
     return (
         <div className="fci-container">
-            <h1>{'Failed Customer Interactions (FCI)'}</h1>
+            <h1 className="page-title">{'Failed Customer Interactions (FCI)'}</h1>
             {isSupportedBrand && <div className="form-container">
                 <DatetimeRangePicker
                     onChange={handleDatetimeChange}

@@ -14,12 +14,23 @@ import {
 import './styles.less';
 import moment from 'moment';
 import ReferenceLabel from '../../../../../../components/ReferenceLabel';
-import {startTime, endTime} from '../../../../impulseHandler';
+import {startTime, endTime, getColor} from '../../../../impulseHandler';
+import AnomalyLabel from './AnomalyLabel';
+import {
+    ANOMALY_DETECTED_COLOR,
+    ANOMALY_RECOVERED_COLOR,
+    INCIDENT_TOOLTIP_COLOR,
+    UPSTREAM_UNHEALTHY_COLOR
+} from '../../../../../../constants';
 
 const BOOKING_CHART_COLOR = '#336BFF';
 const PREDICTION_CHART_COLOR = '#c9405b';
 const PREDICTION_COUNT = 'Prediction Counts';
 const BOOKING_COUNT = 'Booking Counts';
+const INCIDENT = 'Incident';
+const ANOMALY_DETECTED = 'Detected';
+const ANOMALY_RECOVERED = 'Recovered';
+const UPSTREAM_UNHEALTHY = 'Upstream Unhealthy';
 const AreaChartType = 'Area';
 const BarChartType = 'Bar';
 
@@ -35,6 +46,41 @@ const IMPULSE_CHART_TYPE = [
         color: PREDICTION_CHART_COLOR,
         chartType: AreaChartType,
         key: 'predictionChart'
+    }
+];
+
+const LEGEND_TYPE = [
+    {
+        value: BOOKING_COUNT,
+        type: 'square',
+        color: BOOKING_CHART_COLOR,
+    },
+    {
+        value: '3 Week Avg Counts',
+        type: 'line',
+        color: PREDICTION_CHART_COLOR
+    }
+];
+const LEGEND_TYPE2 = [
+    {
+        value: INCIDENT,
+        type: 'triangle',
+        color: INCIDENT_TOOLTIP_COLOR,
+    },
+    {
+        value: ANOMALY_DETECTED,
+        type: 'circle',
+        color: ANOMALY_DETECTED_COLOR
+    },
+    {
+        value: ANOMALY_RECOVERED,
+        type: 'circle',
+        color: ANOMALY_RECOVERED_COLOR
+    },
+    {
+        value: UPSTREAM_UNHEALTHY,
+        type: 'circle',
+        color: UPSTREAM_UNHEALTHY_COLOR
     }
 ];
 
@@ -54,7 +100,8 @@ const CustomTooltip = ({active, payload}) => {
     }
     return null;
 };
-const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSliced, annotations, daysDifference, setDaysDifference, setTableData}) => {
+
+const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSliced, annotations, daysDifference, setDaysDifference, setTableData, anomalies, setAnomalyTableData}) => {
     let [refAreaLeft, setRefAreaLeft] = useState('');
     let [refAreaRight, setRefAreaRight] = useState('');
     let [newData, setNewData] = useState(data);
@@ -142,6 +189,18 @@ const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSlic
                     <Tooltip content={<CustomTooltip/>}/>
                     {IMPULSE_CHART_TYPE.map(renderChart)}
                     {
+                        anomalies && anomalies.map((anomaly) => (
+                            <ReferenceLine
+                                key={Math.random()}
+                                yAxisId={1}
+                                x={anomaly.time}
+                                label={<AnomalyLabel anomaly={anomaly} setAnomalyTableData={setAnomalyTableData} category={anomaly.category}/>}
+                                stroke={getColor(anomaly)}
+                                strokeDasharray="3 3"
+                            />
+                        ))
+                    }
+                    {
                         annotations && annotations.map((annotation) => (
                             <ReferenceLine
                                 key={Math.random()}
@@ -159,7 +218,12 @@ const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSlic
                             ? <ReferenceArea yAxisId={1} x1={refAreaLeft} x2={refAreaRight} strokeOpacity={0.3}/>
                             : null
                     }
-                    <Legend/>
+                    <Legend payload={LEGEND_TYPE} iconSize={10}/>
+                </ComposedChart>
+            </ResponsiveContainer>
+            <ResponsiveContainer width="100%" height="8%">
+                <ComposedChart>
+                    <Legend payload={LEGEND_TYPE2} iconSize={10}/>
                 </ComposedChart>
             </ResponsiveContainer>
         </div>

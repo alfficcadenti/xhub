@@ -12,26 +12,27 @@ import {
     EGENCIA_BRAND,
     EXPEDIA_PARTNER_SERVICES_BRAND,
     HOTELS_COM_BRAND,
-    LOB_LIST,
     VRBO_BRAND,
-    OPXHUB_SUPPORT_CHANNEL
+    OPXHUB_SUPPORT_CHANNEL,
+    SUCCESS_RATES_PAGES_LIST
 } from '../../constants';
 import {
     checkResponse,
     getBrand,
     makeSuccessRatesObjects,
     makeSuccessRatesLOBObjects,
-    getQueryParams,
     getLobPlaceholder
 } from '../utils';
 import HelpText from '../../components/HelpText/HelpText';
-import {SUCCESS_RATES_PAGES_LIST, METRIC_NAMES, EPS_PARTNER_TPIDS} from './constants';
+import {METRIC_NAMES, EPS_PARTNER_TPIDS, AVAILABLE_LOBS} from './constants';
 import {
     getWidgetXAxisTickGap,
     shouldShowTooltip,
     successRatesRealTimeObject,
     buildSuccessRateApiQueryString,
-    getTimeInterval
+    getTimeInterval,
+    getAllAvailableLOBs,
+    getQueryParams
 } from './utils';
 import './styles.less';
 import Annotations from '../../components/Annotations/Annotations';
@@ -107,18 +108,19 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     );
 
     const rttRef = useRef();
+    const didMount = useRef(false);
 
-    const fetchRealTimeData = (brand) => {
+    const fetchRealTimeData = () => {
         setIsRttLoading(true);
         setRttError('');
         const rttStart = moment().utc().subtract(11, 'minute').startOf('minute').format();
         const rttEnd = moment().utc().subtract(1, 'minute').startOf('minute').format();
-        const {funnelBrand} = getBrand(brand, 'label');
+        const {funnelBrand} = getBrand(selectedBrand, 'label');
         const endpoint = buildSuccessRateApiQueryString({rttStart, rttEnd, brand: funnelBrand, EPSPartner: selectedEPSPartner, interval: 1});
 
         Promise.all(METRIC_NAMES.map((metricName) => fetch(`${endpoint}&metricName=${metricName}`)))
             .then((responses) => Promise.all(responses.map(checkResponse)))
-            .then((fetchedSuccessRates) => successRatesRealTimeObject(fetchedSuccessRates, selectedLobs, brand))
+            .then((fetchedSuccessRates) => successRatesRealTimeObject(fetchedSuccessRates, selectedLobs, selectedBrand))
             .then((realTimeData) => setRealTimeTotals(realTimeData))
             .catch((err) => {
                 let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
@@ -145,7 +147,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     return;
                 }
 
-                const successRatesLOBs = LOB_LIST.filter(({value}) => ['H', 'C'].includes(value));
+                const successRatesLOBs = getAllAvailableLOBs(AVAILABLE_LOBS);
                 const widgetObjects = makeSuccessRatesObjects(fetchedSuccessRates, start, end, pageBrand);
                 const widgetLOBObjects = makeSuccessRatesLOBObjects(fetchedSuccessRates, start, end, pageBrand, brand, successRatesLOBs);
                 setWidgets(widgetObjects);
@@ -165,10 +167,20 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     useEffect(() => {
         if ([EG_BRAND, EGENCIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND].includes(selectedBrand)) {
             setIsLoBAvailable(false);
+            setSelectedLobs([]);
         } else {
             setIsLoBAvailable(true);
-        }
 
+            if (didMount.current) {
+                setSelectedLobs(getAllAvailableLOBs(AVAILABLE_LOBS));
+            } else {
+                setSelectedLobs(initialLobs);
+                didMount.current = true;
+            }
+        }
+    }, [selectedBrand]);
+
+    useEffect(() => {
         if ([EG_BRAND, EGENCIA_BRAND].includes(selectedBrand)) {
             setIsSupportedBrand(false);
             setError(`Success rates for ${selectedBrand} is not yet available.
@@ -178,8 +190,6 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             setIsSupportedBrand(true);
             setError(null);
             setIsFormDisabled(false);
-            fetchRealTimeData(selectedBrand);
-            rttRef.current = setInterval(fetchRealTimeData.bind(null, selectedBrand), 60000); // refresh every minute
 
             if (!isZoomedIn) { // we need this flag right after zoomed in so that we don't re-fetch because it filters on existing data
                 fetchSuccessRatesData(selectedBrand);
@@ -188,9 +198,19 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
         return function cleanup() {
             setIsZoomedIn(false); // set to false so that it fetch data when changing brands
-            clearInterval(rttRef.current);
         };
     }, [selectedBrand, start, end, selectedEPSPartner]);
+
+    useEffect(() => {
+        if (![EG_BRAND, EGENCIA_BRAND].includes(selectedBrand)) {
+            fetchRealTimeData();
+            rttRef.current = setInterval(fetchRealTimeData, 60000); // refresh every minute
+        }
+
+        return function cleanup() {
+            clearInterval(rttRef.current);
+        };
+    }, [selectedLobs]);
 
     useEffect(() => {
         if (!selectedLobs.length) {
@@ -266,7 +286,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
     return (
         <div className="success-rates-container">
-            <h1>
+            <h1 className="page-title">
                 {'Success Rates'}
                 {!isLoBAvailable && <HelpText text="Only for LOB Hotels" placement="top" />}
             </h1>
@@ -290,7 +310,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                                 isMulti
                                 classNamePrefix="lob-select"
                                 className="lob-select-container"
-                                options={LOB_LIST.filter(({value}) => ['H', 'C'].includes(value))}
+                                options={getAllAvailableLOBs(AVAILABLE_LOBS)}
                                 onChange={handleLoBChange}
                                 placeholder={getLobPlaceholder(isLoading, lobWidgets.length)}
                                 isDisabled={!lobWidgets.length}
@@ -314,8 +334,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     isDirtyForm={isDirtyForm}
                 />
                 <ResetButton
-                    start={start}
-                    end={end}
+                    isDisabled={moment(end).diff(moment(start), 'hour') === 6}
                     resetGraphToDefault={resetGraphToDefault}
                 />
             </div>
@@ -326,7 +345,6 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     rttError={rttError}
                     tooltipLabel={'Latest real time success rate. Refreshes every minute.'}
                     label={'Real Time Success Rates'}
-                    showPercentageSign
                 />
             )}
             <LoadingContainer isLoading={isLoading} error={error} className="success-rates-loading-container">
