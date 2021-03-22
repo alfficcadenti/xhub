@@ -151,7 +151,7 @@
 			"parameters": {
 			  "REF": "${trigger.parameters.version}"
 			}
-		  },
+		},
 		{
 			"name": "Deploy-To-USE1-Prod",
 			"type": "manualJudgment",
