@@ -334,8 +334,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     isDirtyForm={isDirtyForm}
                 />
                 <ResetButton
-                    start={start}
-                    end={end}
+                    isDisabled={moment(end).diff(moment(start), 'hour') === 6}
                     resetGraphToDefault={resetGraphToDefault}
                 />
             </div>
