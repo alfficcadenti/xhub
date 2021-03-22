@@ -25,6 +25,7 @@
     "build:server": "rm -rf ./build/server && rm -rf ./build/universal && BABEL_ENV=server babel src --copy-files --source-maps --ignore='**/*.test.js,**/*.spec.js' --out-dir ./build",
     "build:prodTest": "bash ./generate-build-info.sh && NODE_ENV=production npm run build:server && NODE_ENV=production UPLOAD_ASSETS=false npm run build:client && npm run tool:checkAssetSize",
     "clean": "rimraf reports",
+    "create-html-report": "node node_modules/common-nightwatch/dist/nw-cucumber-conf/create-html-report.js",
     "da-reporter": "node node_modules/.bin/da-reporter -p opxhub-ui -i /reports -c",
     "lint": "eslint --fix src",
     "prod": "CDN_URL=\"//a.travel-assets.com\" NODE_ENV=production node . | rotate-logs --config=.log-access.js | rotate-logs --config=.log-application.js",
