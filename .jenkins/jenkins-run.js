@@ -15,7 +15,7 @@ const daReports = jenkinsArguments.report || 'da-reporter';
 console.info(`Script Type: ${script}`);
 console.info(`DA Report: ${daReports}`);
 
-runAll('clean')
+runAll()
     .then(() => {
       console.info('cleaned directory');
       return runAll(script, parallelConfig);
