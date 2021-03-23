@@ -186,7 +186,7 @@
 			"type": "jenkins",
 			"refId": "10",
 			"requisiteStageRefIds": [
-				"8"
+				"9"
 			],
 			"failPipeline": false,
 			"continuePipeline": false,
@@ -204,7 +204,7 @@
 			"type": "jenkins",
 			"refId": "11",
 			"requisiteStageRefIds": [
-				"9"
+				"10"
 			],
 			"failPipeline": false,
 			"continuePipeline": false,
@@ -220,7 +220,7 @@
 		{
 			"name": "Mandatory Security Scan",
 			"type": "jenkins",
-			"refId": "11",
+			"refId": "12",
 			"requisiteStageRefIds": [
 				"1"
 			],
