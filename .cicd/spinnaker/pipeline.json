@@ -146,11 +146,8 @@
 			"failPipeline": false,
 			"continuePipeline": false,
 			"completeOtherBranchesThenFail": true,
-			"master": "primer.builds.tools",
-			"job": "opxhub-nw-test-kube",
-			"parameters": {
-			  "REF": "${trigger.parameters.version}"
-			}
+			"master": "ewe.builds.sb.karmalab.net",
+			"job": "opxhub-nw-test-kube"
 		},
 		{
 			"name": "Deploy-To-USE1-Prod",
