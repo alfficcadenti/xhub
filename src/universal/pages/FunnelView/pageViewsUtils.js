@@ -6,9 +6,11 @@ export const buildPageViewsApiQueryString = ({start, end, brand, lob = false, EP
         ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
         : '';
     const baseUrl = lob ? '/v1/pageViewsLoB' : '/v1/pageViews';
+
     if (brand === 'eps') {
         return `${baseUrl}/eps?timeInterval=1${dateQuery}&sitename=${EPSPartner}`;
     }
+
     return `${baseUrl}?brand=${brand}&timeInterval=1${dateQuery}`;
 };
 
