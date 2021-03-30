@@ -1,0 +1,122 @@
+{
+  "name": "opxhub-ui custom-tootip branch",
+  "application": "opxhub-ui custom-tootip branch",
+  "disabled": false,
+  "stages": [
+    {
+      "name": "Build_opxhub-ui",
+      "type": "jenkins",
+      "refId": "1",
+      "requisiteStageRefIds": [],
+      "failPipeline": false,
+      "continuePipeline": false,
+      "completeOtherBranchesThenFail": true,
+      "master": "primer.builds.tools",
+      "job": "opxhub-ui-master",
+      "parameters": {
+        "REF": "${trigger.parameters.version}"
+      }
+    },
+    {
+      "name": "Deploy_To_Test",
+      "type": "jenkins",
+      "refId": "2",
+      "requisiteStageRefIds": [
+        "1"
+      ],
+      "failPipeline": false,
+      "continuePipeline": false,
+      "completeOtherBranchesThenFail": true,
+      "master": "trinity.tools",
+      "job": "ewetest_deploy-docker-ecs",
+      "parameters": {
+        "PERFORM_RELEASE": false,
+        "ROLE_NAME": "opxhub-ui",
+        "VERSION": "${trigger.parameters.version}"
+      }
+    },
+    {
+      "name": "Release_To_Test",
+      "type": "jenkins",
+      "refId": "3",
+      "requisiteStageRefIds": [
+        "2"
+      ],
+      "failPipeline": false,
+      "continuePipeline": false,
+      "completeOtherBranchesThenFail": true,
+      "master": "trinity.tools",
+      "job": "ewetest_release-docker-ecs",
+      "parameters": {
+        "ROLE_NAME": "opxhub-ui",
+        "VERSION": "${trigger.parameters.version}"
+      }
+    },
+    {
+      "name": "Mandatory Security Scan",
+      "type": "jenkins",
+      "refId": "3",
+      "requisiteStageRefIds": [
+        "1"
+      ],
+      "failPipeline": false,
+      "continuePipeline": false,
+      "completeOtherBranchesThenFail": true,
+      "master": "security.builds.exp-tools.net",
+      "job": "run-fortify-scan",
+      "parameters": {
+        "APPLICATION": "opxhub-ui",
+        "PORTFOLIO": "EWE Primer",
+        "VERSION": "${trigger.parameters.version}"
+      }
+    }
+  ],
+  "triggers": [
+    {
+      "branch": "OE-1551",
+      "enabled": true,
+      "project": "eg-reo-opex",
+      "slug": "opxhub-ui",
+      "source": "github",
+      "type": "git"
+    }
+  ],
+  "notifications": [
+    {
+      "address": "vrbo_opex@expedia.com",
+      "level": "pipeline",
+      "type": "email",
+      "when": [
+        "pipeline.starting",
+        "pipeline.complete",
+        "pipeline.failed"
+      ]
+    },
+    {
+      "address": "#vrbo-opex-kumo-notifications",
+      "level": "pipeline",
+      "type": "slack",
+      "when": [
+        "pipeline.starting",
+        "pipeline.complete",
+        "pipeline.failed"
+      ]
+    }
+  ],
+  "parameterConfig": [
+    {
+      "default": "${trigger.hash}",
+      "description": "The Git Commit ID to use in this pipeline",
+      "hasOptions": false,
+      "label": "Git Commit ID",
+      "name": "version",
+      "pinned": true,
+      "required": true
+    }
+  ],
+  "roles": [
+    "spinnakerusers"
+  ],
+  "limitConcurrent": true,
+  "keepWaitingPipelines": true
+}
