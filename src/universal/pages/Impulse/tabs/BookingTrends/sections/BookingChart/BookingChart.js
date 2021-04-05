@@ -3,6 +3,7 @@ import {
     Area,
     Bar,
     ComposedChart,
+    AreaChart,
     CartesianGrid,
     Legend,
     ReferenceArea, ReferenceLine,
@@ -49,7 +50,7 @@ const IMPULSE_CHART_TYPE = [
     }
 ];
 
-const LEGEND_TYPE = [
+/* const LEGEND_TYPE = [
     {
         value: BOOKING_COUNT,
         type: 'square',
@@ -60,7 +61,7 @@ const LEGEND_TYPE = [
         type: 'line',
         color: PREDICTION_CHART_COLOR
     }
-];
+];*/
 const LEGEND_TYPE2 = [
     {
         value: INCIDENT,
@@ -101,12 +102,16 @@ const CustomTooltip = ({active, payload}) => {
     return null;
 };
 
-const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSliced, annotations, daysDifference, setDaysDifference, setTableData, anomalies, setAnomalyTableData}) => {
+const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSliced, annotations, daysDifference, setDaysDifference, setTableData, anomalies, setAnomalyTableData, dataPrediction = []}) => {
     let [refAreaLeft, setRefAreaLeft] = useState('');
     let [refAreaRight, setRefAreaRight] = useState('');
     let [newData, setNewData] = useState(data);
     let [left, setLeft] = useState('dataMin');
     let [right, setRight] = useState('dataMax');
+
+    let [newPredictionData, setNewPredictionData] = useState(dataPrediction);
+
+    const [hiddenKeys, setHiddenKeys] = useState([]);
     const getGradient = ({key, color}) => {
         const id = `color${key}`;
         return (<linearGradient key={`${key}Gradient`} id={id} x1="0" y1="0" x2="0" y2="1" spreadMethod="reflect">
@@ -122,7 +127,14 @@ const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSlic
     };
     useEffect(() => {
         setNewData(data);
+        setNewPredictionData([]);
+        console.log(data);
+        console.log(dataPrediction);
     }, [data]);
+    useEffect(() => {
+        console.log('this is working');
+        setNewPredictionData(dataPrediction);
+    }, [dataPrediction]);
     const zoomIn = () => {
         if (refAreaLeft === refAreaRight || refAreaRight === '') {
             setRefAreaLeft('');
@@ -149,6 +161,7 @@ const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSlic
     const renderChart = ({key, color, name, chartType}) => {
         const fill = `url(#color${key})`;
         return chartType === 'Area' ? <Area
+            //data={newData}
             type="monotone"
             dataKey={name}
             stroke={color}
@@ -156,9 +169,25 @@ const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSlic
             fill={fill}
             yAxisId={1}
             key={`area${name}`}
-            animationDuration={300}
-        /> : <Bar dataKey={name} fillOpacity={1} yAxisId={1} key={`bar${name}`} fill={fill} animationDuration={300}/>;
+            hide = {hiddenKeys.includes(name)}
+        /> : <Bar dataKey={name} fillOpacity={1} yAxisId={1} key={`bar${name}`} fill={fill} hide = {hiddenKeys.includes(name)}/>;
     };
+
+    const handleLegendClick = (e) => {
+        if (e && e.dataKey) {
+            console.log(e.dataKey);
+            const nextHiddenKeys = [...hiddenKeys];
+            const foundIdx = hiddenKeys.findIndex((h) => h === e.dataKey);
+            if (foundIdx > -1) {
+                nextHiddenKeys.splice(foundIdx, 1);
+            } else {
+                nextHiddenKeys.push(e.dataKey);
+            }
+            setHiddenKeys(nextHiddenKeys);
+        }
+    };
+
+
     return (
         <div className="bookings-container-box">
             <div className="reset-div">
@@ -188,6 +217,13 @@ const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSlic
                     <CartesianGrid strokeDasharray="3 3"/>
                     <Tooltip content={<CustomTooltip/>}/>
                     {IMPULSE_CHART_TYPE.map(renderChart)}
+                    <Area type="monotone" data={newPredictionData} dataKey="count" stroke="#008000" fillOpacity={1} fill="url(#colorPv)" key="areacount" yAxisId={1} hide = {hiddenKeys.includes('count')}/>
+                    <defs>
+                        <linearGradient id="colorPv" key="PvGradient" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#008000" stopOpacity={0.2}/>
+                            <stop offset="95%" stopColor="#008000" stopOpacity={0}/>
+                        </linearGradient>
+                    </defs>
                     {
                         anomalies && anomalies.map((anomaly) => (
                             <ReferenceLine
@@ -218,13 +254,13 @@ const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSlic
                             ? <ReferenceArea yAxisId={1} x1={refAreaLeft} x2={refAreaRight} strokeOpacity={0.3}/>
                             : null
                     }
-                    <Legend payload={LEGEND_TYPE} iconSize={10}/>
+                    <Legend onClick={handleLegendClick}/>
                 </ComposedChart>
             </ResponsiveContainer>
-            <ResponsiveContainer width="100%" height="8%">
-                <ComposedChart>
+            <ResponsiveContainer id="extra-legends" width="100%" height="8%">
+                <AreaChart>
                     <Legend payload={LEGEND_TYPE2} iconSize={10}/>
-                </ComposedChart>
+                </AreaChart>
             </ResponsiveContainer>
         </div>
     );
