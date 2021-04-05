@@ -80,8 +80,6 @@ const LineChartWrapper = ({
         </h3>
     );
 
-    // console.log(`refAreaLeft=${refAreaLeft}, refAreaRight=${refAreaRight}`);
-
     return (
         <div className="line-chart-wrapper">
             {title && renderTitle()}

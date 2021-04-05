@@ -8,22 +8,15 @@
     justify-content: space-around;
     text-align: center;
     padding: @spacing-1x;
+    position: relative;
+    overflow: visible;
+    margin-bottom: 0;
+    box-shadow: none;
+    border: @color-border-default 1px solid;
 
-    .custom-tooltip {
-        background-color: rgba(200, 200, 202, 0.9);
-        border-radius: 8px;
-        vertical-align: middle;
-        text-align: center;
-        display: block;
-        min-height: 54px;
-        padding: @spacing-1x;
-
-        .label {
-            color: @text-color;
-            display: block;
-            line-height: 90%;
-            margin: @spacing-1x;
-        }
+    &:hover {
+        box-shadow: 0 0 @spacing-1x 0 rgba(0, 0, 0, .1);
+        cursor: default;
     }
 
     .recharts-empty-container {
@@ -32,8 +25,36 @@
         font-size: @font-size-large;
     }
 
-    &.card {
-        overflow: visible;
-        position: static;
+    .custom-tooltip {
+        display: none;
+        width: 200px;
+        background-color: rgba(200, 200, 202, 0.9);
+        border-radius: 8px;
+        vertical-align: middle;
+        text-align: center;
+        padding: @spacing-1x;
+        position: absolute;
+        top: 270px;
+        z-index: 1;
+
+        .label {
+            color: @text-color;
+            display: block;
+            line-height: 90%;
+            margin: @spacing-1x;
+
+            .lob-label {
+                margin-bottom: @spacing-2x;
+            }
+        }
+
+        .tooltip-link {
+            display: block;
+            font-size: @btn-xs-font-size;
+        }
+
+        &:hover {
+            opacity: 1 !important;
+        }
     }
 }
