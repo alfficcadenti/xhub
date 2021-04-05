@@ -68,6 +68,9 @@ const Impulse = (props) => {
     const [enableAnomalies, setEnableAnomalies] = useState(true);
     const [selectedAnomaliesMulti, setSelectedAnomaliesMulti] = useState([]);
     const [anomalyTableData, setAnomalyTableData] = useState([]);
+
+    const [allPredictions, setPredictions] = useState([]);
+
     useQueryParamChange(newBrand, props.onBrandChange);
     useSelectedBrand(newBrand, props.onBrandChange, props.prevSelectedBrand);
     const [isLoading,
@@ -87,7 +90,8 @@ const Impulse = (props) => {
         isLatencyHealthy,
         sourceLatency,
         anomaliesMulti,
-        anomalies] = useFetchBlipData(
+        anomalies,
+        predictionData] = useFetchBlipData(
         isApplyClicked,
         setIsApplyClicked,
         startDateTime,
@@ -194,7 +198,13 @@ const Impulse = (props) => {
 
         setAnomaliesData(anomalies);
         filterAnomalies(selectedAnomaliesMulti);
+
+        //setPredictions([...predictionData]);
+
     }, [res, annotations, anomalies]);
+    useEffect(() => {
+        setPredictions([...predictionData]);
+    }, [predictionData]);
     const customStyles = {
         control: (base) => ({
             ...base,
@@ -238,6 +248,7 @@ const Impulse = (props) => {
                     setTableData={setTableData}
                     anomalies={enableAnomalies ? anomaliesData : []}
                     setAnomalyTableData={setAnomalyTableData}
+                    dataPrediction={allPredictions}
                 />);
             default:
                 return (<BookingTrends
@@ -247,6 +258,7 @@ const Impulse = (props) => {
                     annotations={enableIncidents ? annotationsMulti : []}
                     setDaysDifference={setDaysDifference}
                     daysDifference={daysDifference}
+                    dataPrediction={allPredictions}
                 />);
         }
     };

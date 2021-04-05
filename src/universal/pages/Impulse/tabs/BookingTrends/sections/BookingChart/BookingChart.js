@@ -109,7 +109,7 @@ const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSlic
     let [left, setLeft] = useState('dataMin');
     let [right, setRight] = useState('dataMax');
 
-    let [newPredictionData, setNewPredictionData] = useState(dataPrediction);
+    //let [newPredictionData, setNewPredictionData] = useState(dataPrediction);
 
     const [hiddenKeys, setHiddenKeys] = useState([]);
     const getGradient = ({key, color}) => {
@@ -127,14 +127,13 @@ const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSlic
     };
     useEffect(() => {
         setNewData(data);
-        setNewPredictionData([]);
         console.log(data);
         console.log(dataPrediction);
     }, [data]);
-    useEffect(() => {
+    /*useEffect(() => {
         console.log('this is working');
         setNewPredictionData(dataPrediction);
-    }, [dataPrediction]);
+    }, [dataPrediction]);*/
     const zoomIn = () => {
         if (refAreaLeft === refAreaRight || refAreaRight === '') {
             setRefAreaLeft('');
@@ -161,7 +160,6 @@ const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSlic
     const renderChart = ({key, color, name, chartType}) => {
         const fill = `url(#color${key})`;
         return chartType === 'Area' ? <Area
-            //data={newData}
             type="monotone"
             dataKey={name}
             stroke={color}
@@ -217,7 +215,7 @@ const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSlic
                     <CartesianGrid strokeDasharray="3 3"/>
                     <Tooltip content={<CustomTooltip/>}/>
                     {IMPULSE_CHART_TYPE.map(renderChart)}
-                    <Area type="monotone" data={newPredictionData} dataKey="count" stroke="#008000" fillOpacity={1} fill="url(#colorPv)" key="areacount" yAxisId={1} hide = {hiddenKeys.includes('count')}/>
+                    <Area type="monotone" data={dataPrediction} dataKey="count" stroke="#008000" fillOpacity={1} fill="url(#colorPv)" key="areacount" yAxisId={1} hide = {hiddenKeys.includes('count')}/>
                     <defs>
                         <linearGradient id="colorPv" key="PvGradient" x1="0" y1="0" x2="0" y2="1">
                             <stop offset="5%" stopColor="#008000" stopOpacity={0.2}/>
