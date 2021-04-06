@@ -202,9 +202,9 @@ const Impulse = (props) => {
         //setPredictions([...predictionData]);
 
     }, [res, annotations, anomalies]);
-    useEffect(() => {
+    /*useEffect(() => {
         setPredictions([...predictionData]);
-    }, [predictionData]);
+    }, [predictionData]);*/
     const customStyles = {
         control: (base) => ({
             ...base,
@@ -248,7 +248,7 @@ const Impulse = (props) => {
                     setTableData={setTableData}
                     anomalies={enableAnomalies ? anomaliesData : []}
                     setAnomalyTableData={setAnomalyTableData}
-                    dataPrediction={allPredictions}
+                    dataPrediction={predictionData}
                 />);
             default:
                 return (<BookingTrends
@@ -258,7 +258,7 @@ const Impulse = (props) => {
                     annotations={enableIncidents ? annotationsMulti : []}
                     setDaysDifference={setDaysDifference}
                     daysDifference={daysDifference}
-                    dataPrediction={allPredictions}
+                    dataPrediction={predictionData}
                 />);
         }
     };

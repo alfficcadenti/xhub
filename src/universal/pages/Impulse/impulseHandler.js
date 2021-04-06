@@ -9,6 +9,9 @@ import {
 } from '../../constants';
 import moment from 'moment';
 
+const PREDICTION_COUNT = 'Prediction Counts';
+const BOOKING_COUNT = 'Booking Counts';
+
 
 export const getFilters = (data = [], typeOfFilter) =>
     data.filter((item) => item.tag === typeOfFilter).map((item) => item.values)[0].map((a) => ({
@@ -66,6 +69,38 @@ export const getQueryString = (start, end, IMPULSE_MAPPING, globalBrandName, sel
     query += getQueryParamMulti('deviceType', selectedDeviceTypeMulti, selectedDeviceTypeMulti.length !== 0);
     query += getBrandQueryParam(IMPULSE_MAPPING, globalBrandName);
     return query;
+};
+
+export const getQueryStringPrediction = (start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti) => {
+    let query = `?start_time=${start.format('YYYY-MM-DDTHH:mm:ss')}Z&end_time=${end.format('YYYY-MM-DDTHH:mm:ss')}Z`;
+    query += getQueryParamMulti('egSiteUrl', selectedSiteURLMulti, selectedSiteURLMulti.length !== 0);
+    query += getQueryParamMulti('lob', selectedLobMulti, selectedLobMulti.length !== 0);
+    query += getQueryParamMulti('brand', selectedBrandMulti, selectedBrandMulti.length !== 0);
+    query += getQueryParamMulti('device_type', selectedDeviceTypeMulti, selectedDeviceTypeMulti.length !== 0);
+    query += getBrandQueryParam(IMPULSE_MAPPING, globalBrandName);
+    return query;
+};
+
+export const simplifyBookingsData = (bookingsData) => {
+    let simplifiedData = bookingsData.map((item) => {
+        return {
+            time: moment.utc(item.time).valueOf(),
+            [BOOKING_COUNT]: item.count,
+            [PREDICTION_COUNT]: item.prediction.weightedCount,
+            count: 0
+        };
+    });
+    return simplifiedData;
+};
+
+export const simplifyPredictionData = (predictionData) => {
+    let simplifiedData = predictionData.map((item) => {
+        return {
+            time: moment.utc(item.time).valueOf(),
+            count: item.prediction
+        };
+    });
+    return simplifiedData;
 };
 export const startTime = () => moment().utc().subtract(3, 'days').startOf('minute');
 export const endTime = () => moment().utc().endOf('minute');

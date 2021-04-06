@@ -21,7 +21,19 @@
       color: @text-color;
     }
   }
+  #extra-legends .recharts-legend-item {
+    &:hover {
+      pointer-events: none;
+      opacity: 1;
+    }
+  }
   .recharts-legend-item {
     font-size: 14px;
+    &:hover {
+      cursor: pointer;
+      opacity: .8;
+    }
   }
 }
+
+
