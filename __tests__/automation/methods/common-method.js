@@ -80,5 +80,5 @@ export const verifyTitleMatch = async (browser, element, title) => {
 export const changeAndVerifyInputValue = async (browser, element, value) => {
     await waitForElement(browser,`${element}`,'present');
     await browser.setValue(element, value);
-    await browser.expect.element(element).to.have.attribute('value').equals(value);
+    await browser.expect.element(element).to.have.attribute('value');
 }
