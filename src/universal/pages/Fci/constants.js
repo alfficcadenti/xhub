@@ -1,3 +1,5 @@
+import {OPXHUB_SUPPORT_CHANNEL} from '../../constants';
+
 export const ALL_ERROR_CODES = 'All Error Codes';
 export const TOP_10_ERROR_CODES = 'Top 10 Error Codes';
 export const TOP_20_ERROR_CODES = 'Top 20 Error Codes';
@@ -55,6 +57,9 @@ export const TRACE_TABLE_COLUMNS = [
     'External Error Code',
     'External Description'
 ];
+
+export const FETCH_FAILED_MSG = 'Failed to retrieve FCI data. Try refreshing the page. '
+    + `If the problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`;
 
 export const ALL_CATEGORIES = 'All Categories';
 export const ALL_SITES = 'All Sites';

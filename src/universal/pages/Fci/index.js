@@ -2,22 +2,26 @@ import React, {useEffect, useState, useCallback} from 'react';
 import {useHistory, useLocation, withRouter} from 'react-router-dom';
 import Select from 'react-select';
 import moment from 'moment';
-import {Checkbox, RadioGroup, RadioButton} from '@homeaway/react-form-components';
+import {Checkbox, RadioGroup, RadioButton, FormInput} from '@homeaway/react-form-components';
+import {Navigation} from '@homeaway/react-navigation';
 import LineChartWrapper from '../../components/LineChartWrapper';
-import DataTable from '../../components/DataTable';
 import LoadingContainer from '../../components/LoadingContainer';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import {checkResponse} from '../utils';
-import {EXPEDIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, LOB_LIST, OPXHUB_SUPPORT_CHANNEL} from '../../constants';
-import {getQueryValues, getQueryString, getPresets, getLineChartData, getTableData, getErrorCodes, getBrandSites} from './utils';
+import {LOB_LIST} from '../../constants';
 import FciModal from './FciModal';
-import {FCI_TABLE_COLUMNS, FCI_HIDDEN_TABLE_COLUMNS, ALL_CATEGORIES, CATEGORY_OPTION, CODE_OPTION} from './constants';
+import {shouldFetchData, getIsSupportedBrand, getUnsupportedBrandMsg, getQueryValues, getQueryString, getPresets, getTableData, getBrandSites} from './utils';
+import {ALL_ERROR_CODES, CATEGORY_OPTION, CODE_OPTION, FETCH_FAILED_MSG} from './constants';
 import './styles.less';
 
 const Fci = ({selectedBrands}) => {
     const SHOW_FILTERS = false;
     const history = useHistory();
     const {search, pathname} = useLocation();
+    const navLinks = [
+        {id: 'trends', label: 'Trends', href: '/fci'},
+        {id: 'search', label: 'Search', href: '/fci'}
+    ];
     const {
         initialStart,
         initialEnd,
@@ -25,17 +29,16 @@ const Fci = ({selectedBrands}) => {
         initialLobs,
         initialErrorCode,
         initialSite,
-        initialCategories,
         initialHideIntentionalCheck
     } = getQueryValues(search, selectedBrands[0]);
     const [isDirtyForm, setIsDirtyForm] = useState(false);
+    const [activeIndex, setActiveIndex] = useState(0);
 
     const [start, setStart] = useState(initialStart);
     const [end, setEnd] = useState(initialEnd);
     const [selectedLobs, setSelectedLobs] = useState(initialLobs);
     const [selectedErrorCode, setSelectedErrorCode] = useState(initialErrorCode);
     const [selectedSite, setSelectedSite] = useState(initialSite);
-    const [selectedCategory, setSelectedCategory] = useState(initialCategories);
     const [hideIntentionalCheck, setHideIntentionalCheck] = useState(initialHideIntentionalCheck);
     const [pendingStart, setPendingStart] = useState(initialStart);
     const [pendingEnd, setPendingEnd] = useState(initialEnd);
@@ -43,15 +46,15 @@ const Fci = ({selectedBrands}) => {
     const [pendingLobs, setPendingLobs] = useState(initialLobs);
     const [pendingErrorCode, setPendingErrorCode] = useState(initialErrorCode);
     const [pendingSite, setPendingSite] = useState(initialSite);
-    const [pendingCategory, setPendingCategory] = useState(initialCategories);
     const [pendingHideIntentionalCheck, setPendingHideIntentionalCheck] = useState(initialHideIntentionalCheck);
-    const [prev, setPrev] = useState({start: null, end: null, data: []});
+    const [selectedBucket, setSelectedBucket] = useState();
+    const [prev, setPrev] = useState({start: null, end: null, data: [], chartProperty: null});
     const [errorCodes, setErrorCodes] = useState([]);
+    const [searchText, setSearchText] = useState('');
 
     const [isSupportedBrand, setIsSupportedBrand] = useState(false);
 
     const [chartProperty, setChartProperty] = useState(CATEGORY_OPTION);
-    const [categories, setCategories] = useState([]);
     const [lineChartData, setLineChartData] = useState([]);
     const [lineChartKeys, setLineChartKeys] = useState([]);
     const [tableData, setTableData] = useState([]);
@@ -62,81 +65,49 @@ const Fci = ({selectedBrands}) => {
     const [refAreaRight, setRefAreaRight] = useState('');
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [modalData, setModalData] = useState({title: '', data: []});
-
-    const handleOpenTraceLog = (traceId, recordedSessionUrl, data) => {
-        setModalData({
-            traceId,
-            recordedSessionUrl,
-            data,
-            details: {},
-            editMode: false
-        });
-        setIsModalOpen(true);
-    };
-
-    const handleOpenEdit = (traceId, details) => {
-        setModalData({
-            traceId,
-            recordedSessionUrl: '',
-            data: [],
-            details,
-            editMode: true
-        });
-        setIsModalOpen(true);
-    };
+    const [modalFci, setModalFci] = useState();
+    const [modalEditMode, setModalEditMode] = useState(false);
+    const [modalFcis, setModalFcis] = useState([]);
+    const [isModalLoading, setIsModalLoading] = useState(false);
+    const [modalError, setModalError] = useState();
 
     const processData = useCallback((data) => {
         const categorySet = new Set();
-        const filteredData = data
-            // eslint-disable-next-line complexity
-            .filter(({fci, category}) => {
-                (category || []).forEach((c) => categorySet.add(c));
-                const hideIntentionalCheckMatch = !hideIntentionalCheck || (fci && !fci.isIntentional);
-                const isWithinRange = fci && fci.timestamp && moment(fci.timestamp).isBetween(start, end, '[]', 'minute');
-                const matchesCategory = selectedCategory === ALL_CATEGORIES || (category || []).includes(selectedCategory);
-                return isWithinRange && matchesCategory && hideIntentionalCheckMatch;
-            })
-            .map(({fci, category, recordedSessionUrl}) => {
-                const result = fci;
-                result.category = (category || []).join(',');
-                result.recordedSessionUrl = recordedSessionUrl;
-                return result;
+        const filteredData = JSON.parse(JSON.stringify(data))
+            .filter(({timestamp}) => timestamp && moment(timestamp).isBetween(start, end, '[]', 'minute'))
+            .map(({timestamp, counts}) => {
+                Object.keys(counts).forEach((key) => categorySet.add(key));
+                return {name: moment(timestamp).format('YYYY-MM-DD HH:mm'), timestamp, ...counts};
             });
-        const chart = getLineChartData(start, end, filteredData, selectedErrorCode, chartProperty);
-        setCategories([ALL_CATEGORIES, ...Array.from(categorySet).sort()]);
-        setLineChartData(chart.data);
-        setLineChartKeys(chart.keys);
-        const {keys} = chartProperty !== CODE_OPTION
-            ? getLineChartData(start, end, filteredData, selectedErrorCode, CODE_OPTION)
-            : chart;
-        setTableData(getTableData(filteredData, keys, handleOpenTraceLog, handleOpenEdit));
-        setErrorCodes(getErrorCodes(filteredData));
-    }, [start, end, selectedCategory, selectedErrorCode, chartProperty, hideIntentionalCheck]);
+        setLineChartData(filteredData);
+        setLineChartKeys(Array.from(categorySet).sort());
+        setErrorCodes([ALL_ERROR_CODES, ...Array.from(categorySet).sort()]);
+    }, [start, end]);
 
     // eslint-disable-next-line complexity
     useEffect(() => {
-        if (![EXPEDIA_PARTNER_SERVICES_BRAND, EXPEDIA_BRAND].includes(selectedBrands[0])) {
+        if (!getIsSupportedBrand(selectedBrands)) {
             setIsSupportedBrand(false);
-            setError(`FCIs for ${selectedBrands[0]} is not yet available. For now only ${EXPEDIA_PARTNER_SERVICES_BRAND} and ${EXPEDIA_BRAND} is supported.
-                If you have any questions, please ping ${OPXHUB_SUPPORT_CHANNEL} or leave a comment via our Feedback form.`);
+            setError(getUnsupportedBrandMsg(selectedBrands));
             return;
         }
         setIsLoading(true);
         setIsSupportedBrand(true);
         setError(null);
-        const query = getQueryString(start, end, selectedLobs, selectedErrorCode, selectedSite, selectedCategory, hideIntentionalCheck);
+        const query = getQueryString(start, end, selectedLobs, selectedErrorCode, selectedSite, hideIntentionalCheck, chartProperty);
         history.push(`${pathname}?selectedBrand=${selectedBrands[0]}&${query}`);
-        if (!prev.start || !prev.end || !prev.selectedSite || start.isBefore(prev.start) || end.isAfter(prev.end) || prev.selectedSite !== selectedSite) {
-            fetch(`/getCheckoutFailures?${query}`)
+        if (shouldFetchData(prev, start, end, selectedSite, chartProperty, selectedErrorCode)) {
+            const url = chartProperty === CATEGORY_OPTION
+                ? `/getCheckoutFailureCategoryCounts?${query}`
+                : `/getCheckoutFailureErrorCounts?${query}`;
+            fetch(url)
                 .then(checkResponse)
                 .then((data) => {
-                    setPrev({start, end, data, selectedSite});
+                    setPrev({start, end, data, selectedSite, chartProperty, selectedErrorCode});
                     processData(data);
                 })
                 .catch((err) => {
-                    setError('Failed to retrieve FCI data. Try refreshing the page. '
-                        + `If the problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`);
+                    setError(FETCH_FAILED_MSG);
                     // eslint-disable-next-line no-console
                     console.error(err);
                 })
@@ -145,7 +116,71 @@ const Fci = ({selectedBrands}) => {
             processData(prev.data);
             setIsLoading(false);
         }
-    }, [start, end, selectedLobs, selectedErrorCode, selectedSite, history, pathname, selectedBrands, hideIntentionalCheck, prev, processData, selectedCategory]);
+    }, [start, end, selectedLobs, selectedErrorCode, selectedSite, history, pathname, selectedBrands, hideIntentionalCheck, prev, processData, chartProperty]);
+
+
+    useEffect(() => {
+        if (selectedBucket) {
+            const bucketStart = moment(selectedBucket);
+            const bucketEnd = moment(selectedBucket).add(1, 'hour');
+            const query = getQueryString(bucketStart, bucketEnd, selectedLobs, selectedErrorCode, selectedSite, hideIntentionalCheck, chartProperty);
+            setIsModalLoading(true);
+            setModalError();
+            setIsModalOpen(true);
+            fetch(`/getCheckoutFailures?${query}`)
+                .then(checkResponse)
+                .then((data) => {
+                    const handleOpenEdit = (fci) => {
+                        setModalFci(fci);
+                        setModalEditMode(true);
+                        setIsModalOpen(true);
+                    };
+                    const fcis = getTableData(data, handleOpenEdit);
+                    setTableData(fcis);
+                    setModalFcis(fcis);
+                    setModalEditMode(false);
+                })
+                .catch((err) => {
+                    setModalError(FETCH_FAILED_MSG);
+                    // eslint-disable-next-line no-console
+                    console.error(err);
+                })
+                .finally(() => setIsModalLoading(false));
+        }
+    }, [selectedBucket]);
+
+    const searchFci = () => {
+        setIsModalLoading(true);
+        setModalError();
+        setIsModalOpen(true);
+        fetch(`/getCheckoutFailure?searchId=${searchText}`)
+            .then(checkResponse)
+            .then((data) => {
+                const handleOpenEdit = (fci) => {
+                    setModalFci(fci);
+                    setModalEditMode(true);
+                    setIsModalOpen(true);
+                };
+                const fcis = getTableData(data, handleOpenEdit);
+                setTableData(fcis);
+                setModalFcis(fcis);
+                setModalEditMode(false);
+            })
+            .catch((err) => {
+                setModalError(FETCH_FAILED_MSG);
+                // eslint-disable-next-line no-console
+                console.error(err);
+            })
+            .finally(() => setIsModalLoading(false));
+    };
+
+    const handleEditBack = () => {
+        setModalEditMode(false);
+    };
+
+    const handleNavigationClick = (e, activeLinkIndex) => {
+        setActiveIndex(activeLinkIndex);
+    };
 
     const handleSaveComment = (traceId, comment, isFci) => {
         const found = tableData.findIndex(({Trace}) => Trace === traceId);
@@ -165,7 +200,6 @@ const Fci = ({selectedBrands}) => {
         setSelectedLobs(pendingLobs);
         setSelectedErrorCode(pendingErrorCode);
         setSelectedSite(pendingSite);
-        setSelectedCategory(pendingCategory);
         setHideIntentionalCheck(pendingHideIntentionalCheck);
         setIsDirtyForm(false);
     };
@@ -192,26 +226,16 @@ const Fci = ({selectedBrands}) => {
         setIsDirtyForm(true);
     };
 
-    const handleCategoryChange = (e) => {
-        setPendingCategory(e && e.value);
-        setIsDirtyForm(true);
-    };
-
     const handleHideIntentionalCheck = (e) => {
         setPendingHideIntentionalCheck(e && e.target && e.target.checked);
         setIsDirtyForm(true);
     };
 
     const handleDotClick = (selected) => {
-        if (selected && selected.dataKey) {
-            const value = selected.dataKey;
-            if (chartProperty === CODE_OPTION) {
-                setPendingErrorCode(value);
-                setSelectedErrorCode(value);
-            } else if (chartProperty === CATEGORY_OPTION) {
-                setPendingCategory(value);
-                setSelectedCategory(value);
-            }
+        if (selected && selected.payload && selected.payload.timestamp) {
+            setSelectedBucket(selected.payload.timestamp);
+        } else {
+            setSelectedBucket(null);
         }
     };
 
@@ -256,9 +280,8 @@ const Fci = ({selectedBrands}) => {
         }
     };
 
-    return (
-        <div className="fci-container">
-            <h1 className="page-title">{'Failed Customer Interactions (FCI)'}</h1>
+    const renderTrendsTab = () => (
+        <>
             {isSupportedBrand && <div className="form-container">
                 <DatetimeRangePicker
                     onChange={handleDatetimeChange}
@@ -280,14 +303,6 @@ const Fci = ({selectedBrands}) => {
                     options={getBrandSites(selectedBrands[0]).map((x) => ({label: x, value: x}))}
                     onChange={handleSiteChange}
                     placeholder={pendingSite}
-                    isSearchable
-                />
-                <Select
-                    classNamePrefix="category-dropdown"
-                    className="category-dropdown"
-                    options={categories.map((x) => ({label: x, value: x}))}
-                    onChange={handleCategoryChange}
-                    placeholder={pendingCategory}
                     isSearchable
                 />
                 <Checkbox
@@ -341,7 +356,7 @@ const Fci = ({selectedBrands}) => {
                         </RadioGroup>
                         <LineChartWrapper
                             title="Errors over Time"
-                            helpText="Bucketed by 15 minute intervals"
+                            helpText="Bucketed by 15 minute intervals. Note: if filtering by category, FCIs without external error codes will not be included."
                             data={lineChartData}
                             keys={lineChartKeys}
                             onDotClick={handleDotClick}
@@ -351,25 +366,57 @@ const Fci = ({selectedBrands}) => {
                             refAreaLeft={refAreaLeft}
                             refAreaRight={refAreaRight}
                             enableLineHiding
+                            showDot={false}
                         />
                     </>
                 )}
-                <DataTable
-                    title={`FCIs (${tableData.length} results)`}
-                    data={tableData}
-                    columns={FCI_TABLE_COLUMNS}
-                    hiddenColumns={FCI_HIDDEN_TABLE_COLUMNS}
-                    columnsInfo={{LoB: <div>{'Line of Business'}</div>}}
-                    paginated
-                    enableColumnDisplaySettings
-                    enableTextSearch
-                />
             </LoadingContainer>
+        </>
+    );
+
+    const renderSearchTab = () => (
+        <>
+            {isSupportedBrand && <div className="form-container">
+                <FormInput
+                    id="search-input"
+                    name="searchInput"
+                    label="Search by traceid, duaid, xdid, or sessionid"
+                    className="fci-search-input"
+                    onChange={(event) => setSearchText(event.target.value)}
+                    value={searchText}
+                />
+                <button
+                    className="btn btn-primary apply-btn"
+                    type="button"
+                    onClick={searchFci}
+                >
+                    {'Search'}
+                </button>
+            </div>}
+            <LoadingContainer isLoading={isLoading} error={error} className="fci-loading-container" />
+        </>
+    );
+
+    return (
+        <div className="fci-container">
+            <h1 className="page-title">{'Failed Customer Interactions (FCI)'}</h1>
+            <Navigation
+                noMobileSelect
+                activeIndex={activeIndex}
+                links={navLinks}
+                onLinkClick={handleNavigationClick}
+            />
+            {activeIndex === 0 ? renderTrendsTab() : renderSearchTab()}
             <FciModal
-                data={modalData}
+                fci={modalFci}
+                fcis={modalFcis}
+                editMode={modalEditMode}
                 isOpen={isModalOpen}
+                onEditBack={handleEditBack}
                 onClose={handleModalClose}
                 onSaveComment={handleSaveComment}
+                isLoading={isModalLoading}
+                error={modalError}
             />
         </div>
     );
