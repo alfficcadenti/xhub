@@ -191,6 +191,7 @@ const Fci = ({selectedBrands}) => {
     };
 
     const handleModalClose = () => {
+        setSelectedBucket(null);
         setIsModalOpen(false);
     };
 
@@ -276,6 +277,8 @@ const Fci = ({selectedBrands}) => {
 
     const handleChoiceChange = (event) => {
         if (event && event.target && event.target.value) {
+            setPendingErrorCode(ALL_ERROR_CODES);
+            setSelectedErrorCode(ALL_ERROR_CODES);
             setChartProperty(event.target.value);
         }
     };
@@ -295,6 +298,7 @@ const Fci = ({selectedBrands}) => {
                     options={errorCodes.map((x) => ({label: x, value: x}))}
                     onChange={handleErrorCodeChange}
                     placeholder={pendingErrorCode}
+                    value={pendingErrorCode}
                     isSearchable
                 />
                 <Select
@@ -303,6 +307,7 @@ const Fci = ({selectedBrands}) => {
                     options={getBrandSites(selectedBrands[0]).map((x) => ({label: x, value: x}))}
                     onChange={handleSiteChange}
                     placeholder={pendingSite}
+                    value={pendingSite}
                     isSearchable
                 />
                 <Checkbox
@@ -367,6 +372,7 @@ const Fci = ({selectedBrands}) => {
                             refAreaRight={refAreaRight}
                             enableLineHiding
                             showDot={false}
+                            height={360}
                         />
                     </>
                 )}
