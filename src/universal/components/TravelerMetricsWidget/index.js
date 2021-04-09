@@ -101,6 +101,7 @@ const TravelerMetricsWidget = ({
                     .join('');
         } else {
             tooltip.style.opacity = '0';
+            tooltip.style.display = 'none';
         }
     };
 
