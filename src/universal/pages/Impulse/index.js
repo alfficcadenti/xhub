@@ -69,8 +69,6 @@ const Impulse = (props) => {
     const [selectedAnomaliesMulti, setSelectedAnomaliesMulti] = useState([]);
     const [anomalyTableData, setAnomalyTableData] = useState([]);
 
-    const [allPredictions, setPredictions] = useState([]);
-
     useQueryParamChange(newBrand, props.onBrandChange);
     useSelectedBrand(newBrand, props.onBrandChange, props.prevSelectedBrand);
     const [isLoading,
@@ -90,8 +88,7 @@ const Impulse = (props) => {
         isLatencyHealthy,
         sourceLatency,
         anomaliesMulti,
-        anomalies,
-        predictionData] = useFetchBlipData(
+        anomalies] = useFetchBlipData(
         isApplyClicked,
         setIsApplyClicked,
         startDateTime,
@@ -198,13 +195,7 @@ const Impulse = (props) => {
 
         setAnomaliesData(anomalies);
         filterAnomalies(selectedAnomaliesMulti);
-
-        //setPredictions([...predictionData]);
-
     }, [res, annotations, anomalies]);
-    /*useEffect(() => {
-        setPredictions([...predictionData]);
-    }, [predictionData]);*/
     const customStyles = {
         control: (base) => ({
             ...base,
@@ -248,7 +239,6 @@ const Impulse = (props) => {
                     setTableData={setTableData}
                     anomalies={enableAnomalies ? anomaliesData : []}
                     setAnomalyTableData={setAnomalyTableData}
-                    dataPrediction={predictionData}
                 />);
             default:
                 return (<BookingTrends
@@ -258,7 +248,6 @@ const Impulse = (props) => {
                     annotations={enableIncidents ? annotationsMulti : []}
                     setDaysDifference={setDaysDifference}
                     daysDifference={daysDifference}
-                    dataPrediction={predictionData}
                 />);
         }
     };
@@ -375,6 +364,7 @@ const Impulse = (props) => {
                 activeIndex={activeIndex}
                 links={navLinks}
             />
+            {/*<LoadingContainer isLoading={isLoadingPrediction} error={errorPrediction} className="impulse-loading-container" />*/}
             <LoadingContainer isLoading={isLoading} error={error} className="impulse-loading-container">
                 <div className="impulse-chart-container">
                     <div className="impulse-bookings-container">

@@ -26,7 +26,9 @@ import {
 } from '../../../../../../constants';
 
 const BOOKING_CHART_COLOR = '#336BFF';
-const PREDICTION_CHART_COLOR = '#c9405b';
+//const PREDICTION_CHART_COLOR = '#c9405b';
+const PREDICTION_CHART_COLOR = '#34495E';
+const THREE_WEEK_AVG_COUNT = '3 Week Avg Counts';
 const PREDICTION_COUNT = 'Prediction Counts';
 const BOOKING_COUNT = 'Booking Counts';
 const INCIDENT = 'Incident';
@@ -44,25 +46,13 @@ const IMPULSE_CHART_TYPE = [
         key: 'bookingChart'
     },
     {
-        name: PREDICTION_COUNT,
+        name: THREE_WEEK_AVG_COUNT,
         color: PREDICTION_CHART_COLOR,
         chartType: AreaChartType,
         key: 'predictionChart'
     }
 ];
 
-/* const LEGEND_TYPE = [
-    {
-        value: BOOKING_COUNT,
-        type: 'square',
-        color: BOOKING_CHART_COLOR,
-    },
-    {
-        value: '3 Week Avg Counts',
-        type: 'line',
-        color: PREDICTION_CHART_COLOR
-    }
-];*/
 const LEGEND_TYPE2 = [
     {
         value: INCIDENT,
@@ -103,14 +93,12 @@ const CustomTooltip = ({active, payload}) => {
     return null;
 };
 
-const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSliced, annotations, daysDifference, setDaysDifference, setTableData, anomalies, setAnomalyTableData, dataPrediction = []}) => {
+const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSliced, annotations, daysDifference, setDaysDifference, setTableData, anomalies, setAnomalyTableData}) => {
     let [refAreaLeft, setRefAreaLeft] = useState('');
     let [refAreaRight, setRefAreaRight] = useState('');
     let [newData, setNewData] = useState(data);
     let [left, setLeft] = useState('dataMin');
     let [right, setRight] = useState('dataMax');
-
-    let [newPredictionData, setNewPredictionData] = useState(dataPrediction);
 
     const [hiddenKeys, setHiddenKeys] = useState([]);
     const getGradient = ({key, color}) => {
@@ -128,14 +116,8 @@ const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSlic
     };
     useEffect(() => {
         setNewData(data);
-        setNewPredictionData([]);
         console.log(data);
-        console.log(dataPrediction);
     }, [data]);
-    useEffect(() => {
-        console.log('this is working');
-        setNewPredictionData(dataPrediction);
-    }, [dataPrediction]);
     const zoomIn = () => {
         if (refAreaLeft === refAreaRight || refAreaRight === '') {
             setRefAreaLeft('');
@@ -169,13 +151,13 @@ const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSlic
             fill={fill}
             yAxisId={1}
             key={`area${name}`}
+            animationDuration={300}
             hide = {hiddenKeys.includes(name)}
-        /> : <Bar dataKey={name} fillOpacity={1} yAxisId={1} key={`bar${name}`} fill={fill} hide = {hiddenKeys.includes(name)}/>;
+        /> : <Bar dataKey={name} fillOpacity={1} yAxisId={1} key={`bar${name}`} fill={fill} animationDuration={300} hide = {hiddenKeys.includes(name)}/>;
     };
 
     const handleLegendClick = (e) => {
         if (e && e.dataKey) {
-            console.log(e.dataKey);
             const nextHiddenKeys = [...hiddenKeys];
             const foundIdx = hiddenKeys.findIndex((h) => h === e.dataKey);
             if (foundIdx > -1) {
@@ -186,7 +168,6 @@ const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSlic
             setHiddenKeys(nextHiddenKeys);
         }
     };
-
 
     return (
         <div className="bookings-container-box">
@@ -217,7 +198,7 @@ const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSlic
                     <CartesianGrid strokeDasharray="3 3"/>
                     <Tooltip content={<CustomTooltip/>}/>
                     {IMPULSE_CHART_TYPE.map(renderChart)}
-                    <Line type="monotone" data={newPredictionData} dataKey="count" stroke="#008000" yAxisId={1} dot={false} hide = {hiddenKeys.includes('count')}/>
+                    <Line type="monotone" dataKey={PREDICTION_COUNT} stroke="#c9405b" yAxisId={1} strokeWidth={1.5} dot={false} animationDuration={300} hide = {hiddenKeys.includes(PREDICTION_COUNT)}/>
                     {
                         anomalies && anomalies.map((anomaly) => (
                             <ReferenceLine

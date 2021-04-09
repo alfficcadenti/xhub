@@ -9,6 +9,7 @@ import {
 } from '../../constants';
 import moment from 'moment';
 
+const THREE_WEEK_AVG_COUNT = '3 Week Avg Counts';
 const PREDICTION_COUNT = 'Prediction Counts';
 const BOOKING_COUNT = 'Booking Counts';
 
@@ -86,8 +87,8 @@ export const simplifyBookingsData = (bookingsData) => {
         return {
             time: moment.utc(item.time).valueOf(),
             [BOOKING_COUNT]: item.count,
-            [PREDICTION_COUNT]: item.prediction.weightedCount,
-            count: 0
+            [THREE_WEEK_AVG_COUNT]: item.prediction.weightedCount,
+            [PREDICTION_COUNT]: 0
         };
     });
     return simplifiedData;

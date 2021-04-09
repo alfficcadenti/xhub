@@ -13,6 +13,7 @@ import {getFilters, getBrandQueryParam, getQueryString, getRevLoss, startTime, e
 import {checkResponse} from '../utils';
 import moment from 'moment';
 
+const THREE_WEEK_AVG_COUNT = '3 Week Avg Counts';
 const PREDICTION_COUNT = 'Prediction Counts';
 const BOOKING_COUNT = 'Booking Counts';
 const IMPULSE_MAPPING = [
@@ -50,7 +51,8 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
     const [anomalyAnnotations, setAnomalyAnnotations] = useState([]);
     const [anomaliesMulti, setAnomaliesMulti] = useState({});
 
-    const [predictionData, setPredictionData] = useState([]);
+    //const [errorPrediction, setErrorPrediction] = useState('');
+    //const [isLoadingPrediction, setIsLoadingPrediction] = useState(true);
 
     const incidentMultiOptions = [
         {
@@ -150,49 +152,45 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 return {
                     time: moment.utc(item.time).valueOf(),
                     [BOOKING_COUNT]: item.count,
-                    [PREDICTION_COUNT]: item.prediction.weightedCount
+                    [THREE_WEEK_AVG_COUNT]: item.prediction.weightedCount,
+                    [PREDICTION_COUNT]: 0
                 };
             });
             return chartData;
         });
 
-    const fetchPredictions = (start = startDateTime, end = endDateTime) => fetch(`http://opxhub-booking-anomaly-detector-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black/v1/impulse/prediction${getQueryStringPrediction(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`)
-        .then(checkResponse)
-        .then((respJson) => {
-            const chartData = respJson.map((item) => {
-                return {
-                    time: moment.utc(item.time).valueOf(),
-                    count: item.prediction
-                };
-            });
-            setPredictionData(chartData);
+    const fetchPredictions = (start = startDateTime, end = endDateTime) => {
+        //setIsLoadingPrediction(true);
+        Promise.all([
+            fetch(`https://opxhub-ui.us-east-1.prod.expedia.com/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`).then(checkResponse),
+            fetch(`http://opxhub-booking-anomaly-detector-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black/v1/impulse/prediction${getQueryStringPrediction(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`).then(checkResponse)
+        ]).then(([bookingsData, predictionData]) => {
+
+            bookingsData = simplifyBookingsData(bookingsData);
+            predictionData = simplifyPredictionData(predictionData);
+
+            let finalChartData = bookingsData;
+            if (bookingsData.length === predictionData.length) {
+                finalChartData = finalChartData.map((item, i) => {
+                    if (bookingsData.length && predictionData.length && (bookingsData[i].time === predictionData[i].time)) {
+                        return {
+                            ...item,
+                            [PREDICTION_COUNT]: Math.round(predictionData[i].count)
+                        };
+                    }
+                    return item;
+                });
+            }
+            //setIsLoadingPrediction(false);
+            //setErrorPrediction('');
+            setRes(finalChartData);
         })
-        .catch((err) => {
-            console.error(err);
-        });
-
-    /* const fetchCall = (start, end) => Promise.all([
-        fetch(`https://opxhub-ui.us-east-1.prod.expedia.com/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`).then(checkResponse),
-        fetch(`http://localhost:8080/v1/impulse/prediction${getQueryStringPrediction(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`).then(checkResponse)
-    ]).then(([bookingsData, predictionData]) => {
-
-        bookingsData = simplifyBookingsData(bookingsData);
-        predictionData = simplifyPredictionData(predictionData);
-
-        let finalChartData = bookingsData;
-        if (bookingsData.length === predictionData.length) {
-            finalChartData = finalChartData.map((item, i) => {
-                if (bookingsData.length && predictionData.length && (bookingsData[i].time === predictionData[i].time)) {
-                    return {
-                        ...item,
-                        count: Math.round(predictionData[i].count)
-                    };
-                }
-                return item;
+            .catch((err) => {
+                //setIsLoadingPrediction(false);
+                //setErrorPrediction('Check');
+                console.error(err);
             });
-        }
-        return finalChartData;
-    });*/
+    };
 
     const fetchHealth = () => {
         fetch('https://opxhub-ui.us-east-1.prod.expedia.com/v1/impulse/health')
@@ -224,6 +222,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
     const setIntervalForRealTimeData = (timeInterval, type) => setInterval(() => {
         if (type === 'bookingData') {
             getRealTimeData();
+            fetchPredictions(startTime(), endTime());
         } else if (type === 'incidents') {
             fetchIncidents();
         } else if (type === 'health') {
@@ -357,7 +356,8 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
         isLatencyHealthy,
         sourceLatency,
         anomaliesMulti,
-        anomalyAnnotations,
-        predictionData
+        anomalyAnnotations
+        //isLoadingPrediction,
+        //errorPrediction
     ];
 };
