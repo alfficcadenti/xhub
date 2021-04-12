@@ -5,7 +5,8 @@ import {SVGIcon} from '@homeaway/react-svg';
 import {EDIT__16} from '@homeaway/svg-defs';
 import DataTable from '../../components/DataTable';
 import {LOB_LIST} from '../../constants';
-import {ALL_ERROR_CODES, TOP_10_ERROR_CODES, TOP_20_ERROR_CODES, TRACE_TABLE_COLUMNS, SITES, ALL_CATEGORIES, CODE_OPTION, ALL_SITES} from './constants';
+import {ALL_ERROR_CODES, TOP_10_ERROR_CODES, TOP_20_ERROR_CODES, TRACE_TABLE_COLUMNS, SITES, CODE_OPTION, ALL_SITES, CATEGORY_OPTION} from './constants';
+import {EXPEDIA_PARTNER_SERVICES_BRAND, EXPEDIA_BRAND, OPXHUB_SUPPORT_CHANNEL} from '../../constants';
 
 export const getNowDate = () => moment().endOf('minute').toDate();
 
@@ -25,6 +26,24 @@ export const getPresets = () => [
 
 export const getBrandSites = (brand) => SITES[brand] || ['travel.chase.com'];
 
+export const getIsSupportedBrand = (selectedBrands) => [EXPEDIA_PARTNER_SERVICES_BRAND, EXPEDIA_BRAND].includes(selectedBrands[0]);
+
+export const getUnsupportedBrandMsg = (selectedBrands) => `FCIs for ${selectedBrands[0]} is not yet available. `
+    + `For now only ${EXPEDIA_PARTNER_SERVICES_BRAND} and ${EXPEDIA_BRAND} is supported. `
+    + `If you have any questions, please ping ${OPXHUB_SUPPORT_CHANNEL} or leave a comment via our Feedback form.`;
+
+// eslint-disable-next-line complexity
+export const shouldFetchData = (prev, start, end, selectedSite, chartProperty, selectedErrorCode) => (
+    !prev.start
+    || !prev.end
+    || !prev.selectedSite
+    || start.isBefore(prev.start)
+    || end.isAfter(prev.end)
+    || prev.selectedSite !== selectedSite
+    || prev.chartProperty !== chartProperty
+    || prev.selectedErrorCode !== selectedErrorCode
+);
+
 // eslint-disable-next-line complexity
 export const validDateRange = (start, end) => {
     if (!start || !end) {
@@ -37,40 +56,37 @@ export const validDateRange = (start, end) => {
 
 // eslint-disable-next-line complexity
 export const getQueryValues = (search, brand = 'Expedia') => {
-    const {from, to, lobs, errorCode, siteName, category, hideIntentionalCheck} = qs.parse(search);
+    const {from, to, lobs, code, siteName, hideIntentionalCheck} = qs.parse(search);
     const isValidDateRange = validDateRange(from, to);
     return {
-        initialStart: isValidDateRange ? moment(from) : moment().subtract(1, 'hours').startOf('minute'),
+        initialStart: isValidDateRange ? moment(from) : moment().subtract(24, 'hours').startOf('minute'),
         initialEnd: isValidDateRange ? moment(to) : moment(),
-        initialTimeRange: isValidDateRange ? 'Custom' : 'Last 1 Hour',
+        initialTimeRange: isValidDateRange ? 'Custom' : 'Last 24 Hours',
         initialLobs: lobs
             ? lobs.split(',').map((l) => LOB_LIST.find(({value}) => value === l)).filter((l) => l)
             : [],
-        initialErrorCode: errorCode || TOP_20_ERROR_CODES,
         initialSite: getBrandSites(brand).includes(siteName)
             ? siteName
             : getBrandSites(brand)[0],
-        initialCategories: category || ALL_CATEGORIES,
+        initialErrorCode: code || ALL_ERROR_CODES,
         initialHideIntentionalCheck: hideIntentionalCheck === 'true'
     };
 };
 
-export const getQueryString = (start, end, selectedLobs, selectedErrorCode, selectedSite, selectedCategory, hideIntentionalCheck) => {
+export const getQueryString = (start, end, selectedLobs, selectedErrorCode, selectedSite, hideIntentionalCheck, chartProperty) => {
     const dateQuery = `from=${start.toISOString()}&to=${end.toISOString()}`;
     const lobQuery = selectedLobs.length
         ? `&lobs=${selectedLobs.map((lob) => lob.value).join(',')}`
         : '';
-    const errorQuery = selectedErrorCode !== TOP_20_ERROR_CODES
-        ? `&errorCode=${selectedErrorCode}`
+    const errorProperty = chartProperty === CATEGORY_OPTION ? 'category' : 'code';
+    const errorQuery = selectedErrorCode !== ALL_ERROR_CODES
+        ? `&${errorProperty}=${selectedErrorCode}`
         : '';
     const siteQuery = selectedSite !== ALL_SITES
         ? `&siteName=${selectedSite}`
         : '';
-    const categoryQuery = selectedCategory !== ALL_CATEGORIES
-        ? `&category=${selectedCategory}`
-        : '';
     const hideIntentionalCheckQuery = `&hideIntentionalCheck=${hideIntentionalCheck}`;
-    return `${dateQuery}${lobQuery}${errorQuery}${siteQuery}${categoryQuery}${hideIntentionalCheckQuery}`;
+    return `${dateQuery}${lobQuery}${errorQuery}${siteQuery}${hideIntentionalCheckQuery}`;
 };
 
 const initTimeKeys = (start, end) => {
@@ -189,40 +205,42 @@ export const mapComment = (row) => ({
     'Is FCI': String(row.isFci)
 });
 
-export const mapFci = (row) => ({
-    Created: row.timestamp ? moment(row.timestamp).format('YYYY-MM-DD HH:mm') : '-',
-    Session: getPropValue(row, 'sessionId'),
-    Trace: getPropValue(row, 'traceId'),
-    Failure: getPropValue(row, 'failure'),
-    'Intentional': getPropValue(row, 'isIntentional'),
-    'Error Code': getPropValue(row, 'errorCode'),
-    Site: getPropValue(row, 'site'),
-    TPID: getPropValue(row, 'tpId'),
-    EAPID: getPropValue(row, 'eapId'),
-    'SiteID': getPropValue(row, 'siteId'),
-    Category: getPropValue(row, 'category'),
-    LoB: (LOB_LIST.find((l) => l.value === row.lineOfBusiness) || {label: '-'}).label,
-    'Device User Agent ID': getPropValue(row, 'duaId'),
-    Comment: getPropValue(row, 'comment'),
-    'Is FCI': String(row.isFci),
-});
+export const mapFci = (row = {}) => {
+    const {fci = {}, category} = JSON.parse(JSON.stringify(row));
+    return {
+        Created: fci.timestamp ? moment(fci.timestamp).format('YYYY-MM-DD HH:mm') : '-',
+        Session: getPropValue(fci, 'sessionId'),
+        Trace: getPropValue(fci, 'traceId'),
+        Failure: getPropValue(fci, 'failure'),
+        'Intentional': getPropValue(fci, 'isIntentional'),
+        'Error Code': getPropValue(fci, 'errorCode'),
+        Site: getPropValue(fci, 'site'),
+        TPID: getPropValue(fci, 'tpId'),
+        EAPID: getPropValue(fci, 'eapId'),
+        'SiteID': getPropValue(fci, 'siteId'),
+        Category: category || '-',
+        LoB: (LOB_LIST.find((l) => l.value === fci.lineOfBusiness) || {label: '-'}).label,
+        'Device User Agent ID': getPropValue(fci, 'duaId'),
+        Comment: getPropValue(fci, 'comment'),
+        'Is FCI': String(fci.isFci),
+        recordedSessionUrl: getPropValue(row, 'recordedSessionUrl'),
+        traces: (fci.traces || []).map(mapTrace)
+    };
+};
 
-export const getTableData = (data, keys, onOpenTraceLog, onOpenEdit) => {
+export const getTableData = (data, onOpenEdit) => {
     const result = data
-        .filter(({errorCode}) => keys.includes(`${errorCode}`))
         .map((row) => {
             const fci = mapFci(row);
-            const traces = row.traces || [];
-            const logClickHandler = () => onOpenTraceLog(row.traceId, row.recordedSessionUrl, traces.map(mapTrace));
-            const editClickHandler = () => onOpenEdit(row.traceId, fci);
-            const traceCounts = getTraceCounts(traces);
+            const editClickHandler = () => onOpenEdit(fci);
+            const traceCounts = getTraceCounts(fci.traces);
             fci.Traces = (
                 <div
                     className="modal-link"
                     role="button"
                     tabIndex={0}
-                    onClick={logClickHandler}
-                    onKeyUp={logClickHandler}
+                    onClick={editClickHandler}
+                    onKeyUp={editClickHandler}
                 >
                     {`Open Log (${traceCounts.errors} error${traceCounts.errors === 1 ? '' : 's'})`}
                 </div>

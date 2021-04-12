@@ -1,8 +1,8 @@
 import React from 'react';
 import {Dropdown} from '@homeaway/react-dropdown';
-import './BrandSelector.less';
-import {EG_BRAND} from '../../constants';
-import {getBrand} from '../../pages/utils';
+import {EG_BRAND} from '../../../constants';
+import {getBrand} from '../../../pages/utils';
+import './styles.less';
 
 
 const BrandSelector = ({selectedBrands, onBrandChange, brands}) => {

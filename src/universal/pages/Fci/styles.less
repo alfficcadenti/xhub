@@ -1,6 +1,16 @@
 @import '../../mixins.less';
 
 .fci-container {
+    .Navigation {
+        margin-bottom: @spacing-3x;
+    }
+
+    .fci-search-input {
+        float: left;
+        width: 512px;
+        max-width: 512px;
+    }
+
     .form-container {
         margin-bottom: @spacing-2x;
         background: @color-bg-contrast;
@@ -98,6 +108,11 @@
         &:hover {
             color: @color-link-hover;
         }
+    }
+
+    .back-btn {
+        position: absolute;
+        margin-top: -@spacing-5x;
     }
 
     .fci-checkbox .CRB--checkbox {
