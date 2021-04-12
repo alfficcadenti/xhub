@@ -1,34 +1,23 @@
 import React from 'react';
+import {useLocation} from 'react-router-dom';
 import sanitizeHtml from 'sanitize-html';
 import {Dropdown} from '@homeaway/react-dropdown';
 import {QUESTION__24} from '@homeaway/svg-defs';
 import {SVGIcon} from '@homeaway/react-svg';
-import './Help.less';
+import {getPageInfo} from './info';
+import './styles.less';
 
-const renderHelpRow = (label, value, type) => {
-    if (!value) {
-        return null;
-    }
-    let valueComponent;
-    if (!type) {
-        valueComponent = value;
-    } else if (type === 'slack') {
-        valueComponent = <a href={'https://expedia.slack.com/archives/C01A9U8GY2G'} target="_blank" rel="noopener noreferrer">{'#'}{value}</a>;
-    } else if (type === 'email') {
-        valueComponent = <a href={`mailto:${value}`}>{value}</a>;
-    }
-    return (
+const Help = () => {
+    const {pathname} = useLocation();
+    const {
+        title, team, owner, slack = {}, email, description
+    } = getPageInfo(pathname);
+    const renderHelpRow = (label, value) => (
         <div className="help-item">
             <div className="help-label">{label}</div>
-            <div className="help-value">{valueComponent}</div>
+            <div className="help-value">{value || '-'}</div>
         </div>
     );
-};
-
-const Help = ({info}) => {
-    const {
-        title, team, owner, slack, email, description
-    } = info;
 
     return (
         <Dropdown
@@ -45,8 +34,8 @@ const Help = ({info}) => {
                 <div className="help-info">
                     {renderHelpRow('Team', team)}
                     {renderHelpRow('Owner', owner)}
-                    {renderHelpRow('Slack', slack, 'slack')}
-                    {renderHelpRow('E-mail', email, 'email')}
+                    {renderHelpRow('Slack', <a href={`https://expedia.slack.com/archives/${slack.id}`} target="_blank" rel="noopener noreferrer">{'#'}{slack.name}</a>)}
+                    {renderHelpRow('E-mail', <a href={`mailto:${email}`}>{email}</a>)}
                 </div>
                 <div className="help-description">
                     <div

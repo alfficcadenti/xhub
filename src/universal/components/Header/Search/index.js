@@ -2,7 +2,7 @@ import React, {forwardRef} from 'react';
 import Select from 'react-select';
 import {SEARCH__24} from '@homeaway/svg-defs';
 import {SVGIcon} from '@homeaway/react-svg';
-import './Search.less';
+import './styles.less';
 
 const Search = ({isSearchOpen, onSearch, onBlur, onToggleSearch, selectedPages, options}, ref) => {
     return (

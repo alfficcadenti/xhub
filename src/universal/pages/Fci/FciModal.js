@@ -10,34 +10,23 @@ import HelpText from '../../components/HelpText/HelpText';
 import LoadingContainer from '../../components/LoadingContainer';
 import {OPXHUB_SUPPORT_CHANNEL} from '../../constants';
 import {checkResponse} from '../utils';
-import {getFilteredTraceData, mapComment} from './utils';
-import {FCI_DETAIL_COLUMNS, COMMENT_TABLE_COLUMNS, TRACE_TABLE_COLUMNS} from './constants';
+import {mapComment} from './utils';
+import {FCI_DETAIL_COLUMNS, COMMENT_TABLE_COLUMNS, TRACE_TABLE_COLUMNS, FCI_TABLE_COLUMNS, FCI_HIDDEN_TABLE_COLUMNS} from './constants';
 
-const FciModal = ({data, isOpen, onClose, onSaveComment}) => {
-    const {
-        traceId,
-        recordedSessionUrl,
-        details,
-        editMode
-    } = data;
-    const title = editMode
-        ? 'Edit Details'
-        : `Trace Log (ID=${traceId})`;
-    const [filteredData, setFilteredData] = useState([]);
+
+const FciModal = ({fci, fcis, editMode, isOpen, onClose, onSaveComment, onEditBack, isLoading, error}) => {
     const [isDirtyForm, setIsDirtyForm] = useState(false);
     const [comment, setComment] = useState('');
     const [isFci, setIsFci] = useState(true);
     const [comments, setComments] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState();
+    const [isLoadingComments, setIsLoadingComments] = useState(false);
+    const [commentsError, setCommentsError] = useState();
 
     useEffect(() => {
-        if (!editMode) {
-            setFilteredData(getFilteredTraceData(data.data));
-        } else {
-            setIsLoading(true);
-            setError();
-            fetch(`/getComments?traceId=${traceId}`)
+        if (editMode && fci) {
+            setIsLoadingComments(true);
+            setCommentsError();
+            fetch(`/getComments?traceId=${fci.Trace}`)
                 .then(checkResponse)
                 .then((response) => {
                     const mappedComments = (response || [])
@@ -51,14 +40,14 @@ const FciModal = ({data, isOpen, onClose, onSaveComment}) => {
                     }
                 })
                 .catch((err) => {
-                    setError('Failed to retrieve comment data. Try refreshing the page. '
+                    setCommentsError('Failed to retrieve comment data. Try refreshing the page. '
                         + `If the problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`);
                     // eslint-disable-next-line no-console
                     console.error(err);
                 })
-                .finally(() => setIsLoading(false));
+                .finally(() => setIsLoadingComments(false));
         }
-    }, [traceId, data, editMode]);
+    }, [editMode, fci]);
 
     const handleCommentChange = (event) => {
         if (event && event.target) {
@@ -77,6 +66,7 @@ const FciModal = ({data, isOpen, onClose, onSaveComment}) => {
     const handleSave = () => {
         const timestamp = moment().toISOString();
         const author = Cookies.get('email') || 'anonymous';
+        const traceId = fci ? fci.Trace : '-';
         fetch('/addComment', {
             method: 'POST',
             headers: {
@@ -110,11 +100,45 @@ const FciModal = ({data, isOpen, onClose, onSaveComment}) => {
         </div>
     );
 
+    const renderTraceLog = () => (
+        <div className="log-container">
+            <a target="_blank" rel="noopener noreferrer" className="ext-link" href={`https://bex.haystack.exp-prod.net/search?query_1.traceId=${fci ? fci.Trace : '-'}`}>
+                {'Haystack'} <SVGIcon usefill markup={NEW_WINDOW__16} />
+            </a>
+            <a target="_blank" rel="noopener noreferrer" className="ext-link" href={fci.recordedSessionUrl}>
+                {'Glassbox'} <SVGIcon usefill markup={NEW_WINDOW__16} />
+            </a>
+            <HelpText className="help-text" text={'Not all sessions are recorded'} placement="bottom" />
+            <DataTable
+                title={'Error Traces'}
+                info={'See Haystack for full error log.'}
+                data={fci.traces}
+                columns={TRACE_TABLE_COLUMNS}
+                rules={[{column: 'Error', setClass: (val) => val === 'true' ? 'error-cell' : 'success-cell'}]}
+                paginated
+            />
+        </div>
+    );
+
+    const renderBackButton = () => (
+        <div
+            className="modal-link back-btn"
+            onClick={onEditBack}
+            onKeyUp={(e) => e.key === 'Enter' && onEditBack()}
+            role="button"
+            tabIndex={0}
+        >
+            {'Back'}
+        </div>
+    );
+
     const renderDetails = () => (
         <div className="details-container">
+            {fcis && fcis.length ? renderBackButton() : null}
+            <h3>{`FCI Details (traceId="${fci.Trace}")`}</h3>
             <div className="details-table">
                 {FCI_DETAIL_COLUMNS
-                    .map((column) => renderRow(column, details[column]))}
+                    .map((column) => renderRow(column, fci[column]))}
                 <div className="detail-row">
                     <div className="detail-label">{'Comment'}</div>
                     <div className="detail-value">
@@ -149,7 +173,8 @@ const FciModal = ({data, isOpen, onClose, onSaveComment}) => {
                     {'Save'}
                 </div>
             </div>
-            <LoadingContainer isLoading={isLoading} error={error} className="comments-container">
+            {renderTraceLog()}
+            <LoadingContainer isLoading={isLoadingComments} error={commentsError} className="comments-container">
                 <DataTable
                     title={'History'}
                     data={comments}
@@ -160,22 +185,16 @@ const FciModal = ({data, isOpen, onClose, onSaveComment}) => {
         </div>
     );
 
-    const renderTraceLog = () => (
+    const renderFciTable = () => (
         <div className="log-container">
-            <a target="_blank" rel="noopener noreferrer" className="ext-link" href={`https://bex.haystack.exp-prod.net/search?query_1.traceId=${traceId}`}>
-                {'Haystack'} <SVGIcon usefill markup={NEW_WINDOW__16} />
-            </a>
-            <a target="_blank" rel="noopener noreferrer" className="ext-link" href={recordedSessionUrl}>
-                {'Glassbox'} <SVGIcon usefill markup={NEW_WINDOW__16} />
-            </a>
-            <HelpText className="help-text" text={'Not all sessions are recorded'} placement="bottom" />
             <DataTable
-                title={'Error Traces'}
-                info={'See Haystack for full error log.'}
-                data={filteredData}
-                columns={TRACE_TABLE_COLUMNS}
-                rules={[{column: 'Error', setClass: (val) => val === 'true' ? 'error-cell' : 'success-cell'}]}
+                title={`FCIs (${fcis.length} results)`}
+                data={fcis}
+                columns={FCI_TABLE_COLUMNS}
+                hiddenColumns={FCI_HIDDEN_TABLE_COLUMNS}
                 paginated
+                enableColumnDisplaySettings
+                enableTextSearch
             />
         </div>
     );
@@ -188,13 +207,14 @@ const FciModal = ({data, isOpen, onClose, onSaveComment}) => {
 
     return (
         <Modal
-            title={title}
             id="fci-modal"
             className="fci-modal"
             isOpen={isOpen}
             onClose={handleOnClose}
         >
-            {editMode ? renderDetails() : renderTraceLog()}
+            <LoadingContainer isLoading={isLoading} error={error}>
+                {editMode ? renderDetails() : renderFciTable()}
+            </LoadingContainer>
         </Modal>
     );
 };

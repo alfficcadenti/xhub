@@ -33,10 +33,10 @@ describe('Fci Utils', () => {
 
     it('getQueryValues - default', () => {
         const result = getQueryValues();
-        expect(result.initialTimeRange).to.be.eql('Last 1 Hour');
+        expect(result.initialTimeRange).to.be.eql('Last 24 Hours');
         expect(result.initialLobs).to.be.eql([]);
-        expect(result.initialErrorCode).to.be.eql(TOP_20_ERROR_CODES);
         expect(result.initialSite).to.be.eql(ALL_SITES);
+        expect(result.initialErrorCode).to.be.eql(ALL_ERROR_CODES);
         expect(result.initialHideIntentionalCheck).to.be.eql(false);
     });
 
@@ -48,7 +48,7 @@ describe('Fci Utils', () => {
         const site = 'travel.chase.com';
         const urlBrand = 'Expedia';
         const intentional = true;
-        const result = getQueryValues(`?from=${start}&to=${end}&lobs=${lob}&errorCode=${errorCode}&siteName=${site}&selectedBrand=${urlBrand}&hideIntentionalCheck=${intentional}`, EXPEDIA_PARTNER_SERVICES_BRAND);
+        const result = getQueryValues(`?from=${start}&to=${end}&lobs=${lob}&code=${errorCode}&siteName=${site}&selectedBrand=${urlBrand}&hideIntentionalCheck=${intentional}`, EXPEDIA_PARTNER_SERVICES_BRAND);
         expect(result.initialStart.isSame(start, 'day')).to.be.eql(true);
         expect(result.initialEnd.isSame(end, 'day')).to.be.eql(true);
         expect(result.initialTimeRange).to.be.eql('Custom');
@@ -186,44 +186,50 @@ describe('Fci Utils', () => {
 
     it('mapFci', () => {
         const row = {
-            timestamp: '2021-01-15T16:36:00.000Z',
-            sessionId: 'sessionId',
-            traceId: 'traceId',
-            failure: 'failure',
-            isIntentional: 'true',
-            errorCode: 'errorCode',
-            site: 'site',
-            tpId: 'tpId',
-            eapId: 'eapId',
-            siteId: 'siteId',
+            fci: {
+                timestamp: '2021-01-15T16:36:00.000Z',
+                sessionId: 'sessionId',
+                traceId: 'traceId',
+                failure: 'failure',
+                isIntentional: 'true',
+                errorCode: 'errorCode',
+                site: 'site',
+                tpId: 'tpId',
+                eapId: 'eapId',
+                siteId: 'siteId',
+                lineOfBusiness: 'F',
+                duaId: 'duaId',
+                comment: 'comment',
+                isFci: true
+            },
             category: 'category',
-            lineOfBusiness: 'F',
-            duaId: 'duaId',
-            comment: 'comment',
-            isFci: true
+            recordedSessionUrl: 'recordedSessionUrl'
         };
+        const {fci, category, recordedSessionUrl} = row;
         expect(mapFci(row)).to.eql({
-            Created: moment(row.timestamp).format('YYYY-MM-DD HH:mm'),
-            Session: row.sessionId,
-            Trace: row.traceId,
-            Failure: row.failure,
-            Intentional: row.isIntentional,
-            'Error Code': row.errorCode,
-            Site: row.site,
-            TPID: row.tpId,
-            EAPID: row.eapId,
-            'SiteID': row.siteId,
-            Category: row.category,
+            Created: moment(fci.timestamp).format('YYYY-MM-DD HH:mm'),
+            Session: fci.sessionId,
+            Trace: fci.traceId,
+            Failure: fci.failure,
+            Intentional: fci.isIntentional,
+            'Error Code': fci.errorCode,
+            Site: fci.site,
+            TPID: fci.tpId,
+            EAPID: fci.eapId,
+            'SiteID': fci.siteId,
+            Category: category,
             LoB: 'Flights',
-            'Device User Agent ID': row.duaId,
-            Comment: row.comment,
-            'Is FCI': String(row.isFci)
+            'Device User Agent ID': fci.duaId,
+            Comment: fci.comment,
+            'Is FCI': String(fci.isFci),
+            recordedSessionUrl,
+            traces: []
         });
     });
 
     it('mapFci - null values', () => {
         const BLANK = '-';
-        expect(mapFci({})).to.eql({
+        expect(mapFci()).to.eql({
             Created: BLANK,
             Session: BLANK,
             Trace: BLANK,
@@ -238,7 +244,9 @@ describe('Fci Utils', () => {
             LoB: BLANK,
             'Device User Agent ID': BLANK,
             Comment: BLANK,
-            'Is FCI': 'undefined'
+            'Is FCI': 'undefined',
+            recordedSessionUrl: BLANK,
+            traces: [],
         });
     });
 
