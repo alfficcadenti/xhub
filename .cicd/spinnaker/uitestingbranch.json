@@ -150,30 +150,12 @@
 			"job": "opxhub-nw-test-kube"
 		},
 		{
-			"name": "Deploy-To-USE1-Prod_execute",
-			"type": "jenkins",
+			"name": "Deploy-To-USE1-Prod",
+			"type": "manualJudgment",
 			"refId": "9",
 			"requisiteStageRefIds": [
 				"3",
 				"4"
-			],
-			"failPipeline": false,
-			"continuePipeline": false,
-			"completeOtherBranchesThenFail": true,
-			"master": "trinity.tools",
-			"job": "eweprod-a_deploy-docker-ecs",
-			"parameters": {
-				"PERFORM_RELEASE": false,
-				"ROLE_NAME": "opxhub-ui",
-				"VERSION": "${trigger.parameters.version}"
-			}
-		},
-		{
-			"name": "Deploy-To-USE1-Prod",
-			"type": "manualJudgment",
-			"refId": "10",
-			"requisiteStageRefIds": [
-				"9"
 			],
 			"failPipeline": false,
 			"continuePipeline": false,
@@ -198,6 +180,24 @@
 			],
 			"sendNotifications": true,
 			"stageTimeoutMs": 300000
+		},
+		{
+			"name": "Deploy-To-USE1-Prod_execute",
+			"type": "jenkins",
+			"refId": "10",
+			"requisiteStageRefIds": [
+				"9"
+			],
+			"failPipeline": false,
+			"continuePipeline": false,
+			"completeOtherBranchesThenFail": true,
+			"master": "trinity.tools",
+			"job": "eweprod-a_deploy-docker-ecs",
+			"parameters": {
+				"PERFORM_RELEASE": false,
+				"ROLE_NAME": "opxhub-ui",
+				"VERSION": "${trigger.parameters.version}"
+			}
 		},
 		{
 			"name": "Release-To-USE1-Prod",
