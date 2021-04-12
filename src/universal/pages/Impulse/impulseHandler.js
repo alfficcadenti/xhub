@@ -12,7 +12,6 @@ import moment from 'moment';
 const THREE_WEEK_AVG_COUNT = '3 Week Avg Counts';
 const BOOKING_COUNT = 'Booking Counts';
 
-
 export const getFilters = (data = [], typeOfFilter) =>
     data.filter((item) => item.tag === typeOfFilter).map((item) => item.values)[0].map((a) => ({
         value: a,

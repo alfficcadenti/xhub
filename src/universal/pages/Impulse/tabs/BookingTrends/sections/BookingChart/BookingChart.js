@@ -98,9 +98,9 @@ const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSlic
     let [newData, setNewData] = useState(data);
     let [left, setLeft] = useState('dataMin');
     let [right, setRight] = useState('dataMax');
+    const [hiddenKeys, setHiddenKeys] = useState([]);
     let LEGEND_TYPE = data && data[0][PREDICTION_COUNT] ? 'line' : 'none';
 
-    const [hiddenKeys, setHiddenKeys] = useState([]);
     const getGradient = ({key, color}) => {
         const id = `color${key}`;
         return (<linearGradient key={`${key}Gradient`} id={id} x1="0" y1="0" x2="0" y2="1" spreadMethod="reflect">
