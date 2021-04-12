@@ -364,7 +364,6 @@ const Impulse = (props) => {
                 activeIndex={activeIndex}
                 links={navLinks}
             />
-            {/*<LoadingContainer isLoading={isLoadingPrediction} error={errorPrediction} className="impulse-loading-container" />*/}
             <LoadingContainer isLoading={isLoading} error={error} className="impulse-loading-container">
                 <div className="impulse-chart-container">
                     <div className="impulse-bookings-container">

@@ -26,8 +26,7 @@ import {
 } from '../../../../../../constants';
 
 const BOOKING_CHART_COLOR = '#336BFF';
-//const PREDICTION_CHART_COLOR = '#c9405b';
-const PREDICTION_CHART_COLOR = '#34495E';
+const THREE_WEEK_AVG_COUNT_COLOR = '#34495E';
 const THREE_WEEK_AVG_COUNT = '3 Week Avg Counts';
 const PREDICTION_COUNT = 'Prediction Counts';
 const BOOKING_COUNT = 'Booking Counts';
@@ -47,7 +46,7 @@ const IMPULSE_CHART_TYPE = [
     },
     {
         name: THREE_WEEK_AVG_COUNT,
-        color: PREDICTION_CHART_COLOR,
+        color: THREE_WEEK_AVG_COUNT_COLOR,
         chartType: AreaChartType,
         key: 'predictionChart'
     }
@@ -99,6 +98,7 @@ const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSlic
     let [newData, setNewData] = useState(data);
     let [left, setLeft] = useState('dataMin');
     let [right, setRight] = useState('dataMax');
+    let LEGEND_TYPE = data && data[0][PREDICTION_COUNT] ? 'line' : 'none';
 
     const [hiddenKeys, setHiddenKeys] = useState([]);
     const getGradient = ({key, color}) => {
@@ -116,7 +116,6 @@ const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSlic
     };
     useEffect(() => {
         setNewData(data);
-        console.log(data);
     }, [data]);
     const zoomIn = () => {
         if (refAreaLeft === refAreaRight || refAreaRight === '') {
@@ -198,7 +197,7 @@ const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSlic
                     <CartesianGrid strokeDasharray="3 3"/>
                     <Tooltip content={<CustomTooltip/>}/>
                     {IMPULSE_CHART_TYPE.map(renderChart)}
-                    <Line type="monotone" dataKey={PREDICTION_COUNT} stroke="#c9405b" yAxisId={1} strokeWidth={1.5} dot={false} animationDuration={300} hide = {hiddenKeys.includes(PREDICTION_COUNT)}/>
+                    <Line legendType={LEGEND_TYPE} type="monotone" dataKey={PREDICTION_COUNT} stroke="#c9405b" yAxisId={1} strokeWidth={1.5} dot={false} animationDuration={300} hide = {hiddenKeys.includes(PREDICTION_COUNT)}/>
                     {
                         anomalies && anomalies.map((anomaly) => (
                             <ReferenceLine
