@@ -36,13 +36,13 @@ describe('impulseHandler', () => {
 
     describe('test getQueryParam', () => {
         it('should return empty string if All LOBs passed', () => {
-            expect(getQueryParamMulti('lob', 'All LOBs', false, '')).eql('');
+            expect(getQueryParamMulti('lob', '')).eql('');
         });
         it('should return query string if valid LOB passed', () => {
-            expect(getQueryParamMulti('lob', ['Car'], true, '')).eql('&lob=Car');
+            expect(getQueryParamMulti('lob', ['Car'])).eql('&lob=Car');
         });
         it('should return query string if valid LOBs if multiple LOBs passed', () => {
-            expect(getQueryParamMulti('lob', ['Car', 'Air'], true, '')).eql('&lob=Car,Air');
+            expect(getQueryParamMulti('lob', ['Car', 'Air'])).eql('&lob=Car,Air');
         });
     });
     describe('test brand query string', () => {
