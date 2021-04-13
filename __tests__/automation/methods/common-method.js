@@ -3,7 +3,7 @@ import { TIMEOUT_NEW_PAGE } from '../utils/consts';
 
 export const navigateToHomepage = async (browser, brand) => {
     const brandName = selectedBrand[brand]
-    const completeUrl = `https://opxhub-ui.us-west-2.test.expedia.com/home?selectedBrand=${brandName}`;
+    const completeUrl = `https://opxhub-ui.us-east-1.prod.expedia.com/home?selectedBrand=${brandName}`;
     console.info(`[info] Navigate to: ${completeUrl}`);
     await browser.navigate(completeUrl);
 };
@@ -76,3 +76,9 @@ export const clickOnHomePageLink = async (browser, element) => {
 export const verifyTitleMatch = async (browser, element, title) => {
     await browser.expect.element(`${element}`).text.to.contain(`${title}`);
 };
+
+export const changeAndVerifyInputValue = async (browser, element, value) => {
+    await waitForElement(browser,`${element}`,'present');
+    await browser.setValue(element, value);
+    await browser.expect.element(element).to.have.attribute('value');
+}
