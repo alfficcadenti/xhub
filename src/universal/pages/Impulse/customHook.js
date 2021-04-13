@@ -161,16 +161,16 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             fetch(`/v1/impulse/prediction${getQueryStringPrediction(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`).then(checkResponse)
         ]).then(([bookingsData, predictionData]) => {
 
-            bookingsData = simplifyBookingsData(bookingsData);
-            predictionData = simplifyPredictionData(predictionData);
+            const simplifiedBookingsData = simplifyBookingsData(bookingsData);
+            const simplifiedPredictionData = simplifyPredictionData(predictionData);
 
-            let finalChartData = bookingsData;
-            if (bookingsData.length === predictionData.length) {
+            let finalChartData = simplifiedBookingsData;
+            if (simplifiedBookingsData.length === simplifiedPredictionData.length) {
                 finalChartData = finalChartData.map((item, i) => {
-                    if (bookingsData.length && predictionData.length && (bookingsData[i].time === predictionData[i].time)) {
+                    if (simplifiedBookingsData.length && simplifiedPredictionData.length && (simplifiedBookingsData[i].time === simplifiedPredictionData[i].time)) {
                         return {
                             ...item,
-                            [PREDICTION_COUNT]: Math.round(predictionData[i].count)
+                            [PREDICTION_COUNT]: Math.round(simplifiedPredictionData[i].count)
                         };
                     }
                     return item;
@@ -246,7 +246,8 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
         }
     };
     const getPredictions = () => {
-        if ((moment(endDateTime).diff(moment(startDateTime), 'days') >= 1) && (moment(endDateTime).diff(moment(startDateTime), 'days') < 7)) {
+        const dayRange = moment(endDateTime).diff(moment(startDateTime), 'days');
+        if (dayRange >= 1 && dayRange < 7) {
             fetchPredictions();
         }
     };
