@@ -1,6 +1,7 @@
 import {expect} from 'chai';
 import moment from 'moment';
 import {EXPEDIA_BRAND, SUCCESS_RATES_PAGES_LIST} from '../../../constants';
+import {AVAILABLE_LOBS} from '../constants';
 import {
     shouldShowTooltip,
     successRatesRealTimeObject,
@@ -98,6 +99,14 @@ describe('getAllAvailableLOBs()', () => {
 
     it('returns correctly filtered LOBs', () => {
         expect(getAllAvailableLOBs(currentLOBs)).to.have.length(3);
+    });
+});
+
+describe('getAllAvailableLOBs()', () => {
+    const currentLOBs = ['C', 'F', 'H'];
+
+    it('returns currently supported LOBs', () => {
+        expect(getAllAvailableLOBs(AVAILABLE_LOBS).map(({value}) => value)).to.eql(currentLOBs);
     });
 });
 
