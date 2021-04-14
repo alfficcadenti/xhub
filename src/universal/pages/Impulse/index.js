@@ -68,6 +68,7 @@ const Impulse = (props) => {
     const [enableAnomalies, setEnableAnomalies] = useState(true);
     const [selectedAnomaliesMulti, setSelectedAnomaliesMulti] = useState([]);
     const [anomalyTableData, setAnomalyTableData] = useState([]);
+
     useQueryParamChange(newBrand, props.onBrandChange);
     useSelectedBrand(newBrand, props.onBrandChange, props.prevSelectedBrand);
     const [isLoading,

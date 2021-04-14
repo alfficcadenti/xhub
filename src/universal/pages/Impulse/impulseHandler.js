@@ -9,6 +9,8 @@ import {
 } from '../../constants';
 import moment from 'moment';
 
+const THREE_WEEK_AVG_COUNT = '3 Week Avg Counts';
+const BOOKING_COUNT = 'Booking Counts';
 
 export const getFilters = (data = [], typeOfFilter) =>
     data.filter((item) => item.tag === typeOfFilter).map((item) => item.values)[0].map((a) => ({
@@ -27,7 +29,7 @@ export const getFiltersForMultiKeys = (keys = [], data = {}, typeOfFilter) => ke
         .sort((A, B) => A.value.localeCompare(B.value)))
     .filter((v, i, a) => a.findIndex((t) => (t.label === v.label && t.value === v.value)) === i);
 
-export const getQueryParamMulti = (key, value, condition, defaultValue = '') => condition ? `&${key}=${value.join(',')}` : defaultValue;
+export const getQueryParamMulti = (key, value) => value && value.length ? `&${key}=${value.join(',')}` : '';
 export const getBrandQueryParam = (IMPULSE_MAPPING, globalBrandName) => {
     let globalBrand = IMPULSE_MAPPING.find((brandNames) => brandNames.globalFilter === globalBrandName)?.impulseFilter;
     if (globalBrand !== ALL_BRAND_GROUP) {
@@ -58,14 +60,37 @@ export const getColor = (anomaly) => {
     return UPSTREAM_UNHEALTHY_COLOR;
 };
 
-export const getQueryString = (start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti) => {
-    let query = `?startDate=${start.format('YYYY-MM-DDTHH:mm:ss')}Z&endDate=${end.format('YYYY-MM-DDTHH:mm:ss')}Z`;
-    query += getQueryParamMulti('egSiteUrl', selectedSiteURLMulti, selectedSiteURLMulti.length !== 0);
-    query += getQueryParamMulti('lob', selectedLobMulti, selectedLobMulti.length !== 0);
-    query += getQueryParamMulti('brand', selectedBrandMulti, selectedBrandMulti.length !== 0);
-    query += getQueryParamMulti('deviceType', selectedDeviceTypeMulti, selectedDeviceTypeMulti.length !== 0);
-    query += getBrandQueryParam(IMPULSE_MAPPING, globalBrandName);
-    return query;
-};
+export const getQueryString = (start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti) => (
+    `?startDate=${start.format('YYYY-MM-DDTHH:mm:ss')}Z&endDate=${end.format('YYYY-MM-DDTHH:mm:ss')}Z`
+    + `${getQueryParamMulti('egSiteUrl', selectedSiteURLMulti)}`
+    + `${getQueryParamMulti('lob', selectedLobMulti)}`
+    + `${getQueryParamMulti('brand', selectedBrandMulti)}`
+    + `${getQueryParamMulti('deviceType', selectedDeviceTypeMulti)}`
+    + `${getBrandQueryParam(IMPULSE_MAPPING, globalBrandName)}`
+);
+
+export const getQueryStringPrediction = (start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti) => (
+    `?start_time=${start.format('YYYY-MM-DDTHH:mm:ss')}Z&end_time=${end.format('YYYY-MM-DDTHH:mm:ss')}Z`
+    + `${getQueryParamMulti('egSiteUrl', selectedSiteURLMulti)}`
+    + `${getQueryParamMulti('lob', selectedLobMulti)}`
+    + `${getQueryParamMulti('brand', selectedBrandMulti)}`
+    + `${getQueryParamMulti('device_type', selectedDeviceTypeMulti)}`
+    + `${getBrandQueryParam(IMPULSE_MAPPING, globalBrandName)}`
+);
+
+export const simplifyBookingsData = (bookingsData) => (
+    bookingsData.map(({time, count, prediction}) => ({
+        time: moment.utc(time).valueOf(),
+        [BOOKING_COUNT]: count,
+        [THREE_WEEK_AVG_COUNT]: prediction.weightedCount
+    }))
+);
+
+export const simplifyPredictionData = (predictionData) => (
+    predictionData.map(({time, prediction}) => ({
+        time: moment.utc(time).valueOf(),
+        count: prediction
+    }))
+);
 export const startTime = () => moment().utc().subtract(3, 'days').startOf('minute');
 export const endTime = () => moment().utc().endOf('minute');
