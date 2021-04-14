@@ -10,6 +10,34 @@ Feature: Verify user is able to navigate around Impulse Dashboard
     Then user go ahead and clicks on the <link>
     Then user wait for the data to load
     Then the current page title contain Impulse Dashboard
+    Then user selects start date
+    Then user selects end date
+    Then user selects brand filter
+    Then submit filters
+    Then user wait for the data to load
+    Then reset filters
+    Then user selects lob filter
+    Then submit filters
+    Then user wait for the data to load
+    Then reset filters
+    Then user selects pos filter
+    Then submit filters
+    Then user wait for the data to load
+    Then reset filters
+    Then select incidents filter
+    Then reset filters
+    Then select anomalies filter
+    Then reset filters
+    Then select checkboxes
+    Then select advance filters
+    Then submit filters
+    Then user wait for the data to load
+    Then reset filters
+    Then set time filter
+    Then submit filters
+    Then user wait for the data to load
+    Then reset graph
+    Then user wait for the data to load
 
     Examples:
     | brand                    | link                    |

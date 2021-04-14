@@ -238,7 +238,7 @@
 	],
 	"triggers": [
 		{
-			"branch": "OE-1561",
+			"branch": "OE-1647",
 			"enabled": true,
 			"project": "eg-reo-opex",
 			"slug": "opxhub-ui",
