@@ -160,7 +160,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             fetch(`/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`).then(checkResponse),
             fetch(`/v1/impulse/prediction${getQueryStringPrediction(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`).then(checkResponse)
         ]).then(([bookingsData, predictionData]) => {
-
             const simplifiedBookingsData = simplifyBookingsData(bookingsData);
             const simplifiedPredictionData = simplifyPredictionData(predictionData);
 
