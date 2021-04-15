@@ -148,7 +148,7 @@ export const traceHasError = (t) => {
 };
 
 export const getTraceCounts = (traces) => traces.reduce((acc, curr) => {
-    if (traceHasError(curr)) {
+    if (curr.Error === 'true') {
         acc.errors++;
     }
     acc.total++;
