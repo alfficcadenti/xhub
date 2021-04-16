@@ -23,45 +23,15 @@ export const selectEndingDate = async browser => {
     await browser.click('@dateSwitch');
 };
 
-export const selectBrandFilter = async browser => {
-    await browser.click('@brandFilter');
-    await browser.click('@brandOptionFilter1');
-    await browser.click('@brandFilter');
-    await browser.click('@brandOptionFilter2');
+export const selectOneElementOfFilter = async (browser, button, listElement) => {
+    await waitForElement(browser, `@${button}`, 'present');
+    await browser.click(`@${button}`);
+    await browser.click(`@${listElement}`);
 };
 
-export const selectLobFilter = async browser => {
-    await browser.click('@lobFilter');
-    await browser.click('@lobOptionFilter');
-};
-
-export const selectPosFilter = async browser => {
-    await browser.click('@posFilter');
-    await browser.click('@posOptionFilter');
-};
-
-export const submitFilters = async browser => {
-    await browser.click('@submitFilters')
-};
-
-export const resetFilters = async browser => {
-    await browser.click('@resetFilters')
-};
-
-export const selectCheckboxes = async browser => {
-    await browser.click('@incidentsCheckbox');
-    await browser.click('@anomaliesCheckbox');
-};
-
-export const selectIncidentsFilter = async browser => {
-    await browser.click('@incidentsFilter');
-    await browser.click('@incidentsOptionFilter');
-};
-
-export const selectAnomaliesFilter = async browser => {
-    await browser.click('@anomaliesFilter');
-    await browser.click('@anomaliesOptionFilter');
-};
+export const clickOn = async (browser, element) => {
+    await browser.click(`@${element}`)
+}
 
 export const selectAdvanceFilters = async browser => {
     await browser.click('@moreFiltersButton');
@@ -70,11 +40,8 @@ export const selectAdvanceFilters = async browser => {
     await browser.click('@deviceOptionFilter');
 };
 
-export const setTimeFilter = async browser => {
-    await browser.click('@setTimeFilter');
-    await browser.click('@setTimeFilterOption');
-};
-
-export const resetGraph = async browser => {
-    await browser.click('@resetGraph');
+export const selectAnnotationsFilter = async browser => {
+    await browser.click('@annotationsButton')
+    await waitForElement(browser, '@annotationsContainer', 'visible');
+    await browser.setValue('@annotationsSearchInput', 'search');
 };

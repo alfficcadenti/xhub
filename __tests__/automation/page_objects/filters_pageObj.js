@@ -95,6 +95,27 @@ module.exports = {
         },
         resetGraph: {
             selector: '.reset-btn'
+        },
+        businessFilter: {
+            selector: '.lob-select__control'
+        },
+        businessFilterOption: {
+            selector: '.lob-select__menu-list #react-select-12-option-0'
+        },
+        resetFilterButton: {
+            selector: '.css-tlfecz-indicatorContainer:nth-child(1)'
+        },
+        annotationsButton: {
+            selector: '.display-annotations-btn'
+        },
+        annotationsContainer: {
+            selector: '.open.annotations-wrapper'
+        },
+        annotationsSearchInput: {
+            selector: 'input[id="searchable-list-input"]'
+        },
+        setDateButton: {
+            selector: '.dates-button'
         }
     }
 };
