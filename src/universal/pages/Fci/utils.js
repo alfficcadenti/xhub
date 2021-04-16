@@ -18,7 +18,7 @@ export const getUnsupportedBrandMsg = (selectedBrands) => `FCIs for ${selectedBr
     + `If you have any questions, please ping ${OPXHUB_SUPPORT_CHANNEL} or leave a comment via our Feedback form.`;
 
 // eslint-disable-next-line complexity
-export const shouldFetchData = (prev, start, end, selectedSite, chartProperty, selectedErrorCode) => (
+export const shouldFetchData = (prev, start, end, selectedSite, chartProperty, selectedErrorCode, hideIntentionalCheck) => (
     !prev.start
     || !prev.end
     || !prev.selectedSite
@@ -27,6 +27,7 @@ export const shouldFetchData = (prev, start, end, selectedSite, chartProperty, s
     || prev.selectedSite !== selectedSite
     || prev.chartProperty !== chartProperty
     || prev.selectedErrorCode !== selectedErrorCode
+    || prev.hideIntentionalCheck !== hideIntentionalCheck
 );
 
 // eslint-disable-next-line complexity
@@ -41,7 +42,7 @@ export const validDateRange = (start, end) => {
 
 // eslint-disable-next-line complexity
 export const getQueryValues = (search, brand = 'Expedia') => {
-    const {from, to, lobs, code, siteName, hideIntentionalCheck} = qs.parse(search);
+    const {from, to, lobs, code, siteName, hideIntentional} = qs.parse(search);
     const isValidDateRange = validDateRange(from, to);
     return {
         initialStart: isValidDateRange ? moment(from) : moment().subtract(24, 'hours').startOf('minute'),
@@ -54,7 +55,7 @@ export const getQueryValues = (search, brand = 'Expedia') => {
             ? siteName
             : getBrandSites(brand)[0],
         initialErrorCode: code || ALL_ERROR_CODES,
-        initialHideIntentionalCheck: hideIntentionalCheck === 'true'
+        initialHideIntentionalCheck: hideIntentional === 'true'
     };
 };
 
@@ -70,7 +71,7 @@ export const getQueryString = (start, end, selectedLobs, selectedErrorCode, sele
     const siteQuery = selectedSite !== ALL_SITES
         ? `&siteName=${selectedSite}`
         : '';
-    const hideIntentionalCheckQuery = `&hideIntentionalCheck=${hideIntentionalCheck}`;
+    const hideIntentionalCheckQuery = `&hideIntentional=${hideIntentionalCheck}`;
     return `${dateQuery}${lobQuery}${errorQuery}${siteQuery}${hideIntentionalCheckQuery}`;
 };
 
@@ -191,7 +192,7 @@ export const mapComment = (row) => ({
 });
 
 export const mapFci = (row = {}) => {
-    const {fci = {}, category} = JSON.parse(JSON.stringify(row));
+    const {fci = {}, category = []} = JSON.parse(JSON.stringify(row));
     return {
         Created: fci.timestamp ? moment(fci.timestamp).format('YYYY-MM-DD HH:mm') : '-',
         Session: getPropValue(fci, 'sessionId'),
@@ -203,7 +204,7 @@ export const mapFci = (row = {}) => {
         TPID: getPropValue(fci, 'tpId'),
         EAPID: getPropValue(fci, 'eapId'),
         'SiteID': getPropValue(fci, 'siteId'),
-        Category: category || '-',
+        Category: category.join(', ') || '-',
         LoB: (LOB_LIST.find((l) => l.value === fci.lineOfBusiness) || {label: '-'}).label,
         'Device User Agent ID': getPropValue(fci, 'duaId'),
         Comment: getPropValue(fci, 'comment'),

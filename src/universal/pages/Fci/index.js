@@ -96,14 +96,14 @@ const Fci = ({selectedBrands}) => {
         setError(null);
         const query = getQueryString(start, end, selectedLobs, selectedErrorCode, selectedSite, hideIntentionalCheck, chartProperty);
         history.push(`${pathname}?selectedBrand=${selectedBrands[0]}&${query}`);
-        if (shouldFetchData(prev, start, end, selectedSite, chartProperty, selectedErrorCode)) {
+        if (shouldFetchData(prev, start, end, selectedSite, chartProperty, selectedErrorCode, hideIntentionalCheck)) {
             const url = chartProperty === CATEGORY_OPTION
                 ? `/getCheckoutFailureCategoryCounts?${query}`
                 : `/getCheckoutFailureErrorCounts?${query}`;
             fetch(url)
                 .then(checkResponse)
                 .then((data) => {
-                    setPrev({start, end, data, selectedSite, chartProperty, selectedErrorCode});
+                    setPrev({start, end, data, selectedSite, chartProperty, selectedErrorCode, hideIntentionalCheck});
                     processData(data);
                 })
                 .catch((err) => {

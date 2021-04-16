@@ -48,7 +48,7 @@ describe('Fci Utils', () => {
         const site = 'travel.chase.com';
         const urlBrand = 'Expedia';
         const intentional = true;
-        const result = getQueryValues(`?from=${start}&to=${end}&lobs=${lob}&code=${errorCode}&siteName=${site}&selectedBrand=${urlBrand}&hideIntentionalCheck=${intentional}`, EXPEDIA_PARTNER_SERVICES_BRAND);
+        const result = getQueryValues(`?from=${start}&to=${end}&lobs=${lob}&code=${errorCode}&siteName=${site}&selectedBrand=${urlBrand}&hideIntentional=${intentional}`, EXPEDIA_PARTNER_SERVICES_BRAND);
         expect(result.initialStart.isSame(start, 'day')).to.be.eql(true);
         expect(result.initialEnd.isSame(end, 'day')).to.be.eql(true);
         expect(result.initialTimeRange).to.be.eql('Custom');
@@ -203,7 +203,7 @@ describe('Fci Utils', () => {
                 comment: 'comment',
                 isFci: true
             },
-            category: 'category',
+            category: ['category'],
             recordedSessionUrl: 'recordedSessionUrl'
         };
         const {fci, category, recordedSessionUrl} = row;
@@ -218,7 +218,7 @@ describe('Fci Utils', () => {
             TPID: fci.tpId,
             EAPID: fci.eapId,
             'SiteID': fci.siteId,
-            Category: category,
+            Category: category.join(', '),
             LoB: 'Flights',
             'Device User Agent ID': fci.duaId,
             Comment: fci.comment,
