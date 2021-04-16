@@ -710,31 +710,6 @@
           }
         }
       },
-      "apiAnomalyDetectorConfig": {
-        "$filter": "env.EXPEDIA_ENVIRONMENT",
-        "$default": {
-          "hostname": "opxhub-booking-anomaly-detector-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black",
-          "protocol": "http:",
-          "routes": {
-            "impulsePrediction": {
-              "path": "/v1/impulse/prediction",
-              "method": "GET",
-              "operation": "GET_impulse_prediction_api_v1"
-            }
-          }
-        },
-        "prod": {
-          "hostname": "opxhub-booking-anomaly-detector-egdp-prod-us-east-1.eglocal.exp-prod.net",
-          "protocol": "http:",
-          "routes": {
-            "impulsePrediction": {
-              "path": "/v1/impulse/prediction",
-              "method": "GET",
-              "operation": "GET_impulse_prediction_api_v1"
-            }
-          }
-        }
-      },
       "oauthApi": {
         "$filter": "env.NODE_ENV",
         "$default": {

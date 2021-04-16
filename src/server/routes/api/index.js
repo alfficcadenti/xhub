@@ -4,7 +4,6 @@ import {bookingsUserEvents, epsPageViewsLoBUserEvents, epsPageViewsUserEvents, p
 import {changeRequests, annotations, productMapping, abTests} from './changeRequestService';
 import {fciUserEvent, fciUserEvents, fciErrorCounts, fciCategoryCounts, getFciComments, postFciComment} from './userEventsAnalysisService';
 import {impulseHealth, impulseAnomalies, impulseAnomaliesGrouped} from './impulseDataService';
-import {impulsePrediction} from './anomalyDetector';
 
 const apiRoutes = [
     // oauth
@@ -47,9 +46,7 @@ const apiRoutes = [
     // impulse data service
     impulseHealth,
     impulseAnomalies,
-    impulseAnomaliesGrouped,
-    // opxhub booking anomaly detector
-    impulsePrediction
+    impulseAnomaliesGrouped
 ];
 
 export default apiRoutes;
