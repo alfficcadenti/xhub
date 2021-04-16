@@ -13,7 +13,9 @@ Then(/^user selects end date/, async () => {
 });
 
 Then(/^user selects one element of filter (.*) (.*)/, async (button, listElement) => {
-    await selectOneElementOfFilter(pageFilters, button, listElement);
+    if (button && listElement) {
+        await selectOneElementOfFilter(pageFilters, button, listElement);
+    } else return;
 });
 
 Then(/^select advance filters/, async () => {
@@ -30,4 +32,10 @@ Then(/^set time filter/, async () => {
 
 Then(/^click on (.*)/, async element => {
     await clickOn(pageFilters, element)
+});
+
+Then(/^conditional click on (.*) (.*)/, async (element, skip) => {
+    if(!skip) {
+        await clickOn(pageFilters, element)
+    } else return;
 });

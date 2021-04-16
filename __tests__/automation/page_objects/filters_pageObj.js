@@ -116,6 +116,15 @@ module.exports = {
         },
         setDateButton: {
             selector: '.dates-button'
+        },
+        applyButton: {
+            selector: '.apply-btn'
+        },
+        partnerFilter: {
+            selector: '.eps-partner-select__control'
+        },
+        partnerFilterOption: {
+            selector: '#react-select-3-option-0'
         }
     }
 };
