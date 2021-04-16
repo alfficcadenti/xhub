@@ -109,10 +109,11 @@ describe('Fci Utils', () => {
 
     it('getTraceCounts', () => {
         const traces = [
-            {tags: [{key: 'error', value: 'true'}]},
-            {tags: [{key: 'error', value: 'false'}]},
-            {tags: [{key: 'error', value: 'false'}]}
+            {Error: 'true'},
+            {Error: 'false'},
+            {Error: 'false'}
         ];
+
         const result = getTraceCounts(traces);
         expect(result.total).to.equal(3);
         expect(result.errors).to.equal(1);

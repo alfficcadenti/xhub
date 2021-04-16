@@ -8,21 +8,6 @@ import {LOB_LIST} from '../../constants';
 import {ALL_ERROR_CODES, TOP_10_ERROR_CODES, TOP_20_ERROR_CODES, TRACE_TABLE_COLUMNS, SITES, CODE_OPTION, ALL_SITES, CATEGORY_OPTION} from './constants';
 import {EXPEDIA_PARTNER_SERVICES_BRAND, EXPEDIA_BRAND, OPXHUB_SUPPORT_CHANNEL} from '../../constants';
 
-export const getNowDate = () => moment().endOf('minute').toDate();
-
-export const getLastDate = (value, unit) => moment().subtract(value, unit).startOf('minute').toDate();
-
-export const getValue = (value, unit) => ({start: getLastDate(value, unit), end: getNowDate()});
-
-export const getPresets = () => [
-    {text: 'Last 15 minutes', value: getValue(15, 'minutes')},
-    {text: 'Last 30 minutes', value: getValue(30, 'minutes')},
-    {text: 'Last 1 hour', value: getValue(1, 'hour')},
-    {text: 'Last 3 hours', value: getValue(3, 'hours')},
-    {text: 'Last 6 hours', value: getValue(6, 'hours')},
-    {text: 'Last 12 hours', value: getValue(12, 'hours')},
-    {text: 'Last 24 hours', value: getValue(24, 'hours')}
-];
 
 export const getBrandSites = (brand) => SITES[brand] || ['travel.chase.com'];
 
@@ -163,7 +148,7 @@ export const traceHasError = (t) => {
 };
 
 export const getTraceCounts = (traces) => traces.reduce((acc, curr) => {
-    if (traceHasError(curr)) {
+    if (curr.Error === 'true') {
         acc.errors++;
     }
     acc.total++;

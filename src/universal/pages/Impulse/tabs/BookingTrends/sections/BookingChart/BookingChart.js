@@ -3,6 +3,8 @@ import {
     Area,
     Bar,
     ComposedChart,
+    AreaChart,
+    Line,
     CartesianGrid,
     Legend,
     ReferenceArea, ReferenceLine,
@@ -24,7 +26,8 @@ import {
 } from '../../../../../../constants';
 
 const BOOKING_CHART_COLOR = '#336BFF';
-const PREDICTION_CHART_COLOR = '#c9405b';
+const THREE_WEEK_AVG_COUNT_COLOR = '#34495E';
+const THREE_WEEK_AVG_COUNT = '3 Week Avg Counts';
 const PREDICTION_COUNT = 'Prediction Counts';
 const BOOKING_COUNT = 'Booking Counts';
 const INCIDENT = 'Incident';
@@ -42,25 +45,13 @@ const IMPULSE_CHART_TYPE = [
         key: 'bookingChart'
     },
     {
-        name: PREDICTION_COUNT,
-        color: PREDICTION_CHART_COLOR,
+        name: THREE_WEEK_AVG_COUNT,
+        color: THREE_WEEK_AVG_COUNT_COLOR,
         chartType: AreaChartType,
         key: 'predictionChart'
     }
 ];
 
-const LEGEND_TYPE = [
-    {
-        value: BOOKING_COUNT,
-        type: 'square',
-        color: BOOKING_CHART_COLOR,
-    },
-    {
-        value: '3 Week Avg Counts',
-        type: 'line',
-        color: PREDICTION_CHART_COLOR
-    }
-];
 const LEGEND_TYPE2 = [
     {
         value: INCIDENT,
@@ -107,6 +98,9 @@ const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSlic
     let [newData, setNewData] = useState(data);
     let [left, setLeft] = useState('dataMin');
     let [right, setRight] = useState('dataMax');
+    const [hiddenKeys, setHiddenKeys] = useState([]);
+    let LEGEND_TYPE = data && data[0][PREDICTION_COUNT] ? 'line' : 'none';
+
     const getGradient = ({key, color}) => {
         const id = `color${key}`;
         return (<linearGradient key={`${key}Gradient`} id={id} x1="0" y1="0" x2="0" y2="1" spreadMethod="reflect">
@@ -157,8 +151,23 @@ const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSlic
             yAxisId={1}
             key={`area${name}`}
             animationDuration={300}
-        /> : <Bar dataKey={name} fillOpacity={1} yAxisId={1} key={`bar${name}`} fill={fill} animationDuration={300}/>;
+            hide = {hiddenKeys.includes(name)}
+        /> : <Bar dataKey={name} fillOpacity={1} yAxisId={1} key={`bar${name}`} fill={fill} animationDuration={300} hide = {hiddenKeys.includes(name)}/>;
     };
+
+    const handleLegendClick = (e) => {
+        if (e && e.dataKey) {
+            const nextHiddenKeys = [...hiddenKeys];
+            const foundIdx = hiddenKeys.findIndex((h) => h === e.dataKey);
+            if (foundIdx > -1) {
+                nextHiddenKeys.splice(foundIdx, 1);
+            } else {
+                nextHiddenKeys.push(e.dataKey);
+            }
+            setHiddenKeys(nextHiddenKeys);
+        }
+    };
+
     return (
         <div className="bookings-container-box">
             <div className="reset-div">
@@ -188,6 +197,7 @@ const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSlic
                     <CartesianGrid strokeDasharray="3 3"/>
                     <Tooltip content={<CustomTooltip/>}/>
                     {IMPULSE_CHART_TYPE.map(renderChart)}
+                    <Line legendType={LEGEND_TYPE} type="monotone" dataKey={PREDICTION_COUNT} stroke="#c9405b" yAxisId={1} strokeWidth={1.5} dot={false} animationDuration={300} hide = {hiddenKeys.includes(PREDICTION_COUNT)}/>
                     {
                         anomalies && anomalies.map((anomaly) => (
                             <ReferenceLine
@@ -218,13 +228,13 @@ const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSlic
                             ? <ReferenceArea yAxisId={1} x1={refAreaLeft} x2={refAreaRight} strokeOpacity={0.3}/>
                             : null
                     }
-                    <Legend payload={LEGEND_TYPE} iconSize={10}/>
+                    <Legend onClick={handleLegendClick}/>
                 </ComposedChart>
             </ResponsiveContainer>
-            <ResponsiveContainer width="100%" height="8%">
-                <ComposedChart>
+            <ResponsiveContainer id="extra-legends" width="100%" height="8%">
+                <AreaChart>
                     <Legend payload={LEGEND_TYPE2} iconSize={10}/>
-                </ComposedChart>
+                </AreaChart>
             </ResponsiveContainer>
         </div>
     );

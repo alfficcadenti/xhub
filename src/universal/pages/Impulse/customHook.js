@@ -9,10 +9,11 @@ import {
     VRBO_BRAND,
     SUPPRESSED_BRANDS
 } from '../../constants';
-import {getFilters, getBrandQueryParam, getQueryString, getRevLoss, startTime, endTime, getCategory} from './impulseHandler';
+import {getFilters, getBrandQueryParam, getQueryString, getRevLoss, startTime, endTime, getCategory, getQueryStringPrediction, simplifyBookingsData, simplifyPredictionData} from './impulseHandler';
 import {checkResponse} from '../utils';
 import moment from 'moment';
 
+const THREE_WEEK_AVG_COUNT = '3 Week Avg Counts';
 const PREDICTION_COUNT = 'Prediction Counts';
 const BOOKING_COUNT = 'Booking Counts';
 const IMPULSE_MAPPING = [
@@ -141,7 +142,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 console.error(err);
             });
     };
-
     const fetchCall = (start, end) => fetch(`/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`)
         .then(checkResponse)
         .then((respJson) => {
@@ -149,11 +149,38 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 return {
                     time: moment.utc(item.time).valueOf(),
                     [BOOKING_COUNT]: item.count,
-                    [PREDICTION_COUNT]: item.prediction.weightedCount
+                    [THREE_WEEK_AVG_COUNT]: item.prediction.weightedCount,
                 };
             });
             return chartData;
         });
+
+    const fetchPredictions = (start = startDateTime, end = endDateTime) => {
+        Promise.all([
+            fetch(`/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`).then(checkResponse),
+            fetch(`/v1/impulse/prediction${getQueryStringPrediction(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`).then(checkResponse)
+        ]).then(([bookingsData, predictionData]) => {
+            const simplifiedBookingsData = simplifyBookingsData(bookingsData);
+            const simplifiedPredictionData = simplifyPredictionData(predictionData);
+
+            let finalChartData = simplifiedBookingsData;
+            if (simplifiedBookingsData.length === simplifiedPredictionData.length) {
+                finalChartData = finalChartData.map((item, i) => {
+                    if (simplifiedBookingsData.length && simplifiedPredictionData.length && (simplifiedBookingsData[i].time === simplifiedPredictionData[i].time)) {
+                        return {
+                            ...item,
+                            [PREDICTION_COUNT]: Math.round(simplifiedPredictionData[i].count)
+                        };
+                    }
+                    return item;
+                });
+            }
+            setRes(finalChartData);
+        })
+            .catch((err) => {
+                console.error(err);
+            });
+    };
 
     const fetchHealth = () => {
         fetch('/v1/impulse/health')
@@ -181,9 +208,11 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 console.error(err);
             });
     };
+
     const setIntervalForRealTimeData = (timeInterval, type) => setInterval(() => {
         if (type === 'bookingData') {
             getRealTimeData();
+            fetchPredictions(startTime(), endTime());
         } else if (type === 'incidents') {
             fetchIncidents();
         } else if (type === 'health') {
@@ -215,6 +244,12 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             intervalForAnomalies = setIntervalForRealTimeData(anomalyTimeInterval, 'anomaly');
         }
     };
+    const getPredictions = () => {
+        const dayRange = moment(endDateTime).diff(moment(startDateTime), 'days');
+        if (dayRange >= 1 && dayRange < 7) {
+            fetchPredictions();
+        }
+    };
     useEffect(() => {
         if (SUPPRESSED_BRANDS.includes(globalBrandName)) {
             setError(`Booking data for ${globalBrandName} is not yet available. The following brands are supported at this time: "Expedia", "Hotels.com Retail", and "Expedia Partner Solutions".`);
@@ -225,6 +260,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             fetchIncidents();
             fetchHealth();
             fetchAnomalies();
+            fetchPredictions();
             intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
             intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
             intervalForHealth = setIntervalForRealTimeData(healthTimeInterval, 'health');
@@ -247,6 +283,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 checkDefaultRange();
                 fetchHealth();
                 fetchAnomalies();
+                getPredictions();
             }
         }
         return () => {
@@ -265,6 +302,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             checkDefaultRange();
             fetchHealth();
             fetchAnomalies();
+            getPredictions();
         }
         return () => {
             setIsApplyClicked(false);
@@ -284,6 +322,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 fetchIncidents(startTime(), endTime());
                 fetchHealth();
                 fetchAnomalies(startTime(), endTime());
+                fetchPredictions(startTime(), endTime());
             }
         } else {
             initialMount = true;

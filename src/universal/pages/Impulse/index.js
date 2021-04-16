@@ -17,6 +17,7 @@ import {getFilters, getFiltersForMultiKeys, startTime, endTime} from './impulseH
 import {Checkbox, Switch} from '@homeaway/react-form-components';
 import {IncidentDetails} from './tabs/BookingTrends';
 import AnomalyDetails from './tabs/BookingTrends/sections/AnomalyTable/AnomalyDetails';
+import {getValue} from '../utils';
 
 const startDateDefaultValue = startTime;
 const endDateDefaultValue = endTime;
@@ -30,9 +31,6 @@ const navLinks = [
     }
 ];
 
-const getNowDate = () => moment().endOf('minute').toDate();
-const getLastDate = (value, unit) => moment().subtract(value, unit).startOf('minute').toDate();
-const getValue = (value, unit) => ({start: getLastDate(value, unit), end: getNowDate()});
 const getPresets = () => [
     {text: 'Last 5 Minutes', value: getValue(6, 'minute')},
     {text: 'Last 15 Minutes', value: getValue(15, 'minute')},
@@ -68,6 +66,7 @@ const Impulse = (props) => {
     const [enableAnomalies, setEnableAnomalies] = useState(true);
     const [selectedAnomaliesMulti, setSelectedAnomaliesMulti] = useState([]);
     const [anomalyTableData, setAnomalyTableData] = useState([]);
+
     useQueryParamChange(newBrand, props.onBrandChange);
     useSelectedBrand(newBrand, props.onBrandChange, props.prevSelectedBrand);
     const [isLoading,

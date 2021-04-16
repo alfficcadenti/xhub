@@ -2,27 +2,13 @@ import React, {useState, useRef, useEffect} from 'react';
 import {DatetimeRangePicker} from '../DatetimeRangePicker';
 import {CALENDAR__16} from '@homeaway/svg-defs';
 import {SVGIcon} from '@homeaway/react-svg';
-import moment from 'moment/moment';
+import {getPresets} from '../../pages/utils';
 import './styles.less';
 
 
 const DateFiltersWrapper = ({isFormDisabled, pendingStart, pendingEnd, handleApplyFilters, handleDatetimeChange, isDirtyForm}) => {
     const [openDateFilter, setOpenDateFilter] = useState(false);
-
-    const getNowDate = () => moment().endOf('minute').toDate();
-    const getLastDate = (value, unit) => moment().subtract(value, unit).startOf('minute').toDate();
-    const getValue = (value, unit) => ({start: getLastDate(value, unit), end: getNowDate()});
     const ref = useRef(null);
-
-    const getPresets = () => [
-        {text: 'Last 15 minutes', value: getValue(15, 'minutes')},
-        {text: 'Last 30 minutes', value: getValue(30, 'minutes')},
-        {text: 'Last 1 hour', value: getValue(1, 'hour')},
-        {text: 'Last 3 hours', value: getValue(3, 'hours')},
-        {text: 'Last 6 hours', value: getValue(6, 'hours')},
-        {text: 'Last 12 hours', value: getValue(12, 'hours')},
-        {text: 'Last 24 hours', value: getValue(24, 'hours')}
-    ];
 
     const handleClickOutside = (event) => {
         if (ref.current && !ref.current.contains(event.target)) {
