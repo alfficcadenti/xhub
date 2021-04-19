@@ -8,14 +8,21 @@ import LineChartWrapper from '../../components/LineChartWrapper';
 import LoadingContainer from '../../components/LoadingContainer';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import {checkResponse, getPresets} from '../utils';
-import {LOB_LIST} from '../../constants';
 import FciModal from './FciModal';
-import {shouldFetchData, getIsSupportedBrand, getUnsupportedBrandMsg, getQueryValues, getQueryString, getTableData, getBrandSites} from './utils';
-import {ALL_ERROR_CODES, CATEGORY_OPTION, CODE_OPTION, FETCH_FAILED_MSG} from './constants';
+import {CATEGORY_OPTION, CODE_OPTION, FETCH_FAILED_MSG, CATEGORIES} from './constants';
+import {
+    shouldFetchData,
+    getIsSupportedBrand,
+    getUnsupportedBrandMsg,
+    getQueryValues,
+    getQueryString,
+    getTableData,
+    getBrandSites
+} from './utils';
 import './styles.less';
 
+
 const Fci = ({selectedBrands}) => {
-    const SHOW_FILTERS = false;
     const history = useHistory();
     const {search, pathname} = useLocation();
     const navLinks = [
@@ -26,7 +33,6 @@ const Fci = ({selectedBrands}) => {
         initialStart,
         initialEnd,
         initialTimeRange,
-        initialLobs,
         initialErrorCode,
         initialSite,
         initialHideIntentionalCheck
@@ -36,19 +42,25 @@ const Fci = ({selectedBrands}) => {
 
     const [start, setStart] = useState(initialStart);
     const [end, setEnd] = useState(initialEnd);
-    const [selectedLobs, setSelectedLobs] = useState(initialLobs);
     const [selectedErrorCode, setSelectedErrorCode] = useState(initialErrorCode);
     const [selectedSite, setSelectedSite] = useState(initialSite);
     const [hideIntentionalCheck, setHideIntentionalCheck] = useState(initialHideIntentionalCheck);
     const [pendingStart, setPendingStart] = useState(initialStart);
     const [pendingEnd, setPendingEnd] = useState(initialEnd);
     const [pendingTimeRange, setPendingTimeRange] = useState(initialTimeRange);
-    const [pendingLobs, setPendingLobs] = useState(initialLobs);
     const [pendingErrorCode, setPendingErrorCode] = useState(initialErrorCode);
     const [pendingSite, setPendingSite] = useState(initialSite);
     const [pendingHideIntentionalCheck, setPendingHideIntentionalCheck] = useState(initialHideIntentionalCheck);
     const [selectedBucket, setSelectedBucket] = useState();
-    const [prev, setPrev] = useState({start: null, end: null, data: [], chartProperty: null});
+    const [prev, setPrev] = useState({
+        start: null,
+        end: null,
+        data: [],
+        chartProperty: null,
+        selectedSite: initialSite,
+        selectedErrorCode: initialErrorCode,
+        hideIntentionalCheck: initialHideIntentionalCheck
+    });
     const [errorCodes, setErrorCodes] = useState([]);
     const [searchText, setSearchText] = useState('');
 
@@ -71,8 +83,8 @@ const Fci = ({selectedBrands}) => {
     const [isModalLoading, setIsModalLoading] = useState(false);
     const [modalError, setModalError] = useState();
 
-    const processData = useCallback((data) => {
-        const categorySet = new Set();
+    const processData = useCallback((data, property) => {
+        const categorySet = property === CATEGORY_OPTION ? new Set(CATEGORIES) : new Set();
         const filteredData = JSON.parse(JSON.stringify(data))
             .filter(({timestamp}) => timestamp && moment(timestamp).isBetween(start, end, '[]', 'minute'))
             .map(({timestamp, counts}) => {
@@ -81,7 +93,7 @@ const Fci = ({selectedBrands}) => {
             });
         setLineChartData(filteredData);
         setLineChartKeys(Array.from(categorySet).sort());
-        setErrorCodes([ALL_ERROR_CODES, ...Array.from(categorySet).sort()]);
+        setErrorCodes(Array.from(categorySet).sort());
     }, [start, end]);
 
     // eslint-disable-next-line complexity
@@ -94,7 +106,7 @@ const Fci = ({selectedBrands}) => {
         setIsLoading(true);
         setIsSupportedBrand(true);
         setError(null);
-        const query = getQueryString(start, end, selectedLobs, selectedErrorCode, selectedSite, hideIntentionalCheck, chartProperty);
+        const query = getQueryString(start, end, selectedErrorCode, selectedSite, hideIntentionalCheck, chartProperty);
         history.push(`${pathname}?selectedBrand=${selectedBrands[0]}&${query}`);
         if (shouldFetchData(prev, start, end, selectedSite, chartProperty, selectedErrorCode, hideIntentionalCheck)) {
             const url = chartProperty === CATEGORY_OPTION
@@ -104,7 +116,7 @@ const Fci = ({selectedBrands}) => {
                 .then(checkResponse)
                 .then((data) => {
                     setPrev({start, end, data, selectedSite, chartProperty, selectedErrorCode, hideIntentionalCheck});
-                    processData(data);
+                    processData(data, chartProperty);
                 })
                 .catch((err) => {
                     setError(FETCH_FAILED_MSG);
@@ -113,17 +125,17 @@ const Fci = ({selectedBrands}) => {
                 })
                 .finally(() => setIsLoading(false));
         } else {
-            processData(prev.data);
+            processData(prev.data, chartProperty);
             setIsLoading(false);
         }
-    }, [start, end, selectedLobs, selectedErrorCode, selectedSite, history, pathname, selectedBrands, hideIntentionalCheck, prev, processData, chartProperty]);
+    }, [start, end, selectedErrorCode, selectedSite, history, pathname, selectedBrands, hideIntentionalCheck, prev, processData, chartProperty]);
 
 
     useEffect(() => {
         if (selectedBucket) {
             const bucketStart = moment(selectedBucket);
             const bucketEnd = moment(selectedBucket).add(1, 'hour');
-            const query = getQueryString(bucketStart, bucketEnd, selectedLobs, selectedErrorCode, selectedSite, hideIntentionalCheck, chartProperty);
+            const query = getQueryString(bucketStart, bucketEnd, selectedErrorCode, selectedSite, hideIntentionalCheck, chartProperty);
             setIsModalLoading(true);
             setModalError();
             setIsModalOpen(true);
@@ -198,7 +210,6 @@ const Fci = ({selectedBrands}) => {
     const handleApplyFilters = () => {
         setStart(pendingStart);
         setEnd(pendingEnd);
-        setSelectedLobs(pendingLobs);
         setSelectedErrorCode(pendingErrorCode);
         setSelectedSite(pendingSite);
         setHideIntentionalCheck(pendingHideIntentionalCheck);
@@ -212,28 +223,24 @@ const Fci = ({selectedBrands}) => {
         setIsDirtyForm(true);
     };
 
-    const handleLoBsChange = (lobs) => {
-        setPendingLobs(lobs || []);
-        setIsDirtyForm(true);
-    };
-
     const handleErrorCodeChange = (e) => {
-        setPendingErrorCode(e && e.value);
+        const selection = e || '';
+        setPendingErrorCode(selection);
         setIsDirtyForm(true);
     };
 
     const handleSiteChange = (e) => {
-        setPendingSite(e && e.value);
+        setPendingSite(e || '');
         setIsDirtyForm(true);
     };
 
     const handleHideIntentionalCheck = (e) => {
-        setPendingHideIntentionalCheck(e && e.target && e.target.checked);
+        setPendingHideIntentionalCheck(e?.target?.checked);
         setIsDirtyForm(true);
     };
 
     const handleDotClick = (selected) => {
-        if (selected && selected.payload && selected.payload.timestamp) {
+        if (selected?.payload?.timestamp) {
             setSelectedBucket(selected.payload.timestamp);
         } else {
             setSelectedBucket(null);
@@ -241,13 +248,13 @@ const Fci = ({selectedBrands}) => {
     };
 
     const handleMouseDown = (e) => {
-        if (e && e.activeLabel) {
+        if (e?.activeLabel) {
             setRefAreaLeft(e.activeLabel);
         }
     };
 
     const handleMouseMove = (e) => {
-        if (refAreaLeft && e && e.activeLabel) {
+        if (refAreaLeft && e?.activeLabel) {
             setRefAreaRight(e.activeLabel);
         }
     };
@@ -276,9 +283,9 @@ const Fci = ({selectedBrands}) => {
     };
 
     const handleChoiceChange = (event) => {
-        if (event && event.target && event.target.value) {
-            setPendingErrorCode(ALL_ERROR_CODES);
-            setSelectedErrorCode(ALL_ERROR_CODES);
+        if (event?.target?.value) {
+            setPendingErrorCode('');
+            setSelectedErrorCode('');
             setChartProperty(event.target.value);
         }
     };
@@ -292,53 +299,45 @@ const Fci = ({selectedBrands}) => {
                     endDate={pendingEnd.toDate()}
                     presets={getPresets()}
                 />
-                <Select
-                    classNamePrefix="error-code-dropdown"
-                    className="error-code-dropdown"
-                    options={errorCodes.map((x) => ({label: x, value: x}))}
-                    onChange={handleErrorCodeChange}
-                    placeholder={pendingErrorCode}
-                    value={pendingErrorCode}
-                    isSearchable
-                />
-                <Select
-                    classNamePrefix="site-dropdown"
-                    className="site-dropdown"
-                    options={getBrandSites(selectedBrands[0]).map((x) => ({label: x, value: x}))}
-                    onChange={handleSiteChange}
-                    placeholder={pendingSite}
-                    value={pendingSite}
-                    isSearchable
-                />
-                <Checkbox
-                    name="intent-cbox"
-                    label="Hide Intentional Errors"
-                    checked={pendingHideIntentionalCheck}
-                    onChange={handleHideIntentionalCheck}
-                    size="sm"
-                    className="intent-cbox"
-                />
-                {SHOW_FILTERS && (
-                    <>
-                        <Select
-                            isMulti
-                            classNamePrefix="lob-select"
-                            className="lob-select-container"
-                            value={pendingLobs}
-                            options={LOB_LIST.filter(({value}) => ['H', 'C', 'F', 'P'].includes(value))}
-                            onChange={handleLoBsChange}
-                            placeholder={'Select Line of Business'}
-                        />
-                    </>
-                )}
-                <button
-                    className="btn btn-primary apply-btn"
-                    type="button"
-                    onClick={handleApplyFilters}
-                    disabled={!isDirtyForm}
-                >
-                    {'Apply'}
-                </button>
+                <div className="selection-wrapper">
+                    <Select
+                        isMulti
+                        classNamePrefix="error-code-dropdown"
+                        className="error-code-dropdown"
+                        options={errorCodes.map((x) => ({label: x, value: x}))}
+                        onChange={handleErrorCodeChange}
+                        placeholder={'All Errors'}
+                        value={pendingErrorCode}
+                        isSearchable
+                    />
+                    <Select
+                        isMulti
+                        classNamePrefix="site-dropdown"
+                        className="site-dropdown"
+                        options={getBrandSites(selectedBrands[0]).map((x) => ({label: x, value: x}))}
+                        onChange={handleSiteChange}
+                        placeholder={'All Sites'}
+                        value={pendingSite}
+                        isSearchable
+                    />
+                    <Checkbox
+                        name="intent-cbox"
+                        label="Hide Intentional Errors"
+                        checked={pendingHideIntentionalCheck}
+                        onChange={handleHideIntentionalCheck}
+                        size="sm"
+                        className="intent-cbox"
+                    />
+                    <button
+                        className="btn btn-primary apply-btn"
+                        type="button"
+                        onClick={handleApplyFilters}
+                        disabled={!isDirtyForm}
+                    >
+                        {'Apply'}
+                    </button>
+
+                </div>
             </div>}
             <LoadingContainer isLoading={isLoading} error={error} className="fci-loading-container">
                 {isSupportedBrand && (

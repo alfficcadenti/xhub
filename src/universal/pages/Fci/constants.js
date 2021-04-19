@@ -1,8 +1,5 @@
 import {OPXHUB_SUPPORT_CHANNEL} from '../../constants';
 
-export const ALL_ERROR_CODES = 'All Error Codes';
-export const TOP_10_ERROR_CODES = 'Top 10 Error Codes';
-export const TOP_20_ERROR_CODES = 'Top 20 Error Codes';
 export const FCI_TABLE_COLUMNS = [
     'Created',
     'Session',
@@ -61,14 +58,11 @@ export const TRACE_TABLE_COLUMNS = [
 export const FETCH_FAILED_MSG = 'Failed to retrieve FCI data. Try refreshing the page. '
     + `If the problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`;
 
-export const ALL_CATEGORIES = 'All Categories';
-export const ALL_SITES = 'All Sites';
 export const CATEGORY_OPTION = 'category';
 export const CODE_OPTION = 'errorCode';
 
 export const SITES = {
     'Expedia': [
-        ALL_SITES,
         'www.expedia.com',
         'axtraweb.poweredbygps.com',
         'barcelo.poweredbygps.com',
@@ -156,9 +150,25 @@ export const SITES = {
     ],
 
     'Expedia Partner Solutions': [
-        ALL_SITES,
         'travel.chase.com',
         'travel.americanexpress.com',
         'travel.rbcrewards.com'
     ]
 };
+
+export const CATEGORIES = [
+    'Business Error',
+    'CC Supply',
+    'Expedia Error',
+    'Other',
+    'Payment Plan',
+    'Payments CC',
+    'Payment Vault',
+    'Price Change',
+    'Price Changes',
+    'Invalid CID',
+    'Inventory Unavailable',
+    'Schedule Change',
+    'Supply Error',
+    'User Error'
+];
