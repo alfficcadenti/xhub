@@ -20,9 +20,7 @@ const AnomalyDetails = ({data = [], setAnomalyTableData}) => {
             timestamp: `${moment(data[0].timestamp).format('YYYY-MM-DD HH:mm')} ${moment().tz(moment.tz.guess()).format('z')}`
         }));
         finalAnomalyData.forEach((anomalyObj) => {
-            if (anomalyObj.deviceType === 'null') {
-                anomalyObj.deviceType = 'NA';
-            }
+            delete anomalyObj.deviceType;
         });
         return finalAnomalyData;
     };
