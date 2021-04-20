@@ -125,6 +125,129 @@ module.exports = {
         },
         partnerFilterOption: {
             selector: '#react-select-3-option-0'
+        },
+        paginationPrevBtn: {
+            selector: '.pagination .btn-group button:nth-child(1)'
+        },
+        paginationNextBtn: {
+            selector: '.pagination .btn-group button:nth-child(5)'
+        },
+        paginationNumberBtn: {
+            selector: '.pagination .btn-group button:nth-child(4)'
+        },
+        pageSizeDropdown: {
+            selector: '#pagesize-dropdown'
+        },
+        pageSizeDropdownListElement: {
+            selector: '#pagesize-dropdown--container li:nth-child(4)'
+        },
+        priorityDropdown: {
+            selector: '#priority-dropdown'
+        },
+        priorityDropdownOption: {
+            selector: '#priority-dropdown--container li:nth-child(3)'
+        },
+        statusDropdown: {
+            selector: '#status-dropdown'
+        },
+        statusDropdownOption: {
+            selector: '#status-dropdown--container li:nth-child(3)'
+        },
+        chartsContainer: {
+            selector: '.overview-charts'
+        },
+        ticketsContainer: {
+            selector: '.data-table__container'
+        },
+        linkToFirstSubpage: {
+            selector: '.Navigation__ul li:nth-child(1)'
+        },
+        linkToSecondSubpage: {
+            selector: '.Navigation__ul li:nth-child(2)'
+        },
+        linkToThirdSubpage: {
+            selector: '.Navigation__ul li:nth-child(3)'
+        },
+        owningOrgsFilter: {
+            selector: '#org-dropdown'
+        },
+        owningOrgsFilterOption: {
+            selector: '#org-dropdown--container li:nth-child(2)'
+        },
+        typeFilter: {
+            selector: '#type-dropdown'
+        },
+        typeFilterOption: {
+            selector: '#type-dropdown--container li:nth-child(2)'
+        },
+        rootCauseOwnerFilter: {
+            selector: '#rc-owner-dropdown'
+        },
+        rootCauseOwnerFilterOption: {
+            selector: '#rc-owner-dropdown--container li:nth-child(2)'
+        },
+        rootCauseCategoriesFilter: {
+            selector: '#rcCategory-dropdown'
+        },
+        rootCauseCategoriesFilterOption: {
+            selector: '#rcCategory-dropdown--container li:nth-child(2)'
+        },
+        moreFiltersContainer: {
+            selector: '#more-filters-divider'
+        },
+        removeCorrectiveActionsFilters: {
+            selector: '.status-select__multi-value__remove'
+        },
+        correctiveActionsContainer: {
+            selector: '.l1-table.l-table'
+        },
+        correctiveActionsModalOpener: {
+            selector: '.l1-table .count'
+        },
+        correctiveActionsModalContainer: {
+            selector: '#corrective-actions-modal'
+        },
+        correctiveActionsModalSettingsButton: {
+            selector: '.Modal__body .settings-btn:nth-child(2)'
+        },
+        correctiveActionsModalSettingsContainer: {
+            selector: '.Modal__content .CollapseBase__content'
+        },
+        correctiveActionsModalSettingsInput: {
+            selector: '.CollapseBase__content.Divider__body input'
+        },
+        correctiveActionsModalCloseButton: {
+            selector: '.Modal__header-btn--close'
+        },
+        l1TableArrow: {
+            selector: '.l1-table .arrow'
+        },
+        l2TableContainer: {
+            selector: '.l2-table'
+        },
+        l2TableArrow: {
+            selector: '.l2-table .arrow'
+        },
+        l3TableContainer: {
+            selector: '.l3-table'
+        },
+        l3TableArrow: {
+            selector: '.l3-table .arrow'
+        },
+        l4TableContainer: {
+            selector: '.l4-table'
+        },
+        l4TableArrow: {
+            selector: '.l4-table .arrow'
+        },
+        l5TableContainer: {
+            selector: '.l5-table'
+        },
+        statusFilter: {
+            selector: '.status-select__control'
+        },
+        statusFilterOption: {
+            selector: '.status-select__menu #react-select-3-option-0'
         }
     }
 };

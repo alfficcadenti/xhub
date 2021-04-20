@@ -10,12 +10,19 @@ Feature: Verify user is able to navigate around Quality Trends
     Then user go ahead and clicks on the <link>
     Then user wait for the data to load
     Then the current page title contain Quality Trends
+    Then conditional click on paginationNextBtn <paginationNextBtn>
+    Then conditional click on paginationPrevBtn <paginationPrevBtn>
+    Then conditional click on paginationNumberBtn <paginationNumberBtn>
+    Then user selects one element of filter <pageSizeDropdown> pageSizeDropdownListElement
+    Then user selects one element of filter priorityDropdown priorityDropdownOption
+    Then user selects one element of filter statusDropdown statusDropdownOption
+    Then click on submitFilters
 
     Examples:
-    | brand                    | link                          |
-    | ExpediaGroup             | platformHealthResiliencyLink2 |
-    | Expedia                  | platformHealthResiliencyLink2 |
-    | Egencia                  | platformHealthResiliencyLink2 |
-    | Hotelscom                | platformHealthResiliencyLink2 |
-    | Vrbo                     | platformHealthResiliencyLink2 |
-    | ExpediaPartnerSolutions  | platformHealthResiliencyLink2 |
+    | brand                    | link                          | paginationNextBtn | paginationPrevBtn | paginationNumberBtn | pageSizeDropdown |
+    | ExpediaGroup             | platformHealthResiliencyLink2 | paginationNextBtn | paginationPrevBtn | paginationNumberBtn | pageSizeDropdown |
+    | Expedia                  | platformHealthResiliencyLink2 | paginationNextBtn | paginationPrevBtn | paginationNumberBtn | pageSizeDropdown |
+    | Egencia                  | platformHealthResiliencyLink2 | paginationNextBtn | paginationPrevBtn | paginationNumberBtn | pageSizeDropdown |
+    | Hotelscom                | platformHealthResiliencyLink2 | paginationNextBtn | paginationPrevBtn | paginationNumberBtn | pageSizeDropdown |
+    | Vrbo                     | platformHealthResiliencyLink2 |                   |                   |                     |                  |
+    | ExpediaPartnerSolutions  | platformHealthResiliencyLink2 |                   |                   |                     |                  |
