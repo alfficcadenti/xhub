@@ -26,8 +26,6 @@ Feature: Verify user is able to navigate around Problem Management
     Then click on linkToThirdSubpage
     Then waiting for correctiveActionsContainer
     Then click on removeCorrectiveActionsFilters
-    Then click on removeCorrectiveActionsFilters
-    Then click on removeCorrectiveActionsFilters
     Then click on submitFilters
     Then user wait for the data to load
     Then select Corrective Actions

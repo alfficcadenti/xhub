@@ -64,7 +64,7 @@ module.exports = {
             selector: '.filter-option-selection #react-select-6-option-0'
         },
         anomaliesOptionFilter: {
-            selector: '.filter-option-selection #react-select-7-option-0'
+            selector: '.filter-option-selection #react-select-7-option-2'
         },
         deviceOptionFilter: {
             selector: '.filter-option-selection #react-select-8-option-0'
@@ -99,8 +99,11 @@ module.exports = {
         businessFilter: {
             selector: '.lob-select__control'
         },
-        businessFilterOption: {
-            selector: '.lob-select__menu-list #react-select-12-option-0'
+        businessFilterOptionExpedia: {
+            selector: '.lob-select__menu-list #react-select-3-option-0'
+        },
+        businessFilterOptionEps: {
+            selector: '.lob-select__menu-list #react-select-4-option-0'
         },
         resetFilterButton: {
             selector: '.css-tlfecz-indicatorContainer:nth-child(1)'
@@ -196,7 +199,7 @@ module.exports = {
             selector: '#more-filters-divider'
         },
         removeCorrectiveActionsFilters: {
-            selector: '.status-select__multi-value__remove'
+            selector: '.status-select__clear-indicator svg'
         },
         correctiveActionsContainer: {
             selector: '.l1-table.l-table'
