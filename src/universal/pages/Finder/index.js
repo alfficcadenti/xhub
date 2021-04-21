@@ -4,21 +4,18 @@ import {withRouter} from 'react-router-dom';
 import moment from 'moment';
 import {Navigation} from '@homeaway/react-navigation';
 import LoadingContainer from '../../components/LoadingContainer';
-import DatePicker from '../../components/DatePicker/index';
+import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import UniversalSearch from '../../components/UniversalSearch';
-
 import {DATE_FORMAT} from '../../constants';
 import {ChangeRequests, ABTests} from './tabs/index';
 import {useFetchCRs, useFetchABTests} from './hooks';
 import {useSelectedBrand, useQueryParamChange, useFetchProductMapping} from '../hooks';
-import './styles.less';
 import {adjustInputValue} from '../utils';
+import './styles.less';
+
 
 const startDateDefaultValue = moment().subtract(1, 'days').format(DATE_FORMAT);
 const endDateDefaultValue = moment().format(DATE_FORMAT);
-const minDate = moment('2019-01-01').toDate();
-
-
 const navLinks = [
     {
         id: 'сhangeRequests',
@@ -125,16 +122,9 @@ const Finder = (props) => {
         applyAdvancedFilter();
     }, [allCRs, allUniqueCRs, abTests, advancedFilter, selectedBrand]);
 
-    const handleDateRangeChange = (start, end) => {
-        setStartDate(start || startDate);
-        setEndDate(end || endDate);
-        setIsDirtyForm(true);
-    };
-
-    const handleClearDates = () => {
-        setStartDate('');
-        setEndDate('');
-        setFilteredUniqueCRs([]);
+    const handleDateRangeChange = ({start, end}) => {
+        setStartDate(moment(start).format(DATE_FORMAT));
+        setEndDate(moment(end).format(DATE_FORMAT));
         setIsDirtyForm(true);
     };
 
@@ -158,12 +148,11 @@ const Finder = (props) => {
         <div className="change-requests-container">
             <h1 className="page-title">{'Change Finder'}</h1>
             <div className="filters-wrapper">
-                <DatePicker
-                    startDate={startDate}
-                    endDate={endDate}
-                    minDate={minDate}
-                    handleDateRangeChange={handleDateRangeChange}
-                    handleClearDates={handleClearDates}
+                <DatetimeRangePicker
+                    onChange={handleDateRangeChange}
+                    startDate={moment(startDate).toDate()}
+                    endDate={moment(endDate).toDate()}
+                    hidePresets
                 />
                 <button
                     type="button"

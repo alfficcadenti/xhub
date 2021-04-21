@@ -195,7 +195,7 @@ BaseDateTimeRangePicker.defaultProps = {
     className: '',
     viewMode: 'days',
     dateFormat: true,
-    timeFormat: true,
+    timeFormat: false,
     closeOnTab: true,
     onBlur: () => {},
     onFocus: () => {},

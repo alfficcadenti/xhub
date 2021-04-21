@@ -6,7 +6,7 @@ import {getPresets} from '../../pages/utils';
 import './styles.less';
 
 
-const DateFiltersWrapper = ({isFormDisabled, pendingStart, pendingEnd, handleApplyFilters, handleDatetimeChange, isDirtyForm}) => {
+const DateFiltersWrapper = ({isFormDisabled, pendingStart, pendingEnd, handleApplyFilters, handleDatetimeChange, isDirtyForm, showTimePicker}) => {
     const [openDateFilter, setOpenDateFilter] = useState(false);
     const ref = useRef(null);
 
@@ -46,6 +46,7 @@ const DateFiltersWrapper = ({isFormDisabled, pendingStart, pendingEnd, handleApp
                     endDate={pendingEnd && pendingEnd.toDate()}
                     presets={getPresets()}
                     disabled={isFormDisabled}
+                    showTimePicker={showTimePicker}
                 />
                 <button
                     className="btn btn-primary apply-btn"

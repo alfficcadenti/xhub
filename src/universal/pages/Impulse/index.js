@@ -307,6 +307,7 @@ const Impulse = (props) => {
                     startDate={startDateTime.toDate()}
                     endDate={endDateTime.toDate()}
                     presets={getPresets()}
+                    showTimePicker
                 />
                 <div className="filter-option">
                     {renderMultiSelectFilters(selectedBrandMulti, brandsMulti, 'brand', ALL_BRANDS, filterSelectionClass)}

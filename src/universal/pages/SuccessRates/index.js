@@ -332,6 +332,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     handleApplyFilters={handleApplyFilters}
                     handleDatetimeChange={handleDatetimeChange}
                     isDirtyForm={isDirtyForm}
+                    showTimePicker
                 />
                 <ResetButton
                     isDisabled={moment(end).diff(moment(start), 'hour') === 6}

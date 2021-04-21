@@ -298,6 +298,7 @@ const Fci = ({selectedBrands}) => {
                     startDate={pendingStart.toDate()}
                     endDate={pendingEnd.toDate()}
                     presets={getPresets()}
+                    showTimePicker
                 />
                 <div className="selection-wrapper">
                     <Select

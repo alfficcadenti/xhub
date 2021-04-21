@@ -4,29 +4,29 @@ import {withRouter} from 'react-router-dom';
 import moment from 'moment/moment';
 import LoadingContainer from '../../../components/LoadingContainer';
 import FilterDropDown from '../../../components/FilterDropDown';
-import DatePicker from '../../../components/DatePicker/index';
 import {DATE_FORMAT, ALL_STATUSES_OPTION, ALL_PRIORITIES_OPTION} from '../../../constants';
 import {Quality} from './tabs/index';
 import {useFetchTickets} from '../hooks';
 import {EG_BRAND} from '../../../constants';
 import {useQueryParamChange, useSelectedBrand} from '../../hooks';
+import {DatetimeRangePicker} from '../../../components/DatetimeRangePicker';
 import './styles.less';
+
 
 const statusDefaultValue = ALL_STATUSES_OPTION;
 const priorityDefaultValue = ALL_PRIORITIES_OPTION;
 const startDateDefaultValue = moment().subtract(14, 'days').format(DATE_FORMAT);
 const endDateDefaultValue = moment().format(DATE_FORMAT);
-const minDate = moment('2019-01-01').toDate();
 
 
 const IncidentTrendsDashboard = (props) => {
     const selectedBrand = props.selectedBrands[0];
 
     const [selectedStatus, setSelectedStatus] = useState(statusDefaultValue);
-    const [startDate, setStartDate] = useState(startDateDefaultValue);
-    const [appliedStartDate, setAppliedStartDate] = useState(startDate);
-    const [endDate, setEndDate] = useState(endDateDefaultValue);
-    const [appliedEndDate, setAppliedEndDate] = useState(endDate);
+    const [pendingStart, setPendingStart] = useState(startDateDefaultValue);
+    const [start, setStart] = useState(pendingStart);
+    const [pendingEnd, setPendingEnd] = useState(endDateDefaultValue);
+    const [end, setEnd] = useState(pendingEnd);
     const [selectedPriority, setSelectedPriority] = useState(priorityDefaultValue);
     const [isDirtyForm, setIsDirtyForm] = useState(false);
     // defects
@@ -42,8 +42,8 @@ const IncidentTrendsDashboard = (props) => {
         defectsStatuses,
     ] = useFetchTickets(
         isApplyClicked,
-        startDate,
-        endDate,
+        pendingStart,
+        pendingEnd,
         applyFilters,
         setIsApplyClicked,
         'defects',
@@ -61,8 +61,8 @@ const IncidentTrendsDashboard = (props) => {
         // defects
         setFilteredUniqueDefects([...allUniqueDefects].filter(filterTickets));
 
-        setAppliedStartDate(startDate);
-        setAppliedEndDate(endDate);
+        setStart(pendingStart);
+        setEnd(pendingEnd);
         setIsDirtyForm(false);
     }
 
@@ -70,16 +70,9 @@ const IncidentTrendsDashboard = (props) => {
         applyFilters();
     }, [allUniqueDefects, allDefects]);
 
-    const handleDateRangeChange = (start, end) => {
-        setStartDate(start || startDate);
-        setEndDate(end || endDate);
-        setIsDirtyForm(true);
-    };
-
-    const handleClearDates = () => {
-        setStartDate('');
-        setEndDate('');
-        setFilteredUniqueDefects([]);
+    const handleDateRangeChange = ({start: startDate, end: endDate}) => {
+        setPendingStart(moment(startDate).format(DATE_FORMAT));
+        setPendingEnd(moment(endDate).format(DATE_FORMAT));
         setIsDirtyForm(true);
     };
 
@@ -97,15 +90,26 @@ const IncidentTrendsDashboard = (props) => {
         <div className="defect-trends-dashboard">
             <h1 className="page-title">{'Quality Trends'}</h1>
             <div className="filters-wrapper">
-                <DatePicker
-                    startDate={startDate}
-                    endDate={endDate}
-                    minDate={minDate}
-                    handleDateRangeChange={handleDateRangeChange}
-                    handleClearDates={handleClearDates}
+                <DatetimeRangePicker
+                    onChange={handleDateRangeChange}
+                    startDate={moment(pendingStart).toDate()}
+                    endDate={moment(pendingEnd).toDate()}
+                    hidePresets
                 />
-                <FilterDropDown id="priority-dropdown" className="priority-dropdown" list={defectsPriorities} selectedValue={selectedPriority} onClickHandler={handlePriorityChange} />
-                <FilterDropDown id="status-dropdown" className="status-dropdown" list={defectsStatuses} selectedValue={selectedStatus} onClickHandler={handleStatusChange} />
+                <FilterDropDown
+                    id="priority-dropdown"
+                    className="priority-dropdown"
+                    list={defectsPriorities}
+                    selectedValue={selectedPriority}
+                    onClickHandler={handlePriorityChange}
+                />
+                <FilterDropDown
+                    id="status-dropdown"
+                    className="status-dropdown"
+                    list={defectsStatuses}
+                    selectedValue={selectedStatus}
+                    onClickHandler={handleStatusChange}
+                />
                 <button
                     type="button"
                     className="apply-button btn btn-primary active"
@@ -117,8 +121,8 @@ const IncidentTrendsDashboard = (props) => {
             </div>
             <LoadingContainer isLoading={isLoading} error={error} className="incident-main">
                 <Quality
-                    startDate={appliedStartDate}
-                    endDate={appliedEndDate}
+                    startDate={start}
+                    endDate={end}
                     filteredDefects={filteredUniqueDefects}
                     setIsApplyClicked={setIsApplyClicked}
                     handleStatusChange={handleStatusChange}

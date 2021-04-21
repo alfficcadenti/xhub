@@ -7,7 +7,6 @@ import {Checkbox} from '@homeaway/react-form-components';
 import {Navigation} from '@homeaway/react-navigation';
 import {SVGIcon} from '@homeaway/react-svg';
 import {FILTER__16} from '@homeaway/svg-defs';
-import DatePicker from '../../../components/DatePicker/index';
 import FilterDropDown from '../../../components/FilterDropDown';
 import LoadingContainer from '../../../components/LoadingContainer';
 import {
@@ -24,7 +23,9 @@ import {Incidents, Overview, Top5} from './tabs/index';
 import {useFetchTickets, useRootCauseOwner} from '../hooks';
 import {useSelectedBrand, useQueryParamChange} from '../../hooks';
 import {impactedBrandToDivision} from '../incidentsHelper';
+import {DatetimeRangePicker} from '../../../components/DatetimeRangePicker';
 import './styles.less';
+
 
 const statusDefaultValue = ALL_STATUSES_OPTION;
 const priorityDefaultValue = ALL_PRIORITIES_OPTION;
@@ -32,7 +33,6 @@ const tagDefaultValue = ALL_TAGS_OPTION;
 const rcOwnerDefaultValue = ALL_RC_OWNERS_OPTION;
 const startDateDefaultValue = moment().subtract(14, 'days').format(DATE_FORMAT);
 const endDateDefaultValue = moment().format(DATE_FORMAT);
-const minDate = moment('2019-01-01').toDate();
 const partnerDefaultValue = ALL_PARTNERS_OPTION;
 const divisionCheckboxesDefaultValue = [
     {text: 'E4P', checked: true},
@@ -70,10 +70,10 @@ const IncidentTrendsDashboard = (props) => {
 
     const [activeIndex, setActiveIndex] = useState(1);
     const [selectedStatus, setSelectedStatus] = useState(statusDefaultValue);
-    const [startDate, setStartDate] = useState(startDateDefaultValue);
-    const [appliedStartDate, setAppliedStartDate] = useState(startDate);
-    const [endDate, setEndDate] = useState(endDateDefaultValue);
-    const [appliedEndDate, setAppliedEndDate] = useState(endDate);
+    const [pendingStart, setPendingStart] = useState(startDateDefaultValue);
+    const [start, setStart] = useState(pendingStart);
+    const [pendingEnd, setPendingEnd] = useState(endDateDefaultValue);
+    const [end, setEnd] = useState(pendingEnd);
     const [selectedPriority, setSelectedPriority] = useState(priorityDefaultValue);
     const [selectedTag, setSelectedTag] = useState(tagDefaultValue);
     const [selectedRcOwner, setSelectedRcOwner] = useState(rcOwnerDefaultValue);
@@ -97,8 +97,8 @@ const IncidentTrendsDashboard = (props) => {
         incidentPartners
     ] = useFetchTickets(
         isApplyClicked,
-        startDate,
-        endDate,
+        pendingStart,
+        pendingEnd,
         applyFilters,
         setIsApplyClicked,
         'incidents',
@@ -123,8 +123,8 @@ const IncidentTrendsDashboard = (props) => {
             && matchesPartner(t) && matchesDivision(t));
         setTickets([...allUniqueIncidents].filter(filterTickets));
 
-        setAppliedStartDate(startDate);
-        setAppliedEndDate(endDate);
+        setStart(pendingStart);
+        setEnd(pendingEnd);
         setIsDirtyForm(false);
     }
 
@@ -136,16 +136,9 @@ const IncidentTrendsDashboard = (props) => {
         setActiveIndex(activeLinkIndex);
     };
 
-    const handleDateRangeChange = (start, end) => {
-        setStartDate(start || startDate);
-        setEndDate(end || endDate);
-        setIsDirtyForm(true);
-    };
-
-    const handleClearDates = () => {
-        setStartDate('');
-        setEndDate('');
-        setTickets([]);
+    const handleDateRangeChange = ({start: startDate, end: endDate}) => {
+        setPendingStart(moment(startDate).format(DATE_FORMAT));
+        setPendingEnd(moment(endDate).format(DATE_FORMAT));
         setIsDirtyForm(true);
     };
 
@@ -190,7 +183,7 @@ const IncidentTrendsDashboard = (props) => {
     const renderTabs = () => {
         switch (activeIndex) {
             case 0:
-                return <Overview startDate={appliedStartDate} endDate={appliedEndDate} tickets={tickets} brand={selectedBrand} />;
+                return <Overview startDate={start} endDate={end} tickets={tickets} brand={selectedBrand} />;
             case 1:
                 return <Incidents tickets={tickets} selectedBrand={selectedBrand} />;
             case 2:
@@ -232,12 +225,11 @@ const IncidentTrendsDashboard = (props) => {
         <div className="incident-trends-container">
             <h1 className="page-title">{'Incident Trends'}</h1>
             <div className="filters-wrapper">
-                <DatePicker
-                    startDate={startDate}
-                    endDate={endDate}
-                    minDate={minDate}
-                    handleDateRangeChange={handleDateRangeChange}
-                    handleClearDates={handleClearDates}
+                <DatetimeRangePicker
+                    onChange={handleDateRangeChange}
+                    startDate={moment(pendingStart).toDate()}
+                    endDate={moment(pendingEnd).toDate()}
+                    hidePresets
                 />
                 <FilterDropDown
                     id="priority-dropdown"
