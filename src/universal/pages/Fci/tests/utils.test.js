@@ -1,10 +1,9 @@
 import moment from 'moment';
 import {expect} from 'chai';
 import {
+    shouldFetchData,
     validDateRange,
     getQueryValues,
-    getLineChartData,
-    getErrorCodes,
     getPropValue,
     traceHasError,
     getTraceCounts,
@@ -14,10 +13,27 @@ import {
     getFilteredTraceData,
     getBrandSites
 } from '../utils';
-import {ALL_ERROR_CODES, TOP_10_ERROR_CODES, TOP_20_ERROR_CODES, CODE_OPTION, CATEGORY_OPTION, SITES, ALL_SITES} from '../constants';
+import {SITES} from '../constants';
 import {EXPEDIA_PARTNER_SERVICES_BRAND} from '../../../constants';
 
 describe('Fci Utils', () => {
+    // shouldFetchData = (prev, start, end, selectedSite, chartProperty, selectedErrorCode)
+    it('shouldFetchData', () => {
+        expect(shouldFetchData({})).to.be.eql(true);
+        expect(shouldFetchData({start: '2020-01-02'})).to.be.eql(true);
+        expect(shouldFetchData({start: '2020-01-02', end: '2020-01-04'})).to.be.eql(true);
+        expect(shouldFetchData({start: '2020-01-02', end: '2020-01-04', selectedSite: 'www.expedia.com'},
+            moment('2020-01-01'))).to.be.eql(true);
+        expect(shouldFetchData({start: '2020-01-02', end: '2020-01-04', selectedSite: 'www.expedia.com'},
+            moment('2020-01-03'), moment('2020-01-05'))).to.be.eql(true);
+        expect(shouldFetchData({start: '2020-01-02', end: '2020-01-04', selectedSite: 'www.expedia.com', chartProperty: 'categoryA'},
+            moment('2020-01-03'), moment('2020-01-03'), 'www.expedia.com', 'categoryB')).to.be.eql(true);
+        expect(shouldFetchData({start: '2020-01-02', end: '2020-01-04', selectedSite: 'www.expedia.com', chartProperty: 'categoryA', selectedErrorCode: '201'},
+            moment('2020-01-03'), moment('2020-01-03'), 'www.expedia.com', 'categoryA')).to.be.eql(true);
+        expect(shouldFetchData({start: '2020-01-02', end: '2020-01-04', selectedSite: 'www.expedia.com', chartProperty: 'categoryA', selectedErrorCode: '201'},
+            moment('2020-01-03'), moment('2020-01-03'), 'www.expedia.com', 'categoryA', '201')).to.be.eql(false);
+    });
+
     it('validDateRange - invalid dates', () => {
         expect(validDateRange(null, null)).to.be.eql(false);
         expect(validDateRange('2020-01-01', null)).to.be.eql(false);
@@ -35,8 +51,8 @@ describe('Fci Utils', () => {
         const result = getQueryValues();
         expect(result.initialTimeRange).to.be.eql('Last 24 Hours');
         expect(result.initialLobs).to.be.eql([]);
-        expect(result.initialSite).to.be.eql(ALL_SITES);
-        expect(result.initialErrorCode).to.be.eql(ALL_ERROR_CODES);
+        expect(result.initialSite).to.be.eql(getBrandSites('Expedia')[0]);
+        expect(result.initialErrorCode).to.be.eql('');
         expect(result.initialHideIntentionalCheck).to.be.eql(false);
     });
 
@@ -48,7 +64,7 @@ describe('Fci Utils', () => {
         const site = 'travel.chase.com';
         const urlBrand = 'Expedia';
         const intentional = true;
-        const result = getQueryValues(`?from=${start}&to=${end}&lobs=${lob}&code=${errorCode}&siteName=${site}&selectedBrand=${urlBrand}&hideIntentionalCheck=${intentional}`, EXPEDIA_PARTNER_SERVICES_BRAND);
+        const result = getQueryValues(`?from=${start}&to=${end}&lobs=${lob}&code=${errorCode}&siteName=${site}&selectedBrand=${urlBrand}&hideIntentional=${intentional}`, EXPEDIA_PARTNER_SERVICES_BRAND);
         expect(result.initialStart.isSame(start, 'day')).to.be.eql(true);
         expect(result.initialEnd.isSame(end, 'day')).to.be.eql(true);
         expect(result.initialTimeRange).to.be.eql('Custom');
@@ -56,21 +72,6 @@ describe('Fci Utils', () => {
         expect(result.initialErrorCode).to.be.eql(errorCode);
         expect(result.initialSite).to.be.eql(site);
         expect(result.initialHideIntentionalCheck).to.be.eql(intentional);
-    });
-
-    it('getLineChartData - errorCode', () => {
-        expect(getLineChartData(moment('2020-01-01T12:00:000Z'), moment('2020-01-01T12:59:000Z'), [{errorCode: 400}, {errorCode: 401}], ALL_ERROR_CODES, CODE_OPTION).keys)
-            .to.be.eql(['400', '401']);
-    });
-
-    it('getLineChartData - category', () => {
-        expect(getLineChartData(moment('2020-01-01T12:00:000Z'), moment('2020-01-01T12:59:000Z'), [{category: ['a']}, {category: ['b']}], ALL_ERROR_CODES, CATEGORY_OPTION).keys)
-            .to.be.eql(['a', 'b']);
-    });
-
-    it('getErrorCodes', () => {
-        expect(getErrorCodes([{errorCode: 400}, {errorCode: 401}]))
-            .to.be.eql([ALL_ERROR_CODES, TOP_10_ERROR_CODES, TOP_20_ERROR_CODES, '400', '401']);
     });
 
     it('getFilteredTraceData', () => {
@@ -203,7 +204,7 @@ describe('Fci Utils', () => {
                 comment: 'comment',
                 isFci: true
             },
-            category: 'category',
+            category: ['category'],
             recordedSessionUrl: 'recordedSessionUrl'
         };
         const {fci, category, recordedSessionUrl} = row;
@@ -218,7 +219,7 @@ describe('Fci Utils', () => {
             TPID: fci.tpId,
             EAPID: fci.eapId,
             'SiteID': fci.siteId,
-            Category: category,
+            Category: category.join(', '),
             LoB: 'Flights',
             'Device User Agent ID': fci.duaId,
             Comment: fci.comment,

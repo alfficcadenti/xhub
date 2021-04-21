@@ -5,7 +5,7 @@ import {SVGIcon} from '@homeaway/react-svg';
 import {EDIT__16} from '@homeaway/svg-defs';
 import DataTable from '../../components/DataTable';
 import {LOB_LIST} from '../../constants';
-import {ALL_ERROR_CODES, TOP_10_ERROR_CODES, TOP_20_ERROR_CODES, TRACE_TABLE_COLUMNS, SITES, CODE_OPTION, ALL_SITES, CATEGORY_OPTION} from './constants';
+import {TRACE_TABLE_COLUMNS, SITES, CATEGORY_OPTION} from './constants';
 import {EXPEDIA_PARTNER_SERVICES_BRAND, EXPEDIA_BRAND, OPXHUB_SUPPORT_CHANNEL} from '../../constants';
 
 
@@ -18,7 +18,7 @@ export const getUnsupportedBrandMsg = (selectedBrands) => `FCIs for ${selectedBr
     + `If you have any questions, please ping ${OPXHUB_SUPPORT_CHANNEL} or leave a comment via our Feedback form.`;
 
 // eslint-disable-next-line complexity
-export const shouldFetchData = (prev, start, end, selectedSite, chartProperty, selectedErrorCode) => (
+export const shouldFetchData = (prev, start, end, selectedSite, chartProperty, selectedErrorCode, hideIntentionalCheck) => (
     !prev.start
     || !prev.end
     || !prev.selectedSite
@@ -27,6 +27,7 @@ export const shouldFetchData = (prev, start, end, selectedSite, chartProperty, s
     || prev.selectedSite !== selectedSite
     || prev.chartProperty !== chartProperty
     || prev.selectedErrorCode !== selectedErrorCode
+    || prev.hideIntentionalCheck !== hideIntentionalCheck
 );
 
 // eslint-disable-next-line complexity
@@ -41,7 +42,7 @@ export const validDateRange = (start, end) => {
 
 // eslint-disable-next-line complexity
 export const getQueryValues = (search, brand = 'Expedia') => {
-    const {from, to, lobs, code, siteName, hideIntentionalCheck} = qs.parse(search);
+    const {from, to, lobs, code, siteName, hideIntentional} = qs.parse(search);
     const isValidDateRange = validDateRange(from, to);
     return {
         initialStart: isValidDateRange ? moment(from) : moment().subtract(24, 'hours').startOf('minute'),
@@ -53,81 +54,20 @@ export const getQueryValues = (search, brand = 'Expedia') => {
         initialSite: getBrandSites(brand).includes(siteName)
             ? siteName
             : getBrandSites(brand)[0],
-        initialErrorCode: code || ALL_ERROR_CODES,
-        initialHideIntentionalCheck: hideIntentionalCheck === 'true'
+        initialErrorCode: code || '',
+        initialHideIntentionalCheck: hideIntentional === 'true'
     };
 };
 
-export const getQueryString = (start, end, selectedLobs, selectedErrorCode, selectedSite, hideIntentionalCheck, chartProperty) => {
+const stringifyQueryParams = (selectedValue) => Array.isArray(selectedValue) ? selectedValue.map(({value}) => value).join(',') : selectedValue;
+
+export const getQueryString = (start, end, selectedErrorCode, selectedSite, hideIntentionalCheck, chartProperty) => {
     const dateQuery = `from=${start.toISOString()}&to=${end.toISOString()}`;
-    const lobQuery = selectedLobs.length
-        ? `&lobs=${selectedLobs.map((lob) => lob.value).join(',')}`
-        : '';
     const errorProperty = chartProperty === CATEGORY_OPTION ? 'category' : 'code';
-    const errorQuery = selectedErrorCode !== ALL_ERROR_CODES
-        ? `&${errorProperty}=${selectedErrorCode}`
-        : '';
-    const siteQuery = selectedSite !== ALL_SITES
-        ? `&siteName=${selectedSite}`
-        : '';
-    const hideIntentionalCheckQuery = `&hideIntentionalCheck=${hideIntentionalCheck}`;
-    return `${dateQuery}${lobQuery}${errorQuery}${siteQuery}${hideIntentionalCheckQuery}`;
-};
-
-const initTimeKeys = (start, end) => {
-    const tick = 15;
-    const keys = [];
-    const roundedStartMinutes = Math.floor(start.minute() / tick) * tick;
-    const curr = start.clone().minute(roundedStartMinutes).second(0);
-    while (curr.isSameOrBefore(end)) {
-        keys.push(curr.format('YYYY-MM-DD HH:mm'));
-        curr.add(tick, 'minutes');
-    }
-    return keys;
-};
-
-export const getLineChartData = (start, end, rows, selectedErrorCode, chartProperty) => {
-    const filteredRows = [ALL_ERROR_CODES, TOP_10_ERROR_CODES, TOP_20_ERROR_CODES].includes(selectedErrorCode)
-        ? rows
-        : rows.filter(({errorCode}) => Number(errorCode) === Number(selectedErrorCode));
-    const initialCounts = filteredRows.reduce((acc, curr) => {
-        if (curr[chartProperty]) {
-            acc[curr[chartProperty]] = 0;
-        }
-        return acc;
-    }, {});
-    const counter = initTimeKeys(start, end).reduce((acc, curr) => {
-        acc[curr] = JSON.parse(JSON.stringify(initialCounts));
-        return acc;
-    }, {});
-    const totals = {};
-    filteredRows.forEach((row) => {
-        const date = moment(row.timestamp);
-        const roundedMinutes = Math.floor(date.minute() / 15) * 15;
-        const key = date.clone().minute(roundedMinutes).second(0).format('YYYY-MM-DD HH:mm');
-        if (counter[key]) {
-            const propValue = row[chartProperty];
-            totals[propValue] = (totals[propValue] || 0) + 1;
-            counter[key][propValue]++;
-        }
-    });
-    const topValues = Object.entries(totals)
-        .sort((a, b) => b.count - a.count)
-        .map(([key]) => key);
-    const data = Object.entries(counter)
-        .map(([date, counts]) => Object.assign({name: date}, counts))
-        .sort((a, b) => b.counts - a.counts);
-    const keys = Object.keys(initialCounts);
-    if (chartProperty === CODE_OPTION) {
-        if (selectedErrorCode === TOP_10_ERROR_CODES) {
-            const top10Errors = topValues.slice(0, 10);
-            return {keys: keys.filter((key) => top10Errors.includes(key)), data};
-        } else if (selectedErrorCode === TOP_20_ERROR_CODES) {
-            const top20Errors = topValues.slice(0, 20);
-            return {keys: keys.filter((key) => top20Errors.includes(key)), data};
-        }
-    }
-    return {keys, data};
+    const errorQuery = selectedErrorCode ? `&${errorProperty}=${stringifyQueryParams(selectedErrorCode)}` : '';
+    const siteQuery = selectedSite ? `&siteName=${stringifyQueryParams(selectedSite)}` : '';
+    const hideIntentionalCheckQuery = `&hideIntentional=${hideIntentionalCheck}`;
+    return `${dateQuery}${errorQuery}${siteQuery}${hideIntentionalCheckQuery}`;
 };
 
 const getTagValue = (tags, property) => {
@@ -191,7 +131,7 @@ export const mapComment = (row) => ({
 });
 
 export const mapFci = (row = {}) => {
-    const {fci = {}, category} = JSON.parse(JSON.stringify(row));
+    const {fci = {}, category = []} = JSON.parse(JSON.stringify(row));
     return {
         Created: fci.timestamp ? moment(fci.timestamp).format('YYYY-MM-DD HH:mm') : '-',
         Session: getPropValue(fci, 'sessionId'),
@@ -203,7 +143,7 @@ export const mapFci = (row = {}) => {
         TPID: getPropValue(fci, 'tpId'),
         EAPID: getPropValue(fci, 'eapId'),
         'SiteID': getPropValue(fci, 'siteId'),
-        Category: category || '-',
+        Category: category.join(', ') || '-',
         LoB: (LOB_LIST.find((l) => l.value === fci.lineOfBusiness) || {label: '-'}).label,
         'Device User Agent ID': getPropValue(fci, 'duaId'),
         Comment: getPropValue(fci, 'comment'),
@@ -245,15 +185,6 @@ export const getTableData = (data, onOpenEdit) => {
         });
     result.sort((a, b) => b.Created.localeCompare(a.Created));
     return result;
-};
-
-export const getErrorCodes = (data) => {
-    const errorCodeSet = data.reduce((acc, {errorCode}) => {
-        acc.add(String(errorCode));
-        return acc;
-    }, new Set());
-    const errorCodes = Array.from(errorCodeSet).sort();
-    return [ALL_ERROR_CODES, TOP_10_ERROR_CODES, TOP_20_ERROR_CODES, ...errorCodes];
 };
 
 export const getFilteredTraceData = (data) => (
