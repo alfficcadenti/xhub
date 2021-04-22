@@ -10,6 +10,29 @@ Feature: Verify user is able to navigate around Problem Management
     Then user go ahead and clicks on the <link>
     Then user wait for the data to load
     Then the current page title contain Problem Management
+    Then waiting for chartsContainer
+    Then click on linkToFirstSubpage
+    Then click on linkToSecondSubpage
+    Then waiting for ticketsContainer
+    Then user selects start date
+    Then user selects end date
+    Then user selects one element of filter owningOrgsFilter owningOrgsFilterOption
+    Then user selects one element of filter priorityDropdown priorityDropdownOption
+    Then user selects one element of filter typeFilter typeFilterOption
+    Then click on moreFiltersButton
+    Then waiting for moreFiltersContainer
+    Then user selects one element of filter statusDropdown statusDropdownOption
+    Then user selects one element of filter rootCauseOwnerFilter rootCauseOwnerFilterOption
+    Then user selects one element of filter rootCauseCategoriesFilter rootCauseCategoriesFilterOption
+    Then click on submitFilters
+    Then click on linkToThirdSubpage
+    Then waiting for correctiveActionsContainer
+    Then click on removeCorrectiveActionsFilters
+    Then click on submitFilters
+    Then user wait for the data to load
+    Then select Corrective Actions
+    Then user selects one element of filter statusFilter statusFilterOption
+    Then click on submitFilters
 
     Examples:
     | brand                    | link                          |

@@ -25,7 +25,7 @@ module.exports = {
             selector: '.mfa-verify'
         },
         appContainer: {
-            selector: '.enduser-app'
+            selector: '.app-buttons-list'
         }
     }
 };

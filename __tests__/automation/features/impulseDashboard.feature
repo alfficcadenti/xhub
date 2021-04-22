@@ -10,12 +10,37 @@ Feature: Verify user is able to navigate around Impulse Dashboard
     Then user go ahead and clicks on the <link>
     Then user wait for the data to load
     Then the current page title contain Impulse Dashboard
+    Then user selects start date
+    Then user selects end date
+    Then user selects one element of filter <brandButton> <brandOption>
+    Then click on <submit>
+    Then user wait for the data to load
+    Then click on <reset>
+    Then user selects one element of filter <lobButton> <lobOption>
+    Then click on <submit>
+    Then user wait for the data to load
+    Then click on <reset>
+    Then user selects one element of filter <posButton> <posOption>
+    Then click on <submit>
+    Then user wait for the data to load
+    Then click on <reset>
+    Then user selects one element of filter <incidentsButton> <incidentsOption>
+    Then user selects one element of filter <anomaliesButton> <anomaliesOption>
+    Then click on <incidentsCheck>
+    Then click on <anomaliesCheck>
+    Then select advance filters
+    Then click on <submit>
+    Then user wait for the data to load
+    Then click on <reset>
+    Then user selects one element of filter <timeButton> <timeOption>
+    Then click on <submit>
+    Then user wait for the data to load
+    Then click on <resetGraph>
+    Then user wait for the data to load
 
     Examples:
-    | brand                    | link                    |
-    | ExpediaGroup             | availabilityTrendsLink1 |
-    | Expedia                  | availabilityTrendsLink1 |
-    | Egencia                  | availabilityTrendsLink1 |
-    | Hotelscom                | availabilityTrendsLink2 |
-    | Vrbo                     | availabilityTrendsLink1 |
-    | ExpediaPartnerSolutions  | availabilityTrendsLink1 |
+    | brand                    | link                    | brandButton | brandOption        | lobButton | lobOption       | posButton | posOption       | incidentsButton | incidentsOption       | incidentsCheck    | anomaliesCheck    | timeButton    | timeOption          | anomaliesButton | anomaliesOption       | submit        | reset        | resetGraph |
+    | ExpediaGroup             | availabilityTrendsLink1 | brandFilter | brandOptionFilter1 | lobFilter | lobOptionFilter | posFilter | posOptionFilter | incidentsFilter | incidentsOptionFilter | incidentsCheckbox | anomaliesCheckbox | setTimeFilter | setTimeFilterOption | anomaliesFilter | anomaliesOptionFilter | submitFilters | resetFilters | resetGraph |
+    | Expedia                  | availabilityTrendsLink1 | brandFilter | brandOptionFilter1 | lobFilter | lobOptionFilter | posFilter | posOptionFilter | incidentsFilter | incidentsOptionFilter | incidentsCheckbox | anomaliesCheckbox | setTimeFilter | setTimeFilterOption | anomaliesFilter | anomaliesOptionFilter | submitFilters | resetFilters | resetGraph |
+    | Hotelscom                | availabilityTrendsLink2 | brandFilter | brandOptionFilter1 | lobFilter | lobOptionFilter | posFilter | posOptionFilter | incidentsFilter | incidentsOptionFilter | incidentsCheckbox | anomaliesCheckbox | setTimeFilter | setTimeFilterOption | anomaliesFilter | anomaliesOptionFilter | submitFilters | resetFilters | resetGraph |
+    | ExpediaPartnerSolutions  | availabilityTrendsLink1 | brandFilter | brandOptionFilter1 | lobFilter | lobOptionFilter | posFilter | posOptionFilter | incidentsFilter | incidentsOptionFilter | incidentsCheckbox | anomaliesCheckbox | setTimeFilter | setTimeFilterOption | anomaliesFilter | anomaliesOptionFilter | submitFilters | resetFilters | resetGraph |
