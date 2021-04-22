@@ -97,6 +97,7 @@ const DatetimeRangePicker = (props) => (
             startDate={props.startDate}
             endDate={props.endDate}
             disabled={props.disabled}
+            timeFormat={props.showTimePicker}
         />
         <div className="rdt-start-label">{'Start'}</div>
         <div className="rdt-end-label">{'End'}</div>

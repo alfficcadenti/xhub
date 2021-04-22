@@ -39,9 +39,9 @@ describe('<IncidentTrendsDashboard/>', () => {
         const startDateDefaultValue = moment().subtract(14, 'days').format(DATE_FORMAT);
         const endDateDefaultValue = moment().format(DATE_FORMAT);
 
-        const props = wrapper.find('DatePicker').props();
-        expect(props.startDate).equal(startDateDefaultValue);
-        expect(props.endDate).equal(endDateDefaultValue);
+        const props = wrapper.find('DatetimeRangePicker').props();
+        expect(moment(props.startDate).format(DATE_FORMAT)).equal(startDateDefaultValue);
+        expect(moment(props.endDate).format(DATE_FORMAT)).equal(endDateDefaultValue);
     });
 
     it('Navigation tab has correct tabs', async () => {

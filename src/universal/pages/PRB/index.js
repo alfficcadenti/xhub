@@ -6,7 +6,7 @@ import {Navigation} from '@homeaway/react-navigation';
 import {SVGIcon} from '@homeaway/react-svg';
 import {FILTER__16} from '@homeaway/svg-defs';
 import {Divider} from '@homeaway/react-collapse';
-import {DateRangePicker} from '@homeaway/react-date-pickers';
+import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import LoadingContainer from '../../components/LoadingContainer';
 import FilterDropDown from '../../components/FilterDropDown';
 import HelpText from '../../components/HelpText/HelpText';
@@ -19,13 +19,14 @@ import {
     ALL_TYPES_OPTION,
     ALL_ORGS_OPTION,
     ALL_RC_OWNERS_OPTION,
-    ALL_RC_CATEGORIES_OPTION
+    ALL_RC_CATEGORIES_OPTION, DATE_FORMAT
 } from '../../constants';
 import {useFetchTickets} from './hooks';
 import {useQueryParamChange, useSelectedBrand} from '../hooks';
 import {NAV_LINKS, CA_STATUS_LIST} from './constants';
 import {validDateRange, getQueryValues, generateUrl, getActiveIndex, filterType} from './utils';
 import './styles.less';
+
 
 // eslint-disable-next-line complexity
 const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
@@ -149,11 +150,13 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         updateHistory();
     }, [selectedL1, selectedL2, selectedL3, selectedL4, activeIndex]);
 
-    const handleDateRangeChange = (start, end) => {
-        setStartDate(start);
+    const handleDateRangeChange = ({start, end}) => {
+        setStartDate(moment(start).format(DATE_FORMAT));
+
         if (!!end || (!end && moment(start).isAfter(endDate))) {
-            setEndDate(end);
+            setEndDate(moment(end).format(DATE_FORMAT));
         }
+
         setIsDirtyForm(true);
     };
 
@@ -266,16 +269,11 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         const showForCA = activeIndex !== 2 ? 'hidden' : '';
         return (
             <div className="filters-wrapper">
-                <DateRangePicker
-                    id="prb-daterangepicker"
-                    startDate={startDate}
-                    endDate={endDate}
-                    minDate={moment('2019-01-01').toDate()}
-                    onDateRangeChange={handleDateRangeChange}
-                    inputLabel1="Start"
-                    inputLabel2="End"
-                    inputName1="start"
-                    inputName2="end"
+                <DatetimeRangePicker
+                    onChange={handleDateRangeChange}
+                    startDate={moment(startDate).toDate()}
+                    endDate={moment(endDate).toDate()}
+                    hidePresets
                 />
                 <Select
                     isMulti
