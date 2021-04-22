@@ -14,6 +14,8 @@ Feature: Verify user is able to navigate around Problem Management
     Then click on linkToFirstSubpage
     Then click on linkToSecondSubpage
     Then waiting for ticketsContainer
+    Then user selects start date
+    Then user selects end date
     Then user selects one element of filter owningOrgsFilter owningOrgsFilterOption
     Then user selects one element of filter priorityDropdown priorityDropdownOption
     Then user selects one element of filter typeFilter typeFilterOption

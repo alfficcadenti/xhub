@@ -2,7 +2,6 @@ import { waitForElement } from './common-method'
 
 export const selectStartingDate = async browser => {
     await browser.click('@dateStart');
-    await browser.click('@dateTimeToggle');
     await browser.click('@dateSwitch');
     await browser.click('@datePrev');
     await browser.click('@dateNext');
@@ -15,7 +14,6 @@ export const selectStartingDate = async browser => {
 
 export const selectEndingDate = async browser => {
     await browser.click('@dateEnd');
-    await browser.click('@dateTimeToggle');
     await browser.click('@dateSwitch');
     await browser.click('@datePrev');
     await browser.click('@dateNext');

@@ -10,6 +10,8 @@ Feature: Verify user is able to navigate around Quality Trends
     Then user go ahead and clicks on the <link>
     Then user wait for the data to load
     Then the current page title contain Quality Trends
+    Then user selects start date
+    Then user selects end date
     Then conditional click on paginationNextBtn <paginationNextBtn>
     Then conditional click on paginationPrevBtn <paginationPrevBtn>
     Then conditional click on paginationNumberBtn <paginationNumberBtn>
