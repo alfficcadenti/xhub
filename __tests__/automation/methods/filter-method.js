@@ -42,7 +42,12 @@ export const selectAdvanceFilters = async browser => {
 export const selectAnnotationsFilter = async browser => {
     await browser.click('@annotationsButton')
     await waitForElement(browser, '@annotationsContainer', 'visible');
+    await browser.click('@annotationsRemoveButton');
     await browser.setValue('@annotationsSearchInput', 'search');
+    await browser.expect.element('@annotationsSearchInput').to.have.value.that.equals('search');
+    await browser.click('@annotationsDeploymentsInput');
+    await browser.expect.element('@annotationsDeploymentsInput').to.be.present.after(2000);
+    await browser.click('@annotationsDeploymentsInput');
 };
 
 export const selectCorrectiveActions = async browser => {

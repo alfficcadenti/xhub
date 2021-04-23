@@ -16,6 +16,13 @@ Then(/^waiting for (.*)/, async element => {
     await waitForElement(pageFilters, `@${element}`, 'visible')
 });
 
+Then(/^wait for data reload (.*) (.*)/, async (element, loader) => {
+    if(element && loader) {
+        await waitForElement(pageFilters, `@${loader}`, 'not present')
+        await waitForElement(pageFilters, `@${element}`, 'present')
+    } else return;
+});
+
 Then(/^user selects one element of filter (.*) (.*)/, async (button, listElement) => {
     if (button && listElement) {
         await selectOneElementOfFilter(pageFilters, button, listElement);
@@ -35,7 +42,9 @@ Then(/^set time filter/, async () => {
 });
 
 Then(/^click on (.*)/, async element => {
-    await clickOn(pageFilters, element)
+    if(element) {
+        await clickOn(pageFilters, element)
+    } else return;
 });
 
 Then(/^conditional click on (.*) (.*)/, async (element, skip) => {

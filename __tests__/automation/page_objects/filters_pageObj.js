@@ -117,6 +117,12 @@ module.exports = {
         annotationsSearchInput: {
             selector: 'input[id="searchable-list-input"]'
         },
+        annotationsRemoveButton: {
+            selector: '.annotations-filters-container .Token__remove'
+        },
+        annotationsDeploymentsInput: {
+            selector: '.annotations-filters-container .annotations-category-filters input[name="deployment-сheckbox"]'
+        },
         setDateButton: {
             selector: '.dates-button'
         },
@@ -251,6 +257,15 @@ module.exports = {
         },
         statusFilterOption: {
             selector: '.status-select__menu #react-select-3-option-0'
+        },
+        lobClearFilters: {
+            selector: '.lob-select__clear-indicator'
+        },
+        realTimeSuccessRates: {
+            selector: '.real-time-card-container'
+        },
+        realTimeSuccessRatesLoader: {
+            selector: '.summary-container .LoadingOverlay'
         }
     }
 };
