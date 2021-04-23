@@ -162,6 +162,12 @@ module.exports = {
         tagDropdownOption: {
             selector: '#tag-dropdown--container li:nth-child(3)'
         },
+        partnerDropdown: {
+            selector: '#partner-dropdown'
+        },
+        partnerDropdownOption: {
+            selector: '#partner-dropdown--container li:nth-child(3)'
+        },
         chartsContainer: {
             selector: '.overview-charts'
         },
