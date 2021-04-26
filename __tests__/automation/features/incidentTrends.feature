@@ -14,6 +14,7 @@ Feature: Verify user is able to navigate around Incident Trends
     Then waiting for overviewTabContainer
     Then click on top5Tab
     Then waiting for top5TabContainer
+    Then click on incidentsTab
     Then user selects start date
     Then user selects end date
     Then conditional click on paginationNextBtn <skipPagination>
