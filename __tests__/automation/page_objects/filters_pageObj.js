@@ -225,9 +225,6 @@ module.exports = {
         correctiveActionsModalSettingsInput: {
             selector: '.CollapseBase__content.Divider__body input'
         },
-        correctiveActionsModalCloseButton: {
-            selector: '.Modal__header-btn--close'
-        },
         l1TableArrow: {
             selector: '.l1-table .arrow'
         },
@@ -266,6 +263,51 @@ module.exports = {
         },
         realTimeSuccessRatesLoader: {
             selector: '.summary-container .LoadingOverlay'
+        },
+        errorsFilter: {
+            selector: '.error-code-dropdown__control'
+        },
+        errorsFilterOption: {
+            selector: '.error-code-dropdown #react-select-3-option-0'
+        },
+        sitesFilter: {
+            selector: '.site-dropdown__control'
+        },
+        sitesFilterOption: {
+            selector: '.site-dropdown__menu #react-select-4-option-0'
+        },
+        hideIntentionalErrorsInput: {
+            selector: 'input[name="intent-cbox"]'
+        },
+        errorCodeCheckbox: {
+            selector: 'input[value="errorCode"]'
+        },
+        categoryCheckbox: {
+            selector: 'input[value="category"]'
+        },
+        subpageLinkFci1: {
+            selector: '.Navigation__ul li:nth-child(1)'
+        },
+        subpageLinkFci2: {
+            selector: '.Navigation__ul li:nth-child(2)'
+        },
+        fciSearchInput: {
+            selector: '.fci-search-input .form-control'
+        },
+        modalContainer: {
+            selector: '.Modal__content'
+        },
+        modalSearchInput: {
+            selector: '.table-search-input .form-control'
+        },
+        modalSettingsButton: {
+            selector: '.Modal__content .settings-btn'
+        },
+        modalMoreSettingsContainer: {
+            selector: '.Modal__content .CollapseBase__content'
+        },
+        modalCloseButton: {
+            selector: '.Modal__header-btn--close'
         }
     }
 };

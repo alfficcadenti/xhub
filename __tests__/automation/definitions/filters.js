@@ -1,6 +1,6 @@
 import { Then } from 'cucumber';
 import { client } from 'nightwatch-api';
-import { selectStartingDate, selectEndingDate, selectOneElementOfFilter, selectAdvanceFilters, setTimeFilter, selectAnnotationsFilter, clickOn, waitForElement, selectCorrectiveActions } from '../methods';
+import { selectStartingDate, selectEndingDate, selectOneElementOfFilter, selectAdvanceFilters, setTimeFilter, selectAnnotationsFilter, clickOn, waitForElement, selectCorrectiveActions, setValueOfInput } from '../methods';
 
 const pageFilters = client.page.filters_pageObj();
 
@@ -55,4 +55,8 @@ Then(/^conditional click on (.*) (.*)/, async (element, skip) => {
 
 Then(/^select Corrective Actions/, async () => {
     await selectCorrectiveActions(pageFilters)
+});
+
+Then(/^set value of input (.*)/, async input => {
+    await setValueOfInput(pageFilters, input);
 });

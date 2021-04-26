@@ -39,6 +39,12 @@ export const selectAdvanceFilters = async browser => {
     await browser.click('@deviceOptionFilter');
 };
 
+export const setValueOfInput = async (browser, input) => {
+    await browser.click(`@${input}`);
+    await browser.setValue(`@${input}`, 'search');
+    await browser.expect.element(`@${input}`).to.have.value.that.equals('search');
+};
+
 export const selectAnnotationsFilter = async browser => {
     await browser.click('@annotationsButton')
     await waitForElement(browser, '@annotationsContainer', 'visible');
@@ -64,5 +70,5 @@ export const selectCorrectiveActions = async browser => {
     await browser.click('@correctiveActionsModalSettingsButton');
     await waitForElement(browser, '@correctiveActionsModalSettingsContainer', 'visible');
     await browser.click('@correctiveActionsModalSettingsInput');
-    await browser.click('@correctiveActionsModalCloseButton');
+    await browser.click('@modalCloseButton');
 };
