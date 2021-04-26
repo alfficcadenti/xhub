@@ -30,7 +30,7 @@ After(async function (scenario) {
         console.info('[info:Retry] Test in progress!');
     }
 
-    getConsoleInfo((logString) => {
+    getConsoleInfo(logString => {
         if (logString) {
             const base64Str = Buffer.from(`executionLog: ${logString}`).toString('base64');
             this.attach(JSON.stringify(base64Str, null, 2), 'text/plain');

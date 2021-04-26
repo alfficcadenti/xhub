@@ -51,7 +51,7 @@ const localBrowsersConfigs = {
                 acceptSslCerts: true,
                 loggingPrefs: { browser: 'INFO' },
                 'goog:chromeOptions': {
-                    args: ['--window-size=1920,1080'],
+                    args: ['--window-size=1920,1080', 'headless', 'disable-gpu'],
                     w3c: false
                 },
             }
