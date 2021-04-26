@@ -10,25 +10,29 @@ Feature: Verify user is able to navigate around Incident Trends
     Then user go ahead and clicks on the <link>
     Then user wait for the data to load
     Then the current page title contain Incident Trends
+    Then click on overviewTab
+    Then waiting for overviewTabContainer
+    Then click on top5Tab
+    Then waiting for top5TabContainer
     Then user selects start date
     Then user selects end date
-    Then conditional click on paginationNextBtn <paginationNextBtn>
-    Then conditional click on paginationPrevBtn <paginationPrevBtn>
-    Then conditional click on paginationNumberBtn <paginationNumberBtn>
+    Then conditional click on paginationNextBtn <skipPagination>
+    Then conditional click on paginationPrevBtn <skipPagination>
+    Then conditional click on paginationNumberBtn <skipPagination>
     Then user selects one element of filter <pageSizeDropdown> pageSizeDropdownListElement
-    Then user selects one element of filter priorityDropdown priorityDropdownOption
-    Then user selects one element of filter statusDropdown statusDropdownOption
+    Then user selects one element of filter <priorityDropdown> priorityDropdownOption
+    Then user selects one element of filter <statusDropdown> statusDropdownOption
     Then user selects one element of filter <filterDropdown> <filterDropdownOption>
     Then click on moreFiltersButton
     Then waiting for moreFiltersContainer
-    Then user selects one element of filter rootCauseOwnerFilter rootCauseOwnerFilterOption
+    Then user selects one element of filter <rootCauseOwnerFilter> rootCauseOwnerFilterOption
     Then click on submitFilters
 
     Examples:
-      | brand                    | link                          | paginationNextBtn | paginationPrevBtn | paginationNumberBtn | pageSizeDropdown | filterDropdown  | filterDropdownOption  |
-      | ExpediaGroup             | platformHealthResiliencyLink1 | paginationNextBtn | paginationPrevBtn | paginationNumberBtn | pageSizeDropdown | tagDropdown     | tagDropdownOption     |
-      | Expedia                  | platformHealthResiliencyLink1 | paginationNextBtn | paginationPrevBtn | paginationNumberBtn | pageSizeDropdown | tagDropdown     | tagDropdownOption     |
-      | Egencia                  | platformHealthResiliencyLink1 | paginationNextBtn | paginationPrevBtn | paginationNumberBtn | pageSizeDropdown | tagDropdown     | tagDropdownOption     |
-      | Hotelscom                | platformHealthResiliencyLink1 | paginationNextBtn | paginationPrevBtn | paginationNumberBtn | pageSizeDropdown | tagDropdown     | tagDropdownOption     |
-      | Vrbo                     | platformHealthResiliencyLink1 |                   |                   |                     |                  | tagDropdown     | tagDropdownOption     |
-      | ExpediaPartnerSolutions  | platformHealthResiliencyLink1 |                   |                   |                     |                  | partnerDropdown | partnerDropdownOption |
+      | brand                    | link                          | skipPagination    | pageSizeDropdown | filterDropdown  | filterDropdownOption  | rootCauseOwnerFilter | priorityDropdown | statusDropdown |
+      | ExpediaGroup             | platformHealthResiliencyLink1 | false             |                  |                 |                       |                      |                  |                |
+      | Expedia                  | platformHealthResiliencyLink1 | false             | pageSizeDropdown | tagDropdown     | tagDropdownOption     | rootCauseOwnerFilter | priorityDropdown | statusDropdown |
+      | Egencia                  | platformHealthResiliencyLink1 | true              |                  | tagDropdown     | tagDropdownOption     |                      | priorityDropdown | statusDropdown |
+      | Hotelscom                | platformHealthResiliencyLink1 | false             | pageSizeDropdown | tagDropdown     | tagDropdownOption     | rootCauseOwnerFilter | priorityDropdown | statusDropdown |
+      | Vrbo                     | platformHealthResiliencyLink1 | false             |                  | tagDropdown     | tagDropdownOption     |                      | priorityDropdown | statusDropdown |
+      | ExpediaPartnerSolutions  | platformHealthResiliencyLink1 | false             |                  |                 |                       |                      |                  |                |

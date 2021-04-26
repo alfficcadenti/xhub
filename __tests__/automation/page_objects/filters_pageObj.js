@@ -263,6 +263,18 @@ module.exports = {
         },
         statusFilterOption: {
             selector: '.status-select__menu #react-select-3-option-0'
+        },
+        overviewTab: {
+            selector: '.Navigation a[data-index="0"]'
+        },
+        overviewTabContainer: {
+            selector: '#inc-overview-table'
+        },
+        top5Tab: {
+            selector: '.Navigation a[data-index="2"]'
+        },
+        top5TabContainer: {
+            selector: '#inc-top5-tables'
         }
     }
 };
