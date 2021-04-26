@@ -13,7 +13,11 @@ Then(/^user selects end date/, async () => {
 });
 
 Then(/^waiting for (.*)/, async element => {
-    await waitForElement(pageFilters, `@${element}`, 'visible')
+    if (element) {
+        await waitForElement(pageFilters, `@${element}`, 'visible');
+    } else {
+        return;
+    }
 });
 
 Then(/^user selects one element of filter (.*) (.*)/, async (button, listElement) => {

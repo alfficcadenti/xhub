@@ -275,6 +275,9 @@ module.exports = {
         },
         top5TabContainer: {
             selector: '#inc-top5-tables'
+        },
+        incidentsTab: {
+            selector: '.Navigation a[data-index="1"]'
         }
     }
 };

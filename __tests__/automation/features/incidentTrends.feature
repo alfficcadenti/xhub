@@ -11,9 +11,9 @@ Feature: Verify user is able to navigate around Incident Trends
     Then user wait for the data to load
     Then the current page title contain Incident Trends
     Then click on overviewTab
-    Then waiting for overviewTabContainer
+    Then waiting for <overviewTabContainer>
     Then click on top5Tab
-    Then waiting for top5TabContainer
+    Then waiting for <top5TabContainer>
     Then click on incidentsTab
     Then user selects start date
     Then user selects end date
@@ -30,10 +30,10 @@ Feature: Verify user is able to navigate around Incident Trends
     Then click on submitFilters
 
     Examples:
-      | brand                    | link                          | skipPagination    | pageSizeDropdown | filterDropdown  | filterDropdownOption  | rootCauseOwnerFilter | priorityDropdown | statusDropdown |
-      | ExpediaGroup             | platformHealthResiliencyLink1 | false             |                  |                 |                       |                      |                  |                |
-      | Expedia                  | platformHealthResiliencyLink1 | false             | pageSizeDropdown | tagDropdown     | tagDropdownOption     | rootCauseOwnerFilter | priorityDropdown | statusDropdown |
-      | Egencia                  | platformHealthResiliencyLink1 | true              |                  | tagDropdown     | tagDropdownOption     |                      | priorityDropdown | statusDropdown |
-      | Hotelscom                | platformHealthResiliencyLink1 | false             | pageSizeDropdown | tagDropdown     | tagDropdownOption     | rootCauseOwnerFilter | priorityDropdown | statusDropdown |
-      | Vrbo                     | platformHealthResiliencyLink1 | false             |                  | tagDropdown     | tagDropdownOption     |                      | priorityDropdown | statusDropdown |
-      | ExpediaPartnerSolutions  | platformHealthResiliencyLink1 | false             |                  |                 |                       |                      |                  |                |
+      | brand                    | link                          | skipPagination    | pageSizeDropdown | filterDropdown  | filterDropdownOption  | rootCauseOwnerFilter | priorityDropdown | statusDropdown | overviewTabContainer | top5TabContainer |
+      | ExpediaGroup             | platformHealthResiliencyLink1 | false             |                  |                 |                       |                      |                  |                |                      |                  |
+      | Expedia                  | platformHealthResiliencyLink1 | false             | pageSizeDropdown | tagDropdown     | tagDropdownOption     | rootCauseOwnerFilter | priorityDropdown | statusDropdown | overviewTabContainer | top5TabContainer |
+      | Egencia                  | platformHealthResiliencyLink1 | true              |                  | tagDropdown     | tagDropdownOption     |                      | priorityDropdown | statusDropdown |                      |                  |
+      | Hotelscom                | platformHealthResiliencyLink1 | false             | pageSizeDropdown | tagDropdown     | tagDropdownOption     | rootCauseOwnerFilter | priorityDropdown | statusDropdown | overviewTabContainer | top5TabContainer |
+      | Vrbo                     | platformHealthResiliencyLink1 | false             |                  | tagDropdown     | tagDropdownOption     |                      | priorityDropdown | statusDropdown |                      | top5TabContainer |
+      | ExpediaPartnerSolutions  | platformHealthResiliencyLink1 | false             |                  |                 |                       |                      |                  |                |                      | top5TabContainer |
