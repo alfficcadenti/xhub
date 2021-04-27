@@ -162,6 +162,18 @@ module.exports = {
         statusDropdownOption: {
             selector: '#status-dropdown--container li:nth-child(3)'
         },
+        tagDropdown: {
+            selector: '#tag-dropdown'
+        },
+        tagDropdownOption: {
+            selector: '#tag-dropdown--container li:nth-child(3)'
+        },
+        partnerDropdown: {
+            selector: '#partner-dropdown'
+        },
+        partnerDropdownOption: {
+            selector: '#partner-dropdown--container li:nth-child(3)'
+        },
         chartsContainer: {
             selector: '.overview-charts'
         },
@@ -308,6 +320,21 @@ module.exports = {
         },
         modalCloseButton: {
             selector: '.Modal__header-btn--close'
+        },
+        overviewTab: {
+            selector: '.Navigation a[data-index="0"]'
+        },
+        overviewTabContainer: {
+            selector: '#inc-overview-table'
+        },
+        top5Tab: {
+            selector: '.Navigation a[data-index="2"]'
+        },
+        top5TabContainer: {
+            selector: '#inc-top5-tables'
+        },
+        incidentsTab: {
+            selector: '.Navigation a[data-index="1"]'
         }
     }
 };
