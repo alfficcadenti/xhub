@@ -64,7 +64,7 @@ const Impulse = (props) => {
     const [tableData, setTableData] = useState([]);
     const [anomaliesData, setAnomaliesData] = useState([]);
     const [enableAnomalies, setEnableAnomalies] = useState(true);
-    const [selectedAnomaliesMulti, setSelectedAnomaliesMulti] = useState(['Anomaly Detected', 'Anomaly Recovered']);
+    const [selectedAnomaliesMulti, setSelectedAnomaliesMulti] = useState(['Anomaly Detected']);
     const [anomalyTableData, setAnomalyTableData] = useState([]);
 
     useQueryParamChange(newBrand, props.onBrandChange);
