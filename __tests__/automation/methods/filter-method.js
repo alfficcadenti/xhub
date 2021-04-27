@@ -19,6 +19,9 @@ export const selectEndingDate = async browser => {
     await browser.click('@dateNext');
     await browser.click('@dateSwitch');
     await browser.click('@dateSwitch');
+    await browser.click('@dateYear');
+    await browser.click('@dateMonth');
+    await browser.click('@dateDay');
 };
 
 export const selectOneElementOfFilter = async (browser, button, listElement) => {

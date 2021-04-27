@@ -30,6 +30,12 @@ module.exports = {
         dateDay: {
             selector: '.rdtOpen tr:nth-child(4) .rdtDay:nth-child(6)'
         },
+        dateEndMonth: {
+            selector: '.rdtOpen tr:nth-child(1) .rdtMonth:nth-child(4)'
+        },
+        dateEndDay: {
+            selector: '.rdtOpen tr:nth-child(3) .rdtDay:nth-child(6)'
+        },
         brandFilter: {
             selector: '.filter-option:nth-child(2) .filter-option-selection:nth-child(1)'
         },
@@ -335,6 +341,21 @@ module.exports = {
         },
         incidentsTab: {
             selector: '.Navigation a[data-index="1"]'
+        },
+        searchListInput: {
+            selector: '.SearchListInput input.form-control'
+        },
+        searchListMenuList: {
+            selector: '.SearchListMenu__ul'
+        },
+        searchListMenuListElement: {
+            selector: '.SearchListMenu__ul li:nth-child(1)'
+        },
+        filterToken: {
+            selector: '.tokens-container .Token'
+        },
+        filterTokenRemove: {
+            selector: '.tokens-container .Token .Token__remove'
         }
     }
 };

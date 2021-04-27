@@ -10,6 +10,24 @@ Feature: Verify user is able to navigate around Change Finder
     Then user go ahead and clicks on the <link>
     Then user wait for the data to load
     Then the current page title contain Change Finder
+    Then conditional click on paginationNextBtn paginationNextBtn
+    Then conditional click on paginationPrevBtn paginationPrevBtn
+    Then conditional click on paginationNumberBtn paginationNumberBtn
+    Then user selects one element of filter pageSizeDropdown pageSizeDropdownListElement
+    Then user selects start date
+    Then user selects end date
+    Then click on submitFilters
+    Then user wait for the data to load
+    Then click on searchListInput
+    Then waiting for searchListMenuListElement
+    Then click on searchListMenuListElement
+    Then waiting for filterToken
+    Then click on searchListInput
+    Then waiting for searchListMenuListElement
+    Then click on searchListMenuListElement
+    Then click on filterTokenRemove
+    Then click on linkToSecondSubpage
+    Then click on linkToFirstSubpage
 
     Examples:
     | brand                    | link                          |
