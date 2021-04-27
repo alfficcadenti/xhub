@@ -14,6 +14,7 @@ import Reservations from './Reservations';
 import OperationalTV from './OperationalTV';
 import OperationalDashboard from './OperationalDashboard';
 import CheckoutSuccessRate from './CheckoutSuccessRate';
+import DataCenterTraffic from './DataCenterTraffic';
 import {EXPEDIA_BRAND, HOTELS_COM_BRAND, VRBO_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../constants';
 
 
@@ -106,6 +107,15 @@ export default [
         link: '/success-rates',
         text: 'Success Rates',
         component: SuccessRates,
+        brands: [EXPEDIA_BRAND, HOTELS_COM_BRAND, VRBO_BRAND],
+        hidden: false
+    },
+    {
+        category: AAT,
+        id: 'data-center-traffic',
+        link: '/data-center-traffic',
+        text: 'Data Center Traffic',
+        component: DataCenterTraffic,
         brands: [EXPEDIA_BRAND, HOTELS_COM_BRAND, VRBO_BRAND],
         hidden: false
     },
