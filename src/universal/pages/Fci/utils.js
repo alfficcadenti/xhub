@@ -42,7 +42,7 @@ export const validDateRange = (start, end) => {
 
 // eslint-disable-next-line complexity
 export const getQueryValues = (search, brand = 'Expedia') => {
-    const {from, to, lobs, code, siteName, hideIntentional} = qs.parse(search);
+    const {tab, from, to, lobs, code, siteName, hideIntentional, id} = qs.parse(search);
     const isValidDateRange = validDateRange(from, to);
     return {
         initialStart: isValidDateRange ? moment(from) : moment().subtract(24, 'hours').startOf('minute'),
@@ -55,19 +55,33 @@ export const getQueryValues = (search, brand = 'Expedia') => {
             ? siteName
             : getBrandSites(brand)[0],
         initialErrorCode: code || '',
-        initialHideIntentionalCheck: hideIntentional === 'true'
+        initialHideIntentionalCheck: hideIntentional === 'true',
+        initialId: id || '',
+        initialIndex: ['0', '1'].includes(tab) ? Number(tab) : 0
     };
 };
 
-const stringifyQueryParams = (selectedValue) => Array.isArray(selectedValue) ? selectedValue.map(({value}) => value).join(',') : selectedValue;
+export const stringifyQueryParams = (selectedValue) => Array.isArray(selectedValue) ? selectedValue.map(({value}) => value).join(',') : selectedValue;
 
-export const getQueryString = (start, end, selectedErrorCode, selectedSite, hideIntentionalCheck, chartProperty) => {
+export const getFciQueryString = (start, end, selectedErrorCode, selectedSite, hideIntentionalCheck, chartProperty) => {
     const dateQuery = `from=${start.toISOString()}&to=${end.toISOString()}`;
     const errorProperty = chartProperty === CATEGORY_OPTION ? 'category' : 'code';
     const errorQuery = selectedErrorCode ? `&${errorProperty}=${stringifyQueryParams(selectedErrorCode)}` : '';
     const siteQuery = selectedSite ? `&siteName=${stringifyQueryParams(selectedSite)}` : '';
     const hideIntentionalCheckQuery = `&hideIntentional=${hideIntentionalCheck}`;
     return `${dateQuery}${errorQuery}${siteQuery}${hideIntentionalCheckQuery}`;
+};
+
+export const getHistoryQueryString = (selectedBrands, start, end, selectedErrorCode, selectedSite, hideIntentionalCheck, chartProperty, selectedId, activeIndex) => {
+    const brandQuery = `selectedBrand=${selectedBrands[0]}`;
+    const dateQuery = `&from=${start.toISOString()}&to=${end.toISOString()}`;
+    const errorProperty = chartProperty === CATEGORY_OPTION ? 'category' : 'code';
+    const errorQuery = selectedErrorCode ? `&${errorProperty}=${stringifyQueryParams(selectedErrorCode)}` : '';
+    const siteQuery = selectedSite ? `&siteName=${stringifyQueryParams(selectedSite)}` : '';
+    const hideIntentionalCheckQuery = `&hideIntentional=${hideIntentionalCheck}`;
+    const idQuery = selectedId ? `&id=${selectedId}` : '';
+    const indexQuery = `&tab=${activeIndex}`;
+    return `${brandQuery}${dateQuery}${errorQuery}${siteQuery}${hideIntentionalCheckQuery}${idQuery}${indexQuery}`;
 };
 
 const getTagValue = (tags, property) => {

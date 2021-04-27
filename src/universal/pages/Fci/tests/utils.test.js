@@ -1,23 +1,42 @@
 import moment from 'moment';
 import {expect} from 'chai';
 import {
+    getBrandSites,
+    getIsSupportedBrand,
     shouldFetchData,
     validDateRange,
+    stringifyQueryParams,
     getQueryValues,
+    getFciQueryString,
+    getHistoryQueryString,
     getPropValue,
     traceHasError,
     getTraceCounts,
     mapTrace,
     mapComment,
     mapFci,
-    getFilteredTraceData,
-    getBrandSites
+    getFilteredTraceData
 } from '../utils';
-import {SITES} from '../constants';
-import {EXPEDIA_PARTNER_SERVICES_BRAND} from '../../../constants';
+import {SITES, CATEGORY_OPTION} from '../constants';
+import {EXPEDIA_BRAND, VRBO_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../../../constants';
 
 describe('Fci Utils', () => {
-    // shouldFetchData = (prev, start, end, selectedSite, chartProperty, selectedErrorCode)
+    it('getBrandSites - returns list of sites per Expedia Partner Solution', () => {
+        const brandSites = getBrandSites(EXPEDIA_PARTNER_SERVICES_BRAND);
+        expect(brandSites).to.eql(SITES[EXPEDIA_PARTNER_SERVICES_BRAND]);
+    });
+
+    it('getBrandSites - returns array with travel.chase.com as per API fallback if input is missing or not a brand', () => {
+        const brandSites = getBrandSites();
+        expect(brandSites).to.eql(['travel.chase.com']);
+    });
+
+    it('getIsSupportedBrand', () => {
+        expect(getIsSupportedBrand([EXPEDIA_BRAND])).to.eql(true);
+        expect(getIsSupportedBrand([EXPEDIA_PARTNER_SERVICES_BRAND])).to.eql(true);
+        expect(getIsSupportedBrand([VRBO_BRAND])).to.eql(false);
+    });
+
     it('shouldFetchData', () => {
         expect(shouldFetchData({})).to.be.eql(true);
         expect(shouldFetchData({start: '2020-01-02'})).to.be.eql(true);
@@ -47,6 +66,11 @@ describe('Fci Utils', () => {
         expect(validDateRange('2020-01-01', '2020-02-02')).to.be.eql(true);
     });
 
+    it('stringifyQueryParams', () => {
+        expect(stringifyQueryParams([{value: 'a'}, {value: 'b'}, {value: 'c'}])).to.be.eql('a,b,c');
+        expect(stringifyQueryParams('abc')).to.be.eql('abc');
+    });
+
     it('getQueryValues - default', () => {
         const result = getQueryValues();
         expect(result.initialTimeRange).to.be.eql('Last 24 Hours');
@@ -54,6 +78,8 @@ describe('Fci Utils', () => {
         expect(result.initialSite).to.be.eql(getBrandSites('Expedia')[0]);
         expect(result.initialErrorCode).to.be.eql('');
         expect(result.initialHideIntentionalCheck).to.be.eql(false);
+        expect(result.initialId).to.be.eql('');
+        expect(result.initialIndex).to.be.eql(0);
     });
 
     it('getQueryValues - custom', () => {
@@ -64,7 +90,9 @@ describe('Fci Utils', () => {
         const site = 'travel.chase.com';
         const urlBrand = 'Expedia';
         const intentional = true;
-        const result = getQueryValues(`?from=${start}&to=${end}&lobs=${lob}&code=${errorCode}&siteName=${site}&selectedBrand=${urlBrand}&hideIntentional=${intentional}`, EXPEDIA_PARTNER_SERVICES_BRAND);
+        const index = 1;
+        const id = 'traceid';
+        const result = getQueryValues(`?from=${start}&to=${end}&lobs=${lob}&code=${errorCode}&siteName=${site}&selectedBrand=${urlBrand}&hideIntentional=${intentional}&id=${id}&tab=${index}`, EXPEDIA_PARTNER_SERVICES_BRAND);
         expect(result.initialStart.isSame(start, 'day')).to.be.eql(true);
         expect(result.initialEnd.isSame(end, 'day')).to.be.eql(true);
         expect(result.initialTimeRange).to.be.eql('Custom');
@@ -72,6 +100,61 @@ describe('Fci Utils', () => {
         expect(result.initialErrorCode).to.be.eql(errorCode);
         expect(result.initialSite).to.be.eql(site);
         expect(result.initialHideIntentionalCheck).to.be.eql(intentional);
+        expect(result.initialId).to.be.eql(id);
+        expect(result.initialIndex).to.be.eql(Number(index));
+    });
+
+    it('getFciQueryString - default', () => {
+        const start = moment().subtract(1, 'day');
+        const end = moment();
+        const hideIntentionalCheck = false;
+        expect(getFciQueryString(start, end, null, null, hideIntentionalCheck, null)).to.eql(
+            `from=${start.toISOString()}&to=${end.toISOString()}&hideIntentional=${hideIntentionalCheck}`
+        );
+    });
+
+    it('getFciQueryString - custom', () => {
+        const start = moment().subtract(1, 'day');
+        const end = moment();
+        const selectedErrorCode = '404';
+        const selectedSite = 'www.expedia.com';
+        const hideIntentionalCheck = false;
+        const chartProperty = CATEGORY_OPTION;
+        expect(getFciQueryString(start, end, selectedErrorCode, selectedSite, hideIntentionalCheck, chartProperty)).to.eql(
+            `from=${start.toISOString()}&to=${end.toISOString()}&category=${selectedErrorCode}`
+            + `&siteName=${selectedSite}&hideIntentional=${hideIntentionalCheck}`
+        );
+    });
+
+    it('getHistoryQueryString - default', () => {
+        const selectedBrands = [EXPEDIA_PARTNER_SERVICES_BRAND];
+        const start = moment().subtract(1, 'day');
+        const end = moment();
+        const hideIntentionalCheck = false;
+        const activeIndex = 0;
+        expect(getHistoryQueryString(selectedBrands, start, end, null, null,
+            hideIntentionalCheck, null, null, activeIndex)).to.eql(
+            `selectedBrand=${selectedBrands[0]}&from=${start.toISOString()}&to=${end.toISOString()}`
+            + `&hideIntentional=${hideIntentionalCheck}&tab=${activeIndex}`
+        );
+    });
+
+    it('getHistoryQueryString - custom', () => {
+        const selectedBrands = [EXPEDIA_PARTNER_SERVICES_BRAND];
+        const start = moment().subtract(1, 'day');
+        const end = moment();
+        const selectedErrorCode = '404';
+        const selectedSite = 'www.expedia.com';
+        const hideIntentionalCheck = false;
+        const chartProperty = CATEGORY_OPTION;
+        const id = 'traceid';
+        const activeIndex = 0;
+        expect(getHistoryQueryString(selectedBrands, start, end, selectedErrorCode, selectedSite,
+            hideIntentionalCheck, chartProperty, id, activeIndex)).to.eql(
+            `selectedBrand=${selectedBrands[0]}&from=${start.toISOString()}&to=${end.toISOString()}`
+            + `&category=${selectedErrorCode}&siteName=${selectedSite}`
+            + `&hideIntentional=${hideIntentionalCheck}&id=${id}&tab=${activeIndex}`
+        );
     });
 
     it('getFilteredTraceData', () => {
@@ -250,15 +333,5 @@ describe('Fci Utils', () => {
             recordedSessionUrl: BLANK,
             traces: [],
         });
-    });
-
-    it('getBrandSites - returns list of sites per Expedia Partner Solution', () => {
-        const brandSites = getBrandSites(EXPEDIA_PARTNER_SERVICES_BRAND);
-        expect(brandSites).to.eql(SITES[EXPEDIA_PARTNER_SERVICES_BRAND]);
-    });
-
-    it('getBrandSites - returns array with travel.chase.com as per API fallback if input is missing or not a brand', () => {
-        const brandSites = getBrandSites();
-        expect(brandSites).to.eql(['travel.chase.com']);
     });
 });
