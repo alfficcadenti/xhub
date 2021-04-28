@@ -14,6 +14,7 @@ import Reservations from './Reservations';
 import OperationalTV from './OperationalTV';
 import OperationalDashboard from './OperationalDashboard';
 import CheckoutSuccessRate from './CheckoutSuccessRate';
+import OperationalIos from './OperationalIos';
 import {EXPEDIA_BRAND, HOTELS_COM_BRAND, VRBO_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../constants';
 
 
@@ -107,6 +108,15 @@ export default [
         text: 'Success Rates',
         component: SuccessRates,
         brands: [EXPEDIA_BRAND, HOTELS_COM_BRAND, VRBO_BRAND],
+        hidden: false
+    },
+    {
+        category: AAT,
+        id: 'operational-ios',
+        link: '/operational-ios',
+        text: 'Operational iOS Dashboard',
+        component: OperationalIos,
+        brands: [HOTELS_COM_BRAND],
         hidden: false
     },
     // PHAR Dashboards

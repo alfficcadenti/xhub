@@ -48,7 +48,7 @@ const apiRoutes = [
     impulseHealth,
     impulseAnomalies,
     impulseAnomaliesGrouped,
-    //opxhub booking anomaly detector
+    // opxhub booking anomaly detector
     impulsePrediction
 ];
 

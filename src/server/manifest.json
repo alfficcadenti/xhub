@@ -895,6 +895,11 @@
             "route": "require:./routes/pages/checkout-success-rate",
             "component": "require:../universal/components/App/ServerApp.js",
             "template": "templates/welcome.hbs"
+          },
+          {
+            "route": "require:./routes/pages/operational-ios",
+            "component": "require:../universal/components/App/ServerApp.js",
+            "template": "templates/welcome.hbs"
           }
         ]
       }
