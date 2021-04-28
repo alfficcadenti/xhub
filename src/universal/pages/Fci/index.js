@@ -37,8 +37,10 @@ const Fci = ({selectedBrands}) => {
         initialErrorCode,
         initialSite,
         initialHideIntentionalCheck,
-        initialId,
-        initialIndex
+        initialSearchId,
+        initialSelectedId,
+        initialIndex,
+        initialBucket
     } = getQueryValues(search, selectedBrands[0]);
     const [isDirtyForm, setIsDirtyForm] = useState(false);
     const [activeIndex, setActiveIndex] = useState(initialIndex);
@@ -54,7 +56,7 @@ const Fci = ({selectedBrands}) => {
     const [pendingErrorCode, setPendingErrorCode] = useState(initialErrorCode);
     const [pendingSite, setPendingSite] = useState(initialSite);
     const [pendingHideIntentionalCheck, setPendingHideIntentionalCheck] = useState(initialHideIntentionalCheck);
-    const [selectedBucket, setSelectedBucket] = useState();
+    const [selectedBucket, setSelectedBucket] = useState(initialBucket);
     const [prev, setPrev] = useState({
         start: null,
         end: null,
@@ -65,7 +67,8 @@ const Fci = ({selectedBrands}) => {
         hideIntentionalCheck: initialHideIntentionalCheck
     });
     const [errorCodes, setErrorCodes] = useState([]);
-    const [searchText, setSearchText] = useState(initialId);
+    const [searchText, setSearchText] = useState(initialSearchId);
+    const [selectedId, setSelectedId] = useState(initialSelectedId);
 
     const [isSupportedBrand, setIsSupportedBrand] = useState(getIsSupportedBrand(selectedBrands));
 
@@ -99,9 +102,9 @@ const Fci = ({selectedBrands}) => {
         setErrorCodes(Array.from(categorySet).sort());
     }, [start, end]);
 
-    const updateHistory = (tabIndex = activeIndex, id = searchText) => {
+    const updateHistory = (tabIndex = activeIndex, searchId = searchText, bucket = selectedBucket, id = selectedId) => {
         const historyQuery = getHistoryQueryString(selectedBrands, start, end, selectedErrorCode,
-            selectedSite, hideIntentionalCheck, chartProperty, id, tabIndex);
+            selectedSite, hideIntentionalCheck, chartProperty, searchId, tabIndex, bucket, id);
         history.push(`${pathname}?${historyQuery}`);
     };
 
@@ -109,7 +112,23 @@ const Fci = ({selectedBrands}) => {
         setModalFci(fci);
         setModalEditMode(true);
         setIsModalOpen(true);
-        updateHistory(1, fci.Trace);
+        setSelectedId(fci.Trace);
+        updateHistory(activeIndex, searchText, selectedBucket, fci.Trace);
+    };
+
+    const processTableData = (data) => {
+        const fcis = getTableData(data, handleOpenEdit);
+        setTableData(fcis);
+        setModalFcis(fcis);
+        if (selectedId) {
+            const fci = fcis.find(({Trace}) => Trace === selectedId);
+            if (fci) {
+                setModalFci(fci);
+                setModalEditMode(true);
+            }
+        } else {
+            setModalEditMode(false);
+        }
     };
 
     const searchFci = () => {
@@ -123,10 +142,7 @@ const Fci = ({selectedBrands}) => {
         fetch(`/getCheckoutFailure?searchId=${searchText}`)
             .then(checkResponse)
             .then((data) => {
-                const fcis = getTableData(data, handleOpenEdit);
-                setTableData(fcis);
-                setModalFcis(fcis);
-                setModalEditMode(false);
+                processTableData(data);
             })
             .catch((err) => {
                 setModalError(FETCH_FAILED_MSG);
@@ -179,17 +195,13 @@ const Fci = ({selectedBrands}) => {
             const bucketStart = moment(selectedBucket);
             const bucketEnd = moment(selectedBucket).add(1, 'hour');
             const query = getFciQueryString(bucketStart, bucketEnd, selectedErrorCode, selectedSite, hideIntentionalCheck, chartProperty);
+            updateHistory();
             setIsModalLoading(true);
             setModalError();
             setIsModalOpen(true);
             fetch(`/getCheckoutFailures?${query}`)
                 .then(checkResponse)
-                .then((data) => {
-                    const fcis = getTableData(data, handleOpenEdit);
-                    setTableData(fcis);
-                    setModalFcis(fcis);
-                    setModalEditMode(false);
-                })
+                .then((data) => processTableData(data))
                 .catch((err) => {
                     setModalError(FETCH_FAILED_MSG);
                     // eslint-disable-next-line no-console
@@ -206,7 +218,7 @@ const Fci = ({selectedBrands}) => {
     const handleNavigationClick = (e, activeLinkIndex) => {
         setActiveIndex(activeLinkIndex);
         setSearchText('');
-        updateHistory();
+        updateHistory(activeLinkIndex, null, null);
     };
 
     const handleSaveComment = (traceId, comment, isFci) => {
@@ -220,6 +232,7 @@ const Fci = ({selectedBrands}) => {
     const handleModalClose = () => {
         setSelectedBucket(null);
         setIsModalOpen(false);
+        updateHistory(activeIndex, searchText, null);
     };
 
     const handleApplyFilters = () => {
