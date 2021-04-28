@@ -59,7 +59,7 @@ export const getQueryValues = (search, brand = 'Expedia') => {
         initialSearchId: searchId || '',
         initialSelectedId: id || '',
         initialIndex: ['0', '1'].includes(tab) ? Number(tab) : 0,
-        initialBucket: moment(bucket).isValid ? bucket : null
+        initialBucket: bucket && moment(bucket).isValid ? bucket : null
     };
 };
 
