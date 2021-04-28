@@ -356,6 +356,21 @@ module.exports = {
         },
         filterTokenRemove: {
             selector: '.tokens-container .Token .Token__remove'
+        },
+        checkoutInput: {
+            selector: 'input[name="Checkout"]'
+        },
+        customerInput: {
+            selector: 'input[name="Customer"]'
+        },
+        qualityMetricsPanelContainer: {
+            selector: '.panels-container .quality-panel:nth-child(1)'
+        },
+        qualityMetricsNoResultsContainer: {
+            selector: '.no-results'
+        },
+        qualityMetricsPanelCountLink: {
+            selector: '.panels-container .quality-panel:nth-child(1) tr:nth-child(1) td:nth-child(4) .count-link:nth-child(1)'
         }
     }
 };

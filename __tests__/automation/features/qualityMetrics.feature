@@ -10,6 +10,23 @@ Feature: Verify user is able to navigate around Quality Metrics
     Then user go ahead and clicks on the <link>
     Then user wait for the data to load
     Then the current page title contain Quality Metrics
+    Then click on checkoutInput
+    Then click on applyButton
+    Then user wait for the data to load
+    Then waiting for qualityMetricsPanelContainer
+    Then click on customerInput
+    Then click on applyButton
+    Then user wait for the data to load
+    Then waiting for qualityMetricsPanelContainer
+    Then click on qualityMetricsPanelCountLink
+    Then waiting for modalContainer
+    Then click on modalCloseButton
+    Then waiting for qualityMetricsPanelContainer
+    Then click on checkoutInput
+    Then click on customerInput
+    Then click on applyButton
+    Then user wait for the data to load
+    Then waiting for qualityMetricsNoResultsContainer
 
     Examples:
     | brand     | link                          |
