@@ -29,6 +29,7 @@ Then(/^wait for data reload (.*) (.*)/, async (element, loader) => {
 
 Then(/^user selects one element of filter (.*) (.*)/, async (button, listElement) => {
     if (button && listElement) {
+        if(button.includes('businessFilter')) await waitForElement(pageFilters, '@businessFilterDisabled', 'not present')
         await selectOneElementOfFilter(pageFilters, button, listElement);
     } else return;
 });
