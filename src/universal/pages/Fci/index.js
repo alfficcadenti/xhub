@@ -231,6 +231,8 @@ const Fci = ({selectedBrands}) => {
 
     const handleModalClose = () => {
         setSelectedBucket(null);
+        setModalFci(null);
+        setModalEditMode(false);
         setIsModalOpen(false);
         updateHistory(activeIndex, searchText, null);
     };
