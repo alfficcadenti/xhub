@@ -30,5 +30,5 @@ Feature: Verify user is able to navigate around Success Rates
     Examples:
     | brand     | link                    | lobClearFilters | realTimeSuccessRates | realTimeSuccessRatesLoader | businessFilter | businessFilterOptionExpedia |
     | Expedia   | availabilityTrendsLink4 | lobClearFilters | realTimeSuccessRates | realTimeSuccessRatesLoader | businessFilter | businessFilterOptionExpedia |
-    | Hotelscom | availabilityTrendsLink7 |                 |                      |                            |                |                             |
+    | Hotelscom | availabilityTrendsLink9 |                 |                      |                            |                |                             |
     | Vrbo      | availabilityTrendsLink3 |                 |                      |                            |                |                             |

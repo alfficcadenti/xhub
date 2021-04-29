@@ -105,6 +105,9 @@ module.exports = {
         businessFilter: {
             selector: '.lob-select__control'
         },
+        businessFilterDisabled: {
+            selector: '.lob-select__control--is-disabled'
+        },
         businessFilterOptionExpedia: {
             selector: '.lob-select__menu-list #react-select-3-option-0'
         },

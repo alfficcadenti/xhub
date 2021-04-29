@@ -36,6 +36,12 @@ module.exports = {
         availabilityTrendsLink7: {
             selector: 'ul[id="Availability & Trends-dropdown--container"] li:nth-child(7) a'
         },
+        availabilityTrendsLink8: {
+            selector: 'ul[id="Availability & Trends-dropdown--container"] li:nth-child(8) a'
+        },
+        availabilityTrendsLink9: {
+            selector: 'ul[id="Availability & Trends-dropdown--container"] li:nth-child(9) a'
+        },
         platformHealthResiliencyDropdown: {
             selector: 'ul[id="Platform Health & Resiliency-dropdown--container"]'
         },

@@ -13,4 +13,4 @@ Feature: Verify user is able to navigate around Reservations
 
     Examples:
     | brand     | link                    |
-    | Hotelscom | availabilityTrendsLink6 |
+    | Hotelscom | availabilityTrendsLink8 |
