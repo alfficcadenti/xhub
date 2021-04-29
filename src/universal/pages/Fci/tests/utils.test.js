@@ -78,8 +78,10 @@ describe('Fci Utils', () => {
         expect(result.initialSite).to.be.eql(getBrandSites('Expedia')[0]);
         expect(result.initialErrorCode).to.be.eql('');
         expect(result.initialHideIntentionalCheck).to.be.eql(false);
-        expect(result.initialId).to.be.eql('');
+        expect(result.initialSearchId).to.be.eql('');
+        expect(result.initialSelectedId).to.be.eql('');
         expect(result.initialIndex).to.be.eql(0);
+        expect(result.initialBucket).to.be.eql(null);
     });
 
     it('getQueryValues - custom', () => {
@@ -91,8 +93,12 @@ describe('Fci Utils', () => {
         const urlBrand = 'Expedia';
         const intentional = true;
         const index = 1;
-        const id = 'traceid';
-        const result = getQueryValues(`?from=${start}&to=${end}&lobs=${lob}&code=${errorCode}&siteName=${site}&selectedBrand=${urlBrand}&hideIntentional=${intentional}&id=${id}&tab=${index}`, EXPEDIA_PARTNER_SERVICES_BRAND);
+        const searchId = 'traceidA';
+        const id = 'traceidB';
+        const bucket = '2020-01-01';
+        const result = getQueryValues(`?from=${start}&to=${end}&lobs=${lob}&code=${errorCode}`
+            + `&siteName=${site}&selectedBrand=${urlBrand}&hideIntentional=${intentional}`
+            + `&searchId=${searchId}&tab=${index}&id=${id}&bucket=${bucket}`, EXPEDIA_PARTNER_SERVICES_BRAND);
         expect(result.initialStart.isSame(start, 'day')).to.be.eql(true);
         expect(result.initialEnd.isSame(end, 'day')).to.be.eql(true);
         expect(result.initialTimeRange).to.be.eql('Custom');
@@ -100,8 +106,10 @@ describe('Fci Utils', () => {
         expect(result.initialErrorCode).to.be.eql(errorCode);
         expect(result.initialSite).to.be.eql(site);
         expect(result.initialHideIntentionalCheck).to.be.eql(intentional);
-        expect(result.initialId).to.be.eql(id);
+        expect(result.initialSearchId).to.be.eql(searchId);
+        expect(result.initialSelectedId).to.be.eql(id);
         expect(result.initialIndex).to.be.eql(Number(index));
+        expect(result.initialBucket).to.be.eql(bucket);
     });
 
     it('getFciQueryString - default', () => {
@@ -147,13 +155,16 @@ describe('Fci Utils', () => {
         const selectedSite = 'www.expedia.com';
         const hideIntentionalCheck = false;
         const chartProperty = CATEGORY_OPTION;
-        const id = 'traceid';
+        const searchId = 'traceidA';
+        const selectedBucket = '2020-01-02';
+        const id = 'traceidA';
         const activeIndex = 0;
         expect(getHistoryQueryString(selectedBrands, start, end, selectedErrorCode, selectedSite,
-            hideIntentionalCheck, chartProperty, id, activeIndex)).to.eql(
+            hideIntentionalCheck, chartProperty, searchId, activeIndex, selectedBucket, id)).to.eql(
             `selectedBrand=${selectedBrands[0]}&from=${start.toISOString()}&to=${end.toISOString()}`
             + `&category=${selectedErrorCode}&siteName=${selectedSite}`
-            + `&hideIntentional=${hideIntentionalCheck}&id=${id}&tab=${activeIndex}`
+            + `&hideIntentional=${hideIntentionalCheck}&searchId=${searchId}&tab=${activeIndex}`
+            + `&bucket=${selectedBucket}&id=${id}`
         );
     });
 

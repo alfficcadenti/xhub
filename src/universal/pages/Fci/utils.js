@@ -42,7 +42,7 @@ export const validDateRange = (start, end) => {
 
 // eslint-disable-next-line complexity
 export const getQueryValues = (search, brand = 'Expedia') => {
-    const {tab, from, to, lobs, code, siteName, hideIntentional, id} = qs.parse(search);
+    const {tab, from, to, lobs, code, siteName, hideIntentional, searchId, bucket, id} = qs.parse(search);
     const isValidDateRange = validDateRange(from, to);
     return {
         initialStart: isValidDateRange ? moment(from) : moment().subtract(24, 'hours').startOf('minute'),
@@ -56,8 +56,10 @@ export const getQueryValues = (search, brand = 'Expedia') => {
             : getBrandSites(brand)[0],
         initialErrorCode: code || '',
         initialHideIntentionalCheck: hideIntentional === 'true',
-        initialId: id || '',
-        initialIndex: ['0', '1'].includes(tab) ? Number(tab) : 0
+        initialSearchId: searchId || '',
+        initialSelectedId: id || '',
+        initialIndex: ['0', '1'].includes(tab) ? Number(tab) : 0,
+        initialBucket: bucket && moment(bucket).isValid ? bucket : null
     };
 };
 
@@ -72,16 +74,21 @@ export const getFciQueryString = (start, end, selectedErrorCode, selectedSite, h
     return `${dateQuery}${errorQuery}${siteQuery}${hideIntentionalCheckQuery}`;
 };
 
-export const getHistoryQueryString = (selectedBrands, start, end, selectedErrorCode, selectedSite, hideIntentionalCheck, chartProperty, selectedId, activeIndex) => {
+// eslint-disable-next-line complexity
+export const getHistoryQueryString = (selectedBrands, start, end, selectedErrorCode, selectedSite,
+    hideIntentionalCheck, chartProperty, searchId, activeIndex, selectedBucket, id) => {
     const brandQuery = `selectedBrand=${selectedBrands[0]}`;
     const dateQuery = `&from=${start.toISOString()}&to=${end.toISOString()}`;
     const errorProperty = chartProperty === CATEGORY_OPTION ? 'category' : 'code';
     const errorQuery = selectedErrorCode ? `&${errorProperty}=${stringifyQueryParams(selectedErrorCode)}` : '';
     const siteQuery = selectedSite ? `&siteName=${stringifyQueryParams(selectedSite)}` : '';
     const hideIntentionalCheckQuery = `&hideIntentional=${hideIntentionalCheck}`;
-    const idQuery = selectedId ? `&id=${selectedId}` : '';
+    const searchQuery = searchId ? `&searchId=${searchId}` : '';
     const indexQuery = `&tab=${activeIndex}`;
-    return `${brandQuery}${dateQuery}${errorQuery}${siteQuery}${hideIntentionalCheckQuery}${idQuery}${indexQuery}`;
+    const bucketQuery = selectedBucket ? `&bucket=${selectedBucket}` : '';
+    const idQuery = id ? `&id=${id}` : '';
+    return `${brandQuery}${dateQuery}${errorQuery}${siteQuery}${hideIntentionalCheckQuery}`
+        + `${searchQuery}${indexQuery}${bucketQuery}${idQuery}`;
 };
 
 const getTagValue = (tags, property) => {
