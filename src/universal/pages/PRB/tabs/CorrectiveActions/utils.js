@@ -23,8 +23,8 @@ export const mapDetails = (row) => ({
 
 // eslint-disable-next-line complexity
 export const checkIsRowSelected = (businessOwnerType, selectedL1, selectedL2, selectedL3, selectedL4, name) => (
-    (businessOwnerType === 'l1' && selectedL1 && selectedL1.name === name)
-    || (selectedL1 && businessOwnerType === 'l2' && selectedL2 && selectedL2.name === name)
-    || (selectedL2 && businessOwnerType === 'l3' && selectedL3 && selectedL3.name === name)
-    || (selectedL3 && businessOwnerType === 'l4' && selectedL4 && selectedL4.name === name)
+    (businessOwnerType === 'l1' && selectedL1 !== null && selectedL1.name === name)
+    || (selectedL1 !== null && businessOwnerType === 'l2' && selectedL2 !== null && selectedL2.name === name)
+    || (selectedL2 !== null && businessOwnerType === 'l3' && selectedL3 !== null && selectedL3.name === name)
+    || (selectedL3 !== null && businessOwnerType === 'l4' && selectedL4 !== null && selectedL4.name === name)
 );

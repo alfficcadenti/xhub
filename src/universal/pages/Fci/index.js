@@ -17,8 +17,7 @@ import {
     getQueryValues,
     getFciQueryString,
     getHistoryQueryString,
-    getTableData,
-    getBrandSites
+    getTableData
 } from './utils';
 import './styles.less';
 
@@ -66,7 +65,12 @@ const Fci = ({selectedBrands}) => {
         selectedErrorCode: initialErrorCode,
         hideIntentionalCheck: initialHideIntentionalCheck
     });
-    const [errorCodes, setErrorCodes] = useState([]);
+    const [errorCodesData, setErrorCodesData] = useState({
+        start: null, end: null, options: [{label: initialErrorCode, value: initialErrorCode}], isLoading: false});
+    const [errorCodesIsLoading, setErrorCodesIsLoading] = useState(false);
+    const [sitesData, setSitesData] = useState({
+        start: null, end: null, options: [{label: initialSite, value: initialSite}], isLoading: false});
+    const [sitesIsLoading, setSitesIsLoading] = useState(false);
     const [searchText, setSearchText] = useState(initialSearchId);
     const [selectedId, setSelectedId] = useState(initialSelectedId);
 
@@ -99,7 +103,6 @@ const Fci = ({selectedBrands}) => {
             });
         setLineChartData(filteredData);
         setLineChartKeys(Array.from(categorySet).sort());
-        setErrorCodes(Array.from(categorySet).sort());
     }, [start, end]);
 
     const updateHistory = (tabIndex = activeIndex, searchId = searchText, bucket = selectedBucket, id = selectedId) => {
@@ -210,6 +213,48 @@ const Fci = ({selectedBrands}) => {
                 .finally(() => setIsModalLoading(false));
         }
     }, [selectedBucket]);
+
+    useEffect(() => {
+        if (sitesIsLoading) {
+            fetch(`/checkout-failure-sites?from=${pendingStart.toISOString()}&to=${pendingEnd.toISOString()}`)
+                .then(checkResponse)
+                .then((data) => setSitesData({
+                    start: pendingStart,
+                    end: pendingEnd,
+                    options: data[0].map((x) => ({label: x, value: x}))
+                }))
+                .finally(() => setSitesIsLoading(false));
+        }
+    }, [pendingStart, pendingEnd, sitesIsLoading]);
+
+    useEffect(() => {
+        if (errorCodesIsLoading) {
+            const path = chartProperty === CODE_OPTION
+                ? '/checkout-failure-error-codes'
+                : '/checkout-failure-error-categories';
+            setErrorCodesIsLoading(true);
+            fetch(`${path}?from=${pendingStart.toISOString()}&to=${pendingEnd.toISOString()}`)
+                .then(checkResponse)
+                .then((data) => setErrorCodesData({
+                    start: pendingStart,
+                    end: pendingEnd,
+                    options: data[0].map((x) => ({label: x, value: x}))
+                }))
+                .finally(() => setErrorCodesIsLoading(false));
+        }
+    }, [pendingStart, pendingEnd, errorCodesIsLoading, chartProperty]);
+
+    const fetchSites = () => {
+        if (!sitesData.start || !sitesData.start.isSame(pendingStart, 'minute')) {
+            setSitesIsLoading(true);
+        }
+    };
+
+    const fetchErrorCodes = () => {
+        if (!errorCodesData.start || !errorCodesData.start.isSame(pendingStart, 'minute')) {
+            setErrorCodesIsLoading(true);
+        }
+    };
 
     const handleEditBack = () => {
         setModalEditMode(false);
@@ -335,20 +380,24 @@ const Fci = ({selectedBrands}) => {
                         isMulti
                         classNamePrefix="error-code-dropdown"
                         className="error-code-dropdown"
-                        options={errorCodes.map((x) => ({label: x, value: x}))}
+                        options={errorCodesData.options}
                         onChange={handleErrorCodeChange}
+                        onFocus={fetchErrorCodes}
                         placeholder={'All Errors'}
-                        value={pendingErrorCode}
+                        defaultValue={(pendingErrorCode || []).map((e) => ({label: e, value: e}))}
+                        isLoading={errorCodesIsLoading}
                         isSearchable
                     />
                     <Select
                         isMulti
                         classNamePrefix="site-dropdown"
                         className="site-dropdown"
-                        options={getBrandSites(selectedBrands[0]).map((x) => ({label: x, value: x}))}
+                        options={sitesData.options}
                         onChange={handleSiteChange}
+                        onFocus={fetchSites}
                         placeholder={'All Sites'}
-                        value={pendingSite}
+                        defaultValue={(pendingSite || []).map((e) => ({label: e, value: e}))}
+                        isLoading={sitesIsLoading}
                         isSearchable
                     />
                     <Checkbox

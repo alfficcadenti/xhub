@@ -54,16 +54,16 @@ describe('CorrectiveActions Utils', () => {
 
 
     it('checkIsRowSelected', () => {
-        expect(checkIsRowSelected('l1', {name: 'hello'}, null, 'hello')).to.be.eql(true);
-        expect(checkIsRowSelected('l1', {name: 'hello'}, null, 'wrong')).to.be.eql(false);
-        expect(checkIsRowSelected('l1', null, null, 'hello')).to.be.eql(false);
-        expect(checkIsRowSelected('l2', {name: 'hello'}, {name: 'goodbye'}, 'goodbye')).to.be.eql(true);
-        expect(checkIsRowSelected('l2', null, {name: 'goodbye'}, 'goodbye')).to.be.eql(true);
-        expect(checkIsRowSelected('l2', {name: 'hello'}, null, 'wrong')).to.be.eql(false);
-        expect(checkIsRowSelected('l2', null, null, 'hello')).to.be.eql(false);
-        expect(checkIsRowSelected('l3', {name: 'hello'}, {name: 'goodbye'}, 'goodbye')).to.be.eql(true);
-        expect(checkIsRowSelected('l3', null, {name: 'goodbye'}, 'goodbye')).to.be.eql(true);
-        expect(checkIsRowSelected('l3', {name: 'hello'}, null, 'wrong')).to.be.eql(false);
-        expect(checkIsRowSelected('l3', null, null, 'hello')).to.be.eql(false);
+        expect(checkIsRowSelected('l1', {name: 'hello'}, null, null, null, 'hello')).to.be.eql(true);
+        expect(checkIsRowSelected('l1', {name: 'hello'}, null, null, null, 'wrong')).to.be.eql(false);
+        expect(checkIsRowSelected('l1', null, null, null, null, 'hello')).to.be.eql(false);
+        expect(checkIsRowSelected('l2', {name: 'hello'}, {name: 'goodbye'}, null, null, 'goodbye')).to.be.eql(true);
+        expect(checkIsRowSelected('l2', null, {name: 'goodbye'}, null, null, 'goodbye')).to.be.eql(false);
+        expect(checkIsRowSelected('l2', {name: 'hello'}, null, null, null, 'wrong')).to.be.eql(false);
+        expect(checkIsRowSelected('l2', null, null, null, null, 'hello')).to.be.eql(false);
+        expect(checkIsRowSelected('l3', {name: 'hello'}, {name: 'goodbye'}, {name: 'goodbye'}, null, 'goodbye')).to.be.eql(true);
+        expect(checkIsRowSelected('l3', null, {name: 'goodbye'}, {name: 'goodbye'}, null, 'goodbye')).to.be.eql(true);
+        expect(checkIsRowSelected('l3', {name: 'hello'}, null, null, null, 'wrong')).to.be.eql(false);
+        expect(checkIsRowSelected('l3', null, null, null, null, 'hello')).to.be.eql(false);
     });
 });

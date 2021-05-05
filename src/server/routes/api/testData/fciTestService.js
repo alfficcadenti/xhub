@@ -5,6 +5,7 @@ const SITES = [
     'travel.rbcrewards.com',
     'travel.chase.com'
 ];
+const ERROR_CODES = ['502', '1953', '2043', '5011', '9006'];
 const CATEGORIES = ['Payments CC', 'User Error', 'Expedia Error', 'Supply Error', 'Inventory Unavailable'];
 const ALPHANUMERIC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
@@ -85,7 +86,7 @@ const getFci = (start, end, site) => {
         traceId: generateTraceId(),
         sessionId: generateSessionId(),
         failure: 'CheckoutError',
-        errorCode: 500 + getRandomInt(5),
+        errorCode: ERROR_CODES,
         site: siteName,
         tpId: getRandomInt(10),
         eapId: getRandomInt(10),
@@ -191,10 +192,21 @@ const getCommentTestData = async (req) => {
     return [];
 };
 
+const getFciSites = async () => [SITES];
+const getFciErrorCodes = async () => [ERROR_CODES];
+const getFciErrorCategories = async () => [CATEGORIES];
+
 module.exports = {
+    generateId,
+    getTags,
+    getTrace,
+    getFciQueryParams,
     getFciTestData,
     getFcisTestData,
     getFciErrorCountsTestData,
     getFciErrorCategoryTestData,
-    getCommentTestData
+    getCommentTestData,
+    getFciSites,
+    getFciErrorCodes,
+    getFciErrorCategories
 };

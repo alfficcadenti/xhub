@@ -3,6 +3,7 @@ import {expect} from 'chai';
 import {
     getBrandSites,
     getIsSupportedBrand,
+    getUnsupportedBrandMsg,
     shouldFetchData,
     validDateRange,
     stringifyQueryParams,
@@ -18,7 +19,7 @@ import {
     getFilteredTraceData
 } from '../utils';
 import {SITES, CATEGORY_OPTION} from '../constants';
-import {EXPEDIA_BRAND, VRBO_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../../../constants';
+import {EXPEDIA_BRAND, VRBO_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, OPXHUB_SUPPORT_CHANNEL} from '../../../constants';
 
 describe('Fci Utils', () => {
     it('getBrandSites - returns list of sites per Expedia Partner Solution', () => {
@@ -37,19 +38,30 @@ describe('Fci Utils', () => {
         expect(getIsSupportedBrand([VRBO_BRAND])).to.eql(false);
     });
 
+    it('getUnsupportedBrandMsg', () => {
+        expect(getUnsupportedBrandMsg([EXPEDIA_BRAND])).to.eql(`FCIs for ${EXPEDIA_BRAND} is not yet available. `
+            + `For now only ${EXPEDIA_PARTNER_SERVICES_BRAND} and ${EXPEDIA_BRAND} is supported. `
+            + `If you have any questions, please ping ${OPXHUB_SUPPORT_CHANNEL} or leave a comment via our Feedback form.`);
+    });
+
     it('shouldFetchData', () => {
-        expect(shouldFetchData({})).to.be.eql(true);
-        expect(shouldFetchData({start: '2020-01-02'})).to.be.eql(true);
-        expect(shouldFetchData({start: '2020-01-02', end: '2020-01-04'})).to.be.eql(true);
-        expect(shouldFetchData({start: '2020-01-02', end: '2020-01-04', selectedSite: 'www.expedia.com'},
+        const start = moment('2020-01-02');
+        const end = moment('2020-01-04');
+        const selectedSite = 'www.expedia.com';
+        const chartProperty = 'categoryA';
+        const selectedErrorCode = '201';
+        expect(shouldFetchData({}, moment('2020-01-01'))).to.be.eql(true);
+        expect(shouldFetchData({start}, moment('2020-01-01'))).to.be.eql(true);
+        expect(shouldFetchData({start, end}, moment('2020-01-01'))).to.be.eql(true);
+        expect(shouldFetchData({start, end, selectedSite},
             moment('2020-01-01'))).to.be.eql(true);
-        expect(shouldFetchData({start: '2020-01-02', end: '2020-01-04', selectedSite: 'www.expedia.com'},
+        expect(shouldFetchData({start, end, selectedSite},
             moment('2020-01-03'), moment('2020-01-05'))).to.be.eql(true);
-        expect(shouldFetchData({start: '2020-01-02', end: '2020-01-04', selectedSite: 'www.expedia.com', chartProperty: 'categoryA'},
+        expect(shouldFetchData({start, end, selectedSite, chartProperty},
             moment('2020-01-03'), moment('2020-01-03'), 'www.expedia.com', 'categoryB')).to.be.eql(true);
-        expect(shouldFetchData({start: '2020-01-02', end: '2020-01-04', selectedSite: 'www.expedia.com', chartProperty: 'categoryA', selectedErrorCode: '201'},
+        expect(shouldFetchData({start, end, selectedSite, chartProperty, selectedErrorCode},
             moment('2020-01-03'), moment('2020-01-03'), 'www.expedia.com', 'categoryA')).to.be.eql(true);
-        expect(shouldFetchData({start: '2020-01-02', end: '2020-01-04', selectedSite: 'www.expedia.com', chartProperty: 'categoryA', selectedErrorCode: '201'},
+        expect(shouldFetchData({start, end, selectedSite, chartProperty, selectedErrorCode},
             moment('2020-01-03'), moment('2020-01-03'), 'www.expedia.com', 'categoryA', '201')).to.be.eql(false);
     });
 
@@ -75,8 +87,8 @@ describe('Fci Utils', () => {
         const result = getQueryValues();
         expect(result.initialTimeRange).to.be.eql('Last 24 Hours');
         expect(result.initialLobs).to.be.eql([]);
-        expect(result.initialSite).to.be.eql(getBrandSites('Expedia')[0]);
-        expect(result.initialErrorCode).to.be.eql('');
+        expect(result.initialSite).to.be.eql([getBrandSites('Expedia')[0]]);
+        expect(result.initialErrorCode).to.be.eql([]);
         expect(result.initialHideIntentionalCheck).to.be.eql(false);
         expect(result.initialSearchId).to.be.eql('');
         expect(result.initialSelectedId).to.be.eql('');
@@ -103,8 +115,8 @@ describe('Fci Utils', () => {
         expect(result.initialEnd.isSame(end, 'day')).to.be.eql(true);
         expect(result.initialTimeRange).to.be.eql('Custom');
         expect(result.initialLobs[0].value).to.be.eql(lob);
-        expect(result.initialErrorCode).to.be.eql(errorCode);
-        expect(result.initialSite).to.be.eql(site);
+        expect(result.initialErrorCode).to.be.eql([errorCode]);
+        expect(result.initialSite).to.be.eql([site]);
         expect(result.initialHideIntentionalCheck).to.be.eql(intentional);
         expect(result.initialSearchId).to.be.eql(searchId);
         expect(result.initialSelectedId).to.be.eql(id);
@@ -162,7 +174,7 @@ describe('Fci Utils', () => {
         expect(getHistoryQueryString(selectedBrands, start, end, selectedErrorCode, selectedSite,
             hideIntentionalCheck, chartProperty, searchId, activeIndex, selectedBucket, id)).to.eql(
             `selectedBrand=${selectedBrands[0]}&from=${start.toISOString()}&to=${end.toISOString()}`
-            + `&category=${selectedErrorCode}&siteName=${selectedSite}`
+            + `&code=${selectedErrorCode}&siteName=${selectedSite}`
             + `&hideIntentional=${hideIntentionalCheck}&searchId=${searchId}&tab=${activeIndex}`
             + `&bucket=${selectedBucket}&id=${id}`
         );
@@ -193,6 +205,7 @@ describe('Fci Utils', () => {
             tags: [{key: 'error', value: 'false'}]
         };
         expect(traceHasError(trace)).to.equal(false);
+        expect(traceHasError({})).to.equal(false);
     });
 
     it('traceHasError - true', () => {
@@ -218,7 +231,6 @@ describe('Fci Utils', () => {
         const data = {
             serviceName: 'Service Name',
             operationName: 'Operation Name',
-            tags: [{key: 'externalerrorcode_1_1', value: 'none'}],
             traces: []
         };
         const trace = mapTrace(data);
