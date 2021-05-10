@@ -1,14 +1,37 @@
 import {expect} from 'chai';
 import {
+    VRBO_BRAND,
     AB_TESTS_ANNOTATION_CATEGORY,
     DEPLOYMENT_ANNOTATION_CATEGORY,
     INCIDENT_ANNOTATION_CATEGORY
 } from '../constants';
-import {formatDurationForTable, formatDurationToH, formatDurationToHours, getAnnotationStrokeColor} from './utils';
+import {
+    brandLogoFile,
+    formatDuration,
+    formatDurationForTable,
+    formatDurationToH,
+    formatDurationToHours,
+    getAnnotationStrokeColor
+} from './utils';
+
+describe('brandLogoFile', () => {
+    it('returns null when given incorrect filename or when error occurs loading the file', async () => {
+        expect(brandLogoFile('nonsense')).to.be.eql(null);
+        expect(brandLogoFile(VRBO_BRAND)).to.be.eql(null);
+    });
+});
+
+describe('formatDuration', () => {
+    it('returns the duration in HH:mm:ss format', async () => {
+        expect(formatDuration(61, 'minutes')).to.be.eql('1h 1m');
+        expect(formatDuration(360000)).to.be.eql('6m');
+    });
+});
 
 describe('formatDurationToHours', () => {
     it('returns the duration from milliseconds in HH:mm:ss format', async () => {
         expect(formatDurationToHours(5000000)).to.be.eql('1h 23m ');
+        expect(formatDurationToHours(500000000)).to.be.eql('5d 18h 53m ');
     });
 });
 

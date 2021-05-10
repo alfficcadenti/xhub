@@ -1,6 +1,9 @@
+const shouldDisableAuth = (process, requireDevAuth) => (
+    process.env.IS_OKTA_DISABLED || !requireDevAuth || process.env.EXPEDIA_ENVIRONMENT !== 'prod'
+);
 
 module.exports = function authHandler(request, h, template, body, context, requireDevAuth = false) {
-    if (process.env.IS_OKTA_DISABLED || !requireDevAuth || process.env.EXPEDIA_ENVIRONMENT !== 'prod') {
+    if (shouldDisableAuth(process, requireDevAuth)) {
         return h.view(template, {body, ...context});
     }
     if ('code' in request.query) {

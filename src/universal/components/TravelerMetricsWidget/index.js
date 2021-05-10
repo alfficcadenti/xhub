@@ -142,7 +142,7 @@ const TravelerMetricsWidget = ({
             <ReferenceLine
                 key={uuid()}
                 yAxisId={yAxisId}
-                x={annotation.time}
+                x={Number.isNaN(annotation.time) ? 0 : annotation.time}
                 label={<ReferenceLabel annotation={annotation} />}
                 stroke={getAnnotationStrokeColor(annotation.category)}
                 strokeDasharray="3 3"
@@ -152,8 +152,8 @@ const TravelerMetricsWidget = ({
     };
 
     const renderLoBArea = () => {
-        return selectedLoBs.map((lob, i) =>
-            (<Area
+        return selectedLoBs.map((lob, i) => (
+            <Area
                 ref={areaLOBRef}
                 connectNulls
                 stacked={!stacked || i}
@@ -164,8 +164,8 @@ const TravelerMetricsWidget = ({
                 fill={fill}
                 key={`area${lob.label}`}
                 yAxisId={yAxisId}
-            />)
-        );
+            />
+        ));
     };
 
     const renderCharts = () => (

@@ -1,9 +1,10 @@
 import React from 'react';
+import {act} from 'react-dom/test-utils';
 import {mount} from 'enzyme';
 import {BrowserRouter as Router} from 'react-router-dom';
 import IncidentTrendsDashboard from '../index';
 import {DATE_FORMAT} from '../../../../constants';
-import {EG_BRAND, ALL_PRIORITIES_OPTION} from '../../../../constants';
+import {EG_BRAND, ALL_PRIORITIES_OPTION, OPXHUB_SUPPORT_CHANNEL} from '../../../../constants';
 import moment from 'moment/moment';
 import {expect} from 'chai';
 
@@ -26,10 +27,22 @@ jest.mock('react-router-dom', () => {
     };
 });
 
+const waitForComponentToPaint = async (wrapper) => {
+    await act(async () => {
+        await new Promise((resolve) => setTimeout(resolve));
+        wrapper.update();
+    });
+};
+
 describe('<IncidentTrendsDashboard/>', () => {
-    const wrapper = mount(<Router>
-        <IncidentTrendsDashboard selectedBrands={[EG_BRAND]} />
-    </Router>);
+    let wrapper;
+
+    beforeEach(async () => {
+        wrapper = mount(<Router>
+            <IncidentTrendsDashboard selectedBrands={[EG_BRAND]} />
+        </Router>);
+        await waitForComponentToPaint(wrapper);
+    });
 
     it('renders successfully', () => {
         expect(wrapper).to.have.length(1);
@@ -63,7 +76,7 @@ describe('<IncidentTrendsDashboard/>', () => {
 
     it('LoadingContainer should have right props', async () => {
         const props = wrapper.find('LoadingContainer').props();
-        expect(props.isLoading).equal(true);
-        expect(props.error).equal('');
+        expect(props.isLoading).equal(false);
+        expect(props.error).equal(`Not all incidents and/or defects are available. Check your VPN or refresh the page to try again. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`);
     });
 });

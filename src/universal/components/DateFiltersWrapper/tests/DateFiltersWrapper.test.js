@@ -11,7 +11,16 @@ describe('DateFilterWrapper component testing', () => {
     let wrapper;
 
     beforeEach(() => {
-        wrapper = mount(<DateFilterWrapper pendingStart={initialStart} pendingEnd={initialEnd} />);
+        wrapper = mount(
+            <DateFilterWrapper
+                pendingStart={initialStart}
+                pendingEnd={initialEnd}
+                isFormDisabled={false}
+                handleApplyFilters={() => {}}
+                handleDatetimeChange={() => {}}
+                showTimePicker={false}
+            />
+        );
     });
 
     afterEach(() => {
