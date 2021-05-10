@@ -14,6 +14,12 @@ See our official documentation [here](https://pages.github.expedia.biz/eg-reo-op
 
 Kumo: https://console.kumo.expedia.biz/apps/opxhub-ui
 
+## VPCE
+
+| Environment | Endpoints                                                                                      |
+| ----------- | ---------------------------------------------------------------------------------------------- |
+| Prod        | opxhub-user-events-data-service                                                                |
+
 ## Logs
 
 | Environment | Endpoints                                                                                                                                                                                                |
