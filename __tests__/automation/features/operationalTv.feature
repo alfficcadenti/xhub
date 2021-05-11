@@ -13,4 +13,4 @@ Feature: Verify user is able to navigate around Operational TV
 
     Examples:
     | brand     | link                    |
-    | Hotelscom | availabilityTrendsLink6 |
+    | Hotelscom | availabilityTrendsLink5 |

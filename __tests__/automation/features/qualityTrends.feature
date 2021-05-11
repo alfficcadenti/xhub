@@ -22,9 +22,9 @@ Feature: Verify user is able to navigate around Quality Trends
 
     Examples:
     | brand                    | link                          | paginationNextBtn | paginationPrevBtn | paginationNumberBtn | pageSizeDropdown |
-    | ExpediaGroup             | platformHealthResiliencyLink2 | paginationNextBtn | paginationPrevBtn | paginationNumberBtn | pageSizeDropdown |
-    | Expedia                  | platformHealthResiliencyLink2 | paginationNextBtn | paginationPrevBtn | paginationNumberBtn | pageSizeDropdown |
-    | Egencia                  | platformHealthResiliencyLink2 | paginationNextBtn | paginationPrevBtn | paginationNumberBtn | pageSizeDropdown |
-    | Hotelscom                | platformHealthResiliencyLink2 | paginationNextBtn | paginationPrevBtn | paginationNumberBtn | pageSizeDropdown |
-    | Vrbo                     | platformHealthResiliencyLink2 |                   |                   |                     |                  |
-    | ExpediaPartnerSolutions  | platformHealthResiliencyLink2 |                   |                   |                     |                  |
+    | ExpediaGroup             | platformHealthResiliencyLink4 | paginationNextBtn | paginationPrevBtn | paginationNumberBtn | pageSizeDropdown |
+    | Expedia                  | platformHealthResiliencyLink4 | paginationNextBtn | paginationPrevBtn | paginationNumberBtn | pageSizeDropdown |
+    | Egencia                  | platformHealthResiliencyLink4 | paginationNextBtn | paginationPrevBtn | paginationNumberBtn | pageSizeDropdown |
+    | Hotelscom                | platformHealthResiliencyLink5 | paginationNextBtn | paginationPrevBtn | paginationNumberBtn | pageSizeDropdown |
+    | Vrbo                     | platformHealthResiliencyLink4 |                   |                   |                     |                  |
+    | ExpediaPartnerSolutions  | platformHealthResiliencyLink4 |                   |                   |                     |                  |
