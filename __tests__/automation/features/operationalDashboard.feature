@@ -13,4 +13,4 @@ Feature: Verify user is able to navigate around Operational Dashboard
 
     Examples:
     | brand     | link                    |
-    | Hotelscom | availabilityTrendsLink5 |
+    | Hotelscom | availabilityTrendsLink4 |

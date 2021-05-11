@@ -45,5 +45,5 @@ Feature: Verify user is able to navigate around FCI
 
     Examples:
     | brand                    | link                    |
-    | Expedia                  | availabilityTrendsLink2 |
-    | ExpediaPartnerSolutions  | availabilityTrendsLink2 |
+    | Expedia                  | availabilityTrendsLink1 |
+    | ExpediaPartnerSolutions  | availabilityTrendsLink1 |
