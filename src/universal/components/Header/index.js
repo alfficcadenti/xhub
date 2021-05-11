@@ -60,6 +60,16 @@ const Header = ({selectedBrands, onBrandChange, brands}) => {
         >
             {VISIBLE_PAGES
                 .filter((p) => p.category === category)
+                .sort((a, b) => {
+                    if (a.text > b.text) {
+                        return 1;
+                    }
+                    if (b.text > a.text) {
+                        return -1;
+                    }
+
+                    return 0;
+                })
                 .map((p) => (<li key={p.text}><Link to={`${p.link}${BRAND_QUERY}`} className="category-dropdown-item">{p.text}</Link></li>))
             }
         </Dropdown>
