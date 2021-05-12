@@ -108,10 +108,10 @@ const FciModal = ({fci, fcis, editMode, isOpen, onClose, onSaveComment, onEditBa
             <a target="_blank" rel="noopener noreferrer" className="ext-link" href={fci.recordedSessionUrl}>
                 {'Glassbox'} <SVGIcon usefill markup={NEW_WINDOW__16} />
             </a>
+            <HelpText className="help-text" text={'Not all sessions are recorded'} placement="bottom" />
             <button className="modal-link copy-link" onClick={() => navigator.clipboard.writeText(window.location.href)}>
                 {'Copy Link'} <SVGIcon usefill markup={LINK__16} />
             </button>
-            <HelpText className="help-text" text={'Not all sessions are recorded'} placement="bottom" />
             <DataTable
                 title={'Error Traces'}
                 info={'See Haystack for full error log.'}
