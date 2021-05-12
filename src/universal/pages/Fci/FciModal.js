@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 import {Checkbox, FormTextArea} from '@homeaway/react-form-components';
 import Modal from '@homeaway/react-modal';
 import {SVGIcon} from '@homeaway/react-svg';
-import {NEW_WINDOW__16} from '@homeaway/svg-defs';
+import {NEW_WINDOW__16, LINK__16} from '@homeaway/svg-defs';
 import DataTable from '../../components/DataTable';
 import HelpText from '../../components/HelpText/HelpText';
 import LoadingContainer from '../../components/LoadingContainer';
@@ -109,6 +109,9 @@ const FciModal = ({fci, fcis, editMode, isOpen, onClose, onSaveComment, onEditBa
                 {'Glassbox'} <SVGIcon usefill markup={NEW_WINDOW__16} />
             </a>
             <HelpText className="help-text" text={'Not all sessions are recorded'} placement="bottom" />
+            <button className="modal-link copy-link" onClick={() => navigator.clipboard.writeText(window.location.href)}>
+                {'Copy Link'} <SVGIcon usefill markup={LINK__16} />
+            </button>
             <DataTable
                 title={'Error Traces'}
                 info={'See Haystack for full error log.'}
