@@ -1,0 +1,158 @@
+@import '../../../mixins.less';
+
+.score-card-container {
+    margin-top: 60px;
+
+    .form-container {
+        margin-bottom: @spacing-2x;
+        background: @color-bg-contrast;
+        padding: @spacing-2x;
+        border-radius: @spacing-1x;
+
+        .datetime-range-picker {
+            height: @spacing-7x;
+            margin-bottom: @spacing-1x;
+            display: inline;
+        }
+
+        .apply-btn {
+            margin-left: @spacing-1x;
+            height: @spacing-7x;
+        }
+    }
+
+    .loading-container {
+        min-height: 50vh;
+    }
+
+    .l-table {
+        position: relative;
+        padding: @spacing-2x;
+        float: left;
+        width: 60%;
+        border: 1px solid @border-color-dark;
+
+        h3 {
+            float: left;
+        }
+
+        .close-btn {
+            cursor: pointer;
+            float: right;
+        }
+
+        .l-row {
+            display: grid;
+            grid-auto-flow: column;
+            grid-gap: 10px;
+            grid-template-columns: 170px 50px 50px 120px 120px 120px 120px 80px 75px;
+            grid-template-rows: auto;
+            padding: @spacing-1x;
+            width: 100%;
+
+            .name {
+                color: @color-link-default;
+                cursor: pointer;
+
+                &:hover {
+                    color: @color-link-hover;
+                }
+            }
+
+            .cell-wrapper {
+                display: flex;
+                align-items: center;
+                background-color: rgba(0, 0, 0, 0.04);
+
+                .cell-label {
+                    padding: 10px 5px;
+                }
+            }
+
+            .cell-value {
+                padding-left: 5px;
+                border-left: 1px solid rgba(0, 0, 0, .2);
+                display: flex;
+                align-items: center;
+            }
+
+            .arrow {
+                cursor: pointer;
+                opacity: .8;
+
+                &.hover {
+                    cursor: pointer;
+                    color: @color-text-default;
+                    background: @color-bg-contrast;
+                    opacity: 1;
+                }
+            }
+        }
+    }
+
+    .l1-table,
+    .l4-table {
+        z-index: 4;
+
+        .l-row.selected {
+            color: @color-text-default;
+            background: @color-bg-contrast;
+
+            .arrow {
+                opacity: 1;
+            }
+        }
+    }
+
+    .l4-table {
+        z-index: 1;
+    }
+
+    .l2-table,
+    .l5-table {
+        z-index: 3;
+        background: @color-bg-contrast;
+
+        .l-row.selected {
+            color: @color-text-default;
+            background: @color-bg-hover;
+
+            .arrow {
+                opacity: 1;
+            }
+        }
+    }
+
+    .l5-table {
+        z-index: 0;
+    }
+
+    .l3-table {
+        z-index: 2;
+        background: @color-bg-hover;
+
+        .l-row.selected {
+            color: @color-text-default;
+            background: @color-bg-contrast;
+
+            .arrow {
+                opacity: 1;
+            }
+        }
+    }
+
+    .sub-table {
+        margin-left: -1%;
+        opacity: 0;
+        transition: all .2s ease;
+
+        &.active {
+            margin-left: 1%;
+            opacity: 1;
+        }
+    }
+
+    .Modal__dialog {
+        width: 90%;
+    }
+}

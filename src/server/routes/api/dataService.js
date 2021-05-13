@@ -61,3 +61,10 @@ module.exports.portfolio = {
     config: getConfig('portfolio-get'),
     handler: getHandler(Object.assign(getHandlerParams('portfolio'), {pathParam: 'panel'}))
 };
+
+module.exports.orgMetrics = {
+    method: 'GET',
+    path: '/v1/org-metrics/business-owner-type/{param*}',
+    config: getConfig('org-metrics-get'),
+    handler: getHandler(Object.assign(getHandlerParams('orgMetrics')))
+};

@@ -54,6 +54,11 @@
               "path": "/v1/portfolio",
               "method": "GET",
               "operation": "GET_PORTFOLIO_V1"
+            },
+            "orgMetrics": {
+              "path": "/v1/org-metrics/business-owner-type/l1",
+              "method": "GET",
+              "operation": "GET_ORG_METRICS_V1"
             }
           }
         },
@@ -95,6 +100,11 @@
               "path": "/v1/portfolio",
               "method": "GET",
               "operation": "GET_PORTFOLIO_V1"
+            },
+            "orgMetrics": {
+              "path": "/v1/org-metrics/business-owner-type",
+              "method": "GET",
+              "operation": "GET_ORG_METRICS_V1"
             }
           }
         },
@@ -136,6 +146,11 @@
               "path": "/v1/portfolio",
               "method": "GET",
               "operation": "GET_PORTFOLIO_V1"
+            },
+            "orgMetrics": {
+              "path": "/v1/org-metrics/business-owner-type",
+              "method": "GET",
+              "operation": "GET_ORG_METRICS_V1"
             }
           }
         }
@@ -963,6 +978,11 @@
           },
           {
             "route": "require:./routes/pages/data-center-traffic",
+            "component": "require:../universal/components/App/ServerApp.js",
+            "template": "templates/welcome.hbs"
+          },
+          {
+            "route": "require:./routes/pages/portfolio-score-card",
             "component": "require:../universal/components/App/ServerApp.js",
             "template": "templates/welcome.hbs"
           }
