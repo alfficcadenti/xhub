@@ -1,30 +1,11 @@
 @import '../../mixins.less';
 
+
 .portfolio-score-card-container {
     text-align: left;
 
-    .datetime-range-picker,
-    .filter-dropdown {
+    .datetime-range-picker {
         margin: 0 @spacing-1x @spacing-1x 0;
-    }
-
-    .status-select-container {
-        width: 460px;
-        height: @spacing-7x;
-        margin-bottom: @spacing-1x;
-        margin-right: @spacing-1x;
-        display: inline-block;
-
-        .status-select__control {
-            height: @spacing-7x;
-            border-color: @border-contrast;
-            border-radius: @spacing-1x;
-        }
-
-        .status-select__menu {
-            background: @color-bg-default;
-            z-index: 1040;
-        }
     }
 
     .filters-wrapper {
@@ -36,24 +17,6 @@
         width: 100%;
         border-radius: @spacing-1x;
 
-        .CRB--checkbox {
-            align-items: center;
-            display: inline-flex;
-        }
-
-        .priority-dropdown .Dropdown__toggle {
-            .dropdown-button(160px);
-        }
-
-        .brand-dropdown .Dropdown__toggle,
-        .status-dropdown .Dropdown__toggle {
-            .dropdown-button;
-        }
-
-        .status-dropdown .Dropdown__toggle {
-            min-width: 130px;
-        }
-
         .apply-button {
             height: fit-content;
         }
@@ -62,100 +25,6 @@
     .page-title {
         margin-bottom: 24px;
         text-align: left;
-    }
-
-    .page-info .Tooltip {
-        font-weight: 400;
-    }
-
-    .overview-charts {
-        min-height: 70vh;
-        margin-bottom: @spacing-7x;
-    }
-
-    .more-filters-btn {
-        margin-left: 5px;
-        margin-bottom: -1px;
-        min-height: @spacing-7x;
-        padding: 0 @spacing-2x;
-        font-size: .75rem;
-        line-height: 1rem;
-        box-shadow: none;
-        border-radius: @spacing-1x @spacing-1x 0 0;
-
-        &.active {
-            background: @color-bg-accent;
-        }
-    }
-
-    .more-filters-divider {
-        margin: -4px 0 4px 5px;
-
-        .Divider__heading {
-            display: none;
-        }
-
-        .Divider__body {
-            padding: @spacing-2x;
-            background: @color-bg-accent;
-            border-radius: 0 0 @spacing-1x @spacing-1x;
-        }
-    }
-
-    .Navigation {
-        margin-bottom: @spacing-3x;
-    }
-
-    .details-container {
-        margin-top: -@spacing-2x;
-        padding: @spacing-2x;
-        min-height: @spacing-8x;
-
-        .details-label {
-            float: left;
-            font-weight: 800;
-            width: 33%;
-        }
-
-        .details-value {
-            float: left;
-            width: 66%;
-        }
-    }
-
-    .linked-issues__table .data-table {
-        .data-table-header {
-            background: #f5f5dc;
-        }
-
-        th {
-            border-top: 1px #908f8f solid;
-            border-bottom: 1px #908f8f solid;
-        }
-
-        td {
-            border-top: none;
-        }
-
-        .expandable-row,
-        b {
-            background: #a0a0a0;
-            color: @color-text-inverse;
-
-            .data-table-header {
-                background: #a0a0a0;
-                color: @color-text-inverse;
-
-                th {
-                    background: #a0a0a0;
-                    color: @color-text-inverse;
-                }
-            }
-        }
-    }
-
-    .filter-dropdown .Dropdown__toggle {
-        .dropdown-button;
     }
 
     .loading-container {

@@ -1,31 +1,14 @@
 @import '../../../mixins.less';
 
+
 .score-card-container {
     margin-top: 60px;
-
-    .form-container {
-        margin-bottom: @spacing-2x;
-        background: @color-bg-contrast;
-        padding: @spacing-2x;
-        border-radius: @spacing-1x;
-
-        .datetime-range-picker {
-            height: @spacing-7x;
-            margin-bottom: @spacing-1x;
-            display: inline;
-        }
-
-        .apply-btn {
-            margin-left: @spacing-1x;
-            height: @spacing-7x;
-        }
-    }
 
     .loading-container {
         min-height: 50vh;
     }
 
-    .l-table {
+    .score-card-table {
         position: relative;
         padding: @spacing-2x;
         float: left;
@@ -41,7 +24,7 @@
             float: right;
         }
 
-        .l-row {
+        .score-card-row {
             display: grid;
             grid-auto-flow: column;
             grid-gap: 10px;
@@ -57,98 +40,34 @@
                 &:hover {
                     color: @color-link-hover;
                 }
+
+                &.disabled {
+                    pointer-events: none;
+                    color: @color-link-darkmode;
+                }
             }
 
-            .cell-wrapper {
+            .header-label {
                 display: flex;
                 align-items: center;
                 background-color: rgba(0, 0, 0, 0.04);
 
-                .cell-label {
+                span {
                     padding: 10px 5px;
                 }
             }
 
             .cell-value {
-                padding-left: 5px;
-                border-left: 1px solid rgba(0, 0, 0, .2);
                 display: flex;
                 align-items: center;
-            }
+                padding-left: 5px;
+                border-left: 1px solid rgba(0, 0, 0, .2);
 
-            .arrow {
-                cursor: pointer;
-                opacity: .8;
-
-                &.hover {
-                    cursor: pointer;
-                    color: @color-text-default;
-                    background: @color-bg-contrast;
-                    opacity: 1;
+                &.under-threshold {
+                    background-color: lightgreen;
+                    color: darkslategray;;
                 }
             }
-        }
-    }
-
-    .l1-table,
-    .l4-table {
-        z-index: 4;
-
-        .l-row.selected {
-            color: @color-text-default;
-            background: @color-bg-contrast;
-
-            .arrow {
-                opacity: 1;
-            }
-        }
-    }
-
-    .l4-table {
-        z-index: 1;
-    }
-
-    .l2-table,
-    .l5-table {
-        z-index: 3;
-        background: @color-bg-contrast;
-
-        .l-row.selected {
-            color: @color-text-default;
-            background: @color-bg-hover;
-
-            .arrow {
-                opacity: 1;
-            }
-        }
-    }
-
-    .l5-table {
-        z-index: 0;
-    }
-
-    .l3-table {
-        z-index: 2;
-        background: @color-bg-hover;
-
-        .l-row.selected {
-            color: @color-text-default;
-            background: @color-bg-contrast;
-
-            .arrow {
-                opacity: 1;
-            }
-        }
-    }
-
-    .sub-table {
-        margin-left: -1%;
-        opacity: 0;
-        transition: all .2s ease;
-
-        &.active {
-            margin-left: 1%;
-            opacity: 1;
         }
     }
 

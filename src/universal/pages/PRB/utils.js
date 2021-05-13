@@ -14,17 +14,7 @@ import {
 } from '../../constants';
 import {CA_STATUS_LIST} from './constants';
 import {DATE_FORMAT} from '../../constants';
-
-
-// eslint-disable-next-line complexity
-export const validDateRange = (start, end) => {
-    if (!start || !end) {
-        return false;
-    }
-    const startMoment = moment(start);
-    const endMoment = moment(end);
-    return startMoment.isValid() && endMoment.isValid() && startMoment.isBefore(new Date()) && endMoment.isAfter(startMoment);
-};
+import {validDateRange} from '../utils';
 
 
 // eslint-disable-next-line complexity

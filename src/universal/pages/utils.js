@@ -446,3 +446,5 @@ export const getPresets = () => [
     {text: 'Last 12 hours', value: getValue(12, 'hours')},
     {text: 'Last 24 hours', value: getValue(24, 'hours')}
 ];
+
+export const getTableValue = (row, property) => row && property ? row[property] || '-' : '-';

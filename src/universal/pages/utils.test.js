@@ -21,7 +21,8 @@ import {
     makeSuccessRatesObjects,
     getQueryParams,
     validDateRange,
-    getLobPlaceholder
+    getLobPlaceholder,
+    getTableValue
 } from './utils';
 import {
     EG_BRAND,
@@ -549,5 +550,15 @@ describe('getLobPlaceholder()', () => {
 
     it('getLobPlaceholder should return Select Line of Business when isLoading & lobWidgetsLength false', () => {
         expect(getLobPlaceholder(false, 0)).to.be.eql('Line of Business Data not available. Try to refresh');
+    });
+});
+
+describe('getTableValue()', () => {
+    it('getTableValue', () => {
+        expect(getTableValue()).to.be.eql('-');
+        expect(getTableValue(null, null)).to.be.eql('-');
+        expect(getTableValue({a: 'hello'}, 'b')).to.be.eql('-');
+        expect(getTableValue({a: 'hello'}, 'a')).to.be.eql('hello');
+        expect(getTableValue({a: ''}, 'a')).to.be.eql('-');
     });
 });
