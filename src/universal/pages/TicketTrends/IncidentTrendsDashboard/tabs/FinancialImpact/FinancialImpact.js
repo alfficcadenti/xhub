@@ -2,6 +2,7 @@ import React from 'react';
 import NoResults from '../../../../../components/NoResults';
 import {buildFinancialImpactData} from '../../../incidentsHelper';
 import LineChartWrapper from '../../../../../components/LineChartWrapper';
+import TooltipContent from './TooltipContent';
 import './styles.less';
 
 const FinancialImpact = ({startDate, endDate, tickets, brand}) => {
@@ -16,25 +17,6 @@ const FinancialImpact = ({startDate, endDate, tickets, brand}) => {
         tooltipData: grossTooltipData
     } = buildFinancialImpactData(tickets, startDate, endDate, brand, 'estimatedGrossLoss');
 
-    const htmlDecode = (input) => {
-        const doc = new DOMParser().parseFromString(input, 'text/html');
-        return doc.documentElement.textContent;
-    };
-
-    const renderLinks = ({link, lostRevenue}) => (
-        <div key={link} className="incident-wrapper">
-            <div
-                className="incident-number"
-                dangerouslySetInnerHTML={{ //eslint-disable-line
-                    __html: htmlDecode(link)
-                }}
-            />
-            <div className="incident-financial-impact">
-                {lostRevenue.toLocaleString('en-US', {style: 'currency', currency: 'USD'})}
-            </div>
-        </div>
-    );
-
     return (
         <div className="financial-impact">
             {
@@ -47,14 +29,14 @@ const FinancialImpact = ({startDate, endDate, tickets, brand}) => {
                                 data={revenueData}
                                 keys={revenueKeys}
                                 tooltipData={revenueTooltipData}
-                                renderTooltipContent={renderLinks}
+                                renderTooltipContent={TooltipContent}
                             />
                             <LineChartWrapper
                                 title="Gross Booking Value Loss"
                                 data={grossData}
                                 keys={grossKeys}
                                 tooltipData={grossTooltipData}
-                                renderTooltipContent={renderLinks}
+                                renderTooltipContent={TooltipContent}
                             />
                         </>
                     )

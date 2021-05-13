@@ -31,9 +31,9 @@ Feature: Verify user is able to navigate around Change Finder
 
     Examples:
     | brand                    | link                          |
-    | ExpediaGroup             | platformHealthResiliencyLink4 |
-    | Expedia                  | platformHealthResiliencyLink4 |
-    | Egencia                  | platformHealthResiliencyLink4 |
-    | Hotelscom                | platformHealthResiliencyLink5 |
-    | Vrbo                     | platformHealthResiliencyLink4 |
-    | ExpediaPartnerSolutions  | platformHealthResiliencyLink4 |
+    | ExpediaGroup             | platformHealthResiliencyLink1 |
+    | Expedia                  | platformHealthResiliencyLink1 |
+    | Egencia                  | platformHealthResiliencyLink1 |
+    | Hotelscom                | platformHealthResiliencyLink1 |
+    | Vrbo                     | platformHealthResiliencyLink1 |
+    | ExpediaPartnerSolutions  | platformHealthResiliencyLink1 |

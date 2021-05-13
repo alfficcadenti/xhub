@@ -13,4 +13,4 @@ Feature: Verify user is able to navigate around Operational iOS Dashboard
 
     Examples:
     | brand     | link                    |
-    | Hotelscom | availabilityTrendsLink7 |
+    | Hotelscom | availabilityTrendsLink6 |

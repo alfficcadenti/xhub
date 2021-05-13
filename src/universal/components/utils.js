@@ -19,6 +19,7 @@ export function brandLogoFile(brand) {
     } catch {
         return null;
     }
+    return null;
 }
 
 export function formatDuration(m, unit = 'milliseconds') {
@@ -44,17 +45,16 @@ export function formatDurationForTable(m, unit = 'milliseconds') {
 }
 
 export function formatDurationToH(duration) {
-    return Number(moment.duration(Number(duration), 'milliseconds').as('hours')).toFixed(2) || '';
+    return Number(moment.duration(Number(duration), 'milliseconds').as('hours')).toFixed(2);
 }
 
 export function formatDurationToHours(duration) {
-    const durationString = moment.duration(Number(duration)).get('days') > 0 ?
+    return moment.duration(Number(duration)).get('days') > 0 ?
         `${String(moment.duration(Number(duration)).get('days'))}d ${
             String(moment.duration(Number(duration)).get('hours'))}h ${
             String(moment.duration(Number(duration)).get('minutes'))}m ` :
         `${String(moment.duration(Number(duration)).get('hours'))}h ${
             String(moment.duration(Number(duration)).get('minutes'))}m `;
-    return durationString || '';
 }
 
 export const getAnnotationStrokeColor = (category) => {

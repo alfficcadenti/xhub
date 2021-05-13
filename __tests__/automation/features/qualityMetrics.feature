@@ -30,4 +30,4 @@ Feature: Verify user is able to navigate around Quality Metrics
 
     Examples:
     | brand     | link                          |
-    | Hotelscom | platformHealthResiliencyLink3 |
+    | Hotelscom | platformHealthResiliencyLink4 |

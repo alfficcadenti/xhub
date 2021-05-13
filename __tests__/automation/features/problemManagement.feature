@@ -39,6 +39,6 @@ Feature: Verify user is able to navigate around Problem Management
     | ExpediaGroup             | platformHealthResiliencyLink3 |
     | Expedia                  | platformHealthResiliencyLink3 |
     | Egencia                  | platformHealthResiliencyLink3 |
-    | Hotelscom                | platformHealthResiliencyLink4 |
+    | Hotelscom                | platformHealthResiliencyLink3 |
     | Vrbo                     | platformHealthResiliencyLink3 |
     | ExpediaPartnerSolutions  | platformHealthResiliencyLink3 |
