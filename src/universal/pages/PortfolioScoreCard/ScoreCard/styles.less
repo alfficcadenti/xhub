@@ -1,0 +1,72 @@
+@import '../../../mixins.less';
+
+
+.score-card-container {
+    margin-top: 60px;
+
+    .loading-container {
+        min-height: 50vh;
+    }
+
+    .score-card-table {
+        padding: @spacing-2x;
+        width: 60%;
+        border: 1px solid @border-color-dark;
+        border-radius: @border-radius-large;
+
+        h3 {
+            font-size: 35px;
+            color: dimgray;;
+        }
+
+        .score-card-row {
+            display: grid;
+            grid-gap: 10px;
+            grid-template-columns: 170px 50px 50px 120px 120px 120px 120px 90px;
+            padding: @spacing-1x;
+
+            .name {
+                color: @color-link-default;
+                cursor: pointer;
+
+                &:hover {
+                    color: @color-link-hover;
+                }
+
+                &.disabled {
+                    pointer-events: none;
+                    color: @color-link-darkmode;
+                }
+            }
+
+            .header-label {
+                display: flex;
+                align-items: center;
+                background-color: rgba(0, 0, 0, 0.04);
+                color: dimgray;
+
+                span {
+                    padding: 10px 5px;
+                }
+            }
+
+            .cell-value {
+                display: flex;
+                align-items: center;
+                padding-left: 5px;
+                border-left: 2px solid rgba(0, 0, 0, .2);
+                color: darkslategray;
+
+                &.under-threshold {
+                    background-color: lightgreen;
+                    color: darkslategray;
+                    border-left-width: 3px;
+                }
+            }
+        }
+    }
+
+    .Modal__dialog {
+        width: 90%;
+    }
+}

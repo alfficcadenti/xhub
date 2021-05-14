@@ -1,6 +1,5 @@
 import {expect} from 'chai';
 import {
-    getTableValue,
     mapDetails,
     checkIsRowSelected,
     filterDetails
@@ -9,14 +8,6 @@ import {mockDetails} from './mockDetails';
 
 
 describe('CorrectiveActions Utils', () => {
-    it('getTableValue', () => {
-        expect(getTableValue()).to.be.eql('-');
-        expect(getTableValue(null, null)).to.be.eql('-');
-        expect(getTableValue({a: 'hello'}, 'b')).to.be.eql('-');
-        expect(getTableValue({a: 'hello'}, 'a')).to.be.eql('hello');
-        expect(getTableValue({a: ''}, 'a')).to.be.eql('-');
-    });
-
     it('mapDetails', () => {
         const row = {
             id: 'ID',

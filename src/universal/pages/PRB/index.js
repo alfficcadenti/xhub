@@ -24,7 +24,8 @@ import {
 import {useFetchTickets} from './hooks';
 import {useQueryParamChange, useSelectedBrand} from '../hooks';
 import {NAV_LINKS, CA_STATUS_LIST} from './constants';
-import {validDateRange, getQueryValues, generateUrl, getActiveIndex, filterType} from './utils';
+import {getQueryValues, generateUrl, getActiveIndex, filterType} from './utils';
+import {validDateRange} from '../utils';
 import './styles.less';
 
 

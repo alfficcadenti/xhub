@@ -5,7 +5,6 @@ import {
     getIsSupportedBrand,
     getUnsupportedBrandMsg,
     shouldFetchData,
-    validDateRange,
     stringifyQueryParams,
     getQueryValues,
     getFciQueryString,
@@ -63,19 +62,6 @@ describe('Fci Utils', () => {
             moment('2020-01-03'), moment('2020-01-03'), 'www.expedia.com', 'categoryA')).to.be.eql(true);
         expect(shouldFetchData({start, end, selectedSite, chartProperty, selectedErrorCode},
             moment('2020-01-03'), moment('2020-01-03'), 'www.expedia.com', 'categoryA', '201')).to.be.eql(false);
-    });
-
-    it('validDateRange - invalid dates', () => {
-        expect(validDateRange(null, null)).to.be.eql(false);
-        expect(validDateRange('2020-01-01', null)).to.be.eql(false);
-        expect(validDateRange(null, '2020-02-02')).to.be.eql(false);
-        expect(validDateRange('abc', '2020-02-02')).to.be.eql(false);
-        expect(validDateRange('2020-01-01', 'abc')).to.be.eql(false);
-        expect(validDateRange('2020-02-02', '2020-01-01')).to.be.eql(false);
-    });
-
-    it('validDateRange - valid', () => {
-        expect(validDateRange('2020-01-01', '2020-02-02')).to.be.eql(true);
     });
 
     it('stringifyQueryParams', () => {

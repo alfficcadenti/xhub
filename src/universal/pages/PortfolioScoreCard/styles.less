@@ -1,0 +1,33 @@
+@import '../../mixins.less';
+
+
+.portfolio-score-card-container {
+    text-align: left;
+
+    .datetime-range-picker {
+        margin: 0 @spacing-1x @spacing-1x 0;
+    }
+
+    .filters-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: left;
+        font-weight: 400;
+        vertical-align: middle;
+        width: 100%;
+        border-radius: @spacing-1x;
+
+        .apply-button {
+            height: fit-content;
+        }
+    }
+
+    .page-title {
+        margin-bottom: 24px;
+        text-align: left;
+    }
+
+    .loading-container {
+        min-height: 50vh;
+    }
+}

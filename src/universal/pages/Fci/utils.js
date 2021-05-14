@@ -7,6 +7,7 @@ import DataTable from '../../components/DataTable';
 import {LOB_LIST} from '../../constants';
 import {TRACE_TABLE_COLUMNS, SITES, CATEGORY_OPTION} from './constants';
 import {EXPEDIA_PARTNER_SERVICES_BRAND, EXPEDIA_BRAND, OPXHUB_SUPPORT_CHANNEL} from '../../constants';
+import {validDateRange} from '../utils';
 
 
 export const getBrandSites = (brand) => SITES[brand] || ['travel.chase.com'];
@@ -28,16 +29,6 @@ export const shouldFetchData = (prev, start, end, selectedSite, chartProperty, s
     || prev.selectedErrorCode !== selectedErrorCode
     || prev.hideIntentionalCheck !== hideIntentionalCheck
 );
-
-// eslint-disable-next-line complexity
-export const validDateRange = (start, end) => {
-    if (!start || !end) {
-        return false;
-    }
-    const startMoment = moment(start);
-    const endMoment = moment(end);
-    return startMoment.isValid() && endMoment.isValid() && startMoment.isBefore(new Date()) && endMoment.isAfter(startMoment);
-};
 
 // eslint-disable-next-line complexity
 export const getQueryValues = (search, brand = 'Expedia') => {

@@ -16,6 +16,7 @@ import OperationalDashboard from './OperationalDashboard';
 import CheckoutSuccessRate from './CheckoutSuccessRate';
 import OperationalIos from './OperationalIos';
 import DataCenterTraffic from './DataCenterTraffic';
+import PortfolioScoreCard from './PortfolioScoreCard';
 import {EXPEDIA_BRAND, HOTELS_COM_BRAND, VRBO_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../constants';
 
 
@@ -165,6 +166,13 @@ export default [
         link: '/finder',
         text: 'Change Finder',
         component: Finder
+    },
+    {
+        category: PHAR,
+        id: 'portfolio-score-card',
+        link: '/portfolio-score-card',
+        text: 'Portfolio ScoreCard',
+        component: PortfolioScoreCard
     },
     // OR Dashboards
     {

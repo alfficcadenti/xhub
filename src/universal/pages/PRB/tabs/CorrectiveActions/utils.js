@@ -1,7 +1,6 @@
 import React from 'react';
+import {getTableValue} from '../../../utils';
 
-
-export const getTableValue = (row, property) => row && property ? row[property] || '-' : '-';
 
 export const mapDetails = (row) => ({
     ID: <a href={row.url} target="_blank" rel="noop">{getTableValue(row, 'id')}</a>,
