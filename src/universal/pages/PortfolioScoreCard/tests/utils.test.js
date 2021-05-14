@@ -5,10 +5,9 @@ import {
     mapDetails,
     detectThreshold
 } from '../utils';
-import { getTableValue } from '../../utils';
 
 
-describe('Portfoli0 ScoreCard utils', () => {
+describe('Portfolio ScoreCard utils', () => {
     it('getQueryValues - default', () => {
         const start = moment().subtract(1, 'years').startOf('minute').format('YYYY-MM-DD');
         const end = moment().format('YYYY-MM-DD');
@@ -49,8 +48,8 @@ describe('Portfoli0 ScoreCard utils', () => {
         };
 
         const result = mapDetails(rowValue);
-        expect(result['P1']).to.be.eql(25);
-        expect(result['P2']).to.be.eql(18);
+        expect(result.P1).to.be.eql(25);
+        expect(result.P2).to.be.eql(18);
         expect(result['TTD<=15M']).to.be.eql(24);
         expect(result['TTF<=15M']).to.be.eql(90);
         expect(result['TTK<=30M']).to.be.eql(93);
@@ -69,8 +68,8 @@ describe('Portfoli0 ScoreCard utils', () => {
         };
 
         const result = mapDetails(rowValue);
-        expect(result['P1']).to.be.eql('-');
-        expect(result['P2']).to.be.eql('-');
+        expect(result.P1).to.be.eql('-');
+        expect(result.P2).to.be.eql('-');
         expect(result['TTD<=15M']).to.be.eql('-');
         expect(result['TTF<=15M']).to.be.eql('-');
         expect(result['TTK<=30M']).to.be.eql('-');
