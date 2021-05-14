@@ -6,7 +6,7 @@ import {checkResponse} from '../../../utils';
 import DataTable from '../../../../components/DataTable';
 import NoResults from '../../../../components/NoResults';
 import LoadingContainer from '../../../../components/LoadingContainer';
-import {mapDetails, checkIsRowSelected} from './utils';
+import {mapDetails, checkIsRowSelected, filterDetails} from './utils';
 import {OPXHUB_SUPPORT_CHANNEL} from '../../../../constants';
 import './styles.less';
 
@@ -116,11 +116,12 @@ const CorrectiveActions = ({
     };
 
     const fetchDetails = (businessOwnerType, businessOwnerValue) => {
-        fetch(`/v1/corrective-actions/business-owner-type/${businessOwnerType}/${businessOwnerValue}/details?${fetchQuery}`)
+        fetch(`/v1/corrective-actions-details?${fetchQuery}`)
             .then(checkResponse)
             .then((response) => {
                 if (response && response.length) {
-                    setDetailsData(response.map(mapDetails));
+                    const filteredReponse = filterDetails(response, businessOwnerType, businessOwnerValue);
+                    setDetailsData(filteredReponse.map(mapDetails));
                     setIsModalOpen(true);
                 }
             });
