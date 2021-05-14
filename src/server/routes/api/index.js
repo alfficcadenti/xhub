@@ -1,5 +1,5 @@
 import {login, logout} from './oauth';
-import {correctiveActions, defects, incidents, incidentsV2, epsIncidents, prbs, portfolio} from './dataService';
+import {correctiveActionsDetails, correctiveActions, defects, incidents, incidentsV2, epsIncidents, prbs, portfolio} from './dataService';
 import {bookingsUserEvents, epsPageViewsLoBUserEvents, epsPageViewsUserEvents, pageViewsUserEvents, pageViewsLoBUserEvents, impulseBookingDataService, impulseBrandsService, impulseFiltersService, impulseRevloss, impulseRevlossV2, epsFunnelViewUserEvents, funnelViewUserEvents, csrUserEvents} from './userEventsService';
 import {changeRequests, annotations, productMapping, abTests} from './changeRequestService';
 import {fciUserEvent, fciUserEvents, fciErrorCounts, fciCategoryCounts, fciSites, fciErrorCodes, fciErrorCategories, getFciComments, postFciComment} from './userEventsAnalysisService';
@@ -11,6 +11,7 @@ const apiRoutes = [
     login,
     logout,
     // data service
+    correctiveActionsDetails,
     correctiveActions,
     defects,
     incidents,

@@ -6,6 +6,13 @@ const getHandlerParams = (routeKey) => ({
     serviceName: 'api-v1-data-service'
 });
 
+module.exports.correctiveActionsDetails = {
+    method: 'GET',
+    path: '/v1/corrective-actions-details/{param*}',
+    config: getConfig('corrective-actions-details'),
+    handler: getHandler(Object.assign(getHandlerParams('correctiveActionsDetails')))
+};
+
 module.exports.correctiveActions = {
     method: 'GET',
     path: '/v1/corrective-actions/business-owner-type/{businessOwnerType*}',

@@ -2,8 +2,10 @@ import {expect} from 'chai';
 import {
     getTableValue,
     mapDetails,
-    checkIsRowSelected
+    checkIsRowSelected,
+    filterDetails
 } from '../utils';
+import {mockDetails} from './mockDetails';
 
 
 describe('CorrectiveActions Utils', () => {
@@ -65,5 +67,13 @@ describe('CorrectiveActions Utils', () => {
         expect(checkIsRowSelected('l3', null, {name: 'goodbye'}, {name: 'goodbye'}, null, 'goodbye')).to.be.eql(true);
         expect(checkIsRowSelected('l3', {name: 'hello'}, null, null, null, 'wrong')).to.be.eql(false);
         expect(checkIsRowSelected('l3', null, null, null, null, 'hello')).to.be.eql(false);
+    });
+
+    it('filterDetails', () => {
+        expect(filterDetails(mockDetails, 'l2', 'Egencia Product')).to.have.length(1);
+        expect(filterDetails(mockDetails, 'l2', 'Egencia Product and Tech')).to.have.length(2);
+        expect(filterDetails([], 'l2', 'Egencia Product and Tech')).to.have.length(0);
+        expect(filterDetails([], null, null)).to.have.length(0);
+        expect(filterDetails(mockDetails, null, null)).to.have.length(3);
     });
 });

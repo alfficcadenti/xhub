@@ -28,3 +28,5 @@ export const checkIsRowSelected = (businessOwnerType, selectedL1, selectedL2, se
     || (selectedL2 !== null && businessOwnerType === 'l3' && selectedL3 !== null && selectedL3.name === name)
     || (selectedL3 !== null && businessOwnerType === 'l4' && selectedL4 !== null && selectedL4.name === name)
 );
+
+export const filterDetails = (data, businessOwnerType, businessOwnerValue) => data && businessOwnerType && businessOwnerValue && data.length && data.filter((x) => x[businessOwnerType] && x[businessOwnerType] === businessOwnerValue) || data;
