@@ -112,7 +112,7 @@
               "operation": "GET_PORTFOLIO_V1"
             },
             "orgMetrics": {
-              "path": "/v1/org-metrics/business-owner-type",
+              "path": "/v1/org-metrics/business-owner-type/l1",
               "method": "GET",
               "operation": "GET_ORG_METRICS_V1"
             }
@@ -163,7 +163,7 @@
               "operation": "GET_PORTFOLIO_V1"
             },
             "orgMetrics": {
-              "path": "/v1/org-metrics/business-owner-type",
+              "path": "/v1/org-metrics/business-owner-type/l1",
               "method": "GET",
               "operation": "GET_ORG_METRICS_V1"
             }
