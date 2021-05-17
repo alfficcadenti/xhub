@@ -50,10 +50,10 @@ describe('Portfolio ScoreCard utils', () => {
         const result = mapDetails(rowValue);
         expect(result.P1).to.be.eql(25);
         expect(result.P2).to.be.eql(18);
-        expect(result['TTD<=15M']).to.be.eql(24);
-        expect(result['TTF<=15M']).to.be.eql(90);
-        expect(result['TTK<=30M']).to.be.eql(93);
-        expect(result['TTR<=30M']).to.be.eql(87);
+        expect(result['TTD<=15M']).to.be.eql('24%');
+        expect(result['TTF<=15M']).to.be.eql('90%');
+        expect(result['TTK<=30M']).to.be.eql('93%');
+        expect(result['TTR<=30M']).to.be.eql('87%');
     });
 
     it('mapDetails - default values', () => {

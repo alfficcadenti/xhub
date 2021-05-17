@@ -19,14 +19,18 @@ export const getQueryValues = (search) => {
     };
 };
 
+const addPercentageSign = (value) => {
+    return value === '-' ? '-' : `${value}%`;
+};
+
 export const mapDetails = (row) => ({
     Name: getTableValue(row, 'name'),
     P1: getTableValue(row, 'p1IncidentCount'),
     P2: getTableValue(row, 'p2IncidentCount'),
-    ['TTD<=15M']: getTableValue(row, 'percentIncidentsTtdWithin15MinSlo'),
-    ['TTF<=15M']: getTableValue(row, 'percentIncidentsTtfWithin15MinSlo'),
-    ['TTK<=30M']: getTableValue(row, 'percentIncidentsTtkWithin30MinSlo'),
-    ['TTR<=30M']: getTableValue(row, 'percentIncidentsTtrWithin60MinSlo')
+    ['TTD<=15M']: addPercentageSign(getTableValue(row, 'percentIncidentsTtdWithin15MinSlo')),
+    ['TTF<=15M']: addPercentageSign(getTableValue(row, 'percentIncidentsTtfWithin15MinSlo')),
+    ['TTK<=30M']: addPercentageSign(getTableValue(row, 'percentIncidentsTtkWithin30MinSlo')),
+    ['TTR<=30M']: addPercentageSign(getTableValue(row, 'percentIncidentsTtrWithin60MinSlo'))
 });
 
 export const detectThreshold = (value) => {
