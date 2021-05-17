@@ -6,10 +6,7 @@ import {validDateRange, getTableValue} from '../utils';
 
 // eslint-disable-next-line complexity
 export const getQueryValues = (search) => {
-    const {
-        start,
-        end
-    } = qs.parse(search);
+    const {start, end} = qs.parse(search);
     const isValidDateRange = validDateRange(start, end);
 
     return {
