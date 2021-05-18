@@ -25,7 +25,7 @@ const PieChartWrapper = ({
     const CustomTooltip = ({payload}) => {
         if (payload && payload.length) {
             const {name, value} = payload[0];
-            return <div className="tooltip-container">{`${name}: ${value}, ${((value / total) * 100).toFixed(0)}%`}</div>;
+            return <div className="tooltip-container">{`${name}: ${value}, ${((value / total) * 100).toFixed(1)}%`}</div>;
         }
         return '';
     };
