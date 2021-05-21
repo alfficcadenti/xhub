@@ -37,7 +37,7 @@
     .datetime-range-picker-container {
         position: absolute;
         right: 0;
-        width: 550px;
+        width: 600px;
         top: @filter-size + @spacing-1x ;
         z-index: 100;
         background-color: @color-bg-accent;
@@ -46,11 +46,17 @@
         padding: @spacing-1x;
 
         .apply-btn {
+            float: right; 
             height: fit-content;
             vertical-align: text-top;
-            margin-top: @spacing-1x;
+            margin-top: -52px;
             margin-left: @spacing-1x;
         }
+    }
+
+    .rdt-preset-dropdown {
+        margin-top: @spacing-1x;
+        margin-left: 0;
     }
 
     .rdt-preset-dropdown {
