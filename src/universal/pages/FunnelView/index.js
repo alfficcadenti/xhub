@@ -17,7 +17,8 @@ import {
     EXPEDIA_PARTNER_SERVICES_BRAND,
     LOB_LIST,
     EPS_PARTNER_SITENAMES,
-    OPXHUB_SUPPORT_CHANNEL
+    OPXHUB_SUPPORT_CHANNEL,
+    EXPEDIA_BRAND
 } from '../../constants';
 import {
     checkResponse,
@@ -244,9 +245,31 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         </div>
     );
 
+    const renderLagComponent = () => {
+        const hcomIframe = <iframe src="https://app.datadoghq.com/graph/embed?token=8883f4260fb4215683ac747fc140759431ec372c9a22c39d55af9aab56ac306c&height=100&width=200&legend=false" width="200" height="100" frameBorder="0" title="Onestream Lag"/>;
+        const uisprimeIframe = <iframe src="https://app.datadoghq.com/graph/embed?token=1865fed42a02636eb6baa6448ad4671b76604611347794e00d815163a79a18f0&height=100&width=200&legend=false" width="200" height="100" frameBorder="0" title="Uisprime Lag" />;
+        const vrboIframe = <iframe src="https://app.datadoghq.com/graph/embed?token=e59ee51979dd7e1f62453c06cf9f1b34e707cffd6e6ce1d053b6d99ae90896ed&height=100&width=200&legend=true" width="200" height="100" frameBorder="0" title="Vrbo Lag" />;
+
+        switch (selectedBrand) {
+            case HOTELS_COM_BRAND:
+                return hcomIframe;
+            case EXPEDIA_PARTNER_SERVICES_BRAND:
+                return uisprimeIframe;
+            case EXPEDIA_BRAND:
+                return uisprimeIframe;
+            case VRBO_BRAND:
+                return vrboIframe;
+            default:
+                return null;
+        }
+    };
+
     return (
         <div className="funnel-views-container">
-            <h1 className="page-title">{'Traveler Page Views'}{!isLoBAvailable && <HelpText text="Only for LOB Hotels" placement="top" />}</h1>
+            <div className="title-iframe-container">
+                <h1 className="page-title">{'Traveler Page Views'}{!isLoBAvailable && <HelpText text="Only for LOB Hotels" placement="top" />}</h1>
+                {renderLagComponent()}
+            </div>
             <div className="filters-wrapper">
                 {
                     selectedBrand === EXPEDIA_PARTNER_SERVICES_BRAND &&
