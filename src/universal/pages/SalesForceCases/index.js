@@ -27,7 +27,7 @@ const SalesForceCases = ({selectedBrands}) => {
                 <div className="sales-force-cases">
                     <Iframe
                         url="http://opex-grafana.homeawayprod.com/d/2Y3eD-liz/sales-force-new-cases?orgId=2&refresh=5s&from=now-1d&to=now&theme=light"
-                        key={'iframe'}
+                        key="iframe"
                         width="1600px"
                         height="950px"
                         id="sales-force-cases"
