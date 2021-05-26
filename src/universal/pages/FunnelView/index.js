@@ -26,6 +26,7 @@ import {
     getLobPlaceholder
 } from '../utils';
 import {makePageViewLoBObjects, makePageViewObjects, buildPageViewsApiQueryString} from './pageViewsUtils';
+import LagIndicator from '../../components/LagIndicator';
 import './styles.less';
 
 // eslint-disable-next-line complexity
@@ -246,7 +247,10 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
     return (
         <div className="funnel-views-container">
-            <h1 className="page-title">{'Traveler Page Views'}{!isLoBAvailable && <HelpText text="Only for LOB Hotels" placement="top" />}</h1>
+            <div className="title-iframe-container">
+                <h1 className="page-title">{'Traveler Page Views'}{!isLoBAvailable && <HelpText text="Only for LOB Hotels" placement="top" />}</h1>
+                <LagIndicator selectedBrand={selectedBrand} />
+            </div>
             <div className="filters-wrapper">
                 {
                     selectedBrand === EXPEDIA_PARTNER_SERVICES_BRAND &&

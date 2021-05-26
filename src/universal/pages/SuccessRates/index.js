@@ -38,6 +38,7 @@ import './styles.less';
 import Annotations from '../../components/Annotations/Annotations';
 import DateFiltersWrapper from '../../components/DateFiltersWrapper/DateFiltersWrapper';
 import ResetButton from '../../components/ResetButton';
+import LagIndicator from '../../components/LagIndicator';
 
 
 const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
@@ -286,10 +287,13 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
     return (
         <div className="success-rates-container">
-            <h1 className="page-title">
-                {'Success Rates'}
-                {!isLoBAvailable && <HelpText text="Only for LOB Hotels" placement="top" />}
-            </h1>
+            <div className="title-iframe-container">
+                <h1 className="page-title">
+                    {'Success Rates'}
+                    {!isLoBAvailable && <HelpText text="Only for LOB Hotels" placement="top" />}
+                </h1>
+                <LagIndicator selectedBrand={selectedBrand} />
+            </div>
             <div className="filters-wrapper">
                 {
                     selectedBrand === EXPEDIA_PARTNER_SERVICES_BRAND &&
