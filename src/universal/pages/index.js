@@ -17,10 +17,12 @@ import CheckoutSuccessRate from './CheckoutSuccessRate';
 import OperationalIos from './OperationalIos';
 import DataCenterTraffic from './DataCenterTraffic';
 import PortfolioScoreCard from './PortfolioScoreCard';
+import SalesForceCases from './SalesForceCases';
 import {EXPEDIA_BRAND, HOTELS_COM_BRAND, VRBO_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../constants';
 
 
 const AAT = 'Availability & Trends';
+const CEA = 'Customer Experience Analysis';
 const PHAR = 'Platform Health & Resiliency';
 const OR = 'Outage Report';
 
@@ -128,6 +130,16 @@ export default [
         text: 'Success Rates',
         component: SuccessRates,
         brands: [EXPEDIA_BRAND, HOTELS_COM_BRAND, VRBO_BRAND],
+        hidden: false
+    },
+    // CEA Dashboards
+    {
+        category: CEA,
+        id: 'sales-force-cases',
+        link: '/sales-force-cases',
+        text: 'SalesForce Cases',
+        component: SalesForceCases,
+        brands: [VRBO_BRAND],
         hidden: false
     },
     // PHAR Dashboards
