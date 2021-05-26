@@ -69,4 +69,27 @@
     .Modal__dialog {
         width: 90%;
     }
+
+    .data-table {
+        .link {
+            color: @color-link-default;
+            cursor: pointer;
+
+            &:hover {
+                color: @color-link-hover;
+            }
+
+            &.disabled {
+                pointer-events: none;
+                color: @color-link-darkmode;
+            }
+        }
+
+        .under-threshold {
+            background-color: lightgreen;
+            color: darkslategray;
+            padding: 5px;
+            border-radius: @card-border-radius;
+        }
+    }
 }
