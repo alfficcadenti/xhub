@@ -1,36 +1,36 @@
 [
   {
-    "tag": "brand",
+    "tag": "brands",
     "values": [
       "HomeAway"
     ]
   },
   {
-    "tag": "bookingType",
+    "tag": "booking_types",
     "values": [
       "Unknown"
     ]
   },
   {
-    "tag": "brandGroupName",
+    "tag": "brand_group_names",
     "values": [
       "VRBO"
     ]
   },
   {
-    "tag": "egSiteUrl",
+    "tag": "point_of_sales",
     "values": [
       "Unknown"
     ]
   },
   {
-    "tag": "deviceType",
+    "tag": "device_types",
     "values": [
       "Unknown"
     ]
   },
   {
-    "tag": "lob",
+    "tag": "lobs",
     "values": [
       "Lodging"
     ]
