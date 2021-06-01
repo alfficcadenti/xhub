@@ -5,7 +5,8 @@ import {
     getQueryValues,
     mapDetails,
     detectThreshold,
-    doesHaveSubOrgs
+    doesHaveSubOrgs,
+    getNextL
 } from '../utils';
 
 
@@ -94,5 +95,10 @@ describe('Portfolio ScoreCard utils', () => {
 
         const result = doesHaveSubOrgs('Egencia Global Customer Ops', 'l3', l2Data, l3Data, l4Data);
         expect(result).to.be.eql(false);
+    });
+
+    it('getNextL()', () => {
+        const result = getNextL('l2');
+        expect(result).to.be.eql('L3');
     });
 });

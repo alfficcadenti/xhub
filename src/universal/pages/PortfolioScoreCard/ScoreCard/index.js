@@ -4,10 +4,20 @@ import {checkResponse} from '../../utils';
 import DataTable from '../../../components/DataTable';
 import NoResults from '../../../components/NoResults';
 import LoadingContainer from '../../../components/LoadingContainer';
-import {mapDetails, detectThreshold, doesHaveSubOrgs, getCurrentSubOrgDetails} from '../utils';
+import {
+    mapDetails,
+    detectThreshold,
+    doesHaveSubOrgs,
+    getCurrentSubOrgDetails,
+    getNextL
+} from '../utils';
 import {OPXHUB_SUPPORT_CHANNEL} from '../../../constants';
 import './styles.less';
+import {ARROW_LEFT__16} from '@homeaway/svg-defs';
+import {SVGIcon} from '@homeaway/react-svg';
 
+
+const detailsStore = [];
 
 const ScoreCard = ({
     start,
@@ -25,6 +35,7 @@ const ScoreCard = ({
     const [error, setError] = useState();
     const [isLoading, setIsLoading] = useState(true);
     const [currentL, setCurrentL] = useState('');
+    const [currentId, setCurrentId] = useState(0);
 
     const fetchLData = () => {
         setIsLoading(true);
@@ -61,15 +72,34 @@ const ScoreCard = ({
         }
     }, [isApplyClicked]);
 
-    const showDetails = (subOrgDetails, name, businessOwnerType) => {
-        const details = subOrgDetails.map((detail) => {
-            return {
-                isDisabled: !doesHaveSubOrgs(detail.name, businessOwnerType, l2Data, l3Data, l4Data),
-                subOrgDetails: getCurrentSubOrgDetails(detail.name, businessOwnerType, l2Data, l3Data, l4Data),
-                showDetails,
-                ...detail
-            };
-        });
+    const showDetails = (detailsId, subOrgDetails = [], name = '', businessOwnerType = '') => {
+        let details;
+
+        if (detailsId === -1) {
+            setIsModalOpen(false);
+            detailsStore.length = 0;
+            setCurrentId(0);
+            return;
+        }
+
+        if (detailsStore[detailsId]) {
+            details = detailsStore[detailsId];
+            setCurrentId((currId) => currId - 1);
+        } else {
+            details = subOrgDetails.map((detail) => {
+                return {
+                    isDisabled: !doesHaveSubOrgs(detail.name, businessOwnerType, l2Data, l3Data, l4Data),
+                    subOrgDetails: getCurrentSubOrgDetails(detail.name, businessOwnerType, l2Data, l3Data, l4Data),
+                    showDetails,
+                    ...detail
+                };
+            });
+
+            detailsStore.push(details);
+
+
+            setCurrentId((currId) => currId + 1);
+        }
 
         setDetailsData(details.map(mapDetails));
         setIsModalOpen(true);
@@ -98,7 +128,7 @@ const ScoreCard = ({
             >
                 <div
                     className={`name ${!subOrgDetails.length ? 'disabled' : ''}`}
-                    onClick={() => showDetails(subOrgDetails, name, businessOwnerType)}
+                    onClick={() => showDetails(null, subOrgDetails, name, businessOwnerType)}
                 >
                     {name}
                 </div>
@@ -158,12 +188,6 @@ const ScoreCard = ({
         </div>
     );
 
-
-    const getNextL = (currentySelectedL) => {
-        const currentLDigit = currentySelectedL.split('')[1];
-        return `L${parseInt(currentLDigit, 10) + 1}`;
-    };
-
     return (
         <div className="score-card-container">
             <LoadingContainer isLoading={isLoading} error={error}>
@@ -175,6 +199,12 @@ const ScoreCard = ({
                 onClose={() => setIsModalOpen(false)}
                 title=""
             >
+                <div className="btn btn-default back-button" onClick={() => {
+                    showDetails(currentId - 2);
+                }}
+                >
+                    <SVGIcon markup={ARROW_LEFT__16} />
+                </div>
                 <DataTable
                     title={`${getNextL(currentL)} Details (${currentL} - ${currentClickedOrg})`}
                     data={detailsData}

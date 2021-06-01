@@ -35,7 +35,7 @@ export const mapDetails = (row) => {
     const ttrValue = getTableValue(row, 'percentIncidentsTtrWithin60MinSlo');
 
     return {
-        Name: <span className={`link ${row.isDisabled ? 'disabled' : ''}`} onClick={() => row.showDetails(row.subOrgDetails, row.name, row.businessOwnerType)}>{getTableValue(row, 'name')}</span>,
+        Name: <span className={`link ${row.isDisabled ? 'disabled' : ''}`} onClick={() => row.showDetails(null, row.subOrgDetails, row.name, row.businessOwnerType)}>{getTableValue(row, 'name')}</span>,
         P1: getTableValue(row, 'p1IncidentCount'),
         P2: getTableValue(row, 'p2IncidentCount'),
         ['TTD<=15M']: <span className={`${detectThreshold(ttdValue)}`}>{addPercentageSign(ttdValue)}</span>,
@@ -45,22 +45,24 @@ export const mapDetails = (row) => {
     };
 };
 
+export const findCorrectLName = (lName) => (item) => item.name === lName;
+
 export const doesHaveSubOrgs = (lName, businessOwnerType, l2Data, l3Data, l4Data) => {
     let result;
 
     if (businessOwnerType === 'l1') {
         result = !!l2Data
-            .find((item) => item.name === lName)
+            .find(findCorrectLName(lName))
             ?.subOrgDetails
             .length;
     } else if (businessOwnerType === 'l2') {
         result = !!l3Data
-            .find((item) => item.name === lName)
+            .find(findCorrectLName(lName))
             ?.subOrgDetails
             .length;
     } else if (businessOwnerType === 'l3') {
         result = !!l4Data
-            .find((item) => item.name === lName)
+            .find(findCorrectLName(lName))
             ?.subOrgDetails
             .length;
     } else {
@@ -75,17 +77,22 @@ export const getCurrentSubOrgDetails = (lName, businessOwnerType, l2Data, l3Data
 
     if (businessOwnerType === 'l1') {
         result = l2Data
-            .find((item) => item.name === lName)
+            .find(findCorrectLName(lName))
             .subOrgDetails;
     } else if (businessOwnerType === 'l2') {
         result = l3Data
-            .find((item) => item.name === lName)
+            .find(findCorrectLName(lName))
             .subOrgDetails;
     } else if (businessOwnerType === 'l3') {
         result = l4Data
-            .find((item) => item.name === lName)
+            .find(findCorrectLName(lName))
             .subOrgDetails;
     }
 
     return result;
+};
+
+export const getNextL = (currentySelectedL) => {
+    const currentLDigit = currentySelectedL.split('')[1];
+    return `L${parseInt(currentLDigit, 10) + 1}`;
 };
