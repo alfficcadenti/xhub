@@ -4,7 +4,7 @@ import moment from 'moment';
 
 let endDate = moment().set({second: 0}).format('YYYY-MM-DDTHH:mm:ss');
 let startDate = moment().set({second: 0}).subtract(1, 'days').format('YYYY-MM-DDTHH:mm:ss');
-const typeofFilter = 'lob';
+const typeofFilter = 'lobs';
 const filterResult = {label: 'Lodging', value: 'Lodging'};
 import mockFilters from './filterMock.test.json';
 import mockRevenue from './revenueLossMock.json';
