@@ -78,14 +78,14 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             label: 'Upstream Unhealthy'
         }];
     const getFilter = () => {
-        fetch(`/v1/bookings/filters?filter=lob,brand,egSiteUrl,deviceType,brandGroupName${getBrandQueryParam(IMPULSE_MAPPING, globalBrandName)}`)
+        fetch(`/v1/bookings/filters?tags=lobs,brands,point_of_sales,device_types,brand_group_names${getBrandQueryParam(IMPULSE_MAPPING, globalBrandName)}`)
             .then(checkResponse)
             .then((respJson) => {
                 setFilterData(respJson);
-                setEgSiteURLMulti(getFilters(respJson, 'egSiteUrl'));
-                setLobsMulti(getFilters(respJson, 'lob'));
-                setBrandMulti(getFilters(respJson, 'brand'));
-                setDeviceTypesMulti(getFilters(respJson, 'deviceType'));
+                setEgSiteURLMulti(getFilters(respJson, 'point_of_sales'));
+                setLobsMulti(getFilters(respJson, 'lobs'));
+                setBrandMulti(getFilters(respJson, 'brands'));
+                setDeviceTypesMulti(getFilters(respJson, 'device_types'));
             })
             .catch((err) => {
                 // eslint-disable-next-line no-console

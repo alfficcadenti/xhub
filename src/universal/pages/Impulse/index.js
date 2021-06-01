@@ -105,13 +105,13 @@ const Impulse = (props) => {
         setSelectedDeviceTypeMulti([]);
         setSelectedSiteURLMulti([]);
         if (typeof newValuesOnChange !== 'undefined' && brandsFilterData !== null && newValuesOnChange.length > 0) {
-            setLobsMulti(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'lob'));
-            setDeviceTypesMulti(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'deviceType'));
-            setEgSiteURLMulti(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'egSiteUrl'));
+            setLobsMulti(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'lobs'));
+            setDeviceTypesMulti(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'device_types'));
+            setEgSiteURLMulti(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'point_of_sales'));
         } else {
-            setLobsMulti(getFilters(filterData, 'lob'));
-            setDeviceTypesMulti(getFilters(filterData, 'deviceType'));
-            setEgSiteURLMulti(getFilters(filterData, 'egSiteUrl'));
+            setLobsMulti(getFilters(filterData, 'lobs'));
+            setDeviceTypesMulti(getFilters(filterData, 'device_types'));
+            setEgSiteURLMulti(getFilters(filterData, 'point_of_sales'));
         }
     };
     const filterAnnotations = (newValuesOnChange) => {

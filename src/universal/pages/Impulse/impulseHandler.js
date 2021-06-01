@@ -33,7 +33,7 @@ export const getQueryParamMulti = (key, value) => value && value.length ? `&${ke
 export const getBrandQueryParam = (IMPULSE_MAPPING, globalBrandName) => {
     let globalBrand = IMPULSE_MAPPING.find((brandNames) => brandNames.globalFilter === globalBrandName)?.impulseFilter;
     if (globalBrand !== ALL_BRAND_GROUP) {
-        return globalBrand === EGENCIA_BRAND ? `&brand=${encodeURI(globalBrand)}` : `&brandGroupName=${encodeURI(globalBrand)}`;
+        return globalBrand === EGENCIA_BRAND ? `&brands=${encodeURI(globalBrand)}` : `&brand_group_names=${encodeURI(globalBrand)}`;
     }
     return '';
 };
@@ -61,11 +61,11 @@ export const getColor = (anomaly) => {
 };
 
 export const getQueryString = (start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti) => (
-    `?startDate=${start.format('YYYY-MM-DDTHH:mm:ss')}Z&endDate=${end.format('YYYY-MM-DDTHH:mm:ss')}Z`
-    + `${getQueryParamMulti('egSiteUrl', selectedSiteURLMulti)}`
-    + `${getQueryParamMulti('lob', selectedLobMulti)}`
-    + `${getQueryParamMulti('brand', selectedBrandMulti)}`
-    + `${getQueryParamMulti('deviceType', selectedDeviceTypeMulti)}`
+    `?start_time=${start.format('YYYY-MM-DDTHH:mm:ss')}Z&end_time=${end.format('YYYY-MM-DDTHH:mm:ss')}Z`
+    + `${getQueryParamMulti('point_of_sales', selectedSiteURLMulti)}`
+    + `${getQueryParamMulti('lobs', selectedLobMulti)}`
+    + `${getQueryParamMulti('brands', selectedBrandMulti)}`
+    + `${getQueryParamMulti('device_types', selectedDeviceTypeMulti)}`
     + `${getBrandQueryParam(IMPULSE_MAPPING, globalBrandName)}`
 );
 
