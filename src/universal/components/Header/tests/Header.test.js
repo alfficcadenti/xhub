@@ -3,7 +3,7 @@ import {mount} from 'enzyme';
 import Header from '../index';
 import {expect} from 'chai';
 import sinon from 'sinon';
-import {BRANDS, EXPEDIA_BRAND, EG_BRAND} from '../../../constants';
+import {BRANDS, EXPEDIA_BRAND, EG_BRAND, VRBO_BRAND} from '../../../constants';
 import {BrowserRouter} from 'react-router-dom';
 
 
@@ -20,5 +20,12 @@ describe('<Header />', () => {
         const wrapper = mount(<BrowserRouter><Header selectedBrands={[EG_BRAND]} onBrandChange={sinon.spy} brands={validBrands} /></BrowserRouter>);
         expect(wrapper.find('[id="Platform Health & Resiliency-dropdown--container"]').children()).to.have.length(5);
         expect(wrapper.find('[id="Availability & Trends-dropdown--container"]').children()).to.have.length(1);
+    });
+
+    it('renders only Platform Health dropdown menu if brand is VRBO', () => {
+        const wrapper = mount(<BrowserRouter><Header selectedBrands={[VRBO_BRAND]} onBrandChange={sinon.spy} brands={validBrands} /></BrowserRouter>);
+        expect(wrapper.find('[id="Platform Health & Resiliency-dropdown--container"]').children()).to.have.length(5);
+        expect(wrapper.find('[id="Availability & Trends-dropdown--container"]').children()).to.have.length(3);
+        expect(wrapper.find('[id="Customer Experience Analysis-dropdown--container"]').children()).to.have.length(1);
     });
 });
