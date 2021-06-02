@@ -22,7 +22,7 @@ export const selectAttributes = (selectedBrand) => {
     }
 };
 
-const LagComponent = ({selectedBrand}) => {
+const LagIndicator = ({selectedBrand}) => {
     const {token, title} = selectAttributes(selectedBrand);
 
     if (token && title) {
@@ -31,4 +31,4 @@ const LagComponent = ({selectedBrand}) => {
     return null;
 };
 
-export default React.memo(LagComponent);
+export default React.memo(LagIndicator);
