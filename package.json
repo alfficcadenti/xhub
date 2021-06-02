@@ -125,7 +125,7 @@
     "browserstack-local": "^1.4.8",
     "chromedriver": "^90.0.0",
     "classnames": "^2.2.6",
-    "common-nightwatch": "0.0.378",
+    "common-nightwatch": "0.0.453",
     "core-js": "^3.6.5",
     "css-modules-require-hook": "^4.2.3",
     "cucumber": "6.0.5",
