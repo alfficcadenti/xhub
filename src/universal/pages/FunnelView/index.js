@@ -29,8 +29,10 @@ import {makePageViewLoBObjects, makePageViewObjects, buildPageViewsApiQueryStrin
 import LagIndicator from '../../components/LagIndicator';
 import './styles.less';
 
+import {triggerEdapPageView} from '../../edap';
+
 // eslint-disable-next-line complexity
-const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
+const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}) => {
     const selectedBrand = selectedBrands[0];
     const {search} = useLocation();
     const {initialStart, initialEnd, initialTimeRange, initialLobs} = getQueryParams(search);
@@ -91,6 +93,10 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         refAreaLeft,
         refAreaRight
     );
+
+    useEffect(() => {
+        triggerEdapPageView(location.pathname);
+    }, []);
 
     useEffect(() => {
         const fetchPageViewsData = (brand) => {
@@ -254,29 +260,29 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             <div className="filters-wrapper">
                 {
                     selectedBrand === EXPEDIA_PARTNER_SERVICES_BRAND &&
-                        <Select
-                            classNamePrefix="eps-partner-select"
-                            className="eps-partner-select-container"
-                            options={EPS_PARTNER_SITENAMES}
-                            onChange={handleEPSPartnerChange}
-                            placeholder="Select Partner"
-                            isClearable
-                            isSearchable
-                        />
+                            <Select
+                                classNamePrefix="eps-partner-select"
+                                className="eps-partner-select-container"
+                                options={EPS_PARTNER_SITENAMES}
+                                onChange={handleEPSPartnerChange}
+                                placeholder="Select Partner"
+                                isClearable
+                                isSearchable
+                            />
                 }
                 <div className="dynamic-filters-wrapper">
                     {
                         isLoBAvailable &&
-                            <Select
-                                isMulti
-                                classNamePrefix="lob-select"
-                                className="lob-select-container"
-                                options={LOB_LIST}
-                                onChange={handleLoBChange}
-                                placeholder={getLobPlaceholder(isLoBLoading, lobWidgets.length)}
-                                isDisabled={!lobWidgets.length}
-                                defaultValue={selectedLobs}
-                            />
+                                <Select
+                                    isMulti
+                                    classNamePrefix="lob-select"
+                                    className="lob-select-container"
+                                    options={LOB_LIST}
+                                    onChange={handleLoBChange}
+                                    placeholder={getLobPlaceholder(isLoBLoading, lobWidgets.length)}
+                                    isDisabled={!lobWidgets.length}
+                                    defaultValue={selectedLobs}
+                                />
                     }
                     <Annotations
                         productMapping={productMapping}

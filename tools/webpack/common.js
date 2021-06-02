@@ -3,6 +3,7 @@ const ExtractCssChunks = require('extract-css-chunks-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const {vendors, browsers} = require('./lists');
 const webpack = require('webpack');
+const path = require('path');
 
 const SRC_DIR = Path.join(__dirname, 'src', 'universal');
 
@@ -19,7 +20,10 @@ if (isProd && cdnUrl) {
 module.exports = {
     resolve: {
         extensions: ['.js', '.css', '.less', '.gif', '.jpg', '.jpeg', '.png', '.svg', '.ico'],
-        modules: ['node_modules', SRC_DIR]
+        modules: ['node_modules', SRC_DIR],
+        alias: {
+            'edap-integrations': path.join('@homeaway', 'edap-integrations', 'release', 'javascripts', 'edap-integrations.webpack.js')
+        }
     },
 
     module: {
