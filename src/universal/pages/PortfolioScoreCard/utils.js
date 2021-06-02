@@ -45,26 +45,21 @@ export const mapDetails = (row) => {
     };
 };
 
-export const findCorrectLName = (lName) => (item) => item.name === lName;
+export const findCorrectLName = (lName) => ({name}) => name === lName;
+
+export const findSubOrgDetails = (data, lName) => data
+    .find(findCorrectLName(lName))
+    ?.subOrgDetails;
 
 export const doesHaveSubOrgs = (lName, businessOwnerType, l2Data, l3Data, l4Data) => {
     let result;
 
     if (businessOwnerType === 'l1') {
-        result = !!l2Data
-            .find(findCorrectLName(lName))
-            ?.subOrgDetails
-            .length;
+        result = !!findSubOrgDetails(l2Data, lName)?.length;
     } else if (businessOwnerType === 'l2') {
-        result = !!l3Data
-            .find(findCorrectLName(lName))
-            ?.subOrgDetails
-            .length;
+        result = !!findSubOrgDetails(l3Data, lName)?.length;
     } else if (businessOwnerType === 'l3') {
-        result = !!l4Data
-            .find(findCorrectLName(lName))
-            ?.subOrgDetails
-            .length;
+        result = !!findSubOrgDetails(l4Data, lName)?.length;
     } else {
         result = false;
     }
@@ -73,20 +68,16 @@ export const doesHaveSubOrgs = (lName, businessOwnerType, l2Data, l3Data, l4Data
 };
 
 export const getCurrentSubOrgDetails = (lName, businessOwnerType, l2Data, l3Data, l4Data) => {
-    let result = [];
+    let result;
 
     if (businessOwnerType === 'l1') {
-        result = l2Data
-            .find(findCorrectLName(lName))
-            .subOrgDetails;
+        result = findSubOrgDetails(l2Data, lName);
     } else if (businessOwnerType === 'l2') {
-        result = l3Data
-            .find(findCorrectLName(lName))
-            .subOrgDetails;
+        result = findSubOrgDetails(l3Data, lName);
     } else if (businessOwnerType === 'l3') {
-        result = l4Data
-            .find(findCorrectLName(lName))
-            .subOrgDetails;
+        result = findSubOrgDetails(l4Data, lName);
+    } else {
+        result = [];
     }
 
     return result;

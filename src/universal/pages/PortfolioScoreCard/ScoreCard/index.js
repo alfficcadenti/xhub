@@ -32,10 +32,10 @@ const ScoreCard = ({
     const [detailsData, setDetailsData] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentClickedOrg, setCurrentClickedOrg] = useState('');
-    const [error, setError] = useState();
-    const [isLoading, setIsLoading] = useState(true);
     const [currentL, setCurrentL] = useState('');
     const [currentId, setCurrentId] = useState(0);
+    const [error, setError] = useState();
+    const [isLoading, setIsLoading] = useState(true);
 
     const fetchLData = () => {
         setIsLoading(true);
@@ -83,8 +83,11 @@ const ScoreCard = ({
         }
 
         if (detailsStore[detailsId]) {
-            details = detailsStore[detailsId];
+            const {details: prevDetails, name: prevName, businessOwnerType: prevBusinessOwnerType} = detailsStore[detailsId];
+            details = prevDetails;
             setCurrentId((currId) => currId - 1);
+            setCurrentClickedOrg(prevName);
+            setCurrentL(prevBusinessOwnerType.toUpperCase());
         } else {
             details = subOrgDetails.map((detail) => {
                 return {
@@ -94,17 +97,19 @@ const ScoreCard = ({
                     ...detail
                 };
             });
-
-            detailsStore.push(details);
-
+            detailsStore.push({
+                details,
+                name,
+                businessOwnerType
+            });
 
             setCurrentId((currId) => currId + 1);
+            setCurrentClickedOrg(name);
+            setCurrentL(businessOwnerType.toUpperCase());
         }
 
         setDetailsData(details.map(mapDetails));
         setIsModalOpen(true);
-        setCurrentClickedOrg(name);
-        setCurrentL(businessOwnerType.toUpperCase());
     };
 
     const renderRow = (row) => {
@@ -199,14 +204,12 @@ const ScoreCard = ({
                 onClose={() => setIsModalOpen(false)}
                 title=""
             >
-                <div className="btn btn-default back-button" onClick={() => {
-                    showDetails(currentId - 2);
-                }}
-                >
+                <div className="back-button" onClick={() => showDetails(currentId - 2)}>
                     <SVGIcon markup={ARROW_LEFT__16} />
+                    <span className="prev-details">{`${currentL} - ${currentClickedOrg}`}</span>
                 </div>
                 <DataTable
-                    title={`${getNextL(currentL)} Details (${currentL} - ${currentClickedOrg})`}
+                    title={`${getNextL(currentL)} Details`}
                     data={detailsData}
                     columns={['Name', 'P1', 'P2', 'TTD<=15M', 'TTF<=15M', 'TTK<=30M', 'TTR<=30M']}
                     enableColumnDisplaySettings
