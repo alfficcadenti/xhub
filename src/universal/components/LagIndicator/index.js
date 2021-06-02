@@ -7,7 +7,7 @@ import {
     VRBO_BRAND,
 } from '../../constants';
 
-const selectAttributes = (selectedBrand) => {
+export const selectAttributes = (selectedBrand) => {
     switch (selectedBrand) {
         case HOTELS_COM_BRAND:
             return {token: '8883f4260fb4215683ac747fc140759431ec372c9a22c39d55af9aab56ac306c', title: 'Onestream Lag'};
