@@ -71,7 +71,7 @@ module.exports.portfolio = {
 
 module.exports.orgMetrics = {
     method: 'GET',
-    path: '/v1/org-metrics/business-owner-type/{param*}',
+    path: '/v1/org-metrics/business-owner-type/{businessOwnerType*}',
     config: getConfig('org-metrics-get'),
-    handler: getHandler(Object.assign(getHandlerParams('orgMetrics')))
+    handler: getHandler(Object.assign(getHandlerParams('orgMetrics'), {pathParam: 'businessOwnerType'}))
 };

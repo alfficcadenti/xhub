@@ -4,10 +4,20 @@ import {checkResponse} from '../../utils';
 import DataTable from '../../../components/DataTable';
 import NoResults from '../../../components/NoResults';
 import LoadingContainer from '../../../components/LoadingContainer';
-import {mapDetails, detectThreshold} from '../utils';
+import {
+    mapDetails,
+    detectThreshold,
+    doesHaveSubOrgs,
+    getCurrentSubOrgDetails,
+    getNextL
+} from '../utils';
 import {OPXHUB_SUPPORT_CHANNEL} from '../../../constants';
 import './styles.less';
+import {ARROW_LEFT__16} from '@homeaway/svg-defs';
+import {SVGIcon} from '@homeaway/react-svg';
 
+
+const detailsStore = [];
 
 const ScoreCard = ({
     start,
@@ -16,19 +26,32 @@ const ScoreCard = ({
 }) => {
     const dateQuery = `fromDate=${start}&toDate=${end}`;
     const [l1Data, setL1Data] = useState([]);
+    const [l2Data, setL2Data] = useState([]);
+    const [l3Data, setL3Data] = useState([]);
+    const [l4Data, setL4Data] = useState([]);
     const [detailsData, setDetailsData] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentClickedOrg, setCurrentClickedOrg] = useState('');
+    const [currentL, setCurrentL] = useState('');
+    const [currentId, setCurrentId] = useState(0);
     const [error, setError] = useState();
     const [isLoading, setIsLoading] = useState(true);
 
     const fetchLData = () => {
         setIsLoading(true);
 
-        fetch(`/v1/org-metrics/business-owner-type/l1?${dateQuery}`)
-            .then(checkResponse)
-            .then(({data}) => {
-                setL1Data(data);
+        Promise.all(['l1', 'l2', 'l3', 'l4'].map((l) => fetch(`/v1/org-metrics/business-owner-type/${l}?${dateQuery}`)))
+            .then((responses) => Promise.all(responses.map(checkResponse)))
+            .then(([
+                {data: l1Response},
+                {data: l2Response},
+                {data: l3Response},
+                {data: l4Response}
+            ]) => {
+                setL1Data(l1Response);
+                setL2Data(l2Response);
+                setL3Data(l3Response);
+                setL4Data(l4Response);
             })
             .catch((err) => {
                 setError('Failed to retrieve data. Try refreshing the page. '
@@ -49,10 +72,44 @@ const ScoreCard = ({
         }
     }, [isApplyClicked]);
 
-    const showDetails = (subOrgDetails, name) => {
-        setDetailsData(subOrgDetails.map(mapDetails));
+    const showDetails = (detailsId, subOrgDetails = [], name = '', businessOwnerType = '') => {
+        let details;
+
+        if (detailsId === -1) {
+            setIsModalOpen(false);
+            detailsStore.length = 0;
+            setCurrentId(0);
+            return;
+        }
+
+        if (detailsStore[detailsId]) {
+            const {details: prevDetails, name: prevName, businessOwnerType: prevBusinessOwnerType} = detailsStore[detailsId];
+            details = prevDetails;
+            setCurrentId((currId) => currId - 1);
+            setCurrentClickedOrg(prevName);
+            setCurrentL(prevBusinessOwnerType.toUpperCase());
+        } else {
+            details = subOrgDetails.map((detail) => {
+                return {
+                    isDisabled: !doesHaveSubOrgs(detail.name, businessOwnerType, l2Data, l3Data, l4Data),
+                    subOrgDetails: getCurrentSubOrgDetails(detail.name, businessOwnerType, l2Data, l3Data, l4Data),
+                    showDetails,
+                    ...detail
+                };
+            });
+            detailsStore.push({
+                details,
+                name,
+                businessOwnerType
+            });
+
+            setCurrentId((currId) => currId + 1);
+            setCurrentClickedOrg(name);
+            setCurrentL(businessOwnerType.toUpperCase());
+        }
+
+        setDetailsData(details.map(mapDetails));
         setIsModalOpen(true);
-        setCurrentClickedOrg(name);
     };
 
     const renderRow = (row) => {
@@ -76,7 +133,7 @@ const ScoreCard = ({
             >
                 <div
                     className={`name ${!subOrgDetails.length ? 'disabled' : ''}`}
-                    onClick={() => showDetails(subOrgDetails, name)}
+                    onClick={() => showDetails(null, subOrgDetails, name, businessOwnerType)}
                 >
                     {name}
                 </div>
@@ -147,8 +204,12 @@ const ScoreCard = ({
                 onClose={() => setIsModalOpen(false)}
                 title=""
             >
+                <div className="back-button" onClick={() => showDetails(currentId - 2)}>
+                    <SVGIcon markup={ARROW_LEFT__16} />
+                    <span className="prev-details">{`${currentL} - ${currentClickedOrg}`}</span>
+                </div>
                 <DataTable
-                    title={`L2 Details (L1 - ${currentClickedOrg})`}
+                    title={`${getNextL(currentL)} Details`}
                     data={detailsData}
                     columns={['Name', 'P1', 'P2', 'TTD<=15M', 'TTF<=15M', 'TTK<=30M', 'TTR<=30M']}
                     enableColumnDisplaySettings
