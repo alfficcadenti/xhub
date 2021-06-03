@@ -36,9 +36,9 @@ Feature: Verify user is able to navigate around Problem Management
 
     Examples:
     | brand                    | link                          |
-    | ExpediaGroup             | platformHealthResiliencyLink3 |
-    | Expedia                  | platformHealthResiliencyLink3 |
-    | Egencia                  | platformHealthResiliencyLink3 |
-    | Hotelscom                | platformHealthResiliencyLink3 |
-    | Vrbo                     | platformHealthResiliencyLink3 |
-    | ExpediaPartnerSolutions  | platformHealthResiliencyLink3 |
+    | ExpediaGroup             | platformHealthResiliencyLink4 |
+    | Expedia                  | platformHealthResiliencyLink4 |
+    | Egencia                  | platformHealthResiliencyLink4 |
+    | Hotelscom                | platformHealthResiliencyLink4 |
+    | Vrbo                     | platformHealthResiliencyLink4 |
+    | ExpediaPartnerSolutions  | platformHealthResiliencyLink4 |
