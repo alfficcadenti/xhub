@@ -4,7 +4,7 @@ import moment from 'moment';
 
 let endDate = moment().set({second: 0}).format('YYYY-MM-DDTHH:mm:ss');
 let startDate = moment().set({second: 0}).subtract(1, 'days').format('YYYY-MM-DDTHH:mm:ss');
-const typeofFilter = 'lob';
+const typeofFilter = 'lobs';
 const filterResult = {label: 'Lodging', value: 'Lodging'};
 import mockFilters from './filterMock.test.json';
 import mockRevenue from './revenueLossMock.json';
@@ -50,15 +50,15 @@ describe('impulseHandler', () => {
             expect(getBrandQueryParam(IMPULSE_MAPPING, EG_BRAND)).eql('');
         });
         it('should return brandName = Expedia Business Services if Expedia Partner Services passed', () => {
-            expect(getBrandQueryParam(IMPULSE_MAPPING, EXPEDIA_PARTNER_SERVICES_BRAND)).eql('&brandGroupName=Expedia%20Business%20Services');
+            expect(getBrandQueryParam(IMPULSE_MAPPING, EXPEDIA_PARTNER_SERVICES_BRAND)).eql('&brand_group_names=Expedia%20Business%20Services');
         });
         it('should return brand=Egencia if Egencia passed', () => {
-            expect(getBrandQueryParam(IMPULSE_MAPPING, EGENCIA_BRAND)).eql('&brand=Egencia');
+            expect(getBrandQueryParam(IMPULSE_MAPPING, EGENCIA_BRAND)).eql('&brands=Egencia');
         });
     });
     describe('test final query string', () => {
         it('should return string with datetime into query string if no filter has been selected', () => {
-            expect(getQueryString(moment().set({second: 0}), moment().set({second: 0}).subtract(1, 'days'), IMPULSE_MAPPING, EG_BRAND, [], [], [], [], [], [], [])).eql(`?startDate=${endDate}Z&endDate=${startDate}Z`);
+            expect(getQueryString(moment().set({second: 0}), moment().set({second: 0}).subtract(1, 'days'), IMPULSE_MAPPING, EG_BRAND, [], [], [], [], [], [], [])).eql(`?start_time=${endDate}Z&end_time=${startDate}Z`);
         });
     });
     describe('test revenue loss calculation method', () => {
