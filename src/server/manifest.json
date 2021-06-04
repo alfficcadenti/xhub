@@ -443,6 +443,16 @@
               "method": "GET",
               "operation": "GET_impulse_booking_revlossV2"
             },
+            "bookingsImpulseRevlossApiFirst": {
+              "path": "/v1/bookings/revenue-loss",
+              "method": "GET",
+              "operation": "GET_impulse_booking_revlossApiFirst"
+            },
+            "bookingsImpulseRevlossV2ApiFirst": {
+              "path": "/v2/bookings/revenue-loss",
+              "method": "GET",
+              "operation": "GET_impulse_booking_revlossApiFirstv2"
+            },
             "epsFunnelView": {
               "path": "/v1/funnelView/eps",
               "method": "GET",
@@ -518,6 +528,16 @@
               "path": "/v2/bookings/revenueLoss",
               "method": "GET",
               "operation": "GET_impulse_booking_revlossV2"
+            },
+            "bookingsImpulseRevlossApiFirst": {
+              "path": "/v1/bookings/revenue-loss",
+              "method": "GET",
+              "operation": "GET_impulse_booking_revlossApiFirst"
+            },
+            "bookingsImpulseRevlossV2ApiFirst": {
+              "path": "/v2/bookings/revenue-loss",
+              "method": "GET",
+              "operation": "GET_impulse_booking_revlossApiFirstv2"
             },
             "epsFunnelView": {
               "path": "/v1/funnelView/eps",
@@ -595,6 +615,16 @@
               "method": "GET",
               "operation": "GET_impulse_booking_revlossV2"
             },
+            "bookingsImpulseRevlossApiFirst": {
+              "path": "/v1/bookings/revenue-loss",
+              "method": "GET",
+              "operation": "GET_impulse_booking_revlossApiFirst"
+            },
+            "bookingsImpulseRevlossV2ApiFirst": {
+              "path": "/v2/bookings/revenue-loss",
+              "method": "GET",
+              "operation": "GET_impulse_booking_revlossApiFirstv2"
+            },
             "epsFunnelView": {
               "path": "/v1/funnelView/eps",
               "method": "GET",
@@ -660,6 +690,16 @@
               "path": "/v2/bookings/revenueLoss",
               "method": "GET",
               "operation": "GET_impulse_booking_revlossV2"
+            },
+            "bookingsImpulseRevlossApiFirst": {
+              "path": "/v1/bookings/revenue-loss",
+              "method": "GET",
+              "operation": "GET_impulse_booking_revlossApiFirst"
+            },
+            "bookingsImpulseRevlossV2ApiFirst": {
+              "path": "/v2/bookings/revenue-loss",
+              "method": "GET",
+              "operation": "GET_impulse_booking_revlossApiFirstv2"
             },
             "epsFunnelView": {
               "path": "/v1/funnelView/eps",
