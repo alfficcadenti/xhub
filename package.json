@@ -90,7 +90,7 @@
     "@homeaway/catalyst-monitoring-statsd": "^2.0.0",
     "@homeaway/catalyst-status": "^2.0.0",
     "@homeaway/edap-wrapper": "^0.4.1",
-    "@homeaway/environment-resolver": "^3.0.0",
+    "@homeaway/environment-resolver": "^3.6.0",
     "@homeaway/eslint-config": "^6.0.0",
     "@homeaway/http-client": "^5.0.0",
     "@homeaway/node-stylelint": "^3.1.2",
