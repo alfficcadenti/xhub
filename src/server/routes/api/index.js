@@ -21,6 +21,8 @@ import {
     impulseFiltersService,
     impulseRevloss,
     impulseRevlossV2,
+    impulseRevlossApiFirst,
+    impulseRevlossV2ApiFirst,
     epsFunnelViewUserEvents,
     funnelViewUserEvents,
     csrUserEvents
@@ -66,6 +68,8 @@ const apiRoutes = [
     impulseFiltersService,
     impulseRevloss,
     impulseRevlossV2,
+    impulseRevlossApiFirst,
+    impulseRevlossV2ApiFirst,
     epsFunnelViewUserEvents,
     funnelViewUserEvents,
     csrUserEvents,

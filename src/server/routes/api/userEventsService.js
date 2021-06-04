@@ -78,6 +78,22 @@ module.exports.impulseRevlossV2 = {
     handler: getHandler(Object.assign(getHandlerParams('bookingsImpulseRevlossV2'), {pathParam: 'impact'}))
 };
 
+// This proxy is for Impulse SNow API after API first. We will remove this proxy once we get the endpoint accessible through
+
+module.exports.impulseRevlossApiFirst = {
+    method: 'GET',
+    path: '/v1/bookings/revenue-loss/{impact*}',
+    config: getConfig('impulse-revloss-api-v1-get-api-first'),
+    handler: getHandler(Object.assign(getHandlerParams('bookingsImpulseRevlossApiFirst'), {pathParam: 'impact'}))
+};
+
+module.exports.impulseRevlossV2ApiFirst = {
+    method: 'GET',
+    path: '/v2/bookings/revenue-loss/{impact*}',
+    config: getConfig('impulse-revloss-api-v2-get-api-first'),
+    handler: getHandler(Object.assign(getHandlerParams('bookingsImpulseRevlossV2ApiFirst'), {pathParam: 'impact'}))
+};
+
 module.exports.epsFunnelViewUserEvents = {
     method: 'GET',
     path: '/user-events-api/v1/funnelView/eps/{param*}',
