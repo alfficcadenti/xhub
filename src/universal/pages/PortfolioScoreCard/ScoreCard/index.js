@@ -72,13 +72,17 @@ const ScoreCard = ({
         }
     }, [isApplyClicked]);
 
+    const closeModalHandler = () => {
+        setIsModalOpen(false);
+        detailsStore.length = 0;
+        setCurrentId(0);
+    };
+
     const showDetails = (detailsId, subOrgDetails = [], name = '', businessOwnerType = '') => {
         let details;
 
         if (detailsId === -1) {
-            setIsModalOpen(false);
-            detailsStore.length = 0;
-            setCurrentId(0);
+            closeModalHandler();
             return;
         }
 
@@ -88,6 +92,7 @@ const ScoreCard = ({
             setCurrentId((currId) => currId - 1);
             setCurrentClickedOrg(prevName);
             setCurrentL(prevBusinessOwnerType.toUpperCase());
+            detailsStore.pop();
         } else {
             details = subOrgDetails.map((detail) => {
                 return {
@@ -102,7 +107,6 @@ const ScoreCard = ({
                 name,
                 businessOwnerType
             });
-
             setCurrentId((currId) => currId + 1);
             setCurrentClickedOrg(name);
             setCurrentL(businessOwnerType.toUpperCase());
@@ -201,8 +205,7 @@ const ScoreCard = ({
             <Modal
                 id="corrective-actions-modal"
                 isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                title=""
+                onClose={() => closeModalHandler()}
             >
                 <div className="back-button" onClick={() => showDetails(currentId - 2)}>
                     <SVGIcon markup={ARROW_LEFT__16} />
