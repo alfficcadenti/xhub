@@ -22,7 +22,7 @@ module.exports = {
         extensions: ['.js', '.css', '.less', '.gif', '.jpg', '.jpeg', '.png', '.svg', '.ico'],
         modules: ['node_modules', SRC_DIR],
         alias: {
-            'edap-integrations': path.join('@homeaway', 'edap-integrations', 'release', 'javascripts', 'edap-integrations.webpack.js')
+            'edap-integrations': path.join('@homeaway', 'edap-integrations', 'release', 'javascripts', 'edap-integrations.webpack.js'),
         }
     },
 
