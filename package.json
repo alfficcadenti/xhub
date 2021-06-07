@@ -89,6 +89,7 @@
     "@homeaway/catalyst-l10n-reader": "^2.0.0",
     "@homeaway/catalyst-monitoring-statsd": "^2.0.0",
     "@homeaway/catalyst-status": "^2.0.0",
+    "@homeaway/edap-integrations": "^11.72.0",
     "@homeaway/edap-wrapper": "^0.4.1",
     "@homeaway/environment-resolver": "^3.6.0",
     "@homeaway/eslint-config": "^6.0.0",
