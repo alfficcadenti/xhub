@@ -64,7 +64,7 @@ async function start(options = {}) {
     server.decorate('server', 'siteInfo', () => ({siteName: 'OpxHub'}));
 
     // start the server
-    await server.register(H2o2);
+    await server.register(H2o2, {once: true});
     await server.start();
     server.log(['info'], `server running: ${server.info.uri}`);
 
