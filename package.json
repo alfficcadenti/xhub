@@ -90,7 +90,7 @@
     "@homeaway/catalyst-monitoring-statsd": "^2.0.0",
     "@homeaway/catalyst-status": "^2.0.0",
     "@homeaway/edap-integrations": "^11.72.0",
-    "@homeaway/edap-wrapper": "^0.4.1",
+    "@homeaway/edap-wrapper": "^0.5.0",
     "@homeaway/environment-resolver": "^3.6.0",
     "@homeaway/eslint-config": "^6.0.0",
     "@homeaway/hapi-dev-bizops-proxy-handler": "^2.1.3",
