@@ -42,7 +42,7 @@ import LagIndicator from '../../components/LagIndicator';
 import {triggerEdapPageView} from '../../edap';
 
 
-const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
+const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, location}) => {
     const selectedBrand = selectedBrands[0];
     const {search} = useLocation();
     const {initialStart, initialEnd, initialTimeRange, initialLobs} = getQueryParams(search);
