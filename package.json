@@ -93,6 +93,7 @@
     "@homeaway/edap-wrapper": "^0.4.1",
     "@homeaway/environment-resolver": "^3.6.0",
     "@homeaway/eslint-config": "^6.0.0",
+    "@homeaway/hapi-dev-bizops-proxy-handler": "^2.1.3",
     "@homeaway/http-client": "^5.0.0",
     "@homeaway/node-stylelint": "^3.1.2",
     "@homeaway/raf-optimized": "^1.2.0",
