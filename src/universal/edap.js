@@ -14,8 +14,10 @@ const triggerEdapPageView = (pagename) => {
         window.edap.trigger('edap.flush');
     }
 
-    edapWrapper().push((edapInstance) => {
-        edapInstance.trigger('pageview', location.pathname);
+    edapWrapper().push({
+        name: 'pageview',
+        data: {eventcategory: 'component', eventaction: 'view-toggle'},
+        options: {}
     });
 };
 
