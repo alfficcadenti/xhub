@@ -907,7 +907,7 @@
         "baseEdapUrl": {
           "$filter": "env.EXPEDIA_ENVIRONMENT",
           "$default": "https://stage.vrbo.com/edap",
-          "prod": "https://www.vrbo.com/eadp"
+          "prod": "https://www.vrbo.com/edap"
         }
       }
     },
