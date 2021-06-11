@@ -10,7 +10,7 @@ function ClientApp() {
     localStorage.setItem('isBrandFilterChanged', JSON.stringify(false));
     localStorage.setItem('isQueryChanged', JSON.stringify(false));
 
-    window.analyticsdatalayer = analyticsDataLayer;
+    window.analyticsdatalayer = analyticsDataLayer({name: 'vrbo'});
     window.edapOptions = {
         skipPageview: true,
         skipFlush: true,
@@ -21,7 +21,7 @@ function ClientApp() {
     const edapVersion = edapPkg.version;
 
     // Load EDAP
-    var edapScript = document.createElement('script');
+    const edapScript = document.createElement('script');
     edapScript.setAttribute('src', `//csvcus.homeaway.com/rsrcs/edap-integrations/${edapVersion}/javascripts/edap-integrations.min.js`);
     edapScript.setAttribute('async', '');
     document.head.appendChild(edapScript);

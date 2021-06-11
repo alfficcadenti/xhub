@@ -11,7 +11,7 @@ const triggerEdapPageView = (pagename) => {
     }
 
     if (typeof window.edap.trigger === 'function') {
-        window.edap.trigger('edap.flush');
+        edapWrapper().trigger('edap.flush');
     }
 
     edapWrapper().push({

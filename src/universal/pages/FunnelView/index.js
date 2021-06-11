@@ -28,7 +28,6 @@ import {
 import {makePageViewLoBObjects, makePageViewObjects, buildPageViewsApiQueryString} from './pageViewsUtils';
 import LagIndicator from '../../components/LagIndicator';
 import './styles.less';
-
 import {triggerEdapPageView} from '../../edap';
 
 // eslint-disable-next-line complexity
