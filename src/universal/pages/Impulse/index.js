@@ -22,12 +22,17 @@ import {getValue} from '../utils';
 const startDateDefaultValue = startTime;
 const endDateDefaultValue = endTime;
 
-const activeIndex = 0;
+//const activeIndex = 0;
 const navLinks = [
     {
         id: 'bookings',
         label: 'Booking Trends',
         href: '/impulse'
+    },
+    {
+        id: 'incidents',
+        label: 'Group_By_Brands',
+        href: '/incident-trends'
     }
 ];
 
@@ -67,8 +72,13 @@ const Impulse = (props) => {
     const [selectedAnomaliesMulti, setSelectedAnomaliesMulti] = useState(['Anomaly Detected']);
     const [anomalyTableData, setAnomalyTableData] = useState([]);
 
+    const [activeIndex, setActiveIndex] = useState(0);
+
     useQueryParamChange(newBrand, props.onBrandChange);
     useSelectedBrand(newBrand, props.onBrandChange, props.prevSelectedBrand);
+    const handleNavigationClick = (e, activeLinkIndex) => {
+        setActiveIndex(activeLinkIndex);
+    };
     const [isLoading,
         res,
         error,
@@ -238,6 +248,8 @@ const Impulse = (props) => {
                     anomalies={enableAnomalies ? anomaliesData : []}
                     setAnomalyTableData={setAnomalyTableData}
                 />);
+            case 1:
+                return (<div>"Hi thi is test page</div>);
             default:
                 return (<BookingTrends
                     data={allData}
@@ -362,6 +374,7 @@ const Impulse = (props) => {
                 noMobileSelect
                 activeIndex={activeIndex}
                 links={navLinks}
+                onLinkClick={handleNavigationClick}
             />
             <LoadingContainer isLoading={isLoading} error={error} className="impulse-loading-container">
                 <div className="impulse-chart-container">
