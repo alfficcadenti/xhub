@@ -7,6 +7,8 @@ import Search from './Search';
 import {getBrand, getVisiblePages} from '../../pages/utils';
 import ALL_PAGES from '../../pages/index';
 import './styles.less';
+import {SVGIcon} from '@homeaway/react-svg';
+import {NEW_WINDOW__16} from '@homeaway/svg-defs';
 
 const DEFAULT_PAGE_INFO = {
     title: 'OpxHub',
@@ -70,8 +72,12 @@ const Header = ({selectedBrands, onBrandChange, brands}) => {
 
                     return 0;
                 })
-                .map((p) => (<li key={p.text}><Link to={`${p.link}${BRAND_QUERY}`} className="category-dropdown-item">{p.text}</Link></li>))
-            }
+                .map((p) => {
+                    if (p.external) {
+                        return <li key={p.text}><Link to={{pathname: `${p.link}`}} target="_blank" className="category-dropdown-item">{p.text} <SVGIcon usefill markup={NEW_WINDOW__16} /></Link></li>;
+                    }
+                    return <li key={p.text}><Link to={`${p.link}${BRAND_QUERY}`} className="category-dropdown-item">{p.text}</Link></li>;
+                })}
         </Dropdown>
     );
 

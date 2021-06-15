@@ -23,6 +23,7 @@ import {EXPEDIA_BRAND, HOTELS_COM_BRAND, VRBO_BRAND, EXPEDIA_PARTNER_SERVICES_BR
 
 const AAT = 'Availability & Trends';
 const CEA = 'Customer Experience Analysis';
+const MP = 'Mobile Performance';
 const PHAR = 'Platform Health & Resiliency';
 const OR = 'Outage Report';
 
@@ -141,6 +142,25 @@ export default [
         component: SalesForceCases,
         brands: [VRBO_BRAND],
         hidden: false
+    },
+    // MP Dashboards
+    {
+        category: MP,
+        id: 'performance-android-traveller',
+        link: 'https://console.firebase.google.com/project/homeaway.com:api-project-42464624060/performance/app/android:com.vrbo.android/trends',
+        text: 'Performance - Android Traveller',
+        brands: [VRBO_BRAND],
+        hidden: false,
+        external: true
+    },
+    {
+        category: MP,
+        id: 'performance-ios-traveller',
+        link: 'https://console.firebase.google.com/project/homeaway.com:api-project-42464624060/performance/app/ios:com.vrbo.traveler/trends',
+        text: 'Performance - iOS Traveller',
+        brands: [VRBO_BRAND],
+        hidden: false,
+        external: true
     },
     // PHAR Dashboards
     {

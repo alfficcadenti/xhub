@@ -57,7 +57,7 @@ function App() {
                 <Feedback />
                 <div className="main-container">
                     <Switch>
-                        {PAGES.map((p) => renderRoute(p, selectedBrands, handleBrandChange, prevSelectedBrand))}
+                        {PAGES.map((p) => p.external ? null : renderRoute(p, selectedBrands, handleBrandChange, prevSelectedBrand))}
                     </Switch>
                 </div>
             </ErrorBoundary>
