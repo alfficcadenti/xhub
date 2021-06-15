@@ -41,6 +41,7 @@ import {
 } from './userEventsAnalysisService';
 import {impulseHealth, impulseAnomalies, impulseAnomaliesGrouped} from './impulseDataService';
 import {impulsePrediction} from './anomalyDetector';
+import {deltaUser} from './deltaUserService';
 
 
 const apiRoutes = [
@@ -93,7 +94,9 @@ const apiRoutes = [
     impulseAnomalies,
     impulseAnomaliesGrouped,
     // opxhub booking anomaly detector
-    impulsePrediction
+    impulsePrediction,
+    // delta user  service
+    deltaUser
 ];
 
 export default apiRoutes;

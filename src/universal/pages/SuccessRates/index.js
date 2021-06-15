@@ -140,17 +140,20 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         setError('');
         const interval = getTimeInterval(start, end);
         const endpoint = buildSuccessRateApiQueryString({start, end, brand: funnelBrand, EPSPartner: selectedEPSPartner, interval});
-        Promise.all(METRIC_NAMES.map((metricName) => fetch(`${endpoint}&metricName=${metricName}`)))
+        Promise.all([
+            fetch(`/v1/delta-users?brand=${funnelBrand}&start_Date=${moment(start).utc().format()}&end_Date=${moment(end).utc().format()}&line_of_business=${selectedLobs.map((l) => l.value).join(',')}`),
+            ...METRIC_NAMES.map((metricName) => fetch(`${endpoint}&metricName=${metricName}`))
+        ])
             .then((responses) => Promise.all(responses.map(checkResponse)))
-            .then((fetchedSuccessRates) => {
+            .then(([deltaUserData, ...fetchedSuccessRates]) => {
                 if (!fetchedSuccessRates || !fetchedSuccessRates.length) {
                     setError('No data found. Try refreshing the page or select another brand.');
                     return;
                 }
 
                 const successRatesLOBs = getAllAvailableLOBs(AVAILABLE_LOBS);
-                const widgetObjects = makeSuccessRatesObjects(fetchedSuccessRates, start, end, pageBrand);
-                const widgetLOBObjects = makeSuccessRatesLOBObjects(fetchedSuccessRates, start, end, pageBrand, brand, successRatesLOBs);
+                const widgetObjects = makeSuccessRatesObjects(fetchedSuccessRates, start, end, pageBrand, deltaUserData);
+                const widgetLOBObjects = makeSuccessRatesLOBObjects(fetchedSuccessRates, start, end, pageBrand, brand, successRatesLOBs, deltaUserData);
                 setWidgets(widgetObjects);
                 setLoBWidgets(widgetLOBObjects);
             })
