@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {withRouter} from 'react-router-dom';
+import {useLocation, withRouter} from 'react-router-dom';
 import {useFetchBlipData} from './customHook';
 import {Navigation} from '@homeaway/react-navigation';
 import LoadingContainer from '../../components/LoadingContainer';
@@ -13,14 +13,11 @@ import {SVGIcon} from '@homeaway/react-svg';
 import {FILTER__16} from '@homeaway/svg-defs';
 import './styles.less';
 import {ALL_LOB, ALL_POS, ALL_BRANDS, ALL_DEVICES, ALL_INCIDENTS, ALL_ANOMALIES} from '../../constants';
-import {getFilters, getFiltersForMultiKeys, startTime, endTime} from './impulseHandler';
+import {getFilters, getFiltersForMultiKeys, getQueryValues, useAddToUrl} from './impulseHandler';
 import {Checkbox, Switch} from '@homeaway/react-form-components';
 import {IncidentDetails} from './tabs/BookingTrends';
 import AnomalyDetails from './tabs/BookingTrends/sections/AnomalyTable/AnomalyDetails';
 import {getValue} from '../utils';
-
-const startDateDefaultValue = startTime;
-const endDateDefaultValue = endTime;
 
 const activeIndex = 0;
 const navLinks = [
@@ -46,17 +43,29 @@ const healthUrl = 'https://opexhub-grafana.expedia.biz/d/x8JcATVMk/opex-impulse?
 
 const Impulse = (props) => {
     const newBrand = props.selectedBrands[0];
-    const [startDateTime, setStartDateTime] = useState(startDateDefaultValue);
-    const [endDateTime, setEndDateTime] = useState(endDateDefaultValue);
+    const {search} = useLocation();
+    const {
+        initialStart,
+        initialEnd,
+        initialBrands,
+        initialLobs,
+        initialEgSiteUrls,
+        initialDevices,
+        initialIncidents,
+        initialAnomalies
+    } = getQueryValues(search);
+
+    const [startDateTime, setStartDateTime] = useState(initialStart);
+    const [endDateTime, setEndDateTime] = useState(initialEnd);
     const [isApplyClicked, setIsApplyClicked] = useState(false);
     const [allData, setFilterAllData] = useState([]);
     const [showMoreFilters, setShowMoreFilters] = useState(false);
     const [annotationsMulti, setAnnotationsMulti] = useState([]);
-    const [selectedSiteURLMulti, setSelectedSiteURLMulti] = useState([]);
-    const [selectedLobMulti, setSelectedLobMulti] = useState([]);
-    const [selectedBrandMulti, setSelectedBrandMulti] = useState([]);
-    const [selectedDeviceTypeMulti, setSelectedDeviceTypeMulti] = useState([]);
-    const [selectedIncidentMulti, setSelectedIncidentMulti] = useState([]);
+    const [selectedSiteURLMulti, setSelectedSiteURLMulti] = useState(initialEgSiteUrls);
+    const [selectedLobMulti, setSelectedLobMulti] = useState(initialLobs);
+    const [selectedBrandMulti, setSelectedBrandMulti] = useState(initialBrands);
+    const [selectedDeviceTypeMulti, setSelectedDeviceTypeMulti] = useState(initialDevices);
+    const [selectedIncidentMulti, setSelectedIncidentMulti] = useState(initialIncidents);
     const [enableIncidents, setEnableIncidents] = useState(true);
     const [chartSliced, setChartSliced] = useState(false);
     const [isAutoRefresh, setAutoRefresh] = useState(true);
@@ -64,7 +73,7 @@ const Impulse = (props) => {
     const [tableData, setTableData] = useState([]);
     const [anomaliesData, setAnomaliesData] = useState([]);
     const [enableAnomalies, setEnableAnomalies] = useState(true);
-    const [selectedAnomaliesMulti, setSelectedAnomaliesMulti] = useState(['Anomaly Detected']);
+    const [selectedAnomaliesMulti, setSelectedAnomaliesMulti] = useState(initialAnomalies);
     const [anomalyTableData, setAnomalyTableData] = useState([]);
 
     useQueryParamChange(newBrand, props.onBrandChange);
@@ -100,6 +109,9 @@ const Impulse = (props) => {
         chartSliced,
         setChartSliced,
         isAutoRefresh);
+
+    useAddToUrl(newBrand, startDateTime, endDateTime, selectedLobMulti, selectedBrandMulti, selectedSiteURLMulti, selectedDeviceTypeMulti, selectedIncidentMulti, selectedAnomaliesMulti);
+
     const modifyFilters = (newValuesOnChange) => {
         setSelectedLobMulti([]);
         setSelectedDeviceTypeMulti([]);

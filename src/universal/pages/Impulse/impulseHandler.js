@@ -5,9 +5,13 @@ import {
     SUPPRESSED_LOBS,
     ANOMALY_DETECTED_COLOR,
     ANOMALY_RECOVERED_COLOR,
-    UPSTREAM_UNHEALTHY_COLOR
+    UPSTREAM_UNHEALTHY_COLOR, LOB_LIST, EG_BRAND
 } from '../../constants';
 import moment from 'moment';
+import qs from 'query-string';
+import {validDateRange} from '../utils';
+import {useHistory, useLocation} from 'react-router-dom';
+import {useEffect} from 'react';
 
 const THREE_WEEK_AVG_COUNT = '3 Week Avg Counts';
 const BOOKING_COUNT = 'Booking Counts';
@@ -94,3 +98,59 @@ export const simplifyPredictionData = (predictionData) => (
 );
 export const startTime = () => moment().utc().subtract(3, 'days').startOf('minute');
 export const endTime = () => moment().utc().endOf('minute');
+
+// eslint-disable-next-line complexity
+export const getQueryValues = (search) => {
+    const {from, to, brands, lobs, siteUrls, devices, incidents, anomalies} = qs.parse(search);
+    const isValidDateRange = validDateRange(from, to);
+    console.log(`INITIAL CALL FROM URL: \n
+                    Start: ${isValidDateRange ? moment(from) : startTime} \n
+                    End: ${isValidDateRange ? moment(to) : endTime} \n
+                    Brands: ${brands ? brands.split(',') : []} \n
+                    LOBs: ${lobs ? lobs.split(',') : []} \n
+                    POS: ${siteUrls ? siteUrls.split(',') : []} \n
+                    Devices: ${devices ? devices.split(',') : []} \n
+                    Incidents: ${incidents ? incidents.split(',') : []} \n
+                    Anomalies: ${anomalies ? anomalies.split(',') : ['Anomaly Detected']} \n`);
+    return {
+        initialStart: isValidDateRange ? moment(from) : startTime,
+        initialEnd: isValidDateRange ? moment(to) : endTime,
+        initialBrands: brands ? brands.split(',') : [],
+        initialLobs: lobs ? lobs.split(',') : [],
+        initialEgSiteUrls: siteUrls ? siteUrls.split(',') : [],
+        initialDevices: devices ? devices.split(',') : [],
+        initialIncidents: incidents ? incidents.split(',') : [],
+        initialAnomalies: anomalies ? anomalies.split(',') : ['Anomaly Detected']
+        // initialInterval: interval ? interval : getDefaultInterval()
+    };
+};
+
+export const useAddToUrl = (
+    selectedBrands,
+    start,
+    end,
+    lobs,
+    brands,
+    egSiteUrls,
+    devices,
+    incidents,
+    anomalies
+) => {
+    const history = useHistory();
+    const {pathname} = useLocation();
+
+    // eslint-disable-next-line complexity
+    useEffect(() => {
+        history.push(`${`${pathname}?selectedBrand=${selectedBrands}`
+                + `&from=${start.format()}`
+                + `&to=${end.format()}`
+        }${brands.length === 0 ? '' : `&brands=${brands.join(',')}`
+        }${lobs.length === 0 ? '' : `&lobs=${lobs.join(',')}`
+        }${egSiteUrls.length === 0 ? '' : `&siteUrls=${egSiteUrls.join(',')}`
+        }${devices.length === 0 ? '' : `&devices=${devices.join(',')}`
+        }${incidents.length === 0 ? '' : `&incidents=${incidents.join(',')}`
+        }${anomalies.length === 0 ? '' : `&anomalies=${anomalies.join(',')}`}`
+        // }${interval ? getDefaultInterval() : `&interval=${interval}`}`
+        );
+    }, [selectedBrands, start, end, lobs, brands, egSiteUrls, devices, incidents, anomalies, history, pathname]);
+};
