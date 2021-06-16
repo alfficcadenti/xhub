@@ -18,6 +18,7 @@ import OperationalIos from './OperationalIos';
 import DataCenterTraffic from './DataCenterTraffic';
 import PortfolioScoreCard from './PortfolioScoreCard';
 import SalesForceCases from './SalesForceCases';
+import GoogleCrUx from './GoogleCrUx';
 import {EXPEDIA_BRAND, HOTELS_COM_BRAND, VRBO_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../constants';
 
 
@@ -26,6 +27,7 @@ const CEA = 'Customer Experience Analysis';
 const MP = 'Mobile Performance';
 const PHAR = 'Platform Health & Resiliency';
 const OR = 'Outage Report';
+const SP = 'Site Performance';
 
 export default [
     {
@@ -213,5 +215,15 @@ export default [
         link: '/outage-report',
         text: 'Outage Report',
         component: OutageReport
-    }
+    },
+    // SP Dashboards
+    {
+        category: SP,
+        id: 'google-crux',
+        link: '/google-crux',
+        text: 'Google CrUx (RUM)',
+        component: GoogleCrUx,
+        brands: [VRBO_BRAND],
+        hidden: false
+    },
 ];

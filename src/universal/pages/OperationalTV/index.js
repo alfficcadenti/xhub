@@ -27,10 +27,10 @@ const OperationalTV = ({selectedBrands}) => {
                 <div className="operational-tv">
                     <Iframe
                         url="https://opexhub-grafana.expedia.biz/d/dlJmetPMk/cortina-tv?orgId=1&refresh=30s&var-LOCALE=All&var-MARKETINGCHANNEL=All&var-PLATFORM=All&var-POS=All&var-IsKES=All"
-                        key={'iframe'}
+                        key="iframe"
                         width="1600px"
                         height="950px"
-                        id={'operational-tv'}
+                        id="operational-tv"
                         className="iframe"
                         position="relative"
                     />
