@@ -26,7 +26,7 @@ const SalesForceCases = ({selectedBrands}) => {
             <LoadingContainer isLoading={false} error={error}>
                 <div className="sales-force-cases">
                     <Iframe
-                        url="http://opex-grafana.homeawayprod.com/d/2Y3eD-liz/sales-force-new-cases?orgId=2&refresh=5s&from=now-1d&to=now&theme=light"
+                        url="https://opexhub-grafana.expedia.biz/d/olJ0j5g7z/sales-force-cases?orgId=1"
                         key="iframe"
                         width="1600px"
                         height="950px"
