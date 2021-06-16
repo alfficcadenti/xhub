@@ -156,7 +156,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 return {
                     time: moment.utc(item.time).valueOf(),
                     [BOOKING_COUNT]: item.count,
-                    [THREE_WEEK_AVG_COUNT]: item.prediction.weightedCount,
+                    [THREE_WEEK_AVG_COUNT]: item.prediction.weighted_count,
                 };
             });
             return chartData;
