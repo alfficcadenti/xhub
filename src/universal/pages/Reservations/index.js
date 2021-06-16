@@ -27,10 +27,10 @@ const Reservations = ({selectedBrands}) => {
                 <div className="reservations">
                     <Iframe
                         url="https://opexhub-grafana.expedia.biz/d/5pQ0gFPMk/realtime-metrics-v2? orgId=1&var-LOCALE=All&var-MARKETINGCHANNEL=All&var-PLATFORM=All&var-POS=All&var-IsKES=All"
-                        key={'iframe'}
+                        key="iframe"
                         width="1600px"
                         height="950px"
-                        id={'reservations'}
+                        id="reservations"
                         className="iframe"
                         position="relative"
                     />
