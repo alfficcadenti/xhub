@@ -59,7 +59,7 @@ const Impulse = (props) => {
     const [endDateTime, setEndDateTime] = useState(initialEnd);
     const [isApplyClicked, setIsApplyClicked] = useState(false);
     const [allData, setFilterAllData] = useState([]);
-    const [showMoreFilters, setShowMoreFilters] = useState(false);
+    const [showMoreFilters, setShowMoreFilters] = useState(initialDevices.length > 0);
     const [annotationsMulti, setAnnotationsMulti] = useState([]);
     const [selectedSiteURLMulti, setSelectedSiteURLMulti] = useState(initialEgSiteUrls);
     const [selectedLobMulti, setSelectedLobMulti] = useState(initialLobs);
@@ -109,8 +109,6 @@ const Impulse = (props) => {
         chartSliced,
         setChartSliced,
         isAutoRefresh);
-
-    useAddToUrl(newBrand, startDateTime, endDateTime, selectedLobMulti, selectedBrandMulti, selectedSiteURLMulti, selectedDeviceTypeMulti, selectedIncidentMulti, selectedAnomaliesMulti);
 
     const modifyFilters = (newValuesOnChange) => {
         setSelectedLobMulti([]);
@@ -236,6 +234,9 @@ const Impulse = (props) => {
         setSelectedAnomaliesMulti([]);
         setAnomaliesData(anomalies);
     };
+
+    useAddToUrl(newBrand, startDateTime, endDateTime, selectedLobMulti, selectedBrandMulti, selectedSiteURLMulti, selectedDeviceTypeMulti, selectedIncidentMulti, selectedAnomaliesMulti);
+
     const renderTabs = () => {
         switch (activeIndex) {
             case 0:

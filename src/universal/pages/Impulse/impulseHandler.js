@@ -5,13 +5,14 @@ import {
     SUPPRESSED_LOBS,
     ANOMALY_DETECTED_COLOR,
     ANOMALY_RECOVERED_COLOR,
-    UPSTREAM_UNHEALTHY_COLOR, LOB_LIST, EG_BRAND
+    UPSTREAM_UNHEALTHY_COLOR
 } from '../../constants';
 import moment from 'moment';
 import qs from 'query-string';
 import {validDateRange} from '../utils';
 import {useHistory, useLocation} from 'react-router-dom';
 import {useEffect} from 'react';
+import {ANOMALY_SELECTOR, BRANDS, DEVICES, EG_SITE_URLS, INCIDENT_SELECTOR, LOBS} from './constants';
 
 const THREE_WEEK_AVG_COUNT = '3 Week Avg Counts';
 const BOOKING_COUNT = 'Booking Counts';
@@ -103,25 +104,16 @@ export const endTime = () => moment().utc().endOf('minute');
 export const getQueryValues = (search) => {
     const {from, to, brands, lobs, siteUrls, devices, incidents, anomalies} = qs.parse(search);
     const isValidDateRange = validDateRange(from, to);
-    console.log(`INITIAL CALL FROM URL: \n
-                    Start: ${isValidDateRange ? moment(from) : startTime} \n
-                    End: ${isValidDateRange ? moment(to) : endTime} \n
-                    Brands: ${brands ? brands.split(',') : []} \n
-                    LOBs: ${lobs ? lobs.split(',') : []} \n
-                    POS: ${siteUrls ? siteUrls.split(',') : []} \n
-                    Devices: ${devices ? devices.split(',') : []} \n
-                    Incidents: ${incidents ? incidents.split(',') : []} \n
-                    Anomalies: ${anomalies ? anomalies.split(',') : ['Anomaly Detected']} \n`);
+
     return {
-        initialStart: isValidDateRange ? moment(from) : startTime,
-        initialEnd: isValidDateRange ? moment(to) : endTime,
-        initialBrands: brands ? brands.split(',') : [],
-        initialLobs: lobs ? lobs.split(',') : [],
-        initialEgSiteUrls: siteUrls ? siteUrls.split(',') : [],
-        initialDevices: devices ? devices.split(',') : [],
-        initialIncidents: incidents ? incidents.split(',') : [],
-        initialAnomalies: anomalies ? anomalies.split(',') : ['Anomaly Detected']
-        // initialInterval: interval ? interval : getDefaultInterval()
+        initialStart: isValidDateRange ? moment(from).utc() : startTime,
+        initialEnd: isValidDateRange ? moment(to).utc() : endTime,
+        initialBrands: brands ? brands.split(',').filter((item) => BRANDS.includes(item)) : [],
+        initialLobs: lobs ? lobs.split(',').filter((item) => LOBS.includes(item)) : [],
+        initialEgSiteUrls: siteUrls ? siteUrls.split(',').filter((item) => EG_SITE_URLS.includes(item)) : [],
+        initialDevices: devices ? devices.split(',').filter((item) => DEVICES.includes(item)) : [],
+        initialIncidents: incidents ? incidents.split(',').filter((item) => INCIDENT_SELECTOR.includes(item)) : [],
+        initialAnomalies: anomalies ? anomalies.split(',').filter((item) => ANOMALY_SELECTOR.includes(item)) : ['Anomaly Detected']
     };
 };
 
@@ -150,7 +142,6 @@ export const useAddToUrl = (
         }${devices.length === 0 ? '' : `&devices=${devices.join(',')}`
         }${incidents.length === 0 ? '' : `&incidents=${incidents.join(',')}`
         }${anomalies.length === 0 ? '' : `&anomalies=${anomalies.join(',')}`}`
-        // }${interval ? getDefaultInterval() : `&interval=${interval}`}`
         );
     }, [selectedBrands, start, end, lobs, brands, egSiteUrls, devices, incidents, anomalies, history, pathname]);
 };
