@@ -27,7 +27,7 @@ const CheckoutSuccessRate = ({selectedBrands}) => {
                 <div className="checkout-success-rate">
                     <Iframe
                         url="https://opexhub-grafana.expedia.biz/d/vv4YryEGz/csr?orgId=1&refresh=30s&var-LOCALE=All&var-MARKETINGCHANNEL=All&var-PLATFORM=All&var-POS=All&var-IsKES=All"
-                        key={'iframe'}
+                        key="iframe"
                         width="1600px"
                         height="950px"
                         id="checkout-success-rate"

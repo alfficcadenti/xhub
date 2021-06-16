@@ -1,4 +1,5 @@
 import moment from 'moment';
+import edapWrapper from '@homeaway/edap-wrapper';
 
 const triggerEdapPageView = (pagename) => {
     if (typeof window === 'undefined') {
@@ -10,11 +11,13 @@ const triggerEdapPageView = (pagename) => {
     }
 
     if (typeof window.edap.trigger === 'function') {
-        window.edap.trigger('edap.flush');
+        edapWrapper().trigger('edap.flush');
     }
 
-    window.edap.push((edapInstance) => {
-        edapInstance.trigger('pageview');
+    edapWrapper().push({
+        name: 'pageview',
+        data: {eventcategory: 'component', eventaction: 'view-toggle'},
+        options: {}
     });
 };
 

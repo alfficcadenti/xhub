@@ -1,12 +1,9 @@
 const environment = require('@homeaway/environment-resolver');
-const pkg = require('../../../package.json');
-
-const appName = pkg.name.replace('@homeaway/', '');
 
 /**
  * Create the analytics data layer object
  */
-function analyticsDataLayer({site}) {
+function analyticsDataLayer(site) {
     let environmentName = environment.getDeployedEnv();
 
     // ADL is expecting "dev" for development
@@ -14,20 +11,20 @@ function analyticsDataLayer({site}) {
         environmentName = 'dev';
     }
 
-    return JSON.stringify({
-        appversion: process.env.MPAAS_APPLICATION_VERSION,
-        publicuuid: '-1',
-        monikerbrand: site.name,
+    return {
         analyticsbrand: site.name,
-        appname: appName,
         appenvironment: environmentName,
-        pagetype: 'internal tools',
-        pagename: '/',
+        appname: 'opxhub-ui',
+        appversion: process.env.MPAAS_APPLICATION_VERSION || '1',
+        monikerbrand: site.name,
+        mpaasregion: process.env.MPAAS_REGION || '-1',
         pageflow: '-1',
-        visitortype: 'internal',
+        pagename: '/',
+        pagetype: 'internal tools',
+        publicuuid: '-1',
         sensitive: 'false',
-        mpaasregion: process.env.MPAAS_REGION || '-1'
-    });
+        visitortype: 'internal'
+    };
 }
 
 module.exports = analyticsDataLayer;

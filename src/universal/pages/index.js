@@ -18,13 +18,16 @@ import OperationalIos from './OperationalIos';
 import DataCenterTraffic from './DataCenterTraffic';
 import PortfolioScoreCard from './PortfolioScoreCard';
 import SalesForceCases from './SalesForceCases';
+import GoogleCrUx from './GoogleCrUx';
 import {EXPEDIA_BRAND, HOTELS_COM_BRAND, VRBO_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../constants';
 
 
 const AAT = 'Availability & Trends';
 const CEA = 'Customer Experience Analysis';
+const MP = 'Mobile Performance';
 const PHAR = 'Platform Health & Resiliency';
 const OR = 'Outage Report';
+const SP = 'Site Performance';
 
 export default [
     {
@@ -142,6 +145,25 @@ export default [
         brands: [VRBO_BRAND],
         hidden: false
     },
+    // MP Dashboards
+    {
+        category: MP,
+        id: 'performance-android-traveller',
+        link: 'https://console.firebase.google.com/project/homeaway.com:api-project-42464624060/performance/app/android:com.vrbo.android/trends',
+        text: 'Performance - Android Traveller',
+        brands: [VRBO_BRAND],
+        hidden: false,
+        external: true
+    },
+    {
+        category: MP,
+        id: 'performance-ios-traveller',
+        link: 'https://console.firebase.google.com/project/homeaway.com:api-project-42464624060/performance/app/ios:com.vrbo.traveler/trends',
+        text: 'Performance - iOS Traveller',
+        brands: [VRBO_BRAND],
+        hidden: false,
+        external: true
+    },
     // PHAR Dashboards
     {
         category: PHAR,
@@ -193,5 +215,15 @@ export default [
         link: '/outage-report',
         text: 'Outage Report',
         component: OutageReport
-    }
+    },
+    // SP Dashboards
+    {
+        category: SP,
+        id: 'google-crux',
+        link: '/google-crux',
+        text: 'Google CrUx (RUM)',
+        component: GoogleCrUx,
+        brands: [VRBO_BRAND],
+        hidden: false
+    },
 ];

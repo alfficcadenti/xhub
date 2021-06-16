@@ -39,9 +39,10 @@ import Annotations from '../../components/Annotations/Annotations';
 import DateFiltersWrapper from '../../components/DateFiltersWrapper/DateFiltersWrapper';
 import ResetButton from '../../components/ResetButton';
 import LagIndicator from '../../components/LagIndicator';
+import {triggerEdapPageView} from '../../edap';
 
 
-const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
+const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, location}) => {
     const selectedBrand = selectedBrands[0];
     const {search} = useLocation();
     const {initialStart, initialEnd, initialTimeRange, initialLobs} = getQueryParams(search);
@@ -164,6 +165,10 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             })
             .finally(() => setIsLoading(false));
     };
+
+    useEffect(() => {
+        triggerEdapPageView(location.pathname);
+    }, []);
 
     useEffect(() => {
         if ([EG_BRAND, EGENCIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND].includes(selectedBrand)) {

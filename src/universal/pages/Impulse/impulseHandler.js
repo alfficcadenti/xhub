@@ -87,7 +87,7 @@ export const simplifyBookingsData = (bookingsData) => (
     bookingsData.map(({time, count, prediction}) => ({
         time: moment.utc(time).valueOf(),
         [BOOKING_COUNT]: count,
-        [THREE_WEEK_AVG_COUNT]: prediction.weightedCount
+        [THREE_WEEK_AVG_COUNT]: prediction.weighted_count
     }))
 );
 
