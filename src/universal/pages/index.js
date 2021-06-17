@@ -19,6 +19,7 @@ import DataCenterTraffic from './DataCenterTraffic';
 import PortfolioScoreCard from './PortfolioScoreCard';
 import SalesForceCases from './SalesForceCases';
 import GoogleCrUx from './GoogleCrUx';
+import Bots from './Bots';
 import {EXPEDIA_BRAND, HOTELS_COM_BRAND, VRBO_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../constants';
 
 
@@ -47,6 +48,15 @@ export default [
         hidden: true
     },
     // AAT Dashboards
+    {
+        category: AAT,
+        id: 'bots',
+        link: '/bots',
+        text: 'Bots',
+        component: Bots,
+        brands: [HOTELS_COM_BRAND],
+        hidden: false
+    },
     {
         category: AAT,
         id: 'checkout-success-rate',
