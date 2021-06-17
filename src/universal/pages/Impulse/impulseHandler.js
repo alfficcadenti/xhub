@@ -8,6 +8,11 @@ import {
     UPSTREAM_UNHEALTHY_COLOR
 } from '../../constants';
 import moment from 'moment';
+import qs from 'query-string';
+import {validDateRange} from '../utils';
+import {useHistory, useLocation} from 'react-router-dom';
+import {useEffect} from 'react';
+import {ANOMALY_SELECTOR, BRANDS, DEVICES, EG_SITE_URLS, INCIDENT_SELECTOR, LOBS} from './constants';
 
 const THREE_WEEK_AVG_COUNT = '3 Week Avg Counts';
 const BOOKING_COUNT = 'Booking Counts';
@@ -94,3 +99,49 @@ export const simplifyPredictionData = (predictionData) => (
 );
 export const startTime = () => moment().utc().subtract(3, 'days').startOf('minute');
 export const endTime = () => moment().utc().endOf('minute');
+
+// eslint-disable-next-line complexity
+export const getQueryValues = (search) => {
+    const {from, to, brands, lobs, siteUrls, devices, incidents, anomalies} = qs.parse(search);
+    const isValidDateRange = validDateRange(from, to);
+
+    return {
+        initialStart: isValidDateRange ? moment(from).utc() : startTime,
+        initialEnd: isValidDateRange ? moment(to).utc() : endTime,
+        initialBrands: brands ? brands.split(',').filter((item) => BRANDS.includes(item)) : [],
+        initialLobs: lobs ? lobs.split(',').filter((item) => LOBS.includes(item)) : [],
+        initialEgSiteUrls: siteUrls ? siteUrls.split(',').filter((item) => EG_SITE_URLS.includes(item)) : [],
+        initialDevices: devices ? devices.split(',').filter((item) => DEVICES.includes(item)) : [],
+        initialIncidents: incidents ? incidents.split(',').filter((item) => INCIDENT_SELECTOR.includes(item)) : [],
+        initialAnomalies: anomalies ? anomalies.split(',').filter((item) => ANOMALY_SELECTOR.includes(item)) : ['Anomaly Detected']
+    };
+};
+
+export const useAddToUrl = (
+    selectedBrands,
+    start,
+    end,
+    lobs,
+    brands,
+    egSiteUrls,
+    devices,
+    incidents,
+    anomalies
+) => {
+    const history = useHistory();
+    const {pathname} = useLocation();
+
+    // eslint-disable-next-line complexity
+    useEffect(() => {
+        history.push(`${`${pathname}?selectedBrand=${selectedBrands}`
+                + `&from=${start.format()}`
+                + `&to=${end.format()}`
+        }${brands.length === 0 ? '' : `&brands=${brands.join(',')}`
+        }${lobs.length === 0 ? '' : `&lobs=${lobs.join(',')}`
+        }${egSiteUrls.length === 0 ? '' : `&siteUrls=${egSiteUrls.join(',')}`
+        }${devices.length === 0 ? '' : `&devices=${devices.join(',')}`
+        }${incidents.length === 0 ? '' : `&incidents=${incidents.join(',')}`
+        }${anomalies.length === 0 ? '' : `&anomalies=${anomalies.join(',')}`}`
+        );
+    }, [selectedBrands, start, end, lobs, brands, egSiteUrls, devices, incidents, anomalies, history, pathname]);
+};
