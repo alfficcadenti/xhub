@@ -207,5 +207,5 @@ export const ANOMALY_SELECTOR = [
     'Upstream Unhealthy'
 ];
 
-export const BRANDS_CHART = ['Vrbo', 'Egencia', 'Travelocity', 'CarRentals.com', 'MrJet', 'Wotif', 'ebookers', 'Expedia Partner Solutions', 'Orbitz', 'lastminute', 'Hotwire', 'CheapTickets', 'Hotels.com', 'Brand Expedia'];
-export const CHART_COLORS = ['#3366cc', '#dc3912', '#CD5C5C', '#40E0D0', '#000000', '#0099c6', '#BC8F8F', '#DAA520', '#FF69B4', '#C0C0C0', '#994499', '#778899', '#1E90FF', '#3CB371', '#6633cc', '#e67300', '#8b0707', '#651067', '#329262', '#5574a6', '#3b3eac', '#b77322', '#16d620', '#b91383', '#f4359e', '#9c5935', '#a9c413', '#2a778d', '#668d1c', '#bea413', '#0c5922', '#743411'];
+export const BRANDS_CHART = ['Brand Expedia', 'Hotels.com', 'Expedia Partner Solutions', 'Travelocity', 'Orbitz', 'Wotif', 'ebookers', 'CarRentals.com', 'MrJet', 'lastminute', 'Hotwire', 'CheapTickets', 'Egencia', 'Vrbo'];
+export const CHART_COLORS = ['#3CB371', '#1E90FF', '#DAA520', '#CD5C5C', '#FF69B4', '#0099c6', '#BC8F8F', '#40E0D0', '#000000', '#C0C0C0', '#994499', '#778899', '#dc3912', '#3366cc', '#6633cc', '#e67300', '#8b0707', '#651067', '#329262', '#5574a6', '#3b3eac', '#b77322', '#16d620', '#b91383', '#f4359e', '#9c5935', '#a9c413', '#2a778d', '#668d1c', '#bea413', '#0c5922', '#743411'];

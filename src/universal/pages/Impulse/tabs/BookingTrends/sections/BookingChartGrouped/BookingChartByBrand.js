@@ -11,64 +11,18 @@ import {
     ComposedChart, ReferenceArea, Area, ReferenceLine, AreaChart
 } from 'recharts';
 import moment from 'moment';
-/* const data = [
-    {
-        'name': '06/14 19:30',
-        'Brand Expedia': 4000,
-        'Hotels.com': 2400,
-        'CarRentals.com': 2400
-    },
-    {
-        'name': '06/15 01:10',
-        'Brand Expedia': 3000,
-        'Hotels.com': 1398,
-        'CarRentals.com': 2210
-    },
-    {
-        'name': '06/15 06:50',
-        'Brand Expedia': 2000,
-        'Hotels.com': 9800,
-        'CarRentals.com': 2290
-    },
-    {
-        'name': '06/15 12:30',
-        'Brand Expedia': 2780,
-        'Hotels.com': 3908,
-        'CarRentals.com': 7000,
-    },
-    {
-        'name': '06/15 18:10',
-        'Brand Expedia': 1890,
-        'Hotels.com': 7800,
-        'CarRentals.com': 2181
-    },
-    {
-        'name': '06/15 23:50',
-        'Brand Expedia': 2390,
-        'Hotels.com': 3800,
-        'CarRentals.com': 2500
-    },
-    {
-        'name': '06/16 05:30',
-        'Brand Expedia': 3490,
-        'Hotels.com': 6300,
-        'CarRentals.com': 2100
-    }
-];*/
 
 import {BRANDS_CHART, CHART_COLORS} from '../../../../constants';
 import {endTime, getColor, startTime} from '../../../../impulseHandler';
 import AnomalyLabel from '../BookingChart/AnomalyLabel';
 
-const GroupedBookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSliced, annotations, daysDifference, setDaysDifference, setTableData, anomalies, setAnomalyTableData}) => {
+const BookingChartByBrand = ({data = [], setStartDateTime, setEndDateTime, setChartSliced, annotations, daysDifference, setDaysDifference, setTableData, anomalies, setAnomalyTableData}) => {
     let [left, setLeft] = useState('dataMin');
     let [right, setRight] = useState('dataMax');
     let [refAreaLeft, setRefAreaLeft] = useState('');
     let [refAreaRight, setRefAreaRight] = useState('');
 
     const [hiddenKeys, setHiddenKeys] = useState([]);
-    // console.log(data);
-    console.log('check');
 
     const formatDateTimeLocal = (date) => moment(date).format('MM/DD HH:mm');
 
@@ -92,6 +46,7 @@ const GroupedBookingChart = ({data = [], setStartDateTime, setEndDateTime, setCh
         return data.length && data[0].hasOwnProperty(name) ? <Area type="monotone" dataKey={name} yAxisId={1} stroke={CHART_COLORS[idx]} fillOpacity={1} fill={fill} hide = {hiddenKeys.includes(name)}/>
             : '';
     };
+
     const resetGraphToDefault = () => {
         setStartDateTime(startTime());
         setEndDateTime(endTime());
@@ -174,7 +129,7 @@ const GroupedBookingChart = ({data = [], setStartDateTime, setEndDateTime, setCh
                     <XAxis allowDataOverflow type="number" scale="time" dataKey="time" tick={{fontSize: 10}} tickFormatter={formatDateTimeLocal} domain={[left, right]}/>
                     <YAxis allowDataOverflow yAxisId={1} tick={{fontSize: 10}} type="number"/>
                     <CartesianGrid strokeDasharray="3 3"/>
-                    <Tooltip content={CustomTooltip}/>
+                    <Tooltip offset={15} content={CustomTooltip}/>
 
                     {
                         anomalies && anomalies.map((anomaly) => (
@@ -200,4 +155,4 @@ const GroupedBookingChart = ({data = [], setStartDateTime, setEndDateTime, setCh
     );
 };
 
-export default React.memo(GroupedBookingChart);
+export default React.memo(BookingChartByBrand);

@@ -49,6 +49,13 @@ module.exports.impulseBookingDataService = {
     handler: getHandler(getHandlerParams('bookingsImpulseCount'))
 };
 
+module.exports.impulseBookingDataGrouped = {
+    method: 'GET',
+    path: '/v1/bookings/count/group',
+    config: getConfig('impulse-bookings-data-grouped-api-v1-get'),
+    handler: getHandler(getHandlerParams('bookingsImpulseCountGrouped'))
+};
+
 module.exports.impulseBrandsService = {
     method: 'GET',
     path: '/v1/bookings/filters/brands',
