@@ -106,7 +106,7 @@ const BookingChartByBrand = ({data = [], setStartDateTime, setEndDateTime, setCh
                     type="button"
                     className={'btn btn-default reset-btn'}
                     disabled={daysDifference === 3}
-                    onClick={() => resetGraphToDefault}
+                    onClick={resetGraphToDefault}
                 >
                     {'Reset Graph'}
                 </button>
