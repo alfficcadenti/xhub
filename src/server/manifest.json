@@ -900,6 +900,17 @@
         "pathTemplate": "./src/i18n/app_{locale}.properties"
       }
     },
+    // Plugin for EDAP/Bizops routing
+    "hapi-dev-bizops-proxy-handler": {
+      "plugin": "require:@homeaway/hapi-dev-bizops-proxy-handler",
+      "options": {
+        "baseEdapUrl": {
+          "$filter": "env.EXPEDIA_ENVIRONMENT",
+          "$default": "https://stage.vrbo.com/edap",
+          "prod": "https://www.vrbo.com/edap"
+        }
+      }
+    },
     // plugin for providing endpoint for healthchecks, etc.
     "catalyst-status": {
       "plugin": "require:@homeaway/catalyst-status",
@@ -1038,6 +1049,11 @@
           },
           {
             "route": "require:./routes/pages/portfolio-score-card",
+            "component": "require:../universal/components/App/ServerApp.js",
+            "template": "templates/welcome.hbs"
+          },
+          {
+            "route": "require:./routes/pages/google-crux",
             "component": "require:../universal/components/App/ServerApp.js",
             "template": "templates/welcome.hbs"
           }
