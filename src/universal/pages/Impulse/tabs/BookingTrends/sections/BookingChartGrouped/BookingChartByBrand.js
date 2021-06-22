@@ -128,7 +128,6 @@ const BookingChartByBrand = ({data = [], setStartDateTime, setEndDateTime, setCh
                     <YAxis allowDataOverflow yAxisId={1} tick={{fontSize: 10}} type="number"/>
                     <CartesianGrid strokeDasharray="3 3"/>
                     <Tooltip offset={15} content={CustomTooltip}/>
-
                     {
                         anomalies && anomalies.map((anomaly) => (
                             <ReferenceLine

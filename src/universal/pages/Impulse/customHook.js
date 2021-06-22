@@ -175,33 +175,32 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             return groupedChartData;
         });
 
-    const
-        fetchPredictions = (start = startDateTime, end = endDateTime) => {
-            Promise.all([
-                fetch(`/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`).then(checkResponse),
-                fetch(`/v1/impulse/prediction${getQueryStringPrediction(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`).then(checkResponse)
-            ]).then(([bookingsData, predictionData]) => {
-                const simplifiedBookingsData = simplifyBookingsData(bookingsData);
-                const simplifiedPredictionData = simplifyPredictionData(predictionData);
+    const fetchPredictions = (start = startDateTime, end = endDateTime) => {
+        Promise.all([
+            fetch(`/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`).then(checkResponse),
+            fetch(`/v1/impulse/prediction${getQueryStringPrediction(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`).then(checkResponse)
+        ]).then(([bookingsData, predictionData]) => {
+            const simplifiedBookingsData = simplifyBookingsData(bookingsData);
+            const simplifiedPredictionData = simplifyPredictionData(predictionData);
 
-                let finalChartData = simplifiedBookingsData;
-                if (simplifiedBookingsData.length === simplifiedPredictionData.length) {
-                    finalChartData = finalChartData.map((item, i) => {
-                        if (simplifiedBookingsData.length && simplifiedPredictionData.length && (simplifiedBookingsData[i].time === simplifiedPredictionData[i].time)) {
-                            return {
-                                ...item,
-                                [PREDICTION_COUNT]: Math.round(simplifiedPredictionData[i].count)
-                            };
-                        }
-                        return item;
-                    });
-                }
-                setRes(finalChartData);
-            })
-                .catch((err) => {
-                    console.error(err);
+            let finalChartData = simplifiedBookingsData;
+            if (simplifiedBookingsData.length === simplifiedPredictionData.length) {
+                finalChartData = finalChartData.map((item, i) => {
+                    if (simplifiedBookingsData.length && simplifiedPredictionData.length && (simplifiedBookingsData[i].time === simplifiedPredictionData[i].time)) {
+                        return {
+                            ...item,
+                            [PREDICTION_COUNT]: Math.round(simplifiedPredictionData[i].count)
+                        };
+                    }
+                    return item;
                 });
-        };
+            }
+            setRes(finalChartData);
+        })
+            .catch((err) => {
+                console.error(err);
+            });
+    };
 
     const fetchHealth = () => {
         fetch('/v1/impulse/health')

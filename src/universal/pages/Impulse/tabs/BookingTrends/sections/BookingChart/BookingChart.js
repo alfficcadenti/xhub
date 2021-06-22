@@ -25,8 +25,6 @@ import {
     UPSTREAM_UNHEALTHY_COLOR
 } from '../../../../../../constants';
 
-
-
 const BOOKING_CHART_COLOR = '#336BFF';
 const THREE_WEEK_AVG_COUNT_COLOR = '#34495E';
 const THREE_WEEK_AVG_COUNT = '3 Week Avg Counts';
