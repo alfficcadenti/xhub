@@ -1,10 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {withRouter} from 'react-router-dom';
-import Iframe from 'react-iframe';
 import './styles.less';
-import LoadingContainer from '../../components/LoadingContainer';
 import {EG_BRAND, EXPEDIA_BRAND, EGENCIA_BRAND, OPXHUB_SUPPORT_CHANNEL, EXPEDIA_PARTNER_SERVICES_BRAND, VRBO_BRAND} from '../../constants';
-
+import GrafanaDashboard from '../../components/GrafanaDashboard';
 
 const Bots = ({selectedBrands}) => {
     const selectedBrand = selectedBrands[0];
@@ -21,22 +19,12 @@ const Bots = ({selectedBrands}) => {
     }, [selectedBrand]);
 
     return (
-        <div className="bots-container">
-            <h1 className="page-title">{'Bots'}</h1>
-            <LoadingContainer isLoading={false} error={error}>
-                <div className="bots">
-                    <Iframe
-                        url="https://opexhub-grafana.expedia.biz/d/ynLVZu1Mk/bots?orgId=1&refresh=5s&from=now-7d&to=now"
-                        key="iframe"
-                        width="1600px"
-                        height="950px"
-                        id="bots"
-                        className="iframe"
-                        position="relative"
-                    />
-                </div>
-            </LoadingContainer>
-        </div>
+        <GrafanaDashboard
+            error={error}
+            title="Bots"
+            name="bots"
+            url="https://opexhub-grafana.expedia.biz/d/ynLVZu1Mk/bots?orgId=1&refresh=5s&from=now-7d&to=now&theme=light"
+        />
     );
 };
 

@@ -1,10 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {withRouter} from 'react-router-dom';
-import Iframe from 'react-iframe';
 import './styles.less';
-import LoadingContainer from '../../components/LoadingContainer';
 import {EG_BRAND, EXPEDIA_BRAND, EGENCIA_BRAND, OPXHUB_SUPPORT_CHANNEL, VRBO_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../../constants';
-
+import GrafanaDashboard from '../../components/GrafanaDashboard';
 
 const OperationalTV = ({selectedBrands}) => {
     const selectedBrand = selectedBrands[0];
@@ -21,22 +19,12 @@ const OperationalTV = ({selectedBrands}) => {
     }, [selectedBrand]);
 
     return (
-        <div className="operational-tv-container">
-            <h1 className="page-title">{'Operational TV'}</h1>
-            <LoadingContainer isLoading={false} error={error}>
-                <div className="operational-tv">
-                    <Iframe
-                        url="https://opexhub-grafana.expedia.biz/d/dlJmetPMk/cortina-tv?orgId=1&refresh=30s&var-LOCALE=All&var-MARKETINGCHANNEL=All&var-PLATFORM=All&var-POS=All&var-IsKES=All"
-                        key="iframe"
-                        width="1600px"
-                        height="950px"
-                        id="operational-tv"
-                        className="iframe"
-                        position="relative"
-                    />
-                </div>
-            </LoadingContainer>
-        </div>
+        <GrafanaDashboard
+            error={error}
+            name="operational-tv"
+            title="Operational TV"
+            url="https://opexhub-grafana.expedia.biz/d/dlJmetPMk/cortina-tv?orgId=1&refresh=30s&var-LOCALE=All&var-MARKETINGCHANNEL=All&var-PLATFORM=All&var-POS=All&var-IsKES=All&theme=light"
+        />
     );
 };
 

@@ -1053,6 +1053,16 @@
             "template": "templates/welcome.hbs"
           },
           {
+            "route": "require:./routes/pages/sales-force-cases",
+            "component": "require:../universal/components/App/ServerApp.js",
+            "template": "templates/welcome.hbs"
+          },
+          {
+            "route": "require:./routes/pages/bots",
+            "component": "require:../universal/components/App/ServerApp.js",
+            "template": "templates/welcome.hbs"
+          },
+          {
             "route": "require:./routes/pages/google-crux",
             "component": "require:../universal/components/App/ServerApp.js",
             "template": "templates/welcome.hbs"
