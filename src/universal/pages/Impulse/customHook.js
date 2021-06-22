@@ -163,17 +163,15 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             });
             return chartData;
         });
+
     const fetchCallGrouped = (start, end) => fetch(`/v1/bookings/count/group${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}&group_by=brands`)
         .then(checkResponse)
-        .then((respJson) => {
-            const groupedChartData = respJson.map((item) => {
-                return {
-                    time: moment.utc(item.time).valueOf(),
-                    ...item.count
-                };
-            });
-            return groupedChartData;
-        });
+        .then((respJson) => (
+            respJson.map(({time, count}) => ({
+                time: moment.utc(time).valueOf(),
+                ...count
+            }))
+        ));
 
     const fetchPredictions = (start = startDateTime, end = endDateTime) => {
         Promise.all([

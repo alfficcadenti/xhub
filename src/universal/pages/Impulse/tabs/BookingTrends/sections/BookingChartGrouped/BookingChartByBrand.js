@@ -15,10 +15,10 @@ import {endTime, getColor, startTime} from '../../../../impulseHandler';
 import AnomalyLabel from '../BookingChart/AnomalyLabel';
 
 const BookingChartByBrand = ({data = [], setStartDateTime, setEndDateTime, setChartSliced, daysDifference, setDaysDifference, setTableData, anomalies, setAnomalyTableData}) => {
-    let [left, setLeft] = useState('dataMin');
-    let [right, setRight] = useState('dataMax');
-    let [refAreaLeft, setRefAreaLeft] = useState('');
-    let [refAreaRight, setRefAreaRight] = useState('');
+    const [left, setLeft] = useState('dataMin');
+    const [right, setRight] = useState('dataMax');
+    const [refAreaLeft, setRefAreaLeft] = useState('');
+    const [refAreaRight, setRefAreaRight] = useState('');
 
     const [hiddenKeys, setHiddenKeys] = useState([]);
 
@@ -26,7 +26,7 @@ const BookingChartByBrand = ({data = [], setStartDateTime, setEndDateTime, setCh
 
     const CustomTooltip = ({active, payload}) => {
         const TIMEZONE = moment().tz(moment.tz.guess()).format('z');
-        if (active && payload && payload[0] && payload[0].payload) {
+        if (active && payload?.[0]?.payload) {
             return (<div className="custom-tooltip">
                 <span className="label">{`${formatDateTimeLocal(payload[0].payload.time)} ${TIMEZONE}`}</span>
                 {payload.map((item) => (
@@ -106,7 +106,7 @@ const BookingChartByBrand = ({data = [], setStartDateTime, setEndDateTime, setCh
                     type="button"
                     className={'btn btn-default reset-btn'}
                     disabled={daysDifference === 3}
-                    onClick={() => resetGraphToDefault()}
+                    onClick={() => resetGraphToDefault}
                 >
                     {'Reset Graph'}
                 </button>
