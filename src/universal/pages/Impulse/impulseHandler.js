@@ -115,7 +115,6 @@ export const getActiveIndex = (pathname = '') => {
 };
 
 
-
 // eslint-disable-next-line complexity
 export const getQueryValues = (search) => {
     const {from, to, brands, lobs, siteUrls, devices, incidents, anomalies} = qs.parse(search);
