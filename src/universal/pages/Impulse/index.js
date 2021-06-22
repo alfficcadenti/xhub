@@ -270,7 +270,6 @@ const Impulse = (props) => {
                     data={allDataByBrands}
                     setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
                     setChartSliced={setChartSliced}
-                    annotations={enableIncidents ? annotationsMulti : []}
                     setDaysDifference={setDaysDifference}
                     daysDifference={daysDifference}
                     setTableData={setTableData}

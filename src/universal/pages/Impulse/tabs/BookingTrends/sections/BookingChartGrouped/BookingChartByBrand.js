@@ -1,14 +1,12 @@
 import React, {useState} from 'react';
 import {
-    LineChart,
-    Line,
     CartesianGrid,
     XAxis,
     YAxis,
     Tooltip,
     Legend,
     ResponsiveContainer,
-    ComposedChart, ReferenceArea, Area, ReferenceLine, AreaChart
+    ComposedChart, ReferenceArea, Area, ReferenceLine
 } from 'recharts';
 import moment from 'moment';
 
@@ -16,7 +14,7 @@ import {BRANDS_CHART, CHART_COLORS} from '../../../../constants';
 import {endTime, getColor, startTime} from '../../../../impulseHandler';
 import AnomalyLabel from '../BookingChart/AnomalyLabel';
 
-const BookingChartByBrand = ({data = [], setStartDateTime, setEndDateTime, setChartSliced, annotations, daysDifference, setDaysDifference, setTableData, anomalies, setAnomalyTableData}) => {
+const BookingChartByBrand = ({data = [], setStartDateTime, setEndDateTime, setChartSliced, daysDifference, setDaysDifference, setTableData, anomalies, setAnomalyTableData}) => {
     let [left, setLeft] = useState('dataMin');
     let [right, setRight] = useState('dataMax');
     let [refAreaLeft, setRefAreaLeft] = useState('');
