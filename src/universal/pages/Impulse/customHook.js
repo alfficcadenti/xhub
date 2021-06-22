@@ -51,6 +51,8 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
     const [anomalyAnnotations, setAnomalyAnnotations] = useState([]);
     const [anomaliesMulti, setAnomaliesMulti] = useState({});
 
+    const [groupedRes, setGroupedRes] = useState([]);
+
     const incidentMultiOptions = [
         {
             value: '0-Code Red',
@@ -156,38 +158,50 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 return {
                     time: moment.utc(item.time).valueOf(),
                     [BOOKING_COUNT]: item.count,
-                    [THREE_WEEK_AVG_COUNT]: item.prediction.weightedCount,
+                    [THREE_WEEK_AVG_COUNT]: item.prediction.weighted_count,
                 };
             });
             return chartData;
         });
-
-    const fetchPredictions = (start = startDateTime, end = endDateTime) => {
-        Promise.all([
-            fetch(`/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`).then(checkResponse),
-            fetch(`/v1/impulse/prediction${getQueryStringPrediction(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`).then(checkResponse)
-        ]).then(([bookingsData, predictionData]) => {
-            const simplifiedBookingsData = simplifyBookingsData(bookingsData);
-            const simplifiedPredictionData = simplifyPredictionData(predictionData);
-
-            let finalChartData = simplifiedBookingsData;
-            if (simplifiedBookingsData.length === simplifiedPredictionData.length) {
-                finalChartData = finalChartData.map((item, i) => {
-                    if (simplifiedBookingsData.length && simplifiedPredictionData.length && (simplifiedBookingsData[i].time === simplifiedPredictionData[i].time)) {
-                        return {
-                            ...item,
-                            [PREDICTION_COUNT]: Math.round(simplifiedPredictionData[i].count)
-                        };
-                    }
-                    return item;
-                });
-            }
-            setRes(finalChartData);
-        })
-            .catch((err) => {
-                console.error(err);
+    const fetchCallGrouped = (start, end) => fetch(`https://opxhub-user-events-data-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black/v1/bookings/count/group${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}&group_by=brands`)
+        .then(checkResponse)
+        .then((respJson) => {
+            const groupedChartData = respJson.map((item) => {
+                return {
+                    time: moment.utc(item.time).valueOf(),
+                    ...item.count
+                };
             });
-    };
+            return groupedChartData;
+        });
+
+    const
+        fetchPredictions = (start = startDateTime, end = endDateTime) => {
+            Promise.all([
+                fetch(`/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`).then(checkResponse),
+                fetch(`/v1/impulse/prediction${getQueryStringPrediction(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`).then(checkResponse)
+            ]).then(([bookingsData, predictionData]) => {
+                const simplifiedBookingsData = simplifyBookingsData(bookingsData);
+                const simplifiedPredictionData = simplifyPredictionData(predictionData);
+
+                let finalChartData = simplifiedBookingsData;
+                if (simplifiedBookingsData.length === simplifiedPredictionData.length) {
+                    finalChartData = finalChartData.map((item, i) => {
+                        if (simplifiedBookingsData.length && simplifiedPredictionData.length && (simplifiedBookingsData[i].time === simplifiedPredictionData[i].time)) {
+                            return {
+                                ...item,
+                                [PREDICTION_COUNT]: Math.round(simplifiedPredictionData[i].count)
+                            };
+                        }
+                        return item;
+                    });
+                }
+                setRes(finalChartData);
+            })
+                .catch((err) => {
+                    console.error(err);
+                });
+        };
 
     const fetchHealth = () => {
         fetch('/v1/impulse/health')
@@ -216,19 +230,19 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             });
     };
 
-    const setIntervalForRealTimeData = (timeInterval, type) => setInterval(() => {
-        if (type === 'bookingData') {
-            getRealTimeData();
-            fetchPredictions(startTime(), endTime());
-        } else if (type === 'incidents') {
-            fetchIncidents();
-        } else if (type === 'health') {
-            fetchHealth();
-        } else if (type === 'anomaly') {
-            fetchAnomalies();
-        }
-    }, timeInterval);
-
+    const getGroupedData = (start = startDateTime, end = endDateTime) => {
+        fetchCallGrouped(start, end)
+            .then((chartData) => {
+                setError('');
+                setGroupedRes(chartData);
+            })
+            .catch((err) => {
+                setIsLoading(false);
+                setError('No data found for this selection.');
+                // eslint-disable-next-line no-console
+                console.error(err);
+            });
+    };
     const getData = (start = startDateTime, end = endDateTime) => {
         setIsLoading(true);
         fetchCall(start, end)
@@ -244,6 +258,21 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 console.error(err);
             });
     };
+
+    const setIntervalForRealTimeData = (timeInterval, type) => setInterval(() => {
+        if (type === 'bookingData') {
+            getRealTimeData();
+            fetchPredictions(startTime(), endTime());
+            getGroupedData(startTime(), endTime());
+        } else if (type === 'incidents') {
+            fetchIncidents();
+        } else if (type === 'health') {
+            fetchHealth();
+        } else if (type === 'anomaly') {
+            fetchAnomalies();
+        }
+    }, timeInterval);
+
     const checkDefaultRange = () => {
         if ((moment(endDateTime).diff(moment(startDateTime), 'days') === 3) && (moment().diff(moment(endDateTime), 'days') === 0)) {
             intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
@@ -261,6 +290,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
         if (SUPPRESSED_BRANDS.includes(globalBrandName)) {
             setError(`Booking data for ${globalBrandName} is not yet available. The following brands are supported at this time: "Expedia", "Hotels.com Retail", and "Expedia Partner Solutions".`);
         } else {
+            getGroupedData();
             getData();
             getFilter();
             getBrandsFilterData();
@@ -283,6 +313,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             if (SUPPRESSED_BRANDS.includes(globalBrandName)) {
                 setError(`Booking data for ${globalBrandName} is not yet available. The following brands are supported at this time: "Expedia", "Hotels.com Retail", and "Expedia Partner Solutions".`);
             } else {
+                getGroupedData();
                 getData();
                 fetchIncidents();
                 getFilter();
@@ -303,6 +334,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
 
     useEffect(() => {
         if (chartSliced || isApplyClicked) {
+            getGroupedData();
             getData();
             fetchIncidents();
             getBrandsFilterData();
@@ -325,6 +357,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
                 intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
                 intervalForAnomalies = setIntervalForRealTimeData(anomalyTimeInterval, 'anomaly');
+                getGroupedData(startTime(), endTime());
                 getData(startTime(), endTime());
                 fetchIncidents(startTime(), endTime());
                 fetchHealth();
@@ -359,6 +392,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
         isLatencyHealthy,
         sourceLatency,
         anomaliesMulti,
-        anomalyAnnotations
+        anomalyAnnotations,
+        groupedRes
     ];
 };

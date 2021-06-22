@@ -18,6 +18,7 @@ import {Checkbox, Switch} from '@homeaway/react-form-components';
 import {IncidentDetails} from './tabs/BookingTrends';
 import AnomalyDetails from './tabs/BookingTrends/sections/AnomalyTable/AnomalyDetails';
 import {getValue} from '../utils';
+import GroupedBookingChart from './tabs/BookingTrends/sections/BookingChartGrouped/GroupedBookingChart';
 
 const startDateDefaultValue = startTime;
 const endDateDefaultValue = endTime;
@@ -30,9 +31,14 @@ const navLinks = [
         href: '/impulse'
     },
     {
-        id: 'incidents',
-        label: 'Group_By_Brands',
-        href: '/incident-trends'
+        id: 'bookings',
+        label: 'By_Brands',
+        href: '/impulse'
+    },
+    {
+        id: 'bookings',
+        label: 'By_Lobs',
+        href: '/impulse'
     }
 ];
 
@@ -73,6 +79,7 @@ const Impulse = (props) => {
     const [anomalyTableData, setAnomalyTableData] = useState([]);
 
     const [activeIndex, setActiveIndex] = useState(0);
+    const [allGroupedData, setGroupedData] = useState([]);
 
     useQueryParamChange(newBrand, props.onBrandChange);
     useSelectedBrand(newBrand, props.onBrandChange, props.prevSelectedBrand);
@@ -96,7 +103,8 @@ const Impulse = (props) => {
         isLatencyHealthy,
         sourceLatency,
         anomaliesMulti,
-        anomalies] = useFetchBlipData(
+        anomalies,
+        groupedRes] = useFetchBlipData(
         isApplyClicked,
         setIsApplyClicked,
         startDateTime,
@@ -198,12 +206,14 @@ const Impulse = (props) => {
     useEffect(() => {
         setFilterAllData([...res]);
 
+        setGroupedData([...groupedRes]);
+
         setAnnotationsMulti(annotations);
         filterAnnotationsOnBrand();
 
         setAnomaliesData(anomalies);
         filterAnomalies(selectedAnomaliesMulti);
-    }, [res, annotations, anomalies]);
+    }, [res, annotations, anomalies, groupedRes]);
     const customStyles = {
         control: (base) => ({
             ...base,
@@ -249,7 +259,17 @@ const Impulse = (props) => {
                     setAnomalyTableData={setAnomalyTableData}
                 />);
             case 1:
-                return (<div>"Hi thi is test page</div>);
+                return (<GroupedBookingChart
+                    data={allGroupedData}
+                    setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
+                    setChartSliced={setChartSliced}
+                    annotations={enableIncidents ? annotationsMulti : []}
+                    setDaysDifference={setDaysDifference}
+                    daysDifference={daysDifference}
+                    setTableData={setTableData}
+                    anomalies={enableAnomalies ? anomaliesData : []}
+                    setAnomalyTableData={setAnomalyTableData}
+                />);
             default:
                 return (<BookingTrends
                     data={allData}
