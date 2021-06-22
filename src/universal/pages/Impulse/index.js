@@ -13,11 +13,12 @@ import {SVGIcon} from '@homeaway/react-svg';
 import {FILTER__16} from '@homeaway/svg-defs';
 import './styles.less';
 import {ALL_LOB, ALL_POS, ALL_BRANDS, ALL_DEVICES, ALL_INCIDENTS, ALL_ANOMALIES} from '../../constants';
-import {getFilters, getFiltersForMultiKeys, getQueryValues, useAddToUrl} from './impulseHandler';
+import {getFilters, getFiltersForMultiKeys, getQueryValues, useAddToUrl, getTimeIntervals, isValidTimeInterval, getDefaultTimeInterval} from './impulseHandler';
 import {Checkbox, Switch} from '@homeaway/react-form-components';
 import {IncidentDetails} from './tabs/BookingTrends';
 import AnomalyDetails from './tabs/BookingTrends/sections/AnomalyTable/AnomalyDetails';
 import {getValue} from '../utils';
+import {Dropdown, DropdownItem} from '@homeaway/react-dropdown';
 
 const activeIndex = 0;
 const navLinks = [
@@ -47,6 +48,8 @@ const Impulse = (props) => {
     const {
         initialStart,
         initialEnd,
+        initialInterval,
+        initialAutoRefresh,
         initialBrands,
         initialLobs,
         initialEgSiteUrls,
@@ -68,13 +71,15 @@ const Impulse = (props) => {
     const [selectedIncidentMulti, setSelectedIncidentMulti] = useState(initialIncidents);
     const [enableIncidents, setEnableIncidents] = useState(true);
     const [chartSliced, setChartSliced] = useState(false);
-    const [isAutoRefresh, setAutoRefresh] = useState(true);
+    const [isAutoRefresh, setAutoRefresh] = useState(initialAutoRefresh);
     const [daysDifference, setDaysDifference] = useState(moment(endDateTime).diff(moment(startDateTime), 'days'));
     const [tableData, setTableData] = useState([]);
     const [anomaliesData, setAnomaliesData] = useState([]);
     const [enableAnomalies, setEnableAnomalies] = useState(true);
     const [selectedAnomaliesMulti, setSelectedAnomaliesMulti] = useState(initialAnomalies);
     const [anomalyTableData, setAnomalyTableData] = useState([]);
+    const [timeInterval, setTimeInterval] = useState(initialInterval);
+    const [timeIntervalOpts, setTimeIntervalOpts] = useState(getTimeIntervals(startDateTime, endDateTime, timeInterval));
 
     useQueryParamChange(newBrand, props.onBrandChange);
     useSelectedBrand(newBrand, props.onBrandChange, props.prevSelectedBrand);
@@ -214,8 +219,17 @@ const Impulse = (props) => {
         }),
     };
     const handleDatetimeChange = ({start: startDateTimeStr, end: endDateTimeStr}) => {
-        setStartDateTime(moment(startDateTimeStr).utc());
-        setEndDateTime(moment(endDateTimeStr).utc());
+        const newStart = moment(startDateTimeStr).utc();
+        const newEnd = moment(endDateTimeStr).utc();
+        setStartDateTime(newStart);
+        setEndDateTime(newEnd);
+        if (!isValidTimeInterval(newStart, newEnd, timeInterval)) {
+            const newInterval = getDefaultTimeInterval(newStart, newEnd);
+            setTimeInterval(newInterval);
+            setTimeIntervalOpts(getTimeIntervals(newStart, newEnd, newInterval));
+        } else {
+            setTimeIntervalOpts(getTimeIntervals(newStart, newEnd, timeInterval));
+        }
     };
     const handleShowMoreFilters = () => {
         setShowMoreFilters(!showMoreFilters);
@@ -234,8 +248,12 @@ const Impulse = (props) => {
         setSelectedAnomaliesMulti([]);
         setAnomaliesData(anomalies);
     };
+    const handleTimeIntervalChange = (timeIntervalStr) => {
+        setTimeInterval(timeIntervalStr);
+        setTimeIntervalOpts(getTimeIntervals(startDateTime, endDateTime, timeIntervalStr));
+    };
 
-    useAddToUrl(newBrand, startDateTime, endDateTime, selectedLobMulti, selectedBrandMulti, selectedSiteURLMulti, selectedDeviceTypeMulti, selectedIncidentMulti, selectedAnomaliesMulti);
+    useAddToUrl(newBrand, startDateTime, endDateTime, timeInterval, isAutoRefresh, selectedLobMulti, selectedBrandMulti, selectedSiteURLMulti, selectedDeviceTypeMulti, selectedIncidentMulti, selectedAnomaliesMulti);
 
     const renderTabs = () => {
         switch (activeIndex) {
@@ -250,6 +268,9 @@ const Impulse = (props) => {
                     setTableData={setTableData}
                     anomalies={enableAnomalies ? anomaliesData : []}
                     setAnomalyTableData={setAnomalyTableData}
+                    timeInterval={timeInterval}
+                    setTimeInterval={setTimeInterval}
+                    setTimeIntervalOpts={setTimeIntervalOpts}
                 />);
             default:
                 return (<BookingTrends
@@ -259,9 +280,34 @@ const Impulse = (props) => {
                     annotations={enableIncidents ? annotationsMulti : []}
                     setDaysDifference={setDaysDifference}
                     daysDifference={daysDifference}
+                    timeInterval={timeInterval}
+                    setTimeInterval={setTimeInterval}
+                    setTimeIntervalOpts={setTimeIntervalOpts}
                 />);
         }
     };
+    const renderTimeIntervalPresets = (presets, onChange) => (
+        presets.map((d) => (
+            <DropdownItem
+                key={d}
+                link="#"
+                text={d}
+                onClick={() => onChange(d)}
+            />
+        ))
+    );
+    const renderTimeInterval = (interval, presets, onChange) => (
+        <div className="time-interval">
+            <Dropdown
+                id="time-interval-dropdown"
+                label={interval ? interval : 'Time Interval'}
+                className="time-interval-dropdown"
+                closeAfterContentClick
+            >
+                {renderTimeIntervalPresets(presets, onChange)}
+            </Dropdown>
+        </div>
+    );
     const renderMultiSelectFilters = (value, options, key, placeholder, className) => {
         return (<div className={className}>
             <Select
@@ -323,6 +369,7 @@ const Impulse = (props) => {
                     showTimePicker
                 />
                 <div className="filter-option">
+                    {renderTimeInterval(timeInterval, timeIntervalOpts, handleTimeIntervalChange)}
                     {renderMultiSelectFilters(selectedBrandMulti, brandsMulti, 'brand', ALL_BRANDS, filterSelectionClass)}
                     {renderMultiSelectFilters(selectedLobMulti, lobsMulti, 'lob', ALL_LOB, filterSelectionClass)}
                     {renderMultiSelectFilters(selectedSiteURLMulti, egSiteURLMulti, 'egSiteUrl', ALL_POS, filterExpandClass)}

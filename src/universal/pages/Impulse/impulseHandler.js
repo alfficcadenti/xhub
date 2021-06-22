@@ -100,14 +100,58 @@ export const simplifyPredictionData = (predictionData) => (
 export const startTime = () => moment().utc().subtract(3, 'days').startOf('minute');
 export const endTime = () => moment().utc().endOf('minute');
 
+export const getDefaultTimeInterval = (startDate, endDate) => {
+    const diff = moment(endDate).diff(moment(startDate), 'days');
+    if (diff <= 1) {
+        return '1m';
+    } else if (diff > 1 && diff <= 7) {
+        return '5m';
+    } else if (diff > 7 && diff <= 31) {
+        return '15m';
+    } else if (diff > 31 && diff <= 120) {
+        return '1h';
+    } else if (diff > 120 && diff <= 365) {
+        return '1d';
+    }
+    return '1w';
+};
+
+
+export const getTimeIntervals = (startDate, endDate, timeInterval) => {
+    const diff = moment(endDate).diff(moment(startDate), 'days');
+    if (diff <= 1) {
+        return ['1m', '5m', '15m', '30m', '1h'].filter((item) => item !== timeInterval);
+    } else if (diff > 1 && diff <= 7) {
+        return ['5m', '15m', '30m', '1h'].filter((item) => item !== timeInterval);
+    } else if (diff > 7 && diff <= 31) {
+        return ['15m', '30m', '1h', '1d'].filter((item) => item !== timeInterval);
+    } else if (diff > 31 && diff <= 120) {
+        return ['1h', '1d', '1w'].filter((item) => item !== timeInterval);
+    }
+    return ['1d', '1w'].filter((item) => item !== timeInterval);
+};
+
+export const isValidTimeInterval = (startDate, endDate, timeInterval) => {
+    if (!timeInterval || !startDate || !endDate) {
+        return false;
+    }
+    const allowedIntervals = getTimeIntervals(startDate, endDate);
+    return allowedIntervals.includes(timeInterval);
+};
+
 // eslint-disable-next-line complexity
 export const getQueryValues = (search) => {
-    const {from, to, brands, lobs, siteUrls, devices, incidents, anomalies} = qs.parse(search);
+    const {from, to, interval, refresh, brands, lobs, siteUrls, devices, incidents, anomalies} = qs.parse(search);
     const isValidDateRange = validDateRange(from, to);
+    const initStart = isValidDateRange ? moment(from).utc() : startTime();
+    const initEnd = isValidDateRange ? moment(to).utc() : endTime();
+    const isValidInterval = isValidTimeInterval(initStart, initEnd, interval);
 
     return {
-        initialStart: isValidDateRange ? moment(from).utc() : startTime,
-        initialEnd: isValidDateRange ? moment(to).utc() : endTime,
+        initialStart: initStart,
+        initialEnd: initEnd,
+        initialInterval: isValidInterval ? interval : getDefaultTimeInterval(initStart, initEnd),
+        initialAutoRefresh: refresh ? refresh !== 'false' : true,
         initialBrands: brands ? brands.split(',').filter((item) => BRANDS.includes(item)) : [],
         initialLobs: lobs ? lobs.split(',').filter((item) => LOBS.includes(item)) : [],
         initialEgSiteUrls: siteUrls ? siteUrls.split(',').filter((item) => EG_SITE_URLS.includes(item)) : [],
@@ -121,6 +165,8 @@ export const useAddToUrl = (
     selectedBrands,
     start,
     end,
+    interval,
+    refresh,
     lobs,
     brands,
     egSiteUrls,
@@ -136,6 +182,8 @@ export const useAddToUrl = (
         history.push(`${`${pathname}?selectedBrand=${selectedBrands}`
                 + `&from=${start.format()}`
                 + `&to=${end.format()}`
+                + `&interval=${interval}`
+                + `&refresh=${refresh}`
         }${brands.length === 0 ? '' : `&brands=${brands.join(',')}`
         }${lobs.length === 0 ? '' : `&lobs=${lobs.join(',')}`
         }${egSiteUrls.length === 0 ? '' : `&siteUrls=${egSiteUrls.join(',')}`
@@ -143,5 +191,5 @@ export const useAddToUrl = (
         }${incidents.length === 0 ? '' : `&incidents=${incidents.join(',')}`
         }${anomalies.length === 0 ? '' : `&anomalies=${anomalies.join(',')}`}`
         );
-    }, [selectedBrands, start, end, lobs, brands, egSiteUrls, devices, incidents, anomalies, history, pathname]);
+    }, [selectedBrands, start, end, interval, refresh, lobs, brands, egSiteUrls, devices, incidents, anomalies, history, pathname]);
 };
