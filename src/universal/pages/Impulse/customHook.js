@@ -51,6 +51,8 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
     const [anomalyAnnotations, setAnomalyAnnotations] = useState([]);
     const [anomaliesMulti, setAnomaliesMulti] = useState({});
 
+    const [groupedRes, setGroupedRes] = useState([]);
+
     const incidentMultiOptions = [
         {
             value: '0-Code Red',
@@ -162,6 +164,15 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             return chartData;
         });
 
+    const fetchCallGrouped = (start, end) => fetch(`/v1/bookings/count/group${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}&group_by=brands`)
+        .then(checkResponse)
+        .then((respJson) => (
+            respJson.map(({time, count}) => ({
+                time: moment.utc(time).valueOf(),
+                ...count
+            }))
+        ));
+
     const fetchPredictions = (start = startDateTime, end = endDateTime) => {
         Promise.all([
             fetch(`/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`).then(checkResponse),
@@ -216,19 +227,19 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             });
     };
 
-    const setIntervalForRealTimeData = (timeInterval, type) => setInterval(() => {
-        if (type === 'bookingData') {
-            getRealTimeData();
-            fetchPredictions(startTime(), endTime());
-        } else if (type === 'incidents') {
-            fetchIncidents();
-        } else if (type === 'health') {
-            fetchHealth();
-        } else if (type === 'anomaly') {
-            fetchAnomalies();
-        }
-    }, timeInterval);
-
+    const getDataByBrands = (start = startDateTime, end = endDateTime) => {
+        fetchCallGrouped(start, end)
+            .then((chartData) => {
+                setError('');
+                setGroupedRes(chartData);
+            })
+            .catch((err) => {
+                setIsLoading(false);
+                setError('No data found for this selection.');
+                // eslint-disable-next-line no-console
+                console.error(err);
+            });
+    };
     const getData = (start = startDateTime, end = endDateTime) => {
         setIsLoading(true);
         fetchCall(start, end)
@@ -244,6 +255,21 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 console.error(err);
             });
     };
+
+    const setIntervalForRealTimeData = (timeInterval, type) => setInterval(() => {
+        if (type === 'bookingData') {
+            getRealTimeData();
+            fetchPredictions(startTime(), endTime());
+            getDataByBrands(startTime(), endTime());
+        } else if (type === 'incidents') {
+            fetchIncidents();
+        } else if (type === 'health') {
+            fetchHealth();
+        } else if (type === 'anomaly') {
+            fetchAnomalies();
+        }
+    }, timeInterval);
+
     const checkDefaultRange = () => {
         if ((moment(endDateTime).diff(moment(startDateTime), 'days') === 3) && (moment().diff(moment(endDateTime), 'days') === 0)) {
             intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
@@ -261,6 +287,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
         if (SUPPRESSED_BRANDS.includes(globalBrandName)) {
             setError(`Booking data for ${globalBrandName} is not yet available. The following brands are supported at this time: "Expedia", "Hotels.com Retail", and "Expedia Partner Solutions".`);
         } else {
+            getDataByBrands();
             getData();
             getFilter();
             getBrandsFilterData();
@@ -283,6 +310,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             if (SUPPRESSED_BRANDS.includes(globalBrandName)) {
                 setError(`Booking data for ${globalBrandName} is not yet available. The following brands are supported at this time: "Expedia", "Hotels.com Retail", and "Expedia Partner Solutions".`);
             } else {
+                getDataByBrands();
                 getData();
                 fetchIncidents();
                 getFilter();
@@ -303,6 +331,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
 
     useEffect(() => {
         if (chartSliced || isApplyClicked) {
+            getDataByBrands();
             getData();
             fetchIncidents();
             getBrandsFilterData();
@@ -325,6 +354,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
                 intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
                 intervalForAnomalies = setIntervalForRealTimeData(anomalyTimeInterval, 'anomaly');
+                getDataByBrands(startTime(), endTime());
                 getData(startTime(), endTime());
                 fetchIncidents(startTime(), endTime());
                 fetchHealth();
@@ -359,6 +389,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
         isLatencyHealthy,
         sourceLatency,
         anomaliesMulti,
-        anomalyAnnotations
+        anomalyAnnotations,
+        groupedRes
     ];
 };

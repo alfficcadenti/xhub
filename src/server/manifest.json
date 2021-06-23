@@ -418,6 +418,11 @@
               "method": "GET",
               "operation": "GET_booking_data"
             },
+            "bookingsImpulseCountGrouped": {
+              "path": "/v1/bookings/count/group",
+              "method": "GET",
+              "operation": "GET_booking_data_grouped"
+            },
             "bookingsImpulseBrands": {
               "path": "/v1/bookings/filters/brands",
               "method": "GET",
@@ -509,6 +514,11 @@
               "method": "GET",
               "operation": "GET_booking_data"
             },
+            "bookingsImpulseCountGrouped": {
+              "path": "/v1/bookings/count/group",
+              "method": "GET",
+              "operation": "GET_booking_data_grouped"
+            },
             "bookingsImpulseBrands": {
               "path": "/v1/bookings/filters/brands",
               "method": "GET",
@@ -595,6 +605,11 @@
               "method": "GET",
               "operation": "GET_booking_data"
             },
+            "bookingsImpulseCountGrouped": {
+              "path": "/v1/bookings/count/group",
+              "method": "GET",
+              "operation": "GET_booking_data_grouped"
+            },
             "bookingsImpulseBrands": {
               "path": "/v1/bookings/filters/brands",
               "method": "GET",
@@ -670,6 +685,11 @@
               "path": "/v1/bookings/count",
               "method": "GET",
               "operation": "GET_booking_data"
+            },
+            "bookingsImpulseCountGrouped": {
+              "path": "/v1/bookings/count/group",
+              "method": "GET",
+              "operation": "GET_booking_data_grouped"
             },
             "bookingsImpulseBrands": {
               "path": "/v1/bookings/filters/brands",

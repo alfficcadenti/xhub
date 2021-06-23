@@ -99,7 +99,6 @@ const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSlic
     let [left, setLeft] = useState('dataMin');
     let [right, setRight] = useState('dataMax');
     const [hiddenKeys, setHiddenKeys] = useState([]);
-    let LEGEND_TYPE = data && data[0][PREDICTION_COUNT] ? 'line' : 'none';
 
     const getGradient = ({key, color}) => {
         const id = `color${key}`;
@@ -197,7 +196,7 @@ const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSlic
                     <CartesianGrid strokeDasharray="3 3"/>
                     <Tooltip content={<CustomTooltip/>}/>
                     {IMPULSE_CHART_TYPE.map(renderChart)}
-                    <Line legendType={LEGEND_TYPE} type="monotone" dataKey={PREDICTION_COUNT} stroke="#c9405b" yAxisId={1} strokeWidth={1.5} dot={false} animationDuration={300} hide = {hiddenKeys.includes(PREDICTION_COUNT)}/>
+                    { data.length && data[0].hasOwnProperty(PREDICTION_COUNT) ? <Line type="monotone" dataKey={PREDICTION_COUNT} stroke="#c9405b" yAxisId={1} strokeWidth={1.5} dot={false} animationDuration={300} hide = {hiddenKeys.includes(PREDICTION_COUNT)}/> : ''}
                     {
                         anomalies && anomalies.map((anomaly) => (
                             <ReferenceLine

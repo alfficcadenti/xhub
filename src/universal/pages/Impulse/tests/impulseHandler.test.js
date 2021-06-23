@@ -1,5 +1,12 @@
 import {expect} from 'chai';
-import {getFilters, getQueryParamMulti, getBrandQueryParam, getQueryString, getRevLoss} from '../impulseHandler';
+import {
+    getFilters,
+    getQueryParamMulti,
+    getBrandQueryParam,
+    getQueryString,
+    getRevLoss,
+    getActiveIndex, mapActiveIndexToTabName
+} from '../impulseHandler';
 import moment from 'moment';
 
 let endDate = moment().set({second: 0}).format('YYYY-MM-DDTHH:mm:ss');
@@ -54,6 +61,28 @@ describe('impulseHandler', () => {
         });
         it('should return brand=Egencia if Egencia passed', () => {
             expect(getBrandQueryParam(IMPULSE_MAPPING, EGENCIA_BRAND)).eql('&brands=Egencia');
+        });
+    });
+    describe('test active index', () => {
+        it('should return 0 if /impulse/booking-trends passed in pathname', () => {
+            expect(getActiveIndex('impulse/booking-trends')).eql(0);
+        });
+        it('should return 1 if /impulse/by-brands passed in pathname', () => {
+            expect(getActiveIndex('impulse/by-brands')).eql(1);
+        });
+        it('should return 2 if /impulse/by-lobs passed in pathname', () => {
+            expect(getActiveIndex('impulse/by-lobs')).eql(2);
+        });
+    });
+    describe('test mapActiveIndexToTabName ', () => {
+        it('should return booking-trends if passed anything', () => {
+            expect(mapActiveIndexToTabName(5)).eql('booking-trends');
+        });
+        it('should return by-brands if passed 1', () => {
+            expect(mapActiveIndexToTabName(1)).eql('by-brands');
+        });
+        it('should return by-lobs if passed 2', () => {
+            expect(mapActiveIndexToTabName(2)).eql('by-lobs');
         });
     });
     describe('test final query string', () => {
