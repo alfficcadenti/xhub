@@ -101,6 +101,29 @@ export const simplifyPredictionData = (predictionData) => (
 export const startTime = () => moment().utc().subtract(3, 'days').startOf('minute');
 export const endTime = () => moment().utc().endOf('minute');
 
+export const getActiveIndex = (pathname = '') => {
+    if (pathname.includes('impulse/booking-trends')) {
+        return 0;
+    }
+    if (pathname.includes('impulse/by-brands')) {
+        return 1;
+    }
+    if (pathname.includes('impulse/by-lobs')) {
+        return 2;
+    }
+    return 0;
+};
+
+export const mapActiveIndexToTabName = (idx) => {
+    if (idx === 1) {
+        return 'by-brands';
+    }
+    if (idx === 2) {
+        return 'by-lobs';
+    }
+    return 'booking-trends';
+};
+
 export const getDefaultTimeInterval = (startDate, endDate) => {
     const diff = moment(endDate).diff(moment(startDate), 'days');
     if (diff <= 1) {
@@ -173,14 +196,15 @@ export const useAddToUrl = (
     egSiteUrls,
     devices,
     incidents,
-    anomalies
+    anomalies,
+    activeIndex
 ) => {
     const history = useHistory();
     const {pathname} = useLocation();
 
     // eslint-disable-next-line complexity
     useEffect(() => {
-        history.push(`${`${pathname}?selectedBrand=${selectedBrands}`
+        history.push(`${`/impulse/${mapActiveIndexToTabName(activeIndex)}?selectedBrand=${selectedBrands}`
                 + `&from=${start.format()}`
                 + `&to=${end.format()}`
                 + `&interval=${interval}`
@@ -192,5 +216,5 @@ export const useAddToUrl = (
         }${incidents.length === 0 ? '' : `&incidents=${incidents.join(',')}`
         }${anomalies.length === 0 ? '' : `&anomalies=${anomalies.join(',')}`}`
         );
-    }, [selectedBrands, start, end, interval, refresh, lobs, brands, egSiteUrls, devices, incidents, anomalies, history, pathname]);
+    }, [selectedBrands, start, end, interval, refresh, lobs, brands, egSiteUrls, devices, incidents, anomalies, history, pathname, activeIndex]);
 };

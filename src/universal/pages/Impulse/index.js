@@ -13,18 +13,23 @@ import {SVGIcon} from '@homeaway/react-svg';
 import {FILTER__16} from '@homeaway/svg-defs';
 import './styles.less';
 import {ALL_LOB, ALL_POS, ALL_BRANDS, ALL_DEVICES, ALL_INCIDENTS, ALL_ANOMALIES} from '../../constants';
-import {getFilters, getFiltersForMultiKeys, getQueryValues, useAddToUrl, getTimeIntervals, isValidTimeInterval, getDefaultTimeInterval} from './impulseHandler';
+import {getFilters, getFiltersForMultiKeys, getQueryValues, useAddToUrl, getTimeIntervals, isValidTimeInterval, getDefaultTimeInterval, getActiveIndex} from './impulseHandler';
 import {Checkbox, Switch} from '@homeaway/react-form-components';
 import {IncidentDetails} from './tabs/BookingTrends';
 import AnomalyDetails from './tabs/BookingTrends/sections/AnomalyTable/AnomalyDetails';
 import {getValue} from '../utils';
 import {Dropdown, DropdownItem} from '@homeaway/react-dropdown';
+import BookingChartByBrand from './tabs/BookingTrends/sections/BookingChartGrouped/BookingChartByBrand';
 
-const activeIndex = 0;
 const navLinks = [
     {
         id: 'bookings',
         label: 'Booking Trends',
+        href: '/impulse'
+    },
+    {
+        id: 'by_brands',
+        label: 'By Brands',
         href: '/impulse'
     }
 ];
@@ -44,7 +49,7 @@ const healthUrl = 'https://opexhub-grafana.expedia.biz/d/x8JcATVMk/opex-impulse?
 
 const Impulse = (props) => {
     const newBrand = props.selectedBrands[0];
-    const {search} = useLocation();
+    const {pathname, search} = useLocation();
     const {
         initialStart,
         initialEnd,
@@ -81,8 +86,14 @@ const Impulse = (props) => {
     const [timeInterval, setTimeInterval] = useState(initialInterval);
     const [timeIntervalOpts, setTimeIntervalOpts] = useState(getTimeIntervals(startDateTime, endDateTime, timeInterval));
 
+    const [activeIndex, setActiveIndex] = useState(getActiveIndex(pathname));
+    const [allDataByBrands, setAllDataByBrand] = useState([]);
+
     useQueryParamChange(newBrand, props.onBrandChange);
     useSelectedBrand(newBrand, props.onBrandChange, props.prevSelectedBrand);
+    const handleNavigationClick = (e, activeLinkIndex) => {
+        setActiveIndex(activeLinkIndex);
+    };
     const [isLoading,
         res,
         error,
@@ -100,7 +111,8 @@ const Impulse = (props) => {
         isLatencyHealthy,
         sourceLatency,
         anomaliesMulti,
-        anomalies] = useFetchBlipData(
+        anomalies,
+        groupedRes] = useFetchBlipData(
         isApplyClicked,
         setIsApplyClicked,
         startDateTime,
@@ -206,12 +218,14 @@ const Impulse = (props) => {
     useEffect(() => {
         setFilterAllData([...res]);
 
+        setAllDataByBrand([...groupedRes]);
+
         setAnnotationsMulti(annotations);
         filterAnnotationsOnBrand();
 
         setAnomaliesData(anomalies);
         filterAnomalies(selectedAnomaliesMulti);
-    }, [res, annotations, anomalies]);
+    }, [res, annotations, anomalies, groupedRes]);
     const customStyles = {
         control: (base) => ({
             ...base,
@@ -256,7 +270,7 @@ const Impulse = (props) => {
         setTimeIntervalOpts(getTimeIntervals(startDateTime, endDateTime, timeIntervalStr));
     };
 
-    useAddToUrl(newBrand, startDateTime, endDateTime, timeInterval, isAutoRefresh, selectedLobMulti, selectedBrandMulti, selectedSiteURLMulti, selectedDeviceTypeMulti, selectedIncidentMulti, selectedAnomaliesMulti);
+    useAddToUrl(newBrand, startDateTime, endDateTime, timeInterval, isAutoRefresh, selectedLobMulti, selectedBrandMulti, selectedSiteURLMulti, selectedDeviceTypeMulti, selectedIncidentMulti, selectedAnomaliesMulti, activeIndex);
 
     const renderTabs = () => {
         switch (activeIndex) {
@@ -274,6 +288,17 @@ const Impulse = (props) => {
                     timeInterval={timeInterval}
                     setTimeInterval={setTimeInterval}
                     setTimeIntervalOpts={setTimeIntervalOpts}
+                />);
+            case 1:
+                return (<BookingChartByBrand
+                    data={allDataByBrands}
+                    setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
+                    setChartSliced={setChartSliced}
+                    setDaysDifference={setDaysDifference}
+                    daysDifference={daysDifference}
+                    setTableData={setTableData}
+                    anomalies={enableAnomalies ? anomaliesData : []}
+                    setAnomalyTableData={setAnomalyTableData}
                 />);
             default:
                 return (<BookingTrends
@@ -425,6 +450,7 @@ const Impulse = (props) => {
                 noMobileSelect
                 activeIndex={activeIndex}
                 links={navLinks}
+                onLinkClick={handleNavigationClick}
             />
             <LoadingContainer isLoading={isLoading} error={error} className="impulse-loading-container">
                 <div className="impulse-chart-container">
