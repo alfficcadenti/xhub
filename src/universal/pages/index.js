@@ -20,6 +20,7 @@ import PortfolioScoreCard from './PortfolioScoreCard';
 import SalesForceCases from './SalesForceCases';
 import GoogleCrUx from './GoogleCrUx';
 import Bots from './Bots';
+import PartnerBusinessMetrics from './PartnerBusinessMetrics';
 import {EXPEDIA_BRAND, HOTELS_COM_BRAND, VRBO_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../constants';
 
 
@@ -125,6 +126,15 @@ export default [
         text: 'Operational iOS Dashboard',
         component: OperationalIos,
         brands: [HOTELS_COM_BRAND],
+        hidden: false
+    },
+    {
+        category: AAT,
+        id: 'partner-business-metrics',
+        link: '/partner-business-metrics',
+        text: 'Partner Business Metrics',
+        component: PartnerBusinessMetrics,
+        brands: [VRBO_BRAND],
         hidden: false
     },
     {
