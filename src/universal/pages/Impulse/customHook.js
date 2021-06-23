@@ -164,14 +164,15 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             return chartData;
         });
 
-    const fetchCallGrouped = (start, end) => fetch(`/v1/bookings/count/group${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}&group_by=brands`)
-        .then(checkResponse)
-        .then((respJson) => (
-            respJson.map(({time, count}) => ({
-                time: moment.utc(time).valueOf(),
-                ...count
-            }))
-        ));
+    const fetchCallGrouped = (start, end, interval) =>
+        fetch(`https://opxhub-ui.us-east-1.prod.expedia.com/v1/bookings/count/group${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval)}&group_by=brands`)
+            .then(checkResponse)
+            .then((respJson) => (
+                respJson.map(({time, count}) => ({
+                    time: moment.utc(time).valueOf(),
+                    ...count
+                }))
+            ));
 
     const fetchPredictions = (start = startDateTime, end = endDateTime, interval = timeInterval) => {
         Promise.all([
@@ -227,8 +228,8 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             });
     };
 
-    const getDataByBrands = (start = startDateTime, end = endDateTime) => {
-        fetchCallGrouped(start, end)
+    const getDataByBrands = (start = startDateTime, end = endDateTime, interval = timeInterval) => {
+        fetchCallGrouped(start, end, interval)
             .then((chartData) => {
                 setError('');
                 setGroupedRes(chartData);
@@ -245,7 +246,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
         if (type === 'bookingData') {
             getRealTimeData();
             fetchPredictions(startTime(), endTime(), timeInterval);
-            getDataByBrands(startTime(), endTime());
+            getDataByBrands(startTime(), endTime(), timeInterval);
             setStartDateTime(startTime());
             setEndDateTime(endTime());
         } else if (type === 'incidents') {
@@ -357,7 +358,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
                 intervalForAnomalies = setIntervalForRealTimeData(anomalyTimeInterval, 'anomaly');
                 getData(startTime(), endTime(), timeInterval);
-                getDataByBrands(startTime(), endTime());
+                getDataByBrands(startTime(), endTime(), timeInterval);
                 fetchIncidents(startTime(), endTime());
                 fetchHealth();
                 fetchAnomalies(startTime(), endTime());

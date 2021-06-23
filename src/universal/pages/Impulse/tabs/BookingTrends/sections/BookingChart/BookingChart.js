@@ -189,7 +189,11 @@ const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSlic
 
     return (
         <div className="bookings-container-box">
-            <div className="reset-div">
+            <div className="reset-div"
+                title={daysDifference === 3
+                    ? 'Click to reset graph to default 3 day date time range (Disabled as default range is selected) '
+                    : 'Click to reset graph to default 3 day date time range'}
+            >
                 <button
                     type="button"
                     className={'btn btn-default reset-btn'}

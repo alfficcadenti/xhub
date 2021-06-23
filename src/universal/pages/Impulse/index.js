@@ -299,6 +299,9 @@ const Impulse = (props) => {
                     setTableData={setTableData}
                     anomalies={enableAnomalies ? anomaliesData : []}
                     setAnomalyTableData={setAnomalyTableData}
+                    timeInterval={timeInterval}
+                    setTimeInterval={setTimeInterval}
+                    setTimeIntervalOpts={setTimeIntervalOpts}
                 />);
             default:
                 return (<BookingTrends
@@ -325,7 +328,7 @@ const Impulse = (props) => {
         ))
     );
     const renderTimeInterval = (interval, presets, onChange) => (
-        <div className="time-interval">
+        <div className="time-interval" title="Time interval dropdown selector">
             <Dropdown
                 id="time-interval-dropdown"
                 label={interval ? interval : 'Time Interval'}
@@ -337,7 +340,7 @@ const Impulse = (props) => {
         </div>
     );
     const renderMultiSelectFilters = (value, options, key, placeholder, className) => {
-        return (<div className={className}>
+        return (<div className={className} title={`Multi select ${key} from dropdown`}>
             <Select
                 isMulti
                 styles={customStyles}
@@ -376,7 +379,7 @@ const Impulse = (props) => {
                 <h1 className="page-title">{'Impulse Dashboard'}</h1>
                 <div className="right-header">
                     {sourceLatency || sourceLatency === 0 ? renderHealthCheck() : ''}
-                    {!chartSliced && daysDifference === 3 && (moment().diff(moment(endDateTime), 'days') === 0) ? <div className="refresh-switch">
+                    {!chartSliced && daysDifference === 3 && (moment().diff(moment(endDateTime), 'days') === 0) ? <div className="refresh-switch" title="Auto refresh charts toggle switch">
                         <Switch
                             id="switch-example-small"
                             name="autoRefresh"
@@ -388,7 +391,7 @@ const Impulse = (props) => {
                     </div> : ''}
                 </div>
             </div>
-            <div className="impulse-filters-wrapper">
+            <div className="impulse-filters-wrapper" title="Date time range selector">
                 <DatetimeRangePicker
                     onChange={handleDatetimeChange}
                     startDate={startDateTime.toDate()}
@@ -404,6 +407,7 @@ const Impulse = (props) => {
                     <button
                         type="button"
                         className="apply-button btn btn-primary active"
+                        title="Click on Submit to apply changes"
                         onClick={() => {
                             setIsApplyClicked(true);
                             setDaysDifference(moment(endDateTime).diff(moment(startDateTime), 'days'));
@@ -417,30 +421,31 @@ const Impulse = (props) => {
                     <button
                         type="button"
                         className={`btn btn-default more-filters-btn ${showMoreFilters ? 'active' : ''}`}
+                        title="Click to expand and see more filters"
                         onClick={handleShowMoreFilters}
                     >
                         <SVGIcon usefill markup={FILTER__16}/>{'Advance Filters'}
                     </button>
-                    <Checkbox
-                        name="incidents-сheckbox"
-                        label="Booking Impacting INCs"
-                        checked={enableIncidents}
-                        onChange={handleEnableIncidentChange}
-                        size="sm"
-                        className="incidents-сheckbox"
-                    />
-                    <div className="filter-option" onClick={() => setShowMoreFilters(false)}>
+                    <div className="filter-option" title="Toggle checkbox to enable/ disable incidents category selector" onClick={() => setShowMoreFilters(false)}>
+                        <Checkbox
+                            name="incidents-сheckbox"
+                            label="Booking Impacting INCs"
+                            checked={enableIncidents}
+                            onChange={handleEnableIncidentChange}
+                            size="sm"
+                            className="incidents-сheckbox"
+                        />
                         {enableIncidents ? renderMultiSelectFilters(selectedIncidentMulti, incidentMulti, 'incidentCategory', ALL_INCIDENTS, filterSelectionClass) : null}
                     </div>
-                    <Checkbox
-                        name="Anomalies-сheckbox"
-                        label="Anomalies"
-                        checked={enableAnomalies}
-                        onChange={handleEnableAnomalyChange}
-                        size="sm"
-                        className="incidents-сheckbox"
-                    />
-                    <div className="filter-option" onClick={() => setShowMoreFilters(false)}>
+                    <div className="filter-option" title="Toggle checkbox to enable/ disable anomalies category selector" onClick={() => setShowMoreFilters(false)}>
+                        <Checkbox
+                            name="Anomalies-сheckbox"
+                            label="Anomalies"
+                            checked={enableAnomalies}
+                            onChange={handleEnableAnomalyChange}
+                            size="sm"
+                            className="incidents-сheckbox"
+                        />
                         {enableAnomalies ? renderMultiSelectFilters(selectedAnomaliesMulti, anomaliesMulti, 'anomaliesCategory', ALL_ANOMALIES, filterSelectionClass) : null}
                     </div>
                 </div>
