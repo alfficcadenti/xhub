@@ -4,7 +4,8 @@ import {
     getQueryValues,
     getUrlParam,
     mapActiveIndexToTabName,
-    getActiveIndex
+    getActiveIndex,
+    mapTickets
 } from '../utils';
 import {
     ALL_STATUSES_OPTION,
@@ -14,6 +15,7 @@ import {
     ALL_RC_OWNERS_OPTION,
     ALL_RC_CATEGORIES_OPTION
 } from '../../../constants';
+import {mockTicket, mockMappedTicket} from './mockTickets';
 
 describe('PRB Utils', () => {
     it('getQueryValues - default', () => {
@@ -105,5 +107,9 @@ describe('PRB Utils', () => {
         expect(mapActiveIndexToTabName(1)).to.equal('tickets');
         expect(mapActiveIndexToTabName(2)).to.equal('corrective-actions');
         expect(mapActiveIndexToTabName()).to.equal('overview');
+    });
+
+    it('mapTickets', () => {
+        expect(mapTickets(mockTicket)).to.be.eql(mockMappedTicket);
     });
 });

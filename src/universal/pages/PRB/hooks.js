@@ -1,75 +1,14 @@
 /* eslint-disable no-unused-vars */
-import React, {useState, useEffect} from 'react';
+import {useState, useEffect} from 'react';
 import moment from 'moment';
-import DataTable from '../../components/DataTable';
 import {isNotEmptyString, isNotDuplicate, checkResponse, sortArrayByMostRecentDate} from '../utils';
+import {mapTickets} from './utils';
 
 const getListOfUniqueProperties = (tickets = [], prop) => tickets
     .map((ticket) => ticket[prop])
     .filter(isNotDuplicate)
     .filter(isNotEmptyString)
     .sort();
-
-const mapLinkedIssues = (i) => {
-    const linkedIssues = (i.linkedIssues || []).map((l) => ({
-        Ticket: `<a href="https://jira.expedia.biz/browse/${l.id}" target="_blank">${l.id}</a>`,
-        Summary: l.summary,
-        Status: l.status,
-        Assignee: l.assignee || '-'
-    }));
-    return ({
-        Ticket: `<a href="https://jira.expedia.biz/browse/${i.id}" target="_blank">${i.id}</a>`,
-        Summary: i.summary,
-        'Issue Type': i.issueType,
-        Status: i.status,
-        Assignee: i.assignee || '-',
-        'Linked Issues': !linkedIssues.length
-            ? null
-            : (
-                <>
-                    <b>{'Dev Tasks'}</b>
-                    <DataTable
-                        className="linked-issues__nested-table"
-                        data={linkedIssues}
-                        columns={['Ticket', 'Summary', 'Status', 'Assignee']}
-                    />
-                </>
-            )
-    });
-};
-
-// eslint-disable-next-line complexity
-const mapTickets = (t) => {
-    const linkedIssues = (t.linkedIssues || []).map(mapLinkedIssues);
-    return ({
-        Ticket: `<a href="https://jira.expedia.biz/browse/${t.id}" target="_blank">${t.id}</a>`,
-        Priority: t.priority,
-        Opened: !t.createdDate ? '-' : moment(t.createdDate).format('YYYY-MM-DD HH:mm'),
-        'Epic Name': t.summary,
-        'Owning Org': t.owningOrganization,
-        'RC Owner': t.rootCauseOwner,
-        'RC Category': t.rootCauseCategory && t.rootCauseCategory.length
-            ? t.rootCauseCategory[0]
-            : '-',
-        Status: t.status,
-        linkedIssues, // for filtering purposes
-        brandsAffected: t.brandsAffected ? t.brandsAffected.split(',') : [],
-        linesOfBusinessImpacted: t.linesOfBusinessImpacted,
-        'Linked Issues': !linkedIssues.length
-            ? null
-            : (
-                <>
-                    <h3>{'Linked Issues'}</h3>
-                    <DataTable
-                        className="linked-issues__table"
-                        data={linkedIssues}
-                        columns={['Ticket', 'Summary', 'Issue Type', 'Status', 'Assignee']}
-                        expandableColumns={['Linked Issues']}
-                    />
-                </>
-            )
-    });
-};
 
 export const useFetchTickets = (
     isApplyClicked,
@@ -131,12 +70,6 @@ export const useFetchTickets = (
 
         return () => {
             setIsApplyClicked(false);
-            setCurrentPriorities(['1-Critical', '2-High', '3-Medium', '4-Low']); // TODO hardcoded
-            setCurrentStatuses(['To Do', 'In Progress', 'Done', 'Resolved', 'Testing', 'Closed']); // TODO hardcoded
-            setCurrentTypes(['Corrective Action', 'Epic', 'Incident', 'Post Mortem', 'Resiliency Validation']); // TODO hardcoded
-            setCurrentOrgs(['Egencia', 'Platform & Marketplaces']); // TODO hardcoded
-            setCurrentRcOwners(['EWE - Air Development', 'Egencia - Hotel Shopping']); // TODO hardcoded
-            setCurrentRcCategories(['Architectural']);
         };
     }, [isApplyClicked]);
 

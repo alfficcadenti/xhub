@@ -65,12 +65,12 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [isDirtyForm, setIsDirtyForm] = useState(false);
 
     const [isApplyClicked, setIsApplyClicked] = useState(false);
-    const [currentPriorities, setCurrentPriorities] = useState(['1-Critical', '2-High', '3-Medium', '4-Low']);
-    const [currentStatuses, setCurrentStatuses] = useState(['To Do', 'In Progress', 'Done', 'Resolved', 'Testing', 'Closed']);
+    const [currentPriorities, setCurrentPriorities] = useState([]);
+    const [currentStatuses, setCurrentStatuses] = useState([]);
     const [currentTypes, setCurrentTypes] = useState(['Corrective Action', 'Epic', 'Incident', 'Post Mortem', 'Resiliency Validation']);
-    const [currentOrgs, setCurrentOrgs] = useState(['Egencia', 'Platform & Marketplaces']);
-    const [currentRcOwners, setCurrentRcOwners] = useState(['EWE - Air Development', 'Egencia - Hotel Shopping']);
-    const [currentRcCategories, setCurrentRcCategories] = useState(['Architectural']);
+    const [currentOrgs, setCurrentOrgs] = useState([]);
+    const [currentRcOwners, setCurrentRcOwners] = useState([]);
+    const [currentRcCategories, setCurrentRcCategories] = useState([]);
 
     const [filteredTickets, setFilteredTickets] = useState([]);
 
