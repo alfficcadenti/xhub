@@ -34,7 +34,7 @@ let intervalForAnnotations = null;
 let intervalForHealth = null;
 let intervalForAnomalies = null;
 
-export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTime, endDateTime, globalBrandName, prevBrand, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, chartSliced, setChartSliced, isAutoRefresh) => {
+export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTime, endDateTime, globalBrandName, prevBrand, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, chartSliced, setChartSliced, isAutoRefresh, setStartDateTime, setEndDateTime, timeInterval) => {
     const [res, setRes] = useState([]);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(true);
@@ -149,7 +149,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 console.error(err);
             });
     };
-    const fetchCall = (start, end) => fetch(`https://opxhub-ui.us-east-1.prod.expedia.com/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`)
+    const fetchCall = (start, end, interval) => fetch(`https://opxhub-ui.us-east-1.prod.expedia.com/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval)}`)
         .then(checkResponse)
         .then((respJson) => {
             const chartData = respJson.map((item) => {
@@ -162,10 +162,10 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             return chartData;
         });
 
-    const fetchPredictions = (start = startDateTime, end = endDateTime) => {
+    const fetchPredictions = (start = startDateTime, end = endDateTime, interval = timeInterval) => {
         Promise.all([
-            fetch(`https://opxhub-ui.us-east-1.prod.expedia.com/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`).then(checkResponse),
-            fetch(`https://opxhub-ui.us-east-1.prod.expedia.com/v1/impulse/prediction${getQueryStringPrediction(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`).then(checkResponse)
+            fetch(`https://opxhub-ui.us-east-1.prod.expedia.com/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval)}`).then(checkResponse),
+            timeInterval === '5m' ? fetch(`https://opxhub-ui.us-east-1.prod.expedia.com/v1/impulse/prediction${getQueryStringPrediction(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`).then(checkResponse) : []
         ]).then(([bookingsData, predictionData]) => {
             const simplifiedBookingsData = simplifyBookingsData(bookingsData);
             const simplifiedPredictionData = simplifyPredictionData(predictionData);
@@ -203,7 +203,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
     };
 
     const getRealTimeData = () => {
-        fetchCall(startTime(), endTime())
+        fetchCall(startTime(), endTime(), timeInterval)
             .then((chartData) => {
                 setError('');
                 setRes(chartData);
@@ -216,10 +216,12 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             });
     };
 
-    const setIntervalForRealTimeData = (timeInterval, type) => setInterval(() => {
+    const setIntervalForRealTimeData = (interval, type) => setInterval(() => {
         if (type === 'bookingData') {
             getRealTimeData();
-            fetchPredictions(startTime(), endTime());
+            fetchPredictions(startTime(), endTime(), timeInterval);
+            setStartDateTime(startTime());
+            setEndDateTime(endTime());
         } else if (type === 'incidents') {
             fetchIncidents();
         } else if (type === 'health') {
@@ -227,11 +229,11 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
         } else if (type === 'anomaly') {
             fetchAnomalies();
         }
-    }, timeInterval);
+    }, interval);
 
-    const getData = (start = startDateTime, end = endDateTime) => {
+    const getData = (start = startDateTime, end = endDateTime, interval = timeInterval) => {
         setIsLoading(true);
-        fetchCall(start, end)
+        fetchCall(start, end, interval)
             .then((chartData) => {
                 setError('');
                 setRes(chartData);
@@ -325,11 +327,11 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
                 intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
                 intervalForAnomalies = setIntervalForRealTimeData(anomalyTimeInterval, 'anomaly');
-                getData(startTime(), endTime());
+                getData(startTime(), endTime(), timeInterval);
                 fetchIncidents(startTime(), endTime());
                 fetchHealth();
                 fetchAnomalies(startTime(), endTime());
-                fetchPredictions(startTime(), endTime());
+                fetchPredictions(startTime(), endTime(), timeInterval);
             }
         } else {
             initialMount = true;

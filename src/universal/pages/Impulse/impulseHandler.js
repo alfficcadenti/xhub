@@ -65,13 +65,14 @@ export const getColor = (anomaly) => {
     return UPSTREAM_UNHEALTHY_COLOR;
 };
 
-export const getQueryString = (start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti) => (
+export const getQueryString = (start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval) => (
     `?start_time=${start.format('YYYY-MM-DDTHH:mm:ss')}Z&end_time=${end.format('YYYY-MM-DDTHH:mm:ss')}Z`
     + `${getQueryParamMulti('point_of_sales', selectedSiteURLMulti)}`
     + `${getQueryParamMulti('lobs', selectedLobMulti)}`
     + `${getQueryParamMulti('brands', selectedBrandMulti)}`
     + `${getQueryParamMulti('device_types', selectedDeviceTypeMulti)}`
     + `${getBrandQueryParam(IMPULSE_MAPPING, globalBrandName)}`
+    + `&time_interval=${interval}`
 );
 
 export const getQueryStringPrediction = (start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti) => (
