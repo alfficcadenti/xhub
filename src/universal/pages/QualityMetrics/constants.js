@@ -1,7 +1,7 @@
 import React from 'react';
 import Tooltip from '@homeaway/react-tooltip';
 
-export const PORTFOLIOS = [
+export const HCOM_PORTFOLIOS = [
     {
         text: 'Checkout',
         value: 'checkout',
@@ -39,6 +39,34 @@ export const PORTFOLIOS = [
         text: 'Pricing',
         value: 'pricing',
         projects: ['PDI', 'DMI', 'HCR']
+    }
+];
+
+export const VRBO_PORTFOLIOS = [
+    {
+        text: 'Vrbo Retail - Tech Enablers',
+        value: 'techenabler',
+        projects: ['UITK', 'COREAPI']
+    }, {
+        text: 'Vrbo Retail - Growth Tech',
+        value: 'growthtech',
+        projects: ['Vrbo Growth Tech']
+    }, {
+        text: 'Vrbo Retail - Stay & GX',
+        value: 'staygx',
+        projects: ['TM', 'SE', 'SHCMP', 'GX', 'GXTRNZ', 'CAMS', 'LOC', 'CAMSUP']
+    }, {
+        text: 'Vrbo Retail - Core Experiences',
+        value: 'coreexperience',
+        projects: ['CHK', 'HAVAS', 'FRIENDS', 'VPCM', 'VPCS', 'SHOP', 'Vrbo-Geo', 'GEODEV', 'VRBODISCO']
+    }, {
+        text: 'P&M',
+        value: 'pm',
+        projects: ['Identity-Auth', 'Identity-Profile']
+    }, {
+        text: 'TPG',
+        value: 'tpg',
+        projects: ['YBIDEV', 'PX - Properties', 'Reservation Manager', 'PXO', 'PX - Core', 'Partner Reviews', 'Mobile - Android Owner', 'Mobile - iOS Owner', 'Partner Hospitality']
     }
 ];
 

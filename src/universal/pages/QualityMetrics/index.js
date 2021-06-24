@@ -7,14 +7,14 @@ import LoadingContainer from '../../components/LoadingContainer';
 import HelpText from '../../components/HelpText/HelpText';
 import {OPXHUB_SUPPORT_CHANNEL} from '../../constants';
 import {DurationPanel, TwoDimensionalPanel, CreatedVsResolvedPanel, PiePanel} from './Panels';
-import {PORTFOLIOS, P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL} from './constants';
-import {getQueryValues, getPortfolioBrand, getPanelDataUrl} from './utils';
+import {P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL} from './constants';
+import {getBrandPortfolios, getQueryValues, getPortfolioBrand, getPanelDataUrl} from './utils';
 import './styles.less';
 
 const QualityMetrics = ({selectedBrands}) => {
     const history = useHistory();
     const {search} = useLocation();
-    const {initialPortfolios} = getQueryValues(search);
+    const {initialPortfolios} = getQueryValues(search, selectedBrands);
 
     const [isSupportedBrand, setIsSupportedBrand] = useState(true);
     const [portfolioBrand, setPortfolioBrand] = useState(getPortfolioBrand(selectedBrands));
@@ -38,9 +38,11 @@ const QualityMetrics = ({selectedBrands}) => {
     const [pieDataError, setPieDataError] = useState();
 
     useEffect(() => {
-        setPortfolioBrand(getPortfolioBrand(selectedBrands));
-        setIsSupportedBrand(portfolioBrand === 'HCOM');
-        if (!selectedPortfolios.length || portfolioBrand !== 'HCOM') {
+        const currPortfolioBrand = getPortfolioBrand(selectedBrands);
+        const brandSupported = ['HCOM', 'VRBO'].includes(currPortfolioBrand);
+        setPortfolioBrand(currPortfolioBrand);
+        setIsSupportedBrand(brandSupported);
+        if (!brandSupported) {
             return;
         }
         setIsLoading(true);
@@ -67,26 +69,28 @@ const QualityMetrics = ({selectedBrands}) => {
                 setTdDataError(e.message);
                 setIsTdDataLoading(false);
             });
-        fetch(getPanelDataUrl(selectedPortfolios, portfolioBrand, 'createdVsResolved'))
-            .then((data) => data.json())
-            .then((response) => {
-                setCvrData(response.data || {});
-                setIsCvrDataLoading(false);
-            })
-            .catch((e) => {
-                setCvrDataError(e.message);
-                setIsCvrDataLoading(false);
-            });
-        fetch(getPanelDataUrl(selectedPortfolios, portfolioBrand, 'piecharts'))
-            .then((data) => data.json())
-            .then((response) => {
-                setPieData(response.data || {});
-                setIsPieDataLoading(false);
-            })
-            .catch((e) => {
-                setPieDataError(e.message);
-                setIsPieDataLoading(false);
-            });
+        if (portfolioBrand === 'HCOM') {
+            fetch(getPanelDataUrl(selectedPortfolios, portfolioBrand, 'createdVsResolved'))
+                .then((data) => data.json())
+                .then((response) => {
+                    setCvrData(response.data || {});
+                    setIsCvrDataLoading(false);
+                })
+                .catch((e) => {
+                    setCvrDataError(e.message);
+                    setIsCvrDataLoading(false);
+                });
+            fetch(getPanelDataUrl(selectedPortfolios, portfolioBrand, 'piecharts'))
+                .then((data) => data.json())
+                .then((response) => {
+                    setPieData(response.data || {});
+                    setIsPieDataLoading(false);
+                })
+                .catch((e) => {
+                    setPieDataError(e.message);
+                    setIsPieDataLoading(false);
+                });
+        }
     }, [history, portfolioBrand, selectedBrands, selectedPortfolios]);
 
     const handlePortfoliosChange = (portfolio) => {
@@ -132,7 +136,7 @@ const QualityMetrics = ({selectedBrands}) => {
         <div className="search-form">
             <div className="form-container">
                 <div className="checkboxes-container">
-                    {PORTFOLIOS.map(renderPortfolioCheckbox)}
+                    {getBrandPortfolios(portfolioBrand).map(renderPortfolioCheckbox)}
                 </div>
             </div>
             <div className="actions-container">
@@ -164,7 +168,7 @@ const QualityMetrics = ({selectedBrands}) => {
         </div>
     );
 
-    const renderPanels = () => (
+    const renderHcomPanels = () => (
         <div className="panels-container">
             <LoadingContainer isLoading={isLoading} error={error}>
                 <TwoDimensionalPanel
@@ -177,6 +181,7 @@ const QualityMetrics = ({selectedBrands}) => {
                     isLoading={isTdDataLoading}
                     error={tdDataError}
                     groupBy="Portfolio"
+                    portfolioBrand={portfolioBrand}
                 />
                 <TwoDimensionalPanel
                     title="Open Bugs"
@@ -187,6 +192,7 @@ const QualityMetrics = ({selectedBrands}) => {
                     dataKey="openBugs"
                     isLoading={isTdDataLoading}
                     error={tdDataError}
+                    portfolioBrand={portfolioBrand}
                 />
                 <DurationPanel
                     title="Mean Time to Resolve by Portfolio"
@@ -221,6 +227,42 @@ const QualityMetrics = ({selectedBrands}) => {
         </div>
     );
 
+    const renderVrboPanels = () => (
+        <div className="panels-container">
+            <LoadingContainer isLoading={isLoading} error={error}>
+                <TwoDimensionalPanel
+                    title="Open Bugs By Portfolio"
+                    info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived' by portfolio"
+                    tickets={tickets}
+                    data={tdData}
+                    portfolios={selectedPortfolios}
+                    dataKey="openBugs"
+                    isLoading={isTdDataLoading}
+                    error={tdDataError}
+                    groupBy="Portfolio"
+                    portfolioBrand={portfolioBrand}
+                />
+                <TwoDimensionalPanel
+                    title="Open Bugs"
+                    info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived'"
+                    tickets={tickets}
+                    data={tdData}
+                    portfolios={selectedPortfolios}
+                    dataKey="openBugs"
+                    isLoading={isTdDataLoading}
+                    error={tdDataError}
+                    portfolioBrand={portfolioBrand}
+                />
+            </LoadingContainer>
+        </div>
+    );
+
+    const renderPanels = () => (
+        (portfolioBrand === 'HCOM')
+            ? renderHcomPanels()
+            : renderVrboPanels()
+    );
+
     const renderBody = () => (
         <>
             {renderForm()}
@@ -239,7 +281,7 @@ const QualityMetrics = ({selectedBrands}) => {
             {isSupportedBrand
                 ? renderBody()
                 : <div className="messaged">{`Quality Metrics for ${selectedBrands} is not yet available.
-                    The following brands are supported at this time: "Hotels.com Retail".
+                    The following brands are supported at this time: "Hotels.com Retail", "Vrbo Retail".
                     If you have any questions, please ping ${OPXHUB_SUPPORT_CHANNEL} or leave a comment via our Feedback form.`}</div>
             }
         </div>

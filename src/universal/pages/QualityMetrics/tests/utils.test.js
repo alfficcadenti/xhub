@@ -18,8 +18,8 @@ import {
     processTwoDimensionalIssues,
     getPanelDataUrl
 } from '../utils';
-import {PORTFOLIOS, P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL, NOT_PRIORITIZED_LABEL} from '../constants';
-import {HOTELS_COM_BRAND, EXPEDIA_BRAND, DATE_FORMAT} from '../../../constants';
+import {HCOM_PORTFOLIOS, VRBO_PORTFOLIOS, P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL, NOT_PRIORITIZED_LABEL} from '../constants';
+import {HOTELS_COM_BRAND, VRBO_BRAND, EXPEDIA_BRAND, DATE_FORMAT} from '../../../constants';
 
 describe('Quality Metrics Util', () => {
     it('getPortfolioBrand', () => {
@@ -28,9 +28,13 @@ describe('Quality Metrics Util', () => {
     });
 
     it('getQueryValues', () => {
-        const portfolios = ['kes'];
-        expect(getQueryValues(`https://localhost:8080/quality-metrics?selectedBrand=${HOTELS_COM_BRAND}&portfolios=${portfolios.toString()}`)).to.be.eql({
-            initialPortfolios: portfolios.map((p) => PORTFOLIOS.find(({value}) => p === value))
+        const hcomPortfolios = ['kes'];
+        expect(getQueryValues(`https://localhost:8080/quality-metrics?selectedBrand=${HOTELS_COM_BRAND}&portfolios=${hcomPortfolios.toString()}`, 'HCOM')).to.be.eql({
+            initialPortfolios: hcomPortfolios.map((p) => HCOM_PORTFOLIOS.find(({value}) => p === value))
+        });
+        const vrboPortfolios = ['pm'];
+        expect(getQueryValues(`https://localhost:8080/quality-metrics?selectedBrand=${VRBO_BRAND}&portfolios=${vrboPortfolios.toString()}`, 'VRBO')).to.be.eql({
+            initialPortfolios: vrboPortfolios.map((p) => VRBO_PORTFOLIOS.find(({value}) => p === value))
         });
     });
 
@@ -229,7 +233,7 @@ describe('Quality Metrics Util', () => {
             'iOS Engagement': {p1: 1, notPrioritized: 1, totalTickets: 2, ticketIds: ['ENG-0001', 'ENG-0002']},
             'Kes': {p1: 1, p2: 1, p4: 1, p5: 2, totalTickets: 5, ticketIds: ['KES-0001', 'KES-0002', 'KES-0003', 'KES-0004', 'KES-0005']},
         };
-        const result = groupDataByPillar(data, [{text: 'Mobile'}, {text: 'Kes'}]);
+        const result = groupDataByPillar(data, [{text: 'Mobile'}, {text: 'Kes'}], 'HCOM');
         expect(result.Mobile).to.eql({
             p1: 1, p4: 2, notPrioritized: 2, totalTickets: 5, ticketIds: ['AND-0001', 'AND-0002', 'AND-0003', 'ENG-0001', 'ENG-0002']
         });
