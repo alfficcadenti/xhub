@@ -317,16 +317,6 @@ const Impulse = (props) => {
                 />);
         }
     };
-    const renderTimeIntervalPresets = (presets, onChange) => (
-        presets.map((d) => (
-            <DropdownItem
-                key={d}
-                link="#"
-                text={d}
-                onClick={() => onChange(d)}
-            />
-        ))
-    );
     const renderTimeInterval = (interval, presets, onChange) => (
         <div className="time-interval" title="Time interval dropdown selector">
             <Dropdown
@@ -335,7 +325,14 @@ const Impulse = (props) => {
                 className="time-interval-dropdown"
                 closeAfterContentClick
             >
-                {renderTimeIntervalPresets(presets, onChange)}
+                {presets.map((d) => (
+                    <DropdownItem
+                        key={d}
+                        link="#"
+                        text={d}
+                        onClick={() => onChange(d)}
+                    />
+                ))}
             </Dropdown>
         </div>
     );

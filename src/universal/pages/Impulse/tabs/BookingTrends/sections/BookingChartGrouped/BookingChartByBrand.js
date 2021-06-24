@@ -71,22 +71,23 @@ const BookingChartByBrand = ({data = [], setStartDateTime, setEndDateTime, setCh
         if (moment(refAreaLeft).isAfter(refAreaRight)) {
             [nextRefAreaLeft, nextRefAreaRight] = [refAreaRight, refAreaLeft];
         }
-
+        const leftMomentUtc = moment(nextRefAreaLeft).utc();
+        const rightMomentUtc = moment(nextRefAreaRight).utc();
         setRefAreaLeft('');
         setRefAreaRight('');
         setLeft(nextRefAreaLeft);
         setRight(nextRefAreaRight);
-        setStartDateTime(moment(nextRefAreaLeft).utc());
-        setEndDateTime(moment(nextRefAreaRight).utc());
+        setStartDateTime(leftMomentUtc);
+        setEndDateTime(rightMomentUtc);
         setChartSliced(true);
-        setDaysDifference(moment(nextRefAreaRight).utc().diff(moment(nextRefAreaLeft).utc(), 'days'));
+        setDaysDifference(rightMomentUtc.diff(leftMomentUtc, 'days'));
         setTableData([]);
-        if (!isValidTimeInterval(moment(nextRefAreaLeft).utc(), moment(nextRefAreaRight).utc(), timeInterval)) {
-            const newInterval = getDefaultTimeInterval(moment(nextRefAreaLeft).utc(), moment(nextRefAreaRight).utc());
+        if (!isValidTimeInterval(leftMomentUtc, rightMomentUtc, timeInterval)) {
+            const newInterval = getDefaultTimeInterval(leftMomentUtc, rightMomentUtc);
             setTimeInterval(newInterval);
-            setTimeIntervalOpts(getTimeIntervals(moment(nextRefAreaLeft).utc(), moment(nextRefAreaRight).utc(), newInterval));
+            setTimeIntervalOpts(getTimeIntervals(leftMomentUtc, rightMomentUtc, newInterval));
         } else {
-            setTimeIntervalOpts(getTimeIntervals(moment(nextRefAreaLeft).utc(), moment(nextRefAreaRight).utc(), timeInterval));
+            setTimeIntervalOpts(getTimeIntervals(leftMomentUtc, rightMomentUtc, timeInterval));
         }
     };
 

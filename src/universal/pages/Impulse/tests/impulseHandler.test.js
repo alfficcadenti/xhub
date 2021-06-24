@@ -5,7 +5,13 @@ import {
     getBrandQueryParam,
     getQueryString,
     getRevLoss,
-    getActiveIndex, mapActiveIndexToTabName, isValidTimeInterval, getTimeIntervals, getDefaultTimeInterval, getCategory
+    getActiveIndex,
+    mapActiveIndexToTabName,
+    isValidTimeInterval,
+    getTimeIntervals,
+    getDefaultTimeInterval,
+    getCategory,
+    simplifyBookingsData, simplifyPredictionData
 } from '../impulseHandler';
 import moment from 'moment';
 
@@ -155,6 +161,16 @@ describe('impulseHandler', () => {
         });
         it('should return Upstream Unhealthy when state is IMPULSE_ALERT_RECOVERED', () => {
             expect(getCategory({state: 'IMPULSE_ALERT_RECOVERED', isLatencyHealthy: true})).eql('Anomaly Recovered');
+        });
+    });
+    describe('get simplify booking data', () => {
+        it('return empty object', () => {
+            expect(simplifyBookingsData([])).eql([]);
+        });
+    });
+    describe('get simplify prediction data', () => {
+        it('return empty object', () => {
+            expect(simplifyPredictionData([])).eql([]);
         });
     });
 });

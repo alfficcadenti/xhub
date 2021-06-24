@@ -142,26 +142,23 @@ export const getDefaultTimeInterval = (startDate, endDate) => {
 
 
 export const getTimeIntervals = (startDate, endDate, timeInterval) => {
+    const filterCurrentInterval = (item) => item !== timeInterval;
     const diff = moment(endDate).diff(moment(startDate), 'days');
     if (diff <= 1) {
-        return ['1m', '5m', '15m', '30m', '1h'].filter((item) => item !== timeInterval);
+        return ['1m', '5m', '15m', '30m', '1h'].filter(filterCurrentInterval);
     } else if (diff > 1 && diff <= 7) {
-        return ['5m', '15m', '30m', '1h'].filter((item) => item !== timeInterval);
+        return ['5m', '15m', '30m', '1h'].filter(filterCurrentInterval);
     } else if (diff > 7 && diff <= 31) {
-        return ['15m', '30m', '1h', '1d'].filter((item) => item !== timeInterval);
+        return ['15m', '30m', '1h', '1d'].filter(filterCurrentInterval);
     } else if (diff > 31 && diff <= 120) {
-        return ['1h', '1d', '1w'].filter((item) => item !== timeInterval);
+        return ['1h', '1d', '1w'].filter(filterCurrentInterval);
     }
-    return ['1d', '1w'].filter((item) => item !== timeInterval);
+    return ['1d', '1w'].filter(filterCurrentInterval);
 };
 
-export const isValidTimeInterval = (startDate, endDate, timeInterval) => {
-    if (!timeInterval || !startDate || !endDate) {
-        return false;
-    }
-    const allowedIntervals = getTimeIntervals(startDate, endDate);
-    return allowedIntervals.includes(timeInterval);
-};
+export const isValidTimeInterval = (startDate, endDate, timeInterval) => (
+    !!timeInterval && !!startDate && !!endDate && getTimeIntervals(startDate, endDate).includes(timeInterval)
+);
 
 // eslint-disable-next-line complexity
 export const getQueryValues = (search) => {
@@ -175,7 +172,7 @@ export const getQueryValues = (search) => {
         initialStart: initStart,
         initialEnd: initEnd,
         initialInterval: isValidInterval ? interval : getDefaultTimeInterval(initStart, initEnd),
-        initialAutoRefresh: refresh ? refresh !== 'false' : true,
+        initialAutoRefresh: refresh === null || refresh !== 'false',
         initialBrands: brands ? brands.split(',').filter((item) => BRANDS.includes(item)) : [],
         initialLobs: lobs ? lobs.split(',').filter((item) => LOBS.includes(item)) : [],
         initialEgSiteUrls: siteUrls ? siteUrls.split(',').filter((item) => EG_SITE_URLS.includes(item)) : [],
