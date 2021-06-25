@@ -30,6 +30,16 @@ const navLinks = [
         id: 'by_brands',
         label: 'By Brands',
         href: '/impulse'
+    },
+    {
+        id: 'by_lobs',
+        label: 'By Lobs',
+        href: '/impulse'
+    },
+    {
+        id: 'by_SiteUrl',
+        label: 'By SiteUrl',
+        href: '/impulse'
     }
 ];
 
@@ -84,6 +94,8 @@ const Impulse = (props) => {
     const [activeIndex, setActiveIndex] = useState(getActiveIndex(pathname));
     const [allDataByBrands, setAllDataByBrand] = useState([]);
 
+    const [allDataByPos, setAllDataByPos] = useState([]);
+
     useQueryParamChange(newBrand, props.onBrandChange);
     useSelectedBrand(newBrand, props.onBrandChange, props.prevSelectedBrand);
     const handleNavigationClick = (e, activeLinkIndex) => {
@@ -107,7 +119,8 @@ const Impulse = (props) => {
         sourceLatency,
         anomaliesMulti,
         anomalies,
-        groupedRes] = useFetchBlipData(
+        groupedRes,
+        groupedResByPos] = useFetchBlipData(
         isApplyClicked,
         setIsApplyClicked,
         startDateTime,
@@ -211,13 +224,14 @@ const Impulse = (props) => {
         setFilterAllData([...res]);
 
         setAllDataByBrand([...groupedRes]);
+        setAllDataByPos([...groupedResByPos]);
 
         setAnnotationsMulti(annotations);
         filterAnnotationsOnBrand();
 
         setAnomaliesData(anomalies);
         filterAnomalies(selectedAnomaliesMulti);
-    }, [res, annotations, anomalies, groupedRes]);
+    }, [res, annotations, anomalies, groupedRes, groupedResByPos]);
     const customStyles = {
         control: (base) => ({
             ...base,
@@ -275,7 +289,34 @@ const Impulse = (props) => {
                     setTableData={setTableData}
                     anomalies={enableAnomalies ? anomaliesData : []}
                     setAnomalyTableData={setAnomalyTableData}
+                    activeIndex={activeIndex}
                 />);
+            case 2:
+                return (<BookingChartByBrand
+                    data={allDataByBrands}
+                    setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
+                    setChartSliced={setChartSliced}
+                    setDaysDifference={setDaysDifference}
+                    daysDifference={daysDifference}
+                    setTableData={setTableData}
+                    anomalies={enableAnomalies ? anomaliesData : []}
+                    setAnomalyTableData={setAnomalyTableData}
+                    activeIndex={activeIndex}
+                />);
+            case 3:
+                return (allDataByPos.length > 0
+                    ? <BookingChartByBrand
+                        data={allDataByPos}
+                        setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
+                        setChartSliced={setChartSliced}
+                        setDaysDifference={setDaysDifference}
+                        daysDifference={daysDifference}
+                        setTableData={setTableData}
+                        anomalies={enableAnomalies ? anomaliesData : []}
+                        setAnomalyTableData={setAnomalyTableData}
+                        activeIndex={activeIndex}
+                    />
+                    : 'Kindly select 1 or more point of sales to display graph');
             default:
                 return (<BookingTrends
                     data={allData}

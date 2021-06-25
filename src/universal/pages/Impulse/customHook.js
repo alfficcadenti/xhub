@@ -52,6 +52,8 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
     const [anomaliesMulti, setAnomaliesMulti] = useState({});
 
     const [groupedRes, setGroupedRes] = useState([]);
+    const [groupedResByPos, setGroupedResByPos] = useState([]);
+    const selectedSiteUrlNum = selectedSiteURLMulti.length;
 
     const incidentMultiOptions = [
         {
@@ -164,6 +166,22 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             return chartData;
         });
 
+    const fetchDataByPos = (start = startDateTime, end = endDateTime) => {
+        fetch(`/v1/bookings/count/group${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}&group_by=point_of_sales`)
+            .then(checkResponse)
+            .then((respJson) => {
+                const chartData = respJson.map(({time, count}) => ({
+                    time: moment.utc(time).valueOf(),
+                    ...count
+                }));
+                setError('');
+                setGroupedResByPos(chartData);
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    };
+
     const fetchCallGrouped = (start, end) => fetch(`/v1/bookings/count/group${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}&group_by=brands`)
         .then(checkResponse)
         .then((respJson) => (
@@ -261,6 +279,9 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             getRealTimeData();
             fetchPredictions(startTime(), endTime());
             getDataByBrands(startTime(), endTime());
+            if (selectedSiteUrlNum > 0 && selectedSiteUrlNum <= 10) {
+                fetchDataByPos(startTime(), endTime());
+            }
         } else if (type === 'incidents') {
             fetchIncidents();
         } else if (type === 'health') {
@@ -277,6 +298,13 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             intervalForAnomalies = setIntervalForRealTimeData(anomalyTimeInterval, 'anomaly');
         }
     };
+    const getDataByPos = () => {
+        if (selectedSiteUrlNum > 0 && selectedSiteUrlNum <= 10) {
+            fetchDataByPos();
+        } else {
+            setGroupedResByPos([]);
+        }
+    };
     const getPredictions = () => {
         const dayRange = moment(endDateTime).diff(moment(startDateTime), 'days');
         if (dayRange >= 1 && dayRange < 7) {
@@ -288,13 +316,15 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             setError(`Booking data for ${globalBrandName} is not yet available. The following brands are supported at this time: "Expedia", "Hotels.com Retail", and "Expedia Partner Solutions".`);
         } else {
             getDataByBrands();
+            getDataByPos();
+            getDataByLobs();
             getData();
             getFilter();
             getBrandsFilterData();
             fetchIncidents();
             fetchHealth();
             fetchAnomalies();
-            fetchPredictions();
+            getPredictions();
             intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
             intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
             intervalForHealth = setIntervalForRealTimeData(healthTimeInterval, 'health');
@@ -311,6 +341,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 setError(`Booking data for ${globalBrandName} is not yet available. The following brands are supported at this time: "Expedia", "Hotels.com Retail", and "Expedia Partner Solutions".`);
             } else {
                 getDataByBrands();
+                getDataByPos();
                 getData();
                 fetchIncidents();
                 getFilter();
@@ -332,6 +363,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
     useEffect(() => {
         if (chartSliced || isApplyClicked) {
             getDataByBrands();
+            getDataByPos();
             getData();
             fetchIncidents();
             getBrandsFilterData();
@@ -360,6 +392,11 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 fetchHealth();
                 fetchAnomalies(startTime(), endTime());
                 fetchPredictions(startTime(), endTime());
+                if (selectedSiteUrlNum > 0 && selectedSiteUrlNum <= 10) {
+                    fetchDataByPos(startTime(), endTime());
+                } else {
+                    setGroupedResByPos([]);
+                }
             }
         } else {
             initialMount = true;
@@ -390,6 +427,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
         sourceLatency,
         anomaliesMulti,
         anomalyAnnotations,
-        groupedRes
+        groupedRes,
+        groupedResByPos
     ];
 };

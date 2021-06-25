@@ -6,7 +6,7 @@ import {
     Tooltip,
     Legend,
     ResponsiveContainer,
-    ComposedChart, ReferenceArea, Area, ReferenceLine
+    ComposedChart, ReferenceArea, Area, ReferenceLine, Line
 } from 'recharts';
 import moment from 'moment';
 
@@ -14,13 +14,18 @@ import {BRANDS_CHART, CHART_COLORS} from '../../../../constants';
 import {endTime, getColor, startTime} from '../../../../impulseHandler';
 import AnomalyLabel from '../BookingChart/AnomalyLabel';
 
-const BookingChartByBrand = ({data = [], setStartDateTime, setEndDateTime, setChartSliced, daysDifference, setDaysDifference, setTableData, anomalies, setAnomalyTableData}) => {
+const BookingChartByBrand = ({data = [], setStartDateTime, setEndDateTime, setChartSliced, daysDifference, setDaysDifference, setTableData, anomalies, setAnomalyTableData, activeIndex}) => {
     const [left, setLeft] = useState('dataMin');
     const [right, setRight] = useState('dataMax');
     const [refAreaLeft, setRefAreaLeft] = useState('');
     const [refAreaRight, setRefAreaRight] = useState('');
 
     const [hiddenKeys, setHiddenKeys] = useState([]);
+
+    let POS_CHART = data.length > 0 ? Object.getOwnPropertyNames(data[0]) : [];
+    if (POS_CHART.length > 0) {
+        POS_CHART.shift();
+    }
 
     const formatDateTimeLocal = (date) => moment(date).format('MM/DD HH:mm');
 
@@ -42,6 +47,11 @@ const BookingChartByBrand = ({data = [], setStartDateTime, setEndDateTime, setCh
     const renderChart = (name, idx) => {
         const fill = `url(#${idx})`;
         return data.length && data[0].hasOwnProperty(name) ? <Area type="monotone" dataKey={name} yAxisId={1} stroke={CHART_COLORS[idx]} fillOpacity={1} fill={fill} hide = {hiddenKeys.includes(name)}/>
+            : '';
+    };
+
+    const renderLineChart = (name, idx) => {
+        return data.length && data[0].hasOwnProperty(name) ? <Line type="monotone" dataKey={name} stroke={CHART_COLORS[idx]} yAxisId={1} strokeWidth={1.5} dot={false} hide = {hiddenKeys.includes(name)}/>
             : '';
     };
 
@@ -99,6 +109,34 @@ const BookingChartByBrand = ({data = [], setStartDateTime, setEndDateTime, setCh
         );
     };
 
+    const renderGradient = () => {
+        switch (activeIndex) {
+            case 1:
+                return (
+                    <defs>
+                        {BRANDS_CHART.map(getGradient)}
+                    </defs>
+                );
+            default:
+                return ('');
+        }
+    };
+
+    const renderMultiViewPanel = () => {
+        switch (activeIndex) {
+            case 1:
+                return (
+                    BRANDS_CHART.map(renderChart)
+                );
+            case 2:
+                return (
+                    POS_CHART.map(renderLineChart)
+                );
+            default:
+                return ('');
+        }
+    };
+
     return (
         <div className="bookings-container-box">
             <div className="reset-div">
@@ -120,10 +158,8 @@ const BookingChartByBrand = ({data = [], setStartDateTime, setEndDateTime, setCh
                     onMouseUp={zoomIn}
                     cursor="crosshair"
                 >
-                    <defs>
-                        {BRANDS_CHART.map(getGradient)}
-                    </defs>
-                    {BRANDS_CHART.map(renderChart)}
+                    {renderGradient()}
+                    {renderMultiViewPanel()}
                     <XAxis allowDataOverflow type="number" scale="time" dataKey="time" tick={{fontSize: 10}} tickFormatter={formatDateTimeLocal} domain={[left, right]}/>
                     <YAxis allowDataOverflow yAxisId={1} tick={{fontSize: 10}} type="number"/>
                     <CartesianGrid strokeDasharray="3 3"/>
