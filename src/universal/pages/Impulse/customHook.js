@@ -51,8 +51,9 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
     const [anomalyAnnotations, setAnomalyAnnotations] = useState([]);
     const [anomaliesMulti, setAnomaliesMulti] = useState({});
 
-    const [groupedRes, setGroupedRes] = useState([]);
+    const [groupedResByBrands, setGroupedResByBrands] = useState([]);
     const [groupedResByPos, setGroupedResByPos] = useState([]);
+    const [groupedResByLobs, setGroupedResByLobs] = useState([]);
     const selectedSiteUrlNum = selectedSiteURLMulti.length;
 
     const incidentMultiOptions = [
@@ -166,24 +167,8 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             return chartData;
         });
 
-    const fetchDataByPos = (start = startDateTime, end = endDateTime) => {
-        fetch(`/v1/bookings/count/group${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}&group_by=point_of_sales`)
-            .then(checkResponse)
-            .then((respJson) => {
-                const chartData = respJson.map(({time, count}) => ({
-                    time: moment.utc(time).valueOf(),
-                    ...count
-                }));
-                setError('');
-                setGroupedResByPos(chartData);
-            })
-            .catch((err) => {
-                console.error(err);
-            });
-    };
-
-    const fetchCallGrouped = (start, end, interval) =>
-        fetch(`/v1/bookings/count/group${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval)}&group_by=brands`)
+    const fetchCallGrouped = (start, end, interval, groupType) =>
+        fetch(`/v1/bookings/count/group${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval)}&group_by=${groupType}`)
             .then(checkResponse)
             .then((respJson) => (
                 respJson.map(({time, count}) => ({
@@ -246,16 +231,19 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             });
     };
 
-    const getDataByBrands = (start = startDateTime, end = endDateTime, interval = timeInterval) => {
-        fetchCallGrouped(start, end, interval)
+    const getGroupedBookingsData = (groupType, start = startDateTime, end = endDateTime, interval = timeInterval) => {
+        fetchCallGrouped(start, end, interval, groupType)
             .then((chartData) => {
                 setError('');
-                setGroupedRes(chartData);
+                if (groupType === 'brands') {
+                    setGroupedResByBrands(chartData);
+                } else if (groupType === 'lobs') {
+                    setGroupedResByLobs(chartData);
+                } else if (groupType === 'point_of_sales') {
+                    setGroupedResByPos(chartData);
+                }
             })
             .catch((err) => {
-                setIsLoading(false);
-                setError('No data found for this selection.');
-                // eslint-disable-next-line no-console
                 console.error(err);
             });
     };
@@ -264,11 +252,12 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
         if (type === 'bookingData') {
             getRealTimeData();
             fetchPredictions(startTime(), endTime(), timeInterval);
-            getDataByBrands(startTime(), endTime(), timeInterval);
+            getGroupedBookingsData('brands', startTime(), endTime(), timeInterval);
+            getGroupedBookingsData('lobs', startTime(), endTime(), timeInterval);
             setStartDateTime(startTime());
             setEndDateTime(endTime());
             if (selectedSiteUrlNum > 0 && selectedSiteUrlNum <= 10) {
-                fetchDataByPos(startTime(), endTime());
+                getGroupedBookingsData('point_of_sales', startTime(), endTime(), timeInterval);
             }
         } else if (type === 'incidents') {
             fetchIncidents();
@@ -304,7 +293,8 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
     };
     const getDataByPos = () => {
         if (selectedSiteUrlNum > 0 && selectedSiteUrlNum <= 10) {
-            fetchDataByPos();
+            getGroupedBookingsData('point_of_sales');
+            //fetchDataByPos();
         } else {
             setGroupedResByPos([]);
         }
@@ -319,7 +309,8 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
         if (SUPPRESSED_BRANDS.includes(globalBrandName)) {
             setError(`Booking data for ${globalBrandName} is not yet available. The following brands are supported at this time: "Expedia", "Hotels.com Retail", and "Expedia Partner Solutions".`);
         } else {
-            getDataByBrands();
+            getGroupedBookingsData('brands');
+            getGroupedBookingsData('lobs');
             getDataByPos();
             getData();
             getFilter();
@@ -343,7 +334,8 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             if (SUPPRESSED_BRANDS.includes(globalBrandName)) {
                 setError(`Booking data for ${globalBrandName} is not yet available. The following brands are supported at this time: "Expedia", "Hotels.com Retail", and "Expedia Partner Solutions".`);
             } else {
-                getDataByBrands();
+                getGroupedBookingsData('brands');
+                getGroupedBookingsData('lobs');
                 getDataByPos();
                 getData();
                 fetchIncidents();
@@ -365,7 +357,8 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
 
     useEffect(() => {
         if (chartSliced || isApplyClicked) {
-            getDataByBrands();
+            getGroupedBookingsData('brands');
+            getGroupedBookingsData('lobs');
             getDataByPos();
             getData();
             fetchIncidents();
@@ -390,13 +383,14 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
                 intervalForAnomalies = setIntervalForRealTimeData(anomalyTimeInterval, 'anomaly');
                 getData(startTime(), endTime(), timeInterval);
-                getDataByBrands(startTime(), endTime(), timeInterval);
+                getGroupedBookingsData('brands', startTime(), endTime(), timeInterval);
+                getGroupedBookingsData('lobs', startTime(), endTime(), timeInterval);
                 fetchIncidents(startTime(), endTime());
                 fetchHealth();
                 fetchAnomalies(startTime(), endTime());
                 fetchPredictions(startTime(), endTime(), timeInterval);
                 if (selectedSiteUrlNum > 0 && selectedSiteUrlNum <= 10) {
-                    fetchDataByPos(startTime(), endTime());
+                    getGroupedBookingsData('point_of_sales', startTime(), endTime(), timeInterval);
                 } else {
                     setGroupedResByPos([]);
                 }
@@ -430,7 +424,8 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
         sourceLatency,
         anomaliesMulti,
         anomalyAnnotations,
-        groupedRes,
-        groupedResByPos
+        groupedResByBrands,
+        groupedResByPos,
+        groupedResByLobs
     ];
 };

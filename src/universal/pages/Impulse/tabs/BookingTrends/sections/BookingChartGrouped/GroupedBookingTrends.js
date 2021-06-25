@@ -10,11 +10,12 @@ import {
 } from 'recharts';
 import moment from 'moment';
 
-import {BRANDS_CHART, CHART_COLORS} from '../../../../constants';
+import {BRANDS_CHART, CHART_COLORS, LOBS_CHART} from '../../../../constants';
 import {startTime, endTime, getColor, getDefaultTimeInterval, getTimeIntervals, isValidTimeInterval} from '../../../../impulseHandler';
 import AnomalyLabel from '../BookingChart/AnomalyLabel';
+import ReferenceLabel from '../../../../../../components/ReferenceLabel';
 
-const BookingChartByBrand = ({data = [], setStartDateTime, setEndDateTime, setChartSliced, daysDifference, setDaysDifference, setTableData, anomalies, setAnomalyTableData, timeInterval, setTimeInterval, setTimeIntervalOpts, activeIndex}) => {
+const GroupedBookingTrends = ({data = [], setStartDateTime, setEndDateTime, setChartSliced, daysDifference, setDaysDifference, annotations, setTableData, anomalies, setAnomalyTableData, timeInterval, setTimeInterval, setTimeIntervalOpts, activeIndex}) => {
     const [left, setLeft] = useState('dataMin');
     const [right, setRight] = useState('dataMax');
     const [refAreaLeft, setRefAreaLeft] = useState('');
@@ -44,9 +45,9 @@ const BookingChartByBrand = ({data = [], setStartDateTime, setEndDateTime, setCh
         return null;
     };
 
-    const renderChart = (name, idx) => {
+    const renderChart = ({name, color}, idx) => {
         const fill = `url(#${idx})`;
-        return data.length && data[0].hasOwnProperty(name) ? <Area type="monotone" dataKey={name} yAxisId={1} stroke={CHART_COLORS[idx]} fillOpacity={1} fill={fill} hide = {hiddenKeys.includes(name)}/>
+        return data.length && data[0].hasOwnProperty(name) ? <Area type="monotone" dataKey={name} yAxisId={1} stroke={color} fillOpacity={1} fill={fill} hide = {hiddenKeys.includes(name)}/>
             : '';
     };
 
@@ -114,11 +115,11 @@ const BookingChartByBrand = ({data = [], setStartDateTime, setEndDateTime, setCh
         }
     };
 
-    const getGradient = (name, idx) => {
+    const getGradient = ({color}, idx) => {
         return (
             <linearGradient id={idx} key={idx} x1="0" y1="0" x2="0" y2="1">
-                <stop offset="2%" stopColor={CHART_COLORS[idx]} stopOpacity={0.5}/>
-                <stop offset="98%" stopColor={CHART_COLORS[idx]} stopOpacity={0}/>
+                <stop offset="2%" stopColor={color} stopOpacity={0.5}/>
+                <stop offset="98%" stopColor={color} stopOpacity={0}/>
             </linearGradient>
         );
     };
@@ -129,6 +130,12 @@ const BookingChartByBrand = ({data = [], setStartDateTime, setEndDateTime, setCh
                 return (
                     <defs>
                         {BRANDS_CHART.map(getGradient)}
+                    </defs>
+                );
+            case 2:
+                return (
+                    <defs>
+                        {LOBS_CHART.map(getGradient)}
                     </defs>
                 );
             default:
@@ -143,6 +150,10 @@ const BookingChartByBrand = ({data = [], setStartDateTime, setEndDateTime, setCh
                     BRANDS_CHART.map(renderChart)
                 );
             case 2:
+                return (
+                    LOBS_CHART.map(renderChart)
+                );
+            case 3:
                 return (
                     POS_CHART.map(renderLineChart)
                 );
@@ -195,6 +206,19 @@ const BookingChartByBrand = ({data = [], setStartDateTime, setEndDateTime, setCh
                         ))
                     }
                     {
+                        annotations && annotations.map((annotation) => (
+                            <ReferenceLine
+                                key={Math.random()}
+                                yAxisId={1}
+                                x={annotation.incidentTime}
+                                label={<ReferenceLabel annotation={annotation} isImpulse setTableData={setTableData}/>}
+                                stroke={'red'}
+                                strokeDasharray="3 3"
+                                isFront
+                            />
+                        ))
+                    }
+                    {
                         (refAreaLeft && refAreaRight)
                             ? <ReferenceArea yAxisId={1} x1={refAreaLeft} x2={refAreaRight} strokeOpacity={0.3}/>
                             : null
@@ -206,4 +230,4 @@ const BookingChartByBrand = ({data = [], setStartDateTime, setEndDateTime, setCh
     );
 };
 
-export default React.memo(BookingChartByBrand);
+export default React.memo(GroupedBookingTrends);
