@@ -54,7 +54,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
     const [groupedResByBrands, setGroupedResByBrands] = useState([]);
     const [groupedResByPos, setGroupedResByPos] = useState([]);
     const [groupedResByLobs, setGroupedResByLobs] = useState([]);
-    const selectedSiteUrlNum = selectedSiteURLMulti.length;
 
     const incidentMultiOptions = [
         {
@@ -256,7 +255,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             getGroupedBookingsData('lobs', startTime(), endTime(), timeInterval);
             setStartDateTime(startTime());
             setEndDateTime(endTime());
-            if (selectedSiteUrlNum > 0 && selectedSiteUrlNum <= 10) {
+            if (selectedSiteURLMulti.length > 0 && selectedSiteURLMulti.length <= 10) {
                 getGroupedBookingsData('point_of_sales', startTime(), endTime(), timeInterval);
             }
         } else if (type === 'incidents') {
@@ -292,9 +291,9 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
         }
     };
     const getDataByPos = () => {
-        if (selectedSiteUrlNum > 0 && selectedSiteUrlNum <= 10) {
+        if (selectedSiteURLMulti.length > 0 && selectedSiteURLMulti.length <= 10) {
             getGroupedBookingsData('point_of_sales');
-            //fetchDataByPos();
+            // fetchDataByPos();
         } else {
             setGroupedResByPos([]);
         }
@@ -389,7 +388,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 fetchHealth();
                 fetchAnomalies(startTime(), endTime());
                 fetchPredictions(startTime(), endTime(), timeInterval);
-                if (selectedSiteUrlNum > 0 && selectedSiteUrlNum <= 10) {
+                if (selectedSiteURLMulti.length > 0 && selectedSiteURLMulti.length <= 10) {
                     getGroupedBookingsData('point_of_sales', startTime(), endTime(), timeInterval);
                 } else {
                     setGroupedResByPos([]);

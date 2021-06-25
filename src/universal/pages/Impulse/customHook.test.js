@@ -44,7 +44,9 @@ describe('Impulse custom hooks', () => {
                 sourceLatency,
                 anomaliesMulti,
                 anomalyAnnotations,
-                groupedRes
+                groupedResByBrands,
+                groupedResByByPos,
+                groupedResByLobs
             ] = hook;
 
             expect(isLoading).eql(true);
@@ -65,7 +67,9 @@ describe('Impulse custom hooks', () => {
             expect(sourceLatency).eql(null);
             expect(anomaliesMulti).eql({});
             expect(anomalyAnnotations).eql([]);
-            expect(groupedRes).eql([]);
+            expect(groupedResByBrands).eql([]);
+            expect(groupedResByByPos).eql([]);
+            expect(groupedResByLobs).eql([]);
         });
     });
 });
