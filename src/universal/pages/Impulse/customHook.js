@@ -34,7 +34,7 @@ let intervalForAnnotations = null;
 let intervalForHealth = null;
 let intervalForAnomalies = null;
 
-export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTime, endDateTime, globalBrandName, prevBrand, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, chartSliced, setChartSliced, isAutoRefresh) => {
+export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTime, endDateTime, globalBrandName, prevBrand, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, chartSliced, setChartSliced, isAutoRefresh, setStartDateTime, setEndDateTime, timeInterval) => {
     const [res, setRes] = useState([]);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(true);
@@ -153,7 +153,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 console.error(err);
             });
     };
-    const fetchCall = (start, end) => fetch(`/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`)
+    const fetchCall = (start, end, interval) => fetch(`/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval)}`)
         .then(checkResponse)
         .then((respJson) => {
             const chartData = respJson.map((item) => {
@@ -182,19 +182,20 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             });
     };
 
-    const fetchCallGrouped = (start, end) => fetch(`/v1/bookings/count/group${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}&group_by=brands`)
-        .then(checkResponse)
-        .then((respJson) => (
-            respJson.map(({time, count}) => ({
-                time: moment.utc(time).valueOf(),
-                ...count
-            }))
-        ));
+    const fetchCallGrouped = (start, end, interval) =>
+        fetch(`/v1/bookings/count/group${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval)}&group_by=brands`)
+            .then(checkResponse)
+            .then((respJson) => (
+                respJson.map(({time, count}) => ({
+                    time: moment.utc(time).valueOf(),
+                    ...count
+                }))
+            ));
 
-    const fetchPredictions = (start = startDateTime, end = endDateTime) => {
+    const fetchPredictions = (start = startDateTime, end = endDateTime, interval = timeInterval) => {
         Promise.all([
-            fetch(`/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`).then(checkResponse),
-            fetch(`/v1/impulse/prediction${getQueryStringPrediction(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`).then(checkResponse)
+            fetch(`/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval)}`).then(checkResponse),
+            timeInterval === '5m' ? fetch(`/v1/impulse/prediction${getQueryStringPrediction(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`).then(checkResponse) : []
         ]).then(([bookingsData, predictionData]) => {
             const simplifiedBookingsData = simplifyBookingsData(bookingsData);
             const simplifiedPredictionData = simplifyPredictionData(predictionData);
@@ -232,7 +233,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
     };
 
     const getRealTimeData = () => {
-        fetchCall(startTime(), endTime())
+        fetchCall(startTime(), endTime(), timeInterval)
             .then((chartData) => {
                 setError('');
                 setRes(chartData);
@@ -245,8 +246,8 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             });
     };
 
-    const getDataByBrands = (start = startDateTime, end = endDateTime) => {
-        fetchCallGrouped(start, end)
+    const getDataByBrands = (start = startDateTime, end = endDateTime, interval = timeInterval) => {
+        fetchCallGrouped(start, end, interval)
             .then((chartData) => {
                 setError('');
                 setGroupedRes(chartData);
@@ -258,9 +259,29 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 console.error(err);
             });
     };
-    const getData = (start = startDateTime, end = endDateTime) => {
+
+    const setIntervalForRealTimeData = (interval, type) => setInterval(() => {
+        if (type === 'bookingData') {
+            getRealTimeData();
+            fetchPredictions(startTime(), endTime(), timeInterval);
+            getDataByBrands(startTime(), endTime(), timeInterval);
+            setStartDateTime(startTime());
+            setEndDateTime(endTime());
+            if (selectedSiteUrlNum > 0 && selectedSiteUrlNum <= 10) {
+                fetchDataByPos(startTime(), endTime());
+            }
+        } else if (type === 'incidents') {
+            fetchIncidents();
+        } else if (type === 'health') {
+            fetchHealth();
+        } else if (type === 'anomaly') {
+            fetchAnomalies();
+        }
+    }, interval);
+
+    const getData = (start = startDateTime, end = endDateTime, interval = timeInterval) => {
         setIsLoading(true);
-        fetchCall(start, end)
+        fetchCall(start, end, interval)
             .then((chartData) => {
                 setError('');
                 setRes(chartData);
@@ -273,23 +294,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 console.error(err);
             });
     };
-
-    const setIntervalForRealTimeData = (timeInterval, type) => setInterval(() => {
-        if (type === 'bookingData') {
-            getRealTimeData();
-            fetchPredictions(startTime(), endTime());
-            getDataByBrands(startTime(), endTime());
-            if (selectedSiteUrlNum > 0 && selectedSiteUrlNum <= 10) {
-                fetchDataByPos(startTime(), endTime());
-            }
-        } else if (type === 'incidents') {
-            fetchIncidents();
-        } else if (type === 'health') {
-            fetchHealth();
-        } else if (type === 'anomaly') {
-            fetchAnomalies();
-        }
-    }, timeInterval);
 
     const checkDefaultRange = () => {
         if ((moment(endDateTime).diff(moment(startDateTime), 'days') === 3) && (moment().diff(moment(endDateTime), 'days') === 0)) {
@@ -317,7 +321,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
         } else {
             getDataByBrands();
             getDataByPos();
-            getDataByLobs();
             getData();
             getFilter();
             getBrandsFilterData();
@@ -386,12 +389,12 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
                 intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
                 intervalForAnomalies = setIntervalForRealTimeData(anomalyTimeInterval, 'anomaly');
-                getDataByBrands(startTime(), endTime());
-                getData(startTime(), endTime());
+                getData(startTime(), endTime(), timeInterval);
+                getDataByBrands(startTime(), endTime(), timeInterval);
                 fetchIncidents(startTime(), endTime());
                 fetchHealth();
                 fetchAnomalies(startTime(), endTime());
-                fetchPredictions(startTime(), endTime());
+                fetchPredictions(startTime(), endTime(), timeInterval);
                 if (selectedSiteUrlNum > 0 && selectedSiteUrlNum <= 10) {
                     fetchDataByPos(startTime(), endTime());
                 } else {

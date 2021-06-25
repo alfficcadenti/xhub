@@ -39,7 +39,12 @@ describe('Impulse custom hooks', () => {
                 incidentMulti,
                 filterData,
                 brandsFilterData,
-                annotations
+                annotations,
+                isLatencyHealthy,
+                sourceLatency,
+                anomaliesMulti,
+                anomalyAnnotations,
+                groupedRes
             ] = hook;
 
             expect(isLoading).eql(true);
@@ -56,6 +61,11 @@ describe('Impulse custom hooks', () => {
             expect(brandsFilterData).eql({});
             expect(incidentMulti).eql({});
             expect(annotations).eql([]);
+            expect(isLatencyHealthy).eql(true);
+            expect(sourceLatency).eql(null);
+            expect(anomaliesMulti).eql({});
+            expect(anomalyAnnotations).eql([]);
+            expect(groupedRes).eql([]);
         });
     });
 });

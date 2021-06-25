@@ -5,7 +5,13 @@ import {
     getBrandQueryParam,
     getQueryString,
     getRevLoss,
-    getActiveIndex, mapActiveIndexToTabName
+    getActiveIndex,
+    mapActiveIndexToTabName,
+    isValidTimeInterval,
+    getTimeIntervals,
+    getDefaultTimeInterval,
+    getCategory,
+    simplifyBookingsData, simplifyPredictionData
 } from '../impulseHandler';
 import moment from 'moment';
 
@@ -87,7 +93,7 @@ describe('impulseHandler', () => {
     });
     describe('test final query string', () => {
         it('should return string with datetime into query string if no filter has been selected', () => {
-            expect(getQueryString(moment().set({second: 0}), moment().set({second: 0}).subtract(1, 'days'), IMPULSE_MAPPING, EG_BRAND, [], [], [], [], [], [], [])).eql(`?start_time=${endDate}Z&end_time=${startDate}Z`);
+            expect(getQueryString(moment().set({second: 0}), moment().set({second: 0}).subtract(1, 'days'), IMPULSE_MAPPING, EG_BRAND, [], [], [], [], [], [], [], '5m')).eql(`?start_time=${endDate}Z&end_time=${startDate}Z&time_interval=`);
         });
     });
     describe('test revenue loss calculation method', () => {
@@ -99,6 +105,72 @@ describe('impulseHandler', () => {
         });
         it('return string should contain NA on empty estimatedImpact', () => {
             expect(getRevLoss(mockRevenue[2])).to.include('NA');
+        });
+    });
+    describe('test final is Valid Time Interval', () => {
+        it('should return false with no start or end date or interval', () => {
+            expect(isValidTimeInterval()).eql(false);
+        });
+        it('should return true with start and end date interval', () => {
+            expect(isValidTimeInterval(startDate, endDate, '5m')).eql(true);
+        });
+    });
+    describe('test final get time intervals', () => {
+        it('should return correct intervals for 1 day diff', () => {
+            expect(getTimeIntervals(startDate, endDate, '5m')).eql(['1m', '15m', '30m', '1h']);
+        });
+        it('should return correct intervals for 5 day diff', () => {
+            expect(getTimeIntervals(moment(startDate).subtract(5, 'days'), endDate, '5m')).eql(['15m', '30m', '1h']);
+        });
+        it('should return correct intervals for 25 day diff', () => {
+            expect(getTimeIntervals(moment(startDate).subtract(26, 'days'), endDate, '15m')).eql(['30m', '1h', '1d']);
+        });
+        it('should return correct intervals for 111 day diff', () => {
+            expect(getTimeIntervals(moment(startDate).subtract(111, 'days'), endDate, '1h')).eql(['1d', '1w']);
+        });
+        it('should return correct intervals for 222 day diff', () => {
+            expect(getTimeIntervals(moment(startDate).subtract(222, 'days'), endDate, '1d')).eql(['1w']);
+        });
+    });
+    describe('test final get default time interval', () => {
+        it('should return correct interval for 1 day diff', () => {
+            expect(getDefaultTimeInterval(startDate, endDate)).eql('1m');
+        });
+        it('should return correct interval for 5 day diff', () => {
+            expect(getDefaultTimeInterval(moment(startDate).subtract(5, 'days'), endDate)).eql('5m');
+        });
+        it('should return correct interval for 25 day diff', () => {
+            expect(getDefaultTimeInterval(moment(startDate).subtract(26, 'days'), endDate)).eql('15m');
+        });
+        it('should return correct interval for 111 day diff', () => {
+            expect(getDefaultTimeInterval(moment(startDate).subtract(111, 'days'), endDate)).eql('1h');
+        });
+        it('should return correct interval for 222 day diff', () => {
+            expect(getDefaultTimeInterval(moment(startDate).subtract(222, 'days'), endDate)).eql('1d');
+        });
+        it('should return correct interval for 444 day diff', () => {
+            expect(getDefaultTimeInterval(moment(startDate).subtract(444, 'days'), endDate)).eql('1w');
+        });
+    });
+    describe('test final get category', () => {
+        it('should return Anomaly Detected when state is IMPULSE_ALERT_DETECTED', () => {
+            expect(getCategory({state: 'IMPULSE_ALERT_DETECTED', isLatencyHealthy: true})).eql('Anomaly Detected');
+        });
+        it('should return Upstream Unhealthy when state is IMPULSE_ALERT_DETECTED', () => {
+            expect(getCategory({state: 'IMPULSE_ALERT_DETECTED', isLatencyHealthy: false})).eql('Upstream Unhealthy');
+        });
+        it('should return Upstream Unhealthy when state is IMPULSE_ALERT_RECOVERED', () => {
+            expect(getCategory({state: 'IMPULSE_ALERT_RECOVERED', isLatencyHealthy: true})).eql('Anomaly Recovered');
+        });
+    });
+    describe('get simplify booking data', () => {
+        it('return empty object', () => {
+            expect(simplifyBookingsData([])).eql([]);
+        });
+    });
+    describe('get simplify prediction data', () => {
+        it('return empty object', () => {
+            expect(simplifyPredictionData([])).eql([]);
         });
     });
 });

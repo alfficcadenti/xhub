@@ -2,21 +2,21 @@ import React from 'react';
 import moment from 'moment';
 import qs from 'query-string';
 import {getBrand} from '../utils';
-import {PORTFOLIOS, PRIORITY_LABELS, P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL, NOT_PRIORITIZED_LABEL} from './constants';
+import {HCOM_PORTFOLIOS, VRBO_PORTFOLIOS, PRIORITY_LABELS, P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL, NOT_PRIORITIZED_LABEL} from './constants';
 import {DATE_FORMAT} from '../../constants';
 import {formatDuration} from '../../components/utils';
 
-export const getPortfolioBrand = (selectedBrands) => {
-    const selectedBrand = getBrand(selectedBrands[0], 'label');
-    return selectedBrand && selectedBrand.portfolioBrand
-        ? selectedBrand.portfolioBrand
-        : 'HCOM';
-};
+export const getPortfolioBrand = (selectedBrands = []) => getBrand(selectedBrands[0], 'label')?.portfolioBrand;
 
-export const getQueryValues = (search) => {
+export const getBrandPortfolios = (PortfolioBrand) => (
+    PortfolioBrand === 'HCOM' ? HCOM_PORTFOLIOS : VRBO_PORTFOLIOS
+);
+
+export const getQueryValues = (search, portfolioBrand) => {
     const {portfolios} = qs.parse(search);
+    const brandPortfolios = getBrandPortfolios(portfolioBrand);
     const initialPortfolios = (Array.isArray(portfolios) ? portfolios : [portfolios])
-        .map((portfolio) => PORTFOLIOS.find((p) => p.value === portfolio))
+        .map((portfolio) => brandPortfolios.find((p) => p.value === portfolio))
         .filter((portfolio) => !!portfolio);
     return {initialPortfolios};
 };
@@ -142,7 +142,7 @@ export const formatWoWData = (data) => {
 
 const TOTAL_UNIQUE_ISSUES_LABEL = 'Total Unique Issues';
 
-export const groupDataByPillar = (data = {}, portfolios = []) => {
+export const groupDataByPillar = (data = {}, portfolios = [], portfolioBrand) => {
     const keys = ['p1', 'p2', 'p3', 'p4', 'p5', 'notPrioritized', 'totalTickets'];
     const result = portfolios.reduce((acc, {text}) => {
         acc[text] = {};
@@ -152,7 +152,7 @@ export const groupDataByPillar = (data = {}, portfolios = []) => {
     return Object.entries(data).reduce((acc, [, counts]) => {
         if (counts.ticketIds) {
             const project = counts.ticketIds[0].split('-')[0];
-            const portfolio = PORTFOLIOS.find((p) => p.projects.includes(project));
+            const portfolio = getBrandPortfolios(portfolioBrand).find((p) => p.projects.includes(project));
             if (portfolio && acc[portfolio.text]) {
                 const portfolioKey = portfolio.text;
                 keys.forEach((key) => {

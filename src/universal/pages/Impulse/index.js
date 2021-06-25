@@ -13,11 +13,12 @@ import {SVGIcon} from '@homeaway/react-svg';
 import {FILTER__16} from '@homeaway/svg-defs';
 import './styles.less';
 import {ALL_LOB, ALL_POS, ALL_BRANDS, ALL_DEVICES, ALL_INCIDENTS, ALL_ANOMALIES} from '../../constants';
-import {getFilters, getFiltersForMultiKeys, getQueryValues, useAddToUrl, getActiveIndex} from './impulseHandler';
+import {getFilters, getFiltersForMultiKeys, getQueryValues, useAddToUrl, getTimeIntervals, isValidTimeInterval, getDefaultTimeInterval, getActiveIndex} from './impulseHandler';
 import {Checkbox, Switch} from '@homeaway/react-form-components';
 import {IncidentDetails} from './tabs/BookingTrends';
 import AnomalyDetails from './tabs/BookingTrends/sections/AnomalyTable/AnomalyDetails';
 import {getValue} from '../utils';
+import {Dropdown, DropdownItem} from '@homeaway/react-dropdown';
 import BookingChartByBrand from './tabs/BookingTrends/sections/BookingChartGrouped/BookingChartByBrand';
 
 const navLinks = [
@@ -62,6 +63,8 @@ const Impulse = (props) => {
     const {
         initialStart,
         initialEnd,
+        initialInterval,
+        initialAutoRefresh,
         initialBrands,
         initialLobs,
         initialEgSiteUrls,
@@ -83,13 +86,15 @@ const Impulse = (props) => {
     const [selectedIncidentMulti, setSelectedIncidentMulti] = useState(initialIncidents);
     const [enableIncidents, setEnableIncidents] = useState(true);
     const [chartSliced, setChartSliced] = useState(false);
-    const [isAutoRefresh, setAutoRefresh] = useState(true);
+    const [isAutoRefresh, setAutoRefresh] = useState(initialAutoRefresh);
     const [daysDifference, setDaysDifference] = useState(moment(endDateTime).diff(moment(startDateTime), 'days'));
     const [tableData, setTableData] = useState([]);
     const [anomaliesData, setAnomaliesData] = useState([]);
     const [enableAnomalies, setEnableAnomalies] = useState(true);
     const [selectedAnomaliesMulti, setSelectedAnomaliesMulti] = useState(initialAnomalies);
     const [anomalyTableData, setAnomalyTableData] = useState([]);
+    const [timeInterval, setTimeInterval] = useState(initialInterval);
+    const [timeIntervalOpts, setTimeIntervalOpts] = useState(getTimeIntervals(startDateTime, endDateTime, timeInterval));
 
     const [activeIndex, setActiveIndex] = useState(getActiveIndex(pathname));
     const [allDataByBrands, setAllDataByBrand] = useState([]);
@@ -133,7 +138,10 @@ const Impulse = (props) => {
         selectedDeviceTypeMulti,
         chartSliced,
         setChartSliced,
-        isAutoRefresh);
+        isAutoRefresh,
+        setStartDateTime,
+        setEndDateTime,
+        timeInterval);
 
     const modifyFilters = (newValuesOnChange) => {
         setSelectedLobMulti([]);
@@ -242,8 +250,17 @@ const Impulse = (props) => {
         }),
     };
     const handleDatetimeChange = ({start: startDateTimeStr, end: endDateTimeStr}) => {
-        setStartDateTime(moment(startDateTimeStr).utc());
-        setEndDateTime(moment(endDateTimeStr).utc());
+        const newStart = moment(startDateTimeStr).utc();
+        const newEnd = moment(endDateTimeStr).utc();
+        setStartDateTime(newStart);
+        setEndDateTime(newEnd);
+        if (!isValidTimeInterval(newStart, newEnd, timeInterval)) {
+            const newInterval = getDefaultTimeInterval(newStart, newEnd);
+            setTimeInterval(newInterval);
+            setTimeIntervalOpts(getTimeIntervals(newStart, newEnd, newInterval));
+        } else {
+            setTimeIntervalOpts(getTimeIntervals(newStart, newEnd, timeInterval));
+        }
     };
     const handleShowMoreFilters = () => {
         setShowMoreFilters(!showMoreFilters);
@@ -262,8 +279,12 @@ const Impulse = (props) => {
         setSelectedAnomaliesMulti([]);
         setAnomaliesData(anomalies);
     };
+    const handleTimeIntervalChange = (timeIntervalStr) => {
+        setTimeInterval(timeIntervalStr);
+        setTimeIntervalOpts(getTimeIntervals(startDateTime, endDateTime, timeIntervalStr));
+    };
 
-    useAddToUrl(newBrand, startDateTime, endDateTime, selectedLobMulti, selectedBrandMulti, selectedSiteURLMulti, selectedDeviceTypeMulti, selectedIncidentMulti, selectedAnomaliesMulti, activeIndex);
+    useAddToUrl(newBrand, startDateTime, endDateTime, timeInterval, isAutoRefresh, selectedLobMulti, selectedBrandMulti, selectedSiteURLMulti, selectedDeviceTypeMulti, selectedIncidentMulti, selectedAnomaliesMulti, activeIndex);
 
     const renderTabs = () => {
         switch (activeIndex) {
@@ -278,6 +299,9 @@ const Impulse = (props) => {
                     setTableData={setTableData}
                     anomalies={enableAnomalies ? anomaliesData : []}
                     setAnomalyTableData={setAnomalyTableData}
+                    timeInterval={timeInterval}
+                    setTimeInterval={setTimeInterval}
+                    setTimeIntervalOpts={setTimeIntervalOpts}
                 />);
             case 1:
                 return (<BookingChartByBrand
@@ -289,6 +313,9 @@ const Impulse = (props) => {
                     setTableData={setTableData}
                     anomalies={enableAnomalies ? anomaliesData : []}
                     setAnomalyTableData={setAnomalyTableData}
+                    timeInterval={timeInterval}
+                    setTimeInterval={setTimeInterval}
+                    setTimeIntervalOpts={setTimeIntervalOpts}
                     activeIndex={activeIndex}
                 />);
             case 2:
@@ -325,11 +352,33 @@ const Impulse = (props) => {
                     annotations={enableIncidents ? annotationsMulti : []}
                     setDaysDifference={setDaysDifference}
                     daysDifference={daysDifference}
+                    timeInterval={timeInterval}
+                    setTimeInterval={setTimeInterval}
+                    setTimeIntervalOpts={setTimeIntervalOpts}
                 />);
         }
     };
+    const renderTimeInterval = (interval, presets, onChange) => (
+        <div className="time-interval" title="Time interval dropdown selector">
+            <Dropdown
+                id="time-interval-dropdown"
+                label={interval ? interval : 'Time Interval'}
+                className="time-interval-dropdown"
+                closeAfterContentClick
+            >
+                {presets.map((d) => (
+                    <DropdownItem
+                        key={d}
+                        link="#"
+                        text={d}
+                        onClick={() => onChange(d)}
+                    />
+                ))}
+            </Dropdown>
+        </div>
+    );
     const renderMultiSelectFilters = (value, options, key, placeholder, className) => {
-        return (<div className={className}>
+        return (<div className={className} title={`Multi select ${key} from dropdown`}>
             <Select
                 isMulti
                 styles={customStyles}
@@ -368,7 +417,7 @@ const Impulse = (props) => {
                 <h1 className="page-title">{'Impulse Dashboard'}</h1>
                 <div className="right-header">
                     {sourceLatency || sourceLatency === 0 ? renderHealthCheck() : ''}
-                    {!chartSliced && daysDifference === 3 && (moment().diff(moment(endDateTime), 'days') === 0) ? <div className="refresh-switch">
+                    {!chartSliced && daysDifference === 3 && (moment().diff(moment(endDateTime), 'days') === 0) ? <div className="refresh-switch" title="Auto refresh charts toggle switch">
                         <Switch
                             id="switch-example-small"
                             name="autoRefresh"
@@ -380,7 +429,7 @@ const Impulse = (props) => {
                     </div> : ''}
                 </div>
             </div>
-            <div className="impulse-filters-wrapper">
+            <div className="impulse-filters-wrapper" title="Date time range selector">
                 <DatetimeRangePicker
                     onChange={handleDatetimeChange}
                     startDate={startDateTime.toDate()}
@@ -389,12 +438,14 @@ const Impulse = (props) => {
                     showTimePicker
                 />
                 <div className="filter-option">
+                    {renderTimeInterval(timeInterval, timeIntervalOpts, handleTimeIntervalChange)}
                     {renderMultiSelectFilters(selectedBrandMulti, brandsMulti, 'brand', ALL_BRANDS, filterSelectionClass)}
                     {renderMultiSelectFilters(selectedLobMulti, lobsMulti, 'lob', ALL_LOB, filterSelectionClass)}
                     {renderMultiSelectFilters(selectedSiteURLMulti, egSiteURLMulti, 'egSiteUrl', ALL_POS, filterExpandClass)}
                     <button
                         type="button"
                         className="apply-button btn btn-primary active"
+                        title="Click on Submit to apply changes"
                         onClick={() => {
                             setIsApplyClicked(true);
                             setDaysDifference(moment(endDateTime).diff(moment(startDateTime), 'days'));
@@ -408,30 +459,31 @@ const Impulse = (props) => {
                     <button
                         type="button"
                         className={`btn btn-default more-filters-btn ${showMoreFilters ? 'active' : ''}`}
+                        title="Click to expand and see more filters"
                         onClick={handleShowMoreFilters}
                     >
                         <SVGIcon usefill markup={FILTER__16}/>{'Advance Filters'}
                     </button>
-                    <Checkbox
-                        name="incidents-сheckbox"
-                        label="Booking Impacting INCs"
-                        checked={enableIncidents}
-                        onChange={handleEnableIncidentChange}
-                        size="sm"
-                        className="incidents-сheckbox"
-                    />
-                    <div className="filter-option" onClick={() => setShowMoreFilters(false)}>
+                    <div className="filter-option" title="Toggle checkbox to enable/ disable incidents category selector" onClick={() => setShowMoreFilters(false)}>
+                        <Checkbox
+                            name="incidents-сheckbox"
+                            label="Booking Impacting INCs"
+                            checked={enableIncidents}
+                            onChange={handleEnableIncidentChange}
+                            size="sm"
+                            className="incidents-сheckbox"
+                        />
                         {enableIncidents ? renderMultiSelectFilters(selectedIncidentMulti, incidentMulti, 'incidentCategory', ALL_INCIDENTS, filterSelectionClass) : null}
                     </div>
-                    <Checkbox
-                        name="Anomalies-сheckbox"
-                        label="Anomalies"
-                        checked={enableAnomalies}
-                        onChange={handleEnableAnomalyChange}
-                        size="sm"
-                        className="incidents-сheckbox"
-                    />
-                    <div className="filter-option" onClick={() => setShowMoreFilters(false)}>
+                    <div className="filter-option" title="Toggle checkbox to enable/ disable anomalies category selector" onClick={() => setShowMoreFilters(false)}>
+                        <Checkbox
+                            name="Anomalies-сheckbox"
+                            label="Anomalies"
+                            checked={enableAnomalies}
+                            onChange={handleEnableAnomalyChange}
+                            size="sm"
+                            className="incidents-сheckbox"
+                        />
                         {enableAnomalies ? renderMultiSelectFilters(selectedAnomaliesMulti, anomaliesMulti, 'anomaliesCategory', ALL_ANOMALIES, filterSelectionClass) : null}
                     </div>
                 </div>

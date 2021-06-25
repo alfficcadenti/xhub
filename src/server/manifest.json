@@ -1086,6 +1086,11 @@
             "route": "require:./routes/pages/google-crux",
             "component": "require:../universal/components/App/ServerApp.js",
             "template": "templates/welcome.hbs"
+          },
+          {
+            "route": "require:./routes/pages/partner-business-metrics",
+            "component": "require:../universal/components/App/ServerApp.js",
+            "template": "templates/welcome.hbs"
           }
         ]
       }
