@@ -10,6 +10,7 @@ initialize {
       Node {
         "attribs": Object {
           "class": "reset-div",
+          "title": "Click to reset graph to default 3 day date time range",
         },
         "children": Array [
           Node {
@@ -131,9 +132,11 @@ initialize {
         "type": "tag",
         "x-attribsNamespace": Object {
           "class": undefined,
+          "title": undefined,
         },
         "x-attribsPrefix": Object {
           "class": undefined,
+          "title": undefined,
         },
       },
       Node {
@@ -210,6 +213,7 @@ initialize {
         "prev": Node {
           "attribs": Object {
             "class": "reset-div",
+            "title": "Click to reset graph to default 3 day date time range",
           },
           "children": Array [
             Node {
@@ -250,9 +254,11 @@ initialize {
           "type": "tag",
           "x-attribsNamespace": Object {
             "class": undefined,
+            "title": undefined,
           },
           "x-attribsPrefix": Object {
             "class": undefined,
+            "title": undefined,
           },
         },
         "type": "tag",
@@ -327,6 +333,7 @@ initialize {
           "prev": Node {
             "attribs": Object {
               "class": "reset-div",
+              "title": "Click to reset graph to default 3 day date time range",
             },
             "children": Array [
               Node {
@@ -367,9 +374,11 @@ initialize {
             "type": "tag",
             "x-attribsNamespace": Object {
               "class": undefined,
+              "title": undefined,
             },
             "x-attribsPrefix": Object {
               "class": undefined,
+              "title": undefined,
             },
           },
           "type": "tag",

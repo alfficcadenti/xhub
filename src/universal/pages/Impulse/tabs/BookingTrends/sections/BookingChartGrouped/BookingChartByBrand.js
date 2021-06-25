@@ -11,10 +11,10 @@ import {
 import moment from 'moment';
 
 import {BRANDS_CHART, CHART_COLORS} from '../../../../constants';
-import {endTime, getColor, startTime} from '../../../../impulseHandler';
+import {startTime, endTime, getColor, getDefaultTimeInterval, getTimeIntervals, isValidTimeInterval} from '../../../../impulseHandler';
 import AnomalyLabel from '../BookingChart/AnomalyLabel';
 
-const BookingChartByBrand = ({data = [], setStartDateTime, setEndDateTime, setChartSliced, daysDifference, setDaysDifference, setTableData, anomalies, setAnomalyTableData}) => {
+const BookingChartByBrand = ({data = [], setStartDateTime, setEndDateTime, setChartSliced, daysDifference, setDaysDifference, setTableData, anomalies, setAnomalyTableData, timeInterval, setTimeInterval, setTimeIntervalOpts}) => {
     const [left, setLeft] = useState('dataMin');
     const [right, setRight] = useState('dataMax');
     const [refAreaLeft, setRefAreaLeft] = useState('');
@@ -50,6 +50,12 @@ const BookingChartByBrand = ({data = [], setStartDateTime, setEndDateTime, setCh
         setEndDateTime(endTime());
         setChartSliced(false);
         setDaysDifference(3);
+        if (!isValidTimeInterval(startTime(), endTime(), timeInterval)) {
+            setTimeInterval('5m');
+            setTimeIntervalOpts(['15m', '30m', '1h']);
+        } else {
+            setTimeIntervalOpts(getTimeIntervals(startTime(), endTime(), timeInterval));
+        }
     };
 
     const zoomIn = () => {
@@ -65,16 +71,24 @@ const BookingChartByBrand = ({data = [], setStartDateTime, setEndDateTime, setCh
         if (moment(refAreaLeft).isAfter(refAreaRight)) {
             [nextRefAreaLeft, nextRefAreaRight] = [refAreaRight, refAreaLeft];
         }
-
+        const leftMomentUtc = moment(nextRefAreaLeft).utc();
+        const rightMomentUtc = moment(nextRefAreaRight).utc();
         setRefAreaLeft('');
         setRefAreaRight('');
         setLeft(nextRefAreaLeft);
         setRight(nextRefAreaRight);
-        setStartDateTime(moment(nextRefAreaLeft).utc());
-        setEndDateTime(moment(nextRefAreaRight).utc());
+        setStartDateTime(leftMomentUtc);
+        setEndDateTime(rightMomentUtc);
         setChartSliced(true);
-        setDaysDifference(moment(nextRefAreaRight).utc().diff(moment(nextRefAreaLeft).utc(), 'days'));
+        setDaysDifference(rightMomentUtc.diff(leftMomentUtc, 'days'));
         setTableData([]);
+        if (!isValidTimeInterval(leftMomentUtc, rightMomentUtc, timeInterval)) {
+            const newInterval = getDefaultTimeInterval(leftMomentUtc, rightMomentUtc);
+            setTimeInterval(newInterval);
+            setTimeIntervalOpts(getTimeIntervals(leftMomentUtc, rightMomentUtc, newInterval));
+        } else {
+            setTimeIntervalOpts(getTimeIntervals(leftMomentUtc, rightMomentUtc, timeInterval));
+        }
     };
 
     const handleLegendClick = (e) => {
@@ -101,7 +115,11 @@ const BookingChartByBrand = ({data = [], setStartDateTime, setEndDateTime, setCh
 
     return (
         <div className="bookings-container-box">
-            <div className="reset-div">
+            <div className="reset-div"
+                title={daysDifference === 3
+                    ? 'Click to reset graph to default 3 day date time range (Disabled as Default Range Selected) '
+                    : 'Click to reset graph to default 3 day date time range'}
+            >
                 <button
                     type="button"
                     className={'btn btn-default reset-btn'}

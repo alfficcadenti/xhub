@@ -16,7 +16,14 @@ import {
 import './styles.less';
 import moment from 'moment';
 import ReferenceLabel from '../../../../../../components/ReferenceLabel';
-import {startTime, endTime, getColor} from '../../../../impulseHandler';
+import {
+    startTime,
+    endTime,
+    getColor,
+    isValidTimeInterval,
+    getDefaultTimeInterval,
+    getTimeIntervals
+} from '../../../../impulseHandler';
 import AnomalyLabel from './AnomalyLabel';
 import {
     ANOMALY_DETECTED_COLOR,
@@ -92,7 +99,7 @@ const CustomTooltip = ({active, payload}) => {
     return null;
 };
 
-const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSliced, annotations, daysDifference, setDaysDifference, setTableData, anomalies, setAnomalyTableData}) => {
+const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSliced, annotations, daysDifference, setDaysDifference, setTableData, anomalies, setAnomalyTableData, timeInterval, setTimeInterval, setTimeIntervalOpts}) => {
     let [refAreaLeft, setRefAreaLeft] = useState('');
     let [refAreaRight, setRefAreaRight] = useState('');
     let [newData, setNewData] = useState(data);
@@ -112,6 +119,12 @@ const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSlic
         setEndDateTime(endTime());
         setChartSliced(false);
         setDaysDifference(3);
+        if (!isValidTimeInterval(startTime(), endTime(), timeInterval)) {
+            setTimeInterval('5m');
+            setTimeIntervalOpts(['15m', '30m', '1h']);
+        } else {
+            setTimeIntervalOpts(getTimeIntervals(startTime(), endTime(), timeInterval));
+        }
     };
     useEffect(() => {
         setNewData(data);
@@ -128,16 +141,25 @@ const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSlic
         if (moment(refAreaLeft).isAfter(refAreaRight)) {
             [nextRefAreaLeft, nextRefAreaRight] = [refAreaRight, refAreaLeft];
         }
+        const leftMomentUtc = moment(nextRefAreaLeft).utc();
+        const rightMomentUtc = moment(nextRefAreaRight).utc();
         setRefAreaLeft('');
         setRefAreaRight('');
         setNewData(newData.slice());
         setLeft(nextRefAreaLeft);
         setRight(nextRefAreaRight);
-        setStartDateTime(moment(nextRefAreaLeft).utc());
-        setEndDateTime(moment(nextRefAreaRight).utc());
+        setStartDateTime(leftMomentUtc);
+        setEndDateTime(rightMomentUtc);
         setChartSliced(true);
-        setDaysDifference(moment(nextRefAreaRight).utc().diff(moment(nextRefAreaLeft).utc(), 'days'));
+        setDaysDifference(rightMomentUtc.diff(leftMomentUtc, 'days'));
         setTableData([]);
+        if (!isValidTimeInterval(leftMomentUtc, rightMomentUtc, timeInterval)) {
+            const newInterval = getDefaultTimeInterval(leftMomentUtc, rightMomentUtc);
+            setTimeInterval(newInterval);
+            setTimeIntervalOpts(getTimeIntervals(leftMomentUtc, rightMomentUtc, newInterval));
+        } else {
+            setTimeIntervalOpts(getTimeIntervals(leftMomentUtc, rightMomentUtc, timeInterval));
+        }
     };
     const renderChart = ({key, color, name, chartType}) => {
         const fill = `url(#color${key})`;
@@ -169,7 +191,11 @@ const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSlic
 
     return (
         <div className="bookings-container-box">
-            <div className="reset-div">
+            <div className="reset-div"
+                title={daysDifference === 3
+                    ? 'Click to reset graph to default 3 day date time range (Disabled as default range is selected) '
+                    : 'Click to reset graph to default 3 day date time range'}
+            >
                 <button
                     type="button"
                     className={'btn btn-default reset-btn'}
