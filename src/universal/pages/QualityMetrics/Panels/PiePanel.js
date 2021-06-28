@@ -8,10 +8,14 @@ import {findAndFormatTicket} from '../utils';
 import {NOT_PRIORITIZED_LABEL} from '../constants';
 import {CHART_COLORS} from '../../../constants';
 
-const PiePanel = ({title, info, tickets, dataKey, data, isLoading, error}) => {
+const PiePanel = ({title, info, tickets, dataKey, panelData}) => {
+    const {data, isLoading, error, queries = []} = panelData;
     const [chartData, setChartData] = useState([]);
     const [modalData, setModalData] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const queryIdx = ['openBugsByPriority', 'openBugsByProject']
+        .indexOf(dataKey);
 
     useEffect(() => {
         const slices = Object.entries(data[dataKey] || {})
@@ -45,7 +49,14 @@ const PiePanel = ({title, info, tickets, dataKey, data, isLoading, error}) => {
     };
 
     return (
-        <Panel title={title} info={info} isLoading={isLoading} error={error} isFixedHeight>
+        <Panel
+            title={title}
+            info={info}
+            queries={queryIdx > -1 ? [queries[queryIdx]] : []}
+            isLoading={isLoading}
+            error={error}
+            isFixedHeight
+        >
             <ResponsiveContainer width="100%" height={320}>
                 <PieChart cursor="pointer">
                     <Tooltip />

@@ -7,33 +7,22 @@ import ChartModal from '../ChartModal';
 import {PRIORITY_LABELS, PRIORITY_COLORS} from '../constants';
 import {formatBarChartData, findAndFormatTicket, mapPriority} from '../utils';
 
-const BarChartPanel = ({title, info, tickets, dataUrl, dataKey}) => {
-    const [isDataLoading, setIsDataLoading] = useState(false);
-    const [dataError, setDataError] = useState();
+const BarChartPanel = ({title, info, tickets, portfolios, panelData, dataKey}) => {
+    const {data, isLoading, error, queries} = panelData;
     const [chartData, setChartData] = useState([]);
     const [modalData, setModalData] = useState({});
     const [hiddenKeys, setHiddenKeys] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
-        setIsDataLoading(true);
-        setDataError(null);
-        fetch(dataUrl)
-            .then((d) => d.json())
-            .then((response) => {
-                const rawData = response.data[dataKey] || {};
-                const formattedData = rawData.info && rawData.info.message === 'no data found'
-                    ? []
-                    : formatBarChartData(rawData);
-                setChartData(formattedData);
-                setIsDataLoading(false);
-            })
-            .catch((e) => {
-                setChartData([]);
-                setDataError(e.message);
-                setIsDataLoading(false);
-            });
-    }, [tickets, dataUrl, dataKey]);
+        if (!portfolios.length) {
+            return;
+        }
+        const formattedData = (panelData?.info?.message === 'no data found')
+            ? []
+            : formatBarChartData(data[dataKey] || []);
+        setChartData(formattedData);
+    }, [tickets, data, panelData, portfolios, dataKey]);
 
     const getBarClickHandler = (priority) => (selectedBar) => {
         if (selectedBar) {
@@ -79,9 +68,10 @@ const BarChartPanel = ({title, info, tickets, dataUrl, dataKey}) => {
     return (
         <Panel
             title={title}
-            isLoading={isDataLoading}
-            error={dataError}
+            isLoading={isLoading}
+            error={error}
             info={info}
+            queries={queries}
             isFixedHeight
         >
             {chartData.length ? renderChart() : <div className="chart-message">{'No Results Found'}</div>}

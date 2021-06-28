@@ -11,7 +11,6 @@ import {usePrevious} from '../../pages/hooks';
 
 function renderRoute(p, selectedBrands, handleBrandChange, prevSelectedBrand) {
     const Page = p.component;
-
     return <Route key={p.link} path={p.link} render={() => <Page selectedBrands={selectedBrands} onBrandChange={handleBrandChange} prevSelectedBrand={prevSelectedBrand} />} />;
 }
 

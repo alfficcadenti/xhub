@@ -1,24 +1,60 @@
 import React from 'react';
 import moment from 'moment';
 import qs from 'query-string';
-import {getBrand} from '../utils';
+import {checkResponse} from '../../pages/utils';
 import {HCOM_PORTFOLIOS, VRBO_PORTFOLIOS, PRIORITY_LABELS, P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL, NOT_PRIORITIZED_LABEL} from './constants';
-import {DATE_FORMAT} from '../../constants';
+import {HOTELS_COM_BRAND, DATE_FORMAT} from '../../constants';
 import {formatDuration} from '../../components/utils';
 
-export const getPortfolioBrand = (selectedBrands = []) => getBrand(selectedBrands[0], 'label')?.portfolioBrand;
 
-export const getBrandPortfolios = (PortfolioBrand) => (
-    PortfolioBrand === 'HCOM' ? HCOM_PORTFOLIOS : VRBO_PORTFOLIOS
+export const getBrandPortfolios = (brand) => (
+    brand === HOTELS_COM_BRAND ? HCOM_PORTFOLIOS : VRBO_PORTFOLIOS
 );
 
-export const getQueryValues = (search, portfolioBrand) => {
-    const {portfolios} = qs.parse(search);
-    const brandPortfolios = getBrandPortfolios(portfolioBrand);
+export const getPortfoliosQuery = (brandPortfolios) => (
+    brandPortfolios.length
+        ? `&portfolios=${brandPortfolios.map((p) => p.value).join('&portfolios=')}`
+        : ''
+);
+
+export const filterBrandPortfolios = (portfolios, brand) => {
+    const brandPortfolioValues = getBrandPortfolios(brand).map(({value}) => value);
+    return (portfolios || []).filter(({value}) => brandPortfolioValues.includes(value));
+};
+
+// eslint-disable-next-line complexity
+export const validDateRange = (start, end) => {
+    if (!start || !end) {
+        return false;
+    }
+    const startMoment = moment(start);
+    const endMoment = moment(end);
+    return startMoment.isValid() && endMoment.isValid() && startMoment.isBefore(new Date()) && endMoment.isAfter(startMoment);
+};
+
+
+export const getQueryValues = (search, selectedBrands) => {
+    const {portfolios, from, to} = qs.parse(search);
+    const isValidDateRange = validDateRange(from, to);
+    const brandPortfolios = getBrandPortfolios(selectedBrands[0]);
     const initialPortfolios = (Array.isArray(portfolios) ? portfolios : [portfolios])
         .map((portfolio) => brandPortfolios.find((p) => p.value === portfolio))
         .filter((portfolio) => !!portfolio);
-    return {initialPortfolios};
+    return {
+        initialStart: isValidDateRange ? moment(from) : moment().subtract(6, 'months'),
+        initialEnd: isValidDateRange ? moment(to) : moment(),
+        initialPortfolios
+    };
+};
+
+export const getQueryString = (brand, portfolios, start, end) => {
+    const brandQuery = `selectedBrand=${brand}`;
+    const brandPortfolios = filterBrandPortfolios(portfolios, brand);
+    const portfoliosQuery = brandPortfolios.length
+        ? `&portfolios=${brandPortfolios.map((p) => p.value).join('&portfolios=')}`
+        : '';
+    const dateQuery = `&from=${start.toISOString()}&to=${end.toISOString()}`;
+    return `/quality-metrics?${brandQuery}${dateQuery}${portfoliosQuery}`;
 };
 
 export const getPropValue = (item, prop) => item[prop] || item[prop] === 0 ? item[prop] : '-';
@@ -142,7 +178,7 @@ export const formatWoWData = (data) => {
 
 const TOTAL_UNIQUE_ISSUES_LABEL = 'Total Unique Issues';
 
-export const groupDataByPillar = (data = {}, portfolios = [], portfolioBrand) => {
+export const groupDataByPillar = (data = {}, portfolios = [], brand) => {
     const keys = ['p1', 'p2', 'p3', 'p4', 'p5', 'notPrioritized', 'totalTickets'];
     const result = portfolios.reduce((acc, {text}) => {
         acc[text] = {};
@@ -152,7 +188,7 @@ export const groupDataByPillar = (data = {}, portfolios = [], portfolioBrand) =>
     return Object.entries(data).reduce((acc, [, counts]) => {
         if (counts.ticketIds) {
             const project = counts.ticketIds[0].split('-')[0];
-            const portfolio = getBrandPortfolios(portfolioBrand).find((p) => p.projects.includes(project));
+            const portfolio = getBrandPortfolios(brand).find((p) => p.projects.includes(project));
             if (portfolio && acc[portfolio.text]) {
                 const portfolioKey = portfolio.text;
                 keys.forEach((key) => {
@@ -254,7 +290,7 @@ export const processTwoDimensionalIssues = (
     const finalList = [];
     portfolios.forEach((portfolio) => {
         tickets.forEach((id) => {
-            const t = allJiraTickets.portfolioTickets[portfolio.value][id];
+            const t = allJiraTickets.portfolioTickets?.[portfolio.value]?.[id];
             if (t && (!priority || mapPriority(t.priority) === selectedPriority)) {
                 t.portfolio = portfolio.text;
                 finalList.push(t);
@@ -292,16 +328,13 @@ export const formatCreatedVsResolvedData = (data) => {
         });
 };
 
-export const getPanelDataUrl = (portfolios, brand, panel) => {
+export const getPanelDataUrl = (start, end, portfolios, brand, panel) => {
     const baseUrl = '/v1/portfolio';
-    const start = moment().subtract(400, 'days').format(DATE_FORMAT);
-    const end = moment().format(DATE_FORMAT);
-    const dateQuery = `fromDate=${start}&toDate=${end}`;
-    const brandQuery = `brand=${brand}`;
-    const portfoliosQuery = `portfolios=${portfolios.map((p) => p.value).join('&portfolios=')}`;
+    const dateQuery = `fromDate=${start.format(DATE_FORMAT)}&toDate=${end.format(DATE_FORMAT)}`;
+    const portfoliosQuery = `portfolios=${filterBrandPortfolios(portfolios, brand).map(({value}) => value).join('&portfolios=')}`;
     const query = portfolios && portfolios.length
-        ? `?${brandQuery}&${dateQuery}&${portfoliosQuery}`
-        : `?${brandQuery}&${dateQuery}`;
+        ? `?${dateQuery}&${portfoliosQuery}`
+        : `?${dateQuery}`;
     if (!panel) {
         return `${baseUrl}${query}`;
     } else if (panel === 'ttrSummary') {
@@ -309,3 +342,19 @@ export const getPanelDataUrl = (portfolios, brand, panel) => {
     }
     return `${baseUrl}/panel/${panel}${query}`;
 };
+
+export const fetchPanelData = async (start, end, brandPortfolios, brand, panel) => (
+    fetch(getPanelDataUrl(start, end, brandPortfolios, brand, panel))
+        .then(checkResponse)
+        .then((response) => ({
+            data: response?.data || response || {},
+            queries: response.queries || [],
+            isLoading: false,
+            error: ''
+        }))
+        .catch(() => ({
+            data: {},
+            isLoading: false,
+            error: 'Failed to retrieve panel data. Try refreshing the page.'
+        }))
+);

@@ -2,7 +2,6 @@ import React from 'react';
 import moment from 'moment';
 import {expect} from 'chai';
 import {
-    getPortfolioBrand,
     getQueryValues,
     getPropValue,
     formatDefect,
@@ -19,23 +18,22 @@ import {
     getPanelDataUrl
 } from '../utils';
 import {HCOM_PORTFOLIOS, VRBO_PORTFOLIOS, P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL, NOT_PRIORITIZED_LABEL} from '../constants';
-import {HOTELS_COM_BRAND, VRBO_BRAND, EXPEDIA_BRAND, DATE_FORMAT} from '../../../constants';
+import {HOTELS_COM_BRAND, VRBO_BRAND, DATE_FORMAT} from '../../../constants';
 
 describe('Quality Metrics Util', () => {
-    it('getPortfolioBrand', () => {
-        expect(getPortfolioBrand([HOTELS_COM_BRAND])).to.be.eql('HCOM');
-        expect(getPortfolioBrand([EXPEDIA_BRAND])).to.be.eql('BEX');
-    });
-
     it('getQueryValues', () => {
+        const start = '2021-05-01';
+        const end = '2021-06-01';
         const hcomPortfolios = ['kes'];
-        expect(getQueryValues(`https://localhost:8080/quality-metrics?selectedBrand=${HOTELS_COM_BRAND}&portfolios=${hcomPortfolios.toString()}`, 'HCOM')).to.be.eql({
-            initialPortfolios: hcomPortfolios.map((p) => HCOM_PORTFOLIOS.find(({value}) => p === value))
-        });
+        let result = getQueryValues(`https://localhost:8080/quality-metrics?selectedBrand=${HOTELS_COM_BRAND}&portfolios=${hcomPortfolios[0]}&from=${start}&to=${end}`, [HOTELS_COM_BRAND]);
+        expect(result.initialPortfolios).to.be.eql(hcomPortfolios.map((p) => HCOM_PORTFOLIOS.find(({value}) => p === value)));
+        expect(result.initialStart.isSame(start, 'day')).to.be.eql(true);
+        expect(result.initialEnd.isSame(end, 'day')).to.be.eql(true);
         const vrboPortfolios = ['pm'];
-        expect(getQueryValues(`https://localhost:8080/quality-metrics?selectedBrand=${VRBO_BRAND}&portfolios=${vrboPortfolios.toString()}`, 'VRBO')).to.be.eql({
-            initialPortfolios: vrboPortfolios.map((p) => VRBO_PORTFOLIOS.find(({value}) => p === value))
-        });
+        result = getQueryValues(`https://localhost:8080/quality-metrics?selectedBrand=${VRBO_BRAND}&portfolios=${vrboPortfolios[0]}&from=${start}&to=${end}`, [VRBO_BRAND]);
+        expect(result.initialPortfolios).to.be.eql(vrboPortfolios.map((p) => VRBO_PORTFOLIOS.find(({value}) => p === value)));
+        expect(result.initialStart.isSame(start, 'day')).to.be.eql(true);
+        expect(result.initialEnd.isSame(end, 'day')).to.be.eql(true);
     });
 
     it('getPropValue', () => {
@@ -233,7 +231,7 @@ describe('Quality Metrics Util', () => {
             'iOS Engagement': {p1: 1, notPrioritized: 1, totalTickets: 2, ticketIds: ['ENG-0001', 'ENG-0002']},
             'Kes': {p1: 1, p2: 1, p4: 1, p5: 2, totalTickets: 5, ticketIds: ['KES-0001', 'KES-0002', 'KES-0003', 'KES-0004', 'KES-0005']},
         };
-        const result = groupDataByPillar(data, [{text: 'Mobile'}, {text: 'Kes'}], 'HCOM');
+        const result = groupDataByPillar(data, [{text: 'Mobile'}, {text: 'Kes'}], HOTELS_COM_BRAND);
         expect(result.Mobile).to.eql({
             p1: 1, p4: 2, notPrioritized: 2, totalTickets: 5, ticketIds: ['AND-0001', 'AND-0002', 'AND-0003', 'ENG-0001', 'ENG-0002']
         });
@@ -379,19 +377,19 @@ describe('Quality Metrics Util', () => {
 
     it('getPanelDataUrl', () => {
         const portfolios = [{text: 'KES', value: 'kes'}];
-        const start = moment().subtract(400, 'days').format(DATE_FORMAT);
-        const end = moment().format(DATE_FORMAT);
-        const brand = 'HCOM';
+        const start = moment().subtract(400, 'days');
+        const end = moment();
+        const brand = HOTELS_COM_BRAND;
         const panel = 'opendefects';
-        expect(getPanelDataUrl(portfolios, brand, panel)).to.be.equal(
-            `/v1/portfolio/panel/${panel}?brand=${brand}&fromDate=${start}&toDate=${end}&portfolios=kes`
+        expect(getPanelDataUrl(start, end, portfolios, brand, panel)).to.be.equal(
+            `/v1/portfolio/panel/${panel}?fromDate=${start.format(DATE_FORMAT)}&toDate=${end.format(DATE_FORMAT)}&portfolios=kes`
         );
         const ttrPanel = 'ttrSummary';
-        expect(getPanelDataUrl(portfolios, brand, ttrPanel)).to.be.equal(
-            `/v1/portfolio/${ttrPanel}?brand=${brand}&fromDate=${start}&toDate=${end}&portfolios=kes`
+        expect(getPanelDataUrl(start, end, portfolios, brand, ttrPanel)).to.be.equal(
+            `/v1/portfolio/${ttrPanel}?fromDate=${start.format(DATE_FORMAT)}&toDate=${end.format(DATE_FORMAT)}&portfolios=kes`
         );
-        expect(getPanelDataUrl(portfolios, brand)).to.be.equal(
-            `/v1/portfolio?brand=${brand}&fromDate=${start}&toDate=${end}&portfolios=kes`
+        expect(getPanelDataUrl(start, end, portfolios, brand)).to.be.equal(
+            `/v1/portfolio?fromDate=${start.format(DATE_FORMAT)}&toDate=${end.format(DATE_FORMAT)}&portfolios=kes`
         );
     });
 });
