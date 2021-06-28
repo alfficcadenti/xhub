@@ -23,10 +23,7 @@ const GroupedBookingTrends = ({data = [], setStartDateTime, setEndDateTime, setC
 
     const [hiddenKeys, setHiddenKeys] = useState([]);
 
-    let POS_CHART = data.length > 0 ? Object.getOwnPropertyNames(data[0]) : [];
-    if (POS_CHART.length > 0) {
-        POS_CHART.shift();
-    }
+    const POS_CHART = data.length > 0 ? Object.getOwnPropertyNames(data[0]).slice(1) : [];
 
     const formatDateTimeLocal = (date) => moment(date).format('MM/DD HH:mm');
 
@@ -47,12 +44,12 @@ const GroupedBookingTrends = ({data = [], setStartDateTime, setEndDateTime, setC
 
     const renderChart = ({name, color}, idx) => {
         const fill = `url(#${idx})`;
-        return data.length && data[0].hasOwnProperty(name) ? <Area type="monotone" dataKey={name} yAxisId={1} stroke={color} fillOpacity={1} fill={fill} hide = {hiddenKeys.includes(name)}/>
+        return data?.[0]?.hasOwnProperty(name) ? <Area type="monotone" dataKey={name} yAxisId={1} stroke={color} fillOpacity={1} fill={fill} hide = {hiddenKeys.includes(name)}/>
             : '';
     };
 
     const renderLineChart = (name, idx) => {
-        return data.length && data[0].hasOwnProperty(name) ? <Line type="monotone" dataKey={name} stroke={CHART_COLORS[idx]} yAxisId={1} strokeWidth={1.5} dot={false} hide = {hiddenKeys.includes(name)}/>
+        return data?.[0]?.hasOwnProperty(name) ? <Line type="monotone" dataKey={name} stroke={CHART_COLORS[idx]} yAxisId={1} strokeWidth={1.5} dot={false} hide = {hiddenKeys.includes(name)}/>
             : '';
     };
 
@@ -115,14 +112,12 @@ const GroupedBookingTrends = ({data = [], setStartDateTime, setEndDateTime, setC
         }
     };
 
-    const getGradient = ({color}, idx) => {
-        return (
-            <linearGradient id={idx} key={idx} x1="0" y1="0" x2="0" y2="1">
-                <stop offset="2%" stopColor={color} stopOpacity={0.5}/>
-                <stop offset="98%" stopColor={color} stopOpacity={0}/>
-            </linearGradient>
-        );
-    };
+    const getGradient = ({color}, idx) => (
+        <linearGradient id={idx} key={idx} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="2%" stopColor={color} stopOpacity={0.5}/>
+            <stop offset="98%" stopColor={color} stopOpacity={0}/>
+        </linearGradient>
+    );
 
     const renderGradient = () => {
         switch (activeIndex) {

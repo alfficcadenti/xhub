@@ -152,7 +152,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 console.error(err);
             });
     };
-    const fetchCall = (start, end, interval) => fetch(`/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval)}`)
+    const fetchCall = (start, end, interval) => fetch(`/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval, '')}`)
         .then(checkResponse)
         .then((respJson) => {
             const chartData = respJson.map((item) => {
@@ -166,7 +166,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
         });
 
     const fetchCallGrouped = (start, end, interval, groupType) =>
-        fetch(`/v1/bookings/count/group${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval)}&group_by=${groupType}`)
+        fetch(`/v1/bookings/count/group${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval, groupType)}`)
             .then(checkResponse)
             .then((respJson) => (
                 respJson.map(({time, count}) => ({
@@ -177,7 +177,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
 
     const fetchPredictions = (start = startDateTime, end = endDateTime, interval = timeInterval) => {
         Promise.all([
-            fetch(`/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval)}`).then(checkResponse),
+            fetch(`/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval, '')}`).then(checkResponse),
             timeInterval === '5m' ? fetch(`/v1/impulse/prediction${getQueryStringPrediction(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`).then(checkResponse) : []
         ]).then(([bookingsData, predictionData]) => {
             const simplifiedBookingsData = simplifyBookingsData(bookingsData);
