@@ -355,7 +355,7 @@ const Impulse = (props) => {
                         setTimeIntervalOpts={setTimeIntervalOpts}
                         activeIndex={activeIndex}
                     />
-                    : 'Kindly select 1 or more point of sales to display graph');
+                    : 'Select 1 or more point of sales from filters above and click submit to display trendlines ');
             default:
                 return (<BookingTrends
                     data={allData}

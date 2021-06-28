@@ -293,7 +293,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
     const getDataByPos = () => {
         if (selectedSiteURLMulti.length > 0 && selectedSiteURLMulti.length <= 10) {
             getGroupedBookingsData('point_of_sales');
-            // fetchDataByPos();
         } else {
             setGroupedResByPos([]);
         }
