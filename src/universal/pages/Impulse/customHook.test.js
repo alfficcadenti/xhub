@@ -45,7 +45,6 @@ describe('Impulse custom hooks', () => {
                 anomaliesMulti,
                 anomalyAnnotations,
                 groupedResByBrands,
-                groupedResByByPos,
                 groupedResByLobs
             ] = hook;
 
@@ -68,7 +67,6 @@ describe('Impulse custom hooks', () => {
             expect(anomaliesMulti).eql({});
             expect(anomalyAnnotations).eql([]);
             expect(groupedResByBrands).eql([]);
-            expect(groupedResByByPos).eql([]);
             expect(groupedResByLobs).eql([]);
         });
     });
