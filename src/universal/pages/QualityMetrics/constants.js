@@ -50,7 +50,7 @@ export const VRBO_PORTFOLIOS = [
     }, {
         text: 'Vrbo Retail - Growth Tech',
         value: 'growthtech',
-        projects: ['Vrbo Growth Tech']
+        projects: ['VGT']
     }, {
         text: 'Vrbo Retail - Stay & GX',
         value: 'staygx',
@@ -58,15 +58,15 @@ export const VRBO_PORTFOLIOS = [
     }, {
         text: 'Vrbo Retail - Core Experiences',
         value: 'coreexperience',
-        projects: ['CHK', 'HAVAS', 'FRIENDS', 'VPCM', 'VPCS', 'SHOP', 'Vrbo-Geo', 'GEODEV', 'VRBODISCO']
+        projects: ['CHK', 'HAVAS', 'FRIENDS', 'VPCM', 'VPCS', 'SHOP', 'VRBOGEO', 'GEODEV', 'VRBODISCO']
     }, {
         text: 'P&M',
         value: 'pm',
-        projects: ['Identity-Auth', 'Identity-Profile']
+        projects: ['AUTH', 'PROFILE']
     }, {
         text: 'TPG',
         value: 'tpg',
-        projects: ['YBIDEV', 'PX - Properties', 'Reservation Manager', 'PXO', 'PX - Core', 'Partner Reviews', 'Mobile - Android Owner', 'Mobile - iOS Owner', 'Partner Hospitality']
+        projects: ['YBIDEV', 'PXP', 'VRM', 'PXO', 'PXC', 'PR', 'MAOWN', 'MIOWN', 'PHT']
     }
 ];
 

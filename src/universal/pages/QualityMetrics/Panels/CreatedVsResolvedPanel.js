@@ -6,7 +6,8 @@ import Panel from '../Panel';
 import ChartModal from '../ChartModal';
 import {formatCreatedVsResolvedData, findAndFormatTicket} from '../utils';
 
-const CreatedVsResolvedPanel = ({title, info, priority, tickets, data, isLoading, error}) => {
+const CreatedVsResolvedPanel = ({title, info, priority, tickets, panelData}) => {
+    const {data, isLoading, error, queries} = panelData;
     const [chartData, setChartData] = useState([]);
     const [modalData, setModalData] = useState({});
     const [hiddenKeys, setHiddenKeys] = useState({});
@@ -51,6 +52,7 @@ const CreatedVsResolvedPanel = ({title, info, priority, tickets, data, isLoading
             key={title}
             title={title}
             info={info}
+            queries={queries}
             isLoading={isLoading}
             error={error}
             isFixedHeight
