@@ -52,7 +52,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
     const [anomaliesMulti, setAnomaliesMulti] = useState({});
 
     const [groupedResByBrands, setGroupedResByBrands] = useState([]);
-    const [groupedResByPos, setGroupedResByPos] = useState([]);
     const [groupedResByLobs, setGroupedResByLobs] = useState([]);
 
     const incidentMultiOptions = [
@@ -238,8 +237,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                     setGroupedResByBrands(chartData);
                 } else if (groupType === 'lobs') {
                     setGroupedResByLobs(chartData);
-                } else if (groupType === 'point_of_sales') {
-                    setGroupedResByPos(chartData);
                 }
             })
             .catch((err) => {
@@ -255,9 +252,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             getGroupedBookingsData('lobs', startTime(), endTime(), timeInterval);
             setStartDateTime(startTime());
             setEndDateTime(endTime());
-            if (selectedSiteURLMulti.length > 0 && selectedSiteURLMulti.length <= 10) {
-                getGroupedBookingsData('point_of_sales', startTime(), endTime(), timeInterval);
-            }
         } else if (type === 'incidents') {
             fetchIncidents();
         } else if (type === 'health') {
@@ -290,13 +284,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             intervalForAnomalies = setIntervalForRealTimeData(anomalyTimeInterval, 'anomaly');
         }
     };
-    const getDataByPos = () => {
-        if (selectedSiteURLMulti.length > 0 && selectedSiteURLMulti.length <= 10) {
-            getGroupedBookingsData('point_of_sales');
-        } else {
-            setGroupedResByPos([]);
-        }
-    };
+
     const getPredictions = () => {
         const dayRange = moment(endDateTime).diff(moment(startDateTime), 'days');
         if (dayRange >= 1 && dayRange < 7) {
@@ -309,7 +297,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
         } else {
             getGroupedBookingsData('brands');
             getGroupedBookingsData('lobs');
-            getDataByPos();
             getData();
             getFilter();
             getBrandsFilterData();
@@ -334,7 +321,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             } else {
                 getGroupedBookingsData('brands');
                 getGroupedBookingsData('lobs');
-                getDataByPos();
                 getData();
                 fetchIncidents();
                 getFilter();
@@ -357,7 +343,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
         if (chartSliced || isApplyClicked) {
             getGroupedBookingsData('brands');
             getGroupedBookingsData('lobs');
-            getDataByPos();
             getData();
             fetchIncidents();
             getBrandsFilterData();
@@ -387,11 +372,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 fetchHealth();
                 fetchAnomalies(startTime(), endTime());
                 fetchPredictions(startTime(), endTime(), timeInterval);
-                if (selectedSiteURLMulti.length > 0 && selectedSiteURLMulti.length <= 10) {
-                    getGroupedBookingsData('point_of_sales', startTime(), endTime(), timeInterval);
-                } else {
-                    setGroupedResByPos([]);
-                }
             }
         } else {
             initialMount = true;
@@ -423,7 +403,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
         anomaliesMulti,
         anomalyAnnotations,
         groupedResByBrands,
-        groupedResByPos,
         groupedResByLobs
     ];
 };

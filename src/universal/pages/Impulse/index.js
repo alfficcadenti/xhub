@@ -36,11 +36,6 @@ const navLinks = [
         id: 'by_lobs',
         label: 'By Lobs',
         href: '/impulse'
-    },
-    {
-        id: 'by_SiteUrl',
-        label: 'By SiteUrl',
-        href: '/impulse'
     }
 ];
 
@@ -98,8 +93,6 @@ const Impulse = (props) => {
 
     const [activeIndex, setActiveIndex] = useState(getActiveIndex(pathname));
     const [allDataByBrands, setAllDataByBrand] = useState([]);
-
-    const [allDataByPos, setAllDataByPos] = useState([]);
     const [allDataByLobs, setAllDataByLobs] = useState([]);
 
     useQueryParamChange(newBrand, props.onBrandChange);
@@ -126,7 +119,6 @@ const Impulse = (props) => {
         anomaliesMulti,
         anomalies,
         groupedResByBrands,
-        groupedResByPos,
         groupedResByLobs] = useFetchBlipData(
         isApplyClicked,
         setIsApplyClicked,
@@ -234,7 +226,6 @@ const Impulse = (props) => {
         setFilterAllData([...res]);
 
         setAllDataByBrand([...groupedResByBrands]);
-        setAllDataByPos([...groupedResByPos]);
         setAllDataByLobs([...groupedResByLobs]);
 
         setAnnotationsMulti(annotations);
@@ -242,7 +233,7 @@ const Impulse = (props) => {
 
         setAnomaliesData(anomalies);
         filterAnomalies(selectedAnomaliesMulti);
-    }, [res, annotations, anomalies, groupedResByBrands, groupedResByPos, groupedResByLobs]);
+    }, [res, annotations, anomalies, groupedResByBrands, groupedResByLobs]);
     const customStyles = {
         control: (base) => ({
             ...base,
@@ -338,24 +329,6 @@ const Impulse = (props) => {
                     setTimeIntervalOpts={setTimeIntervalOpts}
                     activeIndex={activeIndex}
                 />);
-            case 3:
-                return (allDataByPos.length > 0
-                    ? <GroupedBookingTrends
-                        data={allDataByPos}
-                        setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
-                        setChartSliced={setChartSliced}
-                        setDaysDifference={setDaysDifference}
-                        annotations={enableIncidents ? annotationsMulti : []}
-                        daysDifference={daysDifference}
-                        setTableData={setTableData}
-                        anomalies={enableAnomalies ? anomaliesData : []}
-                        setAnomalyTableData={setAnomalyTableData}
-                        timeInterval={timeInterval}
-                        setTimeInterval={setTimeInterval}
-                        setTimeIntervalOpts={setTimeIntervalOpts}
-                        activeIndex={activeIndex}
-                    />
-                    : 'Select 1 or more point of sales from filters above and click submit to display trendlines ');
             default:
                 return (<BookingTrends
                     data={allData}
