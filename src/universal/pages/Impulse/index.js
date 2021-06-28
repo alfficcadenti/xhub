@@ -34,7 +34,7 @@ const navLinks = [
     },
     {
         id: 'by_lobs',
-        label: 'By Lobs',
+        label: 'By LOBs',
         href: '/impulse'
     }
 ];
