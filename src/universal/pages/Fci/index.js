@@ -279,6 +279,7 @@ const Fci = ({selectedBrands}) => {
         setModalFci(null);
         setModalEditMode(false);
         setIsModalOpen(false);
+        setSelectedId(null);
         updateHistory(activeIndex, searchText, null);
     };
 
