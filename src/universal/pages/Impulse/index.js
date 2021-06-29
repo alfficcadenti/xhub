@@ -19,7 +19,7 @@ import {IncidentDetails} from './tabs/BookingTrends';
 import AnomalyDetails from './tabs/BookingTrends/sections/AnomalyTable/AnomalyDetails';
 import {getValue} from '../utils';
 import {Dropdown, DropdownItem} from '@homeaway/react-dropdown';
-import BookingChartByBrand from './tabs/BookingTrends/sections/BookingChartGrouped/BookingChartByBrand';
+import GroupedBookingTrends from './tabs/BookingTrends/sections/BookingChartGrouped/GroupedBookingTrends';
 
 const navLinks = [
     {
@@ -30,6 +30,11 @@ const navLinks = [
     {
         id: 'by_brands',
         label: 'By Brands',
+        href: '/impulse'
+    },
+    {
+        id: 'by_lobs',
+        label: 'By LOBs',
         href: '/impulse'
     }
 ];
@@ -88,6 +93,7 @@ const Impulse = (props) => {
 
     const [activeIndex, setActiveIndex] = useState(getActiveIndex(pathname));
     const [allDataByBrands, setAllDataByBrand] = useState([]);
+    const [allDataByLobs, setAllDataByLobs] = useState([]);
 
     useQueryParamChange(newBrand, props.onBrandChange);
     useSelectedBrand(newBrand, props.onBrandChange, props.prevSelectedBrand);
@@ -112,7 +118,8 @@ const Impulse = (props) => {
         sourceLatency,
         anomaliesMulti,
         anomalies,
-        groupedRes] = useFetchBlipData(
+        groupedResByBrands,
+        groupedResByLobs] = useFetchBlipData(
         isApplyClicked,
         setIsApplyClicked,
         startDateTime,
@@ -218,14 +225,15 @@ const Impulse = (props) => {
     useEffect(() => {
         setFilterAllData([...res]);
 
-        setAllDataByBrand([...groupedRes]);
+        setAllDataByBrand([...groupedResByBrands]);
+        setAllDataByLobs([...groupedResByLobs]);
 
         setAnnotationsMulti(annotations);
         filterAnnotationsOnBrand();
 
         setAnomaliesData(anomalies);
         filterAnomalies(selectedAnomaliesMulti);
-    }, [res, annotations, anomalies, groupedRes]);
+    }, [res, annotations, anomalies, groupedResByBrands, groupedResByLobs]);
     const customStyles = {
         control: (base) => ({
             ...base,
@@ -290,18 +298,36 @@ const Impulse = (props) => {
                     setTimeIntervalOpts={setTimeIntervalOpts}
                 />);
             case 1:
-                return (<BookingChartByBrand
+                return (<GroupedBookingTrends
                     data={allDataByBrands}
                     setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
                     setChartSliced={setChartSliced}
                     setDaysDifference={setDaysDifference}
                     daysDifference={daysDifference}
+                    annotations={enableIncidents ? annotationsMulti : []}
                     setTableData={setTableData}
                     anomalies={enableAnomalies ? anomaliesData : []}
                     setAnomalyTableData={setAnomalyTableData}
                     timeInterval={timeInterval}
                     setTimeInterval={setTimeInterval}
                     setTimeIntervalOpts={setTimeIntervalOpts}
+                    activeIndex={activeIndex}
+                />);
+            case 2:
+                return (<GroupedBookingTrends
+                    data={allDataByLobs}
+                    setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
+                    setChartSliced={setChartSliced}
+                    setDaysDifference={setDaysDifference}
+                    daysDifference={daysDifference}
+                    annotations={enableIncidents ? annotationsMulti : []}
+                    setTableData={setTableData}
+                    anomalies={enableAnomalies ? anomaliesData : []}
+                    setAnomalyTableData={setAnomalyTableData}
+                    timeInterval={timeInterval}
+                    setTimeInterval={setTimeInterval}
+                    setTimeIntervalOpts={setTimeIntervalOpts}
+                    activeIndex={activeIndex}
                 />);
             default:
                 return (<BookingTrends

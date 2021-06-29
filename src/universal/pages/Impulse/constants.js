@@ -207,5 +207,93 @@ export const ANOMALY_SELECTOR = [
     'Upstream Unhealthy'
 ];
 
-export const BRANDS_CHART = ['Brand Expedia', 'Hotels.com', 'Expedia Partner Solutions', 'Travelocity', 'Orbitz', 'Wotif', 'ebookers', 'CarRentals.com', 'MrJet', 'lastminute', 'Hotwire', 'CheapTickets', 'Egencia', 'Vrbo'];
+export const BRANDS_CHART = [
+    {
+        name: 'Brand Expedia',
+        color: '#3CB371'
+    },
+    {
+        name: 'Hotels.com',
+        color: '#1E90FF'
+    },
+    {
+        name: 'Expedia Partner Solutions',
+        color: '#DAA520'
+    },
+    {
+        name: 'Travelocity',
+        color: '#CD5C5C'
+    },
+    {
+        name: 'Orbitz',
+        color: '#FF69B4'
+    },
+    {
+        name: 'Wotif',
+        color: '#0099c6'
+    },
+    {
+        name: 'ebookers',
+        color: '#BC8F8F'
+    },
+    {
+        name: 'CarRentals.com',
+        color: '#40E0D0'
+    },
+    {
+        name: 'MrJet',
+        color: '#000000'
+    },
+    {
+        name: 'lastminute',
+        color: '#C0C0C0'
+    },
+    {
+        name: 'Hotwire',
+        color: '#994499'
+    },
+    {
+        name: 'CheapTickets',
+        color: '#778899'
+    },
+    {
+        name: 'Egencia',
+        color: '#dc3912'
+    },
+    {
+        name: 'Vrbo',
+        color: '#3366cc'
+    }];
+
+
+export const LOBS_CHART = [
+    {
+        name: 'Lodging',
+        color: '#663399'
+    },
+    {
+        name: 'Air',
+        color: '#DAA520'
+    },
+    {
+        name: 'Insurance',
+        color: '#2E8B57'
+    },
+    {
+        name: 'Car',
+        color: '#FF6347'
+    },
+    {
+        name: 'Package',
+        color: '#85929E'
+    },
+    {
+        name: 'Activities',
+        color: '#FF69B4'
+    },
+    {
+        name: 'Cruise',
+        color: '#1E90FF'
+    }
+];
 export const CHART_COLORS = ['#3CB371', '#1E90FF', '#DAA520', '#CD5C5C', '#FF69B4', '#0099c6', '#BC8F8F', '#40E0D0', '#000000', '#C0C0C0', '#994499', '#778899', '#dc3912', '#3366cc', '#6633cc', '#e67300', '#8b0707', '#651067', '#329262', '#5574a6', '#3b3eac', '#b77322', '#16d620', '#b91383', '#f4359e', '#9c5935', '#a9c413', '#2a778d', '#668d1c', '#bea413', '#0c5922', '#743411'];

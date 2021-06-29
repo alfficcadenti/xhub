@@ -65,7 +65,11 @@ export const getColor = (anomaly) => {
     return UPSTREAM_UNHEALTHY_COLOR;
 };
 
-export const getQueryString = (start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval) => (
+export const getGroupType = (groupType) => {
+    return groupType.length > 0 ? `&group_by=${groupType}` : '';
+};
+
+export const getQueryString = (start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval, groupType) => (
     `?start_time=${start.format('YYYY-MM-DDTHH:mm:ss')}Z&end_time=${end.format('YYYY-MM-DDTHH:mm:ss')}Z`
     + `${getQueryParamMulti('point_of_sales', selectedSiteURLMulti)}`
     + `${getQueryParamMulti('lobs', selectedLobMulti)}`
@@ -73,6 +77,7 @@ export const getQueryString = (start, end, IMPULSE_MAPPING, globalBrandName, sel
     + `${getQueryParamMulti('device_types', selectedDeviceTypeMulti)}`
     + `${getBrandQueryParam(IMPULSE_MAPPING, globalBrandName)}`
     + `&time_interval=${interval}`
+    + `${getGroupType(groupType)}`
 );
 
 export const getQueryStringPrediction = (start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti) => (
@@ -111,17 +116,10 @@ export const getActiveIndex = (pathname = '') => {
     if (pathname.includes('impulse/by-lobs')) {
         return 2;
     }
+    if (pathname.includes('impulse/by-siteUrl')) {
+        return 3;
+    }
     return 0;
-};
-
-export const mapActiveIndexToTabName = (idx) => {
-    if (idx === 1) {
-        return 'by-brands';
-    }
-    if (idx === 2) {
-        return 'by-lobs';
-    }
-    return 'booking-trends';
 };
 
 export const getDefaultTimeInterval = (startDate, endDate) => {
@@ -180,6 +178,19 @@ export const getQueryValues = (search) => {
         initialIncidents: incidents ? incidents.split(',').filter((item) => INCIDENT_SELECTOR.includes(item)) : [],
         initialAnomalies: anomalies ? anomalies.split(',').filter((item) => ANOMALY_SELECTOR.includes(item)) : ['Anomaly Detected']
     };
+};
+
+export const mapActiveIndexToTabName = (idx) => {
+    if (idx === 1) {
+        return 'by-brands';
+    }
+    if (idx === 2) {
+        return 'by-lobs';
+    }
+    if (idx === 3) {
+        return 'by-siteUrl';
+    }
+    return 'booking-trends';
 };
 
 export const useAddToUrl = (

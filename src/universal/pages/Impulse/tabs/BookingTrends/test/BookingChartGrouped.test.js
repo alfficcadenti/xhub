@@ -1,4 +1,4 @@
-import BookingChartByBrand from '../sections/BookingChartGrouped/BookingChartByBrand';
+import GroupedBookingTrends from '../sections/BookingChartGrouped/GroupedBookingTrends';
 import {render, shallow} from 'enzyme';
 import React from 'react';
 import chai, {expect} from 'chai';
@@ -12,7 +12,7 @@ describe('Booking Trend component testing', () => {
     beforeEach(() => {
         chaiJestSnapshot.setFilename(`${__filename}.snap`);
         wrapper = shallow(
-            <BookingChartByBrand data ={fakeData} />
+            <GroupedBookingTrends data ={fakeData} />
         );
     });
     afterEach(() => {
@@ -26,7 +26,7 @@ describe('Booking Trend component testing', () => {
 
     it('matches the snapshot', () => {
         chaiJestSnapshot.setTestName('matches the snapshot');
-        const wrapper1 = render(<BookingChartByBrand data={fakeData}/>);
+        const wrapper1 = render(<GroupedBookingTrends data={fakeData}/>);
         expect(wrapper1).to.matchSnapshot();
     });
 });
