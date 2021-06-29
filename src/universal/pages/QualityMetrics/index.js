@@ -53,15 +53,15 @@ const QualityMetrics = ({selectedBrands}) => {
         const fetchData = async (panel) => fetchPanelData(start, end, brandPortfolios, brand, panel);
         setTicketsData(loadingDataState);
         setTdData(loadingDataState);
+        setPieData(loadingDataState);
         fetchData().then(setTicketsData);
         fetchData('twoDimensionalStatistics').then(setTdData);
+        fetchData('piecharts').then(setPieData);
         if (brand === HOTELS_COM_BRAND) {
             setTtrData(loadingDataState);
             setCvrData(loadingDataState);
-            setPieData(loadingDataState);
             fetchData('ttrSummary').then(setTtrData);
             fetchData('createdVsResolved').then(setCvrData);
-            fetchData('piecharts').then(setPieData);
         } else if (brand === VRBO_BRAND) {
             setOpenDefectsData(loadingDataState);
             setSlaDefectsData(loadingDataState);
@@ -242,6 +242,22 @@ const QualityMetrics = ({selectedBrands}) => {
                 portfolios={selectedPortfolios}
                 dataKey="openBugs"
                 brand={brand}
+            />
+            <PiePanel
+                title="Open Bugs (w.r.t. Priority)"
+                info="Charting all defects with regard to priority. Click pie slice for more details."
+                groupBy="Priority"
+                tickets={ticketsData.data}
+                panelData={pieData}
+                dataKey="openBugsByPriority"
+            />
+            <PiePanel
+                title="Open Bugs (w.r.t. Project)"
+                info="Charting all defects with regard to project. Click pie slice for more details."
+                groupBy="Project"
+                tickets={ticketsData.data}
+                panelData={pieData}
+                dataKey="openBugsByProject"
             />
         </>
     );
