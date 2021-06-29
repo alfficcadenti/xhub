@@ -23,7 +23,6 @@ const GroupedBookingTrends = ({data = [], setStartDateTime, setEndDateTime, setC
     const [refAreaRight, setRefAreaRight] = useState('');
 
     const [hiddenKeys, setHiddenKeys] = useState([]);
-
     const [highlightedKey, setHighlightedKey] = useState('');
 
     const POS_CHART = data.length > 0 ? Object.getOwnPropertyNames(data[0]).slice(1) : [];
@@ -49,9 +48,11 @@ const GroupedBookingTrends = ({data = [], setStartDateTime, setEndDateTime, setC
         const {dataKey} = e;
         setHighlightedKey(dataKey);
     };
+
     const handleOnMouseLeave = () => {
         setHighlightedKey('');
     };
+
     const renderChart = ({name, color}, idx) => {
         const fill = `url(#${idx})`;
         return data?.[0]?.hasOwnProperty(name) ? <Area type="monotone" dataKey={name} yAxisId={1} stroke={color} fillOpacity={1} fill={fill} hide = {hiddenKeys.includes(name)} onMouseEnter = {handleOnMouseEnter} onMouseLeave = {handleOnMouseLeave}/>
