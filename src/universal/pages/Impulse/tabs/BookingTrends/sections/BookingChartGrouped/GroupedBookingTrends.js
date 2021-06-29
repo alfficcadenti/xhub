@@ -49,7 +49,7 @@ const GroupedBookingTrends = ({data = [], setStartDateTime, setEndDateTime, setC
         const {dataKey} = e;
         setHighlightedKey(dataKey);
     };
-    const handleOnMouseLeave = (e) => {
+    const handleOnMouseLeave = () => {
         setHighlightedKey('');
     };
     const renderChart = ({name, color}, idx) => {
