@@ -37,7 +37,7 @@ const GroupedBookingTrends = ({data = [], setStartDateTime, setEndDateTime, setC
                 <span className="label">{`${formatDateTimeLocal(payload[0].payload.time)} ${TIMEZONE}`}</span>
                 {payload.map((item) => (
                     <div>
-                        <span className="label" style={{color: item.dataKey === highlightedKey ? 'white' : ''}}>{`${item.dataKey} : ${item.value}`} </span>
+                        <span className="label" style={{color: item.dataKey === highlightedKey ? item.stroke : ''}}>{`${item.dataKey} : ${item.value}`} </span>
                     </div>
                 ))}
             </div>);
