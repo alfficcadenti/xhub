@@ -1,12 +1,12 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import {expect} from 'chai';
-import Bots from '../index';
+import BookingRequests from '../index';
 import {HOTELS_COM_BRAND} from '../../../constants';
 
-describe('<Bots />', () => {
+describe('<Booking Requests />', () => {
     it('renders successfully', () => {
-        const wrapper = shallow(<Bots selectedBrands={[HOTELS_COM_BRAND]} />);
+        const wrapper = shallow(<BookingRequests selectedBrands={[HOTELS_COM_BRAND]} />);
         expect(wrapper).to.have.length(1);
     });
 });
