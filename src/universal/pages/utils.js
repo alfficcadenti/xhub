@@ -19,7 +19,16 @@ import moment from 'moment';
 export const getVisiblePages = (selectedBrands, pages = [...ALL_PAGES]) => {
     return pages.filter(({hidden, brands}) => (
         !hidden && (!brands || brands.filter((brand) => selectedBrands.includes(brand)).length > 0)
-    ));
+    )).sort((a, b) => {
+        if (a.text > b.text) {
+            return 1;
+        }
+        if (b.text > a.text) {
+            return -1;
+        }
+
+        return 0;
+    });
 };
 
 export const getPieData = (items = [], property) => {

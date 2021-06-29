@@ -13,7 +13,7 @@ const Home = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
 
     const renderButton = (item) => {
         if (item.external) {
-            return (<Link to={{pathname: `${item.link}`}} target="_blank" className="dashboard-button">
+            return (<Link to={{pathname: `${item.link}`}} key={item.id} target="_blank" className="dashboard-button">
                 <span id={item.id} key={item.id}>
                     {item.text} <SVGIcon usefill markup={NEW_WINDOW__16} />
                 </span></Link>);

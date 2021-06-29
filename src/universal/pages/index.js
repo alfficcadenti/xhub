@@ -23,6 +23,7 @@ import GoogleCrUx from './GoogleCrUx';
 import Bots from './Bots';
 import PartnerBusinessMetrics from './PartnerBusinessMetrics';
 import BookingRequests from './BookingRequests';
+import InitialBookings from './InitialBookings';
 import {EXPEDIA_BRAND, HOTELS_COM_BRAND, VRBO_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../constants';
 
 const AAT = 'Availability & Trends';
@@ -65,6 +66,15 @@ export default [
         link: '/booking-requests',
         text: 'Booking Requests',
         component: BookingRequests,
+        brands: [VRBO_BRAND],
+        hidden: false
+    },
+    {
+        category: AAT,
+        id: 'initial-bookings',
+        link: '/initial-bookings',
+        text: 'Initial Bookings',
+        component: InitialBookings,
         brands: [VRBO_BRAND],
         hidden: false
     },
