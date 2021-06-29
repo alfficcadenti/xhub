@@ -1098,6 +1098,16 @@
             "template": "templates/welcome.hbs"
           },
           {
+            "route": "require:./routes/pages/booking-requests",
+            "component": "require:../universal/components/App/ServerApp.js",
+            "template": "templates/welcome.hbs"
+          },
+          {
+            "route": "require:./routes/pages/initial-bookings",
+            "component": "require:../universal/components/App/ServerApp.js",
+            "template": "templates/welcome.hbs"
+          },
+          {
             "route": "require:./routes/pages/google-crux",
             "component": "require:../universal/components/App/ServerApp.js",
             "template": "templates/welcome.hbs"
