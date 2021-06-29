@@ -27,6 +27,13 @@ module.exports.defects = {
     handler: getHandler(getHandlerParams('defects'))
 };
 
+module.exports.dogFood = {
+    method: 'GET',
+    path: '/v1/dog-food-data/{param*}',
+    config: getConfig('dog-food-data-get'),
+    handler: getHandler(getHandlerParams('dogFood'))
+};
+
 module.exports.incidents = {
     method: 'GET',
     path: '/v1/incidents/{impulse*}',

@@ -14,7 +14,7 @@ import {
 } from '../../constants';
 import {CA_STATUS_LIST} from './constants';
 import {DATE_FORMAT} from '../../constants';
-import {validDateRange} from '../utils';
+import {validDateRange, getUrlParam} from '../utils';
 
 
 // eslint-disable-next-line complexity
@@ -55,12 +55,6 @@ export const getQueryValues = (search) => {
             l1, l2, l3, l4
         }
     };
-};
-
-export const getUrlParam = (label, value, defaultValue) => {
-    return value && value !== defaultValue
-        ? `&${label}=${encodeURIComponent(value)}`
-        : '';
 };
 
 export const mapActiveIndexToTabName = (idx) => {

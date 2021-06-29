@@ -2,7 +2,6 @@ import moment from 'moment';
 import {expect} from 'chai';
 import {
     getQueryValues,
-    getUrlParam,
     mapActiveIndexToTabName,
     getActiveIndex,
     mapTickets
@@ -78,14 +77,6 @@ describe('PRB Utils', () => {
         expect(result.initialCAOrgs.l2).to.be.eql(l2);
         expect(result.initialCAOrgs.l3).to.be.eql(l3);
         expect(result.initialCAOrgs.l4).to.be.eql(l4);
-    });
-
-    it('getUrlParam', () => {
-        const label = 'label';
-        const valueA = 'a';
-        const valueB = 'b';
-        expect(getUrlParam(label, valueA, valueB)).to.equal(`&${label}=${valueA}`);
-        expect(getUrlParam(label, valueA, valueA)).to.equal('');
     });
 
     it('mapActiveIndexToTabName', () => {

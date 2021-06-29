@@ -1,4 +1,5 @@
 import SuccessRates from './SuccessRates';
+import DogFood from './DogFood';
 import Fci from './Fci';
 import Finder from './Finder';
 import FunnelView from './FunnelView';
@@ -162,6 +163,15 @@ export default [
         link: '/sales-force-cases',
         text: 'SalesForce Cases',
         component: SalesForceCases,
+        brands: [VRBO_BRAND],
+        hidden: false
+    },
+    {
+        category: CEA,
+        id: 'dog-food',
+        link: '/dog-food',
+        text: 'Dog Food',
+        component: DogFood,
         brands: [VRBO_BRAND],
         hidden: false
     },

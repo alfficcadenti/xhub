@@ -35,6 +35,11 @@
               "method": "GET",
               "operation": "GET_DEFECTS_V1"
             },
+            "dogFood": {
+              "path": "/v1/dog-food-data",
+              "method": "GET",
+              "operation": "GET_DOG_FOOD_V1"
+            },
             "incidents": {
               "path": "/v1/incidents",
               "method": "GET",
@@ -86,6 +91,11 @@
               "method": "GET",
               "operation": "GET_DEFECTS_V1"
             },
+            "dogFood": {
+              "path": "/v1/dog-food-data",
+              "method": "GET",
+              "operation": "GET_DOG_FOOD_V1"
+            },
             "incidents": {
               "path": "/v1/incidents",
               "method": "GET",
@@ -136,6 +146,11 @@
               "path": "/v1/defects",
               "method": "GET",
               "operation": "GET_DEFECTS_V1"
+            },
+            "dogFood": {
+              "path": "/v1/dog-food-data",
+              "method": "GET",
+              "operation": "GET_DOG_FOOD_V1"
             },
             "incidents": {
               "path": "/v1/incidents",
@@ -1089,6 +1104,11 @@
           },
           {
             "route": "require:./routes/pages/partner-business-metrics",
+            "component": "require:../universal/components/App/ServerApp.js",
+            "template": "templates/welcome.hbs"
+          },
+          {
+            "route": "require:./routes/pages/dog-food",
             "component": "require:../universal/components/App/ServerApp.js",
             "template": "templates/welcome.hbs"
           }
