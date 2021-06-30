@@ -126,28 +126,27 @@ describe('Quality Metrics Util', () => {
 
     it('formatTTRData', () => {
         const date = '2020-01-01';
-        const p1MinsToResolve = 1;
-        const p2MinsToResolve = 2;
-        const p4MinsToResolve = 4;
-        const p5MinsToResolve = 3;
+        const p1DaysToResolve = 1;
+        const p2DaysToResolve = 2;
+        const p4DaysToResolve = 4;
+        const p5DaysToResolve = 3;
         const ticketIds = ['INC-0001'];
         const data = {
             [date]: {
-                p1MinsToResolve,
-                p2MinsToResolve,
-                p4MinsToResolve,
-                p5MinsToResolve,
+                p1DaysToResolve,
+                p2DaysToResolve,
+                p4DaysToResolve,
+                p5DaysToResolve,
                 totalTickets: ticketIds.length, ticketIds
             }
         };
         expect(formatTTRData(data)).to.be.eql([{
             date,
-            [P1_LABEL]: p1MinsToResolve,
-            [P2_LABEL]: p2MinsToResolve,
+            [P1_LABEL]: p1DaysToResolve,
+            [P2_LABEL]: p2DaysToResolve,
             [P3_LABEL]: 0,
-            [P4_LABEL]: p4MinsToResolve,
-            [P4_LABEL]: p4MinsToResolve,
-            [P5_LABEL]: p5MinsToResolve,
+            [P4_LABEL]: p4DaysToResolve,
+            [P5_LABEL]: p5DaysToResolve,
             counts: ticketIds.length,
             tickets: ticketIds
         }]);
@@ -351,25 +350,15 @@ describe('Quality Metrics Util', () => {
                 [weekStartDate]: {p1: 1, p4: 1, weekStartDate, totalTickets: 2, weekEndDate: '2020-02-22', ticketIds: ['AND-17049', 'AND-17048']}
             },
             resolvedIssuesByWeek: {
-                [weekStartDate]: {p1: 1, p2: 1, weekStartDate, totalTickets: 2, weekEndDate: '2020-02-22', ticketIds: ['AND-17041', 'AND-17042']}
+                [weekStartDate]: {p1: 1, p2: 1, notPrioritized: 2, weekStartDate, totalTickets: 4, weekEndDate: '2020-02-22', ticketIds: ['AND-17041', 'AND-17042']}
             }
         };
-        expect(formatCreatedVsResolvedData(data)).to.be.eql([{
+        // Include all priorities but P4 to check for exclusion logic
+        const priorities = [P1_LABEL, P2_LABEL, P3_LABEL, P5_LABEL, 'notPrioritized'];
+        expect(formatCreatedVsResolvedData(data, priorities)).to.be.eql([{
             date: weekStartDate,
-            'Created Not Prioritized': 0,
-            'Created P1': 1,
-            'Created P2': 0,
-            'Created P3': 0,
-            'Created P4': 1,
-            'Created P5': 0,
-            'Resolved Not Prioritized': 0,
-            'Resolved P1': 1,
-            'Resolved P2': 1,
-            'Resolved P3': 0,
-            'Resolved P4': 0,
-            'Resolved P5': 0,
-            'Total Created': 2,
-            'Total Resolved': 2,
+            'Total Created': 1,
+            'Total Resolved': 4,
             createdTickets: ['AND-17049', 'AND-17048'],
             resolvedTickets: ['AND-17041', 'AND-17042']
         }]);

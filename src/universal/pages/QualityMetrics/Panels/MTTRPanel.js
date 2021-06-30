@@ -7,37 +7,18 @@ import ChartModal from '../ChartModal';
 import {PRIORITY_LABELS, PRIORITY_COLORS} from '../constants';
 import {formatTTRData, findAndFormatTicket, mapPriority} from '../utils';
 
-const MTTRPanel = ({tickets, dataUrl}) => {
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
+const MTTRPanel = ({title, info, tickets, panelData, dataKey}) => {
+    const {data, isLoading, error, queries = []} = panelData;
     const [chartData, setChartData] = useState([]);
     const [modalData, setModalData] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const title = 'Mean Time to Resolve per Week';
-
     useEffect(() => {
-        const fetchData = () => {
-            setIsLoading(true);
-            setError(null);
-            fetch(dataUrl)
-                .then((data) => data.json())
-                .then((response) => {
-                    const rawData = response.data.timetoresolve;
-                    const data = rawData.info && rawData.info.message === 'no data found'
-                        ? []
-                        : formatTTRData(rawData);
-                    setChartData(data);
-                    setIsLoading(false);
-                })
-                .catch((e) => {
-                    setChartData([]);
-                    setError(e.message);
-                    setIsLoading(false);
-                });
-        };
-        fetchData();
-    }, [tickets, dataUrl]);
+        const formattedData = panelData.info && panelData.info.message === 'no data found'
+            ? []
+            : formatTTRData(data[dataKey]);
+        setChartData(formattedData);
+    }, [panelData, data, dataKey]);
 
     const getClickHandler = (priority) => (selected) => {
         if (selected && selected.payload) {
@@ -62,7 +43,8 @@ const MTTRPanel = ({tickets, dataUrl}) => {
     return (
         <Panel
             title={title}
-            info="Charting defects by their mean time (in days) to resolve (bucketed by week). Click line point for more details."
+            info={info}
+            queries={queries}
             isLoading={isLoading}
             error={error}
             isFullWidth

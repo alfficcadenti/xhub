@@ -123,15 +123,15 @@ export const formatBarChartData = (data) => {
 };
 
 export const formatTTRData = (data) => {
-    return Object.entries(data)
-        .map(([date, {p1MinsToResolve = 0, p2MinsToResolve = 0, p3MinsToResolve = 0, p4MinsToResolve = 0, p5MinsToResolve = 0, totalTickets = 0, ticketIds = []}]) => {
+    return Object.entries(data || {})
+        .map(([date, {p1DaysToResolve = 0, p2DaysToResolve = 0, p3DaysToResolve = 0, p4DaysToResolve = 0, p5DaysToResolve = 0, totalTickets = 0, ticketIds = []}]) => {
             return {
                 date,
-                [P1_LABEL]: p1MinsToResolve,
-                [P2_LABEL]: p2MinsToResolve,
-                [P3_LABEL]: p3MinsToResolve,
-                [P4_LABEL]: p4MinsToResolve,
-                [P5_LABEL]: p5MinsToResolve,
+                [P1_LABEL]: p1DaysToResolve,
+                [P2_LABEL]: p2DaysToResolve,
+                [P3_LABEL]: p3DaysToResolve,
+                [P4_LABEL]: p4DaysToResolve,
+                [P5_LABEL]: p5DaysToResolve,
                 counts: totalTickets,
                 tickets: ticketIds
             };
@@ -305,9 +305,14 @@ export const processTwoDimensionalIssues = (
     };
 };
 
-export const formatCreatedVsResolvedData = (data) => {
+export const formatCreatedVsResolvedData = (data, priorities = []) => {
     const {createdIssuesByWeek, resolvedIssuesByWeek} = data;
-    const priorityKeys = PRIORITY_LABELS.map((p) => p.toLowerCase());
+    const priorityKeys = priorities.map((p) => p.toLowerCase());
+    // handle notPrioritized priority
+    const notPrioritizedIdx = priorityKeys.findIndex((pk) => pk === 'notprioritized');
+    if (notPrioritizedIdx !== -1) {
+        priorityKeys[notPrioritizedIdx] = 'notPrioritized';
+    }
     return Object
         .values(createdIssuesByWeek || {})
         .map((createdWeek) => {
@@ -319,11 +324,6 @@ export const formatCreatedVsResolvedData = (data) => {
                 createdTickets: createdWeek.ticketIds,
                 resolvedTickets: resolvedWeek.ticketIds
             };
-            PRIORITY_LABELS.forEach((priority) => {
-                const p = priority.toLowerCase();
-                result[`Created ${priority}`] = createdWeek[p] || 0;
-                result[`Resolved ${priority}`] = resolvedWeek[p] || 0;
-            });
             return result;
         });
 };
