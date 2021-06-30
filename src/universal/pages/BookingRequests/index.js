@@ -23,7 +23,7 @@ const BookingRequests = ({selectedBrands}) => {
             error={error}
             title="Booking Requests"
             name="booking-requests"
-            url="https://opex-grafana.expedia.biz/d/000000004/booking-request?orgId=2"
+            url="https://opex-grafana.expedia.biz/d/000000004/booking-request?orgId=2&theme=light"
         />
     );
 };

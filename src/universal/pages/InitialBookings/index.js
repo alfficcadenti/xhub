@@ -23,7 +23,7 @@ const InitialBookings = ({selectedBrands}) => {
             error={error}
             title="Initial Bookings"
             name="initial-bookings"
-            url="https://opex-grafana.expedia.biz/d/000000022/initial-bookings?refresh=30s&orgId=2"
+            url="https://opex-grafana.expedia.biz/d/000000022/initial-bookings?refresh=30s&orgId=2&theme=light"
         />
     );
 };

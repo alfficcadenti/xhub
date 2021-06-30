@@ -23,7 +23,7 @@ const FencePostEvents = ({selectedBrands}) => {
             error={error}
             title="Fence Post Events - Booking Journey"
             name="fence-post-events-booking-journey"
-            url="https://opexhub-grafana.expedia.biz/d/vBTIYV6Mz/opxhub-vrbo-booking-journey-fence-post-events"
+            url="https://opexhub-grafana.expedia.biz/d/vBTIYV6Mz/opxhub-vrbo-booking-journey-fence-post-events&theme=light"
         />
     );
 };
