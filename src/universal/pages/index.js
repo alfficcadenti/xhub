@@ -24,6 +24,7 @@ import Bots from './Bots';
 import PartnerBusinessMetrics from './PartnerBusinessMetrics';
 import BookingRequests from './BookingRequests';
 import InitialBookings from './InitialBookings';
+import FencePostEvents from './FencePostEvents';
 import {EXPEDIA_BRAND, HOTELS_COM_BRAND, VRBO_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../constants';
 
 const AAT = 'Availability & Trends';
@@ -173,6 +174,15 @@ export default [
         text: 'Success Rates',
         component: SuccessRates,
         brands: [EXPEDIA_BRAND, HOTELS_COM_BRAND, VRBO_BRAND],
+        hidden: false
+    },
+    {
+        category: AAT,
+        id: 'fence-post-events-booking-journey',
+        link: '/fence-post-events-booking-journey',
+        text: 'Fence Post Events - Booking Journey',
+        component: FencePostEvents,
+        brands: [VRBO_BRAND],
         hidden: false
     },
     // CEA Dashboards
