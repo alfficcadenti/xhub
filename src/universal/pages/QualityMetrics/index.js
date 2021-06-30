@@ -8,7 +8,7 @@ import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import LoadingContainer from '../../components/LoadingContainer';
 import HelpText from '../../components/HelpText/HelpText';
 import {VRBO_BRAND, HOTELS_COM_BRAND, OPXHUB_SUPPORT_CHANNEL} from '../../constants';
-import {BarChartPanel, DurationPanel, TwoDimensionalPanel, CreatedVsResolvedPanel, PiePanel} from './Panels';
+import {BarChartPanel, DurationPanel, TwoDimensionalPanel, MTTRPanel, CreatedVsResolvedPanel, PiePanel} from './Panels';
 import {P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL} from './constants';
 import {getBrandPortfolios, filterBrandPortfolios, getQueryValues, getQueryString, fetchPanelData} from './utils';
 import './styles.less';
@@ -33,6 +33,7 @@ const QualityMetrics = ({selectedBrands}) => {
     const [ticketsData, setTicketsData] = useState(initialDataState);
     const [tdData, setTdData] = useState(initialDataState);
     const [ttrData, setTtrData] = useState(initialDataState);
+    const [mttrData, setMttrData] = useState(initialDataState);
     const [cvrData, setCvrData] = useState(initialDataState);
     const [pieData, setPieData] = useState(initialDataState);
     const [openDefectsData, setOpenDefectsData] = useState(initialDataState);
@@ -53,20 +54,22 @@ const QualityMetrics = ({selectedBrands}) => {
         const fetchData = async (panel) => fetchPanelData(start, end, brandPortfolios, brand, panel);
         setTicketsData(loadingDataState);
         setTdData(loadingDataState);
+        setCvrData(loadingDataState);
         setPieData(loadingDataState);
         fetchData().then(setTicketsData);
         fetchData('twoDimensionalStatistics').then(setTdData);
+        fetchData('createdVsResolved').then(setCvrData);
         fetchData('piecharts').then(setPieData);
         if (brand === HOTELS_COM_BRAND) {
             setTtrData(loadingDataState);
-            setCvrData(loadingDataState);
             fetchData('ttrSummary').then(setTtrData);
-            fetchData('createdVsResolved').then(setCvrData);
         } else if (brand === VRBO_BRAND) {
             setOpenDefectsData(loadingDataState);
             setSlaDefectsData(loadingDataState);
+            setMttrData(loadingDataState);
             fetchData('opendefects').then(setOpenDefectsData);
             fetchData('opendefectspastsla').then(setSlaDefectsData);
+            fetchData('timetoresolve').then(setMttrData);
         }
     }, [history, isSupportedBrand, brand, selectedPortfolios, start, end]);
 
@@ -190,7 +193,7 @@ const QualityMetrics = ({selectedBrands}) => {
                     key={`${priority} Created vs. Resolved Chart`}
                     title={`${priority} Created vs. Resolved Chart`}
                     info={`Charting ${priority} defects by their open date and resolve date (bucketed by week). Click line point for more details.`}
-                    priority={priority}
+                    priorities={[priority]}
                     tickets={ticketsData.data}
                     panelData={cvrData}
                 />
@@ -242,6 +245,37 @@ const QualityMetrics = ({selectedBrands}) => {
                 portfolios={selectedPortfolios}
                 dataKey="openBugs"
                 brand={brand}
+            />
+            <MTTRPanel
+                title="Mean Time to Resolve per Week"
+                info="The weekly average amount of days between a ticket's create date and resolve date w.r.t. priority"
+                tickets={ticketsData.data}
+                panelData={mttrData}
+                dataKey="timetoresolve"
+            />
+            <CreatedVsResolvedPanel
+                key="Total Created vs. Resolved Chart"
+                title="Total Created vs. Resolved Chart"
+                info="Charting all defects by their open date and resolve date (bucketed by week). Click line point for more details."
+                priorities={[P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL, 'notPrioritized']}
+                tickets={ticketsData.data}
+                panelData={cvrData}
+            />
+            <CreatedVsResolvedPanel
+                key="P1 Created vs. Resolved Chart"
+                title="P1 Created vs. Resolved Chart"
+                info="Charting P1 defects by their open date and resolve date (bucketed by week). Click line point for more details."
+                priorities={[P1_LABEL]}
+                tickets={ticketsData.data}
+                panelData={cvrData}
+            />
+            <CreatedVsResolvedPanel
+                key="P2 Created vs. Resolved Chart"
+                title="P2 Created vs. Resolved Chart"
+                info="Charting P2 defects by their open date and resolve date (bucketed by week). Click line point for more details."
+                priorities={[P2_LABEL]}
+                tickets={ticketsData.data}
+                panelData={cvrData}
             />
             <PiePanel
                 title="Open Bugs (w.r.t. Priority)"
