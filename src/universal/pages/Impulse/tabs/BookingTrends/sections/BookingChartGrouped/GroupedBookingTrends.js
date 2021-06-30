@@ -14,6 +14,7 @@ import {BRANDS_CHART, CHART_COLORS, LOBS_CHART} from '../../../../constants';
 import {startTime, endTime, getColor, getDefaultTimeInterval, getTimeIntervals, isValidTimeInterval} from '../../../../impulseHandler';
 import AnomalyLabel from '../BookingChart/AnomalyLabel';
 import ReferenceLabel from '../../../../../../components/ReferenceLabel';
+import '/src/universal/pages/Impulse/tabs/BookingTrends/sections/BookingChart/styles.less';
 
 const GroupedBookingTrends = ({data = [], setStartDateTime, setEndDateTime, setChartSliced, daysDifference, setDaysDifference, annotations, setTableData, anomalies, setAnomalyTableData, timeInterval, setTimeInterval, setTimeIntervalOpts, activeIndex}) => {
     const [left, setLeft] = useState('dataMin');
@@ -22,6 +23,7 @@ const GroupedBookingTrends = ({data = [], setStartDateTime, setEndDateTime, setC
     const [refAreaRight, setRefAreaRight] = useState('');
 
     const [hiddenKeys, setHiddenKeys] = useState([]);
+    const [highlightedKey, setHighlightedKey] = useState('');
 
     const POS_CHART = data.length > 0 ? Object.getOwnPropertyNames(data[0]).slice(1) : [];
 
@@ -34,7 +36,7 @@ const GroupedBookingTrends = ({data = [], setStartDateTime, setEndDateTime, setC
                 <span className="label">{`${formatDateTimeLocal(payload[0].payload.time)} ${TIMEZONE}`}</span>
                 {payload.map((item) => (
                     <div>
-                        <span className="label">{`${item.dataKey} : ${item.value}`} </span>
+                        <span className="label" style={{color: item.dataKey === highlightedKey ? item.stroke : ''}}>{`${item.dataKey} : ${item.value}`} </span>
                     </div>
                 ))}
             </div>);
@@ -42,14 +44,23 @@ const GroupedBookingTrends = ({data = [], setStartDateTime, setEndDateTime, setC
         return null;
     };
 
+    const handleOnMouseEnter = (e) => {
+        const {dataKey} = e;
+        setHighlightedKey(dataKey);
+    };
+
+    const handleOnMouseLeave = () => {
+        setHighlightedKey('');
+    };
+
     const renderChart = ({name, color}, idx) => {
         const fill = `url(#${idx})`;
-        return data?.[0]?.hasOwnProperty(name) ? <Area type="monotone" dataKey={name} yAxisId={1} stroke={color} fillOpacity={1} fill={fill} hide = {hiddenKeys.includes(name)}/>
+        return data?.[0]?.hasOwnProperty(name) ? <Area type="monotone" dataKey={name} yAxisId={1} stroke={color} fillOpacity={1} fill={fill} hide = {hiddenKeys.includes(name)} onMouseEnter = {handleOnMouseEnter} onMouseLeave = {handleOnMouseLeave}/>
             : '';
     };
 
     const renderLineChart = (name, idx) => {
-        return data?.[0]?.hasOwnProperty(name) ? <Line type="monotone" dataKey={name} stroke={CHART_COLORS[idx]} yAxisId={1} strokeWidth={1.5} dot={false} hide = {hiddenKeys.includes(name)}/>
+        return data?.[0]?.hasOwnProperty(name) ? <Line type="monotone" dataKey={name} stroke={CHART_COLORS[idx]} yAxisId={1} strokeWidth={1.5} dot={false} hide = {hiddenKeys.includes(name)} onMouseEnter = {handleOnMouseEnter} onMouseLeave = {handleOnMouseLeave}/>
             : '';
     };
 
