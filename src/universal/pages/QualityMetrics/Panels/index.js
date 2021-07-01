@@ -1,7 +1,7 @@
 
 import BarChartPanel from './BarChartPanel';
 import TwoDimensionalPanel from './TwoDimensionalPanel';
-import MTTRPanel from './MTTRPanel';
+import PriorityLineChartPanel from './PriorityLineChartPanel';
 import SLADefinitions from './SLADefinitions';
 import CreatedVsResolvedPanel from './CreatedVsResolvedPanel';
 import DurationPanel from './DurationPanel';
@@ -11,7 +11,7 @@ import PiePanel from './PiePanel';
 export {
     BarChartPanel,
     TwoDimensionalPanel,
-    MTTRPanel,
+    PriorityLineChartPanel,
     SLADefinitions,
     CreatedVsResolvedPanel,
     DurationPanel,

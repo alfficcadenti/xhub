@@ -2,6 +2,9 @@ import React from 'react';
 import moment from 'moment';
 import {expect} from 'chai';
 import {
+    getPortfoliosQuery,
+    filterBrandPortfolios,
+    getQueryString,
     getQueryValues,
     getPropValue,
     formatDefect,
@@ -9,6 +12,7 @@ import {
     mapPriority,
     formatBarChartData,
     formatTTRData,
+    formatPriorityCountsData,
     formatDurationData,
     formatWoWData,
     groupDataByPillar,
@@ -21,6 +25,24 @@ import {HCOM_PORTFOLIOS, VRBO_PORTFOLIOS, P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL
 import {HOTELS_COM_BRAND, VRBO_BRAND, DATE_FORMAT} from '../../../constants';
 
 describe('Quality Metrics Util', () => {
+    it('getPortfoliosQuery', () => {
+        expect(getPortfoliosQuery([{value: 'a'}, {value: 'b'}])).to.eql('&portfolios=a&portfolios=b');
+        expect(getPortfoliosQuery([])).to.eql('');
+    });
+
+    it('filterBrandPortfolios', () => {
+        expect(filterBrandPortfolios([{value: 'checkout'}, {value: 'invalid'}], HOTELS_COM_BRAND)).to.eql([{value: 'checkout'}]);
+    });
+
+    it('getQueryString', () => {
+        const brand = HOTELS_COM_BRAND;
+        const portfolios = [{value: 'checkout'}];
+        const start = moment('06-01-21');
+        const end = moment('06-21-21');
+        expect(getQueryString(brand, portfolios, start, end))
+            .to.eql(`/quality-metrics?selectedBrand=${brand}&from=${start.toISOString()}&to=${end.toISOString()}&portfolios=${portfolios[0].value}`);
+    });
+
     it('getQueryValues', () => {
         const start = '2021-05-01';
         const end = '2021-06-01';
@@ -147,6 +169,26 @@ describe('Quality Metrics Util', () => {
             [P3_LABEL]: 0,
             [P4_LABEL]: p4DaysToResolve,
             [P5_LABEL]: p5DaysToResolve,
+            counts: ticketIds.length,
+            tickets: ticketIds
+        }]);
+    });
+
+    it('formatPriorityCountsData', () => {
+        const date = '2020-01-01';
+        const p1 = 1;
+        const p2 = 2;
+        const p3 = 4;
+        const p5 = 3;
+        const ticketIds = ['INC-0001'];
+        const data = {[date]: {p1, p2, p3, p5, totalTickets: ticketIds.length, ticketIds}};
+        expect(formatPriorityCountsData(data)).to.be.eql([{
+            date,
+            [P1_LABEL]: p1,
+            [P2_LABEL]: p2,
+            [P3_LABEL]: p3,
+            [P4_LABEL]: 0,
+            [P5_LABEL]: p5,
             counts: ticketIds.length,
             tickets: ticketIds
         }]);
