@@ -23,7 +23,7 @@ const RealTimeSitePerformance = ({selectedBrands}) => {
             error={error}
             title="Real-Time Site Performance"
             name="real-time-site-performance"
-            url="https://opex-grafana.expedia.biz/d/na38i33iz/real-time-site-performance-rum&theme=light"
+            url="https://opex-grafana.expedia.biz/d/na38i33iz/real-time-site-performance-rum?refresh=5m&orgId=2&theme=light"
         />
     );
 };
