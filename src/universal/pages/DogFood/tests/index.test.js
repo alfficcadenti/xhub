@@ -27,7 +27,10 @@ describe('<DogFood />', () => {
     let wrapper;
     global.fetch = jest.fn(() =>
         Promise.resolve({
-            json: () => Promise.resolve({mockIssues}),
+            ok: true,
+            json: () => {
+                return mockIssues;
+            },
         })
     );
 

@@ -1,7 +1,7 @@
-/* eslint-disable no-unused-vars */
 import {useState, useEffect} from 'react';
 import moment from 'moment';
 import {checkResponse, getListOfUniqueProperties} from '../utils';
+import {mapIssues} from './utils';
 
 export const useFetchIssues = (
     isApplyClicked,
@@ -25,7 +25,8 @@ export const useFetchIssues = (
         fetch(`/v1/dog-food-data?fromDate=${startDate}&toDate=${endDate}`)
             .then(checkResponse)
             .then((data) => {
-                setAllIssues(data);
+                // setAllIssues(data);
+                setAllIssues(data.map(mapIssues));
                 setCurrentProjects(getListOfUniqueProperties(data, 'project'));
                 setCurrentStatuses(getListOfUniqueProperties(data, 'status'));
                 setIsLoading(false);

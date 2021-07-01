@@ -8,11 +8,11 @@ const Overview = ({
 }) => (
     <div className="overview-charts">
         <PieChart
-            data={getPieData(issues, 'project')}
+            data={getPieData(issues, 'Project')}
             title="Project"
         />
         <PieChart
-            data={getPieData(issues, 'status')}
+            data={getPieData(issues, 'Status')}
             title="Status"
         />
     </div>

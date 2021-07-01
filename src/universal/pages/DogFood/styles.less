@@ -1,26 +1,12 @@
 @import '../../mixins.less';
 
-// .dog-food-container {
-//     margin-bottom: @spacing-1x;
-    
-//     .page-title {
-//         text-align: left;
-//     }
-
-//     .filters-wrapper {
-//         margin-bottom: @spacing-2x;
-//         border-radius: @spacing-1x;
-//         display: flex;
-//         flex-wrap: wrap;
-//         justify-content: left;
-//     }
-// }
-
-@import '../../mixins.less';
-
 .dog-food-container {
     text-align: left;
 
+    .datetime-range-picker {
+        display: flex;
+    }
+    
     .datetime-range-picker,
     .filter-dropdown {
         margin: 0 @spacing-1x @spacing-1x 0;
@@ -59,16 +45,8 @@
             display: inline-flex;
         }
 
-        .priority-dropdown .Dropdown__toggle {
-            .dropdown-button(160px);
-        }
-
-        .brand-dropdown .Dropdown__toggle,
         .status-dropdown .Dropdown__toggle {
             .dropdown-button;
-        }
-
-        .status-dropdown .Dropdown__toggle {
             min-width: 130px;
         }
 
@@ -82,43 +60,11 @@
         text-align: left;
     }
 
-    .page-info .Tooltip {
-        font-weight: 400;
-    }
-
     .overview-charts {
         min-height: 70vh;
         margin-bottom: @spacing-7x;
     }
 
-    .more-filters-btn {
-        margin-left: 5px;
-        margin-bottom: -1px;
-        min-height: @spacing-7x;
-        padding: 0 @spacing-2x;
-        font-size: .75rem;
-        line-height: 1rem;
-        box-shadow: none;
-        border-radius: @spacing-1x @spacing-1x 0 0;
-
-        &.active {
-            background: @color-bg-accent;
-        }
-    }
-
-    .more-filters-divider {
-        margin: -4px 0 4px 5px;
-
-        .Divider__heading {
-            display: none;
-        }
-
-        .Divider__body {
-            padding: @spacing-2x;
-            background: @color-bg-accent;
-            border-radius: 0 0 @spacing-1x @spacing-1x;
-        }
-    }
 
     .Navigation {
         margin-bottom: @spacing-3x;
