@@ -290,7 +290,7 @@ export default [
         category: SP,
         id: 'real-time-site-performance',
         link: '/real-time-site-performance',
-        text: 'Real-Time Site Performance',
+        text: 'Real-Time Site Performance (RUM)',
         component: RealTimeSitePerformance,
         brands: [VRBO_BRAND],
         hidden: false

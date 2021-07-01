@@ -10,7 +10,7 @@ const RealTimeSitePerformance = ({selectedBrands}) => {
 
     useEffect(() => {
         if ([EG_BRAND, EXPEDIA_BRAND, EGENCIA_BRAND, HOTELS_COM_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND].includes(selectedBrand)) {
-            setError(`Real-Time Site Performance for ${selectedBrand} is not yet available.
+            setError(`Real-Time Site Performance (RUM) for ${selectedBrand} is not yet available.
                 The following brands are supported at this time: "Vrbo Retail".
                 If you have any questions, please ping ${OPXHUB_SUPPORT_CHANNEL} or leave a comment via our Feedback form.`);
         } else {
@@ -21,7 +21,7 @@ const RealTimeSitePerformance = ({selectedBrands}) => {
     return (
         <GrafanaDashboard
             error={error}
-            title="Real-Time Site Performance"
+            title="Real-Time Site Performance (RUM)"
             name="real-time-site-performance"
             url="https://opex-grafana.expedia.biz/d/na38i33iz/real-time-site-performance-rum?refresh=5m&orgId=2&theme=light"
         />
