@@ -25,6 +25,7 @@ import PartnerBusinessMetrics from './PartnerBusinessMetrics';
 import BookingRequests from './BookingRequests';
 import InitialBookings from './InitialBookings';
 import FencePostEvents from './FencePostEvents';
+import RealTimeSitePerformance from './RealTimeSitePerformance';
 import {EXPEDIA_BRAND, HOTELS_COM_BRAND, VRBO_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../constants';
 
 const AAT = 'Availability & Trends';
@@ -282,6 +283,15 @@ export default [
         link: '/google-crux',
         text: 'Google CrUx (RUM)',
         component: GoogleCrUx,
+        brands: [VRBO_BRAND],
+        hidden: false
+    },
+    {
+        category: SP,
+        id: 'real-time-site-performance',
+        link: '/real-time-site-performance',
+        text: 'Real-Time Site Performance (RUM)',
+        component: RealTimeSitePerformance,
         brands: [VRBO_BRAND],
         hidden: false
     },
