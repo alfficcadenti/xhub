@@ -9,7 +9,7 @@ import LoadingContainer from '../../components/LoadingContainer';
 import Overview from './tabs/Overview';
 import Issues from './tabs/Issues';
 
-import {getQueryValues, getActiveIndex, generateUrl} from './utils';
+import {generateUrl, getActiveIndex, getQueryValues, getPresets} from './utils';
 import {validDateRange} from '../utils';
 import {useFetchIssues} from './hooks';
 import {useQueryParamChange, useSelectedBrand} from '../hooks';
@@ -27,6 +27,7 @@ const DogFood = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const {
         initialStart,
         initialEnd,
+        initialTimeRange,
         initialStatus,
         initialProject
     } = getQueryValues(search);
@@ -38,6 +39,7 @@ const DogFood = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const [isApplyClicked, setIsApplyClicked] = useState(false);
     const [startDate, setStartDate] = useState(initialStart);
     const [endDate, setEndDate] = useState(initialEnd);
+    const [timeRange, setTimeRange] = useState(initialTimeRange);
     const [selectedStatus, setSelectedStatus] = useState(initialStatus);
     const [currentStatuses, setCurrentStatuses] = useState([]);
     const [selectedProject, setSelectedProject] = useState(initialProject);
@@ -55,29 +57,14 @@ const DogFood = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         selectedProject
     ));
 
-    const [
-        isLoading,
-        errorMessage,
-        allIssues
-    ] = useFetchIssues(
-        isApplyClicked,
-        startDate,
-        endDate,
-        // eslint-disable-next-line no-use-before-define
-        applyFilters,
-        setIsApplyClicked,
-        setCurrentProjects,
-        setCurrentStatuses
-    );
-
     // Filters
-    const matchesProject = (x) => selectedProject === ALL_PROJECTS_OPTION || x.project === selectedProject;
-    const matchesStatus = (x) => selectedStatus === ALL_STATUSES_OPTION || x.status === selectedStatus;
+    const matchesProject = (x) => selectedProject === ALL_PROJECTS_OPTION || x.Project === selectedProject;
+    const matchesStatus = (x) => selectedStatus === ALL_STATUSES_OPTION || x.Status === selectedStatus;
 
     // eslint-disable-next-line complexity
     const filterIssues = (x) => (
         matchesProject(x)
-        && matchesStatus(x)
+            && matchesStatus(x)
     );
 
     const applyFilters = () => {
@@ -86,11 +73,26 @@ const DogFood = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
             setStartDate(values.initialStart);
             setEndDate(values.initialEnd);
         }
+        // eslint-disable-next-line no-use-before-define
         const result = allIssues.filter(filterIssues);
         setFilteredIssues(result);
         updateHistory();
         setIsDirtyForm(false);
     };
+
+    const [
+        isLoading,
+        errorMessage,
+        allIssues
+    ] = useFetchIssues(
+        isApplyClicked,
+        startDate,
+        endDate,
+        applyFilters,
+        setIsApplyClicked,
+        setCurrentProjects,
+        setCurrentStatuses
+    );
 
     useEffect(() => {
         applyFilters();
@@ -104,7 +106,8 @@ const DogFood = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         setActiveIndex(activeLinkIndex);
     };
 
-    const handleDateRangeChange = ({start, end}) => {
+    const handleDateRangeChange = ({start, end}, text) => {
+        setTimeRange(text || timeRange);
         setStartDate(moment(start).format(DATE_FORMAT));
         if (!!end || (!end && moment(start).isAfter(endDate))) {
             setEndDate(moment(end).format(DATE_FORMAT));
@@ -140,7 +143,7 @@ const DogFood = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
                     onChange={handleDateRangeChange}
                     startDate={moment(startDate).toDate()}
                     endDate={moment(endDate).toDate()}
-                    hidePresets
+                    presets={getPresets()}
                 />
                 <FilterDropDown
                     id="status-dropdown"
