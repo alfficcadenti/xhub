@@ -1,4 +1,5 @@
 import SuccessRates from './SuccessRates';
+import DogFood from './DogFood';
 import Fci from './Fci';
 import Finder from './Finder';
 import FunnelView from './FunnelView';
@@ -18,13 +19,20 @@ import OperationalIos from './OperationalIos';
 import DataCenterTraffic from './DataCenterTraffic';
 import PortfolioScoreCard from './PortfolioScoreCard';
 import SalesForceCases from './SalesForceCases';
+import GoogleCrUx from './GoogleCrUx';
+import Bots from './Bots';
+import PartnerBusinessMetrics from './PartnerBusinessMetrics';
+import BookingRequests from './BookingRequests';
+import InitialBookings from './InitialBookings';
+import FencePostEvents from './FencePostEvents';
 import {EXPEDIA_BRAND, HOTELS_COM_BRAND, VRBO_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../constants';
-
 
 const AAT = 'Availability & Trends';
 const CEA = 'Customer Experience Analysis';
+const MP = 'Mobile Performance';
 const PHAR = 'Platform Health & Resiliency';
 const OR = 'Outage Report';
+const SP = 'Site Performance';
 
 export default [
     {
@@ -44,6 +52,33 @@ export default [
         hidden: true
     },
     // AAT Dashboards
+    {
+        category: AAT,
+        id: 'bots',
+        link: '/bots',
+        text: 'Bots',
+        component: Bots,
+        brands: [HOTELS_COM_BRAND],
+        hidden: false
+    },
+    {
+        category: AAT,
+        id: 'booking-requests',
+        link: '/booking-requests',
+        text: 'Booking Requests',
+        component: BookingRequests,
+        brands: [VRBO_BRAND],
+        hidden: false
+    },
+    {
+        category: AAT,
+        id: 'initial-bookings',
+        link: '/initial-bookings',
+        text: 'Initial Bookings',
+        component: InitialBookings,
+        brands: [VRBO_BRAND],
+        hidden: false
+    },
     {
         category: AAT,
         id: 'checkout-success-rate',
@@ -116,6 +151,15 @@ export default [
     },
     {
         category: AAT,
+        id: 'partner-business-metrics',
+        link: '/partner-business-metrics',
+        text: 'Partner Business Metrics',
+        component: PartnerBusinessMetrics,
+        brands: [VRBO_BRAND],
+        hidden: false
+    },
+    {
+        category: AAT,
         id: 'reservations',
         link: '/reservations',
         text: 'Reservations',
@@ -132,6 +176,15 @@ export default [
         brands: [EXPEDIA_BRAND, HOTELS_COM_BRAND, VRBO_BRAND],
         hidden: false
     },
+    {
+        category: AAT,
+        id: 'fence-post-events-booking-journey',
+        link: '/fence-post-events-booking-journey',
+        text: 'Fence Post Events - Booking Journey',
+        component: FencePostEvents,
+        brands: [VRBO_BRAND],
+        hidden: false
+    },
     // CEA Dashboards
     {
         category: CEA,
@@ -141,6 +194,34 @@ export default [
         component: SalesForceCases,
         brands: [VRBO_BRAND],
         hidden: false
+    },
+    {
+        category: CEA,
+        id: 'dog-food',
+        link: '/dog-food',
+        text: 'Dog Food',
+        component: DogFood,
+        brands: [VRBO_BRAND],
+        hidden: false
+    },
+    // MP Dashboards
+    {
+        category: MP,
+        id: 'performance-android-traveller',
+        link: 'https://console.firebase.google.com/project/homeaway.com:api-project-42464624060/performance/app/android:com.vrbo.android/trends',
+        text: 'Performance - Android Traveller',
+        brands: [VRBO_BRAND],
+        hidden: false,
+        external: true
+    },
+    {
+        category: MP,
+        id: 'performance-ios-traveller',
+        link: 'https://console.firebase.google.com/project/homeaway.com:api-project-42464624060/performance/app/ios:com.vrbo.traveler/trends',
+        text: 'Performance - iOS Traveller',
+        brands: [VRBO_BRAND],
+        hidden: false,
+        external: true
     },
     // PHAR Dashboards
     {
@@ -193,5 +274,15 @@ export default [
         link: '/outage-report',
         text: 'Outage Report',
         component: OutageReport
-    }
+    },
+    // SP Dashboards
+    {
+        category: SP,
+        id: 'google-crux',
+        link: '/google-crux',
+        text: 'Google CrUx (RUM)',
+        component: GoogleCrUx,
+        brands: [VRBO_BRAND],
+        hidden: false
+    },
 ];

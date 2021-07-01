@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {withRouter} from 'react-router-dom';
-import Iframe from 'react-iframe';
 import './styles.less';
-import LoadingContainer from '../../components/LoadingContainer';
 import {EG_BRAND, EXPEDIA_BRAND, EGENCIA_BRAND, OPXHUB_SUPPORT_CHANNEL, VRBO_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../../constants';
+import GrafanaDashboard from '../../components/GrafanaDashboard';
 
 
 const CheckoutSuccessRate = ({selectedBrands}) => {
@@ -21,22 +20,12 @@ const CheckoutSuccessRate = ({selectedBrands}) => {
     }, [selectedBrand]);
 
     return (
-        <div className="checkout-success-rate-container">
-            <h1 className="page-title">{'Checkout Success Rate'}</h1>
-            <LoadingContainer isLoading={false} error={error}>
-                <div className="checkout-success-rate">
-                    <Iframe
-                        url="https://opexhub-grafana.expedia.biz/d/vv4YryEGz/csr?orgId=1&refresh=30s&var-LOCALE=All&var-MARKETINGCHANNEL=All&var-PLATFORM=All&var-POS=All&var-IsKES=All"
-                        key={'iframe'}
-                        width="1600px"
-                        height="950px"
-                        id="checkout-success-rate"
-                        className="iframe"
-                        position="relative"
-                    />
-                </div>
-            </LoadingContainer>
-        </div>
+        <GrafanaDashboard
+            error={error}
+            name="checkout-success-rate"
+            title="Checkout Success Rate"
+            url="https://opexhub-grafana.expedia.biz/d/vv4YryEGz/csr?orgId=1&refresh=30s&var-LOCALE=All&var-MARKETINGCHANNEL=All&var-PLATFORM=All&var-POS=All&var-IsKES=All&theme=light"
+        />
     );
 };
 

@@ -22,7 +22,8 @@ import {
     getQueryParams,
     validDateRange,
     getLobPlaceholder,
-    getTableValue
+    getTableValue,
+    getUrlParam
 } from './utils';
 import {
     EG_BRAND,
@@ -561,4 +562,12 @@ describe('getTableValue()', () => {
         expect(getTableValue({a: 'hello'}, 'a')).to.be.eql('hello');
         expect(getTableValue({a: ''}, 'a')).to.be.eql('-');
     });
+});
+
+it('getUrlParam', () => {
+    const label = 'label';
+    const valueA = 'a';
+    const valueB = 'b';
+    expect(getUrlParam(label, valueA, valueB)).to.equal(`&${label}=${valueA}`);
+    expect(getUrlParam(label, valueA, valueA)).to.equal('');
 });

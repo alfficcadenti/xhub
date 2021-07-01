@@ -2,31 +2,35 @@ import React, {useState, useEffect} from 'react';
 import {
     LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
+import {NOT_PRIORITIZED_LABEL} from '../constants';
 import Panel from '../Panel';
 import ChartModal from '../ChartModal';
 import {formatCreatedVsResolvedData, findAndFormatTicket} from '../utils';
 
-const CreatedVsResolvedPanel = ({title, info, priority, tickets, data, isLoading, error}) => {
+const CreatedVsResolvedPanel = ({title, info, priorities = [], tickets, panelData}) => {
+    const {data, isLoading, error, queries} = panelData;
     const [chartData, setChartData] = useState([]);
     const [modalData, setModalData] = useState({});
     const [hiddenKeys, setHiddenKeys] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const createdDataKey = `Created ${priority}`;
-    const resolvedDataKey = `Resolved ${priority}`;
+    const createdDataKey = 'Total Created';
+    const resolvedDataKey = 'Total Resolved';
 
     useEffect(() => {
-        setChartData(formatCreatedVsResolvedData(data));
-    }, [tickets, data]);
+        setChartData(formatCreatedVsResolvedData(data, priorities));
+    }, [priorities, tickets, data]);
 
     const getClickHandler = (ticketsKey) => (selected) => {
         if (selected && selected.payload) {
             const selectedTickets = selected.payload[ticketsKey] || [];
             const ticketDetails = selectedTickets
                 .map((ticketId) => findAndFormatTicket(tickets, ticketId))
-                .filter(({Priority}) => Priority && Priority.includes(priority));
+                .filter(({Priority}) => Priority && priorities.findIndex(
+                    (p) => Priority.includes(p) || (Priority === NOT_PRIORITIZED_LABEL && p === 'notPrioritized')
+                ) !== -1);
             setModalData({
                 data: ticketDetails,
-                description: `Displaying ${ticketsKey === 'createdTickets' ? 'created' : 'resolved'} defects with ${priority} priority`,
+                description: `Displaying ${ticketsKey === 'createdTickets' ? 'created' : 'resolved'} defects with ${priorities.join(', ')} priority`,
                 columns: ['Portfolio', 'Key', 'Summary', 'Priority', 'Status', 'Resolution', 'Opened', 'Days to Resolve']
             });
             setIsModalOpen(true);
@@ -51,6 +55,7 @@ const CreatedVsResolvedPanel = ({title, info, priority, tickets, data, isLoading
             key={title}
             title={title}
             info={info}
+            queries={queries}
             isLoading={isLoading}
             error={error}
             isFixedHeight

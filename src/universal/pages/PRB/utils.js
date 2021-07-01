@@ -1,7 +1,7 @@
 import React from 'react';
+import DataTable from '../../components/DataTable';
 import moment from 'moment';
 import qs from 'query-string';
-import DataTable from '../../components/DataTable';
 import HelpText from '../../components/HelpText/HelpText';
 import {
     ALL_STATUSES_OPTION,
@@ -14,7 +14,7 @@ import {
 } from '../../constants';
 import {CA_STATUS_LIST} from './constants';
 import {DATE_FORMAT} from '../../constants';
-import {validDateRange} from '../utils';
+import {validDateRange, getUrlParam} from '../utils';
 
 
 // eslint-disable-next-line complexity
@@ -55,12 +55,6 @@ export const getQueryValues = (search) => {
             l1, l2, l3, l4
         }
     };
-};
-
-export const getUrlParam = (label, value, defaultValue) => {
-    return value && value !== defaultValue
-        ? `&${label}=${encodeURIComponent(value)}`
-        : '';
 };
 
 export const mapActiveIndexToTabName = (idx) => {
@@ -166,4 +160,63 @@ export const filterType = (tickets, selectedType) => {
         }
     });
     return result;
+};
+
+const mapLinkedIssues = (i) => {
+    const linkedIssues = (i.linkedIssues || []).map((l) => ({
+        Ticket: `<a href="https://jira.expedia.biz/browse/${l.id}" target="_blank">${l.id}</a>`,
+        Summary: l.summary,
+        Status: l.status,
+        Assignee: l.assignee || '-'
+    }));
+    return ({
+        Ticket: `<a href="https://jira.expedia.biz/browse/${i.id}" target="_blank">${i.id}</a>`,
+        Summary: i.summary,
+        'Issue Type': i.issueType,
+        Status: i.status,
+        Assignee: i.assignee || '-',
+        'Linked Issues': !linkedIssues.length
+            ? null
+            : (
+                <>
+                    <b>{'Dev Tasks'}</b>
+                    <DataTable
+                        className="linked-issues__nested-table"
+                        data={linkedIssues}
+                        columns={['Ticket', 'Summary', 'Status', 'Assignee']}
+                    />
+                </>
+            )
+    });
+};
+
+// eslint-disable-next-line complexity
+export const mapTickets = (t) => {
+    const linkedIssues = (t.linkedIssues || []).map(mapLinkedIssues);
+    return ({
+        Ticket: `<a href="https://jira.expedia.biz/browse/${t.id}" target="_blank">${t.id}</a>`,
+        Priority: t.priority,
+        Opened: !t.createdDate ? '-' : moment(t.createdDate).format('YYYY-MM-DD HH:mm'),
+        'Epic Name': t.summary,
+        'Owning Org': t.owningOrganization,
+        'RC Owner': t.rootCauseOwner,
+        'RC Category': t.rootCauseCategory || '-',
+        Status: t.status,
+        linkedIssues, // for filtering purposes
+        brandsAffected: t.brandsAffected ? t.brandsAffected.split(',') : [],
+        linesOfBusinessImpacted: t.linesOfBusinessImpacted,
+        'Linked Issues': !linkedIssues.length
+            ? null
+            : (
+                <>
+                    <h3>{'Linked Issues'}</h3>
+                    <DataTable
+                        className="linked-issues__table"
+                        data={linkedIssues}
+                        columns={['Ticket', 'Summary', 'Issue Type', 'Status', 'Assignee']}
+                        expandableColumns={['Linked Issues']}
+                    />
+                </>
+            )
+    });
 };

@@ -1,0 +1,128 @@
+@import '../../mixins.less';
+
+.dog-food-container {
+    text-align: left;
+
+    .datetime-range-picker {
+        display: flex;
+    }
+    
+    .datetime-range-picker,
+    .filter-dropdown {
+        margin: 0 @spacing-1x @spacing-1x 0;
+    }
+
+    .status-select-container {
+        width: 460px;
+        height: @spacing-7x;
+        margin-bottom: @spacing-1x;
+        margin-right: @spacing-1x;
+        display: inline-block;
+
+        .status-select__control {
+            height: @spacing-7x;
+            border-color: @border-contrast;
+            border-radius: @spacing-1x;
+        }
+
+        .status-select__menu {
+            background: @color-bg-default;
+            z-index: 1040;
+        }
+    }
+
+    .filters-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: left;
+        font-weight: 400;
+        vertical-align: middle;
+        width: 100%;
+        border-radius: @spacing-1x;
+
+        .CRB--checkbox {
+            align-items: center;
+            display: inline-flex;
+        }
+
+        .status-dropdown .Dropdown__toggle {
+            .dropdown-button;
+            min-width: 130px;
+        }
+
+        .apply-button {
+            height: fit-content;
+        }
+    }
+
+    .page-title {
+        margin-bottom: 24px;
+        text-align: left;
+    }
+
+    .overview-charts {
+        min-height: 70vh;
+        margin-bottom: @spacing-7x;
+    }
+
+
+    .Navigation {
+        margin-bottom: @spacing-3x;
+    }
+
+    .details-container {
+        margin-top: -@spacing-2x;
+        padding: @spacing-2x;
+        min-height: @spacing-8x;
+
+        .details-label {
+            float: left;
+            font-weight: 800;
+            width: 33%;
+        }
+
+        .details-value {
+            float: left;
+            width: 66%;
+        }
+    }
+
+    .linked-issues__table .data-table {
+        .data-table-header {
+            background: #f5f5dc;
+        }
+
+        th {
+            border-top: 1px #908f8f solid;
+            border-bottom: 1px #908f8f solid;
+        }
+
+        td {
+            border-top: none;
+        }
+
+        .expandable-row,
+        b {
+            background: #a0a0a0;
+            color: @color-text-inverse;
+
+            .data-table-header {
+                background: #a0a0a0;
+                color: @color-text-inverse;
+
+                th {
+                    background: #a0a0a0;
+                    color: @color-text-inverse;
+                }
+            }
+        }
+    }
+
+    .filter-dropdown .Dropdown__toggle {
+        .dropdown-button;
+    }
+
+    .loading-container {
+        min-height: 50vh;
+    }
+}

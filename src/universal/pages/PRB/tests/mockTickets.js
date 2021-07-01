@@ -1,0 +1,41 @@
+export const mockTicket = {
+    assignee: 'Paige Andrews',
+    brands: '',
+    brandsAffected: 'Expedia',
+    correctiveActionObjective: null,
+    createdDate: '2021-06-22T10:58:56.000+0000',
+    dueDate: null,
+    emailAddress: null,
+    id: 'PRB-1495',
+    issueType: 'Epic',
+    labels: [''],
+    linkedIssues: [],
+    lobs: 'test',
+    linesOfBusinessImpacted: 'test',
+    owningOrganization: 'Platform & Marketplaces',
+    priority: '2-High',
+    projectName: 'Expedia Group Problem Management',
+    resolution: null,
+    resolvedDate: null,
+    rootCauseCategory: null,
+    rootCauseOwner: 'CPCE Data Excellence',
+    status: 'RCA In Progress',
+    summary: 'Softphone Outbound Calls degraded due to scheduled change on cpce-di-data-api-processor',
+    updatedDateTime: '2021-06-22 15:44:31',
+    url: 'https://jira.expedia.biz/browse/PRB-1495'
+};
+
+export const mockMappedTicket = {
+    'Epic Name': 'Softphone Outbound Calls degraded due to scheduled change on cpce-di-data-api-processor',
+    'Linked Issues': null,
+    'Opened': '2021-06-22 10:58',
+    'Owning Org': 'Platform & Marketplaces',
+    'Priority': '2-High',
+    'RC Category': '-',
+    'RC Owner': 'CPCE Data Excellence',
+    'Status': 'RCA In Progress',
+    'Ticket': '<a href="https://jira.expedia.biz/browse/PRB-1495" target="_blank">PRB-1495</a>',
+    'brandsAffected': ['Expedia'],
+    'linesOfBusinessImpacted': 'test',
+    'linkedIssues': []
+};

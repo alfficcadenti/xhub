@@ -11,7 +11,6 @@ import {usePrevious} from '../../pages/hooks';
 
 function renderRoute(p, selectedBrands, handleBrandChange, prevSelectedBrand) {
     const Page = p.component;
-
     return <Route key={p.link} path={p.link} render={() => <Page selectedBrands={selectedBrands} onBrandChange={handleBrandChange} prevSelectedBrand={prevSelectedBrand} />} />;
 }
 
@@ -57,7 +56,7 @@ function App() {
                 <Feedback />
                 <div className="main-container">
                     <Switch>
-                        {PAGES.map((p) => renderRoute(p, selectedBrands, handleBrandChange, prevSelectedBrand))}
+                        {PAGES.map((p) => p.external ? null : renderRoute(p, selectedBrands, handleBrandChange, prevSelectedBrand))}
                     </Switch>
                 </div>
             </ErrorBoundary>

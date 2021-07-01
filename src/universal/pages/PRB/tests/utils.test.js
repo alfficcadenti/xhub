@@ -2,9 +2,9 @@ import moment from 'moment';
 import {expect} from 'chai';
 import {
     getQueryValues,
-    getUrlParam,
     mapActiveIndexToTabName,
-    getActiveIndex
+    getActiveIndex,
+    mapTickets
 } from '../utils';
 import {
     ALL_STATUSES_OPTION,
@@ -14,6 +14,7 @@ import {
     ALL_RC_OWNERS_OPTION,
     ALL_RC_CATEGORIES_OPTION
 } from '../../../constants';
+import {mockTicket, mockMappedTicket} from './mockTickets';
 
 describe('PRB Utils', () => {
     it('getQueryValues - default', () => {
@@ -78,14 +79,6 @@ describe('PRB Utils', () => {
         expect(result.initialCAOrgs.l4).to.be.eql(l4);
     });
 
-    it('getUrlParam', () => {
-        const label = 'label';
-        const valueA = 'a';
-        const valueB = 'b';
-        expect(getUrlParam(label, valueA, valueB)).to.equal(`&${label}=${valueA}`);
-        expect(getUrlParam(label, valueA, valueA)).to.equal('');
-    });
-
     it('mapActiveIndexToTabName', () => {
         expect(mapActiveIndexToTabName(0)).to.equal('overview');
         expect(mapActiveIndexToTabName(1)).to.equal('tickets');
@@ -105,5 +98,9 @@ describe('PRB Utils', () => {
         expect(mapActiveIndexToTabName(1)).to.equal('tickets');
         expect(mapActiveIndexToTabName(2)).to.equal('corrective-actions');
         expect(mapActiveIndexToTabName()).to.equal('overview');
+    });
+
+    it('mapTickets', () => {
+        expect(mapTickets(mockTicket)).to.be.eql(mockMappedTicket);
     });
 });

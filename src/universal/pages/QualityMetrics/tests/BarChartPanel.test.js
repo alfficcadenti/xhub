@@ -2,7 +2,6 @@ import React from 'react';
 import {expect} from 'chai';
 import {shallow} from 'enzyme';
 import BarChartPanel from '../Panels/BarChartPanel';
-import {getPanelDataUrl} from '../utils';
 
 global.fetch = require('node-fetch');
 
@@ -12,9 +11,11 @@ describe('<BarChartPanel>', () => {
     beforeEach(() => {
         wrapper = shallow(
             <BarChartPanel
-                portfolios={['kes']}
+                title="Open Defects"
+                info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived' by portfolio"
                 tickets={[]}
-                dataUrl={getPanelDataUrl(['kes'], '2020-01-01', '2020-02-02', 'HCOM', 'opendefectspastsla')}
+                panelData={{data: [], isLoading: false, queries: [], error: null}}
+                portfolios={['kes']}
                 dataKey="openDefectsPastSla"
             />);
     });

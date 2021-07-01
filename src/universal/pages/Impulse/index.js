@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {withRouter} from 'react-router-dom';
+import {useLocation, withRouter} from 'react-router-dom';
 import {useFetchBlipData} from './customHook';
 import {Navigation} from '@homeaway/react-navigation';
 import LoadingContainer from '../../components/LoadingContainer';
@@ -13,20 +13,28 @@ import {SVGIcon} from '@homeaway/react-svg';
 import {FILTER__16} from '@homeaway/svg-defs';
 import './styles.less';
 import {ALL_LOB, ALL_POS, ALL_BRANDS, ALL_DEVICES, ALL_INCIDENTS, ALL_ANOMALIES} from '../../constants';
-import {getFilters, getFiltersForMultiKeys, startTime, endTime} from './impulseHandler';
+import {getFilters, getFiltersForMultiKeys, getQueryValues, useAddToUrl, getTimeIntervals, isValidTimeInterval, getDefaultTimeInterval, getActiveIndex} from './impulseHandler';
 import {Checkbox, Switch} from '@homeaway/react-form-components';
 import {IncidentDetails} from './tabs/BookingTrends';
 import AnomalyDetails from './tabs/BookingTrends/sections/AnomalyTable/AnomalyDetails';
 import {getValue} from '../utils';
+import {Dropdown, DropdownItem} from '@homeaway/react-dropdown';
+import GroupedBookingTrends from './tabs/BookingTrends/sections/BookingChartGrouped/GroupedBookingTrends';
 
-const startDateDefaultValue = startTime;
-const endDateDefaultValue = endTime;
-
-const activeIndex = 0;
 const navLinks = [
     {
         id: 'bookings',
         label: 'Booking Trends',
+        href: '/impulse'
+    },
+    {
+        id: 'by_brands',
+        label: 'By Brands',
+        href: '/impulse'
+    },
+    {
+        id: 'by_lobs',
+        label: 'By LOBs',
         href: '/impulse'
     }
 ];
@@ -46,29 +54,52 @@ const healthUrl = 'https://opexhub-grafana.expedia.biz/d/x8JcATVMk/opex-impulse?
 
 const Impulse = (props) => {
     const newBrand = props.selectedBrands[0];
-    const [startDateTime, setStartDateTime] = useState(startDateDefaultValue);
-    const [endDateTime, setEndDateTime] = useState(endDateDefaultValue);
+    const {pathname, search} = useLocation();
+    const {
+        initialStart,
+        initialEnd,
+        initialInterval,
+        initialAutoRefresh,
+        initialBrands,
+        initialLobs,
+        initialEgSiteUrls,
+        initialDevices,
+        initialIncidents,
+        initialAnomalies
+    } = getQueryValues(search);
+
+    const [startDateTime, setStartDateTime] = useState(initialStart);
+    const [endDateTime, setEndDateTime] = useState(initialEnd);
     const [isApplyClicked, setIsApplyClicked] = useState(false);
     const [allData, setFilterAllData] = useState([]);
-    const [showMoreFilters, setShowMoreFilters] = useState(false);
+    const [showMoreFilters, setShowMoreFilters] = useState(initialDevices.length > 0);
     const [annotationsMulti, setAnnotationsMulti] = useState([]);
-    const [selectedSiteURLMulti, setSelectedSiteURLMulti] = useState([]);
-    const [selectedLobMulti, setSelectedLobMulti] = useState([]);
-    const [selectedBrandMulti, setSelectedBrandMulti] = useState([]);
-    const [selectedDeviceTypeMulti, setSelectedDeviceTypeMulti] = useState([]);
-    const [selectedIncidentMulti, setSelectedIncidentMulti] = useState([]);
+    const [selectedSiteURLMulti, setSelectedSiteURLMulti] = useState(initialEgSiteUrls);
+    const [selectedLobMulti, setSelectedLobMulti] = useState(initialLobs);
+    const [selectedBrandMulti, setSelectedBrandMulti] = useState(initialBrands);
+    const [selectedDeviceTypeMulti, setSelectedDeviceTypeMulti] = useState(initialDevices);
+    const [selectedIncidentMulti, setSelectedIncidentMulti] = useState(initialIncidents);
     const [enableIncidents, setEnableIncidents] = useState(true);
     const [chartSliced, setChartSliced] = useState(false);
-    const [isAutoRefresh, setAutoRefresh] = useState(true);
+    const [isAutoRefresh, setAutoRefresh] = useState(initialAutoRefresh);
     const [daysDifference, setDaysDifference] = useState(moment(endDateTime).diff(moment(startDateTime), 'days'));
     const [tableData, setTableData] = useState([]);
     const [anomaliesData, setAnomaliesData] = useState([]);
     const [enableAnomalies, setEnableAnomalies] = useState(true);
-    const [selectedAnomaliesMulti, setSelectedAnomaliesMulti] = useState(['Anomaly Detected']);
+    const [selectedAnomaliesMulti, setSelectedAnomaliesMulti] = useState(initialAnomalies);
     const [anomalyTableData, setAnomalyTableData] = useState([]);
+    const [timeInterval, setTimeInterval] = useState(initialInterval);
+    const [timeIntervalOpts, setTimeIntervalOpts] = useState(getTimeIntervals(startDateTime, endDateTime, timeInterval));
+
+    const [activeIndex, setActiveIndex] = useState(getActiveIndex(pathname));
+    const [allDataByBrands, setAllDataByBrand] = useState([]);
+    const [allDataByLobs, setAllDataByLobs] = useState([]);
 
     useQueryParamChange(newBrand, props.onBrandChange);
     useSelectedBrand(newBrand, props.onBrandChange, props.prevSelectedBrand);
+    const handleNavigationClick = (e, activeLinkIndex) => {
+        setActiveIndex(activeLinkIndex);
+    };
     const [isLoading,
         res,
         error,
@@ -86,7 +117,9 @@ const Impulse = (props) => {
         isLatencyHealthy,
         sourceLatency,
         anomaliesMulti,
-        anomalies] = useFetchBlipData(
+        anomalies,
+        groupedResByBrands,
+        groupedResByLobs] = useFetchBlipData(
         isApplyClicked,
         setIsApplyClicked,
         startDateTime,
@@ -99,7 +132,11 @@ const Impulse = (props) => {
         selectedDeviceTypeMulti,
         chartSliced,
         setChartSliced,
-        isAutoRefresh);
+        isAutoRefresh,
+        setStartDateTime,
+        setEndDateTime,
+        timeInterval);
+
     const modifyFilters = (newValuesOnChange) => {
         setSelectedLobMulti([]);
         setSelectedDeviceTypeMulti([]);
@@ -188,12 +225,15 @@ const Impulse = (props) => {
     useEffect(() => {
         setFilterAllData([...res]);
 
+        setAllDataByBrand([...groupedResByBrands]);
+        setAllDataByLobs([...groupedResByLobs]);
+
         setAnnotationsMulti(annotations);
         filterAnnotationsOnBrand();
 
         setAnomaliesData(anomalies);
         filterAnomalies(selectedAnomaliesMulti);
-    }, [res, annotations, anomalies]);
+    }, [res, annotations, anomalies, groupedResByBrands, groupedResByLobs]);
     const customStyles = {
         control: (base) => ({
             ...base,
@@ -204,8 +244,17 @@ const Impulse = (props) => {
         }),
     };
     const handleDatetimeChange = ({start: startDateTimeStr, end: endDateTimeStr}) => {
-        setStartDateTime(moment(startDateTimeStr).utc());
-        setEndDateTime(moment(endDateTimeStr).utc());
+        const newStart = moment(startDateTimeStr).utc();
+        const newEnd = moment(endDateTimeStr).utc();
+        setStartDateTime(newStart);
+        setEndDateTime(newEnd);
+        if (!isValidTimeInterval(newStart, newEnd, timeInterval)) {
+            const newInterval = getDefaultTimeInterval(newStart, newEnd);
+            setTimeInterval(newInterval);
+            setTimeIntervalOpts(getTimeIntervals(newStart, newEnd, newInterval));
+        } else {
+            setTimeIntervalOpts(getTimeIntervals(newStart, newEnd, timeInterval));
+        }
     };
     const handleShowMoreFilters = () => {
         setShowMoreFilters(!showMoreFilters);
@@ -224,6 +273,13 @@ const Impulse = (props) => {
         setSelectedAnomaliesMulti([]);
         setAnomaliesData(anomalies);
     };
+    const handleTimeIntervalChange = (timeIntervalStr) => {
+        setTimeInterval(timeIntervalStr);
+        setTimeIntervalOpts(getTimeIntervals(startDateTime, endDateTime, timeIntervalStr));
+    };
+
+    useAddToUrl(newBrand, startDateTime, endDateTime, timeInterval, isAutoRefresh, selectedLobMulti, selectedBrandMulti, selectedSiteURLMulti, selectedDeviceTypeMulti, selectedIncidentMulti, selectedAnomaliesMulti, activeIndex);
+
     const renderTabs = () => {
         switch (activeIndex) {
             case 0:
@@ -237,6 +293,41 @@ const Impulse = (props) => {
                     setTableData={setTableData}
                     anomalies={enableAnomalies ? anomaliesData : []}
                     setAnomalyTableData={setAnomalyTableData}
+                    timeInterval={timeInterval}
+                    setTimeInterval={setTimeInterval}
+                    setTimeIntervalOpts={setTimeIntervalOpts}
+                />);
+            case 1:
+                return (<GroupedBookingTrends
+                    data={allDataByBrands}
+                    setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
+                    setChartSliced={setChartSliced}
+                    setDaysDifference={setDaysDifference}
+                    daysDifference={daysDifference}
+                    annotations={enableIncidents ? annotationsMulti : []}
+                    setTableData={setTableData}
+                    anomalies={enableAnomalies ? anomaliesData : []}
+                    setAnomalyTableData={setAnomalyTableData}
+                    timeInterval={timeInterval}
+                    setTimeInterval={setTimeInterval}
+                    setTimeIntervalOpts={setTimeIntervalOpts}
+                    activeIndex={activeIndex}
+                />);
+            case 2:
+                return (<GroupedBookingTrends
+                    data={allDataByLobs}
+                    setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
+                    setChartSliced={setChartSliced}
+                    setDaysDifference={setDaysDifference}
+                    daysDifference={daysDifference}
+                    annotations={enableIncidents ? annotationsMulti : []}
+                    setTableData={setTableData}
+                    anomalies={enableAnomalies ? anomaliesData : []}
+                    setAnomalyTableData={setAnomalyTableData}
+                    timeInterval={timeInterval}
+                    setTimeInterval={setTimeInterval}
+                    setTimeIntervalOpts={setTimeIntervalOpts}
+                    activeIndex={activeIndex}
                 />);
             default:
                 return (<BookingTrends
@@ -246,11 +337,33 @@ const Impulse = (props) => {
                     annotations={enableIncidents ? annotationsMulti : []}
                     setDaysDifference={setDaysDifference}
                     daysDifference={daysDifference}
+                    timeInterval={timeInterval}
+                    setTimeInterval={setTimeInterval}
+                    setTimeIntervalOpts={setTimeIntervalOpts}
                 />);
         }
     };
+    const renderTimeInterval = (interval, presets, onChange) => (
+        <div className="time-interval" title="Time interval dropdown selector">
+            <Dropdown
+                id="time-interval-dropdown"
+                label={interval ? interval : 'Time Interval'}
+                className="time-interval-dropdown"
+                closeAfterContentClick
+            >
+                {presets.map((d) => (
+                    <DropdownItem
+                        key={d}
+                        link="#"
+                        text={d}
+                        onClick={() => onChange(d)}
+                    />
+                ))}
+            </Dropdown>
+        </div>
+    );
     const renderMultiSelectFilters = (value, options, key, placeholder, className) => {
-        return (<div className={className}>
+        return (<div className={className} title={`Multi select ${key} from dropdown`}>
             <Select
                 isMulti
                 styles={customStyles}
@@ -289,7 +402,7 @@ const Impulse = (props) => {
                 <h1 className="page-title">{'Impulse Dashboard'}</h1>
                 <div className="right-header">
                     {sourceLatency || sourceLatency === 0 ? renderHealthCheck() : ''}
-                    {!chartSliced && daysDifference === 3 && (moment().diff(moment(endDateTime), 'days') === 0) ? <div className="refresh-switch">
+                    {!chartSliced && daysDifference === 3 && (moment().diff(moment(endDateTime), 'days') === 0) ? <div className="refresh-switch" title="Auto refresh charts toggle switch">
                         <Switch
                             id="switch-example-small"
                             name="autoRefresh"
@@ -301,7 +414,7 @@ const Impulse = (props) => {
                     </div> : ''}
                 </div>
             </div>
-            <div className="impulse-filters-wrapper">
+            <div className="impulse-filters-wrapper" title="Date time range selector">
                 <DatetimeRangePicker
                     onChange={handleDatetimeChange}
                     startDate={startDateTime.toDate()}
@@ -310,12 +423,14 @@ const Impulse = (props) => {
                     showTimePicker
                 />
                 <div className="filter-option">
+                    {renderTimeInterval(timeInterval, timeIntervalOpts, handleTimeIntervalChange)}
                     {renderMultiSelectFilters(selectedBrandMulti, brandsMulti, 'brand', ALL_BRANDS, filterSelectionClass)}
                     {renderMultiSelectFilters(selectedLobMulti, lobsMulti, 'lob', ALL_LOB, filterSelectionClass)}
                     {renderMultiSelectFilters(selectedSiteURLMulti, egSiteURLMulti, 'egSiteUrl', ALL_POS, filterExpandClass)}
                     <button
                         type="button"
                         className="apply-button btn btn-primary active"
+                        title="Click on Submit to apply changes"
                         onClick={() => {
                             setIsApplyClicked(true);
                             setDaysDifference(moment(endDateTime).diff(moment(startDateTime), 'days'));
@@ -329,30 +444,31 @@ const Impulse = (props) => {
                     <button
                         type="button"
                         className={`btn btn-default more-filters-btn ${showMoreFilters ? 'active' : ''}`}
+                        title="Click to expand and see more filters"
                         onClick={handleShowMoreFilters}
                     >
                         <SVGIcon usefill markup={FILTER__16}/>{'Advance Filters'}
                     </button>
-                    <Checkbox
-                        name="incidents-сheckbox"
-                        label="Booking Impacting INCs"
-                        checked={enableIncidents}
-                        onChange={handleEnableIncidentChange}
-                        size="sm"
-                        className="incidents-сheckbox"
-                    />
-                    <div className="filter-option" onClick={() => setShowMoreFilters(false)}>
+                    <div className="filter-option" title="Toggle checkbox to enable/ disable incidents category selector" onClick={() => setShowMoreFilters(false)}>
+                        <Checkbox
+                            name="incidents-сheckbox"
+                            label="Booking Impacting INCs"
+                            checked={enableIncidents}
+                            onChange={handleEnableIncidentChange}
+                            size="sm"
+                            className="incidents-сheckbox"
+                        />
                         {enableIncidents ? renderMultiSelectFilters(selectedIncidentMulti, incidentMulti, 'incidentCategory', ALL_INCIDENTS, filterSelectionClass) : null}
                     </div>
-                    <Checkbox
-                        name="Anomalies-сheckbox"
-                        label="Anomalies"
-                        checked={enableAnomalies}
-                        onChange={handleEnableAnomalyChange}
-                        size="sm"
-                        className="incidents-сheckbox"
-                    />
-                    <div className="filter-option" onClick={() => setShowMoreFilters(false)}>
+                    <div className="filter-option" title="Toggle checkbox to enable/ disable anomalies category selector" onClick={() => setShowMoreFilters(false)}>
+                        <Checkbox
+                            name="Anomalies-сheckbox"
+                            label="Anomalies"
+                            checked={enableAnomalies}
+                            onChange={handleEnableAnomalyChange}
+                            size="sm"
+                            className="incidents-сheckbox"
+                        />
                         {enableAnomalies ? renderMultiSelectFilters(selectedAnomaliesMulti, anomaliesMulti, 'anomaliesCategory', ALL_ANOMALIES, filterSelectionClass) : null}
                     </div>
                 </div>
@@ -362,6 +478,7 @@ const Impulse = (props) => {
                 noMobileSelect
                 activeIndex={activeIndex}
                 links={navLinks}
+                onLinkClick={handleNavigationClick}
             />
             <LoadingContainer isLoading={isLoading} error={error} className="impulse-loading-container">
                 <div className="impulse-chart-container">

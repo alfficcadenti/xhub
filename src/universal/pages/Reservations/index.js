@@ -1,10 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {withRouter} from 'react-router-dom';
-import Iframe from 'react-iframe';
 import './styles.less';
-import LoadingContainer from '../../components/LoadingContainer';
 import {EG_BRAND, EXPEDIA_BRAND, EGENCIA_BRAND, OPXHUB_SUPPORT_CHANNEL, VRBO_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../../constants';
-
+import GrafanaDashboard from '../../components/GrafanaDashboard';
 
 const Reservations = ({selectedBrands}) => {
     const selectedBrand = selectedBrands[0];
@@ -21,22 +19,12 @@ const Reservations = ({selectedBrands}) => {
     }, [selectedBrand]);
 
     return (
-        <div className="reservations-container">
-            <h1 className="page-title">{'Reservations'}</h1>
-            <LoadingContainer isLoading={false} error={error}>
-                <div className="reservations">
-                    <Iframe
-                        url="https://opexhub-grafana.expedia.biz/d/5pQ0gFPMk/realtime-metrics-v2? orgId=1&var-LOCALE=All&var-MARKETINGCHANNEL=All&var-PLATFORM=All&var-POS=All&var-IsKES=All"
-                        key={'iframe'}
-                        width="1600px"
-                        height="950px"
-                        id={'reservations'}
-                        className="iframe"
-                        position="relative"
-                    />
-                </div>
-            </LoadingContainer>
-        </div>
+        <GrafanaDashboard
+            error={error}
+            title="Reservations"
+            name="reservations"
+            url="https://opexhub-grafana.expedia.biz/d/5pQ0gFPMk/realtime-metrics-v2? orgId=1&var-LOCALE=All&var-MARKETINGCHANNEL=All&var-PLATFORM=All&var-POS=All&var-IsKES=All&theme=light"
+        />
     );
 };
 

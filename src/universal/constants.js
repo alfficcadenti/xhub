@@ -7,6 +7,7 @@ export const IMPACTED_PORTFOLIOS = 'All Impacted Portfolios';
 export const IMPACTED_PORTFOLIO_GROUPS = 'All Impacted Portfolio Groups';
 export const DATE_FORMAT = 'YYYY-MM-DD';
 export const ALL_PRIORITIES_OPTION = 'All Priorities';
+export const ALL_PROJECTS_OPTION = 'All Projects';
 export const ALL_STATUSES_OPTION = 'All Statuses';
 export const ALL_TAGS_OPTION = 'All Tags';
 export const ALL_TAGS = ['cost-optimization', 'covid-19'];
@@ -115,7 +116,6 @@ export const BRANDS = [
         funnelBrand: EG_BRAND,
         landingBrand: '',
         changeRequests: '',
-        portfolioBrand: '',
         color: '#1B5CAF'
     },
     {
@@ -125,7 +125,6 @@ export const BRANDS = [
         funnelBrand: 'expedia',
         changeRequests: 'Expedia',
         landingBrand: EXPEDIA_BRAND,
-        portfolioBrand: 'BEX',
         color: '#1B5CAF'
     },
     {
@@ -135,7 +134,6 @@ export const BRANDS = [
         funnelBrand: 'egencia',
         changeRequests: 'Egencia EU,Egencia NA',
         landingBrand: '',
-        portfolioBrand: '',
         color: '#1B5CAF'
     },
     {
@@ -145,7 +143,6 @@ export const BRANDS = [
         funnelBrand: 'hcom',
         changeRequests: 'Hotels',
         landingBrand: HOTELS_COM_BRAND,
-        portfolioBrand: 'HCOM',
         color: '#F71414'
     },
     {
@@ -155,7 +152,6 @@ export const BRANDS = [
         funnelBrand: 'vrbo',
         changeRequests: 'HomeAway',
         landingBrand: VRBO_BRAND,
-        portfolioBrand: 'VRBO',
         color: '#1478F7'
     },
     {
@@ -164,7 +160,6 @@ export const BRANDS = [
         psrBrand: '',
         funnelBrand: 'eps',
         landingBrand: EXPEDIA_PARTNER_SERVICES_BRAND,
-        portfolioBrand: '',
         color: '#FFC72C'
     }
 ];

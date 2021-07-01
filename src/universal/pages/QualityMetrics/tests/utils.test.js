@@ -2,7 +2,6 @@ import React from 'react';
 import moment from 'moment';
 import {expect} from 'chai';
 import {
-    getPortfolioBrand,
     getQueryValues,
     getPropValue,
     formatDefect,
@@ -18,20 +17,23 @@ import {
     processTwoDimensionalIssues,
     getPanelDataUrl
 } from '../utils';
-import {PORTFOLIOS, P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL, NOT_PRIORITIZED_LABEL} from '../constants';
-import {HOTELS_COM_BRAND, EXPEDIA_BRAND, DATE_FORMAT} from '../../../constants';
+import {HCOM_PORTFOLIOS, VRBO_PORTFOLIOS, P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL, NOT_PRIORITIZED_LABEL} from '../constants';
+import {HOTELS_COM_BRAND, VRBO_BRAND, DATE_FORMAT} from '../../../constants';
 
 describe('Quality Metrics Util', () => {
-    it('getPortfolioBrand', () => {
-        expect(getPortfolioBrand([HOTELS_COM_BRAND])).to.be.eql('HCOM');
-        expect(getPortfolioBrand([EXPEDIA_BRAND])).to.be.eql('BEX');
-    });
-
     it('getQueryValues', () => {
-        const portfolios = ['kes'];
-        expect(getQueryValues(`https://localhost:8080/quality-metrics?selectedBrand=${HOTELS_COM_BRAND}&portfolios=${portfolios.toString()}`)).to.be.eql({
-            initialPortfolios: portfolios.map((p) => PORTFOLIOS.find(({value}) => p === value))
-        });
+        const start = '2021-05-01';
+        const end = '2021-06-01';
+        const hcomPortfolios = ['kes'];
+        let result = getQueryValues(`https://localhost:8080/quality-metrics?selectedBrand=${HOTELS_COM_BRAND}&portfolios=${hcomPortfolios[0]}&from=${start}&to=${end}`, [HOTELS_COM_BRAND]);
+        expect(result.initialPortfolios).to.be.eql(hcomPortfolios.map((p) => HCOM_PORTFOLIOS.find(({value}) => p === value)));
+        expect(result.initialStart.isSame(start, 'day')).to.be.eql(true);
+        expect(result.initialEnd.isSame(end, 'day')).to.be.eql(true);
+        const vrboPortfolios = ['pm'];
+        result = getQueryValues(`https://localhost:8080/quality-metrics?selectedBrand=${VRBO_BRAND}&portfolios=${vrboPortfolios[0]}&from=${start}&to=${end}`, [VRBO_BRAND]);
+        expect(result.initialPortfolios).to.be.eql(vrboPortfolios.map((p) => VRBO_PORTFOLIOS.find(({value}) => p === value)));
+        expect(result.initialStart.isSame(start, 'day')).to.be.eql(true);
+        expect(result.initialEnd.isSame(end, 'day')).to.be.eql(true);
     });
 
     it('getPropValue', () => {
@@ -124,28 +126,27 @@ describe('Quality Metrics Util', () => {
 
     it('formatTTRData', () => {
         const date = '2020-01-01';
-        const p1MinsToResolve = 1;
-        const p2MinsToResolve = 2;
-        const p4MinsToResolve = 4;
-        const p5MinsToResolve = 3;
+        const p1DaysToResolve = 1;
+        const p2DaysToResolve = 2;
+        const p4DaysToResolve = 4;
+        const p5DaysToResolve = 3;
         const ticketIds = ['INC-0001'];
         const data = {
             [date]: {
-                p1MinsToResolve,
-                p2MinsToResolve,
-                p4MinsToResolve,
-                p5MinsToResolve,
+                p1DaysToResolve,
+                p2DaysToResolve,
+                p4DaysToResolve,
+                p5DaysToResolve,
                 totalTickets: ticketIds.length, ticketIds
             }
         };
         expect(formatTTRData(data)).to.be.eql([{
             date,
-            [P1_LABEL]: p1MinsToResolve,
-            [P2_LABEL]: p2MinsToResolve,
+            [P1_LABEL]: p1DaysToResolve,
+            [P2_LABEL]: p2DaysToResolve,
             [P3_LABEL]: 0,
-            [P4_LABEL]: p4MinsToResolve,
-            [P4_LABEL]: p4MinsToResolve,
-            [P5_LABEL]: p5MinsToResolve,
+            [P4_LABEL]: p4DaysToResolve,
+            [P5_LABEL]: p5DaysToResolve,
             counts: ticketIds.length,
             tickets: ticketIds
         }]);
@@ -229,7 +230,7 @@ describe('Quality Metrics Util', () => {
             'iOS Engagement': {p1: 1, notPrioritized: 1, totalTickets: 2, ticketIds: ['ENG-0001', 'ENG-0002']},
             'Kes': {p1: 1, p2: 1, p4: 1, p5: 2, totalTickets: 5, ticketIds: ['KES-0001', 'KES-0002', 'KES-0003', 'KES-0004', 'KES-0005']},
         };
-        const result = groupDataByPillar(data, [{text: 'Mobile'}, {text: 'Kes'}]);
+        const result = groupDataByPillar(data, [{text: 'Mobile'}, {text: 'Kes'}], HOTELS_COM_BRAND);
         expect(result.Mobile).to.eql({
             p1: 1, p4: 2, notPrioritized: 2, totalTickets: 5, ticketIds: ['AND-0001', 'AND-0002', 'AND-0003', 'ENG-0001', 'ENG-0002']
         });
@@ -349,25 +350,15 @@ describe('Quality Metrics Util', () => {
                 [weekStartDate]: {p1: 1, p4: 1, weekStartDate, totalTickets: 2, weekEndDate: '2020-02-22', ticketIds: ['AND-17049', 'AND-17048']}
             },
             resolvedIssuesByWeek: {
-                [weekStartDate]: {p1: 1, p2: 1, weekStartDate, totalTickets: 2, weekEndDate: '2020-02-22', ticketIds: ['AND-17041', 'AND-17042']}
+                [weekStartDate]: {p1: 1, p2: 1, notPrioritized: 2, weekStartDate, totalTickets: 4, weekEndDate: '2020-02-22', ticketIds: ['AND-17041', 'AND-17042']}
             }
         };
-        expect(formatCreatedVsResolvedData(data)).to.be.eql([{
+        // Include all priorities but P4 to check for exclusion logic
+        const priorities = [P1_LABEL, P2_LABEL, P3_LABEL, P5_LABEL, 'notPrioritized'];
+        expect(formatCreatedVsResolvedData(data, priorities)).to.be.eql([{
             date: weekStartDate,
-            'Created Not Prioritized': 0,
-            'Created P1': 1,
-            'Created P2': 0,
-            'Created P3': 0,
-            'Created P4': 1,
-            'Created P5': 0,
-            'Resolved Not Prioritized': 0,
-            'Resolved P1': 1,
-            'Resolved P2': 1,
-            'Resolved P3': 0,
-            'Resolved P4': 0,
-            'Resolved P5': 0,
-            'Total Created': 2,
-            'Total Resolved': 2,
+            'Total Created': 1,
+            'Total Resolved': 4,
             createdTickets: ['AND-17049', 'AND-17048'],
             resolvedTickets: ['AND-17041', 'AND-17042']
         }]);
@@ -375,19 +366,19 @@ describe('Quality Metrics Util', () => {
 
     it('getPanelDataUrl', () => {
         const portfolios = [{text: 'KES', value: 'kes'}];
-        const start = moment().subtract(400, 'days').format(DATE_FORMAT);
-        const end = moment().format(DATE_FORMAT);
-        const brand = 'HCOM';
+        const start = moment().subtract(400, 'days');
+        const end = moment();
+        const brand = HOTELS_COM_BRAND;
         const panel = 'opendefects';
-        expect(getPanelDataUrl(portfolios, brand, panel)).to.be.equal(
-            `/v1/portfolio/panel/${panel}?brand=${brand}&fromDate=${start}&toDate=${end}&portfolios=kes`
+        expect(getPanelDataUrl(start, end, portfolios, brand, panel)).to.be.equal(
+            `/v1/portfolio/panel/${panel}?fromDate=${start.format(DATE_FORMAT)}&toDate=${end.format(DATE_FORMAT)}&portfolios=kes`
         );
         const ttrPanel = 'ttrSummary';
-        expect(getPanelDataUrl(portfolios, brand, ttrPanel)).to.be.equal(
-            `/v1/portfolio/${ttrPanel}?brand=${brand}&fromDate=${start}&toDate=${end}&portfolios=kes`
+        expect(getPanelDataUrl(start, end, portfolios, brand, ttrPanel)).to.be.equal(
+            `/v1/portfolio/${ttrPanel}?fromDate=${start.format(DATE_FORMAT)}&toDate=${end.format(DATE_FORMAT)}&portfolios=kes`
         );
-        expect(getPanelDataUrl(portfolios, brand)).to.be.equal(
-            `/v1/portfolio?brand=${brand}&fromDate=${start}&toDate=${end}&portfolios=kes`
+        expect(getPanelDataUrl(start, end, portfolios, brand)).to.be.equal(
+            `/v1/portfolio?fromDate=${start.format(DATE_FORMAT)}&toDate=${end.format(DATE_FORMAT)}&portfolios=kes`
         );
     });
 });

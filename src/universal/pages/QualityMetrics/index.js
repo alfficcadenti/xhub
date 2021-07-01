@@ -1,100 +1,90 @@
 import React, {useState, useEffect} from 'react';
 import {useHistory, useLocation, withRouter} from 'react-router-dom';
+import moment from 'moment';
 import {SVGIcon} from '@homeaway/react-svg';
 import {QUESTION__16} from '@homeaway/svg-defs';
 import {Checkbox} from '@homeaway/react-form-components';
+import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import LoadingContainer from '../../components/LoadingContainer';
 import HelpText from '../../components/HelpText/HelpText';
-import {OPXHUB_SUPPORT_CHANNEL} from '../../constants';
-import {DurationPanel, TwoDimensionalPanel, CreatedVsResolvedPanel, PiePanel} from './Panels';
-import {PORTFOLIOS, P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL} from './constants';
-import {getQueryValues, getPortfolioBrand, getPanelDataUrl} from './utils';
+import {VRBO_BRAND, HOTELS_COM_BRAND, OPXHUB_SUPPORT_CHANNEL} from '../../constants';
+import {BarChartPanel, DurationPanel, TwoDimensionalPanel, MTTRPanel, CreatedVsResolvedPanel, PiePanel} from './Panels';
+import {P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL} from './constants';
+import {getBrandPortfolios, filterBrandPortfolios, getQueryValues, getQueryString, fetchPanelData} from './utils';
 import './styles.less';
 
 const QualityMetrics = ({selectedBrands}) => {
     const history = useHistory();
     const {search} = useLocation();
-    const {initialPortfolios} = getQueryValues(search);
+    const {initialPortfolios, initialStart, initialEnd} = getQueryValues(search, selectedBrands);
+    const initialDataState = {data: {}, isLoading: false, error: null};
 
     const [isSupportedBrand, setIsSupportedBrand] = useState(true);
-    const [portfolioBrand, setPortfolioBrand] = useState(getPortfolioBrand(selectedBrands));
+    const [brand, setBrand] = useState(selectedBrands[0]);
+
+    const [start, setStart] = useState(initialStart);
+    const [end, setEnd] = useState(initialEnd);
+    const [pendingStart, setPendingStart] = useState(initialStart);
+    const [pendingEnd, setPendingEnd] = useState(initialEnd);
     const [pendingPortfolios, setPendingPortfolios] = useState(initialPortfolios);
     const [selectedPortfolios, setSelectedPortfolios] = useState(initialPortfolios);
     const [isDirtyForm, setIsDirtyForm] = useState(false);
-    const [tickets, setTickets] = useState({});
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState();
 
-    const [tdData, setTdData] = useState({});
-    const [isTdDataLoading, setIsTdDataLoading] = useState(true);
-    const [tdDataError, setTdDataError] = useState();
-
-    const [cvrData, setCvrData] = useState({});
-    const [isCvrDataLoading, setIsCvrDataLoading] = useState(true);
-    const [cvrDataError, setCvrDataError] = useState();
-
-    const [pieData, setPieData] = useState({});
-    const [isPieDataLoading, setIsPieDataLoading] = useState(true);
-    const [pieDataError, setPieDataError] = useState();
+    const [ticketsData, setTicketsData] = useState(initialDataState);
+    const [tdData, setTdData] = useState(initialDataState);
+    const [ttrData, setTtrData] = useState(initialDataState);
+    const [mttrData, setMttrData] = useState(initialDataState);
+    const [cvrData, setCvrData] = useState(initialDataState);
+    const [pieData, setPieData] = useState(initialDataState);
+    const [openDefectsData, setOpenDefectsData] = useState(initialDataState);
+    const [slaDefectsData, setSlaDefectsData] = useState(initialDataState);
 
     useEffect(() => {
-        setPortfolioBrand(getPortfolioBrand(selectedBrands));
-        setIsSupportedBrand(portfolioBrand === 'HCOM');
-        if (!selectedPortfolios.length || portfolioBrand !== 'HCOM') {
+        setBrand(selectedBrands[0]);
+        setIsSupportedBrand([HOTELS_COM_BRAND, VRBO_BRAND].includes(selectedBrands[0]));
+    }, [selectedBrands]);
+
+    useEffect(() => {
+        const brandPortfolios = filterBrandPortfolios(selectedPortfolios, brand);
+        history.push(getQueryString(brand, selectedPortfolios, start, end));
+        if (!isSupportedBrand || !brandPortfolios.length) {
             return;
         }
-        setIsLoading(true);
-        const brandQuery = `?selectedBrand=${selectedBrands[0]}`;
-        const portfoliosQuery = selectedPortfolios.length ? `&portfolios=${selectedPortfolios.map((p) => p.value).join('&portfolios=')}` : '';
-        history.push(`/quality-metrics${brandQuery}${portfoliosQuery}`);
-        fetch(getPanelDataUrl(selectedPortfolios, portfolioBrand))
-            .then((data) => data.json())
-            .then((allTickets) => {
-                setTickets(allTickets);
-                setIsLoading(false);
-            })
-            .catch((e) => {
-                setError(e.message);
-                setIsLoading(false);
-            });
-        fetch(getPanelDataUrl(selectedPortfolios, portfolioBrand, 'twoDimensionalStatistics'))
-            .then((data) => data.json())
-            .then((response) => {
-                setTdData(response.data || {});
-                setIsTdDataLoading(false);
-            })
-            .catch((e) => {
-                setTdDataError(e.message);
-                setIsTdDataLoading(false);
-            });
-        fetch(getPanelDataUrl(selectedPortfolios, portfolioBrand, 'createdVsResolved'))
-            .then((data) => data.json())
-            .then((response) => {
-                setCvrData(response.data || {});
-                setIsCvrDataLoading(false);
-            })
-            .catch((e) => {
-                setCvrDataError(e.message);
-                setIsCvrDataLoading(false);
-            });
-        fetch(getPanelDataUrl(selectedPortfolios, portfolioBrand, 'piecharts'))
-            .then((data) => data.json())
-            .then((response) => {
-                setPieData(response.data || {});
-                setIsPieDataLoading(false);
-            })
-            .catch((e) => {
-                setPieDataError(e.message);
-                setIsPieDataLoading(false);
-            });
-    }, [history, portfolioBrand, selectedBrands, selectedPortfolios]);
+        const loadingDataState = {data: {}, isLoading: false, error: null};
+        const fetchData = async (panel) => fetchPanelData(start, end, brandPortfolios, brand, panel);
+        setTicketsData(loadingDataState);
+        setTdData(loadingDataState);
+        setCvrData(loadingDataState);
+        setPieData(loadingDataState);
+        fetchData().then(setTicketsData);
+        fetchData('twoDimensionalStatistics').then(setTdData);
+        fetchData('createdVsResolved').then(setCvrData);
+        fetchData('piecharts').then(setPieData);
+        if (brand === HOTELS_COM_BRAND) {
+            setTtrData(loadingDataState);
+            fetchData('ttrSummary').then(setTtrData);
+        } else if (brand === VRBO_BRAND) {
+            setOpenDefectsData(loadingDataState);
+            setSlaDefectsData(loadingDataState);
+            setMttrData(loadingDataState);
+            fetchData('opendefects').then(setOpenDefectsData);
+            fetchData('opendefectspastsla').then(setSlaDefectsData);
+            fetchData('timetoresolve').then(setMttrData);
+        }
+    }, [history, isSupportedBrand, brand, selectedPortfolios, start, end]);
+
+    const handleDatetimeChange = ({start: startDateTimeStr, end: endDateTimeStr}) => {
+        setPendingStart(moment(startDateTimeStr));
+        setPendingEnd(moment(endDateTimeStr));
+        setIsDirtyForm(true);
+    };
 
     const handlePortfoliosChange = (portfolio) => {
         let portfolios = [];
         try {
             portfolios = JSON.parse(JSON.stringify(pendingPortfolios));
         } catch (e) {
-            setError('An error occurred when parsing portfolios.');
+            setTicketsData({data: {}, isLoading: false, error: 'An error occurred when parsing portfolios.'});
         }
         const idx = portfolios.map((p) => p.value).indexOf(portfolio.value);
         if (idx >= 0) {
@@ -107,6 +97,8 @@ const QualityMetrics = ({selectedBrands}) => {
     };
 
     const handleApplyFilters = () => {
+        setStart(pendingStart);
+        setEnd(pendingEnd);
         if (pendingPortfolios.length) {
             setSelectedPortfolios(JSON.parse(JSON.stringify(pendingPortfolios)));
         } else {
@@ -130,12 +122,13 @@ const QualityMetrics = ({selectedBrands}) => {
 
     const renderForm = () => (
         <div className="search-form">
-            <div className="form-container">
-                <div className="checkboxes-container">
-                    {PORTFOLIOS.map(renderPortfolioCheckbox)}
-                </div>
-            </div>
-            <div className="actions-container">
+            <div className="form-left">
+                <DatetimeRangePicker
+                    onChange={handleDatetimeChange}
+                    startDate={pendingStart.toDate()}
+                    endDate={pendingEnd.toDate()}
+                    hidePresets
+                />
                 <button
                     className="btn btn-primary apply-btn"
                     type="button"
@@ -144,14 +137,17 @@ const QualityMetrics = ({selectedBrands}) => {
                 >
                     {'Apply'}
                 </button>
-            </div>
-            <div className="info-container">
-                <div className="info-title">
-                    <SVGIcon className="info-icon" markup={QUESTION__16} />
-                    {'Data source'}
+                <div className="checkboxes-container">
+                    {getBrandPortfolios(brand).map(renderPortfolioCheckbox)}
                 </div>
-                <div className="info-box">
-                    <div className="info-stat">
+            </div>
+            <div className="form-right">
+                <div className="info-container">
+                    <div className="info-title">
+                        <SVGIcon className="info-icon" markup={QUESTION__16} />
+                        {'Data source'}
+                    </div>
+                    <div className="info-box">
                         <div className="info-stat__label">{'JIRA Projects included:'}</div>
                         <div className="info-stat__value">
                             {selectedPortfolios
@@ -164,69 +160,155 @@ const QualityMetrics = ({selectedBrands}) => {
         </div>
     );
 
-    const renderPanels = () => (
-        <div className="panels-container">
-            <LoadingContainer isLoading={isLoading} error={error}>
-                <TwoDimensionalPanel
-                    title="Open Bugs By Portfolio"
-                    info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived' by portfolio"
-                    tickets={tickets}
-                    data={tdData}
-                    portfolios={selectedPortfolios}
-                    dataKey="openBugs"
-                    isLoading={isTdDataLoading}
-                    error={tdDataError}
-                    groupBy="Portfolio"
+    const renderHcomPanels = () => (
+        <>
+            <TwoDimensionalPanel
+                title="Open Bugs By Portfolio"
+                info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived' by portfolio"
+                tickets={ticketsData.data}
+                panelData={tdData}
+                portfolios={selectedPortfolios}
+                dataKey="openBugs"
+                groupBy="Portfolio"
+                brand={brand}
+            />
+            <TwoDimensionalPanel
+                title="Open Bugs"
+                info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived'"
+                tickets={ticketsData.data}
+                panelData={tdData}
+                portfolios={selectedPortfolios}
+                dataKey="openBugs"
+                brand={brand}
+            />
+            <DurationPanel
+                title="Mean Time to Resolve by Portfolio"
+                info="Mean time to resolve in days by portfolio"
+                tickets={ticketsData.data}
+                panelData={ttrData}
+                portfolios={selectedPortfolios}
+            />
+            {[P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL].map((priority) => (
+                <CreatedVsResolvedPanel
+                    key={`${priority} Created vs. Resolved Chart`}
+                    title={`${priority} Created vs. Resolved Chart`}
+                    info={`Charting ${priority} defects by their open date and resolve date (bucketed by week). Click line point for more details.`}
+                    priorities={[priority]}
+                    tickets={ticketsData.data}
+                    panelData={cvrData}
                 />
-                <TwoDimensionalPanel
-                    title="Open Bugs"
-                    info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived'"
-                    tickets={tickets}
-                    data={tdData}
-                    portfolios={selectedPortfolios}
-                    dataKey="openBugs"
-                    isLoading={isTdDataLoading}
-                    error={tdDataError}
-                />
-                <DurationPanel
-                    title="Mean Time to Resolve by Portfolio"
-                    info="Mean time to resolve in days by portfolio"
-                    tickets={tickets}
-                    portfolios={selectedPortfolios}
-                    dataUrl={getPanelDataUrl(selectedPortfolios, portfolioBrand, 'ttrSummary')}
-                />
-                {[P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL].map((priority) => (
-                    <CreatedVsResolvedPanel
-                        key={`${priority} Created vs. Resolved Chart`}
-                        title={`${priority} Created vs. Resolved Chart`}
-                        info={`Charting ${priority} defects by their open date and resolve date (bucketed by week). Click line point for more details.`}
-                        priority={priority}
-                        tickets={tickets}
-                        data={cvrData}
-                        isLoading={isCvrDataLoading}
-                        error={cvrDataError}
-                    />
-                ))}
-                <PiePanel
-                    title="Open Bugs (w.r.t. Priority)"
-                    info="Charting all defects with regard to priority. Click pie slice for more details."
-                    groupBy="Priority"
-                    tickets={tickets}
-                    dataKey="openBugsByPriority"
-                    data={pieData}
-                    isLoading={isPieDataLoading}
-                    error={pieDataError}
-                />
-            </LoadingContainer>
-        </div>
+            ))}
+            <PiePanel
+                title="Open Bugs (w.r.t. Priority)"
+                info="Charting all defects with regard to priority. Click pie slice for more details."
+                groupBy="Priority"
+                tickets={ticketsData.data}
+                panelData={pieData}
+                dataKey="openBugsByPriority"
+            />
+        </>
+    );
+
+    const renderVrboPanels = () => (
+        <>
+            <BarChartPanel
+                title="Open Defects"
+                info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived' by portfolio"
+                tickets={ticketsData.data}
+                panelData={openDefectsData}
+                portfolios={selectedPortfolios}
+                dataKey="openDefects"
+            />
+            <BarChartPanel
+                title="Open Defects Past SLA"
+                info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived' by portfolio"
+                tickets={ticketsData.data}
+                panelData={slaDefectsData}
+                portfolios={selectedPortfolios}
+                dataKey="openDefectsPastSla"
+            />
+            <TwoDimensionalPanel
+                title="Open Bugs By Portfolio"
+                info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived' by portfolio"
+                tickets={ticketsData.data}
+                panelData={tdData}
+                portfolios={selectedPortfolios}
+                dataKey="openBugs"
+                groupBy="Portfolio"
+                brand={brand}
+            />
+            <TwoDimensionalPanel
+                title="Open Bugs"
+                info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived'"
+                tickets={ticketsData.data}
+                panelData={tdData}
+                portfolios={selectedPortfolios}
+                dataKey="openBugs"
+                brand={brand}
+            />
+            <MTTRPanel
+                title="Mean Time to Resolve per Week"
+                info="The weekly average amount of days between a ticket's create date and resolve date w.r.t. priority"
+                tickets={ticketsData.data}
+                panelData={mttrData}
+                dataKey="timetoresolve"
+            />
+            <CreatedVsResolvedPanel
+                key="Total Created vs. Resolved Chart"
+                title="Total Created vs. Resolved Chart"
+                info="Charting all defects by their open date and resolve date (bucketed by week). Click line point for more details."
+                priorities={[P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL, 'notPrioritized']}
+                tickets={ticketsData.data}
+                panelData={cvrData}
+            />
+            <CreatedVsResolvedPanel
+                key="P1 Created vs. Resolved Chart"
+                title="P1 Created vs. Resolved Chart"
+                info="Charting P1 defects by their open date and resolve date (bucketed by week). Click line point for more details."
+                priorities={[P1_LABEL]}
+                tickets={ticketsData.data}
+                panelData={cvrData}
+            />
+            <CreatedVsResolvedPanel
+                key="P2 Created vs. Resolved Chart"
+                title="P2 Created vs. Resolved Chart"
+                info="Charting P2 defects by their open date and resolve date (bucketed by week). Click line point for more details."
+                priorities={[P2_LABEL]}
+                tickets={ticketsData.data}
+                panelData={cvrData}
+            />
+            <PiePanel
+                title="Open Bugs (w.r.t. Priority)"
+                info="Charting all defects with regard to priority. Click pie slice for more details."
+                groupBy="Priority"
+                tickets={ticketsData.data}
+                panelData={pieData}
+                dataKey="openBugsByPriority"
+            />
+            <PiePanel
+                title="Open Bugs (w.r.t. Project)"
+                info="Charting all defects with regard to project. Click pie slice for more details."
+                groupBy="Project"
+                tickets={ticketsData.data}
+                panelData={pieData}
+                dataKey="openBugsByProject"
+            />
+        </>
     );
 
     const renderBody = () => (
         <>
             {renderForm()}
-            {selectedPortfolios && selectedPortfolios.length
-                ? renderPanels()
-                : <div className="no-results">{'No Portfolio Selected'}</div>}
+            {!filterBrandPortfolios(selectedPortfolios, brand)?.length
+                ? <div className="no-results">{'No Portfolio Selected'}</div>
+                : (
+                    <div className="panels-container">
+                        <LoadingContainer isLoading={ticketsData.isLoading} error={ticketsData.error}>
+                            {(brand === HOTELS_COM_BRAND) ? renderHcomPanels() : renderVrboPanels()}
+                        </LoadingContainer>
+                    </div>
+                )
+            }
         </>
     );
 
@@ -239,7 +321,7 @@ const QualityMetrics = ({selectedBrands}) => {
             {isSupportedBrand
                 ? renderBody()
                 : <div className="messaged">{`Quality Metrics for ${selectedBrands} is not yet available.
-                    The following brands are supported at this time: "Hotels.com Retail".
+                    The following brands are supported at this time: "Hotels.com Retail", "Vrbo Retail".
                     If you have any questions, please ping ${OPXHUB_SUPPORT_CHANNEL} or leave a comment via our Feedback form.`}</div>
             }
         </div>
