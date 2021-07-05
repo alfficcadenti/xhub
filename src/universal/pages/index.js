@@ -25,6 +25,7 @@ import PartnerBusinessMetrics from './PartnerBusinessMetrics';
 import BookingRequests from './BookingRequests';
 import InitialBookings from './InitialBookings';
 import FencePostEvents from './FencePostEvents';
+import ShoppingFencePostEvents from './ShoppingFencePostEvents';
 import RealTimeSitePerformance from './RealTimeSitePerformance';
 import CheckoutBookingRequests from './CheckoutBookingRequests';
 import {EXPEDIA_BRAND, HOTELS_COM_BRAND, VRBO_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../constants';
@@ -184,6 +185,15 @@ export default [
         link: '/fence-post-events-booking-journey',
         text: 'Fence Post Events - Booking Journey',
         component: FencePostEvents,
+        brands: [VRBO_BRAND],
+        hidden: false
+    },
+    {
+        category: AAT,
+        id: 'fence-post-events-shopping-journey',
+        link: '/fence-post-events-shopping-journey',
+        text: 'Fence Post Events - Shopping Journey',
+        component: ShoppingFencePostEvents,
         brands: [VRBO_BRAND],
         hidden: false
     },
