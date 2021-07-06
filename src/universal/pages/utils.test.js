@@ -497,7 +497,7 @@ describe('makeSuccessRatesObjects()', () => {
             {'aggregatedData': [], 'minValue': 92.96, 'pageBrand': 'Expedia', 'pageName': 'Checkout (CKO) To Checkout Confirmation Page'}
         ];
 
-        expect(makeSuccessRatesObjects(successRatesMockData, start, end, EXPEDIA_BRAND, EXPEDIA_BRAND, deltaUserMock)).to.eql(pageViewsMockResults);
+        expect(makeSuccessRatesObjects(successRatesMockData, start, end, EXPEDIA_BRAND, deltaUserMock)).to.eql(pageViewsMockResults);
     });
 });
 

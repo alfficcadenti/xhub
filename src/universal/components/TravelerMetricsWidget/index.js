@@ -16,6 +16,7 @@ import HelpText from '../HelpText/HelpText';
 import ReferenceLabel from '../ReferenceLabel';
 import {getBrand} from '../../pages/utils';
 import {getAnnotationStrokeColor} from '../utils.js';
+import {EXPEDIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../../constants';
 import './styles.less';
 
 
@@ -84,6 +85,17 @@ const TravelerMetricsWidget = ({
         const point = pointRef.current;
         const tooltip = tooltipRef.current;
 
+        const getDeltaUserCount = () => {
+            if (![EXPEDIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND].includes(brand)) {
+                return !selectedLoBs.length
+                    ? `delta users = ${point.payload.deltaUserCount}`
+                    : selectedLoBs
+                        .map(({label}) => `<div class="lob-label">${label} delta users = ${point.payload[`${label}deltaUserCount`]}</div>`)
+                        .join('');
+            }
+            return '';
+        };
+
         if (point) {
             const x = Math.round(point.x);
             const y = Math.round(point.y - 140);
@@ -99,11 +111,7 @@ const TravelerMetricsWidget = ({
                 : selectedLoBs
                     .map(({label}) => `<div class="lob-label">${label} = ${point.payload[label]}</div>`)
                     .join('');
-            tooltip.childNodes[2].innerHTML = !selectedLoBs.length
-                ? `delta users = ${point.payload.deltaUserCount}`
-                : selectedLoBs
-                    .map(({label}) => `<div class="lob-label">${label} delta users = ${point.payload[`${label}deltaUserCount`]}</div>`)
-                    .join('');
+            tooltip.childNodes[2].innerHTML = getDeltaUserCount();
         } else {
             tooltip.style.opacity = '0';
             tooltip.style.display = 'none';

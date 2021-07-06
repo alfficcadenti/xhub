@@ -384,12 +384,12 @@ export const makeSuccessRatesLOBObjects = (
                 .forEach(({rate, lineOfBusiness}) => {
                     const momentTime = moment(time);
 
-                    const deltaUserCount = deltaUserData.find((item) => item.metricName === METRIC_NAMES[i]).metricDeltaUserCounts
+                    const deltaUserCount = deltaUserData.find((item) => item.metricName === METRIC_NAMES[i])?.metricDeltaUserCounts
                         .find((deltaUserItem) => {
                             return momentTime.isSame(deltaUserItem.time);
                         })?.lobDeltaUserCounts
                         .find((item) => {
-                            return item.lineOfBusiness === lineOfBusiness;
+                            return item.lineOfBusiness === 'H';
                         })
                         .deltaCount;
 
