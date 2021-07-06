@@ -124,15 +124,15 @@ export const getActiveIndex = (pathname = '') => {
 
 export const getDefaultTimeInterval = (startDate, endDate) => {
     const diff = moment(endDate).diff(moment(startDate), 'days');
-    if (diff <= 1) {
+    if (diff < 1) {
         return '1m';
-    } else if (diff > 1 && diff <= 7) {
+    } else if (diff >= 1 && diff < 7) {
         return '5m';
-    } else if (diff > 7 && diff <= 31) {
+    } else if (diff >= 7 && diff < 31) {
         return '15m';
-    } else if (diff > 31 && diff <= 120) {
+    } else if (diff >= 31 && diff < 120) {
         return '1h';
-    } else if (diff > 120 && diff <= 365) {
+    } else if (diff >= 120 && diff < 365) {
         return '1d';
     }
     return '1w';
@@ -142,13 +142,13 @@ export const getDefaultTimeInterval = (startDate, endDate) => {
 export const getTimeIntervals = (startDate, endDate, timeInterval) => {
     const filterCurrentInterval = (item) => item !== timeInterval;
     const diff = moment(endDate).diff(moment(startDate), 'days');
-    if (diff <= 1) {
+    if (diff < 1) {
         return ['1m', '5m', '15m', '30m', '1h'].filter(filterCurrentInterval);
-    } else if (diff > 1 && diff <= 7) {
+    } else if (diff >= 1 && diff < 7) {
         return ['5m', '15m', '30m', '1h'].filter(filterCurrentInterval);
-    } else if (diff > 7 && diff <= 31) {
+    } else if (diff >= 7 && diff < 31) {
         return ['15m', '30m', '1h', '1d'].filter(filterCurrentInterval);
-    } else if (diff > 31 && diff <= 120) {
+    } else if (diff >= 31 && diff < 120) {
         return ['1h', '1d', '1w'].filter(filterCurrentInterval);
     }
     return ['1d', '1w'].filter(filterCurrentInterval);
