@@ -86,16 +86,9 @@ const Header = ({selectedBrands, onBrandChange, brands}) => {
             <Link to={`/impulse${BRAND_QUERY}`} className="header--logo">
                 {'OpXHub'}
             </Link>
-            {CATEGORIES.sort((a, b) => {
-                if (a.toLowerCase() > b.toLowerCase()) {
-                    return 1;
-                }
-                if (b.toLowerCase() > a.toLowerCase()) {
-                    return -1;
-                }
-
-                return 0;
-            }).map(renderCategoryDropdown)}
+            {CATEGORIES
+                .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
+                .map(renderCategoryDropdown)}
             <BrandSelector
                 selectedBrands={selectedBrands.map((brand) => getBrand(brand, 'label').retailLabel)}
                 onBrandChange={onBrandChange}
@@ -114,6 +107,5 @@ const Header = ({selectedBrands, onBrandChange, brands}) => {
         </div>
     );
 };
-
 
 export default withRouter(Header);
