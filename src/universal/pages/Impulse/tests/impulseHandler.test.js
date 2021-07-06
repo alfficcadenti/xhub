@@ -117,7 +117,7 @@ describe('impulseHandler', () => {
     });
     describe('test final get time intervals', () => {
         it('should return correct intervals for 1 day diff', () => {
-            expect(getTimeIntervals(startDate, endDate, '5m')).eql(['1m', '15m', '30m', '1h']);
+            expect(getTimeIntervals(moment(startDate).add(5, 'minutes'), endDate, '5m')).eql(['1m', '15m', '30m', '1h']);
         });
         it('should return correct intervals for 5 day diff', () => {
             expect(getTimeIntervals(moment(startDate).subtract(5, 'days'), endDate, '5m')).eql(['15m', '30m', '1h']);
@@ -134,7 +134,7 @@ describe('impulseHandler', () => {
     });
     describe('test final get default time interval', () => {
         it('should return correct interval for 1 day diff', () => {
-            expect(getDefaultTimeInterval(startDate, endDate)).eql('1m');
+            expect(getDefaultTimeInterval(moment(startDate).add(5, 'minutes'), endDate)).eql('1m');
         });
         it('should return correct interval for 5 day diff', () => {
             expect(getDefaultTimeInterval(moment(startDate).subtract(5, 'days'), endDate)).eql('5m');
