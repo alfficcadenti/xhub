@@ -83,10 +83,12 @@ const Header = ({selectedBrands, onBrandChange, brands}) => {
 
     return (
         <div className="header">
-            <Link to={`/impulse${BRAND_QUERY}`} className="header--logo" >
+            <Link to={`/impulse${BRAND_QUERY}`} className="header--logo">
                 {'OpXHub'}
             </Link>
-            {CATEGORIES.map(renderCategoryDropdown)}
+            {CATEGORIES
+                .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
+                .map(renderCategoryDropdown)}
             <BrandSelector
                 selectedBrands={selectedBrands.map((brand) => getBrand(brand, 'label').retailLabel)}
                 onBrandChange={onBrandChange}
