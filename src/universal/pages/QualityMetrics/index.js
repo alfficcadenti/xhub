@@ -8,7 +8,8 @@ import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import LoadingContainer from '../../components/LoadingContainer';
 import HelpText from '../../components/HelpText/HelpText';
 import {VRBO_BRAND, HOTELS_COM_BRAND, OPXHUB_SUPPORT_CHANNEL} from '../../constants';
-import {BarChartPanel, DurationPanel, TwoDimensionalPanel, MTTRPanel, CreatedVsResolvedPanel, PiePanel} from './Panels';
+import {BarChartPanel, DurationPanel, TwoDimensionalPanel, PriorityLineChartPanel,
+    CreatedVsResolvedPanel, PiePanel, SLADefinitions} from './Panels';
 import {P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL} from './constants';
 import {getBrandPortfolios, filterBrandPortfolios, getQueryValues, getQueryString, fetchPanelData} from './utils';
 import './styles.less';
@@ -163,7 +164,16 @@ const QualityMetrics = ({selectedBrands}) => {
     const renderHcomPanels = () => (
         <>
             <TwoDimensionalPanel
-                title="Open Bugs By Portfolio"
+                title="Open Defects"
+                info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived'"
+                tickets={ticketsData.data}
+                panelData={tdData}
+                portfolios={selectedPortfolios}
+                dataKey="openBugs"
+                brand={brand}
+            />
+            <TwoDimensionalPanel
+                title="Open Defects By Portfolio"
                 info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived' by portfolio"
                 tickets={ticketsData.data}
                 panelData={tdData}
@@ -172,17 +182,8 @@ const QualityMetrics = ({selectedBrands}) => {
                 groupBy="Portfolio"
                 brand={brand}
             />
-            <TwoDimensionalPanel
-                title="Open Bugs"
-                info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived'"
-                tickets={ticketsData.data}
-                panelData={tdData}
-                portfolios={selectedPortfolios}
-                dataKey="openBugs"
-                brand={brand}
-            />
             <DurationPanel
-                title="Mean Time to Resolve by Portfolio"
+                title="Mean Time to Resolve By Portfolio"
                 info="Mean time to resolve in days by portfolio"
                 tickets={ticketsData.data}
                 panelData={ttrData}
@@ -190,8 +191,8 @@ const QualityMetrics = ({selectedBrands}) => {
             />
             {[P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL].map((priority) => (
                 <CreatedVsResolvedPanel
-                    key={`${priority} Created vs. Resolved Chart`}
-                    title={`${priority} Created vs. Resolved Chart`}
+                    key={`${priority} Created vs. Resolved`}
+                    title={`${priority} Created vs. Resolved`}
                     info={`Charting ${priority} defects by their open date and resolve date (bucketed by week). Click line point for more details.`}
                     priorities={[priority]}
                     tickets={ticketsData.data}
@@ -199,7 +200,7 @@ const QualityMetrics = ({selectedBrands}) => {
                 />
             ))}
             <PiePanel
-                title="Open Bugs (w.r.t. Priority)"
+                title="Open Defects (w.r.t. Priority)"
                 info="Charting all defects with regard to priority. Click pie slice for more details."
                 groupBy="Priority"
                 tickets={ticketsData.data}
@@ -212,23 +213,24 @@ const QualityMetrics = ({selectedBrands}) => {
     const renderVrboPanels = () => (
         <>
             <BarChartPanel
-                title="Open Defects"
-                info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived' by portfolio"
+                title="Open Defects By Open Date"
+                info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived' by open date"
                 tickets={ticketsData.data}
                 panelData={openDefectsData}
                 portfolios={selectedPortfolios}
                 dataKey="openDefects"
             />
-            <BarChartPanel
-                title="Open Defects Past SLA"
-                info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived' by portfolio"
+            <TwoDimensionalPanel
+                title="Open Defects"
+                info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived'"
                 tickets={ticketsData.data}
-                panelData={slaDefectsData}
+                panelData={tdData}
                 portfolios={selectedPortfolios}
-                dataKey="openDefectsPastSla"
+                dataKey="openBugs"
+                brand={brand}
             />
             <TwoDimensionalPanel
-                title="Open Bugs By Portfolio"
+                title="Open Defects By Portfolio"
                 info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived' by portfolio"
                 tickets={ticketsData.data}
                 panelData={tdData}
@@ -238,31 +240,57 @@ const QualityMetrics = ({selectedBrands}) => {
                 brand={brand}
             />
             <TwoDimensionalPanel
-                title="Open Bugs"
-                info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived'"
+                title="Open Defects Approaching SLA"
+                info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived' approaching and before SLA"
                 tickets={ticketsData.data}
                 panelData={tdData}
                 portfolios={selectedPortfolios}
-                dataKey="openBugs"
+                dataKey="approachingSLA"
                 brand={brand}
             />
-            <MTTRPanel
-                title="Mean Time to Resolve per Week"
-                info="The weekly average amount of days between a ticket's create date and resolve date w.r.t. priority"
+            <SLADefinitions />
+            <PriorityLineChartPanel
+                title="Open Defects Past SLA By Open Date"
+                info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived' and past SLA"
+                tickets={ticketsData.data}
+                panelData={slaDefectsData}
+                dataKey="openDefectsPastSla"
+            />
+            <BarChartPanel
+                title="Open Defects Past SLA"
+                info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived' and past SLA by open date"
+                tickets={ticketsData.data}
+                panelData={slaDefectsData}
+                portfolios={selectedPortfolios}
+                dataKey="openDefectsPastSla"
+            />
+            <TwoDimensionalPanel
+                title="Open Defects Past SLA"
+                info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived' past SLA"
+                tickets={ticketsData.data}
+                panelData={tdData}
+                portfolios={selectedPortfolios}
+                dataKey="pastSLA"
+                brand={brand}
+            />
+            <PriorityLineChartPanel
+                title="Mean Time to Resolve"
+                info="The average amount of days between a ticket's create date and resolve date w.r.t. priority"
                 tickets={ticketsData.data}
                 panelData={mttrData}
                 dataKey="timetoresolve"
             />
             <CreatedVsResolvedPanel
-                key="Total Created vs. Resolved Chart"
+                key="Total Created vs. Resolved"
                 title="Total Created vs. Resolved Chart"
                 info="Charting all defects by their open date and resolve date (bucketed by week). Click line point for more details."
                 priorities={[P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL, 'notPrioritized']}
                 tickets={ticketsData.data}
                 panelData={cvrData}
+                isFullWidth
             />
             <CreatedVsResolvedPanel
-                key="P1 Created vs. Resolved Chart"
+                key="P1 Created vs. Resolved"
                 title="P1 Created vs. Resolved Chart"
                 info="Charting P1 defects by their open date and resolve date (bucketed by week). Click line point for more details."
                 priorities={[P1_LABEL]}
@@ -270,7 +298,7 @@ const QualityMetrics = ({selectedBrands}) => {
                 panelData={cvrData}
             />
             <CreatedVsResolvedPanel
-                key="P2 Created vs. Resolved Chart"
+                key="P2 Created vs. Resolved"
                 title="P2 Created vs. Resolved Chart"
                 info="Charting P2 defects by their open date and resolve date (bucketed by week). Click line point for more details."
                 priorities={[P2_LABEL]}
@@ -278,7 +306,7 @@ const QualityMetrics = ({selectedBrands}) => {
                 panelData={cvrData}
             />
             <PiePanel
-                title="Open Bugs (w.r.t. Priority)"
+                title="Open Defects (w.r.t. Priority)"
                 info="Charting all defects with regard to priority. Click pie slice for more details."
                 groupBy="Priority"
                 tickets={ticketsData.data}
@@ -286,7 +314,7 @@ const QualityMetrics = ({selectedBrands}) => {
                 dataKey="openBugsByPriority"
             />
             <PiePanel
-                title="Open Bugs (w.r.t. Project)"
+                title="Open Defects (w.r.t. Project)"
                 info="Charting all defects with regard to project. Click pie slice for more details."
                 groupBy="Project"
                 tickets={ticketsData.data}

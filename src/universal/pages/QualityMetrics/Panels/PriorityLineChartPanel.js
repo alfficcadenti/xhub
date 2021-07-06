@@ -5,9 +5,9 @@ import {
 import Panel from '../Panel';
 import ChartModal from '../ChartModal';
 import {PRIORITY_LABELS, PRIORITY_COLORS} from '../constants';
-import {formatTTRData, findAndFormatTicket, mapPriority} from '../utils';
+import {formatPriorityLineChartData, findAndFormatTicket, mapPriority} from '../utils';
 
-const MTTRPanel = ({title, info, tickets, panelData, dataKey}) => {
+const PriorityLineChartPanel = ({title, info, tickets, panelData, dataKey}) => {
     const {data, isLoading, error, queries = []} = panelData;
     const [chartData, setChartData] = useState([]);
     const [modalData, setModalData] = useState({});
@@ -16,7 +16,7 @@ const MTTRPanel = ({title, info, tickets, panelData, dataKey}) => {
     useEffect(() => {
         const formattedData = panelData.info && panelData.info.message === 'no data found'
             ? []
-            : formatTTRData(data[dataKey]);
+            : formatPriorityLineChartData(data[dataKey], dataKey);
         setChartData(formattedData);
     }, [panelData, data, dataKey]);
 
@@ -69,4 +69,4 @@ const MTTRPanel = ({title, info, tickets, panelData, dataKey}) => {
     );
 };
 
-export default MTTRPanel;
+export default PriorityLineChartPanel;
