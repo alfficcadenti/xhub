@@ -11,6 +11,7 @@ import {
     TIMEZONE_ABBR,
     VRBO_BRAND
 } from '../constants';
+import {METRIC_NAMES} from './SuccessRates/constants';
 import ALL_PAGES from './index';
 import qs from 'query-string';
 import moment from 'moment';
@@ -298,7 +299,7 @@ export const filterNewSelectedItems = (input, key) => {
         : [];
 };
 
-export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pageBrand = '', deltaUserData) => {
+export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pageBrand = '', deltaUserData = []) => {
     let minValue;
 
     const formatRate = (rate) => parseFloat((Number(rate) || 0).toFixed(2));
@@ -313,8 +314,10 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
         ).reduce((prev, {time, brandWiseSuccessRateData}) => {
             let localMin = prev;
             const momentTime = moment(time);
-            // const deltaUserCount = deltaUserData.find((deltaUserItem) => momentTime.isSame(deltaUserItem.time)).totalDeltaCount;
-            const deltaUserCount = deltaUserData[i].metricDelatUserCounts.find((deltaUserItem) => momentTime.isSame(deltaUserItem.time)).lobTotalDeltaUserCount;
+
+            const deltaUserCount = deltaUserData
+                .find((item) => item.metricName === METRIC_NAMES[i])?.metricDeltaUserCounts
+                .find((deltaUserItem) => momentTime.isSame(deltaUserItem.time))?.lobTotalDeltaUserCount;
 
             if (momentTime.isBetween(start, end, 'minutes', '[]')) {
                 const found = aggregatedData.findIndex((d) => d.time === moment.utc(time).valueOf());
@@ -380,10 +383,14 @@ export const makeSuccessRatesLOBObjects = (
             // eslint-disable-next-line complexity
                 .forEach(({rate, lineOfBusiness}) => {
                     const momentTime = moment(time);
-                    // const deltaUserCount = deltaUserData.find((deltaUserItem) => momentTime.isSame(deltaUserItem.time)).totalDeltaCount;
-                    const deltaUserCount = deltaUserData[i].metricDelatUserCounts
-                        .find((deltaUserItem) => momentTime.isSame(deltaUserItem.time)).lobDelatUserCounts
-                        .find((item) => item.lineOfBusiness === lobs[0].value) // instead of lobs[0].value make it work with multiple lobs
+
+                    const deltaUserCount = deltaUserData.find((item) => item.metricName === METRIC_NAMES[i]).metricDeltaUserCounts
+                        .find((deltaUserItem) => {
+                            return momentTime.isSame(deltaUserItem.time);
+                        })?.lobDeltaUserCounts
+                        .find((item) => {
+                            return item.lineOfBusiness === lineOfBusiness;
+                        })
                         .deltaCount;
 
                     if (momentTime.isBetween(start, end, 'minutes', '[]')) {
@@ -399,7 +406,6 @@ export const makeSuccessRatesLOBObjects = (
                                 time: moment.utc(time).valueOf(),
                                 [valueKey]: rate === null ? null : formatRate(rate),
                                 [`${valueKey}deltaUserCount`]: deltaUserCount
-                                // deltaUserCount
                             });
                         }
                     }

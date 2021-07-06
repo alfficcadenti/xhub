@@ -142,7 +142,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
         const interval = getTimeInterval(start, end);
         const endpoint = buildSuccessRateApiQueryString({start, end, brand: funnelBrand, EPSPartner: selectedEPSPartner, interval});
         Promise.all([
-            fetch(`/v1/delta-users?brand=${funnelBrand}&start_Date=${moment(start).utc().format()}&end_Date=${moment(end).utc().format()}&line_of_business=${selectedLobs.map((l) => l.value).join(',')}`),
+            fetch(`/v1/delta-users-counts-by-metrics?brand=${funnelBrand}&from_date=${moment(start).utc().format()}&to_date=${moment(end).utc().format()}&${selectedLobs.map((l) => `line_of_business=${l.value}`).join('&')}`),
             ...METRIC_NAMES.map((metricName) => fetch(`${endpoint}&metricName=${metricName}`))
         ])
             .then((responses) => Promise.all(responses.map(checkResponse)))

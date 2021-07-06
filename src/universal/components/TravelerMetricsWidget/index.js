@@ -99,12 +99,10 @@ const TravelerMetricsWidget = ({
                 : selectedLoBs
                     .map(({label}) => `<div class="lob-label">${label} = ${point.payload[label]}</div>`)
                     .join('');
-
-            tooltip.childNodes[2].innerHTML = `delta users = ${point.payload.deltaUserCount}`;
             tooltip.childNodes[2].innerHTML = !selectedLoBs.length
                 ? `delta users = ${point.payload.deltaUserCount}`
                 : selectedLoBs
-                    .map(({label}) => `<div class="lob-label">${label} delta users = ${point.payload[label]}</div>`)
+                    .map(({label}) => `<div class="lob-label">${label} delta users = ${point.payload[`${label}deltaUserCount`]}</div>`)
                     .join('');
         } else {
             tooltip.style.opacity = '0';
@@ -141,7 +139,7 @@ const TravelerMetricsWidget = ({
         <div className="custom-tooltip" ref={tooltipRef}>
             <p className="label" />
             <div className="label" />
-            <div className="delta-users" />
+            <div className="label" />
         </div>
     );
 

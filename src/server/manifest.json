@@ -903,22 +903,22 @@
       "apiDeltaUserConfig": {
         "$filter": "env.EXPEDIA_ENVIRONMENT",
         "$default": {
-          "hostname": "opxhub-computation-engine-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black",
+          "hostname": "eg-fci-data-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black",
           "protocol": "http:",
           "routes": {
             "deltaUser": {
-              "path": "/v1/delta-users",
+              "path": "/v1/delta-users-counts-by-metrics",
               "method": "GET",
               "operation": "GET_delta_user_api_v1"
             }
           }
         },
         "prod": {
-          "hostname": "opxhub-computation-engine-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black",
+          "hostname": "eg-fci-data-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black",
           "protocol": "http:",
           "routes": {
             "deltaUser": {
-              "path": "/v1/delta-users",
+              "path": "/v1/delta-users-counts-by-metrics",
               "method": "GET",
               "operation": "GET_delta_user_api_v1"
             }

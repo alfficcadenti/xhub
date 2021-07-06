@@ -8,7 +8,7 @@ const getHandlerParams = (routeKey) => ({
 
 module.exports.deltaUser = {
     method: 'GET',
-    path: '/v1/delta-users',
+    path: '/v1/delta-users-counts-by-metrics',
     config: getConfig('delta-user-get'),
     handler: getHandler(Object.assign(getHandlerParams('deltaUser')))
 };
