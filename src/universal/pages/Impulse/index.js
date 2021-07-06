@@ -17,9 +17,13 @@ import {getFilters, getFiltersForMultiKeys, getQueryValues, useAddToUrl, getTime
 import {Checkbox, Switch} from '@homeaway/react-form-components';
 import {IncidentDetails} from './tabs/BookingTrends';
 import AnomalyDetails from './tabs/BookingTrends/sections/AnomalyTable/AnomalyDetails';
+import BookingsDataTable from './tabs/BookingTrends/sections/BookingChart/BookingsDataTable';
 import {getValue} from '../utils';
 import {Dropdown, DropdownItem} from '@homeaway/react-dropdown';
 import GroupedBookingTrends from './tabs/BookingTrends/sections/BookingChartGrouped/GroupedBookingTrends';
+
+const THREE_WEEK_AVG_COUNT = '3 Week Avg Counts';
+const BOOKING_COUNT = 'Booking Counts';
 
 const navLinks = [
     {
@@ -35,6 +39,11 @@ const navLinks = [
     {
         id: 'by_lobs',
         label: 'By LOBs',
+        href: '/impulse'
+    },
+    {
+        id: 'bookings-data',
+        label: 'Bookings data',
         href: '/impulse'
     }
 ];
@@ -328,6 +337,16 @@ const Impulse = (props) => {
                     setTimeInterval={setTimeInterval}
                     setTimeIntervalOpts={setTimeIntervalOpts}
                     activeIndex={activeIndex}
+                />);
+            case 3:
+                return (<BookingsDataTable
+                    data={allData.map((item) => {
+                        return {
+                            ['Timestamp']: `${moment(item.time).format('YYYY-MM-DD HH:mm')} ${moment().tz(moment.tz.guess()).format('z')}`,
+                            [BOOKING_COUNT]: item[BOOKING_COUNT],
+                            [THREE_WEEK_AVG_COUNT]: item[THREE_WEEK_AVG_COUNT]
+                        };
+                    })}
                 />);
             default:
                 return (<BookingTrends
