@@ -205,6 +205,7 @@ const FciModal = ({fci, fcis, editMode, isOpen, onClose, onSaveComment, onEditBa
     const handleOnClose = () => {
         setComment();
         setIsFci(true);
+        onEditBack();
         onClose();
     };
 
