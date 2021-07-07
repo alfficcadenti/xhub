@@ -11,6 +11,7 @@ import {
     TIMEZONE_ABBR,
     VRBO_BRAND
 } from '../constants';
+import {METRIC_NAMES} from './SuccessRates/constants';
 import ALL_PAGES from './index';
 import qs from 'query-string';
 import moment from 'moment';
@@ -298,7 +299,7 @@ export const filterNewSelectedItems = (input, key) => {
         : [];
 };
 
-export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pageBrand = '') => {
+export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pageBrand = '', deltaUserData = []) => {
     let minValue;
 
     const formatRate = (rate) => parseFloat((Number(rate) || 0).toFixed(2));
@@ -313,19 +314,28 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
         ).reduce((prev, {time, brandWiseSuccessRateData}) => {
             let localMin = prev;
             const momentTime = moment(time);
+
+            const deltaUserCount = deltaUserData
+                .find((item) => item.metricName === METRIC_NAMES[i])?.metricDeltaUserCounts
+                .find((deltaUserItem) => momentTime.isSame(deltaUserItem.time))?.lobTotalDeltaUserCount;
+
             if (momentTime.isBetween(start, end, 'minutes', '[]')) {
                 const found = aggregatedData.findIndex((d) => d.time === moment.utc(time).valueOf());
+
                 if (found > -1) {
                     aggregatedData[found].value = brandWiseSuccessRateData.rate === null ? null : formatRate(brandWiseSuccessRateData.rate);
                 } else {
                     aggregatedData.push({
                         label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
                         time: moment.utc(time).valueOf(),
-                        value: brandWiseSuccessRateData.rate === null ? null : formatRate(brandWiseSuccessRateData.rate)
+                        value: brandWiseSuccessRateData.rate === null ? null : formatRate(brandWiseSuccessRateData.rate),
+                        deltaUserCount
                     });
                 }
             }
+
             localMin = brandWiseSuccessRateData.rate ? Math.min(localMin, formatRate(brandWiseSuccessRateData.rate)) : localMin;
+
             return localMin;
         }, (data[0] && data[0][0]) ? data[0][0].brandWiseSuccessRateData.rate : 0);
 
@@ -339,7 +349,15 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
     }).map((item) => ({...item, minValue}));
 };
 
-export const makeSuccessRatesLOBObjects = (data = [[], [], [], []], start, end, pageBrand = '', selectedBrand = '', lobs = []) => {
+export const makeSuccessRatesLOBObjects = (
+    data = [[], [], [], []],
+    start,
+    end,
+    pageBrand = '',
+    selectedBrand = '',
+    lobs = [],
+    deltaUserData
+) => {
     let minValue;
     const successRateFilter = ({brand, lineOfBusiness}) => (
         mapBrandNames(brand) === selectedBrand
@@ -366,23 +384,35 @@ export const makeSuccessRatesLOBObjects = (data = [[], [], [], []], start, end, 
                 .forEach(({rate, lineOfBusiness}) => {
                     const momentTime = moment(time);
 
+                    const deltaUserCount = deltaUserData.find((item) => item.metricName === METRIC_NAMES[i])?.metricDeltaUserCounts
+                        .find((deltaUserItem) => {
+                            return momentTime.isSame(deltaUserItem.time);
+                        })?.lobDeltaUserCounts
+                        .find((item) => {
+                            return item.lineOfBusiness === 'H';
+                        })
+                        .deltaCount;
+
                     if (momentTime.isBetween(start, end, 'minutes', '[]')) {
                         const lob = lineOfBusiness ? lobs.find(({value}) => value === lineOfBusiness) : null;
                         const valueKey = lob ? lob.label : 'value';
                         const found = aggregatedData.findIndex((d) => d.time === moment.utc(time).valueOf());
+
                         if (found > -1) {
                             aggregatedData[found][valueKey] = rate === null ? null : formatRate(rate);
                         } else {
                             aggregatedData.push({
                                 label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
                                 time: moment.utc(time).valueOf(),
-                                [valueKey]: rate === null ? null : formatRate(rate)
+                                [valueKey]: rate === null ? null : formatRate(rate),
+                                [`${valueKey}deltaUserCount`]: deltaUserCount
                             });
                         }
                     }
 
                     localMin = rate ? Math.min(localMin, formatRate(rate)) : localMin;
                 });
+
             return localMin;
         }, (data[0] && data[0][0]) ? data[0][0].successRatePercentagesData.find((item) => mapBrandNames(item.brand) === selectedBrand).rate : 0);
 
