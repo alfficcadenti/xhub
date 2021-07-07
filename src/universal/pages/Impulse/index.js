@@ -22,9 +22,6 @@ import {getValue} from '../utils';
 import {Dropdown, DropdownItem} from '@homeaway/react-dropdown';
 import GroupedBookingTrends from './tabs/BookingTrends/sections/BookingChartGrouped/GroupedBookingTrends';
 
-const THREE_WEEK_AVG_COUNT = '3 Week Avg Counts';
-const BOOKING_COUNT = 'Booking Counts';
-
 const navLinks = [
     {
         id: 'bookings',
@@ -43,7 +40,7 @@ const navLinks = [
     },
     {
         id: 'bookings-data',
-        label: 'Bookings data',
+        label: 'Bookings Data',
         href: '/impulse'
     }
 ];
@@ -340,13 +337,7 @@ const Impulse = (props) => {
                 />);
             case 3:
                 return (<BookingsDataTable
-                    data={allData.map((item) => {
-                        return {
-                            ['Timestamp']: `${moment(item.time).format('YYYY-MM-DD HH:mm')} ${moment().tz(moment.tz.guess()).format('z')}`,
-                            [BOOKING_COUNT]: item[BOOKING_COUNT],
-                            [THREE_WEEK_AVG_COUNT]: item[THREE_WEEK_AVG_COUNT]
-                        };
-                    })}
+                    data={allData}
                 />);
             default:
                 return (<BookingTrends
