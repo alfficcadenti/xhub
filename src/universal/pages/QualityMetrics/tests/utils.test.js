@@ -180,8 +180,9 @@ describe('Quality Metrics Util', () => {
         const p2 = 2;
         const p3 = 4;
         const p5 = 3;
+        const notPrioritized = 3;
         const ticketIds = ['INC-0001'];
-        const data = {[date]: {p1, p2, p3, p5, totalTickets: ticketIds.length, ticketIds}};
+        const data = {[date]: {p1, p2, p3, p5, notPrioritized, totalTickets: ticketIds.length, ticketIds}};
         expect(formatPriorityCountsData(data)).to.be.eql([{
             date,
             [P1_LABEL]: p1,
@@ -189,6 +190,7 @@ describe('Quality Metrics Util', () => {
             [P3_LABEL]: p3,
             [P4_LABEL]: 0,
             [P5_LABEL]: p5,
+            [NOT_PRIORITIZED_LABEL]: notPrioritized,
             counts: ticketIds.length,
             tickets: ticketIds
         }]);

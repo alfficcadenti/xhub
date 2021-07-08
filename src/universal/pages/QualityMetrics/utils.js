@@ -140,7 +140,7 @@ export const formatTTRData = (data) => {
 
 export const formatPriorityCountsData = (data) => {
     return Object.entries(data || {})
-        .map(([date, {p1 = 0, p2 = 0, p3 = 0, p4 = 0, p5 = 0, totalTickets = 0, ticketIds = []}]) => {
+        .map(([date, {p1 = 0, p2 = 0, p3 = 0, p4 = 0, p5 = 0, totalTickets = 0, notPrioritized = 0, ticketIds = []}]) => {
             return {
                 date,
                 [P1_LABEL]: p1,
@@ -148,6 +148,7 @@ export const formatPriorityCountsData = (data) => {
                 [P3_LABEL]: p3,
                 [P4_LABEL]: p4,
                 [P5_LABEL]: p5,
+                [NOT_PRIORITIZED_LABEL]: notPrioritized,
                 counts: totalTickets,
                 tickets: ticketIds
             };

@@ -10,7 +10,7 @@ import HelpText from '../../components/HelpText/HelpText';
 import {VRBO_BRAND, HOTELS_COM_BRAND, OPXHUB_SUPPORT_CHANNEL} from '../../constants';
 import {BarChartPanel, DurationPanel, TwoDimensionalPanel, PriorityLineChartPanel,
     CreatedVsResolvedPanel, PiePanel, SLADefinitions} from './Panels';
-import {P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL} from './constants';
+import {NOT_PRIORITIZED_LABEL, P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL} from './constants';
 import {getBrandPortfolios, filterBrandPortfolios, getQueryValues, getQueryString, fetchPanelData} from './utils';
 import './styles.less';
 
@@ -39,6 +39,7 @@ const QualityMetrics = ({selectedBrands}) => {
     const [pieData, setPieData] = useState(initialDataState);
     const [openDefectsData, setOpenDefectsData] = useState(initialDataState);
     const [slaDefectsData, setSlaDefectsData] = useState(initialDataState);
+    const [unprioritizedData, setUnprioritizedData] = useState(initialDataState);
 
     useEffect(() => {
         setBrand(selectedBrands[0]);
@@ -71,6 +72,7 @@ const QualityMetrics = ({selectedBrands}) => {
             fetchData('opendefects').then(setOpenDefectsData);
             fetchData('opendefectspastsla').then(setSlaDefectsData);
             fetchData('timetoresolve').then(setMttrData);
+            fetchData('unprioritized').then(setUnprioritizedData);
         }
     }, [history, isSupportedBrand, brand, selectedPortfolios, start, end]);
 
@@ -281,8 +283,7 @@ const QualityMetrics = ({selectedBrands}) => {
                 dataKey="timetoresolve"
             />
             <CreatedVsResolvedPanel
-                key="Total Created vs. Resolved"
-                title="Total Created vs. Resolved Chart"
+                title="Total Created vs. Resolved"
                 info="Charting all defects by their open date and resolve date (bucketed by week). Click line point for more details."
                 priorities={[P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL, 'notPrioritized']}
                 tickets={ticketsData.data}
@@ -290,20 +291,26 @@ const QualityMetrics = ({selectedBrands}) => {
                 isFullWidth
             />
             <CreatedVsResolvedPanel
-                key="P1 Created vs. Resolved"
-                title="P1 Created vs. Resolved Chart"
+                title="P1 Created vs. Resolved"
                 info="Charting P1 defects by their open date and resolve date (bucketed by week). Click line point for more details."
                 priorities={[P1_LABEL]}
                 tickets={ticketsData.data}
                 panelData={cvrData}
             />
             <CreatedVsResolvedPanel
-                key="P2 Created vs. Resolved"
-                title="P2 Created vs. Resolved Chart"
+                title="P2 Created vs. Resolved"
                 info="Charting P2 defects by their open date and resolve date (bucketed by week). Click line point for more details."
                 priorities={[P2_LABEL]}
                 tickets={ticketsData.data}
                 panelData={cvrData}
+            />
+            <PriorityLineChartPanel
+                title="Unprioritized Defects"
+                info="Displaying unprioritized defects w.r.t. open date"
+                tickets={ticketsData.data}
+                panelData={unprioritizedData}
+                dataKey="unprioritized"
+                priorities={[NOT_PRIORITIZED_LABEL]}
             />
             <PiePanel
                 title="Open Defects (w.r.t. Priority)"

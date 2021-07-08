@@ -7,7 +7,7 @@ import ChartModal from '../ChartModal';
 import {PRIORITY_LABELS, PRIORITY_COLORS} from '../constants';
 import {formatPriorityLineChartData, findAndFormatTicket, mapPriority} from '../utils';
 
-const PriorityLineChartPanel = ({title, info, tickets, panelData, dataKey}) => {
+const PriorityLineChartPanel = ({title, info, tickets, panelData, dataKey, priorities = PRIORITY_LABELS}) => {
     const {data, isLoading, error, queries = []} = panelData;
     const [chartData, setChartData] = useState([]);
     const [modalData, setModalData] = useState({});
@@ -56,7 +56,7 @@ const PriorityLineChartPanel = ({title, info, tickets, panelData, dataKey}) => {
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    {PRIORITY_LABELS.map((p) => <Line key={p} dataKey={p} stroke={PRIORITY_COLORS[p]} activeDot={{onClick: getClickHandler(p)}} />)}
+                    {priorities.map((p) => <Line key={p} dataKey={p} stroke={PRIORITY_COLORS[p]} activeDot={{onClick: getClickHandler(p)}} />)}
                 </LineChart>
             </ResponsiveContainer>
             <ChartModal
