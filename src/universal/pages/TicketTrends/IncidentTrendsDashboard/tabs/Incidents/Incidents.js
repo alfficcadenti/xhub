@@ -7,7 +7,7 @@ const renderTable = (tickets, selectedBrand) => {
     const columns = getTableColumns(selectedBrand);
     const columnsInfo = {
         TTD: <div>{'Time to Detect'}</div>,
-        TTR: <div>{'Time to Resolve (Duration)'}</div>
+        TTR: <div>{'Time to Repair (Duration)'}</div>
     };
     const csvColumns = columns.concat(['Executive Summary', 'Resolution Notes']);
     return (
