@@ -29,7 +29,7 @@ const ReferenceLabel = ({viewBox: {x}, annotation, isImpulse = false, setTableDa
         <foreignObject
             className="foreign-object"
             x={x - 5.5}
-            y={-5}
+            y={-12}
             width={10}
             height={10}
         >

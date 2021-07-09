@@ -194,6 +194,7 @@ const TravelerMetricsWidget = ({
                     cursor="crosshair"
                     onMouseMove={onChartMouseMove}
                     onMouseLeave={onChartMouseLeave}
+                    margin={{top: 0, right: 5, bottom: 5, left: 5}}
                 >
                     <defs>
                         <linearGradient key={`${title}Gradient`} id={brandLabel} x1="0" y1="0" x2="0" y2="1">

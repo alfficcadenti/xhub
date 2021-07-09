@@ -75,10 +75,10 @@ describe('LineChart component testing', () => {
         const chartRight = jest.fn();
 
         const wrapperWithData = mount(<TravelerMetricsWidget
-            title={'test'}
+            title="test"
             data={pageViewsMockResults[0].aggregatedData}
-            key={'expediaTest'}
-            brand={'Expedia'}
+            key="expediaTest"
+            brand="Expedia"
             tickGap={5}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
