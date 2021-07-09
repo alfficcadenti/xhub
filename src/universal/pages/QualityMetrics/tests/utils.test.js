@@ -21,7 +21,7 @@ import {
     processTwoDimensionalIssues,
     getPanelDataUrl
 } from '../utils';
-import {HCOM_PORTFOLIOS, VRBO_PORTFOLIOS, P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL, NOT_PRIORITIZED_LABEL} from '../constants';
+import {HCOM_PORTFOLIOS, VRBO_PORTFOLIOS, P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL, NOT_PRIORITIZED_LABEL, SEARCH_TYPE_PROJECT, SEARCH_TYPE_PORTFOLIO} from '../constants';
 import {HOTELS_COM_BRAND, VRBO_BRAND, DATE_FORMAT} from '../../../constants';
 
 describe('Quality Metrics Util', () => {
@@ -34,13 +34,26 @@ describe('Quality Metrics Util', () => {
         expect(filterBrandPortfolios([{value: 'checkout'}, {value: 'invalid'}], HOTELS_COM_BRAND)).to.eql([{value: 'checkout'}]);
     });
 
-    it('getQueryString', () => {
+    it('getQueryString - projects', () => {
         const brand = HOTELS_COM_BRAND;
         const portfolios = [{value: 'checkout'}];
         const start = moment('06-01-21');
         const end = moment('06-21-21');
-        expect(getQueryString(brand, portfolios, start, end))
-            .to.eql(`/quality-metrics?selectedBrand=${brand}&from=${start.toISOString()}&to=${end.toISOString()}&portfolios=${portfolios[0].value}`);
+        const projectKeys = [{value: 'LASER'}];
+        const searchType = SEARCH_TYPE_PROJECT;
+        expect(getQueryString(brand, portfolios, projectKeys, start, end, searchType))
+            .to.eql(`/quality-metrics?selectedBrand=${brand}&from=${start.toISOString()}&to=${end.toISOString()}&projectKeys=${projectKeys[0].value}&type=${searchType}`);
+    });
+
+    it('getQueryString - portfolios', () => {
+        const brand = HOTELS_COM_BRAND;
+        const portfolios = [{value: 'checkout'}];
+        const start = moment('06-01-21');
+        const end = moment('06-21-21');
+        const projectKeys = [{value: 'LASER'}];
+        const searchType = SEARCH_TYPE_PORTFOLIO;
+        expect(getQueryString(brand, portfolios, projectKeys, start, end, searchType))
+            .to.eql(`/quality-metrics?selectedBrand=${brand}&from=${start.toISOString()}&to=${end.toISOString()}&portfolios=${portfolios[0].value}&type=${searchType}`);
     });
 
     it('getQueryValues', () => {
@@ -325,7 +338,7 @@ describe('Quality Metrics Util', () => {
         const result = formatTableData({
             'AND - Android': {p4: 2, notPrioritized: 1, totalTickets: 3, ticketIds: ['AND-0001', 'AND-0002', 'AND-0003']},
             'Kes': {p1: 1, p2: 1, p4: 1, p5: 2, totalTickets: 5, ticketIds: ['KES-0001', 'KES-0002', 'KES-0003', 'KES-0004', 'KES-0005']},
-        }, () => true, rowKey, true);
+        }, () => true, rowKey, SEARCH_TYPE_PORTFOLIO, true);
         expect(result.length).to.eql(2);
         // AND
         const row0 = result[0];
@@ -410,18 +423,20 @@ describe('Quality Metrics Util', () => {
 
     it('getPanelDataUrl', () => {
         const portfolios = [{text: 'KES', value: 'kes'}];
+        const projectKeys = [{text: 'LASER', value: 'LASER'}];
         const start = moment().subtract(400, 'days');
         const end = moment();
         const brand = HOTELS_COM_BRAND;
         const panel = 'opendefects';
-        expect(getPanelDataUrl(start, end, portfolios, brand, panel)).to.be.equal(
+        const searchType = SEARCH_TYPE_PORTFOLIO;
+        expect(getPanelDataUrl(start, end, searchType, portfolios, projectKeys, brand, panel)).to.be.equal(
             `/v1/portfolio/panel/${panel}?fromDate=${start.format(DATE_FORMAT)}&toDate=${end.format(DATE_FORMAT)}&portfolios=kes`
         );
         const ttrPanel = 'ttrSummary';
-        expect(getPanelDataUrl(start, end, portfolios, brand, ttrPanel)).to.be.equal(
+        expect(getPanelDataUrl(start, end, searchType, portfolios, projectKeys, brand, ttrPanel)).to.be.equal(
             `/v1/portfolio/${ttrPanel}?fromDate=${start.format(DATE_FORMAT)}&toDate=${end.format(DATE_FORMAT)}&portfolios=kes`
         );
-        expect(getPanelDataUrl(start, end, portfolios, brand)).to.be.equal(
+        expect(getPanelDataUrl(start, end, searchType, portfolios, projectKeys, brand)).to.be.equal(
             `/v1/portfolio?fromDate=${start.format(DATE_FORMAT)}&toDate=${end.format(DATE_FORMAT)}&portfolios=kes`
         );
     });

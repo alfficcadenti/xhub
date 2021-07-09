@@ -14,12 +14,12 @@
 
     .form-left {
         float: left;
-        width: 50%;
+        width: 75%;
     }
 
     .form-right {
         float: left;
-        width: 50%;
+        width: 25%;
     }
 
     .search-form {
@@ -39,12 +39,24 @@
             background: @color-text-inverse;
         }
 
-        .checkboxes-container {
-            margin: @spacing-3x 0 0 @spacing-1x;
+        .Navigation {
+            background: none;
 
-            .portfolio-checkbox {
+            .Navigation__a {
+                cursor: pointer;
+            }
+        }
+
+        .checkboxes-container {
+            margin: @spacing-3x @spacing-1x 0;
+            float: left;
+            height: 128px;
+            overflow-y: scroll;
+
+            .filter-checkbox {
                 float: left;
-                width: 50%;
+                height: @spacing-3x;
+                width: 20%;
             }
         }
 
@@ -72,8 +84,8 @@
                 border: 1px solid @color-border-contrast;
                 border-radius: @spacing-1x;
                 padding: @spacing-2x;
-                height: 216px;
-                max-height: 216px;
+                height: 280px;
+                max-height: 280px;
                 overflow-y: scroll;
 
                 .info-stat__label {

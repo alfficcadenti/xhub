@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {useHistory, useLocation, withRouter} from 'react-router-dom';
 import moment from 'moment';
+import {Navigation} from '@homeaway/react-navigation';
 import {SVGIcon} from '@homeaway/react-svg';
 import {QUESTION__16} from '@homeaway/svg-defs';
 import {Checkbox} from '@homeaway/react-form-components';
@@ -10,14 +11,16 @@ import HelpText from '../../components/HelpText/HelpText';
 import {VRBO_BRAND, HOTELS_COM_BRAND, OPXHUB_SUPPORT_CHANNEL} from '../../constants';
 import {BarChartPanel, DurationPanel, TwoDimensionalPanel, PriorityLineChartPanel,
     CreatedVsResolvedPanel, PiePanel, SLADefinitions} from './Panels';
-import {NOT_PRIORITIZED_LABEL, P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL} from './constants';
-import {getBrandPortfolios, filterBrandPortfolios, getQueryValues, getQueryString, fetchPanelData} from './utils';
+import {NOT_PRIORITIZED_LABEL, P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL,
+    SEARCH_TYPE_PORTFOLIO, SEARCH_TYPE_PROJECT} from './constants';
+import {getBrandPortfolios, getBrandProjectKeys, filterBrandPortfolios, getQueryValues,
+    getQueryString, fetchPanelData, filterBrandProjectKeys} from './utils';
 import './styles.less';
 
 const QualityMetrics = ({selectedBrands}) => {
     const history = useHistory();
     const {search} = useLocation();
-    const {initialPortfolios, initialStart, initialEnd} = getQueryValues(search, selectedBrands);
+    const {initialType, initialPortfolios, initialStart, initialEnd, initialProjectKeys} = getQueryValues(search, selectedBrands);
     const initialDataState = {data: {}, isLoading: false, error: null};
 
     const [isSupportedBrand, setIsSupportedBrand] = useState(true);
@@ -27,8 +30,11 @@ const QualityMetrics = ({selectedBrands}) => {
     const [end, setEnd] = useState(initialEnd);
     const [pendingStart, setPendingStart] = useState(initialStart);
     const [pendingEnd, setPendingEnd] = useState(initialEnd);
+    const [searchType, setSearchType] = useState(initialType);
     const [pendingPortfolios, setPendingPortfolios] = useState(initialPortfolios);
     const [selectedPortfolios, setSelectedPortfolios] = useState(initialPortfolios);
+    const [pendingProjectKeys, setPendingProjectKeys] = useState(initialProjectKeys);
+    const [selectedProjectKeys, setSelectedProjectKeys] = useState(initialProjectKeys);
     const [isDirtyForm, setIsDirtyForm] = useState(false);
 
     const [ticketsData, setTicketsData] = useState(initialDataState);
@@ -37,6 +43,7 @@ const QualityMetrics = ({selectedBrands}) => {
     const [mttrData, setMttrData] = useState(initialDataState);
     const [cvrData, setCvrData] = useState(initialDataState);
     const [pieData, setPieData] = useState(initialDataState);
+    const [dogfoodData, setDogfoodData] = useState(initialDataState);
     const [openDefectsData, setOpenDefectsData] = useState(initialDataState);
     const [slaDefectsData, setSlaDefectsData] = useState(initialDataState);
     const [unprioritizedData, setUnprioritizedData] = useState(initialDataState);
@@ -46,14 +53,19 @@ const QualityMetrics = ({selectedBrands}) => {
         setIsSupportedBrand([HOTELS_COM_BRAND, VRBO_BRAND].includes(selectedBrands[0]));
     }, [selectedBrands]);
 
+    // eslint-disable-next-line complexity
     useEffect(() => {
         const brandPortfolios = filterBrandPortfolios(selectedPortfolios, brand);
-        history.push(getQueryString(brand, selectedPortfolios, start, end));
-        if (!isSupportedBrand || !brandPortfolios.length) {
+        const brandProjectKeys = filterBrandProjectKeys(selectedProjectKeys, brand);
+        history.push(getQueryString(brand, selectedPortfolios, selectedProjectKeys, start, end, searchType));
+        if (!isSupportedBrand
+            || (searchType === SEARCH_TYPE_PORTFOLIO && !brandPortfolios.length)
+            || (searchType === SEARCH_TYPE_PROJECT && !brandProjectKeys.length)
+        ) {
             return;
         }
         const loadingDataState = {data: {}, isLoading: false, error: null};
-        const fetchData = async (panel) => fetchPanelData(start, end, brandPortfolios, brand, panel);
+        const fetchData = async (panel) => fetchPanelData(start, end, searchType, brandPortfolios, brandProjectKeys, brand, panel);
         setTicketsData(loadingDataState);
         setTdData(loadingDataState);
         setCvrData(loadingDataState);
@@ -69,12 +81,14 @@ const QualityMetrics = ({selectedBrands}) => {
             setOpenDefectsData(loadingDataState);
             setSlaDefectsData(loadingDataState);
             setMttrData(loadingDataState);
+            setDogfoodData(loadingDataState);
             fetchData('opendefects').then(setOpenDefectsData);
             fetchData('opendefectspastsla').then(setSlaDefectsData);
             fetchData('timetoresolve').then(setMttrData);
             fetchData('unprioritized').then(setUnprioritizedData);
+            fetchData('dogfood').then(setDogfoodData);
         }
-    }, [history, isSupportedBrand, brand, selectedPortfolios, start, end]);
+    }, [history, isSupportedBrand, brand, selectedPortfolios, selectedProjectKeys, start, end]);
 
     const handleDatetimeChange = ({start: startDateTimeStr, end: endDateTimeStr}) => {
         setPendingStart(moment(startDateTimeStr));
@@ -99,23 +113,61 @@ const QualityMetrics = ({selectedBrands}) => {
         setIsDirtyForm(true);
     };
 
+    const handleProjectKeysChange = (projectKey) => {
+        let projectKeys = [];
+        try {
+            projectKeys = JSON.parse(JSON.stringify(pendingProjectKeys));
+        } catch (e) {
+            setTicketsData({data: {}, isLoading: false, error: 'An error occurred when parsing portfolios.'});
+        }
+        const idx = projectKeys.map((p) => p.value).indexOf(projectKey.value);
+        if (idx >= 0) {
+            projectKeys.splice(idx, 1);
+        } else {
+            projectKeys.push(projectKey);
+        }
+        setPendingProjectKeys(projectKeys);
+        setIsDirtyForm(true);
+    };
+
     const handleApplyFilters = () => {
         setStart(pendingStart);
         setEnd(pendingEnd);
-        if (pendingPortfolios.length) {
-            setSelectedPortfolios(JSON.parse(JSON.stringify(pendingPortfolios)));
-        } else {
-            setPendingPortfolios([]);
-            setSelectedPortfolios([]);
+        if (searchType === SEARCH_TYPE_PORTFOLIO) {
+            if (pendingPortfolios.length) {
+                setPendingProjectKeys([]);
+                setSelectedProjectKeys([]);
+                setSelectedPortfolios(JSON.parse(JSON.stringify(pendingPortfolios)));
+            } else {
+                setPendingPortfolios([]);
+                setSelectedPortfolios([]);
+            }
+        } else if (searchType === SEARCH_TYPE_PROJECT) {
+            if (pendingProjectKeys.length) {
+                setPendingPortfolios([]);
+                setSelectedPortfolios([]);
+                setSelectedProjectKeys(JSON.parse(JSON.stringify(pendingProjectKeys)));
+            } else {
+                setPendingProjectKeys([]);
+                setSelectedProjectKeys([]);
+            }
         }
         setIsDirtyForm(false);
+    };
+
+    const handleNavigationClick = (e, activeLinkIndex) => {
+        if (activeLinkIndex) {
+            setSearchType(SEARCH_TYPE_PROJECT);
+        } else {
+            setSearchType(SEARCH_TYPE_PORTFOLIO);
+        }
     };
 
     const renderPortfolioCheckbox = (portfolio) => (
         <Checkbox
             key={`checkbox-${portfolio.value}`}
             size="sm"
-            className="portfolio-checkbox"
+            className="filter-checkbox"
             name={portfolio.text}
             label={portfolio.text}
             checked={!!pendingPortfolios.find((p) => p.value === portfolio.value)}
@@ -123,6 +175,19 @@ const QualityMetrics = ({selectedBrands}) => {
         />
     );
 
+    const renderProjectKeyCheckbox = (projectKey) => (
+        <Checkbox
+            key={`checkbox-${projectKey.value}`}
+            size="sm"
+            className="filter-checkbox"
+            name={projectKey.text}
+            label={projectKey.text}
+            checked={!!pendingProjectKeys.find((p) => p.value === projectKey.value)}
+            onChange={() => handleProjectKeysChange(projectKey)}
+        />
+    );
+
+    // eslint-disable-next-line complexity
     const renderForm = () => (
         <div className="search-form">
             <div className="form-left">
@@ -140,8 +205,15 @@ const QualityMetrics = ({selectedBrands}) => {
                 >
                     {'Apply'}
                 </button>
+                <Navigation
+                    noMobileSelect
+                    activeIndex={searchType === SEARCH_TYPE_PORTFOLIO ? 0 : 1}
+                    links={[{label: 'Portfolios', href: '#'}, {label: 'Projects', href: '#'}]}
+                    onLinkClick={handleNavigationClick}
+                />
                 <div className="checkboxes-container">
-                    {getBrandPortfolios(brand).map(renderPortfolioCheckbox)}
+                    {searchType === SEARCH_TYPE_PORTFOLIO && getBrandPortfolios(brand).map(renderPortfolioCheckbox)}
+                    {searchType === SEARCH_TYPE_PROJECT && getBrandProjectKeys(brand).map(renderProjectKeyCheckbox)}
                 </div>
             </div>
             <div className="form-right">
@@ -153,7 +225,7 @@ const QualityMetrics = ({selectedBrands}) => {
                     <div className="info-box">
                         <div className="info-stat__label">{'JIRA Projects included:'}</div>
                         <div className="info-stat__value">
-                            {selectedPortfolios
+                            {(searchType === SEARCH_TYPE_PORTFOLIO ? selectedPortfolios : selectedProjectKeys)
                                 .reduce((acc, curr) => acc.concat(curr.projects), [])
                                 .join(', ') || 'None'}
                         </div>
@@ -173,6 +245,7 @@ const QualityMetrics = ({selectedBrands}) => {
                 portfolios={selectedPortfolios}
                 dataKey="openBugs"
                 brand={brand}
+                type={searchType}
             />
             <TwoDimensionalPanel
                 title="Open Defects By Portfolio"
@@ -183,6 +256,7 @@ const QualityMetrics = ({selectedBrands}) => {
                 dataKey="openBugs"
                 groupBy="Portfolio"
                 brand={brand}
+                type={searchType}
             />
             <DurationPanel
                 title="Mean Time to Resolve By Portfolio"
@@ -190,6 +264,7 @@ const QualityMetrics = ({selectedBrands}) => {
                 tickets={ticketsData.data}
                 panelData={ttrData}
                 portfolios={selectedPortfolios}
+                type={searchType}
             />
             {[P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL].map((priority) => (
                 <CreatedVsResolvedPanel
@@ -219,7 +294,6 @@ const QualityMetrics = ({selectedBrands}) => {
                 info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived' by open date"
                 tickets={ticketsData.data}
                 panelData={openDefectsData}
-                portfolios={selectedPortfolios}
                 dataKey="openDefects"
             />
             <TwoDimensionalPanel
@@ -230,6 +304,7 @@ const QualityMetrics = ({selectedBrands}) => {
                 portfolios={selectedPortfolios}
                 dataKey="openBugs"
                 brand={brand}
+                type={searchType}
             />
             <TwoDimensionalPanel
                 title="Open Defects By Portfolio"
@@ -240,6 +315,7 @@ const QualityMetrics = ({selectedBrands}) => {
                 dataKey="openBugs"
                 groupBy="Portfolio"
                 brand={brand}
+                type={searchType}
             />
             <TwoDimensionalPanel
                 title="Open Defects Approaching SLA"
@@ -249,6 +325,7 @@ const QualityMetrics = ({selectedBrands}) => {
                 portfolios={selectedPortfolios}
                 dataKey="approachingSLA"
                 brand={brand}
+                type={searchType}
             />
             <SLADefinitions />
             <PriorityLineChartPanel
@@ -274,6 +351,7 @@ const QualityMetrics = ({selectedBrands}) => {
                 portfolios={selectedPortfolios}
                 dataKey="pastSLA"
                 brand={brand}
+                type={searchType}
             />
             <PriorityLineChartPanel
                 title="Mean Time to Resolve"
@@ -312,6 +390,13 @@ const QualityMetrics = ({selectedBrands}) => {
                 dataKey="unprioritized"
                 priorities={[NOT_PRIORITIZED_LABEL]}
             />
+            <PriorityLineChartPanel
+                title="Open Dogfood Defects"
+                info="Displaying dogfood defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived' and past SLA"
+                tickets={ticketsData.data}
+                panelData={dogfoodData}
+                dataKey="dogfood"
+            />
             <PiePanel
                 title="Open Defects (w.r.t. Priority)"
                 info="Charting all defects with regard to priority. Click pie slice for more details."
@@ -331,11 +416,13 @@ const QualityMetrics = ({selectedBrands}) => {
         </>
     );
 
+    // eslint-disable-next-line complexity
     const renderBody = () => (
         <>
             {renderForm()}
-            {!filterBrandPortfolios(selectedPortfolios, brand)?.length
-                ? <div className="no-results">{'No Portfolio Selected'}</div>
+            {(searchType === SEARCH_TYPE_PORTFOLIO && !filterBrandPortfolios(selectedPortfolios, brand)?.length
+                || searchType === SEARCH_TYPE_PROJECT && !filterBrandProjectKeys(selectedProjectKeys, brand)?.length)
+                ? <div className="no-results">{searchType === SEARCH_TYPE_PORTFOLIO ? 'No Portfolio Selected' : 'No Project Selected'}</div>
                 : (
                     <div className="panels-container">
                         <LoadingContainer isLoading={ticketsData.isLoading} error={ticketsData.error}>

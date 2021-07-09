@@ -7,22 +7,20 @@ import ChartModal from '../ChartModal';
 import {PRIORITY_LABELS, PRIORITY_COLORS} from '../constants';
 import {formatBarChartData, findAndFormatTicket, mapPriority} from '../utils';
 
-const BarChartPanel = ({title, info, tickets, portfolios, panelData, dataKey}) => {
+const BarChartPanel = ({title, info, tickets, panelData, dataKey, type}) => {
     const {data, isLoading, error, queries} = panelData;
     const [chartData, setChartData] = useState([]);
     const [modalData, setModalData] = useState({});
     const [hiddenKeys, setHiddenKeys] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    // eslint-disable-next-line complexity
     useEffect(() => {
-        if (!portfolios.length) {
-            return;
-        }
         const formattedData = (panelData?.info?.message === 'no data found')
             ? []
             : formatBarChartData(data[dataKey] || []);
         setChartData(formattedData);
-    }, [tickets, data, panelData, portfolios, dataKey]);
+    }, [tickets, data, panelData, dataKey, type]);
 
     const getBarClickHandler = (priority) => (selectedBar) => {
         if (selectedBar) {

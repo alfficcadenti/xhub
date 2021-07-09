@@ -70,6 +70,19 @@ export const VRBO_PORTFOLIOS = [
     }
 ];
 
+export const HCOM_PROJECT_KEYS = HCOM_PORTFOLIOS
+    .reduce((acc, curr) => [...acc, ...curr.projects], [])
+    .sort()
+    .map((p) => ({text: p, value: p, projects: [p]}));
+
+export const VRBO_PROJECT_KEYS = VRBO_PORTFOLIOS
+    .reduce((acc, curr) => [...acc, ...curr.projects], [])
+    .sort()
+    .map((p) => ({text: p, value: p, projects: [p]}));
+
+export const SEARCH_TYPE_PORTFOLIO = 'portfolio';
+export const SEARCH_TYPE_PROJECT = 'project';
+
 export const P1_LABEL = 'P1';
 export const P2_LABEL = 'P2';
 export const P3_LABEL = 'P3';

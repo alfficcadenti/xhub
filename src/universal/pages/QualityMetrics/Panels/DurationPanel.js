@@ -5,7 +5,7 @@ import DataTable from '../../../components/DataTable';
 import {PRIORITY_COLUMN_HEADERS} from '../constants';
 import {formatTableData, formatDurationData, processTwoDimensionalIssues} from '../utils';
 
-const DurationPanel = ({title, info, tickets, portfolios, panelData}) => {
+const DurationPanel = ({title, info, tickets, portfolios, panelData, type}) => {
     const {data, isLoading, error, queries} = panelData;
     const [chartData, setChartData] = useState([]);
     const [modalData, setModalData] = useState({});
@@ -21,7 +21,7 @@ const DurationPanel = ({title, info, tickets, portfolios, panelData}) => {
         const formattedData = panelData?.info?.message === 'no data found'
             ? []
             : formatDurationData(data.portfolioTTRSummaries || []);
-        setChartData(formatTableData(formattedData, handleClick, 'Portfolio', true));
+        setChartData(formatTableData(formattedData, handleClick, 'Portfolio', type, true));
     }, [tickets, portfolios, panelData, data]);
 
     const handleCloseModal = () => {
