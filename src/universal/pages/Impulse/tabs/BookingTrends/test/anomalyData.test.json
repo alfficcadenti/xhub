@@ -1,0 +1,18 @@
+[
+  {
+    "category": "Anomaly Detected",
+    "impact": [
+      {
+        "brand": "Brand Expedia",
+        "count": 156,
+        "deviceType": "null",
+        "lob": "Air",
+        "predicted": 198
+      }
+    ],
+    "isLatencyHealthy": true,
+    "state": "IMPULSE_ALERT_DETECTED",
+    "time": 1625619000000,
+    "timestamp": "2021-07-07T00:50:00Z"
+  }
+]
