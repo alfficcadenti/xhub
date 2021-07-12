@@ -17,7 +17,7 @@ const AnomalyDetails = ({data = [], setAnomalyTableData}) => {
         let finalAnomalyData = data[0].impact.map((impactObj) => ({
             ...impactObj,
             changePercentage: getPercentage(impactObj),
-            timestamp: `${moment(data[0].timestamp).format('YYYY-MM-DD HH:mm')} ${moment().tz(moment.tz.guess()).format('z')}`
+            timestamp: `${moment(data[0].timestamp).format('YYYY-MM-DD HH:mm')} ${moment().tz?.tz(moment.tz.guess()).format('z')}`
         }));
         finalAnomalyData.forEach((anomalyObj) => {
             delete anomalyObj.deviceType;
