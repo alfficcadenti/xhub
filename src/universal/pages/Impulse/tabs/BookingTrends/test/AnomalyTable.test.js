@@ -3,6 +3,8 @@ import React from 'react';
 import {expect} from 'chai';
 import fakeData from './anomalyData.test.json';
 import AnomalyDetails from '../sections/AnomalyTable/AnomalyDetails';
+
+
 describe('Anomaly Table component testing', () => {
     let wrapper;
 
