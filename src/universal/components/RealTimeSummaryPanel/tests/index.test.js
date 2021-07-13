@@ -10,6 +10,11 @@ const realTimeTotals = {
     'Search (SERP) To Property Page (PDP)': 59.23
 };
 
+const realTimeTotals2 = {
+    'Checkout (CKO) To Checkout Confirmation Page': [0, 1, 2],
+    'Search (SERP) To Property Page (PDP)': [59.23, 32.3, 54.7],
+};
+
 describe('RealTimeSummaryPanel component testing', () => {
     let wrapper;
 
@@ -33,5 +38,11 @@ describe('RealTimeSummaryPanel component testing', () => {
     it('renders loading alert when there is an error', () => {
         wrapper.setProps({isRttLoading: false, rttError: 'test error'});
         expect(wrapper.render().find('.loading-alert')).to.have.length(1);
+    });
+
+    it('renders 2 lob wrappers if array of values', () => {
+        wrapper.setProps({realTimeTotals: realTimeTotals2});
+        expect(wrapper.render().find('.real-time-card')).to.have.length(2);
+        expect(wrapper.render().find('.rtt-lob-item')).to.have.length(6);
     });
 });

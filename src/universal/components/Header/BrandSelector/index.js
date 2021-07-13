@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import React from 'react';
 import {Dropdown} from '@homeaway/react-dropdown';
 import {EG_BRAND} from '../../../constants';
@@ -6,8 +7,9 @@ import './styles.less';
 
 
 const BrandSelector = ({selectedBrands, onBrandChange, brands}) => {
-    const handleOnClick = (brand) => {
+    const handleOnClick = (e, brand) => {
         let nextSelectedBrands;
+        e.preventDefault();
         if (brand === EG_BRAND) {
             nextSelectedBrands = [brand];
         } else {
@@ -30,14 +32,14 @@ const BrandSelector = ({selectedBrands, onBrandChange, brands}) => {
             }
         }
 
-        onBrandChange(nextSelectedBrands.map((nextBrand) => getBrand(nextBrand, 'retailLabel').label));
+        onBrandChange(nextSelectedBrands.map((nextBrand) => getBrand(nextBrand, 'retailLabel')?.label));
     };
 
     const renderBrandItem = (brand) => (
         <li key={brand}>
             {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
             <a
-                onClick={() => handleOnClick(brand)}
+                onClick={(e) => handleOnClick(e, brand)}
                 onKeyDown={() => handleOnClick(brand)}
                 role="button"
                 tabIndex={0}
