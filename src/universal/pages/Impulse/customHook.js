@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import {useEffect, useState} from 'react';
 import {
     ALL_BRAND_GROUP,
@@ -24,7 +25,7 @@ const IMPULSE_MAPPING = [
     {globalFilter: EGENCIA_BRAND, impulseFilter: EGENCIA_BRAND},
     {globalFilter: VRBO_BRAND, impulseFilter: 'VRBO'}
 ];
-const bookingTimeInterval = 300000;
+const bookingTimeInterval = 30000;
 const incidentTimeInterval = 900000;
 const healthTimeInterval = 300000;
 const anomalyTimeInterval = 900000;
@@ -216,14 +217,15 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
     };
 
     const getRealTimeData = () => {
-        fetchCall(startTime(), endTime(), timeInterval)
+        console.log(moment());
+        fetchCall(startDateTime, endTime(), timeInterval)
             .then((chartData) => {
                 setError('');
                 setRes(chartData);
-                setChartSliced(false);
             })
             .catch((err) => {
                 setError('No data found for this selection.');
+                setIsLoading(false);
                 // eslint-disable-next-line no-console
                 console.error(err);
             });
@@ -243,10 +245,8 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
     const setIntervalForRealTimeData = (interval, type) => setInterval(() => {
         if (type === 'bookingData') {
             getRealTimeData();
-            fetchPredictions(startTime(), endTime(), timeInterval);
-            getGroupedBookingsData(startTime(), endTime(), timeInterval);
-            setStartDateTime(startTime());
-            setEndDateTime(endTime());
+            fetchPredictions(startDateTime, endTime(), timeInterval);
+            getGroupedBookingsData(startDateTime, endTime(), timeInterval);
         } else if (type === 'incidents') {
             fetchIncidents();
         } else if (type === 'health') {
@@ -273,11 +273,9 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
     };
 
     const checkDefaultRange = () => {
-        if ((moment(endDateTime).diff(moment(startDateTime), 'days') === 3) && (moment().diff(moment(endDateTime), 'days') === 0)) {
-            intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
-            intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
-            intervalForAnomalies = setIntervalForRealTimeData(anomalyTimeInterval, 'anomaly');
-        }
+        intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
+        intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
+        intervalForAnomalies = setIntervalForRealTimeData(anomalyTimeInterval, 'anomaly');
     };
 
     const getPredictions = () => {
@@ -333,7 +331,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
 
 
     useEffect(() => {
-        if (chartSliced || isApplyClicked) {
+        if (isApplyClicked) {
             getGroupedBookingsData();
             getData();
             fetchIncidents();
@@ -342,27 +340,39 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             fetchHealth();
             fetchAnomalies();
             getPredictions();
+
+
+            // if (!(((moment(endDateTime).diff(moment(startDateTime), 'days') <= 3)) && (moment().diff(moment(endDateTime), 'hours') <= 0))) {
+            //     clearInterval(intervalForCharts);
+            //     clearInterval(intervalForAnnotations);
+            //     clearInterval(intervalForAnomalies);
+            // }
+
+            return () => {
+                setIsApplyClicked(false);
+            };
         }
+
         return () => {
             setIsApplyClicked(false);
             clearInterval(intervalForCharts);
             clearInterval(intervalForAnnotations);
             clearInterval(intervalForAnomalies);
         };
-    }, [isApplyClicked, startDateTime, endDateTime]);
+    }, [isApplyClicked]);
 
     useEffect(() => {
         if (initialMount) {
-            if (!chartSliced && isAutoRefresh && (moment(endDateTime).diff(moment(startDateTime), 'days') === 3) && (moment().diff(moment(endDateTime), 'days') === 0)) {
+            if (isAutoRefresh) {
                 intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
                 intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
                 intervalForAnomalies = setIntervalForRealTimeData(anomalyTimeInterval, 'anomaly');
-                getData(startTime(), endTime(), timeInterval);
-                getGroupedBookingsData(startTime(), endTime(), timeInterval);
-                fetchIncidents(startTime(), endTime());
+                getData(startDateTime, endTime(), timeInterval);
+                getGroupedBookingsData(startDateTime, endDateTime, timeInterval);
+                fetchIncidents(startDateTime, endDateTime);
                 fetchHealth();
-                fetchAnomalies(startTime(), endTime());
-                fetchPredictions(startTime(), endTime(), timeInterval);
+                fetchAnomalies(startDateTime, endDateTime);
+                fetchPredictions(startDateTime, endDateTime, timeInterval);
             }
         } else {
             initialMount = true;
@@ -372,7 +382,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             clearInterval(intervalForAnnotations);
             clearInterval(intervalForAnomalies);
         };
-    }, [isAutoRefresh, startDateTime, endDateTime]);
+    }, [isAutoRefresh]);
 
     return [
         isLoading,

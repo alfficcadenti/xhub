@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import React, {useState, useEffect} from 'react';
 import {useLocation, withRouter} from 'react-router-dom';
 import {useFetchBlipData} from './customHook';
@@ -406,13 +407,14 @@ const Impulse = (props) => {
                 </span>
             </div></a>
     );
+
     return (
         <div className="impulse-container">
             <div className="heading-container">
                 <h1 className="page-title">{'Impulse Dashboard'}</h1>
                 <div className="right-header">
                     {sourceLatency || sourceLatency === 0 ? renderHealthCheck() : ''}
-                    {!chartSliced && daysDifference === 3 && (moment().diff(moment(endDateTime), 'days') === 0) ? <div className="refresh-switch" title="Auto refresh charts toggle switch">
+                    {!chartSliced && (((moment(endDateTime).diff(moment(startDateTime), 'days') <= 3)) && (moment().diff(moment(endDateTime), 'hours') <= 0)) ? <div className="refresh-switch" title="Auto refresh charts toggle switch">
                         <Switch
                             id="switch-example-small"
                             name="autoRefresh"
