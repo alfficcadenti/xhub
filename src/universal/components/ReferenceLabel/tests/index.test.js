@@ -2,23 +2,23 @@ import React from 'react';
 import {expect} from 'chai';
 import {shallow} from 'enzyme';
 import ReferenceLabel from '../index';
-
-const annotation = {
-    time: '2020-01-01',
-    number: 'testNumber',
-    tags: [],
-    serviceName: 'testServiceName',
-    id: '2020-01-02'
-};
+import {annotation1, annotation2, annotation3} from './Annotations';
 
 describe('ReferenceLabel component testing', () => {
-    it('checks ReferenceLabel component exists', () => {
-        const wrapper = shallow(
-            <ReferenceLabel
-                annotation={annotation}
-            />
-        );
+    let wrapper = shallow(
+        <ReferenceLabel
+            annotation={annotation1}
+        />
+    );
 
+    it('checks ReferenceLabel component exists', () => {
         expect(wrapper).to.have.length(1);
+    });
+
+    it('checks if switch statement returns correct element', () => {
+        wrapper.setProps({annotation: annotation2});
+        expect(wrapper.render().find('.experiment-link')).to.have.length(1);
+        wrapper.setProps({annotation: annotation3});
+        expect(wrapper.render().find('.summary')).to.have.length(1);
     });
 });

@@ -1,14 +1,29 @@
 import React from 'react';
-import {shallow} from 'enzyme/build';
+import {shallow, mount} from 'enzyme/build';
 import BrandSelector from '../index';
-import {expect} from 'chai';
+import {EG_BRAND, EGENCIA_BRAND, VRBO_BRAND} from '../../../../constants';
+
+const props = {
+    brands: [EG_BRAND, EGENCIA_BRAND, VRBO_BRAND],
+    selectedBrands: [EG_BRAND, EGENCIA_BRAND, VRBO_BRAND],
+    getBrand: () => {},
+    onBrandChange: () => {},
+};
 
 describe('<BrandSelector />', () => {
-    const wrapper = shallow(
-        <BrandSelector selectedBrands={['EXPEDIA', 'EGENCIA', 'VRBO']} brands={['EXPEDIA', 'EGENCIA', 'VRBO']} />
-    );
-
     it('renders successfully', () => {
-        expect(wrapper).to.have.length(1);
+        const wrapper = shallow(
+            <BrandSelector {...props} />
+        );
+        expect(wrapper).toHaveLength(1);
+    });
+
+    it('clicks on brand and filters successfully', () => {
+        const wrapper = mount(<BrandSelector {...props} />);
+        expect(wrapper.exists()).toBeTruthy();
+        const mEvent = {stopPropagation: jest.fn(), preventDefault: jest.fn()};
+        wrapper.find('#brand-selector').at(0).simulate('click');
+        wrapper.find('#brand-selector--container a').at(2).simulate('click', mEvent);
+        expect(mEvent.preventDefault).toBeCalledTimes(1);
     });
 });

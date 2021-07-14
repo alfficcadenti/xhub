@@ -19,7 +19,7 @@ const DEFAULT_PAGE_INFO = {
     description: ''
 };
 
-const Header = ({selectedBrands, onBrandChange, brands}) => {
+const Header = ({selectedBrands = [], onBrandChange, brands = []}) => {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [selectedPages, setSelectedPages] = useState([]);
     const searchInput = useRef(null);
