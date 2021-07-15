@@ -162,12 +162,17 @@ describe('Quality Metrics Util', () => {
     it('formatTTRData', () => {
         const date = '2020-01-01';
         const p1DaysToResolve = 1;
+        const p1 = 1;
         const p2DaysToResolve = 2;
+        const p2 = 2;
         const p4DaysToResolve = 4;
+        const p4 = 2;
         const p5DaysToResolve = 3;
+        const p5 = 2;
         const ticketIds = ['INC-0001'];
         const data = {
             [date]: {
+                p1, p2, p4, p5,
                 p1DaysToResolve,
                 p2DaysToResolve,
                 p4DaysToResolve,
@@ -177,11 +182,11 @@ describe('Quality Metrics Util', () => {
         };
         expect(formatTTRData(data)).to.be.eql([{
             date,
-            [P1_LABEL]: p1DaysToResolve,
-            [P2_LABEL]: p2DaysToResolve,
+            [P1_LABEL]: 1,
+            [P2_LABEL]: 1,
             [P3_LABEL]: 0,
-            [P4_LABEL]: p4DaysToResolve,
-            [P5_LABEL]: p5DaysToResolve,
+            [P4_LABEL]: 2,
+            [P5_LABEL]: 2,
             counts: ticketIds.length,
             tickets: ticketIds
         }]);
@@ -283,15 +288,15 @@ describe('Quality Metrics Util', () => {
 
     it('groupDataByPillar', () => {
         const data = {
-            'AND - Android': {p4: 2, notPrioritized: 1, totalTickets: 3, ticketIds: ['AND-0001', 'AND-0002', 'AND-0003']},
-            'iOS Engagement': {p1: 1, notPrioritized: 1, totalTickets: 2, ticketIds: ['ENG-0001', 'ENG-0002']},
-            'Kes': {p1: 1, p2: 1, p4: 1, p5: 2, totalTickets: 5, ticketIds: ['KES-0001', 'KES-0002', 'KES-0003', 'KES-0004', 'KES-0005']},
+            'AND': {p4: 2, notPrioritized: 1, totalTickets: 3, ticketIds: ['AND-0001', 'AND-0002', 'AND-0003']},
+            'ENG': {p1: 1, notPrioritized: 1, totalTickets: 2, ticketIds: ['ENG-0001', 'ENG-0002']},
+            'KES': {p1: 1, p2: 1, p4: 1, p5: 2, totalTickets: 5, ticketIds: ['KES-0001', 'KES-0002', 'KES-0003', 'KES-0004', 'KES-0005']},
         };
-        const result = groupDataByPillar(data, [{text: 'Mobile'}, {text: 'Kes'}], HOTELS_COM_BRAND);
+        const result = groupDataByPillar(data);
         expect(result.Mobile).to.eql({
             p1: 1, p4: 2, notPrioritized: 2, totalTickets: 5, ticketIds: ['AND-0001', 'AND-0002', 'AND-0003', 'ENG-0001', 'ENG-0002']
         });
-        expect(result.Kes).to.eql(data.Kes);
+        expect(result.Kes).to.eql(data.KES);
     });
 
     it('formatTableData - counts by project', () => {
@@ -371,7 +376,6 @@ describe('Quality Metrics Util', () => {
             {defectNumber: 'AND-1005', priority: '5-Trivial', status: 'To Do'},
             {defectNumber: 'AND-1006', priority: '5-Trivial', status: 'To Do'},
         ];
-        const portfolios = [{text: 'AND - Android', value: 'and'}];
         const project = 'openBugs';
         const projectTickets = {
             [project]: {
@@ -380,23 +384,23 @@ describe('Quality Metrics Util', () => {
         };
         const allJiraTickets = {
             portfolioTickets: {
-                and: defects.reduce((acc, curr) => {
+                mobile: defects.reduce((acc, curr) => {
                     acc[curr.defectNumber] = curr;
                     return acc;
                 }, {})
             }
         };
-        expect(processTwoDimensionalIssues(allJiraTickets, projectTickets, project, portfolios))
+        expect(processTwoDimensionalIssues(allJiraTickets, projectTickets, project))
             .to.eql({data: defects.map(formatDefect), description: 'Displaying all "openBugs" defects'});
-        expect(processTwoDimensionalIssues(allJiraTickets, projectTickets, project, portfolios, P1_LABEL))
+        expect(processTwoDimensionalIssues(allJiraTickets, projectTickets, project, P1_LABEL))
             .to.eql({data: [defects[0]].map(formatDefect), description: 'Displaying "openBugs" defects with P1 priority'});
-        expect(processTwoDimensionalIssues(allJiraTickets, projectTickets, project, portfolios, P2_LABEL))
+        expect(processTwoDimensionalIssues(allJiraTickets, projectTickets, project, P2_LABEL))
             .to.eql({data: [], description: 'Displaying "openBugs" defects with P2 priority'});
-        expect(processTwoDimensionalIssues(allJiraTickets, projectTickets, project, portfolios, P3_LABEL))
+        expect(processTwoDimensionalIssues(allJiraTickets, projectTickets, project, P3_LABEL))
             .to.eql({data: [defects[1], defects[2]].map(formatDefect), description: 'Displaying "openBugs" defects with P3 priority'});
-        expect(processTwoDimensionalIssues(allJiraTickets, projectTickets, project, portfolios, P4_LABEL))
+        expect(processTwoDimensionalIssues(allJiraTickets, projectTickets, project, P4_LABEL))
             .to.eql({data: [], description: 'Displaying "openBugs" defects with P4 priority'});
-        expect(processTwoDimensionalIssues(allJiraTickets, projectTickets, project, portfolios, P5_LABEL))
+        expect(processTwoDimensionalIssues(allJiraTickets, projectTickets, project, P5_LABEL))
             .to.eql({data: [defects[3], defects[4], defects[5]].map(formatDefect), description: 'Displaying "openBugs" defects with P5 priority'});
     });
 

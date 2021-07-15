@@ -242,29 +242,23 @@ const QualityMetrics = ({selectedBrands}) => {
                 info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived'"
                 tickets={ticketsData.data}
                 panelData={tdData}
-                portfolios={selectedPortfolios}
                 dataKey="openBugs"
                 brand={brand}
-                type={searchType}
             />
             <TwoDimensionalPanel
                 title="Open Defects By Portfolio"
                 info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived' by portfolio"
                 tickets={ticketsData.data}
                 panelData={tdData}
-                portfolios={selectedPortfolios}
                 dataKey="openBugs"
                 groupBy="Portfolio"
                 brand={brand}
-                type={searchType}
             />
             <DurationPanel
                 title="Mean Time to Resolve By Portfolio"
                 info="Mean time to resolve in days by portfolio"
                 tickets={ticketsData.data}
                 panelData={ttrData}
-                portfolios={selectedPortfolios}
-                type={searchType}
             />
             {[P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL].map((priority) => (
                 <CreatedVsResolvedPanel
@@ -301,31 +295,25 @@ const QualityMetrics = ({selectedBrands}) => {
                 info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived'"
                 tickets={ticketsData.data}
                 panelData={tdData}
-                portfolios={selectedPortfolios}
                 dataKey="openBugs"
                 brand={brand}
-                type={searchType}
             />
             <TwoDimensionalPanel
                 title="Open Defects By Portfolio"
                 info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived' by portfolio"
                 tickets={ticketsData.data}
                 panelData={tdData}
-                portfolios={selectedPortfolios}
                 dataKey="openBugs"
                 groupBy="Portfolio"
                 brand={brand}
-                type={searchType}
             />
             <TwoDimensionalPanel
                 title="Open Defects Approaching SLA"
                 info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived' approaching and before SLA"
                 tickets={ticketsData.data}
                 panelData={tdData}
-                portfolios={selectedPortfolios}
                 dataKey="approachingSLA"
                 brand={brand}
-                type={searchType}
             />
             <SLADefinitions />
             <PriorityLineChartPanel
@@ -340,7 +328,6 @@ const QualityMetrics = ({selectedBrands}) => {
                 info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived' and past SLA by open date"
                 tickets={ticketsData.data}
                 panelData={slaDefectsData}
-                portfolios={selectedPortfolios}
                 dataKey="openDefectsPastSla"
             />
             <TwoDimensionalPanel
@@ -348,10 +335,8 @@ const QualityMetrics = ({selectedBrands}) => {
                 info="Displaying defects with status that is not 'Done', 'Closed', 'Resolved', 'In Production', or 'Archived' past SLA"
                 tickets={ticketsData.data}
                 panelData={tdData}
-                portfolios={selectedPortfolios}
                 dataKey="pastSLA"
                 brand={brand}
-                type={searchType}
             />
             <PriorityLineChartPanel
                 title="Mean Time to Resolve"

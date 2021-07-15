@@ -80,6 +80,15 @@ export const VRBO_PROJECT_KEYS = VRBO_PORTFOLIOS
     .sort()
     .map((p) => ({text: p, value: p, projects: [p]}));
 
+export const ALL_PORTFOLIOS = [...HCOM_PORTFOLIOS, ...VRBO_PORTFOLIOS];
+
+export const ALL_PROJECT_KEY_VALUES = [...HCOM_PROJECT_KEYS, ...VRBO_PROJECT_KEYS].map((p) => p.value);
+
+export const PROJECT_PORTFOLIO_MAP = ALL_PROJECT_KEY_VALUES.reduce((acc, curr) => {
+    const portfolio = ALL_PORTFOLIOS.find(({projects}) => projects.includes(curr));
+    return Object.assign(acc, {[curr]: JSON.parse(JSON.stringify(portfolio))});
+}, {});
+
 export const SEARCH_TYPE_PORTFOLIO = 'portfolio';
 export const SEARCH_TYPE_PROJECT = 'project';
 
