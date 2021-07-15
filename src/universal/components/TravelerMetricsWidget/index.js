@@ -14,7 +14,7 @@ import {
 import {v1 as uuid} from 'uuid';
 import HelpText from '../HelpText/HelpText';
 import ReferenceLabel from '../ReferenceLabel';
-import {getBrand} from '../../pages/utils';
+import {checkResponse, getBrand} from '../../pages/utils';
 import {getAnnotationStrokeColor} from '../utils.js';
 import {EXPEDIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../../constants';
 import './styles.less';
@@ -81,6 +81,41 @@ const TravelerMetricsWidget = ({
         });
     };
 
+    const saveData = () => {
+        const a = document.createElement('a');
+        document.body.appendChild(a);
+        a.style = 'display: none';
+
+        return function (deltaUserDetailsData) {
+            const json = JSON.stringify(deltaUserDetailsData);
+            const blob = new Blob([json], {type: 'octet/stream'});
+            const url = window.URL.createObjectURL(blob);
+
+            a.href = url;
+            a.download = 'user-count-details.json';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        };
+    };
+
+    const fetchDeltaCountDetails = (e) => {
+        const splitDataPointTime = e.currentTarget.endTime.split(' ');
+        splitDataPointTime.pop();
+        const dataPointTime = splitDataPointTime.join(' ');
+        const endTime = moment(dataPointTime).utc().format();
+        const startTime = moment(dataPointTime).subtract(5, 'minutes').utc().format();
+
+        fetch(`/v1/delta-users-details?brand=${brand}&from_date=${startTime}&to_date=${endTime}`)
+            .then((response) => checkResponse(response))
+            .then((deltaUserDetailsData) => {
+                saveData()(deltaUserDetailsData);
+            })
+            .catch((err) => {
+                // eslint-disable-next-line no-console
+                console.error(err);
+            });
+    };
+
     const updateTooltip = () => {
         const point = pointRef.current;
         const tooltip = tooltipRef.current;
@@ -88,7 +123,7 @@ const TravelerMetricsWidget = ({
         const getDeltaUserCount = () => {
             if (![EXPEDIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND].includes(brand)) {
                 return !selectedLoBs.length
-                    ? `delta users = ${point.payload.deltaUserCount}`
+                    ? `<span class="delta-link">delta users = ${point.payload.deltaUserCount ?? 0}</span>`
                     : selectedLoBs
                         .map(({label}) => `<div class="lob-label">${label} delta users = ${point.payload[`${label}deltaUserCount`]}</div>`)
                         .join('');
@@ -112,6 +147,8 @@ const TravelerMetricsWidget = ({
                     .map(({label}) => `<div class="lob-label">${label} = ${point.payload[label]}</div>`)
                     .join('');
             tooltip.childNodes[2].innerHTML = getDeltaUserCount();
+            tooltip.childNodes[2].onclick = fetchDeltaCountDetails;
+            tooltip.childNodes[2].endTime = point.payload.label;
         } else {
             tooltip.style.opacity = '0';
             tooltip.style.display = 'none';
