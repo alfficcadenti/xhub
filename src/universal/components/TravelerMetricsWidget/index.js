@@ -123,7 +123,7 @@ const TravelerMetricsWidget = ({
         const getDeltaUserCount = () => {
             if (![EXPEDIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND].includes(brand)) {
                 return !selectedLoBs.length
-                    ? `<span class="delta-link">delta users = ${point.payload.deltaUserCount}</span>`
+                    ? `<span class="delta-link">delta users = ${point.payload.deltaUserCount ?? 0}</span>`
                     : selectedLoBs
                         .map(({label}) => `<div class="lob-label">${label} delta users = ${point.payload[`${label}deltaUserCount`]}</div>`)
                         .join('');
