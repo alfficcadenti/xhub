@@ -176,7 +176,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 }))
             ));
 
-    const fetchPredictions = (start = startDateTime, end = endDateTime, interval = timeInterval) => {
+    const fetchPredictions = (start = startDateTime, end = endDateTime, interval = timeInterval, chartData) => {
         Promise.all([
             fetch(`/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval, '')}`).then(checkResponse),
             timeInterval === '5m' ? fetch(`/v1/impulse/prediction${getQueryStringPrediction(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`).then(checkResponse) : []
@@ -185,6 +185,8 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             const simplifiedPredictionData = simplifyPredictionData(predictionData);
 
             let finalChartData = simplifiedBookingsData;
+            let finalChartData2 = simplifiedPredictionData;
+
             if (simplifiedBookingsData.length === simplifiedPredictionData.length) {
                 finalChartData = finalChartData.map((item, i) => {
                     if (simplifiedBookingsData.length && simplifiedPredictionData.length && (simplifiedBookingsData[i].time === simplifiedPredictionData[i].time)) {
@@ -196,6 +198,28 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                     return item;
                 });
             }
+
+            if (chartData && chartData.length && chartData.length < simplifiedPredictionData.length) {
+                finalChartData2 = simplifiedPredictionData.map((item, i) => {
+                    if (item.time === chartData[i]?.time) {
+                        return {
+                            ...item,
+                            [BOOKING_COUNT]: chartData[i][BOOKING_COUNT],
+                            [PREDICTION_COUNT]: Math.round(item.count),
+                            [THREE_WEEK_AVG_COUNT]: simplifiedBookingsData[i][THREE_WEEK_AVG_COUNT]
+                        };
+                    }
+                    return {
+                        ...item,
+                        [BOOKING_COUNT]: 0,
+                        [PREDICTION_COUNT]: Math.round(item.count),
+                        [THREE_WEEK_AVG_COUNT]: simplifiedBookingsData[i][THREE_WEEK_AVG_COUNT]
+                    };
+                });
+
+                finalChartData = finalChartData2;
+            }
+
             setRes(finalChartData);
         })
             .catch((err) => {
@@ -221,6 +245,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             .then((chartData) => {
                 setError('');
                 setRes(chartData);
+                fetchPredictions(startDateTime, endDateTime, timeInterval, chartData);
             })
             .catch((err) => {
                 setError('No data found for this selection.');
@@ -244,8 +269,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
     const setIntervalForRealTimeData = (interval, type) => setInterval(() => {
         if (type === 'bookingData') {
             getRealTimeData();
-            fetchPredictions(startDateTime, endTime(), timeInterval);
-            getGroupedBookingsData(startDateTime, endTime(), timeInterval);
+            getGroupedBookingsData(startDateTime, endDateTime, timeInterval);
         } else if (type === 'incidents') {
             fetchIncidents();
         } else if (type === 'health') {
