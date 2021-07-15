@@ -140,6 +140,7 @@ const Impulse = (props) => {
         chartSliced,
         setChartSliced,
         isAutoRefresh,
+        setAutoRefresh,
         setStartDateTime,
         setEndDateTime,
         timeInterval);
@@ -414,7 +415,7 @@ const Impulse = (props) => {
                 <h1 className="page-title">{'Impulse Dashboard'}</h1>
                 <div className="right-header">
                     {sourceLatency || sourceLatency === 0 ? renderHealthCheck() : ''}
-                    {!chartSliced && (((moment(endDateTime).diff(moment(startDateTime), 'days') <= 3)) && (moment().diff(moment(endDateTime), 'hours') <= 0)) ? <div className="refresh-switch" title="Auto refresh charts toggle switch">
+                    {(((moment(endDateTime).diff(moment(startDateTime), 'days') <= 5)) && (moment().diff(moment(endDateTime), 'hours') <= 0)) ? <div className="refresh-switch" title="Auto refresh charts toggle switch">
                         <Switch
                             id="switch-example-small"
                             name="autoRefresh"

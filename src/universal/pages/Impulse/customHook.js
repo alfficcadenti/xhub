@@ -25,7 +25,7 @@ const IMPULSE_MAPPING = [
     {globalFilter: EGENCIA_BRAND, impulseFilter: EGENCIA_BRAND},
     {globalFilter: VRBO_BRAND, impulseFilter: 'VRBO'}
 ];
-const bookingTimeInterval = 30000;
+const bookingTimeInterval = 60000;
 const incidentTimeInterval = 900000;
 const healthTimeInterval = 300000;
 const anomalyTimeInterval = 900000;
@@ -35,7 +35,7 @@ let intervalForAnnotations = null;
 let intervalForHealth = null;
 let intervalForAnomalies = null;
 
-export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTime, endDateTime, globalBrandName, prevBrand, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, chartSliced, setChartSliced, isAutoRefresh, setStartDateTime, setEndDateTime, timeInterval) => {
+export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTime, endDateTime, globalBrandName, prevBrand, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, chartSliced, setChartSliced, isAutoRefresh, setAutoRefresh, setStartDateTime, setEndDateTime, timeInterval) => {
     const [res, setRes] = useState([]);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(true);
@@ -217,7 +217,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
     };
 
     const getRealTimeData = () => {
-        console.log(moment());
         fetchCall(startDateTime, endTime(), timeInterval)
             .then((chartData) => {
                 setError('');
@@ -273,6 +272,9 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
     };
 
     const checkDefaultRange = () => {
+        if (!isAutoRefresh) {
+            return;
+        }
         intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
         intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
         intervalForAnomalies = setIntervalForRealTimeData(anomalyTimeInterval, 'anomaly');
@@ -341,8 +343,13 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             fetchAnomalies();
             getPredictions();
 
+            const dateInvalid = (moment(endDateTime).diff(moment(startDateTime), 'days') >= 5) || (moment().diff(moment(endDateTime), 'hours') > 0);
 
-            // if (!(((moment(endDateTime).diff(moment(startDateTime), 'days') <= 3)) && (moment().diff(moment(endDateTime), 'hours') <= 0))) {
+            if (dateInvalid) {
+                setAutoRefresh(false);
+            }
+
+            // if ((moment(endDateTime).diff(moment(startDateTime), 'days') > 3) || (moment().diff(moment(endDateTime), 'hours') > 0)) {
             //     clearInterval(intervalForCharts);
             //     clearInterval(intervalForAnnotations);
             //     clearInterval(intervalForAnomalies);
