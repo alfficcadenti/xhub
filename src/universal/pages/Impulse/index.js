@@ -130,8 +130,6 @@ const Impulse = (props) => {
         groupedResByLobs] = useFetchBlipData(
         isApplyClicked,
         setIsApplyClicked,
-        isResetClicked,
-        setIsResetClicked,
         startDateTime,
         endDateTime,
         newBrand,
@@ -146,7 +144,9 @@ const Impulse = (props) => {
         setAutoRefresh,
         setStartDateTime,
         setEndDateTime,
-        timeInterval);
+        timeInterval,
+        isResetClicked,
+        setIsResetClicked);
 
     const modifyFilters = (newValuesOnChange) => {
         setSelectedLobMulti([]);
