@@ -269,7 +269,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
     const setIntervalForRealTimeData = (interval, type) => setInterval(() => {
         if (type === 'bookingData') {
             getRealTimeData();
-            getGroupedBookingsData(startDateTime, endDateTime, timeInterval);
+            getGroupedBookingsData(startDateTime, endTime(), timeInterval);
         } else if (type === 'incidents') {
             fetchIncidents();
         } else if (type === 'health') {
