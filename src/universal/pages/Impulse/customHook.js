@@ -35,7 +35,7 @@ let intervalForAnnotations = null;
 let intervalForHealth = null;
 let intervalForAnomalies = null;
 
-export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTime, endDateTime, globalBrandName, prevBrand, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, chartSliced, setChartSliced, isAutoRefresh, setAutoRefresh, setStartDateTime, setEndDateTime, timeInterval) => {
+export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTime, endDateTime, globalBrandName, prevBrand, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, chartSliced, setChartSliced, isAutoRefresh, setAutoRefresh, setStartDateTime, setEndDateTime, timeInterval, setIsResetClicked, isResetClicked) => {
     const [res, setRes] = useState([]);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(true);
@@ -357,7 +357,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
 
 
     useEffect(() => {
-        if (isApplyClicked) {
+        if (isApplyClicked || isResetClicked) {
             getGroupedBookingsData();
             getData();
             fetchIncidents();
@@ -373,24 +373,20 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 setAutoRefresh(false);
             }
 
-            // if ((moment(endDateTime).diff(moment(startDateTime), 'days') > 3) || (moment().diff(moment(endDateTime), 'hours') > 0)) {
-            //     clearInterval(intervalForCharts);
-            //     clearInterval(intervalForAnnotations);
-            //     clearInterval(intervalForAnomalies);
-            // }
-
             return () => {
                 setIsApplyClicked(false);
+                setIsResetClicked(false);
             };
         }
 
         return () => {
             setIsApplyClicked(false);
+            setIsResetClicked(false);
             clearInterval(intervalForCharts);
             clearInterval(intervalForAnnotations);
             clearInterval(intervalForAnomalies);
         };
-    }, [isApplyClicked]);
+    }, [isApplyClicked, isResetClicked]);
 
     useEffect(() => {
         if (initialMount) {

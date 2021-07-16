@@ -78,6 +78,7 @@ const Impulse = (props) => {
     const [startDateTime, setStartDateTime] = useState(initialStart);
     const [endDateTime, setEndDateTime] = useState(initialEnd);
     const [isApplyClicked, setIsApplyClicked] = useState(false);
+    const [isResetClicked, setIsResetClicked] = useState(false);
     const [allData, setFilterAllData] = useState([]);
     const [showMoreFilters, setShowMoreFilters] = useState(initialDevices.length > 0);
     const [annotationsMulti, setAnnotationsMulti] = useState([]);
@@ -129,6 +130,8 @@ const Impulse = (props) => {
         groupedResByLobs] = useFetchBlipData(
         isApplyClicked,
         setIsApplyClicked,
+        isResetClicked,
+        setIsResetClicked,
         startDateTime,
         endDateTime,
         newBrand,
@@ -295,6 +298,7 @@ const Impulse = (props) => {
                     data={allData}
                     setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
                     setChartSliced={setChartSliced}
+                    setIsResetClicked={setIsResetClicked}
                     annotations={enableIncidents ? annotationsMulti : []}
                     setDaysDifference={setDaysDifference}
                     daysDifference={daysDifference}
@@ -309,6 +313,7 @@ const Impulse = (props) => {
                 return (<GroupedBookingTrends
                     data={allDataByBrands}
                     setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
+                    setIsResetClicked={setIsResetClicked}
                     setChartSliced={setChartSliced}
                     setDaysDifference={setDaysDifference}
                     daysDifference={daysDifference}
@@ -325,6 +330,7 @@ const Impulse = (props) => {
                 return (<GroupedBookingTrends
                     data={allDataByLobs}
                     setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
+                    setIsResetClicked={setIsResetClicked}
                     setChartSliced={setChartSliced}
                     setDaysDifference={setDaysDifference}
                     daysDifference={daysDifference}
