@@ -177,10 +177,18 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             ));
 
     const fetchPredictions = (start = startDateTime, end = endDateTime, interval = timeInterval, chartData) => {
+        console.log(moment());
+        const dateInvalid = (moment(endDateTime).diff(moment(startDateTime), 'days') >= 5) || (moment().diff(moment(endDateTime), 'hours') > 0);
+
+        if (dateInvalid) {
+            return;
+        }
+
         Promise.all([
             fetch(`/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval, '')}`).then(checkResponse),
             timeInterval === '5m' ? fetch(`/v1/impulse/prediction${getQueryStringPrediction(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`).then(checkResponse) : []
         ]).then(([bookingsData, predictionData]) => {
+            // console.log(bookingsData, 'RAW BOOKINGS DATA IN FETCH PREDS');
             const simplifiedBookingsData = simplifyBookingsData(bookingsData);
             const simplifiedPredictionData = simplifyPredictionData(predictionData);
 
@@ -199,26 +207,40 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 });
             }
 
-            if (chartData && chartData.length && chartData.length < simplifiedPredictionData.length) {
-                finalChartData2 = simplifiedPredictionData.map((item, i) => {
+            // console.log((chartSliced && !dateInvalid), '(chartSliced && !dateInvalid)', moment().diff(moment(endDateTime), 'hours'));
+
+            // console.log(chartData.length, 'CHART DATA');
+            console.log(simplifiedPredictionData, 'simplifiedPredictionData');
+            // console.log(simplifiedBookingsData.length, 'simplifiedBookingsData');
+
+            if ((chartSliced && !dateInvalid) && chartData && chartData.length && chartData.length < simplifiedPredictionData.length) {
+                finalChartData2 = simplifiedBookingsData.map((item, i) => {
+                    let predictionCount = null;
+                    for (let predItem of simplifiedPredictionData) {
+                        console.log(predItem, 'PREDITEM');
+                        if (predItem.time === item.time) {
+                            predictionCount = Math.round(predItem.count);
+                        }
+                    }
+
                     if (item.time === chartData[i]?.time) {
                         return {
                             ...item,
                             [BOOKING_COUNT]: chartData[i][BOOKING_COUNT],
-                            [PREDICTION_COUNT]: Math.round(item.count),
-                            [THREE_WEEK_AVG_COUNT]: simplifiedBookingsData[i][THREE_WEEK_AVG_COUNT]
+                            ...(predictionCount && {[PREDICTION_COUNT]: predictionCount}),
                         };
                     }
                     return {
                         ...item,
                         [BOOKING_COUNT]: 0,
-                        [PREDICTION_COUNT]: Math.round(item.count),
-                        [THREE_WEEK_AVG_COUNT]: simplifiedBookingsData[i][THREE_WEEK_AVG_COUNT]
+                        ...(predictionCount && {[PREDICTION_COUNT]: predictionCount}),
                     };
                 });
 
                 finalChartData = finalChartData2;
             }
+
+            console.log(finalChartData);
 
             setRes(finalChartData);
         })
@@ -357,7 +379,9 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
 
 
     useEffect(() => {
-        if (isApplyClicked || isResetClicked) {
+        const dateInvalid = (moment(endDateTime).diff(moment(startDateTime), 'days') >= 5) || (moment().diff(moment(endDateTime), 'hours') > 0);
+
+        if (isApplyClicked || isResetClicked || chartSliced) {
             getGroupedBookingsData();
             getData();
             fetchIncidents();
@@ -366,8 +390,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             fetchHealth();
             fetchAnomalies();
             getPredictions();
-
-            const dateInvalid = (moment(endDateTime).diff(moment(startDateTime), 'days') >= 5) || (moment().diff(moment(endDateTime), 'hours') > 0);
 
             if (dateInvalid) {
                 setAutoRefresh(false);
@@ -386,7 +408,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             clearInterval(intervalForAnnotations);
             clearInterval(intervalForAnomalies);
         };
-    }, [isApplyClicked, isResetClicked]);
+    }, [isApplyClicked, isResetClicked, chartSliced]);
 
     useEffect(() => {
         if (initialMount) {
