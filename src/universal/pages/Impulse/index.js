@@ -146,7 +146,8 @@ const Impulse = (props) => {
         setEndDateTime,
         timeInterval,
         isResetClicked,
-        setIsResetClicked);
+        setIsResetClicked,
+        allData);
 
     const modifyFilters = (newValuesOnChange) => {
         setSelectedLobMulti([]);

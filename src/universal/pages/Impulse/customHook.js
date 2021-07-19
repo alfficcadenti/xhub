@@ -35,7 +35,7 @@ let intervalForAnnotations = null;
 let intervalForHealth = null;
 let intervalForAnomalies = null;
 
-export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTime, endDateTime, globalBrandName, prevBrand, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, chartSliced, setChartSliced, isAutoRefresh, setAutoRefresh, setStartDateTime, setEndDateTime, timeInterval, isResetClicked, setIsResetClicked) => {
+export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTime, endDateTime, globalBrandName, prevBrand, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, chartSliced, setChartSliced, isAutoRefresh, setAutoRefresh, setStartDateTime, setEndDateTime, timeInterval, isResetClicked, setIsResetClicked, allData) => {
     const [res, setRes] = useState([]);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(true);
@@ -177,18 +177,10 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             ));
 
     const fetchPredictions = (start = startDateTime, end = endDateTime, interval = timeInterval, chartData) => {
-        console.log(moment());
-        const dateInvalid = (moment(endDateTime).diff(moment(startDateTime), 'days') >= 5) || (moment().diff(moment(endDateTime), 'hours') > 0);
-
-        if (dateInvalid) {
-            return;
-        }
-
         Promise.all([
             fetch(`/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval, '')}`).then(checkResponse),
             timeInterval === '5m' ? fetch(`/v1/impulse/prediction${getQueryStringPrediction(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`).then(checkResponse) : []
         ]).then(([bookingsData, predictionData]) => {
-            // console.log(bookingsData, 'RAW BOOKINGS DATA IN FETCH PREDS');
             const simplifiedBookingsData = simplifyBookingsData(bookingsData);
             const simplifiedPredictionData = simplifyPredictionData(predictionData);
 
@@ -207,17 +199,16 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 });
             }
 
-            // console.log((chartSliced && !dateInvalid), '(chartSliced && !dateInvalid)', moment().diff(moment(endDateTime), 'hours'));
+            const dateInvalid = (moment(endDateTime).diff(moment(startDateTime), 'days') >= 5) || (moment().diff(moment(endDateTime), 'hours') > 0);
 
-            // console.log(chartData.length, 'CHART DATA');
-            console.log(simplifiedPredictionData, 'simplifiedPredictionData');
-            // console.log(simplifiedBookingsData.length, 'simplifiedBookingsData');
+            if (dateInvalid) {
+                return;
+            }
 
-            if ((chartSliced && !dateInvalid) && chartData && chartData.length && chartData.length < simplifiedPredictionData.length) {
+            if (!dateInvalid && chartData && chartData.length && chartData.length < simplifiedPredictionData.length) {
                 finalChartData2 = simplifiedBookingsData.map((item, i) => {
                     let predictionCount = null;
                     for (let predItem of simplifiedPredictionData) {
-                        console.log(predItem, 'PREDITEM');
                         if (predItem.time === item.time) {
                             predictionCount = Math.round(predItem.count);
                         }
@@ -240,8 +231,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 finalChartData = finalChartData2;
             }
 
-            console.log(finalChartData);
-
             setRes(finalChartData);
         })
             .catch((err) => {
@@ -261,13 +250,29 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 console.error(err);
             });
     };
+    const getPredictions = (start, end, interval, chartData) => {
+        const dayRange = moment(endDateTime).diff(moment(startDateTime), 'days');
+        if (dayRange >= 1 && dayRange < 7) {
+            fetchPredictions(start, end, interval, chartData);
+        } else {
+            setRes(chartData);
+        }
+    };
 
     const getRealTimeData = () => {
+        console.log(allData, 'ALL DATA');
         fetchCall(startDateTime, endTime(), timeInterval)
             .then((chartData) => {
                 setError('');
-                setRes(chartData);
-                fetchPredictions(startDateTime, endDateTime, timeInterval, chartData);
+                // setRes(chartData);
+
+                const liveData = (moment(endDateTime).diff(moment(endTime()), 'minutes') < 0);
+                if (liveData) {
+                    getPredictions(startDateTime, endTime(), timeInterval, chartData);
+                    setEndDateTime(endTime());
+                    setStartDateTime(startTime());
+                }
+                getPredictions(startDateTime, endDateTime, timeInterval, chartData);
             })
             .catch((err) => {
                 setError('No data found for this selection.');
@@ -324,13 +329,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
         intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
         intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
         intervalForAnomalies = setIntervalForRealTimeData(anomalyTimeInterval, 'anomaly');
-    };
-
-    const getPredictions = () => {
-        const dayRange = moment(endDateTime).diff(moment(startDateTime), 'days');
-        if (dayRange >= 1 && dayRange < 7) {
-            fetchPredictions();
-        }
     };
     useEffect(() => {
         if (SUPPRESSED_BRANDS.includes(globalBrandName)) {
@@ -393,6 +391,10 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
 
             if (dateInvalid) {
                 setAutoRefresh(false);
+            }
+
+            if (isResetClicked) {
+                setAutoRefresh(true);
             }
 
             return () => {
