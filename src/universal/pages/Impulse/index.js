@@ -79,6 +79,7 @@ const Impulse = (props) => {
     const [endDateTime, setEndDateTime] = useState(initialEnd);
     const [isApplyClicked, setIsApplyClicked] = useState(false);
     const [isResetClicked, setIsResetClicked] = useState(false);
+    const [isChartSliceClicked, setIsChartSliceClicked] = useState(false);
     const [allData, setFilterAllData] = useState([]);
     const [showMoreFilters, setShowMoreFilters] = useState(initialDevices.length > 0);
     const [annotationsMulti, setAnnotationsMulti] = useState([]);
@@ -147,7 +148,9 @@ const Impulse = (props) => {
         timeInterval,
         isResetClicked,
         setIsResetClicked,
-        allData);
+        allData,
+        isChartSliceClicked,
+        setIsChartSliceClicked);
 
     const modifyFilters = (newValuesOnChange) => {
         setSelectedLobMulti([]);
@@ -300,6 +303,7 @@ const Impulse = (props) => {
                     setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
                     setChartSliced={setChartSliced}
                     setIsResetClicked={setIsResetClicked}
+                    setIsChartSliceClicked={setIsChartSliceClicked}
                     annotations={enableIncidents ? annotationsMulti : []}
                     setDaysDifference={setDaysDifference}
                     daysDifference={daysDifference}
@@ -316,6 +320,7 @@ const Impulse = (props) => {
                     setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
                     setIsResetClicked={setIsResetClicked}
                     setChartSliced={setChartSliced}
+                    setIsChartSliceClicked={setIsChartSliceClicked}
                     setDaysDifference={setDaysDifference}
                     daysDifference={daysDifference}
                     annotations={enableIncidents ? annotationsMulti : []}
@@ -333,6 +338,7 @@ const Impulse = (props) => {
                     setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
                     setIsResetClicked={setIsResetClicked}
                     setChartSliced={setChartSliced}
+                    setIsChartSliceClicked={setIsChartSliceClicked}
                     setDaysDifference={setDaysDifference}
                     daysDifference={daysDifference}
                     annotations={enableIncidents ? annotationsMulti : []}
@@ -353,6 +359,7 @@ const Impulse = (props) => {
                     data={allData}
                     setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
                     setChartSliced={setChartSliced}
+                    setIsChartSliceClicked={setIsChartSliceClicked}
                     annotations={enableIncidents ? annotationsMulti : []}
                     setDaysDifference={setDaysDifference}
                     daysDifference={daysDifference}
@@ -422,7 +429,7 @@ const Impulse = (props) => {
                 <h1 className="page-title">{'Impulse Dashboard'}</h1>
                 <div className="right-header">
                     {sourceLatency || sourceLatency === 0 ? renderHealthCheck() : ''}
-                    {(((moment(endDateTime).diff(moment(startDateTime), 'days') <= 5)) && (moment().diff(moment(endDateTime), 'hours') <= 0)) ? <div className="refresh-switch" title="Auto refresh charts toggle switch">
+                    {(((moment(endDateTime).diff(moment(startDateTime), 'days') <= 5)) && (moment().diff(moment(endDateTime), 'minutes') <= 0)) ? <div className="refresh-switch" title="Auto refresh charts toggle switch">
                         <Switch
                             id="switch-example-small"
                             name="autoRefresh"

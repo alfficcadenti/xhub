@@ -35,7 +35,7 @@ let intervalForAnnotations = null;
 let intervalForHealth = null;
 let intervalForAnomalies = null;
 
-export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTime, endDateTime, globalBrandName, prevBrand, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, chartSliced, setChartSliced, isAutoRefresh, setAutoRefresh, setStartDateTime, setEndDateTime, timeInterval, isResetClicked, setIsResetClicked, allData) => {
+export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTime, endDateTime, globalBrandName, prevBrand, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, chartSliced, setChartSliced, isAutoRefresh, setAutoRefresh, setStartDateTime, setEndDateTime, timeInterval, isResetClicked, setIsResetClicked, allData, isChartSliceClicked, setIsChartSliceClicked) => {
     const [res, setRes] = useState([]);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(true);
@@ -199,7 +199,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 });
             }
 
-            const dateInvalid = (moment(endDateTime).diff(moment(startDateTime), 'days') >= 5) || (moment().diff(moment(endDateTime), 'hours') > 0);
+            const dateInvalid = (moment(endDateTime).diff(moment(startDateTime), 'days') >= 5) || (moment().diff(moment(endDateTime), 'minutes') > 10);
 
             if (dateInvalid) {
                 return;
@@ -254,17 +254,15 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
         const dayRange = moment(endDateTime).diff(moment(startDateTime), 'days');
         if (dayRange >= 1 && dayRange < 7) {
             fetchPredictions(start, end, interval, chartData);
-        } else {
+        } else if (chartData && chartData.length) {
             setRes(chartData);
         }
     };
 
     const getRealTimeData = () => {
-        console.log(allData, 'ALL DATA');
         fetchCall(startDateTime, endTime(), timeInterval)
             .then((chartData) => {
                 setError('');
-                // setRes(chartData);
 
                 const liveData = (moment(endDateTime).diff(moment(endTime()), 'minutes') < 0);
                 if (liveData) {
@@ -323,13 +321,13 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             });
     };
 
-    const checkDefaultRange = () => {
-        if (!isAutoRefresh) {
-            return;
+    const checkRefreshRange = () => {
+        console.log((moment(endDateTime).diff(moment(startDateTime), 'days') <= 5) && (moment().diff(moment(endDateTime), 'minutes') < 10), 'CHECK REFRESH RANGE', (moment(endDateTime).diff(moment(startDateTime), 'days') <= 5), (moment().diff(moment(endDateTime), 'minutes') < 10));
+        if ((moment(endDateTime).diff(moment(startDateTime), 'days') <= 5) && (moment().diff(moment(endDateTime), 'minutes') < 10)) {
+            intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
+            intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
+            intervalForAnomalies = setIntervalForRealTimeData(anomalyTimeInterval, 'anomaly');
         }
-        intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
-        intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
-        intervalForAnomalies = setIntervalForRealTimeData(anomalyTimeInterval, 'anomaly');
     };
     useEffect(() => {
         if (SUPPRESSED_BRANDS.includes(globalBrandName)) {
@@ -363,7 +361,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 fetchIncidents();
                 getFilter();
                 getBrandsFilterData();
-                checkDefaultRange();
+                checkRefreshRange();
                 fetchHealth();
                 fetchAnomalies();
                 getPredictions();
@@ -378,14 +376,14 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
 
 
     useEffect(() => {
-        const dateInvalid = (moment(endDateTime).diff(moment(startDateTime), 'days') >= 5) || (moment().diff(moment(endDateTime), 'hours') > 0);
+        const dateInvalid = (moment(endDateTime).diff(moment(startDateTime), 'days') >= 5) || (moment().diff(moment(endDateTime), 'minutes') > 10);
 
-        if (isApplyClicked || isResetClicked || chartSliced) {
+        if (isApplyClicked || isResetClicked || isChartSliceClicked) {
             getGroupedBookingsData();
             getData();
             fetchIncidents();
             getBrandsFilterData();
-            checkDefaultRange();
+            checkRefreshRange();
             fetchHealth();
             fetchAnomalies();
             getPredictions();
@@ -401,17 +399,19 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             return () => {
                 setIsApplyClicked(false);
                 setIsResetClicked(false);
+                setIsChartSliceClicked(false);
             };
         }
 
         return () => {
             setIsApplyClicked(false);
             setIsResetClicked(false);
+            setIsChartSliceClicked(false);
             clearInterval(intervalForCharts);
             clearInterval(intervalForAnnotations);
             clearInterval(intervalForAnomalies);
         };
-    }, [isApplyClicked, isResetClicked, chartSliced]);
+    }, [isApplyClicked, isResetClicked, isChartSliceClicked]);
 
     useEffect(() => {
         if (initialMount) {

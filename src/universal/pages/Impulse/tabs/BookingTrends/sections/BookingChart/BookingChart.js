@@ -100,7 +100,7 @@ const CustomTooltip = ({active, payload}) => {
     return null;
 };
 
-const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSliced, setIsResetClicked, annotations, daysDifference, setDaysDifference, setTableData, anomalies, setAnomalyTableData, timeInterval, setTimeInterval, setTimeIntervalOpts}) => {
+const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSliced, setIsResetClicked, annotations, daysDifference, setDaysDifference, setTableData, anomalies, setAnomalyTableData, timeInterval, setTimeInterval, setTimeIntervalOpts, setIsChartSliceClicked}) => {
     let [refAreaLeft, setRefAreaLeft] = useState('');
     let [refAreaRight, setRefAreaRight] = useState('');
     let [newData, setNewData] = useState(data);
@@ -153,6 +153,7 @@ const BookingChart = ({data = [], setStartDateTime, setEndDateTime, setChartSlic
         setStartDateTime(leftMomentUtc);
         setEndDateTime(rightMomentUtc);
         setChartSliced(true);
+        setIsChartSliceClicked(true);
         setDaysDifference(rightMomentUtc.diff(leftMomentUtc, 'days'));
         setTableData([]);
         if (!isValidTimeInterval(leftMomentUtc, rightMomentUtc, timeInterval)) {
