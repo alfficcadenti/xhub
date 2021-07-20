@@ -3,7 +3,6 @@ import moment from 'moment';
 import {expect} from 'chai';
 import {
     getPortfoliosQuery,
-    filterBrandPortfolios,
     getQueryString,
     getQueryValues,
     getPropValue,
@@ -21,7 +20,7 @@ import {
     processTwoDimensionalIssues,
     getPanelDataUrl
 } from '../utils';
-import {HCOM_PORTFOLIOS, VRBO_PORTFOLIOS, P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL, NOT_PRIORITIZED_LABEL, SEARCH_TYPE_PROJECT, SEARCH_TYPE_PORTFOLIO} from '../constants';
+import {P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL, NOT_PRIORITIZED_LABEL} from '../constants';
 import {HOTELS_COM_BRAND, VRBO_BRAND, DATE_FORMAT} from '../../../constants';
 
 describe('Quality Metrics Util', () => {
@@ -30,43 +29,26 @@ describe('Quality Metrics Util', () => {
         expect(getPortfoliosQuery([])).to.eql('');
     });
 
-    it('filterBrandPortfolios', () => {
-        expect(filterBrandPortfolios([{value: 'checkout'}, {value: 'invalid'}], HOTELS_COM_BRAND)).to.eql([{value: 'checkout'}]);
-    });
-
     it('getQueryString - projects', () => {
         const brand = HOTELS_COM_BRAND;
-        const portfolios = [{value: 'checkout'}];
         const start = moment('06-01-21');
         const end = moment('06-21-21');
-        const projectKeys = [{value: 'LASER'}];
-        const searchType = SEARCH_TYPE_PROJECT;
-        expect(getQueryString(brand, portfolios, projectKeys, start, end, searchType))
-            .to.eql(`/quality-metrics?selectedBrand=${brand}&from=${start.toISOString()}&to=${end.toISOString()}&projectKeys=${projectKeys[0].value}&type=${searchType}`);
-    });
-
-    it('getQueryString - portfolios', () => {
-        const brand = HOTELS_COM_BRAND;
-        const portfolios = [{value: 'checkout'}];
-        const start = moment('06-01-21');
-        const end = moment('06-21-21');
-        const projectKeys = [{value: 'LASER'}];
-        const searchType = SEARCH_TYPE_PORTFOLIO;
-        expect(getQueryString(brand, portfolios, projectKeys, start, end, searchType))
-            .to.eql(`/quality-metrics?selectedBrand=${brand}&from=${start.toISOString()}&to=${end.toISOString()}&portfolios=${portfolios[0].value}&type=${searchType}`);
+        const projectKeys = ['LASER'];
+        expect(getQueryString(brand, projectKeys, start, end))
+            .to.eql(`/quality-metrics?selectedBrand=${brand}&from=${start.toISOString()}&to=${end.toISOString()}&projectKeys=${projectKeys[0]}`);
     });
 
     it('getQueryValues', () => {
         const start = '2021-05-01';
         const end = '2021-06-01';
-        const hcomPortfolios = ['kes'];
-        let result = getQueryValues(`https://localhost:8080/quality-metrics?selectedBrand=${HOTELS_COM_BRAND}&portfolios=${hcomPortfolios[0]}&from=${start}&to=${end}`, [HOTELS_COM_BRAND]);
-        expect(result.initialPortfolios).to.be.eql(hcomPortfolios.map((p) => HCOM_PORTFOLIOS.find(({value}) => p === value)));
+        const hcomProjectKeys = ['KES'];
+        let result = getQueryValues(`https://localhost:8080/quality-metrics?selectedBrand=${HOTELS_COM_BRAND}&projectKeys=${hcomProjectKeys[0]}&from=${start}&to=${end}`, [HOTELS_COM_BRAND]);
+        expect(result.initialProjectKeys).to.be.eql(hcomProjectKeys);
         expect(result.initialStart.isSame(start, 'day')).to.be.eql(true);
         expect(result.initialEnd.isSame(end, 'day')).to.be.eql(true);
-        const vrboPortfolios = ['pm'];
-        result = getQueryValues(`https://localhost:8080/quality-metrics?selectedBrand=${VRBO_BRAND}&portfolios=${vrboPortfolios[0]}&from=${start}&to=${end}`, [VRBO_BRAND]);
-        expect(result.initialPortfolios).to.be.eql(vrboPortfolios.map((p) => VRBO_PORTFOLIOS.find(({value}) => p === value)));
+        const vrboProjectKeys = ['COREAPI'];
+        result = getQueryValues(`https://localhost:8080/quality-metrics?selectedBrand=${VRBO_BRAND}&projectKeys=${vrboProjectKeys[0]}&from=${start}&to=${end}`, [VRBO_BRAND]);
+        expect(result.initialProjectKeys).to.be.eql(vrboProjectKeys);
         expect(result.initialStart.isSame(start, 'day')).to.be.eql(true);
         expect(result.initialEnd.isSame(end, 'day')).to.be.eql(true);
     });
@@ -343,7 +325,7 @@ describe('Quality Metrics Util', () => {
         const result = formatTableData({
             'AND - Android': {p4: 2, notPrioritized: 1, totalTickets: 3, ticketIds: ['AND-0001', 'AND-0002', 'AND-0003']},
             'Kes': {p1: 1, p2: 1, p4: 1, p5: 2, totalTickets: 5, ticketIds: ['KES-0001', 'KES-0002', 'KES-0003', 'KES-0004', 'KES-0005']},
-        }, () => true, rowKey, SEARCH_TYPE_PORTFOLIO, true);
+        }, () => true, rowKey, true);
         expect(result.length).to.eql(2);
         // AND
         const row0 = result[0];
@@ -426,22 +408,20 @@ describe('Quality Metrics Util', () => {
     });
 
     it('getPanelDataUrl', () => {
-        const portfolios = [{text: 'KES', value: 'kes'}];
-        const projectKeys = [{text: 'LASER', value: 'LASER'}];
+        const projectKeys = ['LASER', 'ENG'];
         const start = moment().subtract(400, 'days');
         const end = moment();
         const brand = HOTELS_COM_BRAND;
         const panel = 'opendefects';
-        const searchType = SEARCH_TYPE_PORTFOLIO;
-        expect(getPanelDataUrl(start, end, searchType, portfolios, projectKeys, brand, panel)).to.be.equal(
-            `/v1/portfolio/panel/${panel}?fromDate=${start.format(DATE_FORMAT)}&toDate=${end.format(DATE_FORMAT)}&portfolios=kes`
+        expect(getPanelDataUrl(start, end, projectKeys, brand, panel)).to.be.equal(
+            `/v1/portfolio/panel/${panel}?fromDate=${start.format(DATE_FORMAT)}&toDate=${end.format(DATE_FORMAT)}&projectKeys=LASER&projectKeys=ENG`
         );
         const ttrPanel = 'ttrSummary';
-        expect(getPanelDataUrl(start, end, searchType, portfolios, projectKeys, brand, ttrPanel)).to.be.equal(
-            `/v1/portfolio/${ttrPanel}?fromDate=${start.format(DATE_FORMAT)}&toDate=${end.format(DATE_FORMAT)}&portfolios=kes`
+        expect(getPanelDataUrl(start, end, projectKeys, brand, ttrPanel)).to.be.equal(
+            `/v1/portfolio/${ttrPanel}?fromDate=${start.format(DATE_FORMAT)}&toDate=${end.format(DATE_FORMAT)}&projectKeys=LASER&projectKeys=ENG`
         );
-        expect(getPanelDataUrl(start, end, searchType, portfolios, projectKeys, brand)).to.be.equal(
-            `/v1/portfolio?fromDate=${start.format(DATE_FORMAT)}&toDate=${end.format(DATE_FORMAT)}&portfolios=kes`
+        expect(getPanelDataUrl(start, end, projectKeys, brand)).to.be.equal(
+            `/v1/portfolio?fromDate=${start.format(DATE_FORMAT)}&toDate=${end.format(DATE_FORMAT)}&projectKeys=LASER&projectKeys=ENG`
         );
     });
 });

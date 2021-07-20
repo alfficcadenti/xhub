@@ -3,13 +3,12 @@ import moment from 'moment';
 import qs from 'query-string';
 import {checkResponse} from '../../pages/utils';
 import {
-    HCOM_PORTFOLIOS, VRBO_PORTFOLIOS, PRIORITY_LABELS,
+    PRIORITY_LABELS,
     P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL, NOT_PRIORITIZED_LABEL,
-    HCOM_PROJECT_KEYS, VRBO_PROJECT_KEYS, SEARCH_TYPE_PORTFOLIO, SEARCH_TYPE_PROJECT, PROJECT_PORTFOLIO_MAP
+    HCOM_PROJECT_KEYS, VRBO_PROJECT_KEYS, PROJECT_PORTFOLIO_MAP, HCOM_PORTFOLIOS, VRBO_PORTFOLIOS
 } from './constants';
 import {HOTELS_COM_BRAND, DATE_FORMAT} from '../../constants';
 import {formatDuration} from '../../components/utils';
-
 
 export const getBrandPortfolios = (brand) => (
     brand === HOTELS_COM_BRAND ? HCOM_PORTFOLIOS : VRBO_PORTFOLIOS
@@ -31,14 +30,9 @@ export const getProjectKeysQuery = (brandProjectKeys) => (
         : ''
 );
 
-export const filterBrandPortfolios = (portfolios, brand) => {
-    const brandPortfolioValues = getBrandPortfolios(brand).map(({value}) => value);
-    return (portfolios || []).filter(({value}) => brandPortfolioValues.includes(value));
-};
-
 export const filterBrandProjectKeys = (projectKeys, brand) => {
-    const brandProjectKeyValues = getBrandProjectKeys(brand).map(({value}) => value);
-    return (projectKeys || []).filter(({value}) => brandProjectKeyValues.includes(value));
+    const brandProjectKeyValues = getBrandProjectKeys(brand);
+    return (projectKeys || []).filter((projectKey) => brandProjectKeyValues.includes(projectKey));
 };
 
 // eslint-disable-next-line complexity
@@ -54,44 +48,27 @@ export const validDateRange = (start, end) => {
 
 // eslint-disable-next-line complexity
 export const getQueryValues = (search, selectedBrands) => {
-    const {portfolios, projectKeys, from, to, type} = qs.parse(search);
+    const {projectKeys, from, to} = qs.parse(search);
     const isValidDateRange = validDateRange(from, to);
-    const initialType = type === SEARCH_TYPE_PROJECT ? SEARCH_TYPE_PROJECT : SEARCH_TYPE_PORTFOLIO;
-    const initialPortfolios = (initialType === SEARCH_TYPE_PORTFOLIO)
-        ? (Array.isArray(portfolios) ? portfolios : [portfolios])
-            .map((portfolio) => getBrandPortfolios(selectedBrands[0]).find((p) => p.value === portfolio))
-            .filter((portfolio) => !!portfolio)
-        : [];
-    const initialProjectKeys = (initialType === SEARCH_TYPE_PROJECT)
-        ? (Array.isArray(projectKeys) ? projectKeys : [projectKeys])
-            .map((projectKey) => getBrandProjectKeys(selectedBrands[0]).find((p) => p.value === projectKey))
-            .filter((projectKey) => !!projectKey)
-        : [];
+    const brandProjectKeys = getBrandProjectKeys(selectedBrands[0]);
+    const initialProjectKeys = (Array.isArray(projectKeys) ? projectKeys : [projectKeys])
+        .filter((projectKey) => brandProjectKeys.includes(projectKey));
     return {
-        initialType,
         initialStart: isValidDateRange ? moment(from) : moment().subtract(6, 'months'),
         initialEnd: isValidDateRange ? moment(to) : moment(),
-        initialPortfolios,
         initialProjectKeys
     };
 };
 
 // eslint-disable-next-line complexity
-export const getQueryString = (brand, portfolios, projectKeys, start, end, searchType) => {
+export const getQueryString = (brand, projectKeys, start, end) => {
     const brandQuery = `selectedBrand=${brand}`;
-    const brandPortfolios = filterBrandPortfolios(portfolios, brand);
-    const portfoliosQuery = brandPortfolios.length && searchType === SEARCH_TYPE_PORTFOLIO
-        ? `&portfolios=${brandPortfolios.map((p) => p.value).join('&portfolios=')}`
-        : '';
     const brandProjectKeys = filterBrandProjectKeys(projectKeys, brand);
-    const projectKeysQuery = brandProjectKeys.length && searchType === SEARCH_TYPE_PROJECT
-        ? `&projectKeys=${brandProjectKeys.map((p) => p.value).join('&projectKeys=')}`
+    const projectKeysQuery = brandProjectKeys.length
+        ? `&projectKeys=${brandProjectKeys.join('&projectKeys=')}`
         : '';
     const dateQuery = `&from=${start.toISOString()}&to=${end.toISOString()}`;
-    const searchTypeQuery = searchType === SEARCH_TYPE_PORTFOLIO
-        ? `&type=${SEARCH_TYPE_PORTFOLIO}`
-        : `&type=${SEARCH_TYPE_PROJECT}`;
-    return `/quality-metrics?${brandQuery}${dateQuery}${portfoliosQuery}${projectKeysQuery}${searchTypeQuery}`;
+    return `/quality-metrics?${brandQuery}${dateQuery}${projectKeysQuery}`;
 };
 
 export const getPropValue = (item, prop) => item[prop] || item[prop] === 0 ? item[prop] : '-';
@@ -383,16 +360,13 @@ export const formatCreatedVsResolvedData = (data, priorities = []) => {
 };
 
 // eslint-disable-next-line complexity
-export const getPanelDataUrl = (start, end, searchType, portfolios, projectKeys, brand, panel) => {
+export const getPanelDataUrl = (start, end, projectKeys, brand, panel) => {
     const baseUrl = '/v1/portfolio';
     const dateQuery = `fromDate=${start.format(DATE_FORMAT)}&toDate=${end.format(DATE_FORMAT)}`;
-    const portfoliosQuery = searchType === SEARCH_TYPE_PORTFOLIO && portfolios?.length
-        ? `&portfolios=${filterBrandPortfolios(portfolios, brand).map(({value}) => value).join('&portfolios=')}`
+    const projectKeysQuery = projectKeys?.length
+        ? `&projectKeys=${filterBrandProjectKeys(projectKeys, brand).join('&projectKeys=')}`
         : '';
-    const projectKeysQuery = searchType === SEARCH_TYPE_PROJECT && projectKeys?.length
-        ? `&projectKeys=${filterBrandProjectKeys(projectKeys, brand).map(({value}) => value).join('&projectKeys=')}`
-        : '';
-    const query = `?${dateQuery}${portfoliosQuery}${projectKeysQuery}`;
+    const query = `?${dateQuery}${projectKeysQuery}`;
     if (!panel) {
         return `${baseUrl}${query}`;
     } else if (panel === 'ttrSummary') {
@@ -401,8 +375,8 @@ export const getPanelDataUrl = (start, end, searchType, portfolios, projectKeys,
     return `${baseUrl}/panel/${panel}${query}`;
 };
 
-export const fetchPanelData = async (start, end, searchType, brandPortfolios, brandProjectKeys, brand, panel) => (
-    fetch(getPanelDataUrl(start, end, searchType, brandPortfolios, brandProjectKeys, brand, panel))
+export const fetchPanelData = async (start, end, brandProjectKeys, brand, panel) => (
+    fetch(getPanelDataUrl(start, end, brandProjectKeys, brand, panel))
         .then(checkResponse)
         .then((response) => ({
             data: response?.data || response || {},

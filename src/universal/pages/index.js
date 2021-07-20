@@ -256,7 +256,7 @@ export default [
         link: '/quality-metrics',
         text: 'Quality Metrics',
         component: QualityMetrics,
-        brands: [HOTELS_COM_BRAND]
+        brands: [HOTELS_COM_BRAND, VRBO_BRAND]
     },
     {
         category: PHAR,

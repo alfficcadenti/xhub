@@ -20,7 +20,7 @@ const data = [{
 }];
 
 const SLADefinitions = () => (
-    <Panel title="SLA Definitions" isFullWidth>
+    <Panel title="SLA Definitions" isFixedHeight>
         <DataTable
             data={data}
             columns={SLA_COLUMNS}
