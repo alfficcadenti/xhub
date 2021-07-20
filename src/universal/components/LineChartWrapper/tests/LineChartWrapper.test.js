@@ -93,7 +93,8 @@ describe('<LineChartWrapper />', () => {
             onMouseMove={onMouseMove}
             onMouseUp={onMouseUp}
             label="2021-06-20"
-            payload={payload} />);
+            payload={payload}
+        />);
 
         expect(wrapper.find('.recharts-tooltip-wrapper')).to.have.length(1);
         expect(wrapper.find('.recharts-legend-wrapper')).to.have.length(1);

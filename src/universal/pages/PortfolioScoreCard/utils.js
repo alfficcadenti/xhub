@@ -1,7 +1,7 @@
 import moment from 'moment';
 import qs from 'query-string';
 import {DATE_FORMAT} from '../../constants';
-import {validDateRange, getTableValue} from '../utils';
+import {validDateRange, getTableValue, buildTicketLink} from '../utils';
 import React from 'react';
 
 
@@ -28,7 +28,12 @@ export const detectThreshold = (value) => {
     return value >= 75 ? 'under-threshold' : '';
 };
 
-export const mapDetails = (row) => {
+export const mapDetails = (
+    setTicketDetailsBusinessOwnerType,
+    setTicketDetailsOrgName,
+    setIsTicketDetailsModalOpen,
+    row
+) => {
     const ttdValue = getTableValue(row, 'percentIncidentsTtdWithin15MinSlo');
     const ttfValue = getTableValue(row, 'percentIncidentsTtfWithin15MinSlo');
     const ttkValue = getTableValue(row, 'percentIncidentsTtkWithin30MinSlo');
@@ -36,7 +41,15 @@ export const mapDetails = (row) => {
 
     return {
         Name: <span className={`link ${row.isDisabled ? 'disabled' : ''}`} onClick={() => row.showDetails(null, row.subOrgDetails, row.name, row.businessOwnerType)}>{getTableValue(row, 'name')}</span>,
-        P1: getTableValue(row, 'p1IncidentCount'),
+        P1: (<span
+            className="link"
+            onClick={() => {
+                setTicketDetailsBusinessOwnerType(row.businessOwnerType);
+                setTicketDetailsOrgName(row.name);
+                setIsTicketDetailsModalOpen(true);
+            }}
+        >{getTableValue(row, 'p1IncidentCount')}
+        </span>),
         P2: getTableValue(row, 'p2IncidentCount'),
         ['TTD<=15M']: <span className={`${detectThreshold(ttdValue)}`}>{addPercentageSign(ttdValue)}</span>,
         ['TTF<=15M']: <span className={`${detectThreshold(ttfValue)}`}>{addPercentageSign(ttfValue)}</span>,
@@ -86,4 +99,16 @@ export const getCurrentSubOrgDetails = (lName, businessOwnerType, l2Data, l3Data
 export const getNextL = (currentySelectedL) => {
     const currentLDigit = currentySelectedL.split('')[1];
     return `L${parseInt(currentLDigit, 10) + 1}`;
+};
+
+export const mapTicketDetails = (ticketDetails = []) => {
+    return ticketDetails.map((ticketDetail) => ({
+        Number: buildTicketLink(getTableValue(ticketDetail, 'number')),
+        Priority: getTableValue(ticketDetail, 'priority'),
+        Title: getTableValue(ticketDetail, 'title'),
+        'Time To Detect': getTableValue(ticketDetail, 'timeToDetect'),
+        'Time To Know': getTableValue(ticketDetail, 'timeToKnow'),
+        'Time To Fix': getTableValue(ticketDetail, 'timeToFix'),
+        'Time To Restore': getTableValue(ticketDetail, 'timeToRestore'),
+    }));
 };
