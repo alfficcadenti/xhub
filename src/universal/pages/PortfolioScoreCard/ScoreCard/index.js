@@ -44,8 +44,7 @@ const ScoreCard = ({
     const fetchLData = () => {
         setIsLoading(true);
 
-        // Promise.all(['l1', 'l2', 'l3', 'l4'].map((l) => fetch(`/v1/org-metrics/business-owner-type/${l}?${dateQuery}`)))
-        Promise.all(['l1', 'l2', 'l3', 'l4'].map((l) => fetch(`https://opxhub-data-service.us-west-2.test.expedia.com/v1/org-metrics/business-owner-type/${l}?${dateQuery}`)))
+        Promise.all(['l1', 'l2', 'l3', 'l4'].map((l) => fetch(`/v1/org-metrics/business-owner-type/${l}?${dateQuery}`)))
             .then((responses) => Promise.all(responses.map(checkResponse)))
             .then(([
                 {data: l1Response},

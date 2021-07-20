@@ -27,8 +27,7 @@ const TicketDetailsModal = ({isOpen, onClose, onBack, currentL, currentClickedOr
         setIsLoadingTicketDetails(true);
         setTicketDetailsError();
 
-        // fetch(`/v1/org-metrics/business-owner-type/p1/${currentL}/${currentClickedOrg}`)
-        fetch(`https://opxhub-data-service.us-west-2.test.expedia.com/v1/org-metrics/business-owner-type/p1/${currentL}/${currentClickedOrg}`)
+        fetch(`/v1/org-metrics/business-owner-type/p1/${currentL}/${currentClickedOrg}`)
             .then(checkResponse)
             .then((response) => {
                 setTicketDetails(response);
