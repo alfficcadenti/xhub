@@ -49,9 +49,17 @@ describe('Portfolio ScoreCard utils', () => {
             percentIncidentsTtkWithin30MinSlo: 93,
             percentIncidentsTtrWithin60MinSlo: 87
         };
+        const setTicketDetailsBusinessOwnerType = jest.fn();
+        const setTicketDetailsOrgName = jest.fn();
+        const setIsTicketDetailsModalOpen = jest.fn();
 
-        const result = mapDetails(rowValue);
-        expect(result.P1).to.be.eql(25);
+        const result = mapDetails(
+            setTicketDetailsBusinessOwnerType,
+            setTicketDetailsOrgName,
+            setIsTicketDetailsModalOpen,
+            rowValue
+        );
+
         expect(result.P2).to.be.eql(18);
         expect(result['TTD<=15M']).to.be.eql(<span className="">24%</span>);
         expect(result['TTF<=15M']).to.be.eql(<span className="under-threshold">90%</span>);
@@ -69,9 +77,17 @@ describe('Portfolio ScoreCard utils', () => {
             percentIncidentsTtkWithin30MinSlo: 0,
             percentIncidentsTtrWithin60MinSlo: 0
         };
+        const setTicketDetailsBusinessOwnerType = jest.fn();
+        const setTicketDetailsOrgName = jest.fn();
+        const setIsTicketDetailsModalOpen = jest.fn();
 
-        const result = mapDetails(rowValue);
-        expect(result.P1).to.be.eql('-');
+        const result = mapDetails(
+            setTicketDetailsBusinessOwnerType,
+            setTicketDetailsOrgName,
+            setIsTicketDetailsModalOpen,
+            rowValue
+        );
+
         expect(result.P2).to.be.eql('-');
         expect(result['TTD<=15M']).to.be.eql(<span className="">-</span>);
         expect(result['TTF<=15M']).to.be.eql(<span className="">-</span>);

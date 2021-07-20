@@ -9,7 +9,6 @@ import {
     getQueryValues,
     getFciQueryString,
     getHistoryQueryString,
-    getPropValue,
     traceHasError,
     getTraceCounts,
     mapTrace,
@@ -175,15 +174,6 @@ describe('Fci Utils', () => {
         expect(errorLogs).to.eql([
             {Error: 'true', Operation: 'A'}
         ]);
-    });
-
-    it('getPropValue', () => {
-        const item = {a: 'aa', b: 'bb'};
-        expect(getPropValue(item, 'a')).to.equal('aa');
-        expect(getPropValue(item, 'b')).to.equal('bb');
-        expect(getPropValue(item, 'c')).to.equal('-');
-        expect(getPropValue(null, 'a')).to.equal('-');
-        expect(getPropValue(item, null)).to.equal('-');
     });
 
     it('traceHasError - false', () => {

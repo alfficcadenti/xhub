@@ -15,6 +15,7 @@ import {OPXHUB_SUPPORT_CHANNEL} from '../../../constants';
 import './styles.less';
 import {ARROW_LEFT__16} from '@homeaway/svg-defs';
 import {SVGIcon} from '@homeaway/react-svg';
+import TicketDetailsModal from '../TicketDetailsModal/TicketDetailsModal';
 
 
 const detailsStore = [];
@@ -31,11 +32,14 @@ const ScoreCard = ({
     const [l4Data, setL4Data] = useState([]);
     const [detailsData, setDetailsData] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isTicketDetailsModalOpen, setIsTicketDetailsModalOpen] = useState(false);
     const [currentClickedOrg, setCurrentClickedOrg] = useState('');
     const [currentL, setCurrentL] = useState('');
     const [currentId, setCurrentId] = useState(0);
     const [error, setError] = useState();
     const [isLoading, setIsLoading] = useState(true);
+    const [ticketDetailsBusinessOwnerType, setTicketDetailsBusinessOwnerType] = useState(null);
+    const [ticketDetailsOrgName, setTicketDetailsOrgName] = useState(null);
 
     const fetchLData = () => {
         setIsLoading(true);
@@ -112,7 +116,7 @@ const ScoreCard = ({
             setCurrentL(businessOwnerType.toUpperCase());
         }
 
-        setDetailsData(details.map(mapDetails));
+        setDetailsData(details.map(mapDetails.bind(null, setTicketDetailsBusinessOwnerType, setTicketDetailsOrgName, setIsTicketDetailsModalOpen)));
         setIsModalOpen(true);
     };
 
@@ -141,7 +145,12 @@ const ScoreCard = ({
                 >
                     {name}
                 </div>
-                <div className="cell-value">
+                <div className="cell-value clickable" onClick={() => {
+                    setTicketDetailsBusinessOwnerType(businessOwnerType);
+                    setTicketDetailsOrgName(name);
+                    setIsTicketDetailsModalOpen(true);
+                }}
+                >
                     <span>{p1IncidentCount}</span>
                 </div>
                 <div className="cell-value">
@@ -197,6 +206,10 @@ const ScoreCard = ({
         </div>
     );
 
+    const handleModalClose = () => {
+        setIsTicketDetailsModalOpen(false);
+    };
+
     return (
         <div className="score-card-container">
             <LoadingContainer isLoading={isLoading} error={error}>
@@ -220,6 +233,14 @@ const ScoreCard = ({
                     paginated
                 />
             </Modal>
+
+            <TicketDetailsModal
+                isOpen={isTicketDetailsModalOpen}
+                currentL={ticketDetailsBusinessOwnerType}
+                currentClickedOrg={ticketDetailsOrgName}
+                onBack={handleModalClose}
+                onClose={handleModalClose}
+            />
         </div>
     );
 };
