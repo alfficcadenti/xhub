@@ -271,8 +271,9 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                     getPredictions(startDateTime, endTime(), timeInterval, chartData);
                     setEndDateTime(endTime());
                     setStartDateTime(startTime());
+                } else {
+                    getPredictions(startDateTime, endDateTime, timeInterval, chartData);
                 }
-                getPredictions(startDateTime, endDateTime, timeInterval, chartData);
             })
             .catch((err) => {
                 setError('No data found for this selection.');
