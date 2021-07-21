@@ -304,7 +304,7 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
 
     const formatRate = (rate) => parseFloat((Number(rate) || 0).toFixed(2));
     // eslint-disable-next-line complexity
-    return SUCCESS_RATES_PAGES_LIST.map((pageName, i) => {
+    return SUCCESS_RATES_PAGES_LIST.map((chartName, i) => {
         const aggregatedData = [];
         let tempMinValue = 0;
 
@@ -345,7 +345,7 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
             minValue = tempMinValue < minValue ? tempMinValue : minValue;
         }
 
-        return {pageName, aggregatedData, pageBrand};
+        return {chartName, aggregatedData, pageBrand};
     }).map((item) => ({...item, minValue}));
 };
 
@@ -369,7 +369,7 @@ export const makeSuccessRatesLOBObjects = (
     );
     const formatRate = (rate) => parseFloat((Number(rate) || 0).toFixed(2));
     // eslint-disable-next-line complexity
-    return SUCCESS_RATES_PAGES_LIST.map((pageName, i) => {
+    return SUCCESS_RATES_PAGES_LIST.map((chartName, i) => {
         const aggregatedData = [];
         let tempMinValue = 0;
 
@@ -422,7 +422,7 @@ export const makeSuccessRatesLOBObjects = (
             minValue = tempMinValue < minValue ? tempMinValue : minValue;
         }
 
-        return {pageName, aggregatedData, pageBrand};
+        return {chartName, aggregatedData, pageBrand};
     }).map((item) => ({...item, minValue}));
 };
 

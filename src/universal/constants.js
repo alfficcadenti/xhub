@@ -165,3 +165,4 @@ export const BRANDS = [
 ];
 
 export const OPXHUB_SUPPORT_CHANNEL = '#opxhub-support';
+export const PAGE_VIEWS_PAGE_NAME = 'Page Views';

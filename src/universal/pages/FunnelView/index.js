@@ -17,7 +17,8 @@ import {
     EXPEDIA_PARTNER_SERVICES_BRAND,
     LOB_LIST,
     EPS_PARTNER_SITENAMES,
-    OPXHUB_SUPPORT_CHANNEL
+    OPXHUB_SUPPORT_CHANNEL,
+    PAGE_VIEWS_PAGE_NAME
 } from '../../constants';
 import {
     checkResponse,
@@ -200,11 +201,11 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}
         'Last 24 hours'
     ].includes(timeRange) ? 20 : 5;
 
-    const renderWidget = ({pageName, aggregatedData, pageBrand, minValue}) => (
+    const renderWidget = ({chartName, aggregatedData, pageBrand, minValue}) => (
         <TravelerMetricsWidget
-            title={pageName}
+            title={chartName}
             data={aggregatedData}
-            key={pageName}
+            key={chartName}
             brand={pageBrand}
             tickGap={getWidgetXAxisTickGap(currentTimeRange)}
             onMouseDown={handleMouseDown}
@@ -217,6 +218,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}
             annotations={enableAnnotations ? filteredAnnotations : []}
             selectedLoBs={selectedLobs}
             minChartValue={minValue}
+            pageName={PAGE_VIEWS_PAGE_NAME}
         />
     );
 

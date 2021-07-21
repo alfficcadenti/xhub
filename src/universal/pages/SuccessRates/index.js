@@ -269,11 +269,11 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
         }
     };
 
-    const renderWidget = ({pageName, aggregatedData, pageBrand, minValue}) => (
+    const renderWidget = ({chartName, aggregatedData, pageBrand, minValue}) => (
         <TravelerMetricsWidget
-            title={pageName}
+            title={chartName}
             data={aggregatedData}
-            key={pageName}
+            key={chartName}
             brand={pageBrand}
             tickGap={getWidgetXAxisTickGap(currentTimeRange)}
             onMouseDown={handleMouseDown}
@@ -283,11 +283,11 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
             chartRight={chartRight}
             refAreaLeft={refAreaLeft}
             refAreaRight={refAreaRight}
-            helpText={shouldShowTooltip(pageName, pageBrand, selectedLobs)}
+            helpText={shouldShowTooltip(chartName, pageBrand, selectedLobs)}
             formatYAxis={(value) => `${value.toFixed()}%`}
             minChartValue={minValue}
             maxChartValue={100}
-            selectedLoBs={pageName !== SUCCESS_RATES_PAGES_LIST[0] ? selectedLobs : []}
+            selectedLoBs={chartName !== SUCCESS_RATES_PAGES_LIST[0] ? selectedLobs : []}
             annotations={enableAnnotations ? filteredAnnotations : []}
             stacked
         />

@@ -16,7 +16,7 @@ import HelpText from '../HelpText/HelpText';
 import ReferenceLabel from '../ReferenceLabel';
 import {checkResponse, getBrand} from '../../pages/utils';
 import {getAnnotationStrokeColor} from '../utils.js';
-import {EXPEDIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../../constants';
+import {EXPEDIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, PAGE_VIEWS_PAGE_NAME} from '../../constants';
 import './styles.less';
 
 
@@ -50,7 +50,8 @@ const TravelerMetricsWidget = ({
     maxChartValue = 'auto',
     ResponsiveContainerWidth = '100%',
     ResponsiveContainerHeight = '80%',
-    stacked = false
+    stacked = false,
+    pageName = ''
 }) => {
     const brandLabel = brand.replace(/\s/g, '');
     const fill = `url(#${brandLabel})`;
@@ -121,7 +122,7 @@ const TravelerMetricsWidget = ({
         const tooltip = tooltipRef.current;
 
         const getDeltaUserCount = () => {
-            if (![EXPEDIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND].includes(brand)) {
+            if (pageName !== PAGE_VIEWS_PAGE_NAME && ![EXPEDIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND].includes(brand)) {
                 return !selectedLoBs.length
                     ? `<span class="delta-link">delta users = ${point.payload.deltaUserCount ?? 0}</span>`
                     : selectedLoBs
