@@ -38,15 +38,18 @@ export const mapDetails = (
     const ttfValue = getTableValue(row, 'percentIncidentsTtfWithin15MinSlo');
     const ttkValue = getTableValue(row, 'percentIncidentsTtkWithin30MinSlo');
     const ttrValue = getTableValue(row, 'percentIncidentsTtrWithin60MinSlo');
+    const isP1HasIncidents = row.p1IncidentCount > 0;
 
     return {
         Name: <span className={`link ${row.isDisabled ? 'disabled' : ''}`} onClick={() => row.showDetails(null, row.subOrgDetails, row.name, row.businessOwnerType)}>{getTableValue(row, 'name')}</span>,
         P1: (<span
-            className="link"
+            className={isP1HasIncidents ? 'link' : 'disabled'}
             onClick={() => {
-                setTicketDetailsBusinessOwnerType(row.businessOwnerType);
-                setTicketDetailsOrgName(row.name);
-                setIsTicketDetailsModalOpen(true);
+                if (isP1HasIncidents) {
+                    setTicketDetailsBusinessOwnerType(row.businessOwnerType);
+                    setTicketDetailsOrgName(row.name);
+                    setIsTicketDetailsModalOpen(true);
+                }
             }}
         >{getTableValue(row, 'p1IncidentCount')}
         </span>),
