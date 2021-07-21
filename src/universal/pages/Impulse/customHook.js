@@ -254,23 +254,64 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
         const dayRange = moment(endDateTime).diff(moment(startDateTime), 'days');
         if (dayRange >= 1 && dayRange < 7) {
             fetchPredictions(start, end, interval, chartData);
-        } else if (chartData && chartData.length) {
-            setRes(chartData);
         }
     };
 
     const getRealTimeData = () => {
+        let zoomOutRange = false;
+        let defaultTime = false;
+
+        const dayRange = moment(endDateTime).diff(moment(startDateTime), 'days');
+        if (dayRange >= 1 && dayRange < 7) {
+            zoomOutRange = true;
+        }
+
+        const defaultTimeRange = moment(endDateTime).diff(moment(endTime()), 'minutes');
+        if (defaultTimeRange <= 5) {
+            defaultTime = true;
+        }
+
         fetchCall(startDateTime, endTime(), timeInterval)
             .then((chartData) => {
                 setError('');
 
-                const liveData = (moment(endDateTime).diff(moment(endTime()), 'minutes') < 0);
-                if (liveData) {
-                    getPredictions(startDateTime, endTime(), timeInterval, chartData);
+                if (zoomOutRange) {
+                    getPredictions(startDateTime, defaultTime ? endTime() : endDateTime, timeInterval, chartData);
+
+                    if (defaultTime) {
+                        setEndDateTime(endTime());
+                        setStartDateTime(startTime());
+                    }
+                } else if (defaultTime) {
+                    setRes(chartData);
                     setEndDateTime(endTime());
                     setStartDateTime(startTime());
                 } else {
-                    getPredictions(startDateTime, endDateTime, timeInterval, chartData);
+                    fetchCall(startDateTime, endDateTime, timeInterval)
+                        .then((data) => {
+                            const newData = data.map((item, i) => {
+                                if (item.time === chartData[i]?.time) {
+                                    item[BOOKING_COUNT] = chartData[i][BOOKING_COUNT];
+                                }
+                                return item;
+                            });
+                            if (defaultTime) {
+                                setEndDateTime(endTime());
+                            }
+
+                            if (newData.length <= chartData.length) {
+                                setRes(chartData);
+                                return;
+                            }
+
+                            setRes(newData);
+                        })
+                        .catch((err) => {
+                            setError('No data found for this selection.');
+                            setIsLoading(false);
+                            // eslint-disable-next-line no-console
+                            console.error(err);
+                        });
                 }
             })
             .catch((err) => {
@@ -322,8 +363,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
     };
 
     const checkRefreshRange = () => {
-        console.log((moment(endDateTime).diff(moment(startDateTime), 'days') <= 5) && (moment().diff(moment(endDateTime), 'minutes') < 10), 'CHECK REFRESH RANGE', (moment(endDateTime).diff(moment(startDateTime), 'days') <= 5), (moment().diff(moment(endDateTime), 'minutes') < 10));
-        if ((moment(endDateTime).diff(moment(startDateTime), 'days') <= 5) && (moment().diff(moment(endDateTime), 'minutes') < 10)) {
+        if ((moment(endDateTime).diff(moment(startDateTime), 'days') <= 5) && (moment().diff(moment(endDateTime), 'minutes') <= 5)) {
             intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
             intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
             intervalForAnomalies = setIntervalForRealTimeData(anomalyTimeInterval, 'anomaly');
