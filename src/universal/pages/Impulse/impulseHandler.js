@@ -161,12 +161,36 @@ export const isValidTimeInterval = (startDate, endDate, timeInterval) => (
     !!timeInterval && !!startDate && !!endDate && getTimeIntervals(startDate, endDate).includes(timeInterval)
 );
 
+const convertRelativeDateRange = (date = '') => {
+    const regex = /^(now)([ +-][0-9]*[hd])?$/;
+
+    const match = regex.exec(date);
+    if (!match) {
+        return moment().format();
+    }
+    const [, , , time] = match;
+    if (!time) {
+        return moment().format();
+    }
+
+    let hd = time[time.length - 1];
+    let sign = time[0];
+    let num = time.slice(1, time.length - 1);
+
+    const unit = hd === 'h' ? 'hours' : 'days';
+    return (sign === '+' || sign === ' ')
+        ? moment().add(Number(num), unit).format()
+        : moment().subtract(Number(num), unit).format();
+};
+
 // eslint-disable-next-line complexity
 export const getQueryValues = (search) => {
     const {from, to, interval, refresh, brands, lobs, siteUrls, devices, incidents, anomalies} = qs.parse(search);
-    const isValidDateRange = validDateRange(from, to);
-    const initStart = isValidDateRange ? moment(from).utc() : startTime();
-    const initEnd = isValidDateRange ? moment(to).utc() : endTime();
+    const relativeFrom = convertRelativeDateRange(from);
+    const relativeTo = convertRelativeDateRange(to);
+    const isValidDateRange = validDateRange(relativeFrom, relativeTo);
+    const initStart = isValidDateRange ? moment(relativeFrom).utc() : startTime();
+    const initEnd = isValidDateRange ? moment(relativeTo).utc() : endTime();
     const isValidInterval = isValidTimeInterval(initStart, initEnd, interval);
 
     return {
@@ -181,6 +205,28 @@ export const getQueryValues = (search) => {
         initialIncidents: incidents ? incidents.split(',').filter((item) => INCIDENT_SELECTOR.includes(item)) : [],
         initialAnomalies: anomalies ? anomalies.split(',').filter((item) => ANOMALY_SELECTOR.includes(item)) : ['Anomaly Detected']
     };
+};
+
+const convertRelativeDateInString = (date) => {
+    const regex1 = /^([0-9]{4,4})[-]([0-9]{2,2})[-]([0-9]{2,2})[T]([0-9]{2,2})[:]([0-9]{2,2})[:]([0-9]{2,2})[Z]$/;
+    const match1 = regex1.exec(date);
+    const match2 = regex1.exec(moment(new Date()).utc().format());
+
+    const [, , , D, H] = match1;
+    const [, , , D1, H1] = match2;
+    let d = D1 - D;
+    let h = H1 - H;
+    if (d === 0 && h === 0) {
+        return 'now';
+    }
+    if (d > 0) {
+        return 'now' + '-' + d + 'd';
+    } else if (d < 0) {
+        return 'now' + '+' + (-d) + 'd';
+    } else if (h > 0) {
+        return 'now' + '-' + h + 'h';
+    }
+    return 'now' + '+' + (-h) + 'h';
 };
 
 export const mapActiveIndexToTabName = (idx) => {
@@ -201,6 +247,8 @@ export const mapActiveIndexToTabName = (idx) => {
 
 export const useAddToUrl = (
     selectedBrands,
+    isSubmitClicked,
+    chartSliced,
     start,
     end,
     interval,
@@ -219,10 +267,10 @@ export const useAddToUrl = (
     // eslint-disable-next-line complexity
     useEffect(() => {
         history.push(`${`/impulse/${mapActiveIndexToTabName(activeIndex)}?selectedBrand=${selectedBrands}`
-                + `&from=${start.format()}`
-                + `&to=${end.format()}`
-                + `&interval=${interval}`
-                + `&refresh=${refresh}`
+            + `&from=${isSubmitClicked === true || chartSliced === true ? start.format() : convertRelativeDateInString(start.format())}`
+            + `&to=${isSubmitClicked === true || chartSliced === true ? end.format() : convertRelativeDateInString((end.format()))}`
+            + `&interval=${interval}`
+            + `&refresh=${refresh}`
         }${brands.length === 0 ? '' : `&brands=${brands.join(',')}`
         }${lobs.length === 0 ? '' : `&lobs=${lobs.join(',')}`
         }${egSiteUrls.length === 0 ? '' : `&siteUrls=${egSiteUrls.join(',')}`
@@ -230,5 +278,5 @@ export const useAddToUrl = (
         }${incidents.length === 0 ? '' : `&incidents=${incidents.join(',')}`
         }${anomalies.length === 0 ? '' : `&anomalies=${anomalies.join(',')}`}`
         );
-    }, [selectedBrands, start, end, interval, refresh, lobs, brands, egSiteUrls, devices, incidents, anomalies, history, pathname, activeIndex]);
+    }, [selectedBrands, isSubmitClicked, chartSliced, start, end, interval, refresh, lobs, brands, egSiteUrls, devices, incidents, anomalies, history, pathname, activeIndex]);
 };
