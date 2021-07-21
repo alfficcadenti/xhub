@@ -13,10 +13,10 @@ export const getWidgetXAxisTickGap = (timeRange) => [
     'Last 24 hours'
 ].includes(timeRange) ? 20 : 5;
 
-export const shouldShowTooltip = (pageName, pageBrand, selectedLobs = []) => {
-    if (pageBrand === EXPEDIA_BRAND && pageName === SUCCESS_RATES_PAGES_LIST[3]) {
+export const shouldShowTooltip = (chartName, pageBrand, selectedLobs = []) => {
+    if (pageBrand === EXPEDIA_BRAND && chartName === SUCCESS_RATES_PAGES_LIST[3]) {
         return 'Only for nonNativeApps';
-    } else if (selectedLobs.length && pageName === SUCCESS_RATES_PAGES_LIST[0]) {
+    } else if (selectedLobs.length && chartName === SUCCESS_RATES_PAGES_LIST[0]) {
         return 'Only aggregated view is available for search';
     }
     return null;

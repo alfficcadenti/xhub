@@ -37,7 +37,7 @@ export const makePageViewLoBObjects = (data = [], start, end, pageBrand = '') =>
                 }
             }
         });
-        return {pageName: label, aggregatedData, pageBrand, lob: true};
+        return {chartName: label, aggregatedData, pageBrand, lob: true};
     });
 };
 
@@ -68,6 +68,6 @@ export const makePageViewObjects = (data = [], start, end, pageBrand = '') => {
             minValue = tempMinValue < minValue ? tempMinValue : minValue;
         }
 
-        return {pageName: label, aggregatedData, pageBrand};
+        return {chartName: label, aggregatedData, pageBrand};
     }).map((item) => ({...item, minValue}));
 };
