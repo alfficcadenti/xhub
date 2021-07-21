@@ -133,6 +133,7 @@ const ScoreCard = ({
             percentIncidentsTtrWithin60MinSlo,
             subOrgDetails
         } = row;
+        const isP1HasIncidents = p1IncidentCount > 0;
 
         return (
             <div
@@ -145,10 +146,12 @@ const ScoreCard = ({
                 >
                     {name}
                 </div>
-                <div className="cell-value clickable" onClick={() => {
-                    setTicketDetailsBusinessOwnerType(businessOwnerType);
-                    setTicketDetailsOrgName(name);
-                    setIsTicketDetailsModalOpen(true);
+                <div className={`cell-value ${isP1HasIncidents ? 'clickable' : ''}`} onClick={() => {
+                    if (isP1HasIncidents) {
+                        setTicketDetailsBusinessOwnerType(businessOwnerType);
+                        setTicketDetailsOrgName(name);
+                        setIsTicketDetailsModalOpen(true);
+                    }
                 }}
                 >
                     <span>{p1IncidentCount}</span>
