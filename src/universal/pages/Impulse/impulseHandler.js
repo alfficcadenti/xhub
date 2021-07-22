@@ -16,7 +16,6 @@ import {ANOMALY_SELECTOR, BRANDS, DEVICES, EG_SITE_URLS, INCIDENT_SELECTOR, LOBS
 
 const THREE_WEEK_AVG_COUNT = '3 Week Avg Counts';
 const BOOKING_COUNT = 'Booking Counts';
-
 export const getFilters = (data = [], typeOfFilter) =>
     data.filter((item) => item.tag === typeOfFilter).map((item) => item.values)[0].map((a) => ({
         value: a,
@@ -161,21 +160,20 @@ export const isValidTimeInterval = (startDate, endDate, timeInterval) => (
     !!timeInterval && !!startDate && !!endDate && getTimeIntervals(startDate, endDate).includes(timeInterval)
 );
 
-const convertRelativeDateRange = (date = '') => {
+export const convertRelativeDateRange = (date = '') => {
     const regex = /^(now)([ +-][0-9]*[hd])?$/;
 
     const match = regex.exec(date);
     if (!match) {
         return moment().format();
     }
-    const [, , , time] = match;
+    const [, , time] = match;
     if (!time) {
         return moment().format();
     }
-
-    let hd = time[time.length - 1];
-    let sign = time[0];
-    let num = time.slice(1, time.length - 1);
+    const timeSliceRegex = /^([ +-])([0-9]*)([hd])?$/;
+    const timeSliceMatch = timeSliceRegex.exec(time);
+    const [, sign, num, hd] = timeSliceMatch;
 
     const unit = hd === 'h' ? 'hours' : 'days';
     return (sign === '+' || sign === ' ')
@@ -186,11 +184,11 @@ const convertRelativeDateRange = (date = '') => {
 // eslint-disable-next-line complexity
 export const getQueryValues = (search) => {
     const {from, to, interval, refresh, brands, lobs, siteUrls, devices, incidents, anomalies} = qs.parse(search);
-    const relativeFrom = convertRelativeDateRange(from);
-    const relativeTo = convertRelativeDateRange(to);
-    const isValidDateRange = validDateRange(relativeFrom, relativeTo);
-    const initStart = isValidDateRange ? moment(relativeFrom).utc() : startTime();
-    const initEnd = isValidDateRange ? moment(relativeTo).utc() : endTime();
+    const from1 = convertRelativeDateRange(from);
+    const to1 = convertRelativeDateRange(to);
+    const isValidDateRange = validDateRange(from1, to1);
+    const initStart = isValidDateRange ? moment(from1).utc() : startTime();
+    const initEnd = isValidDateRange ? moment(to1).utc() : endTime();
     const isValidInterval = isValidTimeInterval(initStart, initEnd, interval);
 
     return {
@@ -207,26 +205,26 @@ export const getQueryValues = (search) => {
     };
 };
 
-const convertRelativeDateInString = (date) => {
+export const convertRelativeDateInString = (date) => {
     const regex1 = /^([0-9]{4,4})[-]([0-9]{2,2})[-]([0-9]{2,2})[T]([0-9]{2,2})[:]([0-9]{2,2})[:]([0-9]{2,2})[Z]$/;
     const match1 = regex1.exec(date);
     const match2 = regex1.exec(moment(new Date()).utc().format());
 
     const [, , , D, H] = match1;
     const [, , , D1, H1] = match2;
-    let d = D1 - D;
-    let h = H1 - H;
+    const d = D1 - D;
+    const h = H1 - H;
     if (d === 0 && h === 0) {
         return 'now';
     }
     if (d > 0) {
-        return 'now' + '-' + d + 'd';
+        return `now-${d}d`;
     } else if (d < 0) {
-        return 'now' + '+' + (-d) + 'd';
+        return `now+${-d}d`;
     } else if (h > 0) {
-        return 'now' + '-' + h + 'h';
+        return `now-${h}h`;
     }
-    return 'now' + '+' + (-h) + 'h';
+    return `now+${-h}h`;
 };
 
 export const mapActiveIndexToTabName = (idx) => {
