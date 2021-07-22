@@ -5,20 +5,24 @@
 
     .Dropdown__toggle {
         padding: @spacing-1x @spacing-2x;
-        margin-top: 3px;
         margin-right: @spacing-1x;
         font-weight: 400;
         border-radius: @spacing-1x;
-        background: @color-brand;
-        color: @color-text-inverse;
+        background: @color-bg-contrast;
+        color: @color-text-default;
         box-shadow: none;
         min-height: @spacing-5x;
         height: @spacing-5x;
+
+        &:hover {
+            background: @color-bg-hover;
+        }
     }
 
     .Dropdown__menu {
         cursor: pointer;
         min-width: 270px;
+        margin-right: @spacing-1x;
 
         li:first-child a {
             border-bottom: 1px solid @color-border-default;

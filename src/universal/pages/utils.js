@@ -17,20 +17,11 @@ import qs from 'query-string';
 import moment from 'moment';
 
 
-export const getVisiblePages = (selectedBrands, pages = [...ALL_PAGES]) => {
-    return pages.filter(({hidden, brands}) => (
+export const getVisiblePages = (selectedBrands, pages = [...ALL_PAGES]) => (
+    pages.filter(({hidden, brands}) => (
         !hidden && (!brands || brands.filter((brand) => selectedBrands.includes(brand)).length > 0)
-    )).sort((a, b) => {
-        if (a.text > b.text) {
-            return 1;
-        }
-        if (b.text > a.text) {
-            return -1;
-        }
-
-        return 0;
-    });
-};
+    ))
+);
 
 export const getPieData = (items = [], property) => {
     const counts = items
@@ -71,7 +62,7 @@ export const checkResponse = (response) => {
     return response.json();
 };
 
-export const getBrand = (brand, key) => BRANDS.find((b) => brand === b[key]);
+export const getBrand = (brand, key) => BRANDS.find((b) => brand === b[key]) || {};
 
 export const sortArrayByMostRecentDate = (arr, prop) => arr.sort((a, b) => new Date(b[prop]) - new Date(a[prop]));
 

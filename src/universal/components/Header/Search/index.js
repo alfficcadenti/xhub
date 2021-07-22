@@ -6,11 +6,11 @@ import './styles.less';
 
 const Search = ({isSearchOpen, onSearch, onBlur, onToggleSearch, selectedPages, options}, ref) => {
     return (
-        <>
+        <div className={`site-search-container ${isSearchOpen ? 'active' : ''}`}>
             <div role="button" className="btn btn-default search-toggle-btn" onClick={onToggleSearch} tabIndex={0} onKeyDown={onToggleSearch}>
                 <SVGIcon markup={SEARCH__24} />
             </div>
-            <div className={`site-search-container ${isSearchOpen ? 'active' : ''}`}>
+            <div className="site-search-form">
                 <Select
                     ref={ref}
                     className="site-search-input"
@@ -22,7 +22,7 @@ const Search = ({isSearchOpen, onSearch, onBlur, onToggleSearch, selectedPages, 
                 />
                 <div className={`site-search-blur ${isSearchOpen ? 'active' : ''}`} onClick={onBlur} />  {/* eslint-disable-line */}
             </div>
-        </>
+        </div>
     );
 };
 
