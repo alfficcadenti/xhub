@@ -429,7 +429,7 @@ const Impulse = (props) => {
                 <h1 className="page-title">{'Impulse Dashboard'}</h1>
                 <div className="right-header">
                     {sourceLatency || sourceLatency === 0 ? renderHealthCheck() : ''}
-                    {(((moment(endDateTime).diff(moment(startDateTime), 'days') <= 5)) && (moment().diff(moment(endDateTime), 'minutes') <= 5)) ? <div className="refresh-switch" title="Auto refresh charts toggle switch">
+                    {(((moment(endDateTime).diff(moment(startDateTime), 'days') <= 5)) && (moment().diff(moment(endDateTime), 'minutes') < 5)) ? <div className="refresh-switch" title="Auto refresh charts toggle switch">
                         <Switch
                             id="switch-example-small"
                             name="autoRefresh"

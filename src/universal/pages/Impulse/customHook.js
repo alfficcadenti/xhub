@@ -258,31 +258,15 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
     };
 
     const getRealTimeData = () => {
-        let zoomOutRange = false;
-        let defaultTime = false;
-
-        const dayRange = moment(endDateTime).diff(moment(startDateTime), 'days');
-        if (dayRange >= 1 && dayRange < 7) {
-            zoomOutRange = true;
-        }
-
-        const defaultTimeRange = moment(endDateTime).diff(moment(endTime()), 'minutes');
-        if (defaultTimeRange <= 5) {
-            defaultTime = true;
-        }
+        const futureEvent = moment(endDateTime).diff(moment(endTime()), 'minutes') >= 5;
 
         fetchCall(startDateTime, endTime(), timeInterval)
             .then((chartData) => {
                 setError('');
 
-                if (zoomOutRange) {
-                    getPredictions(startDateTime, defaultTime ? endTime() : endDateTime, timeInterval, chartData);
+                getPredictions(startDateTime, futureEvent ? endDateTime : endTime(), timeInterval, chartData);
 
-                    if (defaultTime) {
-                        setEndDateTime(endTime());
-                        setStartDateTime(startTime());
-                    }
-                } else if (defaultTime) {
+                if (!futureEvent) {
                     setRes(chartData);
                     setEndDateTime(endTime());
                     setStartDateTime(startTime());
@@ -295,9 +279,6 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                                 }
                                 return item;
                             });
-                            if (defaultTime) {
-                                setEndDateTime(endTime());
-                            }
 
                             if (newData.length <= chartData.length) {
                                 setRes(chartData);
@@ -325,8 +306,35 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
     const getGroupedBookingsData = (start = startDateTime, end = endDateTime, interval = timeInterval) => {
         Promise.all(['brands', 'lobs'].map((groupType) => fetchCallGrouped(start, end, interval, groupType)))
             .then(([brandsGroupedData, lobsGroupedData]) => {
-                setGroupedResByBrands(brandsGroupedData);
-                setGroupedResByLobs(lobsGroupedData);
+                const futureEvent = moment(endDateTime).diff(moment(endTime()), 'minutes') >= 5;
+
+                if (futureEvent) {
+                    Promise.all(['brands', 'lobs'].map((groupType) => fetchCallGrouped(start, endDateTime, interval, groupType)))
+                        .then(([brandsGroupedDataFuture, lobsGroupedDataFuture]) => {
+                            const newBrandsGroupedData = brandsGroupedDataFuture.map((item, i) => {
+                                if (brandsGroupedData[i]) {
+                                    item = brandsGroupedData[i];
+                                }
+                                return item;
+                            });
+
+                            const newLobsGroupedData = lobsGroupedDataFuture.map((item, i) => {
+                                if (lobsGroupedData[i]) {
+                                    item = lobsGroupedData[i];
+                                }
+                                return item;
+                            });
+
+                            setGroupedResByBrands(newBrandsGroupedData);
+                            setGroupedResByLobs(newLobsGroupedData);
+                        })
+                        .catch((err) => {
+                            console.error(err);
+                        });
+                } else {
+                    setGroupedResByBrands(brandsGroupedData);
+                    setGroupedResByLobs(lobsGroupedData);
+                }
             })
             .catch((err) => {
                 console.error(err);
@@ -363,7 +371,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
     };
 
     const checkRefreshRange = () => {
-        if ((moment(endDateTime).diff(moment(startDateTime), 'days') <= 5) && (moment().diff(moment(endDateTime), 'minutes') <= 5)) {
+        if ((moment(endDateTime).diff(moment(startDateTime), 'days') <= 5) && (moment().diff(moment(endDateTime), 'minutes') < 5)) {
             intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
             intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
             intervalForAnomalies = setIntervalForRealTimeData(anomalyTimeInterval, 'anomaly');
