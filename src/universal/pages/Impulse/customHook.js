@@ -267,9 +267,9 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 getPredictions(startDateTime, futureEvent ? endDateTime : endTime(), timeInterval, chartData);
 
                 if (!futureEvent) {
-                    setRes(chartData);
                     setEndDateTime(endTime());
                     setStartDateTime(startTime());
+                    setRes(chartData);
                 } else {
                     fetchCall(startDateTime, endDateTime, timeInterval)
                         .then((data) => {
@@ -371,10 +371,12 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
     };
 
     const checkRefreshRange = () => {
-        if ((moment(endDateTime).diff(moment(startDateTime), 'days') <= 5) && (moment().diff(moment(endDateTime), 'minutes') < 5)) {
-            intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
-            intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
-            intervalForAnomalies = setIntervalForRealTimeData(anomalyTimeInterval, 'anomaly');
+        if (isAutoRefresh) {
+            if ((moment(endDateTime).diff(moment(startDateTime), 'days') <= 5) && (moment().diff(moment(endDateTime), 'minutes') < 5)) {
+                intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
+                intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
+                intervalForAnomalies = setIntervalForRealTimeData(anomalyTimeInterval, 'anomaly');
+            }
         }
     };
     useEffect(() => {
@@ -424,20 +426,24 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
 
 
     useEffect(() => {
-        const dateInvalid = (moment(endDateTime).diff(moment(startDateTime), 'days') >= 5) || (moment().diff(moment(endDateTime), 'minutes') > 10);
+        const dateInvalid = (moment(endDateTime).diff(moment(startDateTime), 'days') >= 5) || (moment().diff(moment(endDateTime), 'minutes') > 5);
 
         if (isApplyClicked || isResetClicked || isChartSliceClicked) {
             getGroupedBookingsData();
             getData();
             fetchIncidents();
             getBrandsFilterData();
-            checkRefreshRange();
             fetchHealth();
             fetchAnomalies();
             getPredictions();
 
-            if (dateInvalid) {
+            if (dateInvalid || !isAutoRefresh) {
                 setAutoRefresh(false);
+                clearInterval(intervalForCharts);
+                clearInterval(intervalForAnnotations);
+                clearInterval(intervalForAnomalies);
+            } else {
+                checkRefreshRange();
             }
 
             if (isResetClicked) {
