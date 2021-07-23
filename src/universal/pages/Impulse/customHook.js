@@ -25,7 +25,7 @@ const IMPULSE_MAPPING = [
     {globalFilter: EGENCIA_BRAND, impulseFilter: EGENCIA_BRAND},
     {globalFilter: VRBO_BRAND, impulseFilter: 'VRBO'}
 ];
-const bookingTimeInterval = 300000;
+const bookingTimeInterval = 60000;
 const incidentTimeInterval = 900000;
 const healthTimeInterval = 300000;
 const anomalyTimeInterval = 900000;
@@ -259,6 +259,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
 
     const getRealTimeData = () => {
         const futureEvent = moment(endDateTime).diff(moment(endTime()), 'minutes') >= 5;
+        const defaultRange = moment(endDateTime).diff(moment(startDateTime), 'hours') === 72;
 
         fetchCall(startDateTime, endTime(), timeInterval)
             .then((chartData) => {
@@ -270,7 +271,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                     setEndDateTime(endTime());
                     setRes(chartData);
 
-                    if (!chartSliced) {
+                    if (defaultRange) {
                         setStartDateTime(startTime());
                     }
                 } else {
