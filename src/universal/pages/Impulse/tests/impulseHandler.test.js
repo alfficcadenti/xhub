@@ -93,46 +93,46 @@ describe('impulseHandler', () => {
     });
     describe('convertRelativeDateRange', () => {
         it('should return future date by day', () => {
-            const now = moment().add(1, 'day').format();
-            expect(convertRelativeDateRange('now+1d')).eql(now);
+            const expectedDate = moment().add(1, 'day').format();
+            expect(convertRelativeDateRange('now+1d')).eql(expectedDate);
         });
         it('should return future date by hour', () => {
-            const now = moment().add(1, 'hour').format();
-            expect(convertRelativeDateRange('now+1h')).eql(now);
+            const expectedDate = moment().add(1, 'hour').format();
+            expect(convertRelativeDateRange('now+1h')).eql(expectedDate);
         });
         it('should return past date by day', () => {
-            const now = moment().subtract(1, 'day').format();
-            expect(convertRelativeDateRange('now-1d')).eql(now);
+            const expectedDate = moment().subtract(1, 'day').format();
+            expect(convertRelativeDateRange('now-1d')).eql(expectedDate);
         });
         it('should return past date by hour', () => {
-            const now = moment().subtract(1, 'hour').format();
-            expect(convertRelativeDateRange('now-1h')).eql(now);
+            const expectedDate = moment().subtract(1, 'hour').format();
+            expect(convertRelativeDateRange('now-1h')).eql(expectedDate);
         });
         it('should return current date', () => {
-            const now = moment().format();
-            expect(convertRelativeDateRange('now')).eql(now);
+            const expectedDate = moment().format();
+            expect(convertRelativeDateRange('now')).eql(expectedDate);
         });
     });
     describe('convertRelativeDateInString', () => {
         it('should return relative future date by day', () => {
-            const now = moment().add(1, 'day').utc().format();
-            expect(convertRelativeDateInString(now)).eql('now+1d');
+            const expectedDate = moment().add(1, 'day').utc().format();
+            expect(convertRelativeDateInString(expectedDate)).eql('now+1d');
         });
         it('should return relative future date by hour', () => {
-            const now = moment().add(1, 'hour').utc().format();
-            expect(convertRelativeDateInString(now)).eql('now+1h');
+            const expectedDate = moment().add(1, 'hour').utc().format();
+            expect(convertRelativeDateInString(expectedDate)).eql('now+1h');
         });
         it('should return relative past date by day', () => {
-            const now = moment().subtract(1, 'day').utc().format();
-            expect(convertRelativeDateInString(now)).eql('now-1d');
+            const expectedDate = moment().subtract(1, 'day').utc().format();
+            expect(convertRelativeDateInString(expectedDate)).eql('now-1d');
         });
         it('should return relative past date by hour', () => {
-            const now = moment().subtract(1, 'hour').utc().format();
-            expect(convertRelativeDateInString(now)).eql('now-1h');
+            const expectedDate = moment().subtract(1, 'hour').utc().format();
+            expect(convertRelativeDateInString(expectedDate)).eql('now-1h');
         });
         it('should return relative current date', () => {
-            const now = moment().utc().format();
-            expect(convertRelativeDateInString(now)).eql('now');
+            const expectedDate = moment().utc().format();
+            expect(convertRelativeDateInString(expectedDate)).eql('now');
         });
     });
     describe('test final query string', () => {

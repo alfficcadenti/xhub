@@ -184,11 +184,11 @@ export const convertRelativeDateRange = (date = '') => {
 // eslint-disable-next-line complexity
 export const getQueryValues = (search) => {
     const {from, to, interval, refresh, brands, lobs, siteUrls, devices, incidents, anomalies} = qs.parse(search);
-    const from1 = convertRelativeDateRange(from);
-    const to1 = convertRelativeDateRange(to);
-    const isValidDateRange = validDateRange(from1, to1);
-    const initStart = isValidDateRange ? moment(from1).utc() : startTime();
-    const initEnd = isValidDateRange ? moment(to1).utc() : endTime();
+    const relativeFrom = convertRelativeDateRange(from);
+    const relativeTo = convertRelativeDateRange(to);
+    const isValidDateRange = validDateRange(relativeFrom, relativeTo);
+    const initStart = isValidDateRange ? moment(relativeFrom).utc() : startTime();
+    const initEnd = isValidDateRange ? moment(relativeTo).utc() : endTime();
     const isValidInterval = isValidTimeInterval(initStart, initEnd, interval);
 
     return {
@@ -206,25 +206,18 @@ export const getQueryValues = (search) => {
 };
 
 export const convertRelativeDateInString = (date) => {
-    const regex1 = /^([0-9]{4,4})[-]([0-9]{2,2})[-]([0-9]{2,2})[T]([0-9]{2,2})[:]([0-9]{2,2})[:]([0-9]{2,2})[Z]$/;
-    const match1 = regex1.exec(date);
-    const match2 = regex1.exec(moment(new Date()).utc().format());
-
-    const [, , , D, H] = match1;
-    const [, , , D1, H1] = match2;
-    const d = D1 - D;
-    const h = H1 - H;
-    if (d === 0 && h === 0) {
-        return 'now';
+    const utcDateTimeRegex = /^([0-9]{4,4})[-]([0-9]{2,2})[-]([0-9]{2,2})[T]([0-9]{2,2})[:]([0-9]{2,2})[:]([0-9]{2,2})[Z]$/;
+    const [, , , days, hours] = utcDateTimeRegex.exec(date);
+    const [, , , currDays, currHours] = utcDateTimeRegex.exec(moment(new Date()).utc().format());
+    const d = currDays - days;
+    const h = currHours - hours;
+    if (d === 0) {
+        if (h === 0) {
+            return 'now';
+        }
+        return (h > 0) ? `now-${h}h` : `now+${-h}h`;
     }
-    if (d > 0) {
-        return `now-${d}d`;
-    } else if (d < 0) {
-        return `now+${-d}d`;
-    } else if (h > 0) {
-        return `now-${h}h`;
-    }
-    return `now+${-h}h`;
+    return (d > 0) ? `now-${d}d` : `now+${-d}d`;
 };
 
 export const mapActiveIndexToTabName = (idx) => {
