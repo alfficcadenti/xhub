@@ -910,6 +910,11 @@
               "path": "/v1/delta-users-counts-by-metrics",
               "method": "GET",
               "operation": "GET_delta_user_api_v1"
+            },
+            "deltaUserDetails": {
+              "path": "/v1/delta-users-details",
+              "method": "GET",
+              "operation": "GET_delta_user_details_api_v1"
             }
           }
         },
@@ -921,6 +926,11 @@
               "path": "/v1/delta-users-counts-by-metrics",
               "method": "GET",
               "operation": "GET_delta_user_api_v1"
+            },
+            "deltaUserDetails": {
+              "path": "/v1/delta-users-details",
+              "method": "GET",
+              "operation": "GET_delta_user_details_api_v1"
             }
           }
         }

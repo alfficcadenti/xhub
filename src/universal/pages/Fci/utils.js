@@ -7,7 +7,7 @@ import DataTable from '../../components/DataTable';
 import {LOB_LIST} from '../../constants';
 import {TRACE_TABLE_COLUMNS, SITES, CATEGORY_OPTION} from './constants';
 import {EXPEDIA_PARTNER_SERVICES_BRAND, EXPEDIA_BRAND, OPXHUB_SUPPORT_CHANNEL} from '../../constants';
-import {validDateRange} from '../utils';
+import {validDateRange, getTableValue} from '../utils';
 
 
 export const getBrandSites = (brand) => SITES[brand] || ['travel.chase.com'];
@@ -90,8 +90,6 @@ const getTagValue = (tags, property) => {
     return '-';
 };
 
-export const getPropValue = (item, property) => item && property ? (item[property] || '-') : '-';
-
 export const traceHasError = (t) => {
     const tags = t.tags || [];
     const errorIdx = tags.findIndex(({key}) => key === 'error');
@@ -112,8 +110,8 @@ export const mapTrace = (t) => {
     const tags = t.tags || [];
     const hasError = traceHasError(t);
     const result = {
-        Service: getPropValue(t, 'serviceName'),
-        Operation: getPropValue(t, 'operationName'),
+        Service: getTableValue(t, 'serviceName'),
+        Operation: getTableValue(t, 'operationName'),
         Error: String(hasError),
         'External Error Code': '-',
         'External Description': '-',
@@ -136,9 +134,9 @@ export const mapTrace = (t) => {
 };
 
 export const mapComment = (row) => ({
-    Created: getPropValue(row, 'timestamp'),
-    Author: getPropValue(row, 'author'),
-    Comment: getPropValue(row, 'comment'),
+    Created: getTableValue(row, 'timestamp'),
+    Author: getTableValue(row, 'author'),
+    Comment: getTableValue(row, 'comment'),
     'Is FCI': String(row.isFci)
 });
 
@@ -146,21 +144,21 @@ export const mapFci = (row = {}) => {
     const {fci = {}, category = []} = JSON.parse(JSON.stringify(row));
     return {
         Created: fci.timestamp ? moment(fci.timestamp).format('YYYY-MM-DD HH:mm') : '-',
-        Session: getPropValue(fci, 'sessionId'),
-        Trace: getPropValue(fci, 'traceId'),
-        Failure: getPropValue(fci, 'failure'),
-        'Intentional': getPropValue(fci, 'isIntentional'),
-        'Error Code': getPropValue(fci, 'errorCode'),
-        Site: getPropValue(fci, 'site'),
-        TPID: getPropValue(fci, 'tpId'),
-        EAPID: getPropValue(fci, 'eapId'),
-        'SiteID': getPropValue(fci, 'siteId'),
+        Session: getTableValue(fci, 'sessionId'),
+        Trace: getTableValue(fci, 'traceId'),
+        Failure: getTableValue(fci, 'failure'),
+        'Intentional': getTableValue(fci, 'isIntentional'),
+        'Error Code': getTableValue(fci, 'errorCode'),
+        Site: getTableValue(fci, 'site'),
+        TPID: getTableValue(fci, 'tpId'),
+        EAPID: getTableValue(fci, 'eapId'),
+        'SiteID': getTableValue(fci, 'siteId'),
         Category: category.join(', ') || '-',
         LoB: (LOB_LIST.find((l) => l.value === fci.lineOfBusiness) || {label: '-'}).label,
-        'Device User Agent ID': getPropValue(fci, 'duaId'),
-        Comment: getPropValue(fci, 'comment'),
+        'Device User Agent ID': getTableValue(fci, 'duaId'),
+        Comment: getTableValue(fci, 'comment'),
         'Is FCI': String(fci.isFci),
-        recordedSessionUrl: getPropValue(row, 'recordedSessionUrl'),
+        recordedSessionUrl: getTableValue(row, 'recordedSessionUrl'),
         traces: (fci.traces || []).map(mapTrace)
     };
 };

@@ -17,20 +17,11 @@ import qs from 'query-string';
 import moment from 'moment';
 
 
-export const getVisiblePages = (selectedBrands, pages = [...ALL_PAGES]) => {
-    return pages.filter(({hidden, brands}) => (
+export const getVisiblePages = (selectedBrands, pages = [...ALL_PAGES]) => (
+    pages.filter(({hidden, brands}) => (
         !hidden && (!brands || brands.filter((brand) => selectedBrands.includes(brand)).length > 0)
-    )).sort((a, b) => {
-        if (a.text > b.text) {
-            return 1;
-        }
-        if (b.text > a.text) {
-            return -1;
-        }
-
-        return 0;
-    });
-};
+    ))
+);
 
 export const getPieData = (items = [], property) => {
     const counts = items
@@ -71,7 +62,7 @@ export const checkResponse = (response) => {
     return response.json();
 };
 
-export const getBrand = (brand, key) => BRANDS.find((b) => brand === b[key]);
+export const getBrand = (brand, key) => BRANDS.find((b) => brand === b[key]) || {};
 
 export const sortArrayByMostRecentDate = (arr, prop) => arr.sort((a, b) => new Date(b[prop]) - new Date(a[prop]));
 
@@ -304,7 +295,7 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
 
     const formatRate = (rate) => parseFloat((Number(rate) || 0).toFixed(2));
     // eslint-disable-next-line complexity
-    return SUCCESS_RATES_PAGES_LIST.map((pageName, i) => {
+    return SUCCESS_RATES_PAGES_LIST.map((chartName, i) => {
         const aggregatedData = [];
         let tempMinValue = 0;
 
@@ -345,7 +336,7 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
             minValue = tempMinValue < minValue ? tempMinValue : minValue;
         }
 
-        return {pageName, aggregatedData, pageBrand};
+        return {chartName, aggregatedData, pageBrand};
     }).map((item) => ({...item, minValue}));
 };
 
@@ -369,7 +360,7 @@ export const makeSuccessRatesLOBObjects = (
     );
     const formatRate = (rate) => parseFloat((Number(rate) || 0).toFixed(2));
     // eslint-disable-next-line complexity
-    return SUCCESS_RATES_PAGES_LIST.map((pageName, i) => {
+    return SUCCESS_RATES_PAGES_LIST.map((chartName, i) => {
         const aggregatedData = [];
         let tempMinValue = 0;
 
@@ -422,7 +413,7 @@ export const makeSuccessRatesLOBObjects = (
             minValue = tempMinValue < minValue ? tempMinValue : minValue;
         }
 
-        return {pageName, aggregatedData, pageBrand};
+        return {chartName, aggregatedData, pageBrand};
     }).map((item) => ({...item, minValue}));
 };
 

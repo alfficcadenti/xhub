@@ -5,7 +5,7 @@ import DataTable from '../../../components/DataTable';
 import {PRIORITY_COLUMN_HEADERS} from '../constants';
 import {formatTableData, groupDataByPillar, processTwoDimensionalIssues} from '../utils';
 
-const TwoDimensionalPanel = ({title, info, tickets, portfolios, panelData, dataKey, fullWidth = false, groupBy = 'Project', brand, type}) => {
+const TwoDimensionalPanel = ({title, info, tickets, panelData, dataKey, fullWidth = false, groupBy = 'Project', brand}) => {
     const {data, isLoading, error, queries = []} = panelData;
     const [chartData, setChartData] = useState([]);
     const [modalData, setModalData] = useState({});
@@ -16,14 +16,14 @@ const TwoDimensionalPanel = ({title, info, tickets, portfolios, panelData, dataK
 
     useEffect(() => {
         const handleClick = (d, project, priority) => {
-            setModalData(processTwoDimensionalIssues(tickets, d, project, portfolios, priority));
+            setModalData(processTwoDimensionalIssues(tickets, d, project, priority));
             setIsModalOpen(true);
         };
         const selectedData = groupBy === 'Project'
             ? data[dataKey]
-            : groupDataByPillar(data[dataKey], portfolios, brand);
-        setChartData(formatTableData(selectedData, handleClick, groupBy, type));
-    }, [tickets, data, portfolios, dataKey, groupBy, brand, type]);
+            : groupDataByPillar(data[dataKey]);
+        setChartData(formatTableData(selectedData, handleClick, groupBy));
+    }, [tickets, data, dataKey, groupBy, brand]);
 
     const handleCloseModal = () => {
         setIsModalOpen(false);

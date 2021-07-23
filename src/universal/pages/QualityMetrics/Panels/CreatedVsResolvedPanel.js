@@ -73,13 +73,15 @@ const CreatedVsResolvedPanel = ({title, info, priorities = [], tickets, panelDat
                         hide={hiddenKeys[createdDataKey]}
                         dataKey={createdDataKey}
                         stroke="#3366cc"
+                        strokeWidth={2}
                         activeDot={{onClick: getClickHandler('createdTickets')}}
                     />
                     <Line
                         name="Resolved"
                         hide={hiddenKeys[resolvedDataKey]}
                         dataKey={resolvedDataKey}
-                        stroke="#109618"
+                        stroke="#ff9900"
+                        strokeWidth={2}
                         activeDot={{onClick: getClickHandler('resolvedTickets')}}
                     />
                 </LineChart>

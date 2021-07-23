@@ -5,19 +5,19 @@ export const HCOM_PORTFOLIOS = [
     {
         text: 'Checkout',
         value: 'checkout',
-        projects: ['COPB', 'EPOCH', 'CCAT', 'HBILL', 'HPAY', 'CKOCLD', 'COLT', 'CXP', 'ROCK', 'SCOUTS', 'HCKOSUP', 'SKYNET']
+        projects: ['CCAT', 'CKOCLD', 'COLT', 'COPB', 'CXP', 'EPOCH', 'HBILL', 'HCKOSUP', 'HPAY', 'ROCK', 'SCOUTS', 'SKYNET']
     }, {
         text: 'Core Services',
         value: 'coreservices',
-        projects: ['BANK', 'PRIME', 'ONEAPI', 'MOB', 'HK', 'NUCLEO']
+        projects: ['BANK', 'HK', 'MOB', 'NUCLEO', 'ONEAPI', 'PRIME']
     }, {
         text: 'Customer',
         value: 'customer',
-        projects: ['LOYD', 'CARTA', 'CRTR', 'LORD', 'CRUISE']
+        projects: ['CARTA', 'CRTR', 'CRUISE', 'LORD', 'LOYD']
     }, {
         text: 'H4P',
         value: 'h4p',
-        projects: ['PIT', 'HROP']
+        projects: ['HROP', 'PIT']
     }, {
         text: 'Kes',
         value: 'kes',
@@ -25,28 +25,36 @@ export const HCOM_PORTFOLIOS = [
     }, {
         text: 'Landing',
         value: 'landing',
-        projects: ['LAPLAT', 'FIGS', 'LASER', 'PANDA', 'HCOMLAND']
+        projects: ['FIGS', 'HCOMLAND', 'LAPLAT', 'LASER', 'PANDA']
     }, {
         text: 'Mobile',
         value: 'mobile',
         projects: ['AND', 'ENG', 'RVN']
-    }, {
-        text: 'Shopping',
-        value: 'shopping',
-        projects: ['ALO', 'SHP']
     },
     {
         text: 'Pricing',
         value: 'pricing',
-        projects: ['PDI', 'DMI', 'HCR']
+        projects: ['DMI', 'HCR', 'PDI']
+    }, {
+        text: 'Shopping',
+        value: 'shopping',
+        projects: ['ALO', 'SHP']
     }
 ];
 
 export const VRBO_PORTFOLIOS = [
     {
-        text: 'Vrbo Retail - Tech Enablers',
-        value: 'techenabler',
-        projects: ['UITK', 'COREAPI']
+        text: 'P&M',
+        value: 'pm',
+        projects: ['AUTH', 'PROFILE']
+    }, {
+        text: 'TPG',
+        value: 'tpg',
+        projects: ['MAOWN', 'MIOWN', 'PHT', 'PR', 'PXC', 'PXO', 'PXP', 'VRM', 'YBIDEV']
+    }, {
+        text: 'Vrbo Retail - Core Experiences',
+        value: 'coreexperience',
+        projects: ['CHK', 'FRIENDS', 'GEODEV', 'HAVAS', 'SHOP', 'VPCM', 'VPCS', 'VRBODISCO', 'VRBOGEO']
     }, {
         text: 'Vrbo Retail - Growth Tech',
         value: 'growthtech',
@@ -54,34 +62,30 @@ export const VRBO_PORTFOLIOS = [
     }, {
         text: 'Vrbo Retail - Stay & GX',
         value: 'staygx',
-        projects: ['TM', 'SE', 'SHCMP', 'GX', 'GXTRNZ', 'CAMS', 'LOC', 'CAMSUP']
+        projects: ['CAMS', 'CAMSUP', 'GX', 'GXTRNZ', 'LOC', 'SE', 'SHCMP', 'TM']
     }, {
-        text: 'Vrbo Retail - Core Experiences',
-        value: 'coreexperience',
-        projects: ['CHK', 'HAVAS', 'FRIENDS', 'VPCM', 'VPCS', 'SHOP', 'VRBOGEO', 'GEODEV', 'VRBODISCO']
-    }, {
-        text: 'P&M',
-        value: 'pm',
-        projects: ['AUTH', 'PROFILE']
-    }, {
-        text: 'TPG',
-        value: 'tpg',
-        projects: ['YBIDEV', 'PXP', 'VRM', 'PXO', 'PXC', 'PR', 'MAOWN', 'MIOWN', 'PHT']
+        text: 'Vrbo Retail - Tech Enablers',
+        value: 'techenabler',
+        projects: ['COREAPI', 'UITK']
     }
 ];
 
 export const HCOM_PROJECT_KEYS = HCOM_PORTFOLIOS
     .reduce((acc, curr) => [...acc, ...curr.projects], [])
-    .sort()
-    .map((p) => ({text: p, value: p, projects: [p]}));
+    .sort();
 
 export const VRBO_PROJECT_KEYS = VRBO_PORTFOLIOS
     .reduce((acc, curr) => [...acc, ...curr.projects], [])
-    .sort()
-    .map((p) => ({text: p, value: p, projects: [p]}));
+    .sort();
 
-export const SEARCH_TYPE_PORTFOLIO = 'portfolio';
-export const SEARCH_TYPE_PROJECT = 'project';
+export const ALL_PORTFOLIOS = [...HCOM_PORTFOLIOS, ...VRBO_PORTFOLIOS];
+
+export const ALL_PROJECT_KEY_VALUES = [...HCOM_PROJECT_KEYS, ...VRBO_PROJECT_KEYS].sort();
+
+export const PROJECT_PORTFOLIO_MAP = ALL_PROJECT_KEY_VALUES.reduce((acc, curr) => {
+    const portfolio = ALL_PORTFOLIOS.find(({projects}) => projects.includes(curr));
+    return Object.assign(acc, {[curr]: JSON.parse(JSON.stringify(portfolio))});
+}, {});
 
 export const P1_LABEL = 'P1';
 export const P2_LABEL = 'P2';

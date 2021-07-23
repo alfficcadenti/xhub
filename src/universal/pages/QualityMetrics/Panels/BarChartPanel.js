@@ -7,7 +7,7 @@ import ChartModal from '../ChartModal';
 import {PRIORITY_LABELS, PRIORITY_COLORS} from '../constants';
 import {formatBarChartData, findAndFormatTicket, mapPriority} from '../utils';
 
-const BarChartPanel = ({title, info, tickets, panelData, dataKey, type}) => {
+const BarChartPanel = ({title, info, tickets, panelData, dataKey}) => {
     const {data, isLoading, error, queries} = panelData;
     const [chartData, setChartData] = useState([]);
     const [modalData, setModalData] = useState({});
@@ -20,7 +20,7 @@ const BarChartPanel = ({title, info, tickets, panelData, dataKey, type}) => {
             ? []
             : formatBarChartData(data[dataKey] || []);
         setChartData(formattedData);
-    }, [tickets, data, panelData, dataKey, type]);
+    }, [tickets, data, panelData, dataKey]);
 
     const getBarClickHandler = (priority) => (selectedBar) => {
         if (selectedBar) {

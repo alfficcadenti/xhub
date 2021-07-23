@@ -3,13 +3,12 @@ import moment from 'moment';
 import qs from 'query-string';
 import {checkResponse} from '../../pages/utils';
 import {
-    HCOM_PORTFOLIOS, VRBO_PORTFOLIOS, PRIORITY_LABELS,
+    PRIORITY_LABELS,
     P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL, NOT_PRIORITIZED_LABEL,
-    HCOM_PROJECT_KEYS, VRBO_PROJECT_KEYS, SEARCH_TYPE_PORTFOLIO, SEARCH_TYPE_PROJECT
+    HCOM_PROJECT_KEYS, VRBO_PROJECT_KEYS, PROJECT_PORTFOLIO_MAP, HCOM_PORTFOLIOS, VRBO_PORTFOLIOS
 } from './constants';
 import {HOTELS_COM_BRAND, DATE_FORMAT} from '../../constants';
 import {formatDuration} from '../../components/utils';
-
 
 export const getBrandPortfolios = (brand) => (
     brand === HOTELS_COM_BRAND ? HCOM_PORTFOLIOS : VRBO_PORTFOLIOS
@@ -31,14 +30,9 @@ export const getProjectKeysQuery = (brandProjectKeys) => (
         : ''
 );
 
-export const filterBrandPortfolios = (portfolios, brand) => {
-    const brandPortfolioValues = getBrandPortfolios(brand).map(({value}) => value);
-    return (portfolios || []).filter(({value}) => brandPortfolioValues.includes(value));
-};
-
 export const filterBrandProjectKeys = (projectKeys, brand) => {
-    const brandProjectKeyValues = getBrandProjectKeys(brand).map(({value}) => value);
-    return (projectKeys || []).filter(({value}) => brandProjectKeyValues.includes(value));
+    const brandProjectKeyValues = getBrandProjectKeys(brand);
+    return (projectKeys || []).filter((projectKey) => brandProjectKeyValues.includes(projectKey));
 };
 
 // eslint-disable-next-line complexity
@@ -54,44 +48,27 @@ export const validDateRange = (start, end) => {
 
 // eslint-disable-next-line complexity
 export const getQueryValues = (search, selectedBrands) => {
-    const {portfolios, projectKeys, from, to, type} = qs.parse(search);
+    const {projectKeys, from, to} = qs.parse(search);
     const isValidDateRange = validDateRange(from, to);
-    const initialType = type === SEARCH_TYPE_PROJECT ? SEARCH_TYPE_PROJECT : SEARCH_TYPE_PORTFOLIO;
-    const initialPortfolios = (initialType === SEARCH_TYPE_PORTFOLIO)
-        ? (Array.isArray(portfolios) ? portfolios : [portfolios])
-            .map((portfolio) => getBrandPortfolios(selectedBrands[0]).find((p) => p.value === portfolio))
-            .filter((portfolio) => !!portfolio)
-        : [];
-    const initialProjectKeys = (initialType === SEARCH_TYPE_PROJECT)
-        ? (Array.isArray(projectKeys) ? projectKeys : [projectKeys])
-            .map((projectKey) => getBrandProjectKeys(selectedBrands[0]).find((p) => p.value === projectKey))
-            .filter((projectKey) => !!projectKey)
-        : [];
+    const brandProjectKeys = getBrandProjectKeys(selectedBrands[0]);
+    const initialProjectKeys = (Array.isArray(projectKeys) ? projectKeys : [projectKeys])
+        .filter((projectKey) => brandProjectKeys.includes(projectKey));
     return {
-        initialType,
         initialStart: isValidDateRange ? moment(from) : moment().subtract(6, 'months'),
         initialEnd: isValidDateRange ? moment(to) : moment(),
-        initialPortfolios,
         initialProjectKeys
     };
 };
 
 // eslint-disable-next-line complexity
-export const getQueryString = (brand, portfolios, projectKeys, start, end, searchType) => {
+export const getQueryString = (brand, projectKeys, start, end) => {
     const brandQuery = `selectedBrand=${brand}`;
-    const brandPortfolios = filterBrandPortfolios(portfolios, brand);
-    const portfoliosQuery = brandPortfolios.length && searchType === SEARCH_TYPE_PORTFOLIO
-        ? `&portfolios=${brandPortfolios.map((p) => p.value).join('&portfolios=')}`
-        : '';
     const brandProjectKeys = filterBrandProjectKeys(projectKeys, brand);
-    const projectKeysQuery = brandProjectKeys.length && searchType === SEARCH_TYPE_PROJECT
-        ? `&projectKeys=${brandProjectKeys.map((p) => p.value).join('&projectKeys=')}`
+    const projectKeysQuery = brandProjectKeys.length
+        ? `&projectKeys=${brandProjectKeys.join('&projectKeys=')}`
         : '';
     const dateQuery = `&from=${start.toISOString()}&to=${end.toISOString()}`;
-    const searchTypeQuery = searchType === SEARCH_TYPE_PORTFOLIO
-        ? `&type=${SEARCH_TYPE_PORTFOLIO}`
-        : `&type=${SEARCH_TYPE_PROJECT}`;
-    return `/quality-metrics?${brandQuery}${dateQuery}${portfoliosQuery}${projectKeysQuery}${searchTypeQuery}`;
+    return `/quality-metrics?${brandQuery}${dateQuery}${projectKeysQuery}`;
 };
 
 export const getPropValue = (item, prop) => item[prop] || item[prop] === 0 ? item[prop] : '-';
@@ -161,14 +138,15 @@ export const formatBarChartData = (data) => {
 
 export const formatTTRData = (data) => {
     return Object.entries(data || {})
-        .map(([date, {p1DaysToResolve = 0, p2DaysToResolve = 0, p3DaysToResolve = 0, p4DaysToResolve = 0, p5DaysToResolve = 0, totalTickets = 0, ticketIds = []}]) => {
+        .map(([date, {p1 = 1, p2 = 1, p3 = 1, p4 = 1, p5 = 1,
+            p1DaysToResolve = 0, p2DaysToResolve = 0, p3DaysToResolve = 0, p4DaysToResolve = 0, p5DaysToResolve = 0, totalTickets = 0, ticketIds = []}]) => {
             return {
                 date,
-                [P1_LABEL]: p1DaysToResolve,
-                [P2_LABEL]: p2DaysToResolve,
-                [P3_LABEL]: p3DaysToResolve,
-                [P4_LABEL]: p4DaysToResolve,
-                [P5_LABEL]: p5DaysToResolve,
+                [P1_LABEL]: Math.round(p1DaysToResolve / p1),
+                [P2_LABEL]: Math.round(p2DaysToResolve / p2),
+                [P3_LABEL]: Math.round(p3DaysToResolve / p3),
+                [P4_LABEL]: Math.round(p4DaysToResolve / p4),
+                [P5_LABEL]: Math.round(p5DaysToResolve / p5),
                 counts: totalTickets,
                 tickets: ticketIds
             };
@@ -236,24 +214,21 @@ export const formatWoWData = (data) => {
 
 const TOTAL_UNIQUE_ISSUES_LABEL = 'Total Unique Issues';
 
-export const groupDataByPillar = (data = {}, portfolios = [], brand) => {
-    const keys = ['p1', 'p2', 'p3', 'p4', 'p5', 'notPrioritized', 'totalTickets'];
-    const result = portfolios.reduce((acc, {text}) => {
-        acc[text] = {};
-        return acc;
-    }, {});
+export const groupDataByPillar = (data = {}) => {
+    const columns = ['p1', 'p2', 'p3', 'p4', 'p5', 'notPrioritized', 'totalTickets'];
     // eslint-disable-next-line complexity
-    return Object.entries(data).reduce((acc, [, counts]) => {
+    return Object.entries(data).reduce((acc, [projectKey, counts]) => {
         if (counts.ticketIds) {
-            const project = counts.ticketIds[0].split('-')[0];
-            const portfolio = getBrandPortfolios(brand).find((p) => p.projects.includes(project));
-            if (portfolio && acc[portfolio.text]) {
-                const portfolioKey = portfolio.text;
-                keys.forEach((key) => {
-                    if (acc[portfolioKey][key] && counts[key]) {
-                        acc[portfolioKey][key] += counts[key];
-                    } else if (counts[key]) {
-                        acc[portfolioKey][key] = counts[key];
+            const portfolioKey = PROJECT_PORTFOLIO_MAP[projectKey]?.text;
+            if (portfolioKey) {
+                if (!acc[portfolioKey]) {
+                    acc[portfolioKey] = {};
+                }
+                columns.forEach((col) => {
+                    if (acc[portfolioKey][col] && counts[col]) {
+                        acc[portfolioKey][col] += counts[col];
+                    } else if (counts[col]) {
+                        acc[portfolioKey][col] = counts[col];
                     }
                 });
                 if (acc[portfolioKey].ticketIds && counts.ticketIds) {
@@ -264,10 +239,10 @@ export const groupDataByPillar = (data = {}, portfolios = [], brand) => {
             }
         }
         return acc;
-    }, result);
+    }, {});
 };
 
-export const formatTableData = (rawData, onClickHandler, rowKey = 'Project', type, isDuration = false) => {
+export const formatTableData = (rawData, onClickHandler, rowKey = 'Project', isDuration = false) => {
     const data = [];
     const totalCounts = {
         [rowKey]: TOTAL_UNIQUE_ISSUES_LABEL,
@@ -309,19 +284,17 @@ export const formatTableData = (rawData, onClickHandler, rowKey = 'Project', typ
             ? formatDuration(value, 'minutes')
             : value;
         const clickHandler = () => onClickHandler(rawData, key, priority);
-        return type === SEARCH_TYPE_PORTFOLIO
-            ? (
-                <div
-                    className="count-link"
-                    role="button"
-                    tabIndex={0}
-                    onClick={clickHandler}
-                    onKeyUp={clickHandler}
-                >
-                    {text}
-                </div>
-            )
-            : <div>{text}</div>;
+        return (
+            <div
+                className="count-link"
+                role="button"
+                tabIndex={0}
+                onClick={clickHandler}
+                onKeyUp={clickHandler}
+            >
+                {text}
+            </div>
+        );
     };
     const result = data.map((row) => {
         const {p1, p2, p3, p4, p5, notPrioritized, totalTickets} = row;
@@ -340,22 +313,20 @@ export const formatTableData = (rawData, onClickHandler, rowKey = 'Project', typ
     return result;
 };
 
-export const processTwoDimensionalIssues = (
-    allJiraTickets, projectTickets, project, portfolios, priority
-) => {
+export const processTwoDimensionalIssues = (allJiraTickets, projectTickets, project, priority) => {
     const selectedPriority = mapPriority(priority);
     const tickets = project === TOTAL_UNIQUE_ISSUES_LABEL
         ? Object.values(projectTickets).reduce((acc, curr) => acc.concat(curr.ticketIds), [])
         : projectTickets[project].ticketIds;
     const finalList = [];
-    portfolios.forEach((portfolio) => {
-        tickets.forEach((id) => {
-            const t = allJiraTickets.portfolioTickets?.[portfolio.value]?.[id];
-            if (t && (!priority || mapPriority(t.priority) === selectedPriority)) {
-                t.portfolio = portfolio.text;
-                finalList.push(t);
-            }
-        });
+    tickets.forEach((id) => {
+        const projectKey = id?.split('-')[0];
+        const portfolio = PROJECT_PORTFOLIO_MAP[projectKey];
+        const t = allJiraTickets.portfolioTickets?.[portfolio?.value]?.[id];
+        if (t && (!priority || mapPriority(t.priority) === selectedPriority)) {
+            t.portfolio = portfolio?.text;
+            finalList.push(t);
+        }
     });
     return {
         data: (finalList || []).map(formatDefect),
@@ -389,16 +360,13 @@ export const formatCreatedVsResolvedData = (data, priorities = []) => {
 };
 
 // eslint-disable-next-line complexity
-export const getPanelDataUrl = (start, end, searchType, portfolios, projectKeys, brand, panel) => {
+export const getPanelDataUrl = (start, end, projectKeys, brand, panel) => {
     const baseUrl = '/v1/portfolio';
     const dateQuery = `fromDate=${start.format(DATE_FORMAT)}&toDate=${end.format(DATE_FORMAT)}`;
-    const portfoliosQuery = searchType === SEARCH_TYPE_PORTFOLIO && portfolios?.length
-        ? `&portfolios=${filterBrandPortfolios(portfolios, brand).map(({value}) => value).join('&portfolios=')}`
+    const projectKeysQuery = projectKeys?.length
+        ? `&projectKeys=${filterBrandProjectKeys(projectKeys, brand).join('&projectKeys=')}`
         : '';
-    const projectKeysQuery = searchType === SEARCH_TYPE_PROJECT && projectKeys?.length
-        ? `&projectKeys=${filterBrandProjectKeys(projectKeys, brand).map(({value}) => value).join('&projectKeys=')}`
-        : '';
-    const query = `?${dateQuery}${portfoliosQuery}${projectKeysQuery}`;
+    const query = `?${dateQuery}${projectKeysQuery}`;
     if (!panel) {
         return `${baseUrl}${query}`;
     } else if (panel === 'ttrSummary') {
@@ -407,8 +375,8 @@ export const getPanelDataUrl = (start, end, searchType, portfolios, projectKeys,
     return `${baseUrl}/panel/${panel}${query}`;
 };
 
-export const fetchPanelData = async (start, end, searchType, brandPortfolios, brandProjectKeys, brand, panel) => (
-    fetch(getPanelDataUrl(start, end, searchType, brandPortfolios, brandProjectKeys, brand, panel))
+export const fetchPanelData = async (start, end, brandProjectKeys, brand, panel) => (
+    fetch(getPanelDataUrl(start, end, brandProjectKeys, brand, panel))
         .then(checkResponse)
         .then((response) => ({
             data: response?.data || response || {},

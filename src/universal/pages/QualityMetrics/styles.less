@@ -12,16 +12,6 @@
         }
     }
 
-    .form-left {
-        float: left;
-        width: 75%;
-    }
-
-    .form-right {
-        float: left;
-        width: 25%;
-    }
-
     .search-form {
         float: left;
         width: 100%;
@@ -49,53 +39,45 @@
 
         .checkboxes-container {
             margin: @spacing-3x @spacing-1x 0;
-            float: left;
-            height: 128px;
-            overflow-y: scroll;
+            width: 100%;
+            height: 176px;
+            overflow: scroll;
+            display: flex;
+
+            .portfolio-checkboxes {
+                flex: 1 auto;
+                padding-right: @spacing-4x;
+                margin-bottom: @spacing-2x;
+            }
 
             .filter-checkbox {
-                float: left;
                 height: @spacing-3x;
-                width: 20%;
+                margin-bottom: 0;
+            }
+
+            .portfolio-checkbox .CRB__label {
+                font-weight: 800;
+            }
+        }
+
+        .project-checkboxes-container {
+            display: flex;
+            flex-flow: column wrap;
+
+            .project-checkbox {
+                flex: 1 auto;
+
+                .CRB__label {
+                    font-size: 14px;
+                    padding-left: @spacing-3x;
+                    margin-left: @spacing-3x;
+                }
             }
         }
 
         .apply-btn {
             margin-left: @spacing-2x;
             height: @spacing-7x;
-        }
-
-        .info-container {
-            float: left;
-            width: 100%;
-
-            .info-title {
-                position: absolute;
-                background: @color-bg-accent;
-                width: 132px;
-                margin: -12px @spacing-1x;
-
-                .info-icon {
-                    margin: 0 @spacing-1x;
-                }
-            }
-
-            .info-box {
-                border: 1px solid @color-border-contrast;
-                border-radius: @spacing-1x;
-                padding: @spacing-2x;
-                height: 280px;
-                max-height: 280px;
-                overflow-y: scroll;
-
-                .info-stat__label {
-                    font-weight: 800;
-                }
-
-                .info-stat__value {
-                    margin-bottom: 0;
-                }
-            }
         }
     }
 

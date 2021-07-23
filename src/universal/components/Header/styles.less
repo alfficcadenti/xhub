@@ -1,37 +1,98 @@
 @import '../../mixins.less';
 
 .header {
-    position: absolute;
-    background: @color-brand;
+    left: 0;
+    top: 0;
     width: 100%;
+    position: absolute;
     height: @spacing-6x;
+    background: @color-bg-default;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .2);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
     z-index: 1021;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .2), 0 6px 20px 0 rgba(0, 0, 0, .19);
 
     .header--logo {
-        margin-top: 2px;
-        margin-right: @spacing-1x;
-        padding: @spacing-1x @spacing-3x;
+        padding: 12px 12px 12px 24px;
         font-size: @h2-font-size;
-        color: @color-text-inverse;
-        display: inline-block;
+        color: @color-text-default;
     }
 
-    .category-dropdown {
-        .Dropdown__toggle {
-            padding: @spacing-1x @spacing-2x @spacing-1x 0;
-            margin-top: -@spacing-1x;
-            margin-right: @spacing-2x;
-            font-weight: 400;
-            border-radius: @spacing-1x;
-            background: @color-brand;
-            color: @color-text-inverse;
+    .header__controls {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        border-left: 1px solid @color-border-default;
+    }
+
+    .header__navigation {
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        margin-right: auto;
+        min-width: 0;
+        height: 100%;
+
+        .Navigation__a > .Dropdown__toggle {
+            border: none;
             box-shadow: none;
-            min-height: @spacing-5x;
+            background: none;
+            color: @color-text-default;
+            font-weight: 400;
+            font-size: 14px;
+            padding: 0;
         }
 
-        .Dropdown__toggle-icon {
-            color: @color-text-inverse;
+        &.active {
+            .HScroll {
+                /* stylelint-disable */
+                // Override component style
+                height: 100vh !important;
+                /* stylelint-enable */
+            }
+
+
+            .HScroll__scroll-area {
+                /* stylelint-disable */
+                // Override component style
+                height: 100vh !important;
+                /* stylelint-enable */
+            }
+        }
+
+        .Navigation {
+            .Navigation__a {
+                padding: 0;
+            }
+        }
+
+        .HScroll {
+            width: 100vw;
+            display: flex;
+            align-items: flex-start;
+            margin-top: -12px;
+
+            .HScroll__left,
+            .HScroll__right {
+                height: @spacing-7x;
+            }
+
+            .HScroll__scroll-area {
+                width: 100%;
+            }
+        }
+
+        .category-dropdown {
+            .Dropdown__toggle {
+                font-weight: 400;
+                font-size: 14px;
+                color: @color-text-default;
+                background: none;
+                border: none;
+                box-shadow: none;
+                padding: 0;
+            }
         }
     }
 }

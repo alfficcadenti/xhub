@@ -28,7 +28,13 @@ import FencePostEvents from './FencePostEvents';
 import ShoppingFencePostEvents from './ShoppingFencePostEvents';
 import RealTimeSitePerformance from './RealTimeSitePerformance';
 import CheckoutBookingRequests from './CheckoutBookingRequests';
-import {EXPEDIA_BRAND, HOTELS_COM_BRAND, VRBO_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../constants';
+import {
+    EXPEDIA_BRAND,
+    HOTELS_COM_BRAND,
+    VRBO_BRAND,
+    EXPEDIA_PARTNER_SERVICES_BRAND,
+    PAGE_VIEWS_PAGE_NAME
+} from '../constants';
 
 const AAT = 'Availability & Trends';
 const CEA = 'Customer Experience Analysis';
@@ -121,7 +127,7 @@ export default [
         category: AAT,
         id: 'funnel-view',
         link: '/funnel-view',
-        text: 'Page Views',
+        text: PAGE_VIEWS_PAGE_NAME,
         component: FunnelView,
         brands: [EXPEDIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND]
     },
@@ -256,7 +262,7 @@ export default [
         link: '/quality-metrics',
         text: 'Quality Metrics',
         component: QualityMetrics,
-        brands: [HOTELS_COM_BRAND]
+        brands: [HOTELS_COM_BRAND, VRBO_BRAND]
     },
     {
         category: PHAR,

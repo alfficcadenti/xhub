@@ -12,3 +12,10 @@ module.exports.deltaUser = {
     config: getConfig('delta-user-get'),
     handler: getHandler(Object.assign(getHandlerParams('deltaUser')))
 };
+
+module.exports.deltaUserDetails = {
+    method: 'GET',
+    path: '/v1/delta-users-details',
+    config: getConfig('delta-user-details-get'),
+    handler: getHandler(Object.assign(getHandlerParams('deltaUserDetails')))
+};

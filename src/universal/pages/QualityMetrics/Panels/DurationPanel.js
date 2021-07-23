@@ -5,7 +5,7 @@ import DataTable from '../../../components/DataTable';
 import {PRIORITY_COLUMN_HEADERS} from '../constants';
 import {formatTableData, formatDurationData, processTwoDimensionalIssues} from '../utils';
 
-const DurationPanel = ({title, info, tickets, portfolios, panelData, type}) => {
+const DurationPanel = ({title, info, tickets, panelData}) => {
     const {data, isLoading, error, queries} = panelData;
     const [chartData, setChartData] = useState([]);
     const [modalData, setModalData] = useState({});
@@ -13,7 +13,7 @@ const DurationPanel = ({title, info, tickets, portfolios, panelData, type}) => {
 
     useEffect(() => {
         const handleClick = (d, portfolio, priority) => {
-            const nextModalData = processTwoDimensionalIssues(tickets, d, portfolio, portfolios, priority);
+            const nextModalData = processTwoDimensionalIssues(tickets, d, portfolio, priority);
             nextModalData.columns = ['Portfolio', 'Key', 'Summary', 'Priority', 'Status', 'Time to Resolve', 'Opened'];
             setModalData(nextModalData);
             setIsModalOpen(true);
@@ -21,8 +21,8 @@ const DurationPanel = ({title, info, tickets, portfolios, panelData, type}) => {
         const formattedData = panelData?.info?.message === 'no data found'
             ? []
             : formatDurationData(data.portfolioTTRSummaries || []);
-        setChartData(formatTableData(formattedData, handleClick, 'Portfolio', type, true));
-    }, [tickets, portfolios, panelData, data]);
+        setChartData(formatTableData(formattedData, handleClick, 'Portfolio', true));
+    }, [tickets, panelData, data]);
 
     const handleCloseModal = () => {
         setIsModalOpen(false);

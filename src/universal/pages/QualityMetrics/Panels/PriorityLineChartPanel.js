@@ -7,7 +7,7 @@ import ChartModal from '../ChartModal';
 import {PRIORITY_LABELS, PRIORITY_COLORS} from '../constants';
 import {formatPriorityLineChartData, findAndFormatTicket, mapPriority} from '../utils';
 
-const PriorityLineChartPanel = ({title, info, tickets, panelData, dataKey, priorities = PRIORITY_LABELS}) => {
+const PriorityLineChartPanel = ({title, info, tickets, panelData, dataKey, priorities = PRIORITY_LABELS, isFullWidth = true}) => {
     const {data, isLoading, error, queries = []} = panelData;
     const [chartData, setChartData] = useState([]);
     const [modalData, setModalData] = useState({});
@@ -47,7 +47,8 @@ const PriorityLineChartPanel = ({title, info, tickets, panelData, dataKey, prior
             queries={queries}
             isLoading={isLoading}
             error={error}
-            isFullWidth
+            isFullWidth={isFullWidth}
+            isFixedHeight={!isFullWidth}
         >
             <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={chartData} cursor="pointer">
@@ -56,7 +57,7 @@ const PriorityLineChartPanel = ({title, info, tickets, panelData, dataKey, prior
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    {priorities.map((p) => <Line key={p} dataKey={p} stroke={PRIORITY_COLORS[p]} activeDot={{onClick: getClickHandler(p)}} />)}
+                    {priorities.map((p) => <Line key={p} dataKey={p} stroke={PRIORITY_COLORS[p]} strokeWidth={2} activeDot={{onClick: getClickHandler(p)}} />)}
                 </LineChart>
             </ResponsiveContainer>
             <ChartModal
