@@ -25,7 +25,7 @@ const IMPULSE_MAPPING = [
     {globalFilter: EGENCIA_BRAND, impulseFilter: EGENCIA_BRAND},
     {globalFilter: VRBO_BRAND, impulseFilter: 'VRBO'}
 ];
-const bookingTimeInterval = 60000;
+const bookingTimeInterval = 300000;
 const incidentTimeInterval = 900000;
 const healthTimeInterval = 300000;
 const anomalyTimeInterval = 900000;
