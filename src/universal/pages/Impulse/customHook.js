@@ -185,7 +185,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             const simplifiedPredictionData = simplifyPredictionData(predictionData);
 
             let finalChartData = simplifiedBookingsData;
-            let finalChartData2 = simplifiedPredictionData;
+            let chartDataForFutureEvents = simplifiedPredictionData;
 
             if (simplifiedBookingsData.length === simplifiedPredictionData.length) {
                 finalChartData = finalChartData.map((item, i) => {
@@ -206,7 +206,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
             }
 
             if (!dateInvalid && chartData && chartData.length && chartData.length < simplifiedPredictionData.length) {
-                finalChartData2 = simplifiedBookingsData.map((item, i) => {
+                chartDataForFutureEvents = simplifiedBookingsData.map((item, i) => {
                     let predictionCount = null;
                     for (let predItem of simplifiedPredictionData) {
                         if (predItem.time === item.time) {
@@ -228,7 +228,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                     };
                 });
 
-                finalChartData = finalChartData2;
+                finalChartData = chartDataForFutureEvents;
             }
 
             setRes(finalChartData);
