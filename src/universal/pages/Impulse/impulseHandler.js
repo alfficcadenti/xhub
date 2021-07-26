@@ -16,7 +16,6 @@ import {ANOMALY_SELECTOR, BRANDS, DEVICES, EG_SITE_URLS, INCIDENT_SELECTOR, LOBS
 
 const THREE_WEEK_AVG_COUNT = '3 Week Avg Counts';
 const BOOKING_COUNT = 'Booking Counts';
-
 export const getFilters = (data = [], typeOfFilter) =>
     data.filter((item) => item.tag === typeOfFilter).map((item) => item.values)[0].map((a) => ({
         value: a,
@@ -161,12 +160,35 @@ export const isValidTimeInterval = (startDate, endDate, timeInterval) => (
     !!timeInterval && !!startDate && !!endDate && getTimeIntervals(startDate, endDate).includes(timeInterval)
 );
 
+export const convertRelativeDateRange = (date = '') => {
+    const regex = /^(now)([ +-][0-9]*[hd])?$/;
+
+    const match = regex.exec(date);
+    if (!match) {
+        return moment().format();
+    }
+    const [, , time] = match;
+    if (!time) {
+        return moment().format();
+    }
+    const timeSliceRegex = /^([ +-])([0-9]*)([hd])?$/;
+    const timeSliceMatch = timeSliceRegex.exec(time);
+    const [, sign, num, hd] = timeSliceMatch;
+
+    const unit = hd === 'h' ? 'hours' : 'days';
+    return (sign === '+' || sign === ' ')
+        ? moment().add(Number(num), unit).format()
+        : moment().subtract(Number(num), unit).format();
+};
+
 // eslint-disable-next-line complexity
 export const getQueryValues = (search) => {
     const {from, to, interval, refresh, brands, lobs, siteUrls, devices, incidents, anomalies} = qs.parse(search);
-    const isValidDateRange = validDateRange(from, to);
-    const initStart = isValidDateRange ? moment(from).utc() : startTime();
-    const initEnd = isValidDateRange ? moment(to).utc() : endTime();
+    const relativeFrom = convertRelativeDateRange(from);
+    const relativeTo = convertRelativeDateRange(to);
+    const isValidDateRange = validDateRange(relativeFrom, relativeTo);
+    const initStart = isValidDateRange ? moment(relativeFrom).utc() : startTime();
+    const initEnd = isValidDateRange ? moment(relativeTo).utc() : endTime();
     const isValidInterval = isValidTimeInterval(initStart, initEnd, interval);
 
     return {
@@ -181,6 +203,21 @@ export const getQueryValues = (search) => {
         initialIncidents: incidents ? incidents.split(',').filter((item) => INCIDENT_SELECTOR.includes(item)) : [],
         initialAnomalies: anomalies ? anomalies.split(',').filter((item) => ANOMALY_SELECTOR.includes(item)) : ['Anomaly Detected']
     };
+};
+
+export const convertRelativeDateInString = (date) => {
+    const utcDateTimeRegex = /^([0-9]{4,4})[-]([0-9]{2,2})[-]([0-9]{2,2})[T]([0-9]{2,2})[:]([0-9]{2,2})[:]([0-9]{2,2})[Z]$/;
+    const [, , , days, hours] = utcDateTimeRegex.exec(date);
+    const [, , , currDays, currHours] = utcDateTimeRegex.exec(moment(new Date()).utc().format());
+    const d = currDays - days;
+    const h = currHours - hours;
+    if (d === 0) {
+        if (h === 0) {
+            return 'now';
+        }
+        return (h > 0) ? `now-${h}h` : `now+${-h}h`;
+    }
+    return (d > 0) ? `now-${d}d` : `now+${-d}d`;
 };
 
 export const mapActiveIndexToTabName = (idx) => {
@@ -201,6 +238,8 @@ export const mapActiveIndexToTabName = (idx) => {
 
 export const useAddToUrl = (
     selectedBrands,
+    isSubmitClicked,
+    chartSliced,
     start,
     end,
     interval,
@@ -219,10 +258,10 @@ export const useAddToUrl = (
     // eslint-disable-next-line complexity
     useEffect(() => {
         history.push(`${`/impulse/${mapActiveIndexToTabName(activeIndex)}?selectedBrand=${selectedBrands}`
-                + `&from=${start.format()}`
-                + `&to=${end.format()}`
-                + `&interval=${interval}`
-                + `&refresh=${refresh}`
+            + `&from=${isSubmitClicked === true || chartSliced === true ? start.format() : convertRelativeDateInString(start.format())}`
+            + `&to=${isSubmitClicked === true || chartSliced === true ? end.format() : convertRelativeDateInString((end.format()))}`
+            + `&interval=${interval}`
+            + `&refresh=${refresh}`
         }${brands.length === 0 ? '' : `&brands=${brands.join(',')}`
         }${lobs.length === 0 ? '' : `&lobs=${lobs.join(',')}`
         }${egSiteUrls.length === 0 ? '' : `&siteUrls=${egSiteUrls.join(',')}`
@@ -230,5 +269,5 @@ export const useAddToUrl = (
         }${incidents.length === 0 ? '' : `&incidents=${incidents.join(',')}`
         }${anomalies.length === 0 ? '' : `&anomalies=${anomalies.join(',')}`}`
         );
-    }, [selectedBrands, start, end, interval, refresh, lobs, brands, egSiteUrls, devices, incidents, anomalies, history, pathname, activeIndex]);
+    }, [selectedBrands, isSubmitClicked, chartSliced, start, end, interval, refresh, lobs, brands, egSiteUrls, devices, incidents, anomalies, history, pathname, activeIndex]);
 };
