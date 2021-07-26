@@ -12,6 +12,7 @@ import {
 import {getFilters, getBrandQueryParam, getQueryString, getRevLoss, startTime, endTime, getCategory, getQueryStringPrediction, simplifyBookingsData, simplifyPredictionData} from './impulseHandler';
 import {checkResponse} from '../utils';
 import moment from 'moment';
+import html2canvas from 'html2canvas';
 
 const THREE_WEEK_AVG_COUNT = '3 Week Avg Counts';
 const PREDICTION_COUNT = 'Prediction Counts';
@@ -256,6 +257,16 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
         }
     }, interval);
 
+    const getScreenshot = () => {
+        setTimeout(() => {
+            const screenshotTarget = document.body.querySelector('.impulse-chart-container');
+
+            html2canvas(screenshotTarget).then((canvas) => {
+                console.log(canvas);
+            });
+        }, 2000);
+    };
+
     const getData = (start = startDateTime, end = endDateTime, interval = timeInterval) => {
         setIsLoading(true);
         fetchCall(start, end, interval)
@@ -263,6 +274,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 setError('');
                 setRes(chartData);
                 setIsLoading(false);
+                getScreenshot();
             })
             .catch((err) => {
                 setIsLoading(false);
