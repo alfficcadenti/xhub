@@ -82,3 +82,11 @@ module.exports.orgMetrics = {
     config: getConfig('org-metrics-get'),
     handler: getHandler(Object.assign(getHandlerParams('orgMetrics'), {pathParam: 'businessOwnerType'}))
 };
+
+module.exports.robbie = {
+    method: 'GET',
+    path: '/v1/robbie/notification-logs/{param*}',
+    config: getConfig('robbie-get'),
+    handler: getHandler(Object.assign(getHandlerParams('robbie')))
+
+};
