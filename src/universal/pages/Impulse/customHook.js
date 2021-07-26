@@ -35,7 +35,29 @@ let intervalForAnnotations = null;
 let intervalForHealth = null;
 let intervalForAnomalies = null;
 
-export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTime, endDateTime, globalBrandName, prevBrand, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, chartSliced, setChartSliced, isAutoRefresh, setAutoRefresh, setStartDateTime, setEndDateTime, timeInterval, isResetClicked, setIsResetClicked, allData, isChartSliceClicked, setIsChartSliceClicked) => {
+export const useFetchBlipData = (
+    isApplyClicked,
+    setIsApplyClicked,
+    startDateTime,
+    endDateTime,
+    globalBrandName,
+    prevBrand,
+    selectedSiteURLMulti,
+    selectedLobMulti,
+    selectedBrandMulti,
+    selectedDeviceTypeMulti,
+    chartSliced,
+    setChartSliced,
+    isAutoRefresh,
+    setAutoRefresh,
+    setStartDateTime,
+    setEndDateTime, timeInterval,
+    isResetClicked,
+    setIsResetClicked,
+    allData,
+    isChartSliceClicked,
+    setIsChartSliceClicked
+) => {
     const [res, setRes] = useState([]);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(true);
@@ -153,7 +175,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 console.error(err);
             });
     };
-    const fetchCall = (start, end, interval) => fetch(`/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval, '')}`)
+    const fetchData = (start, end, interval) => fetch(`/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval, '')}`)
         .then(checkResponse)
         .then((respJson) => {
             const chartData = respJson.map((item) => {
@@ -261,7 +283,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
         const futureEvent = moment(endDateTime).diff(moment(endTime()), 'minutes') >= 5;
         const defaultRange = moment(endDateTime).diff(moment(startDateTime), 'hours') === 72;
 
-        fetchCall(startDateTime, endTime(), timeInterval)
+        fetchData(startDateTime, endTime(), timeInterval)
             .then((chartData) => {
                 setError('');
 
@@ -275,7 +297,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                         setStartDateTime(startTime());
                     }
                 } else {
-                    fetchCall(startDateTime, endDateTime, timeInterval)
+                    fetchData(startDateTime, endDateTime, timeInterval)
                         .then((data) => {
                             const newData = data.map((item, i) => {
                                 if (item.time === chartData[i]?.time) {
@@ -286,10 +308,9 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
 
                             if (newData.length <= chartData.length) {
                                 setRes(chartData);
-                                return;
+                            } else {
+                                setRes(newData);
                             }
-
-                            setRes(newData);
                         })
                         .catch((err) => {
                             setError('No data found for this selection.');
@@ -315,14 +336,16 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
                 if (futureEvent) {
                     Promise.all(['brands', 'lobs'].map((groupType) => fetchCallGrouped(start, endDateTime, interval, groupType)))
                         .then(([brandsGroupedDataFuture, lobsGroupedDataFuture]) => {
-                            const newBrandsGroupedData = brandsGroupedDataFuture.map((item, i) => {
+                            let newBrandsGroupedData = [...brandsGroupedDataFuture];
+                            newBrandsGroupedData = newBrandsGroupedData.map((item, i) => {
                                 if (brandsGroupedData[i]) {
                                     item = brandsGroupedData[i];
                                 }
                                 return item;
                             });
 
-                            const newLobsGroupedData = lobsGroupedDataFuture.map((item, i) => {
+                            let newLobsGroupedData = [...lobsGroupedDataFuture];
+                            newLobsGroupedData = newLobsGroupedData.map((item, i) => {
                                 if (lobsGroupedData[i]) {
                                     item = lobsGroupedData[i];
                                 }
@@ -360,7 +383,7 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
 
     const getData = (start = startDateTime, end = endDateTime, interval = timeInterval) => {
         setIsLoading(true);
-        fetchCall(start, end, interval)
+        fetchData(start, end, interval)
             .then((chartData) => {
                 setError('');
                 setRes(chartData);
@@ -375,12 +398,12 @@ export const useFetchBlipData = (isApplyClicked, setIsApplyClicked, startDateTim
     };
 
     const checkRefreshRange = () => {
-        if (isAutoRefresh) {
-            if ((moment(endDateTime).diff(moment(startDateTime), 'days') <= 5) && (moment().diff(moment(endDateTime), 'minutes') < 5)) {
-                intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
-                intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
-                intervalForAnomalies = setIntervalForRealTimeData(anomalyTimeInterval, 'anomaly');
-            }
+        const isRefreshRange = (moment(endDateTime).diff(moment(startDateTime), 'days') <= 5) && (moment().diff(moment(endDateTime), 'minutes') < 5);
+
+        if (isAutoRefresh && isRefreshRange) {
+            intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
+            intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
+            intervalForAnomalies = setIntervalForRealTimeData(anomalyTimeInterval, 'anomaly');
         }
     };
     useEffect(() => {

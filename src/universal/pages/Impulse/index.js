@@ -103,6 +103,7 @@ const Impulse = (props) => {
     const [activeIndex, setActiveIndex] = useState(getActiveIndex(pathname));
     const [allDataByBrands, setAllDataByBrand] = useState([]);
     const [allDataByLobs, setAllDataByLobs] = useState([]);
+    const refreshRange = ((moment(endDateTime).diff(moment(startDateTime), 'days') <= 5) && (moment().diff(moment(endDateTime), 'minutes') < 5));
 
     useQueryParamChange(newBrand, props.onBrandChange);
     useSelectedBrand(newBrand, props.onBrandChange, props.prevSelectedBrand);
@@ -429,7 +430,7 @@ const Impulse = (props) => {
                 <h1 className="page-title">{'Impulse Dashboard'}</h1>
                 <div className="right-header">
                     {sourceLatency || sourceLatency === 0 ? renderHealthCheck() : ''}
-                    {(((moment(endDateTime).diff(moment(startDateTime), 'days') <= 5)) && (moment().diff(moment(endDateTime), 'minutes') < 5)) ? <div className="refresh-switch" title="Auto refresh charts toggle switch">
+                    {refreshRange ? <div className="refresh-switch" title="Auto refresh charts toggle switch">
                         <Switch
                             id="switch-example-small"
                             name="autoRefresh"
