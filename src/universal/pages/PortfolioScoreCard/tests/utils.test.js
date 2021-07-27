@@ -52,15 +52,17 @@ describe('Portfolio ScoreCard utils', () => {
         const setTicketDetailsBusinessOwnerType = jest.fn();
         const setTicketDetailsOrgName = jest.fn();
         const setIsTicketDetailsModalOpen = jest.fn();
+        const setCurrentP = jest.fn();
 
         const result = mapDetails(
             setTicketDetailsBusinessOwnerType,
             setTicketDetailsOrgName,
             setIsTicketDetailsModalOpen,
+            setCurrentP,
             rowValue
         );
 
-        expect(result.P2).to.be.eql(18);
+        expect(result.P2).to.be.an('object');
         expect(result['TTD<=15M']).to.be.eql(<span className="">24%</span>);
         expect(result['TTF<=15M']).to.be.eql(<span className="under-threshold">90%</span>);
         expect(result['TTK<=30M']).to.be.eql(<span className="under-threshold">93%</span>);
@@ -80,15 +82,17 @@ describe('Portfolio ScoreCard utils', () => {
         const setTicketDetailsBusinessOwnerType = jest.fn();
         const setTicketDetailsOrgName = jest.fn();
         const setIsTicketDetailsModalOpen = jest.fn();
+        const setCurrentP = jest.fn();
 
         const result = mapDetails(
             setTicketDetailsBusinessOwnerType,
             setTicketDetailsOrgName,
             setIsTicketDetailsModalOpen,
+            setCurrentP,
             rowValue
         );
 
-        expect(result.P2).to.be.eql('-');
+        expect(result.P2).to.be.an('object');
         expect(result['TTD<=15M']).to.be.eql(<span className="">-</span>);
         expect(result['TTF<=15M']).to.be.eql(<span className="">-</span>);
         expect(result['TTK<=30M']).to.be.eql(<span className="">-</span>);

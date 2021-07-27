@@ -32,6 +32,7 @@ export const mapDetails = (
     setTicketDetailsBusinessOwnerType,
     setTicketDetailsOrgName,
     setIsTicketDetailsModalOpen,
+    setCurrentP,
     row
 ) => {
     const ttdValue = getTableValue(row, 'percentIncidentsTtdWithin15MinSlo');
@@ -39,6 +40,7 @@ export const mapDetails = (
     const ttkValue = getTableValue(row, 'percentIncidentsTtkWithin30MinSlo');
     const ttrValue = getTableValue(row, 'percentIncidentsTtrWithin60MinSlo');
     const isP1HasIncidents = row.p1IncidentCount > 0;
+    const isP2HasIncidents = row.p2IncidentCount > 0;
 
     return {
         Name: <span className={`link ${row.isDisabled ? 'disabled' : ''}`} onClick={() => row.showDetails(null, row.subOrgDetails, row.name, row.businessOwnerType)}>{getTableValue(row, 'name')}</span>,
@@ -49,11 +51,23 @@ export const mapDetails = (
                     setTicketDetailsBusinessOwnerType(row.businessOwnerType);
                     setTicketDetailsOrgName(row.name);
                     setIsTicketDetailsModalOpen(true);
+                    setCurrentP('p1');
                 }
             }}
         >{getTableValue(row, 'p1IncidentCount')}
         </span>),
-        P2: getTableValue(row, 'p2IncidentCount'),
+        P2: (<span
+            className={isP2HasIncidents ? 'link' : 'disabled'}
+            onClick={() => {
+                if (isP2HasIncidents) {
+                    setTicketDetailsBusinessOwnerType(row.businessOwnerType);
+                    setTicketDetailsOrgName(row.name);
+                    setIsTicketDetailsModalOpen(true);
+                    setCurrentP('p2');
+                }
+            }}
+        >{getTableValue(row, 'p2IncidentCount')}
+        </span>),
         ['TTD<=15M']: <span className={`${detectThreshold(ttdValue)}`}>{addPercentageSign(ttdValue)}</span>,
         ['TTF<=15M']: <span className={`${detectThreshold(ttfValue)}`}>{addPercentageSign(ttfValue)}</span>,
         ['TTK<=30M']: <span className={`${detectThreshold(ttkValue)}`}>{addPercentageSign(ttkValue)}</span>,
