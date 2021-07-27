@@ -429,7 +429,6 @@ export const useFetchBlipData = (
 
     useEffect(() => {
         const dateInvalid = checkIsDateInvalid(startDateTime, endDateTime);
-        console.log(startDateTime, endDateTime);
 
         if (isApplyClicked || isResetClicked || isChartSliceClicked) {
             getGroupedBookingsData();
