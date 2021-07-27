@@ -9,7 +9,8 @@ import {
     epsIncidents,
     prbs,
     portfolio,
-    orgMetrics
+    orgMetrics,
+    robbie
 } from './dataService';
 import {
     bookingsUserEvents,
@@ -61,6 +62,7 @@ const apiRoutes = [
     prbs,
     portfolio,
     orgMetrics,
+    robbie,
     // user events service
     bookingsUserEvents,
     epsPageViewsLoBUserEvents,

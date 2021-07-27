@@ -69,6 +69,11 @@
               "path": "/v1/org-metrics/business-owner-type",
               "method": "GET",
               "operation": "GET_ORG_METRICS_V1"
+            },
+            "robbie": {
+              "path": "/v1/robbie/notification-logs",
+              "method": "GET",
+              "operation": "GET_ROBBIE_NOTIFICATIONS_V1"
             }
           }
         },
@@ -125,6 +130,11 @@
               "path": "/v1/org-metrics/business-owner-type",
               "method": "GET",
               "operation": "GET_ORG_METRICS_V1"
+            },
+            "robbie": {
+              "path": "/v1/robbie/notification-logs",
+              "method": "GET",
+              "operation": "GET_ROBBIE_NOTIFICATIONS_V1"
             }
           }
         },
@@ -181,6 +191,11 @@
               "path": "/v1/org-metrics/business-owner-type",
               "method": "GET",
               "operation": "GET_ORG_METRICS_V1"
+            },
+            "robbie": {
+              "path": "/v1/robbie/notification-logs",
+              "method": "GET",
+              "operation": "GET_ROBBIE_NOTIFICATIONS_V1"
             }
           }
         }
@@ -1029,6 +1044,11 @@
         },
         "routes": [{
             "route": "require:./routes/pages/home",
+            "component": "require:../universal/components/App/ServerApp.js",
+            "template": "templates/welcome.hbs"
+          },
+          {
+            "route": "require:./routes/pages/robbie",
             "component": "require:../universal/components/App/ServerApp.js",
             "template": "templates/welcome.hbs"
           },
