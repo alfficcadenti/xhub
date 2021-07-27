@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 import {useEffect, useState} from 'react';
 import {
     ALL_BRAND_GROUP,
@@ -11,7 +10,7 @@ import {
     SUPPRESSED_BRANDS
 } from '../../constants';
 import {getFilters, getBrandQueryParam, getQueryString, getRevLoss, startTime, endTime, getCategory, getQueryStringPrediction, simplifyBookingsData, simplifyPredictionData} from './impulseHandler';
-import {checkResponse} from '../utils';
+import {checkResponse, checkIsDateInvalid, getChartDataForFutureEvents} from '../utils';
 import moment from 'moment';
 
 const THREE_WEEK_AVG_COUNT = '3 Week Avg Counts';
@@ -221,37 +220,13 @@ export const useFetchBlipData = (
                 });
             }
 
-            const dateInvalid = (moment(endDateTime).diff(moment(startDateTime), 'days') >= 5) || (moment().diff(moment(endDateTime), 'minutes') > 10);
+            const dateInvalid = checkIsDateInvalid(startDateTime, endDateTime);
 
             if (dateInvalid) {
                 return;
             }
 
-            if (!dateInvalid && chartData && chartData.length && chartData.length < simplifiedPredictionData.length) {
-                chartDataForFutureEvents = simplifiedBookingsData.map((item, i) => {
-                    let predictionCount = null;
-                    for (let predItem of simplifiedPredictionData) {
-                        if (predItem.time === item.time) {
-                            predictionCount = Math.round(predItem.count);
-                        }
-                    }
-
-                    if (item.time === chartData[i]?.time) {
-                        return {
-                            ...item,
-                            [BOOKING_COUNT]: chartData[i][BOOKING_COUNT],
-                            ...(predictionCount && {[PREDICTION_COUNT]: predictionCount}),
-                        };
-                    }
-                    return {
-                        ...item,
-                        [BOOKING_COUNT]: 0,
-                        ...(predictionCount && {[PREDICTION_COUNT]: predictionCount}),
-                    };
-                });
-
-                finalChartData = chartDataForFutureEvents;
-            }
+            finalChartData = getChartDataForFutureEvents(dateInvalid, chartData, simplifiedPredictionData, chartDataForFutureEvents, simplifiedBookingsData, finalChartData);
 
             setRes(finalChartData);
         })
@@ -453,7 +428,8 @@ export const useFetchBlipData = (
 
 
     useEffect(() => {
-        const dateInvalid = (moment(endDateTime).diff(moment(startDateTime), 'days') >= 5) || (moment().diff(moment(endDateTime), 'minutes') > 5);
+        const dateInvalid = checkIsDateInvalid(startDateTime, endDateTime);
+        console.log(startDateTime, endDateTime);
 
         if (isApplyClicked || isResetClicked || isChartSliceClicked) {
             getGroupedBookingsData();

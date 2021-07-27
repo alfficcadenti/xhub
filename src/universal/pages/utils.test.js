@@ -23,7 +23,9 @@ import {
     validDateRange,
     getLobPlaceholder,
     getTableValue,
-    getUrlParam
+    getUrlParam,
+    checkIsDateInvalid,
+    getChartDataForFutureEvents
 } from './utils';
 import {
     EG_BRAND,
@@ -565,6 +567,48 @@ describe('getTableValue()', () => {
         expect(getTableValue({a: 'hello'}, 'b')).to.be.eql('-');
         expect(getTableValue({a: 'hello'}, 'a')).to.be.eql('hello');
         expect(getTableValue({a: ''}, 'a')).to.be.eql('-');
+    });
+});
+
+describe('checkIsDateInvalid()', () => {
+    it('checkIsDateInvalid should return true if start time is >=5 days', () => {
+        expect(checkIsDateInvalid(moment('2015-01-01'), moment())).to.be.eql(true);
+    });
+
+    it('checkIsDateInvalid should return false when end time is <5 minutes', () => {
+        expect(checkIsDateInvalid(moment(), moment())).to.be.eql(false);
+    });
+});
+
+describe('getChartDataForFutureEvents()', () => {
+    let dateInvalid;
+    const chartData = [
+        {time: 123123123, 'Booking Counts': 123}
+    ];
+    const simplifiedPredictionData = [
+        {time: 123123123, count: 123},
+        {time: 123123124, count: 124}
+    ];
+    const chartDataForFutureEvents = [...simplifiedPredictionData];
+    const simplifiedBookingsData = [
+        {time: 123123123, 'Booking Counts': 566, '3 Week Avg Counts': 615},
+        {time: 123123124, 'Booking Counts': 697, '3 Week Avg Counts': 761}
+    ];
+
+    beforeEach(() => {
+        dateInvalid = false;
+    });
+
+    it('getChartDataForFutureEvents should return false if date is invalid', () => {
+        dateInvalid = true;
+        expect(getChartDataForFutureEvents(dateInvalid, chartData, simplifiedPredictionData, chartDataForFutureEvents, simplifiedBookingsData, simplifiedBookingsData)).to.be.eql(simplifiedBookingsData);
+    });
+
+    it('getChartDataForFutureEvents should return true if date is valid', () => {
+        expect(getChartDataForFutureEvents(dateInvalid, chartData, simplifiedPredictionData, chartDataForFutureEvents, simplifiedBookingsData, simplifiedBookingsData)).to.be.eql([
+            {time: 123123123, 'Booking Counts': 123, '3 Week Avg Counts': 615, 'Prediction Counts': 123},
+            {time: 123123124, 'Booking Counts': 0, '3 Week Avg Counts': 761, 'Prediction Counts': 124}
+        ]);
     });
 });
 
