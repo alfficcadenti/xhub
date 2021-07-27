@@ -10,12 +10,12 @@ import LoadingContainer from '../../components/LoadingContainer';
 import './styles.less';
 import {getData} from './utils';
 
-const initialStart = moment().subtract(400, 'days').format(DATE_FORMAT);
+const initialStart = moment().subtract(6, 'months').format(DATE_FORMAT);
 const initialEnd = moment().format(DATE_FORMAT);
 const Robbie = () => {
     const columns = ['ID', 'PRB', 'Channel ID', 'Email', 'Robbie Reminder', 'Message', 'Notified', 'Status', 'Assignee'];
-    const [startDate, setstartDate] = useState(moment().subtract(400, 'days').format(DATE_FORMAT));
-    const [endDate, setendDate] = useState(moment().format(DATE_FORMAT));
+    const [startDate, setstartDate] = useState(initialStart);
+    const [endDate, setendDate] = useState(initialEnd);
     const [isApplyClicked, setIsApplyClicked] = useState(false);
     const [isDirtyForm, setisDirtyForm] = useState(false);
 
