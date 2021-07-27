@@ -40,6 +40,7 @@ const ScoreCard = ({
     const [isLoading, setIsLoading] = useState(true);
     const [ticketDetailsBusinessOwnerType, setTicketDetailsBusinessOwnerType] = useState(null);
     const [ticketDetailsOrgName, setTicketDetailsOrgName] = useState(null);
+    const [currentP, setCurrentP] = useState('');
 
     const fetchLData = () => {
         setIsLoading(true);
@@ -116,7 +117,13 @@ const ScoreCard = ({
             setCurrentL(businessOwnerType.toUpperCase());
         }
 
-        setDetailsData(details.map(mapDetails.bind(null, setTicketDetailsBusinessOwnerType, setTicketDetailsOrgName, setIsTicketDetailsModalOpen)));
+        setDetailsData(details.map(mapDetails.bind(
+            null,
+            setTicketDetailsBusinessOwnerType,
+            setTicketDetailsOrgName,
+            setIsTicketDetailsModalOpen,
+            setCurrentP
+        )));
         setIsModalOpen(true);
     };
 
@@ -134,6 +141,7 @@ const ScoreCard = ({
             subOrgDetails
         } = row;
         const isP1HasIncidents = p1IncidentCount > 0;
+        const isP2HasIncidents = p2IncidentCount > 0;
 
         return (
             <div
@@ -151,12 +159,21 @@ const ScoreCard = ({
                         setTicketDetailsBusinessOwnerType(businessOwnerType);
                         setTicketDetailsOrgName(name);
                         setIsTicketDetailsModalOpen(true);
+                        setCurrentP('p1');
                     }
                 }}
                 >
                     <span>{p1IncidentCount}</span>
                 </div>
-                <div className="cell-value">
+                <div className={`cell-value ${isP2HasIncidents ? 'clickable' : ''}`} onClick={() => {
+                    if (isP2HasIncidents) {
+                        setTicketDetailsBusinessOwnerType(businessOwnerType);
+                        setTicketDetailsOrgName(name);
+                        setIsTicketDetailsModalOpen(true);
+                        setCurrentP('p2');
+                    }
+                }}
+                >
                     <span>{p2IncidentCount}</span>
                 </div>
                 <div className={`cell-value ${detectThreshold(percentIncidentsTtdWithin15MinSlo)}`}>
@@ -243,6 +260,7 @@ const ScoreCard = ({
                 currentClickedOrg={ticketDetailsOrgName}
                 onBack={handleModalClose}
                 onClose={handleModalClose}
+                currentP={currentP}
             />
         </div>
     );
