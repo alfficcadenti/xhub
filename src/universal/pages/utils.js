@@ -15,6 +15,8 @@ import {METRIC_NAMES} from './SuccessRates/constants';
 import ALL_PAGES from './index';
 import qs from 'query-string';
 import moment from 'moment';
+const BOOKING_COUNT = 'Booking Counts';
+const PREDICTION_COUNT = 'Prediction Counts';
 
 
 export const getVisiblePages = (selectedBrands, pages = [...ALL_PAGES]) => (
@@ -483,4 +485,36 @@ export const getUrlParam = (label, value, defaultValue) => {
     return value && value !== defaultValue
         ? `&${label}=${encodeURIComponent(value)}`
         : '';
+};
+
+export const checkIsDateInvalid = (start, end) => (moment(end).diff(moment(start), 'days') >= 5) || (moment().diff(moment(end), 'minutes') > 5);
+
+export const getChartDataForFutureEvents = (dateInvalid, chartData, simplifiedPredictionData, chartDataForFutureEvents, simplifiedBookingsData, finalChartData) => {
+    if (!dateInvalid && chartData && chartData.length && chartData.length < simplifiedPredictionData.length) {
+        chartDataForFutureEvents = simplifiedBookingsData.map((item, i) => {
+            let predictionCount = null;
+            for (let predItem of simplifiedPredictionData) {
+                if (predItem.time === item.time) {
+                    predictionCount = Math.round(predItem.count);
+                }
+            }
+
+            if (item.time === chartData[i]?.time) {
+                return {
+                    ...item,
+                    [BOOKING_COUNT]: chartData[i][BOOKING_COUNT],
+                    ...(predictionCount && {[PREDICTION_COUNT]: predictionCount}),
+                };
+            }
+            return {
+                ...item,
+                [BOOKING_COUNT]: 0,
+                ...(predictionCount && {[PREDICTION_COUNT]: predictionCount}),
+            };
+        });
+
+        return chartDataForFutureEvents;
+    }
+
+    return finalChartData;
 };

@@ -16,7 +16,25 @@ import AnomalyLabel from '../BookingChart/AnomalyLabel';
 import ReferenceLabel from '../../../../../../components/ReferenceLabel';
 import '/src/universal/pages/Impulse/tabs/BookingTrends/sections/BookingChart/styles.less';
 
-const GroupedBookingTrends = ({data = [], setStartDateTime, setEndDateTime, setChartSliced, daysDifference, setDaysDifference, annotations, setTableData, anomalies, setAnomalyTableData, timeInterval, setTimeInterval, setTimeIntervalOpts, activeIndex, setIsSubmitClicked}) => {
+const GroupedBookingTrends = ({
+    data = [],
+    setStartDateTime,
+    setEndDateTime,
+    setChartSliced,
+    daysDifference,
+    setDaysDifference,
+    annotations,
+    setTableData,
+    anomalies,
+    setAnomalyTableData,
+    timeInterval,
+    setTimeInterval,
+    setTimeIntervalOpts,
+    activeIndex,
+    setIsResetClicked,
+    setIsChartSliceClicked,
+    setIsSubmitClicked
+}) => {
     const [left, setLeft] = useState('dataMin');
     const [right, setRight] = useState('dataMax');
     const [refAreaLeft, setRefAreaLeft] = useState('');
@@ -69,6 +87,7 @@ const GroupedBookingTrends = ({data = [], setStartDateTime, setEndDateTime, setC
         setEndDateTime(endTime());
         setChartSliced(false);
         setDaysDifference(3);
+        setIsResetClicked(true);
         setIsSubmitClicked(false);
         if (!isValidTimeInterval(startTime(), endTime(), timeInterval)) {
             setTimeInterval('5m');
@@ -100,6 +119,7 @@ const GroupedBookingTrends = ({data = [], setStartDateTime, setEndDateTime, setC
         setStartDateTime(leftMomentUtc);
         setEndDateTime(rightMomentUtc);
         setChartSliced(true);
+        setIsChartSliceClicked(true);
         setDaysDifference(rightMomentUtc.diff(leftMomentUtc, 'days'));
         setTableData([]);
         setIsSubmitClicked(false);

@@ -76,6 +76,8 @@ const Impulse = (props) => {
     const [startDateTime, setStartDateTime] = useState(initialStart);
     const [endDateTime, setEndDateTime] = useState(initialEnd);
     const [isApplyClicked, setIsApplyClicked] = useState(false);
+    const [isResetClicked, setIsResetClicked] = useState(false);
+    const [isChartSliceClicked, setIsChartSliceClicked] = useState(false);
     const [isSubmitClicked, setIsSubmitClicked] = useState(false);
     const [allData, setFilterAllData] = useState([]);
     const [showMoreFilters, setShowMoreFilters] = useState(initialDevices.length > 0);
@@ -100,6 +102,7 @@ const Impulse = (props) => {
     const [activeIndex, setActiveIndex] = useState(getActiveIndex(pathname));
     const [allDataByBrands, setAllDataByBrand] = useState([]);
     const [allDataByLobs, setAllDataByLobs] = useState([]);
+    const refreshRange = ((moment(endDateTime).diff(moment(startDateTime), 'days') <= 5) && (moment().diff(moment(endDateTime), 'minutes') < 5));
 
     useQueryParamChange(newBrand, props.onBrandChange);
     useSelectedBrand(newBrand, props.onBrandChange, props.prevSelectedBrand);
@@ -139,9 +142,15 @@ const Impulse = (props) => {
         chartSliced,
         setChartSliced,
         isAutoRefresh,
+        setAutoRefresh,
         setStartDateTime,
         setEndDateTime,
-        timeInterval);
+        timeInterval,
+        isResetClicked,
+        setIsResetClicked,
+        allData,
+        isChartSliceClicked,
+        setIsChartSliceClicked);
 
     const modifyFilters = (newValuesOnChange) => {
         setSelectedLobMulti([]);
@@ -292,6 +301,8 @@ const Impulse = (props) => {
                     data={allData}
                     setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
                     setChartSliced={setChartSliced}
+                    setIsResetClicked={setIsResetClicked}
+                    setIsChartSliceClicked={setIsChartSliceClicked}
                     annotations={enableIncidents ? annotationsMulti : []}
                     setDaysDifference={setDaysDifference}
                     daysDifference={daysDifference}
@@ -307,7 +318,9 @@ const Impulse = (props) => {
                 return (<GroupedBookingTrends
                     data={allDataByBrands}
                     setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
+                    setIsResetClicked={setIsResetClicked}
                     setChartSliced={setChartSliced}
+                    setIsChartSliceClicked={setIsChartSliceClicked}
                     setDaysDifference={setDaysDifference}
                     daysDifference={daysDifference}
                     annotations={enableIncidents ? annotationsMulti : []}
@@ -324,7 +337,9 @@ const Impulse = (props) => {
                 return (<GroupedBookingTrends
                     data={allDataByLobs}
                     setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
+                    setIsResetClicked={setIsResetClicked}
                     setChartSliced={setChartSliced}
+                    setIsChartSliceClicked={setIsChartSliceClicked}
                     setDaysDifference={setDaysDifference}
                     daysDifference={daysDifference}
                     annotations={enableIncidents ? annotationsMulti : []}
@@ -342,6 +357,7 @@ const Impulse = (props) => {
                     data={allData}
                     setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
                     setChartSliced={setChartSliced}
+                    setIsChartSliceClicked={setIsChartSliceClicked}
                     annotations={enableIncidents ? annotationsMulti : []}
                     setDaysDifference={setDaysDifference}
                     daysDifference={daysDifference}
@@ -405,13 +421,14 @@ const Impulse = (props) => {
                 </span>
             </div></a>
     );
+
     return (
         <div className="impulse-container">
             <div className="heading-container">
                 <h1 className="page-title">{'Impulse Dashboard'}</h1>
                 <div className="right-header">
                     {sourceLatency || sourceLatency === 0 ? renderHealthCheck() : ''}
-                    {!chartSliced && daysDifference === 3 && (moment().diff(moment(endDateTime), 'days') === 0) ? <div className="refresh-switch" title="Auto refresh charts toggle switch">
+                    {refreshRange ? <div className="refresh-switch" title="Auto refresh charts toggle switch">
                         <Switch
                             id="switch-example-small"
                             name="autoRefresh"
