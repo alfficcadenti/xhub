@@ -28,6 +28,9 @@ import FencePostEvents from './FencePostEvents';
 import ShoppingFencePostEvents from './ShoppingFencePostEvents';
 import RealTimeSitePerformance from './RealTimeSitePerformance';
 import CheckoutBookingRequests from './CheckoutBookingRequests';
+import Robbie from './robbie';
+
+
 import {
     EXPEDIA_BRAND,
     HOTELS_COM_BRAND,
@@ -248,6 +251,13 @@ export default [
         link: '/incident-trends',
         text: 'Incident Trends',
         component: IncidentTrendsDashboard
+    },
+    {
+        category: PHAR,
+        id: 'robbie',
+        link: '/robbie',
+        text: 'Robbie',
+        component: Robbie
     },
     {
         category: PHAR,

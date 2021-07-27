@@ -17,7 +17,6 @@ import {getFilters, getFiltersForMultiKeys, getQueryValues, useAddToUrl, getTime
 import {Checkbox, Switch} from '@homeaway/react-form-components';
 import {IncidentDetails} from './tabs/BookingTrends';
 import AnomalyDetails from './tabs/BookingTrends/sections/AnomalyTable/AnomalyDetails';
-import BookingsDataTable from './tabs/BookingTrends/sections/BookingChart/BookingsDataTable';
 import {getValue} from '../utils';
 import {Dropdown, DropdownItem} from '@homeaway/react-dropdown';
 import GroupedBookingTrends from './tabs/BookingTrends/sections/BookingChartGrouped/GroupedBookingTrends';
@@ -79,6 +78,7 @@ const Impulse = (props) => {
     const [isApplyClicked, setIsApplyClicked] = useState(false);
     const [isResetClicked, setIsResetClicked] = useState(false);
     const [isChartSliceClicked, setIsChartSliceClicked] = useState(false);
+    const [isSubmitClicked, setIsSubmitClicked] = useState(false);
     const [allData, setFilterAllData] = useState([]);
     const [showMoreFilters, setShowMoreFilters] = useState(initialDevices.length > 0);
     const [annotationsMulti, setAnnotationsMulti] = useState([]);
@@ -293,8 +293,7 @@ const Impulse = (props) => {
         setTimeIntervalOpts(getTimeIntervals(startDateTime, endDateTime, timeIntervalStr));
     };
 
-    useAddToUrl(newBrand, startDateTime, endDateTime, timeInterval, isAutoRefresh, selectedLobMulti, selectedBrandMulti, selectedSiteURLMulti, selectedDeviceTypeMulti, selectedIncidentMulti, selectedAnomaliesMulti, activeIndex);
-
+    useAddToUrl(newBrand, isSubmitClicked, chartSliced, startDateTime, endDateTime, timeInterval, isAutoRefresh, selectedLobMulti, selectedBrandMulti, selectedSiteURLMulti, selectedDeviceTypeMulti, selectedIncidentMulti, selectedAnomaliesMulti, activeIndex);
     const renderTabs = () => {
         switch (activeIndex) {
             case 0:
@@ -313,6 +312,7 @@ const Impulse = (props) => {
                     timeInterval={timeInterval}
                     setTimeInterval={setTimeInterval}
                     setTimeIntervalOpts={setTimeIntervalOpts}
+                    setIsSubmitClicked={setIsSubmitClicked}
                 />);
             case 1:
                 return (<GroupedBookingTrends
@@ -331,6 +331,7 @@ const Impulse = (props) => {
                     setTimeInterval={setTimeInterval}
                     setTimeIntervalOpts={setTimeIntervalOpts}
                     activeIndex={activeIndex}
+                    setIsSubmitClicked={setIsSubmitClicked}
                 />);
             case 2:
                 return (<GroupedBookingTrends
@@ -349,10 +350,7 @@ const Impulse = (props) => {
                     setTimeInterval={setTimeInterval}
                     setTimeIntervalOpts={setTimeIntervalOpts}
                     activeIndex={activeIndex}
-                />);
-            case 3:
-                return (<BookingsDataTable
-                    data={allData}
+                    setIsSubmitClicked={setIsSubmitClicked}
                 />);
             default:
                 return (<BookingTrends
@@ -366,6 +364,7 @@ const Impulse = (props) => {
                     timeInterval={timeInterval}
                     setTimeInterval={setTimeInterval}
                     setTimeIntervalOpts={setTimeIntervalOpts}
+                    setIsSubmitClicked={setIsSubmitClicked}
                 />);
         }
     };
@@ -462,6 +461,7 @@ const Impulse = (props) => {
                             setIsApplyClicked(true);
                             setDaysDifference(moment(endDateTime).diff(moment(startDateTime), 'days'));
                             setTableData([]);
+                            setIsSubmitClicked(true);
                         }}
                     >
                         {'Submit'}

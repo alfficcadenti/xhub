@@ -114,7 +114,8 @@ const BookingChart = ({
     timeInterval,
     setTimeInterval,
     setTimeIntervalOpts,
-    setIsChartSliceClicked
+    setIsChartSliceClicked,
+    setIsSubmitClicked
 }) => {
     let [refAreaLeft, setRefAreaLeft] = useState('');
     let [refAreaRight, setRefAreaRight] = useState('');
@@ -136,6 +137,7 @@ const BookingChart = ({
         setChartSliced(false);
         setDaysDifference(3);
         setIsResetClicked(true);
+        setIsSubmitClicked(false);
         if (!isValidTimeInterval(startTime(), endTime(), timeInterval)) {
             setTimeInterval('5m');
             setTimeIntervalOpts(['15m', '30m', '1h']);
@@ -171,6 +173,7 @@ const BookingChart = ({
         setIsChartSliceClicked(true);
         setDaysDifference(rightMomentUtc.diff(leftMomentUtc, 'days'));
         setTableData([]);
+        setIsSubmitClicked(false);
         if (!isValidTimeInterval(leftMomentUtc, rightMomentUtc, timeInterval)) {
             const newInterval = getDefaultTimeInterval(leftMomentUtc, rightMomentUtc);
             setTimeInterval(newInterval);

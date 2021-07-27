@@ -22,15 +22,18 @@ const GroupedBookingTrends = ({
     setEndDateTime,
     setChartSliced,
     daysDifference,
-    setDaysDifference, annotations,
+    setDaysDifference,
+    annotations,
     setTableData,
     anomalies,
     setAnomalyTableData,
     timeInterval,
-    setTimeInterval, setTimeIntervalOpts,
+    setTimeInterval,
+    setTimeIntervalOpts,
     activeIndex,
     setIsResetClicked,
-    setIsChartSliceClicked
+    setIsChartSliceClicked,
+    setIsSubmitClicked
 }) => {
     const [left, setLeft] = useState('dataMin');
     const [right, setRight] = useState('dataMax');
@@ -85,6 +88,7 @@ const GroupedBookingTrends = ({
         setChartSliced(false);
         setDaysDifference(3);
         setIsResetClicked(true);
+        setIsSubmitClicked(false);
         if (!isValidTimeInterval(startTime(), endTime(), timeInterval)) {
             setTimeInterval('5m');
             setTimeIntervalOpts(['15m', '30m', '1h']);
@@ -118,6 +122,7 @@ const GroupedBookingTrends = ({
         setIsChartSliceClicked(true);
         setDaysDifference(rightMomentUtc.diff(leftMomentUtc, 'days'));
         setTableData([]);
+        setIsSubmitClicked(false);
         if (!isValidTimeInterval(leftMomentUtc, rightMomentUtc, timeInterval)) {
             const newInterval = getDefaultTimeInterval(leftMomentUtc, rightMomentUtc);
             setTimeInterval(newInterval);
