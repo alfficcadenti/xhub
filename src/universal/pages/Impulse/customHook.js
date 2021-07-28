@@ -13,7 +13,6 @@ import {getFilters, getBrandQueryParam, getQueryString, getRevLoss, startTime, e
 import {checkResponse, checkIsDateInvalid, getChartDataForFutureEvents} from '../utils';
 import moment from 'moment';
 import html2canvas from 'html2canvas';
-import { remove } from 'js-cookie';
 
 const THREE_WEEK_AVG_COUNT = '3 Week Avg Counts';
 const PREDICTION_COUNT = 'Prediction Counts';
@@ -399,6 +398,7 @@ export const useFetchBlipData = (
                 setError('');
                 setRes(chartData);
                 setIsLoading(false);
+                getScreenshot();
             })
             .then(() => {
                 getScreenshot();
