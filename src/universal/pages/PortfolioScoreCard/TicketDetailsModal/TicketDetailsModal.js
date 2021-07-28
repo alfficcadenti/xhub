@@ -18,7 +18,7 @@ export const TICKET_DETAILS_COLUMNS = [
     'Time To Restore'
 ];
 
-const TicketDetailsModal = ({isOpen, onClose, onBack, currentL, currentClickedOrg}) => {
+const TicketDetailsModal = ({isOpen, onClose, onBack, currentL, currentClickedOrg, currentP}) => {
     const [ticketDetails, setTicketDetails] = useState([]);
     const [isLoadingTicketDetails, setIsLoadingTicketDetails] = useState(false);
     const [ticketDetailsError, setTicketDetailsError] = useState();
@@ -27,7 +27,7 @@ const TicketDetailsModal = ({isOpen, onClose, onBack, currentL, currentClickedOr
         setIsLoadingTicketDetails(true);
         setTicketDetailsError();
 
-        fetch(`/v1/org-metrics/business-owner-type/p1/${currentL}/${currentClickedOrg}`)
+        fetch(`/v1/org-metrics/business-owner-type/${currentP}/${currentL}/${currentClickedOrg}`)
             .then(checkResponse)
             .then((response) => {
                 setTicketDetails(response);
