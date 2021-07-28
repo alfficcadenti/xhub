@@ -17,6 +17,7 @@ import {getFilters, getFiltersForMultiKeys, getQueryValues, useAddToUrl, getTime
 import {Checkbox, Switch} from '@homeaway/react-form-components';
 import {IncidentDetails} from './tabs/BookingTrends';
 import AnomalyDetails from './tabs/BookingTrends/sections/AnomalyTable/AnomalyDetails';
+import BookingsDataTable from './tabs/BookingTrends/sections/BookingChart/BookingsDataTable';
 import {getValue} from '../utils';
 import {Dropdown, DropdownItem} from '@homeaway/react-dropdown';
 import GroupedBookingTrends from './tabs/BookingTrends/sections/BookingChartGrouped/GroupedBookingTrends';
@@ -351,6 +352,10 @@ const Impulse = (props) => {
                     setTimeIntervalOpts={setTimeIntervalOpts}
                     activeIndex={activeIndex}
                     setIsSubmitClicked={setIsSubmitClicked}
+                />);
+            case 3:
+                return (<BookingsDataTable
+                    data={allData}
                 />);
             default:
                 return (<BookingTrends
