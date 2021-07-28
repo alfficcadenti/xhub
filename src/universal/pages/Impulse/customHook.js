@@ -398,7 +398,6 @@ export const useFetchBlipData = (
                 setError('');
                 setRes(chartData);
                 setIsLoading(false);
-                getScreenshot();
             })
             .then(() => {
                 getScreenshot();
