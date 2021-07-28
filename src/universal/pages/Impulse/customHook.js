@@ -13,6 +13,7 @@ import {getFilters, getBrandQueryParam, getQueryString, getRevLoss, startTime, e
 import {checkResponse, checkIsDateInvalid, getChartDataForFutureEvents} from '../utils';
 import moment from 'moment';
 import html2canvas from 'html2canvas';
+import { remove } from 'js-cookie';
 
 const THREE_WEEK_AVG_COUNT = '3 Week Avg Counts';
 const PREDICTION_COUNT = 'Prediction Counts';
@@ -360,11 +361,35 @@ export const useFetchBlipData = (
     const getScreenshot = () => {
         setTimeout(() => {
             const screenshotTarget = document.body.querySelector('.impulse-chart-container');
+            const tooltipList = screenshotTarget.querySelectorAll('.tooltip-body');
+            const resetDiv = screenshotTarget.querySelector('.reset-div');
+            resetDiv.remove();
 
-            html2canvas(screenshotTarget).then((canvas) => {
-                console.log(canvas);
+            for (let i = 0; i < tooltipList.length; i++) {
+                tooltipList[i].remove();
+            }
+
+            html2canvas(screenshotTarget, {scrollY: -window.scrollY}).then((canvas) => {
+                const container = document.body.querySelector('.impulse-container');
+
+                const removeElement = document.querySelector('.graph-image-container');
+                if (removeElement) {
+                    document.body.querySelector('.impulse-container').removeChild(removeElement);
+                }
+
+                const imageContainer = document.createElement('div');
+                imageContainer.className = 'graph-image-container';
+                imageContainer.style.display = 'none';
+
+                const image = document.createElement('img');
+                const imgSource = canvas.toDataURL('image/png');
+                image.src = imgSource;
+                image.alt = 'graph';
+                imageContainer.appendChild(image);
+
+                container.appendChild(imageContainer);
             });
-        }, 2000);
+        }, 6000);
     };
 
     const getData = (start = startDateTime, end = endDateTime, interval = timeInterval) => {
@@ -374,6 +399,8 @@ export const useFetchBlipData = (
                 setError('');
                 setRes(chartData);
                 setIsLoading(false);
+            })
+            .then(() => {
                 getScreenshot();
             })
             .catch((err) => {
