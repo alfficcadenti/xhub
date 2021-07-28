@@ -269,12 +269,13 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
         }
     };
 
-    const renderWidget = ({chartName, aggregatedData, pageBrand, minValue}) => (
+    const renderWidget = ({chartName, aggregatedData, pageBrand, minValue, metricName}) => (
         <TravelerMetricsWidget
             title={chartName}
             data={aggregatedData}
             key={chartName}
             brand={pageBrand}
+            metricName={metricName}
             tickGap={getWidgetXAxisTickGap(currentTimeRange)}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}

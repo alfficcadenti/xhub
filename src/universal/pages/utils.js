@@ -299,6 +299,7 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
     // eslint-disable-next-line complexity
     return SUCCESS_RATES_PAGES_LIST.map((chartName, i) => {
         const aggregatedData = [];
+        let metricName = '';
         let tempMinValue = 0;
 
         // eslint-disable-next-line complexity
@@ -307,7 +308,7 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
         ).reduce((prev, {time, brandWiseSuccessRateData}) => {
             let localMin = prev;
             const momentTime = moment(time);
-
+            metricName = METRIC_NAMES[i];
             const deltaUserCount = deltaUserData
                 .find((item) => item.metricName === METRIC_NAMES[i])?.metricDeltaUserCounts
                 .find((deltaUserItem) => momentTime.isSame(deltaUserItem.time))?.lobTotalDeltaUserCount;
@@ -338,7 +339,7 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
             minValue = tempMinValue < minValue ? tempMinValue : minValue;
         }
 
-        return {chartName, aggregatedData, pageBrand};
+        return {chartName, aggregatedData, pageBrand, metricName};
     }).map((item) => ({...item, minValue}));
 };
 
@@ -352,6 +353,7 @@ export const makeSuccessRatesLOBObjects = (
     deltaUserData
 ) => {
     let minValue;
+    let metricName = '';
     const successRateFilter = ({brand, lineOfBusiness}) => (
         mapBrandNames(brand) === selectedBrand
         && (!lobs.length || !lineOfBusiness || lobs.findIndex(({value}) => value === lineOfBusiness) > -1)
@@ -371,12 +373,12 @@ export const makeSuccessRatesLOBObjects = (
             Array.isArray(data[i]) ? data[i] : []
         ).reduce((prev, {time, successRatePercentagesData}) => {
             let localMin = prev;
+            metricName = METRIC_NAMES[i];
             successRatePercentagesData
                 .filter(selectedBrand === 'eps' ? successRateEPSFilter : successRateFilter)
             // eslint-disable-next-line complexity
                 .forEach(({rate, lineOfBusiness}) => {
                     const momentTime = moment(time);
-
                     const deltaUserCount = deltaUserData.find((item) => item.metricName === METRIC_NAMES[i])?.metricDeltaUserCounts
                         .find((deltaUserItem) => {
                             return momentTime.isSame(deltaUserItem.time);
@@ -415,7 +417,7 @@ export const makeSuccessRatesLOBObjects = (
             minValue = tempMinValue < minValue ? tempMinValue : minValue;
         }
 
-        return {chartName, aggregatedData, pageBrand};
+        return {chartName, aggregatedData, pageBrand, metricName};
     }).map((item) => ({...item, minValue}));
 };
 
