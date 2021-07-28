@@ -487,20 +487,20 @@ describe('makeSuccessRatesObjects()', () => {
 
     it('returns array with objects if no inputs are passed', () => {
         const emptyPageViewsMockResults = [
-            {aggregatedData: [], minValue: 0, pageBrand: '', chartName: 'Home To Search Page (SERP)'},
-            {aggregatedData: [], minValue: 0, pageBrand: '', chartName: 'Search (SERP) To Property Page (PDP)'},
-            {aggregatedData: [], minValue: 0, pageBrand: '', chartName: 'Property (PDP) To Checkout Page (CKO)'},
-            {aggregatedData: [], minValue: 0, pageBrand: '', chartName: 'Checkout (CKO) To Checkout Confirmation Page'}];
+            {aggregatedData: [], minValue: 0, pageBrand: '', chartName: 'Home To Search Page (SERP)', metricName: ''},
+            {aggregatedData: [], minValue: 0, pageBrand: '', chartName: 'Search (SERP) To Property Page (PDP)', metricName: ''},
+            {aggregatedData: [], minValue: 0, pageBrand: '', chartName: 'Property (PDP) To Checkout Page (CKO)', metricName: ''},
+            {aggregatedData: [], minValue: 0, pageBrand: '', chartName: 'Checkout (CKO) To Checkout Confirmation Page', metricName: ''}];
 
         expect(makeSuccessRatesObjects()).to.eql(emptyPageViewsMockResults);
     });
 
     it('creates an array with each object and the expected format', () => {
         const pageViewsMockResults = [
-            {aggregatedData: [], minValue: 92.96, pageBrand: 'Expedia', chartName: 'Home To Search Page (SERP)'},
-            {aggregatedData: [], minValue: 92.96, pageBrand: 'Expedia', chartName: 'Search (SERP) To Property Page (PDP)'},
-            {aggregatedData: [], minValue: 92.96, pageBrand: 'Expedia', chartName: 'Property (PDP) To Checkout Page (CKO)'},
-            {aggregatedData: [], minValue: 92.96, pageBrand: 'Expedia', chartName: 'Checkout (CKO) To Checkout Confirmation Page'}
+            {aggregatedData: [], minValue: 92.96, pageBrand: 'Expedia', chartName: 'Home To Search Page (SERP)', metricName: 'SearchSuccessRate'},
+            {aggregatedData: [], minValue: 92.96, pageBrand: 'Expedia', chartName: 'Search (SERP) To Property Page (PDP)', metricName: 'SERPSuccessRate'},
+            {aggregatedData: [], minValue: 92.96, pageBrand: 'Expedia', chartName: 'Property (PDP) To Checkout Page (CKO)', metricName: 'PDPSuccessRate'},
+            {aggregatedData: [], minValue: 92.96, pageBrand: 'Expedia', chartName: 'Checkout (CKO) To Checkout Confirmation Page', metricName: 'checkoutSuccessRate'}
         ];
 
         expect(makeSuccessRatesObjects(successRatesMockData, start, end, EXPEDIA_BRAND, deltaUserMock)).to.eql(pageViewsMockResults);

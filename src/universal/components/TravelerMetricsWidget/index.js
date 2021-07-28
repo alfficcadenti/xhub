@@ -34,6 +34,7 @@ const TravelerMetricsWidget = ({
     title = '',
     data = [],
     brand,
+    metricName,
     tickGap = 5,
     onMouseDown,
     onMouseMove,
@@ -106,7 +107,7 @@ const TravelerMetricsWidget = ({
         const endTime = moment(dataPointTime).utc().format();
         const startTime = moment(dataPointTime).subtract(5, 'minutes').utc().format();
 
-        fetch(`/v1/delta-users-details?brand=${brand}&from_date=${startTime}&to_date=${endTime}`)
+        fetch(`/v1/delta-users-details?brand=${brand}&from_date=${startTime}&to_date=${endTime}&metric=${metricName}`)
             .then((response) => checkResponse(response))
             .then((deltaUserDetailsData) => {
                 saveData()(deltaUserDetailsData);
