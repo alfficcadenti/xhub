@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {useLocation, withRouter} from 'react-router-dom';
 import {useFetchBlipData} from './customHook';
 import {Navigation} from '@homeaway/react-navigation';
@@ -21,6 +21,7 @@ import BookingsDataTable from './tabs/BookingTrends/sections/BookingChart/Bookin
 import {getValue} from '../utils';
 import {Dropdown, DropdownItem} from '@homeaway/react-dropdown';
 import GroupedBookingTrends from './tabs/BookingTrends/sections/BookingChartGrouped/GroupedBookingTrends';
+import html2canvas from 'html2canvas';
 
 const navLinks = [
     {
@@ -99,16 +100,35 @@ const Impulse = (props) => {
     const [anomalyTableData, setAnomalyTableData] = useState([]);
     const [timeInterval, setTimeInterval] = useState(initialInterval);
     const [timeIntervalOpts, setTimeIntervalOpts] = useState(getTimeIntervals(startDateTime, endDateTime, timeInterval));
+    const [graphImage, setGraphImage] = useState();
+    const imageContainer = useRef(null);
 
     const [activeIndex, setActiveIndex] = useState(getActiveIndex(pathname));
     const [allDataByBrands, setAllDataByBrand] = useState([]);
     const [allDataByLobs, setAllDataByLobs] = useState([]);
     const refreshRange = ((moment(endDateTime).diff(moment(startDateTime), 'days') <= 5) && (moment().diff(moment(endDateTime), 'minutes') < 5));
 
+    const getScreenshot = () => {
+        setGraphImage(null);
+        setTimeout(() => {
+            const screenshotTarget = imageContainer.current;
+            const tooltipList = screenshotTarget.querySelectorAll('.tooltip-body');
+
+            for (let i = 0; i < tooltipList.length; i++) {
+                tooltipList[i].remove();
+            }
+            html2canvas(screenshotTarget, {scrollY: -window.scrollY}).then((canvas) => {
+                const graphSource = canvas.toDataURL('image/png');
+                setGraphImage(graphSource);
+            });
+        }, 6000);
+    };
+
     useQueryParamChange(newBrand, props.onBrandChange);
     useSelectedBrand(newBrand, props.onBrandChange, props.prevSelectedBrand);
     const handleNavigationClick = (e, activeLinkIndex) => {
         setActiveIndex(activeLinkIndex);
+        getScreenshot();
     };
     const [isLoading,
         res,
@@ -151,7 +171,9 @@ const Impulse = (props) => {
         setIsResetClicked,
         allData,
         isChartSliceClicked,
-        setIsChartSliceClicked);
+        setIsChartSliceClicked,
+        getScreenshot,
+        setGraphImage);
 
     const modifyFilters = (newValuesOnChange) => {
         setSelectedLobMulti([]);
@@ -426,6 +448,20 @@ const Impulse = (props) => {
                 </span>
             </div></a>
     );
+    const renderImage = () => {
+        if (res.length && !isLoading && graphImage) {
+            return (<div className="graph-image-container" style={{
+                'display': 'none'
+            }}>
+                <img src={graphImage} alt="graph-image" style={{
+                    'width': '1600px'
+                }}
+                />
+            </div>);
+        }
+
+        return null;
+    };
 
     return (
         <div className="impulse-container">
@@ -513,7 +549,7 @@ const Impulse = (props) => {
                 onLinkClick={handleNavigationClick}
             />
             <LoadingContainer isLoading={isLoading} error={error} className="impulse-loading-container">
-                <div className="impulse-chart-container">
+                <div ref={imageContainer} className="impulse-chart-container">
                     <div className="impulse-bookings-container">
                         {renderTabs()}
                         { (tableData.length !== 0) && <IncidentDetails data={tableData} setTableData={setTableData}/> }
@@ -521,6 +557,7 @@ const Impulse = (props) => {
                     </div>
                 </div>
             </LoadingContainer>
+            {renderImage()}
         </div>
     );
 };

@@ -12,7 +12,6 @@ import {
 import {getFilters, getBrandQueryParam, getQueryString, getRevLoss, startTime, endTime, getCategory, getQueryStringPrediction, simplifyBookingsData, simplifyPredictionData} from './impulseHandler';
 import {checkResponse, checkIsDateInvalid, getChartDataForFutureEvents} from '../utils';
 import moment from 'moment';
-import html2canvas from 'html2canvas';
 
 const THREE_WEEK_AVG_COUNT = '3 Week Avg Counts';
 const PREDICTION_COUNT = 'Prediction Counts';
@@ -56,7 +55,9 @@ export const useFetchBlipData = (
     setIsResetClicked,
     allData,
     isChartSliceClicked,
-    setIsChartSliceClicked
+    setIsChartSliceClicked,
+    getScreenshot,
+    setGraphImage
 ) => {
     const [res, setRes] = useState([]);
     const [error, setError] = useState('');
@@ -268,6 +269,7 @@ export const useFetchBlipData = (
                 if (!futureEvent) {
                     setEndDateTime(endTime());
                     setRes(chartData);
+                    getScreenshot();
 
                     if (defaultRange) {
                         setStartDateTime(startTime());
@@ -275,6 +277,7 @@ export const useFetchBlipData = (
                 } else {
                     fetchData(startDateTime, endDateTime, timeInterval)
                         .then((data) => {
+                            getScreenshot();
                             const newData = data.map((item, i) => {
                                 if (item.time === chartData[i]?.time) {
                                     item[BOOKING_COUNT] = chartData[i][BOOKING_COUNT];
@@ -357,42 +360,9 @@ export const useFetchBlipData = (
         }
     }, interval);
 
-    const getScreenshot = () => {
-        setTimeout(() => {
-            const screenshotTarget = document.body.querySelector('.impulse-chart-container');
-            const tooltipList = screenshotTarget.querySelectorAll('.tooltip-body');
-            const resetDiv = screenshotTarget.querySelector('.reset-div');
-            resetDiv.remove();
-
-            for (let i = 0; i < tooltipList.length; i++) {
-                tooltipList[i].remove();
-            }
-
-            html2canvas(screenshotTarget, {scrollY: -window.scrollY}).then((canvas) => {
-                const container = document.body.querySelector('.impulse-container');
-
-                const removeElement = document.querySelector('.graph-image-container');
-                if (removeElement) {
-                    document.body.querySelector('.impulse-container').removeChild(removeElement);
-                }
-
-                const imageContainer = document.createElement('div');
-                imageContainer.className = 'graph-image-container';
-                imageContainer.style.display = 'none';
-
-                const image = document.createElement('img');
-                const imgSource = canvas.toDataURL('image/png');
-                image.src = imgSource;
-                image.alt = 'graph';
-                imageContainer.appendChild(image);
-
-                container.appendChild(imageContainer);
-            });
-        }, 6000);
-    };
-
     const getData = (start = startDateTime, end = endDateTime, interval = timeInterval) => {
         setIsLoading(true);
+        setGraphImage(null);
         fetchData(start, end, interval)
             .then((chartData) => {
                 setError('');
