@@ -114,6 +114,7 @@ const Impulse = (props) => {
         setTimeout(() => {
             const screenshotTarget = imageContainer.current;
             const tooltipList = screenshotTarget.querySelectorAll('.tooltip-body');
+            const tooltipListCopy = [...screenshotTarget.querySelectorAll('.tooltip-body')];
 
             for (let i = 0; i < tooltipList.length; i++) {
                 tooltipList[i].remove();
@@ -122,6 +123,11 @@ const Impulse = (props) => {
                 const graphSource = canvas.toDataURL('image/png');
                 setGraphImage(graphSource);
             });
+
+            const annotationsList = screenshotTarget.querySelectorAll('.annotation-tooltip');
+            for (let i = 0; i < annotationsList.length; i++) {
+                annotationsList[i].appendChild(tooltipListCopy[0][i]);
+            }
         }, 6000);
     };
 
