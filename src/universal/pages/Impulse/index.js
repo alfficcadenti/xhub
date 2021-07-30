@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import React, {useState, useEffect, useRef} from 'react';
 import {useLocation, withRouter} from 'react-router-dom';
 import {useFetchBlipData} from './customHook';
@@ -450,14 +451,11 @@ const Impulse = (props) => {
     );
     const renderImage = () => {
         if (res.length && !isLoading && graphImage) {
-            return (<div className="graph-image-container" style={{
-                'display': 'none'
-            }}>
-                <img src={graphImage} alt="graph-image" style={{
-                    'width': '1600px'
-                }}
-                />
-            </div>);
+            return (
+                <div className="graph-download-container">
+                    <a href={graphImage} download={`Graph ${moment(startDateTime).format()} - ${moment(endDateTime).format()}`}>Download graph</a>
+                </div>
+            );
         }
 
         return null;
@@ -555,9 +553,9 @@ const Impulse = (props) => {
                         { (tableData.length !== 0) && <IncidentDetails data={tableData} setTableData={setTableData}/> }
                         { (anomalyTableData.length !== 0) && <AnomalyDetails data={anomalyTableData} setAnomalyTableData={setAnomalyTableData}/>}
                     </div>
+                    {renderImage()}
                 </div>
             </LoadingContainer>
-            {renderImage()}
         </div>
     );
 };
