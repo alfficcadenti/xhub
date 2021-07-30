@@ -68,35 +68,36 @@ const getTags = () => {
 };
 
 const getTrace = () => ({
-    traceId: generateTraceId(),
-    spanId: generateSpanId(),
-    serviceName: `Service #${getRandomInt(100)}`,
-    operationName: `Operation #${getRandomInt(100)}`,
+    trace_id: generateTraceId(),
+    span_id: generateSpanId(),
+    service_name: `Service #${getRandomInt(100)}`,
+    operation_name: `Operation #${getRandomInt(100)}`,
     tags: getTags()
 });
 
-const getFci = (start, end, site) => {
+// eslint-disable-next-line complexity
+const getFci = (start, end, sites, hideIntentional) => {
     const momentEnd = moment(end);
     const dateTimeRange = momentEnd.diff(start, 'minutes');
     const timestamp = momentEnd.subtract(getRandomInt(dateTimeRange), 'minutes').toISOString();
-    const siteName = site || SITES[getRandomInt(SITES.length)];
+    const siteName = sites || SITES[getRandomInt(SITES.length)];
     const hasComment = getRandomInt(10) % 3 === 1;
     const fci = {
         timestamp,
-        traceId: generateTraceId(),
-        sessionId: generateSessionId(),
+        trace_id: generateTraceId(),
+        session_id: generateSessionId(),
         failure: 'CheckoutError',
-        errorCode: ERROR_CODES,
+        error_code: ERROR_CODES,
         site: siteName,
-        tpId: getRandomInt(10),
-        eapId: getRandomInt(10),
-        siteId: getRandomInt(10),
+        tp_id: getRandomInt(10),
+        eap_id: getRandomInt(10),
+        site_id: getRandomInt(10),
         traces: (new Array(getRandomInt(3) + 2).fill(0)).map(getTrace),
-        isIntentional: getRandomInt(13) % 3 === 1,
-        xdId: getRandomInt(10) % 3 ? `${generateTraceId()}|${getRandomInt(1000000000)}|${siteName}` : null,
-        duaId: generateTraceId(),
+        is_intentional: hideIntentional === true || hideIntentional === 'true' ? false : getRandomInt(13) % 3 === 1,
+        xd_id: getRandomInt(10) % 3 ? `${generateTraceId()}|${getRandomInt(1000000000)}|${siteName}` : null,
+        dua_id: generateTraceId(),
         comment: hasComment ? `Comment ${getRandomInt(1000)}` : null,
-        isFci: !hasComment
+        is_fci: !hasComment
     };
     const category = getRandomInt(10) % 3 === 1
         ? []
@@ -105,7 +106,7 @@ const getFci = (start, end, site) => {
     return {
         fci,
         category,
-        recordedSessionUrl
+        recorded_session_url: recordedSessionUrl
     };
 };
 
@@ -114,28 +115,29 @@ const getFciQueryParams = (req) => {
     const defaultEnd = moment().toISOString();
     const defaultLobs = [];
     if (!req.url || !req.url.query) {
-        req.url = {query: {from: defaultStart, to: defaultEnd, lobs: defaultLobs, traceId: 'traceId'}};
+        req.url = {query: {from: defaultStart, to: defaultEnd, lobs: defaultLobs, trace_id: 'traceId'}};
     }
     return {
         start: req.url.query.from || defaultStart,
         end: req.url.query.to || defaultEnd,
-        site: req.url.query.site,
-        traceId: req.url.query.traceId
+        sites: req.url.query.sites,
+        trace_id: req.url.query.trace_id,
+        hide_intentional: req.url.query.hide_intentional
     };
 };
 
 const getFciTestData = async (req) => {
-    const {start, end, site, traceId} = getFciQueryParams(req);
-    const fci = getFci(start, end, site);
-    fci.fci.traceId = traceId;
+    const {start, end, sites, trace_id: traceId, hide_intentional: hideIntentional} = getFciQueryParams(req);
+    const fci = getFci(start, end, sites, hideIntentional);
+    fci.fci.trace_id = traceId;
     return [fci];
 };
 
 const getFcisTestData = async (req) => {
-    const {start, end, site} = getFciQueryParams(req);
+    const {start, end, sites, hide_intentional: hideIntentional} = getFciQueryParams(req);
     return (new Array(52))
         .fill(0)
-        .map(() => getFci(start, end, site));
+        .map(() => getFci(start, end, sites, hideIntentional));
 };
 
 const getFciCounts = (start, end, isCategory) => {

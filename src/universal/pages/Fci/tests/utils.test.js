@@ -205,13 +205,13 @@ describe('Fci Utils', () => {
 
     it('mapTrace - no error', () => {
         const data = {
-            serviceName: 'Service Name',
-            operationName: 'Operation Name',
+            service_name: 'Service Name',
+            operation_name: 'Operation Name',
             traces: []
         };
         const trace = mapTrace(data);
-        expect(trace.Service).to.eql(data.serviceName);
-        expect(trace.Operation).to.eql(data.operationName);
+        expect(trace.Service).to.eql(data.service_name);
+        expect(trace.Operation).to.eql(data.operation_name);
         expect(trace.Error).to.eql('false');
         expect(trace['External Error Code']).to.eql('-');
         expect(trace['External Description']).to.eql('-');
@@ -222,20 +222,20 @@ describe('Fci Utils', () => {
         const extErrorCode = '502';
         const extErrorDescription = 'Error Description';
         const data = {
-            serviceName: 'Service Name',
-            operationName: 'Operation Name',
+            service_name: 'Service Name',
+            operation_name: 'Operation Name',
             tags: [
                 {key: 'error', value: 'true'},
                 {key: 'externalerrorcode_1_1', value: extErrorCode},
                 {key: 'externalerrordescription_1_1', value: extErrorDescription}
             ],
             traces: [
-                {serviceName: 'Service Name', operationName: 'Operation Name', tags: [], traces: []}
+                {service_name: 'Service Name', operationn_ame: 'Operation Name', tags: [], traces: []}
             ]
         };
         const trace = mapTrace(data);
-        expect(trace.Service).to.eql(data.serviceName);
-        expect(trace.Operation).to.eql(data.operationName);
+        expect(trace.Service).to.eql(data.service_name);
+        expect(trace.Operation).to.eql(data.operation_name);
         expect(trace.Error).to.eql('true');
         expect(trace['External Error Code']).to.eql(extErrorCode);
         expect(trace['External Description']).to.eql(extErrorDescription);
@@ -272,40 +272,40 @@ describe('Fci Utils', () => {
         const row = {
             fci: {
                 timestamp: '2021-01-15T16:36:00.000Z',
-                sessionId: 'sessionId',
-                traceId: 'traceId',
+                session_id: 'sessionId',
+                trace_id: 'traceId',
                 failure: 'failure',
-                isIntentional: 'true',
-                errorCode: 'errorCode',
+                is_intentional: 'true',
+                error_code: 'errorCode',
                 site: 'site',
-                tpId: 'tpId',
-                eapId: 'eapId',
-                siteId: 'siteId',
-                lineOfBusiness: 'F',
-                duaId: 'duaId',
+                tp_id: 'tpId',
+                eap_id: 'eapId',
+                site_id: 'siteId',
+                line_of_business: 'F',
+                dua_id: 'duaId',
                 comment: 'comment',
-                isFci: true
+                is_fci: true
             },
             category: ['category'],
-            recordedSessionUrl: 'recordedSessionUrl'
+            recorded_session_url: 'recordedSessionUrl'
         };
-        const {fci, category, recordedSessionUrl} = row;
+        const {fci, category, recorded_session_url: recordedSessionUrl} = row;
         expect(mapFci(row)).to.eql({
             Created: moment(fci.timestamp).format('YYYY-MM-DD HH:mm'),
-            Session: fci.sessionId,
-            Trace: fci.traceId,
+            Session: fci.session_id,
+            Trace: fci.trace_id,
             Failure: fci.failure,
-            Intentional: fci.isIntentional,
-            'Error Code': fci.errorCode,
+            Intentional: fci.is_intentional,
+            'Error Code': fci.error_code,
             Site: fci.site,
-            TPID: fci.tpId,
-            EAPID: fci.eapId,
-            'SiteID': fci.siteId,
+            TPID: fci.tp_id,
+            EAPID: fci.eap_id,
+            'SiteID': fci.site_id,
             Category: category.join(', '),
             LoB: 'Flights',
-            'Device User Agent ID': fci.duaId,
+            'Device User Agent ID': fci.dua_id,
             Comment: fci.comment,
-            'Is FCI': String(fci.isFci),
+            'Is FCI': String(fci.is_fci),
             recordedSessionUrl,
             traces: []
         });

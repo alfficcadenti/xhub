@@ -110,8 +110,8 @@ export const mapTrace = (t) => {
     const tags = t.tags || [];
     const hasError = traceHasError(t);
     const result = {
-        Service: getTableValue(t, 'serviceName'),
-        Operation: getTableValue(t, 'operationName'),
+        Service: getTableValue(t, 'service_name'),
+        Operation: getTableValue(t, 'operation_name'),
         Error: String(hasError),
         'External Error Code': '-',
         'External Description': '-',
@@ -144,21 +144,21 @@ export const mapFci = (row = {}) => {
     const {fci = {}, category = []} = JSON.parse(JSON.stringify(row));
     return {
         Created: fci.timestamp ? moment(fci.timestamp).format('YYYY-MM-DD HH:mm') : '-',
-        Session: getTableValue(fci, 'sessionId'),
-        Trace: getTableValue(fci, 'traceId'),
+        Session: getTableValue(fci, 'session_id'),
+        Trace: getTableValue(fci, 'trace_id'),
         Failure: getTableValue(fci, 'failure'),
-        'Intentional': getTableValue(fci, 'isIntentional'),
-        'Error Code': getTableValue(fci, 'errorCode'),
+        'Intentional': getTableValue(fci, 'is_intentional'),
+        'Error Code': getTableValue(fci, 'error_code'),
         Site: getTableValue(fci, 'site'),
-        TPID: getTableValue(fci, 'tpId'),
-        EAPID: getTableValue(fci, 'eapId'),
-        'SiteID': getTableValue(fci, 'siteId'),
+        TPID: getTableValue(fci, 'tp_id'),
+        EAPID: getTableValue(fci, 'eap_id'),
+        'SiteID': getTableValue(fci, 'site_id'),
         Category: category.join(', ') || '-',
-        LoB: (LOB_LIST.find((l) => l.value === fci.lineOfBusiness) || {label: '-'}).label,
-        'Device User Agent ID': getTableValue(fci, 'duaId'),
+        LoB: (LOB_LIST.find((l) => l.value === fci.line_of_business) || {label: '-'}).label,
+        'Device User Agent ID': getTableValue(fci, 'dua_id'),
         Comment: getTableValue(fci, 'comment'),
-        'Is FCI': String(fci.isFci),
-        recordedSessionUrl: getTableValue(row, 'recordedSessionUrl'),
+        'Is FCI': String(fci.is_fci),
+        recordedSessionUrl: getTableValue(row, 'recorded_session_url'),
         traces: (fci.traces || []).map(mapTrace)
     };
 };
