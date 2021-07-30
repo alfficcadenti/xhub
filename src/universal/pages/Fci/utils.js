@@ -32,7 +32,7 @@ export const shouldFetchData = (prev, start, end, selectedSite, chartProperty, s
 
 // eslint-disable-next-line complexity
 export const getQueryValues = (search, brand = 'Expedia') => {
-    const {tab, from, to, lobs, code, siteName, hideIntentional, searchId, bucket, id} = qs.parse(search);
+    const {tab, from, to, lobs, code, sites, hide_intentional: hideIntentional, search_id: searchId, bucket, id} = qs.parse(search);
     const isValidDateRange = validDateRange(from, to);
     return {
         initialStart: isValidDateRange ? moment(from) : moment().subtract(24, 'hours').startOf('minute'),
@@ -41,8 +41,8 @@ export const getQueryValues = (search, brand = 'Expedia') => {
         initialLobs: lobs
             ? lobs.split(',').map((l) => LOB_LIST.find(({value}) => value === l)).filter((l) => l)
             : [],
-        initialSite: siteName
-            ? siteName.split(',')
+        initialSite: sites
+            ? sites.split(',')
             : [getBrandSites(brand)[0]],
         initialErrorCode: code ? code.split(',') : [],
         initialHideIntentionalCheck: hideIntentional === 'true',
@@ -60,8 +60,8 @@ export const getFciQueryString = (start, end, selectedErrorCode, selectedSite, h
     const dateQuery = `from=${start.toISOString()}&to=${end.toISOString()}`;
     const errorProperty = chartProperty === CATEGORY_OPTION ? 'category' : 'code';
     const errorQuery = selectedErrorCode && selectedErrorCode.length ? `&${errorProperty}=${stringifyQueryParams(selectedErrorCode)}` : '';
-    const siteQuery = selectedSite && selectedSite.length ? `&siteName=${stringifyQueryParams(selectedSite)}` : '';
-    const hideIntentionalCheckQuery = `&hideIntentional=${hideIntentionalCheck}`;
+    const siteQuery = selectedSite && selectedSite.length ? `&sites=${stringifyQueryParams(selectedSite)}` : '';
+    const hideIntentionalCheckQuery = `&hide_intentional=${hideIntentionalCheck}`;
     return `${dateQuery}${errorQuery}${siteQuery}${hideIntentionalCheckQuery}`;
 };
 
@@ -72,9 +72,9 @@ export const getHistoryQueryString = (selectedBrands, start, end, selectedErrorC
     const dateQuery = `&from=${start.toISOString()}&to=${end.toISOString()}`;
     const errorProperty = chartProperty === CATEGORY_OPTION ? 'code' : 'code';
     const errorQuery = selectedErrorCode && selectedErrorCode.length ? `&${errorProperty}=${stringifyQueryParams(selectedErrorCode)}` : '';
-    const siteQuery = selectedSite ? `&siteName=${stringifyQueryParams(selectedSite)}` : '';
-    const hideIntentionalCheckQuery = `&hideIntentional=${hideIntentionalCheck}`;
-    const searchQuery = searchId ? `&searchId=${searchId}` : '';
+    const siteQuery = selectedSite ? `&sites=${stringifyQueryParams(selectedSite)}` : '';
+    const hideIntentionalCheckQuery = `&hide_intentional=${hideIntentionalCheck}`;
+    const searchQuery = searchId ? `&search_id=${searchId}` : '';
     const indexQuery = `&tab=${activeIndex}`;
     const bucketQuery = selectedBucket ? `&bucket=${selectedBucket}` : '';
     const idQuery = id ? `&id=${id}` : '';

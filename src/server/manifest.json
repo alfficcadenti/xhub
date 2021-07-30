@@ -207,49 +207,49 @@
           "protocol": "http:",
           "routes": {
             "fci": {
-              "path": "/getCheckoutFailure",
+              "path": "/v2/checkout-failure",
               "method": "GET",
-              "operation": "GET_user_events_analysis_fci_api_v1"
+              "operation": "GET_user_events_analysis_fci_api_v2"
             },
             "fcis": {
-              "path": "/getCheckoutFailures",
+              "path": "/v2/checkout-failures",
               "method": "GET",
-              "operation": "GET_user_events_analysis_api_v1"
+              "operation": "GET_user_events_analysis_api_v2"
             },
             "fciErrorCounts": {
-              "path": "/getCheckoutFailureErrorCounts",
+              "path": "/v2/checkout-failure-error-counts",
               "method": "GET",
-              "operation": "GET_user_events_analysis_error_counts_api_v1"
+              "operation": "GET_user_events_analysis_error_counts_api_v2"
             },
             "fciCategoryCounts": {
-              "path": "/getCheckoutFailureCategoryCounts",
+              "path": "/v2/checkout-failure-category-counts",
               "method": "GET",
-              "operation": "GET_user_events_analysis_category_counts_api_v1"
+              "operation": "GET_user_events_analysis_category_counts_api_v2"
             },
             "checkout-failure-sites": {
-              "path": "/checkout-failure-sites",
+              "path": "/v2/checkout-failure-sites",
               "method": "GET",
-              "operation": "GET_user_events_analysis_sites_api_v1"
+              "operation": "GET_user_events_analysis_sites_api_v2"
             },
             "checkout-failure-error-codes": {
-              "path": "/checkout-failure-error-codes",
+              "path": "/v2/checkout-failure-error-codes",
               "method": "GET",
-              "operation": "GET_user_events_analysis_error_codes_api_v1"
+              "operation": "GET_user_events_analysis_error_codes_api_v2"
             },
             "checkout-failure-error-categories": {
-              "path": "/checkout-failure-error-categories",
+              "path": "/v2/checkout-failure-error-categories",
               "method": "GET",
-              "operation": "GET_user_events_analysis_error_categories_api_v1"
+              "operation": "GET_user_events_analysis_error_categories_api_v2"
             },
             "getFciComments": {
-              "path": "/getComments",
+              "path": "/v2/comments",
               "method": "GET",
-              "operation": "GET_user_events_analysis_comments_api_v1"
+              "operation": "GET_user_events_analysis_comments_api_v2"
             },
             "postFciComment": {
-              "path": "/addComment",
+              "path": "/v2/comment",
               "method": "POST",
-              "operation": "POST_user_events_analysis_comments_api_v1"
+              "operation": "POST_user_events_analysis_comments_api_v2"
             }
           }
         },
@@ -258,49 +258,49 @@
           "protocol": "http:",
           "routes": {
             "fci": {
-              "path": "/getCheckoutFailure",
+              "path": "/v2/checkout-failure",
               "method": "GET",
-              "operation": "GET_user_events_analysis_fci_api_v1"
+              "operation": "GET_user_events_analysis_fci_api_v2"
             },
             "fcis": {
-              "path": "/getCheckoutFailures",
+              "path": "/v2/checkout-failures",
               "method": "GET",
-              "operation": "GET_user_events_analysis_api_v1"
+              "operation": "GET_user_events_analysis_api_v2"
             },
             "fciErrorCounts": {
-              "path": "/getCheckoutFailureErrorCounts",
+              "path": "/v2/checkout-failure-error-counts",
               "method": "GET",
-              "operation": "GET_user_events_analysis_error_counts_api_v1"
+              "operation": "GET_user_events_analysis_error_counts_api_v2"
             },
             "fciCategoryCounts": {
-              "path": "/getCheckoutFailureCategoryCounts",
+              "path": "/v2/checkout-failure-category-counts",
               "method": "GET",
-              "operation": "GET_user_events_analysis_category_counts_api_v1"
+              "operation": "GET_user_events_analysis_category_counts_api_v2"
             },
             "checkout-failure-sites": {
-              "path": "/checkout-failure-sites",
+              "path": "/v2/checkout-failure-sites",
               "method": "GET",
-              "operation": "GET_user_events_analysis_sites_api_v1"
+              "operation": "GET_user_events_analysis_sites_api_v2"
             },
             "checkout-failure-error-codes": {
-              "path": "/checkout-failure-error-codes",
+              "path": "/v2/checkout-failure-error-codes",
               "method": "GET",
-              "operation": "GET_user_events_analysis_error_codes_api_v1"
+              "operation": "GET_user_events_analysis_error_codes_api_v2"
             },
             "checkout-failure-error-categories": {
-              "path": "/checkout-failure-error-categories",
+              "path": "/v2/checkout-failure-error-categories",
               "method": "GET",
-              "operation": "GET_user_events_analysis_error_categories_api_v1"
+              "operation": "GET_user_events_analysis_error_categories_api_v2"
             },
             "getFciComments": {
-              "path": "/getComments",
+              "path": "/v2/comments",
               "method": "GET",
-              "operation": "GET_user_events_analysis_comments_api_v1"
+              "operation": "GET_user_events_analysis_comments_api_v2"
             },
             "postFciComment": {
-              "path": "/addComment",
+              "path": "/v2/comment",
               "method": "POST",
-              "operation": "POST_user_events_analysis_comments_api_v1"
+              "operation": "POST_user_events_analysis_comments_api_v2"
             }
           }
         },
@@ -309,49 +309,49 @@
           "protocol": "http:",
           "routes": {
             "fci": {
-              "path": "/getCheckoutFailure",
+              "path": "/v2/checkout-failure",
               "method": "GET",
-              "operation": "GET_user_events_analysis_fci_api_v1"
+              "operation": "GET_user_events_analysis_fci_api_v2"
             },
             "fcis": {
-              "path": "/getCheckoutFailures",
+              "path": "/v2/checkout-failures",
               "method": "GET",
-              "operation": "GET_user_events_analysis_api_v1"
+              "operation": "GET_user_events_analysis_api_v2"
             },
             "fciErrorCounts": {
-              "path": "/getCheckoutFailureErrorCounts",
+              "path": "/v2/checkout-failure-error-counts",
               "method": "GET",
-              "operation": "GET_user_events_analysis_error_counts_api_v1"
+              "operation": "GET_user_events_analysis_error_counts_api_v2"
             },
             "fciCategoryCounts": {
-              "path": "/getCheckoutFailureCategoryCounts",
+              "path": "/v2/checkout-failure-category-counts",
               "method": "GET",
-              "operation": "GET_user_events_analysis_category_counts_api_v1"
+              "operation": "GET_user_events_analysis_category_counts_api_v2"
             },
             "checkout-failure-sites": {
-              "path": "/checkout-failure-sites",
+              "path": "/v2/checkout-failure-sites",
               "method": "GET",
-              "operation": "GET_user_events_analysis_sites_api_v1"
+              "operation": "GET_user_events_analysis_sites_api_v2"
             },
             "checkout-failure-error-codes": {
-              "path": "/checkout-failure-error-codes",
+              "path": "/v2/checkout-failure-error-codes",
               "method": "GET",
-              "operation": "GET_user_events_analysis_error_codes_api_v1"
+              "operation": "GET_user_events_analysis_error_codes_api_v2"
             },
             "checkout-failure-error-categories": {
-              "path": "/checkout-failure-error-categories",
+              "path": "/v2/checkout-failure-error-categories",
               "method": "GET",
-              "operation": "GET_user_events_analysis_error_categories_api_v1"
+              "operation": "GET_user_events_analysis_error_categories_api_v2"
             },
             "getFciComments": {
-              "path": "/getComments",
+              "path": "/v2/comments",
               "method": "GET",
-              "operation": "GET_user_events_analysis_comments_api_v1"
+              "operation": "GET_user_events_analysis_comments_api_v2"
             },
             "postFciComment": {
-              "path": "/addComment",
+              "path": "/v2/comment",
               "method": "POST",
-              "operation": "POST_user_events_analysis_comments_api_v1"
+              "operation": "POST_user_events_analysis_comments_api_v2"
             }
           }
         },
@@ -360,49 +360,49 @@
           "protocol": "http:",
           "routes": {
             "fci": {
-              "path": "/getCheckoutFailure",
+              "path": "/v2/checkout-failure",
               "method": "GET",
-              "operation": "GET_user_events_analysis_fci_api_v1"
+              "operation": "GET_user_events_analysis_fci_api_v2"
             },
             "fcis": {
-              "path": "/getCheckoutFailures",
+              "path": "/v2/checkout-failures",
               "method": "GET",
-              "operation": "GET_user_events_analysis_api_v1"
+              "operation": "GET_user_events_analysis_api_v2"
             },
             "fciErrorCounts": {
-              "path": "/getCheckoutFailureErrorCounts",
+              "path": "/v2/checkout-failure-error-counts",
               "method": "GET",
-              "operation": "GET_user_events_analysis_error_counts_api_v1"
+              "operation": "GET_user_events_analysis_error_counts_api_v2"
             },
             "fciCategoryCounts": {
-              "path": "/getCheckoutFailureCategoryCounts",
+              "path": "/v2/checkout-failure-category-counts",
               "method": "GET",
-              "operation": "GET_user_events_analysis_category_counts_api_v1"
+              "operation": "GET_user_events_analysis_category_counts_api_v2"
             },
             "checkout-failure-sites": {
-              "path": "/checkout-failure-sites",
+              "path": "/v2/checkout-failure-sites",
               "method": "GET",
-              "operation": "GET_user_events_analysis_sites_api_v1"
+              "operation": "GET_user_events_analysis_sites_api_v2"
             },
             "checkout-failure-error-codes": {
-              "path": "/checkout-failure-error-codes",
+              "path": "/v2/checkout-failure-error-codes",
               "method": "GET",
-              "operation": "GET_user_events_analysis_error_categories_api_v1"
+              "operation": "GET_user_events_analysis_error_codes_api_v2"
             },
             "checkout-failure-error-categories": {
-              "path": "/checkout-failure-error-categories",
+              "path": "/v2/checkout-failure-error-categories",
               "method": "GET",
-              "operation": "GET_user_events_analysis_error_categories_api_v1"
+              "operation": "GET_user_events_analysis_error_categories_api_v2"
             },
             "getFciComments": {
-              "path": "/getComments",
+              "path": "/v2/comments",
               "method": "GET",
-              "operation": "GET_user_events_analysis_comments_api_v1"
+              "operation": "GET_user_events_analysis_comments_api_v2"
             },
             "postFciComment": {
-              "path": "/addComment",
+              "path": "/v2/comment",
               "method": "POST",
-              "operation": "POST_user_events_analysis_comments_api_v1"
+              "operation": "POST_user_events_analysis_comments_api_v2"
             }
           }
         }

@@ -94,8 +94,8 @@ describe('Fci Utils', () => {
         const id = 'traceidB';
         const bucket = '2020-01-01';
         const result = getQueryValues(`?from=${start}&to=${end}&lobs=${lob}&code=${errorCode}`
-            + `&siteName=${site}&selectedBrand=${urlBrand}&hideIntentional=${intentional}`
-            + `&searchId=${searchId}&tab=${index}&id=${id}&bucket=${bucket}`, EXPEDIA_PARTNER_SERVICES_BRAND);
+            + `&sites=${site}&selectedBrand=${urlBrand}&hide_intentional=${intentional}`
+            + `&search_id=${searchId}&tab=${index}&id=${id}&bucket=${bucket}`, EXPEDIA_PARTNER_SERVICES_BRAND);
         expect(result.initialStart.isSame(start, 'day')).to.be.eql(true);
         expect(result.initialEnd.isSame(end, 'day')).to.be.eql(true);
         expect(result.initialTimeRange).to.be.eql('Custom');
@@ -114,7 +114,7 @@ describe('Fci Utils', () => {
         const end = moment();
         const hideIntentionalCheck = false;
         expect(getFciQueryString(start, end, null, null, hideIntentionalCheck, null)).to.eql(
-            `from=${start.toISOString()}&to=${end.toISOString()}&hideIntentional=${hideIntentionalCheck}`
+            `from=${start.toISOString()}&to=${end.toISOString()}&hide_intentional=${hideIntentionalCheck}`
         );
     });
 
@@ -127,7 +127,7 @@ describe('Fci Utils', () => {
         const chartProperty = CATEGORY_OPTION;
         expect(getFciQueryString(start, end, selectedErrorCode, selectedSite, hideIntentionalCheck, chartProperty)).to.eql(
             `from=${start.toISOString()}&to=${end.toISOString()}&category=${selectedErrorCode}`
-            + `&siteName=${selectedSite}&hideIntentional=${hideIntentionalCheck}`
+            + `&sites=${selectedSite}&hide_intentional=${hideIntentionalCheck}`
         );
     });
 
@@ -140,7 +140,7 @@ describe('Fci Utils', () => {
         expect(getHistoryQueryString(selectedBrands, start, end, null, null,
             hideIntentionalCheck, null, null, activeIndex)).to.eql(
             `selectedBrand=${selectedBrands[0]}&from=${start.toISOString()}&to=${end.toISOString()}`
-            + `&hideIntentional=${hideIntentionalCheck}&tab=${activeIndex}`
+            + `&hide_intentional=${hideIntentionalCheck}&tab=${activeIndex}`
         );
     });
 
@@ -159,8 +159,8 @@ describe('Fci Utils', () => {
         expect(getHistoryQueryString(selectedBrands, start, end, selectedErrorCode, selectedSite,
             hideIntentionalCheck, chartProperty, searchId, activeIndex, selectedBucket, id)).to.eql(
             `selectedBrand=${selectedBrands[0]}&from=${start.toISOString()}&to=${end.toISOString()}`
-            + `&code=${selectedErrorCode}&siteName=${selectedSite}`
-            + `&hideIntentional=${hideIntentionalCheck}&searchId=${searchId}&tab=${activeIndex}`
+            + `&code=${selectedErrorCode}&sites=${selectedSite}`
+            + `&hide_intentional=${hideIntentionalCheck}&search_id=${searchId}&tab=${activeIndex}`
             + `&bucket=${selectedBucket}&id=${id}`
         );
     });
