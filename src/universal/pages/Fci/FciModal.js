@@ -26,7 +26,7 @@ const FciModal = ({fci, fcis, editMode, isOpen, onClose, onSaveComment, onEditBa
         if (editMode && fci) {
             setIsLoadingComments(true);
             setCommentsError();
-            fetch(`/getComments?traceId=${fci.Trace}`)
+            fetch(`/v2/comments?trace_id=${fci.Trace}`)
                 .then(checkResponse)
                 .then((response) => {
                     const mappedComments = (response || [])
@@ -67,7 +67,7 @@ const FciModal = ({fci, fcis, editMode, isOpen, onClose, onSaveComment, onEditBa
         const timestamp = moment().toISOString();
         const author = Cookies.get('email') || 'anonymous';
         const traceId = fci ? fci.Trace : '-';
-        fetch('/addComment', {
+        fetch('/v2/comment', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

@@ -142,7 +142,7 @@ const Fci = ({selectedBrands}) => {
         setModalError();
         setIsModalOpen(true);
         updateHistory();
-        fetch(`/getCheckoutFailure?searchId=${searchText}`)
+        fetch(`/v2/checkout-failure?search_id=${searchText}`)
             .then(checkResponse)
             .then((data) => {
                 processTableData(data);
@@ -173,8 +173,8 @@ const Fci = ({selectedBrands}) => {
         if (shouldFetchData(prev, start, end, selectedSite, chartProperty, selectedErrorCode, hideIntentionalCheck)) {
             const fciQuery = getFciQueryString(start, end, selectedErrorCode, selectedSite, hideIntentionalCheck, chartProperty);
             const url = chartProperty === CATEGORY_OPTION
-                ? `/getCheckoutFailureCategoryCounts?${fciQuery}`
-                : `/getCheckoutFailureErrorCounts?${fciQuery}`;
+                ? `/v2/checkout-failure-category-counts?${fciQuery}`
+                : `/v2/checkout-failure-error-counts?${fciQuery}`;
             fetch(url)
                 .then(checkResponse)
                 .then((data) => {
@@ -202,7 +202,7 @@ const Fci = ({selectedBrands}) => {
             setIsModalLoading(true);
             setModalError();
             setIsModalOpen(true);
-            fetch(`/getCheckoutFailures?${query}`)
+            fetch(`/v2/checkout-failures?${query}`)
                 .then(checkResponse)
                 .then((data) => processTableData(data))
                 .catch((err) => {
@@ -216,7 +216,7 @@ const Fci = ({selectedBrands}) => {
 
     useEffect(() => {
         if (sitesIsLoading) {
-            fetch(`/checkout-failure-sites?from=${pendingStart.toISOString()}&to=${pendingEnd.toISOString()}`)
+            fetch(`/v2/checkout-failure-sites?from=${pendingStart.toISOString()}&to=${pendingEnd.toISOString()}`)
                 .then(checkResponse)
                 .then((data) => setSitesData({
                     start: pendingStart,
@@ -230,8 +230,8 @@ const Fci = ({selectedBrands}) => {
     useEffect(() => {
         if (errorCodesIsLoading) {
             const path = chartProperty === CODE_OPTION
-                ? '/checkout-failure-error-codes'
-                : '/checkout-failure-error-categories';
+                ? '/v2/checkout-failure-error-codes'
+                : '/v2/checkout-failure-error-categories';
             setErrorCodesIsLoading(true);
             fetch(`${path}?from=${pendingStart.toISOString()}&to=${pendingEnd.toISOString()}`)
                 .then(checkResponse)
