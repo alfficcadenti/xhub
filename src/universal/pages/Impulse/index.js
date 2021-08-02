@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 import React, {useState, useEffect, useRef} from 'react';
 import {useLocation, withRouter} from 'react-router-dom';
 import {useFetchBlipData} from './customHook';
@@ -456,11 +455,13 @@ const Impulse = (props) => {
             </div></a>
     );
     const renderImage = () => {
-        if (res.length && !isLoading && graphImage) {
+        if (res.length) {
             return (
-                <div className="graph-download-container">
-                    <a href={graphImage} download={`Graph ${moment(startDateTime).format()} - ${moment(endDateTime).format()}`}>Download graph</a>
-                </div>
+                <button className="btn btn-default graph-download-button" disabled={!graphImage}>
+                    <a href={graphImage ? graphImage : ''} style={{
+                        'color': `${graphImage ? 'inherit' : '#ddddde'}`
+                    }} download={`Graph ${moment(startDateTime).format()} - ${moment(endDateTime).format()}`}>Download graph</a>
+                </button>
             );
         }
 
