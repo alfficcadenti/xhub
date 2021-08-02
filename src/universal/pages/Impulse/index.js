@@ -560,8 +560,8 @@ const Impulse = (props) => {
                         { (tableData.length !== 0) && <IncidentDetails data={tableData} setTableData={setTableData}/> }
                         { (anomalyTableData.length !== 0) && <AnomalyDetails data={anomalyTableData} setAnomalyTableData={setAnomalyTableData}/>}
                     </div>
-                    {renderImage()}
                 </div>
+                {renderImage()}
             </LoadingContainer>
         </div>
     );
