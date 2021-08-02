@@ -32,7 +32,7 @@ export const shouldFetchData = (prev, start, end, selectedSite, chartProperty, s
 
 // eslint-disable-next-line complexity
 export const getQueryValues = (search, brand = 'Expedia') => {
-    const {tab, from, to, lobs, code, siteName, hideIntentional, searchId, bucket, id} = qs.parse(search);
+    const {tab, from, to, lobs, code, sites, hide_intentional: hideIntentional, search_id: searchId, bucket, id} = qs.parse(search);
     const isValidDateRange = validDateRange(from, to);
     return {
         initialStart: isValidDateRange ? moment(from) : moment().subtract(24, 'hours').startOf('minute'),
@@ -41,8 +41,8 @@ export const getQueryValues = (search, brand = 'Expedia') => {
         initialLobs: lobs
             ? lobs.split(',').map((l) => LOB_LIST.find(({value}) => value === l)).filter((l) => l)
             : [],
-        initialSite: siteName
-            ? siteName.split(',')
+        initialSite: sites
+            ? sites.split(',')
             : [getBrandSites(brand)[0]],
         initialErrorCode: code ? code.split(',') : [],
         initialHideIntentionalCheck: hideIntentional === 'true',
@@ -60,8 +60,8 @@ export const getFciQueryString = (start, end, selectedErrorCode, selectedSite, h
     const dateQuery = `from=${start.toISOString()}&to=${end.toISOString()}`;
     const errorProperty = chartProperty === CATEGORY_OPTION ? 'category' : 'code';
     const errorQuery = selectedErrorCode && selectedErrorCode.length ? `&${errorProperty}=${stringifyQueryParams(selectedErrorCode)}` : '';
-    const siteQuery = selectedSite && selectedSite.length ? `&siteName=${stringifyQueryParams(selectedSite)}` : '';
-    const hideIntentionalCheckQuery = `&hideIntentional=${hideIntentionalCheck}`;
+    const siteQuery = selectedSite && selectedSite.length ? `&sites=${stringifyQueryParams(selectedSite)}` : '';
+    const hideIntentionalCheckQuery = `&hide_intentional=${hideIntentionalCheck}`;
     return `${dateQuery}${errorQuery}${siteQuery}${hideIntentionalCheckQuery}`;
 };
 
@@ -72,9 +72,9 @@ export const getHistoryQueryString = (selectedBrands, start, end, selectedErrorC
     const dateQuery = `&from=${start.toISOString()}&to=${end.toISOString()}`;
     const errorProperty = chartProperty === CATEGORY_OPTION ? 'code' : 'code';
     const errorQuery = selectedErrorCode && selectedErrorCode.length ? `&${errorProperty}=${stringifyQueryParams(selectedErrorCode)}` : '';
-    const siteQuery = selectedSite ? `&siteName=${stringifyQueryParams(selectedSite)}` : '';
-    const hideIntentionalCheckQuery = `&hideIntentional=${hideIntentionalCheck}`;
-    const searchQuery = searchId ? `&searchId=${searchId}` : '';
+    const siteQuery = selectedSite ? `&sites=${stringifyQueryParams(selectedSite)}` : '';
+    const hideIntentionalCheckQuery = `&hide_intentional=${hideIntentionalCheck}`;
+    const searchQuery = searchId ? `&search_id=${searchId}` : '';
     const indexQuery = `&tab=${activeIndex}`;
     const bucketQuery = selectedBucket ? `&bucket=${selectedBucket}` : '';
     const idQuery = id ? `&id=${id}` : '';
@@ -110,8 +110,8 @@ export const mapTrace = (t) => {
     const tags = t.tags || [];
     const hasError = traceHasError(t);
     const result = {
-        Service: getTableValue(t, 'serviceName'),
-        Operation: getTableValue(t, 'operationName'),
+        Service: getTableValue(t, 'service_name'),
+        Operation: getTableValue(t, 'operation_name'),
         Error: String(hasError),
         'External Error Code': '-',
         'External Description': '-',
@@ -144,21 +144,21 @@ export const mapFci = (row = {}) => {
     const {fci = {}, category = []} = JSON.parse(JSON.stringify(row));
     return {
         Created: fci.timestamp ? moment(fci.timestamp).format('YYYY-MM-DD HH:mm') : '-',
-        Session: getTableValue(fci, 'sessionId'),
-        Trace: getTableValue(fci, 'traceId'),
+        Session: getTableValue(fci, 'session_id'),
+        Trace: getTableValue(fci, 'trace_id'),
         Failure: getTableValue(fci, 'failure'),
-        'Intentional': getTableValue(fci, 'isIntentional'),
-        'Error Code': getTableValue(fci, 'errorCode'),
+        'Intentional': getTableValue(fci, 'is_intentional'),
+        'Error Code': getTableValue(fci, 'error_code'),
         Site: getTableValue(fci, 'site'),
-        TPID: getTableValue(fci, 'tpId'),
-        EAPID: getTableValue(fci, 'eapId'),
-        'SiteID': getTableValue(fci, 'siteId'),
+        TPID: getTableValue(fci, 'tp_id'),
+        EAPID: getTableValue(fci, 'eap_id'),
+        'SiteID': getTableValue(fci, 'site_id'),
         Category: category.join(', ') || '-',
-        LoB: (LOB_LIST.find((l) => l.value === fci.lineOfBusiness) || {label: '-'}).label,
-        'Device User Agent ID': getTableValue(fci, 'duaId'),
+        LoB: (LOB_LIST.find((l) => l.value === fci.line_of_business) || {label: '-'}).label,
+        'Device User Agent ID': getTableValue(fci, 'dua_id'),
         Comment: getTableValue(fci, 'comment'),
-        'Is FCI': String(fci.isFci),
-        recordedSessionUrl: getTableValue(row, 'recordedSessionUrl'),
+        'Is FCI': String(fci.is_fci),
+        recordedSessionUrl: getTableValue(row, 'recorded_session_url'),
         traces: (fci.traces || []).map(mapTrace)
     };
 };

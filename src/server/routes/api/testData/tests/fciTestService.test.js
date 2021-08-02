@@ -27,10 +27,10 @@ describe('Fci Test Service', () => {
 
     it('getTrace', () => {
         const tagKeys = Object.keys(getTrace());
-        expect(tagKeys).to.include('traceId');
-        expect(tagKeys).to.include('spanId');
-        expect(tagKeys).to.include('serviceName');
-        expect(tagKeys).to.include('operationName');
+        expect(tagKeys).to.include('trace_id');
+        expect(tagKeys).to.include('span_id');
+        expect(tagKeys).to.include('service_name');
+        expect(tagKeys).to.include('operation_name');
         expect(tagKeys).to.include('tags');
     });
 

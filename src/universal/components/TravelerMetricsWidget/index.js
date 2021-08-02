@@ -34,6 +34,7 @@ const TravelerMetricsWidget = ({
     title = '',
     data = [],
     brand,
+    metricName,
     tickGap = 5,
     onMouseDown,
     onMouseMove,
@@ -106,7 +107,7 @@ const TravelerMetricsWidget = ({
         const endTime = moment(dataPointTime).utc().format();
         const startTime = moment(dataPointTime).subtract(5, 'minutes').utc().format();
 
-        fetch(`/v1/delta-users-details?brand=${brand}&from_date=${startTime}&to_date=${endTime}`)
+        fetch(`/v1/delta-users-details?brand=${brand}&from_date=${startTime}&to_date=${endTime}&metric=${metricName}`)
             .then((response) => checkResponse(response))
             .then((deltaUserDetailsData) => {
                 saveData()(deltaUserDetailsData);
@@ -122,13 +123,17 @@ const TravelerMetricsWidget = ({
         const tooltip = tooltipRef.current;
 
         const getDeltaUserCount = () => {
-            if (pageName !== PAGE_VIEWS_PAGE_NAME && ![EXPEDIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND].includes(brand)) {
+            const dataPointsHoursRange = moment(data[1]?.time).diff(moment(data[0]?.time), 'minutes');
+            const shouldShowDeltaTag = dataPointsHoursRange <= 5 && pageName !== PAGE_VIEWS_PAGE_NAME && ![EXPEDIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND].includes(brand);
+
+            if (shouldShowDeltaTag) {
                 return !selectedLoBs.length
                     ? `<span class="delta-link">delta users = ${point.payload.deltaUserCount ?? 0}</span>`
                     : selectedLoBs
                         .map(({label}) => `<div class="lob-label">${label} delta users = ${point.payload[`${label}deltaUserCount`]}</div>`)
                         .join('');
             }
+
             return '';
         };
 
