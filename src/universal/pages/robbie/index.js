@@ -10,8 +10,10 @@ import LoadingContainer from '../../components/LoadingContainer';
 import './styles.less';
 import {getData} from './utils';
 
+
 const initialStart = moment().subtract(6, 'months').format(DATE_FORMAT);
 const initialEnd = moment().format(DATE_FORMAT);
+
 const Robbie = () => {
     const columns = ['ID', 'PRB', 'Channel ID', 'Email', 'Robbie Reminder', 'Message', 'Notified', 'Status', 'Assignee'];
     const [startDate, setstartDate] = useState(initialStart);
@@ -26,7 +28,6 @@ const Robbie = () => {
         }
         setisDirtyForm(false);
     };
-
 
     const [
         isLoading,
@@ -67,18 +68,18 @@ const Robbie = () => {
             </div>
         )
     };
+
     return (
-        <div className = "robbie-container">
+        <div className="robbie-container">
             <h1 className="page-title">
                 {'Robbie Notifications'}
             </h1>
-            <div className = "filters-wrapper">
+            <div className="filters-wrapper">
                 <DatetimeRangePicker
                     onChange={handleDateRangeChange}
                     startDate={startDate}
                     endDate={endDate}
                 />
-
                 <button
                     type="button"
                     className="apply-button btn btn-primary active"
@@ -91,16 +92,16 @@ const Robbie = () => {
                     {'Apply'}
                 </button>
             </div>
-
-            <DataTable className = "data-table"
-                data = {getData(items)}
-                columns = {columns}
-                columnsInfo = {columnsInfo}
-                paginated
-            />
-
-            <LoadingContainer isLoading={isLoading} error={errorMessage} />
+            <LoadingContainer isLoading={isLoading} error={errorMessage} className="robbie-loading-container" >
+                <DataTable className="data-table"
+                    data={getData(items)}
+                    columns={columns}
+                    columnsInfo={columnsInfo}
+                    paginated
+                />
+            </LoadingContainer>
         </div>
     );
 };
+
 export default withRouter(Robbie);
