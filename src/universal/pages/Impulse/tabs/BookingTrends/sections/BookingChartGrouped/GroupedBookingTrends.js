@@ -33,7 +33,9 @@ const GroupedBookingTrends = ({
     activeIndex,
     setIsResetClicked,
     setIsChartSliceClicked,
-    setIsSubmitClicked
+    setIsSubmitClicked,
+    renderImage,
+    imageContainer
 }) => {
     const [left, setLeft] = useState('dataMin');
     const [right, setRight] = useState('dataMax');
@@ -191,12 +193,13 @@ const GroupedBookingTrends = ({
     };
 
     return (
-        <div className="bookings-container-box">
-            <div className="reset-div"
+        <div className="bookings-container-box" ref={imageContainer}>
+            <div className="reset-div" data-html2canvas-ignore
                 title={daysDifference === 3
                     ? 'Click to reset graph to default 3 day date time range (Disabled as Default Range Selected) '
                     : 'Click to reset graph to default 3 day date time range'}
             >
+                {renderImage()}
                 <button
                     type="button"
                     className={'btn btn-default reset-btn'}

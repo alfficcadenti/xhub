@@ -110,24 +110,17 @@ const Impulse = (props) => {
 
     const getScreenshot = () => {
         setGraphImage(null);
+        const config = {
+            scrollY: -window.scrollY
+        };
+
         setTimeout(() => {
             const screenshotTarget = imageContainer.current;
-            const tooltipList = screenshotTarget.querySelectorAll('.tooltip-body');
-            const tooltipListCopy = [...screenshotTarget.querySelectorAll('.tooltip-body')];
-
-            for (let i = 0; i < tooltipList.length; i++) {
-                tooltipList[i].remove();
-            }
-            html2canvas(screenshotTarget, {scrollY: -window.scrollY}).then((canvas) => {
+            html2canvas(screenshotTarget, config).then((canvas) => {
                 const graphSource = canvas.toDataURL('image/png');
                 setGraphImage(graphSource);
             });
-
-            const annotationsList = screenshotTarget.querySelectorAll('.annotation-tooltip');
-            for (let i = 0; i < annotationsList.length; i++) {
-                annotationsList[i].appendChild(tooltipListCopy[0][i]);
-            }
-        }, 6000);
+        }, 5000);
     };
 
     useQueryParamChange(newBrand, props.onBrandChange);
@@ -321,7 +314,16 @@ const Impulse = (props) => {
         setTimeInterval(timeIntervalStr);
         setTimeIntervalOpts(getTimeIntervals(startDateTime, endDateTime, timeIntervalStr));
     };
-
+    const renderImage = () => (
+        <button className="btn btn-default reset-btn graph-download-button" disabled={!graphImage}>
+            <a className="download-graph-link" href={graphImage ? graphImage : ''} style={{
+                'color': `${graphImage ? 'inherit' : '#ddddde'}`
+            }} download={`Graph ${moment(startDateTime).format()} - ${moment(endDateTime).format()}`}
+            >
+                {'Download graph'}
+            </a>
+        </button>
+    );
     useAddToUrl(newBrand, isSubmitClicked, chartSliced, startDateTime, endDateTime, timeInterval, isAutoRefresh, selectedLobMulti, selectedBrandMulti, selectedSiteURLMulti, selectedDeviceTypeMulti, selectedIncidentMulti, selectedAnomaliesMulti, activeIndex);
     const renderTabs = () => {
         switch (activeIndex) {
@@ -332,16 +334,18 @@ const Impulse = (props) => {
                     setChartSliced={setChartSliced}
                     setIsResetClicked={setIsResetClicked}
                     setIsChartSliceClicked={setIsChartSliceClicked}
-                    annotations={enableIncidents ? annotationsMulti : []}
+                    annotations={enableIncidents && graphImage ? annotationsMulti : []}
                     setDaysDifference={setDaysDifference}
                     daysDifference={daysDifference}
                     setTableData={setTableData}
-                    anomalies={enableAnomalies ? anomaliesData : []}
+                    anomalies={enableAnomalies && graphImage ? anomaliesData : []}
                     setAnomalyTableData={setAnomalyTableData}
                     timeInterval={timeInterval}
                     setTimeInterval={setTimeInterval}
                     setTimeIntervalOpts={setTimeIntervalOpts}
                     setIsSubmitClicked={setIsSubmitClicked}
+                    renderImage={renderImage}
+                    imageContainer={imageContainer}
                 />);
             case 1:
                 return (<GroupedBookingTrends
@@ -352,15 +356,17 @@ const Impulse = (props) => {
                     setIsChartSliceClicked={setIsChartSliceClicked}
                     setDaysDifference={setDaysDifference}
                     daysDifference={daysDifference}
-                    annotations={enableIncidents ? annotationsMulti : []}
+                    annotations={enableIncidents && graphImage ? annotationsMulti : []}
                     setTableData={setTableData}
-                    anomalies={enableAnomalies ? anomaliesData : []}
+                    anomalies={enableAnomalies && graphImage ? anomaliesData : []}
                     setAnomalyTableData={setAnomalyTableData}
                     timeInterval={timeInterval}
                     setTimeInterval={setTimeInterval}
                     setTimeIntervalOpts={setTimeIntervalOpts}
                     activeIndex={activeIndex}
                     setIsSubmitClicked={setIsSubmitClicked}
+                    renderImage={renderImage}
+                    imageContainer={imageContainer}
                 />);
             case 2:
                 return (<GroupedBookingTrends
@@ -371,15 +377,17 @@ const Impulse = (props) => {
                     setIsChartSliceClicked={setIsChartSliceClicked}
                     setDaysDifference={setDaysDifference}
                     daysDifference={daysDifference}
-                    annotations={enableIncidents ? annotationsMulti : []}
+                    annotations={enableIncidents && graphImage ? annotationsMulti : []}
                     setTableData={setTableData}
-                    anomalies={enableAnomalies ? anomaliesData : []}
+                    anomalies={enableAnomalies && graphImage ? anomaliesData : []}
                     setAnomalyTableData={setAnomalyTableData}
                     timeInterval={timeInterval}
                     setTimeInterval={setTimeInterval}
                     setTimeIntervalOpts={setTimeIntervalOpts}
                     activeIndex={activeIndex}
                     setIsSubmitClicked={setIsSubmitClicked}
+                    renderImage={renderImage}
+                    imageContainer={imageContainer}
                 />);
             case 3:
                 return (<BookingsDataTable
@@ -391,13 +399,15 @@ const Impulse = (props) => {
                     setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
                     setChartSliced={setChartSliced}
                     setIsChartSliceClicked={setIsChartSliceClicked}
-                    annotations={enableIncidents ? annotationsMulti : []}
+                    annotations={enableIncidents && graphImage ? annotationsMulti : []}
                     setDaysDifference={setDaysDifference}
                     daysDifference={daysDifference}
                     timeInterval={timeInterval}
                     setTimeInterval={setTimeInterval}
                     setTimeIntervalOpts={setTimeIntervalOpts}
                     setIsSubmitClicked={setIsSubmitClicked}
+                    renderImage={renderImage}
+                    imageContainer={imageContainer}
                 />);
         }
     };
@@ -454,19 +464,6 @@ const Impulse = (props) => {
                 </span>
             </div></a>
     );
-    const renderImage = () => {
-        if (res.length) {
-            return (
-                <button className="btn btn-default graph-download-button" disabled={!graphImage}>
-                    <a href={graphImage ? graphImage : ''} style={{
-                        'color': `${graphImage ? 'inherit' : '#ddddde'}`
-                    }} download={`Graph ${moment(startDateTime).format()} - ${moment(endDateTime).format()}`}>Download graph</a>
-                </button>
-            );
-        }
-
-        return null;
-    };
 
     return (
         <div className="impulse-container">
@@ -554,14 +551,13 @@ const Impulse = (props) => {
                 onLinkClick={handleNavigationClick}
             />
             <LoadingContainer isLoading={isLoading} error={error} className="impulse-loading-container">
-                <div ref={imageContainer} className="impulse-chart-container">
+                <div className="impulse-chart-container">
                     <div className="impulse-bookings-container">
                         {renderTabs()}
                         { (tableData.length !== 0) && <IncidentDetails data={tableData} setTableData={setTableData}/> }
                         { (anomalyTableData.length !== 0) && <AnomalyDetails data={anomalyTableData} setAnomalyTableData={setAnomalyTableData}/>}
                     </div>
                 </div>
-                {renderImage()}
             </LoadingContainer>
         </div>
     );
