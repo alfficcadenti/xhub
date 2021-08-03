@@ -207,8 +207,13 @@ export const getQueryValues = (search) => {
 
 export const convertRelativeDateInString = (date) => {
     const utcDateTimeRegex = /^([0-9]{4,4})[-]([0-9]{2,2})[-]([0-9]{2,2})[T]([0-9]{2,2})[:]([0-9]{2,2})[:]([0-9]{2,2})[Z]$/;
-    const [, , , days, hours] = utcDateTimeRegex.exec(date);
-    const [, , , currDays, currHours] = utcDateTimeRegex.exec(moment(new Date()).utc().format());
+    const [, , months, days, hours] = utcDateTimeRegex.exec(date);
+    const [, , currMonths, currDays, currHours] = utcDateTimeRegex.exec(moment(new Date()).utc().format());
+    if (months !== currMonths) {
+        let diffInTime = (new Date()).getTime() - (new Date(date)).getTime();
+        let diffInDay = Math.round(diffInTime / (1000 * 3600 * 24));
+        return (diffInDay > 0) ? `now-${diffInDay}d` : `now+${-diffInDay}d`;
+    }
     const d = currDays - days;
     const h = currHours - hours;
     if (d === 0) {
