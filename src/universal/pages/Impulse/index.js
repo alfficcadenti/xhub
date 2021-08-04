@@ -39,6 +39,11 @@ const navLinks = [
         href: '/impulse'
     },
     {
+        id: 'by_SiteUrl',
+        label: 'By Point Of Sales',
+        href: '/impulse'
+    },
+    {
         id: 'bookings-data',
         label: 'Bookings Data',
         href: '/impulse'
@@ -103,6 +108,7 @@ const Impulse = (props) => {
     const [activeIndex, setActiveIndex] = useState(getActiveIndex(pathname));
     const [allDataByBrands, setAllDataByBrand] = useState([]);
     const [allDataByLobs, setAllDataByLobs] = useState([]);
+    const [allDataByPos, setAllDataByPos] = useState([]);
     const refreshRange = ((moment(endDateTime).diff(moment(startDateTime), 'days') <= 5) && (moment().diff(moment(endDateTime), 'minutes') < 5));
 
     useQueryParamChange(newBrand, props.onBrandChange);
@@ -129,7 +135,8 @@ const Impulse = (props) => {
         anomaliesMulti,
         anomalies,
         groupedResByBrands,
-        groupedResByLobs] = useFetchBlipData(
+        groupedResByLobs,
+        groupedResByPos] = useFetchBlipData(
         isApplyClicked,
         setIsApplyClicked,
         startDateTime,
@@ -243,13 +250,17 @@ const Impulse = (props) => {
 
         setAllDataByBrand([...groupedResByBrands]);
         setAllDataByLobs([...groupedResByLobs]);
+        setAllDataByPos([...groupedResByPos]);
+        if (selectedSiteURLMulti.length === 0) {
+            setAllDataByPos([]);
+        }
 
         setAnnotationsMulti(annotations);
         filterAnnotationsOnBrand();
 
         setAnomaliesData(anomalies);
         filterAnomalies(selectedAnomaliesMulti);
-    }, [res, annotations, anomalies, groupedResByBrands, groupedResByLobs]);
+    }, [res, annotations, anomalies, groupedResByBrands, groupedResByLobs, groupedResByPos]);
     const customStyles = {
         control: (base) => ({
             ...base,
@@ -354,6 +365,28 @@ const Impulse = (props) => {
                     setIsSubmitClicked={setIsSubmitClicked}
                 />);
             case 3:
+                return (allDataByPos.length > 0
+                    ? <GroupedBookingTrends
+                        data={allDataByPos}
+                        setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
+                        setIsResetClicked={setIsResetClicked}
+                        setChartSliced={setChartSliced}
+                        setIsChartSliceClicked={setIsChartSliceClicked}
+                        setDaysDifference={setDaysDifference}
+                        daysDifference={daysDifference}
+                        annotations={enableIncidents ? annotationsMulti : []}
+                        setTableData={setTableData}
+                        anomalies={enableAnomalies ? anomaliesData : []}
+                        setAnomalyTableData={setAnomalyTableData}
+                        timeInterval={timeInterval}
+                        setTimeInterval={setTimeInterval}
+                        setTimeIntervalOpts={setTimeIntervalOpts}
+                        activeIndex={activeIndex}
+                        setIsSubmitClicked={setIsSubmitClicked}
+                        setAllDataByPos={setAllDataByPos}
+                    />
+                    : 'Select 1 or more point of sales (less than or equals to 10) from filters above and click submit to display trendlines ');
+            case 4:
                 return (<BookingsDataTable
                     data={allData}
                 />);

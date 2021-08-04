@@ -115,10 +115,10 @@ export const getActiveIndex = (pathname = '') => {
     if (pathname.includes('impulse/by-lobs')) {
         return 2;
     }
-    if (pathname.includes('impulse/bookings-data')) {
+    if (pathname.includes('impulse/by-siteUrl')) {
         return 3;
     }
-    if (pathname.includes('impulse/by-siteUrl')) {
+    if (pathname.includes('impulse/bookings-data')) {
         return 4;
     }
     return 0;
@@ -233,10 +233,10 @@ export const mapActiveIndexToTabName = (idx) => {
         return 'by-lobs';
     }
     if (idx === 3) {
-        return 'bookings-data';
+        return 'by-siteUrl';
     }
     if (idx === 4) {
-        return 'by-siteUrl';
+        return 'bookings-data';
     }
     return 'booking-trends';
 };

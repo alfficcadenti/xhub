@@ -75,6 +75,7 @@ export const useFetchBlipData = (
 
     const [groupedResByBrands, setGroupedResByBrands] = useState([]);
     const [groupedResByLobs, setGroupedResByLobs] = useState([]);
+    const [groupedResByPos, setGroupedResByPos] = useState([]);
 
     const incidentMultiOptions = [
         {
@@ -304,13 +305,19 @@ export const useFetchBlipData = (
     };
 
     const getGroupedBookingsData = (start = startDateTime, end = endDateTime, interval = timeInterval) => {
-        Promise.all(['brands', 'lobs'].map((groupType) => fetchCallGrouped(start, end, interval, groupType)))
-            .then(([brandsGroupedData, lobsGroupedData]) => {
+        let groupTypes = ['brands', 'lobs'];
+        if (selectedSiteURLMulti.length > 0 && selectedSiteURLMulti.length <= 10) {
+            groupTypes.push('point_of_sales');
+        } else {
+            setGroupedResByPos([]);
+        }
+        Promise.all(groupTypes.map((groupType) => fetchCallGrouped(start, end, interval, groupType)))
+            .then(([brandsGroupedData, lobsGroupedData, posGroupedData]) => {
                 const futureEvent = moment(endDateTime).diff(moment(endTime()), 'minutes') >= 5;
 
                 if (futureEvent) {
-                    Promise.all(['brands', 'lobs'].map((groupType) => fetchCallGrouped(start, endDateTime, interval, groupType)))
-                        .then(([brandsGroupedDataFuture, lobsGroupedDataFuture]) => {
+                    Promise.all(groupTypes.map((groupType) => fetchCallGrouped(start, endDateTime, interval, groupType)))
+                        .then(([brandsGroupedDataFuture, lobsGroupedDataFuture, posGroupedDataFuture]) => {
                             let newBrandsGroupedData = [...brandsGroupedDataFuture];
                             newBrandsGroupedData = newBrandsGroupedData.map((item, i) => {
                                 if (brandsGroupedData[i]) {
@@ -327,6 +334,18 @@ export const useFetchBlipData = (
                                 return item;
                             });
 
+                            if (selectedSiteURLMulti.length > 0 && selectedSiteURLMulti.length <= 10) {
+                                let newPosGroupedData = [...posGroupedDataFuture];
+                                newPosGroupedData = newPosGroupedData.map((item, i) => {
+                                    if (posGroupedData[i]) {
+                                        item = posGroupedData[i];
+                                    }
+                                    return item;
+                                });
+                                setGroupedResByPos(newPosGroupedData);
+                            } else {
+                                setGroupedResByPos([]);
+                            }
                             setGroupedResByBrands(newBrandsGroupedData);
                             setGroupedResByLobs(newLobsGroupedData);
                         })
@@ -336,6 +355,11 @@ export const useFetchBlipData = (
                 } else {
                     setGroupedResByBrands(brandsGroupedData);
                     setGroupedResByLobs(lobsGroupedData);
+                    if (selectedSiteURLMulti.length > 0 && selectedSiteURLMulti.length <= 10) {
+                        setGroupedResByPos(posGroupedData);
+                    } else {
+                        setGroupedResByPos([]);
+                    }
                 }
             })
             .catch((err) => {
@@ -512,6 +536,7 @@ export const useFetchBlipData = (
         anomaliesMulti,
         anomalyAnnotations,
         groupedResByBrands,
-        groupedResByLobs
+        groupedResByLobs,
+        groupedResByPos
     ];
 };
