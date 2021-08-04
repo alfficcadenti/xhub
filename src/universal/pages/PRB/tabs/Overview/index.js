@@ -2,6 +2,7 @@ import React from 'react';
 import PieChart from '../../../../components/PieChart';
 import {getPieData} from '../../../utils';
 
+
 const Overview = ({
     tickets, generateChartClickHandler, onOrgChange, onStatusChange, onPriorityChange
 }) => (
