@@ -20,7 +20,7 @@ const GrafanaDashboard = ({selectedBrands = [], availableBrands = [], name, titl
     }, [selectedBrand, availableBrands]);
 
     return (
-        <div className={`${name}-container`}>
+        <div className={`${name}-container grafana-container`}>
             <h1 className="page-title">{`${title} Dashboard`}</h1>
             <LoadingContainer isLoading={false} error={error}>
                 <div className="grafana-navigation-blocker" />
