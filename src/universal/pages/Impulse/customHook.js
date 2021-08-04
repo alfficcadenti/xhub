@@ -231,9 +231,11 @@ export const useFetchBlipData = (
             finalChartData = getChartDataForFutureEvents(dateInvalid, chartData, simplifiedPredictionData, chartDataForFutureEvents, simplifiedBookingsData, finalChartData);
 
             setRes(finalChartData);
+            getScreenshot();
         })
             .catch((err) => {
                 console.error(err);
+                getScreenshot();
             });
     };
 
@@ -253,6 +255,8 @@ export const useFetchBlipData = (
         const dayRange = moment(endDateTime).diff(moment(startDateTime), 'days');
         if (dayRange >= 1 && dayRange < 7) {
             fetchPredictions(start, end, interval, chartData);
+        } else {
+            getScreenshot();
         }
     };
 
@@ -269,7 +273,6 @@ export const useFetchBlipData = (
                 if (!futureEvent) {
                     setEndDateTime(endTime());
                     setRes(chartData);
-                    getScreenshot();
 
                     if (defaultRange) {
                         setStartDateTime(startTime());
@@ -277,7 +280,6 @@ export const useFetchBlipData = (
                 } else {
                     fetchData(startDateTime, endDateTime, timeInterval)
                         .then((data) => {
-                            getScreenshot();
                             const newData = data.map((item, i) => {
                                 if (item.time === chartData[i]?.time) {
                                     item[BOOKING_COUNT] = chartData[i][BOOKING_COUNT];
@@ -368,9 +370,6 @@ export const useFetchBlipData = (
                 setError('');
                 setRes(chartData);
                 setIsLoading(false);
-            })
-            .then(() => {
-                getScreenshot();
             })
             .catch((err) => {
                 setIsLoading(false);

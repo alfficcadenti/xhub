@@ -108,7 +108,7 @@ const Impulse = (props) => {
     const [allDataByLobs, setAllDataByLobs] = useState([]);
     const refreshRange = ((moment(endDateTime).diff(moment(startDateTime), 'days') <= 5) && (moment().diff(moment(endDateTime), 'minutes') < 5));
 
-    const getScreenshot = () => {
+    const getScreenshot = (timeout) => {
         setGraphImage(null);
         const config = {
             scrollY: -window.scrollY
@@ -116,10 +116,12 @@ const Impulse = (props) => {
 
         setTimeout(() => {
             const screenshotTarget = imageContainer.current;
-            const refLines = screenshotTarget.getElementsByClassName('recharts-reference-line');
+            const refLines = screenshotTarget.getElementsByClassName('recharts-reference-line') ? screenshotTarget.getElementsByClassName('recharts-reference-line') : [];
 
-            for (let i = 0; i < refLines.length; i++) {
-                refLines[i].style.display = 'none';
+            if (refLines.length) {
+                for (let i = 0; i < refLines.length; i++) {
+                    refLines[i].style.display = 'none';
+                }
             }
 
             html2canvas(screenshotTarget, config).then((canvas) => {
@@ -127,17 +129,19 @@ const Impulse = (props) => {
                 setGraphImage(graphSource);
             });
 
-            for (let i = 0; i < refLines.length; i++) {
-                refLines[i].style.display = 'initial';
+            if (refLines.length) {
+                for (let i = 0; i < refLines.length; i++) {
+                    refLines[i].style.display = 'initial';
+                }
             }
-        }, 5000);
+        }, timeout ? timeout : 2000);
     };
 
     useQueryParamChange(newBrand, props.onBrandChange);
     useSelectedBrand(newBrand, props.onBrandChange, props.prevSelectedBrand);
     const handleNavigationClick = (e, activeLinkIndex) => {
         setActiveIndex(activeLinkIndex);
-        getScreenshot();
+        getScreenshot(6000);
     };
     const [isLoading,
         res,
