@@ -116,10 +116,20 @@ const Impulse = (props) => {
 
         setTimeout(() => {
             const screenshotTarget = imageContainer.current;
+            const refLines = screenshotTarget.getElementsByClassName('recharts-reference-line');
+
+            for (let i = 0; i < refLines.length; i++) {
+                refLines[i].style.display = 'none';
+            }
+
             html2canvas(screenshotTarget, config).then((canvas) => {
                 const graphSource = canvas.toDataURL('image/png');
                 setGraphImage(graphSource);
             });
+
+            for (let i = 0; i < refLines.length; i++) {
+                refLines[i].style.display = 'initial';
+            }
         }, 5000);
     };
 
@@ -334,11 +344,11 @@ const Impulse = (props) => {
                     setChartSliced={setChartSliced}
                     setIsResetClicked={setIsResetClicked}
                     setIsChartSliceClicked={setIsChartSliceClicked}
-                    annotations={enableIncidents && graphImage ? annotationsMulti : []}
+                    annotations={enableIncidents ? annotationsMulti : []}
                     setDaysDifference={setDaysDifference}
                     daysDifference={daysDifference}
                     setTableData={setTableData}
-                    anomalies={enableAnomalies && graphImage ? anomaliesData : []}
+                    anomalies={enableAnomalies ? anomaliesData : []}
                     setAnomalyTableData={setAnomalyTableData}
                     timeInterval={timeInterval}
                     setTimeInterval={setTimeInterval}
@@ -356,9 +366,9 @@ const Impulse = (props) => {
                     setIsChartSliceClicked={setIsChartSliceClicked}
                     setDaysDifference={setDaysDifference}
                     daysDifference={daysDifference}
-                    annotations={enableIncidents && graphImage ? annotationsMulti : []}
+                    annotations={enableIncidents ? annotationsMulti : []}
                     setTableData={setTableData}
-                    anomalies={enableAnomalies && graphImage ? anomaliesData : []}
+                    anomalies={enableAnomalies ? anomaliesData : []}
                     setAnomalyTableData={setAnomalyTableData}
                     timeInterval={timeInterval}
                     setTimeInterval={setTimeInterval}
@@ -377,9 +387,9 @@ const Impulse = (props) => {
                     setIsChartSliceClicked={setIsChartSliceClicked}
                     setDaysDifference={setDaysDifference}
                     daysDifference={daysDifference}
-                    annotations={enableIncidents && graphImage ? annotationsMulti : []}
+                    annotations={enableIncidents ? annotationsMulti : []}
                     setTableData={setTableData}
-                    anomalies={enableAnomalies && graphImage ? anomaliesData : []}
+                    anomalies={enableAnomalies ? anomaliesData : []}
                     setAnomalyTableData={setAnomalyTableData}
                     timeInterval={timeInterval}
                     setTimeInterval={setTimeInterval}
@@ -399,7 +409,7 @@ const Impulse = (props) => {
                     setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
                     setChartSliced={setChartSliced}
                     setIsChartSliceClicked={setIsChartSliceClicked}
-                    annotations={enableIncidents && graphImage ? annotationsMulti : []}
+                    annotations={enableIncidents ? annotationsMulti : []}
                     setDaysDifference={setDaysDifference}
                     daysDifference={daysDifference}
                     timeInterval={timeInterval}

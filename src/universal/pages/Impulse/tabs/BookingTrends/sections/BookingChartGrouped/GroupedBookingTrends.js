@@ -194,17 +194,16 @@ const GroupedBookingTrends = ({
 
     return (
         <div className="bookings-container-box" ref={imageContainer}>
-            <div className="reset-div" data-html2canvas-ignore
-                title={daysDifference === 3
-                    ? 'Click to reset graph to default 3 day date time range (Disabled as Default Range Selected) '
-                    : 'Click to reset graph to default 3 day date time range'}
-            >
+            <div className="download-reset-container" data-html2canvas-ignore>
                 {renderImage()}
                 <button
                     type="button"
                     className={'btn btn-default reset-btn'}
                     disabled={daysDifference === 3}
                     onClick={resetGraphToDefault}
+                    title={daysDifference === 3
+                        ? 'Click to reset graph to default 3 day date time range (Disabled as Default Range Selected) '
+                        : 'Click to reset graph to default 3 day date time range'}
                 >
                     {'Reset Graph'}
                 </button>
