@@ -1,15 +1,21 @@
 import React from 'react';
 import {expect} from 'chai';
-import {shallow} from 'enzyme';
+import {mount} from 'enzyme';
 import SuccessRates from '../';
 import {EG_BRAND} from '../../../constants';
+import {BrowserRouter as Router} from 'react-router-dom';
+import {getErrorMessage} from '../constants';
 
+
+global.fetch = require('node-fetch');
 jest.mock('react-router-dom', () => {
     const originalModule = jest.requireActual('react-router-dom');
 
     return {
         ...originalModule,
-        useHistory: jest.fn(),
+        useHistory: () => ({
+            push: jest.fn(),
+        }),
         useLocation: () => ({
             pathname: '/test',
             hash: '',
@@ -23,7 +29,9 @@ describe('SuccessRates component testing', () => {
     let wrapper;
 
     beforeEach(() => {
-        wrapper = shallow(<SuccessRates selectedBrands={[EG_BRAND]} />);
+        wrapper = mount(<Router>
+            <SuccessRates selectedBrands={[EG_BRAND]} />
+        </Router>);
     });
 
     afterEach(() => {
@@ -32,5 +40,12 @@ describe('SuccessRates component testing', () => {
 
     it('renders successfully', () => {
         expect(wrapper).to.have.length(1);
+    });
+
+    it('LoadingContainer should have right props', async () => {
+        wrapper.setProps({selectedBrands: [EG_BRAND]});
+        const props = wrapper.find('.success-rates-loading-container').at(0).props();
+        expect(props.isLoading).equal(true);
+        expect(props.error).equal(getErrorMessage(EG_BRAND));
     });
 });

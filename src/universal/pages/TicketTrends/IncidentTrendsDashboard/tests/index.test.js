@@ -10,22 +10,6 @@ import {expect} from 'chai';
 
 global.fetch = require('node-fetch');
 
-jest.mock('react-router-dom', () => {
-    const originalModule = jest.requireActual('react-router-dom');
-
-    return {
-        ...originalModule,
-        useHistory: () => ({
-            push: jest.fn(),
-        }),
-        useLocation: () => ({
-            pathname: '/test',
-            hash: '',
-            search: '',
-            state: ''
-        }),
-    };
-});
 
 const waitForComponentToPaint = async (wrapper) => {
     await act(async () => {

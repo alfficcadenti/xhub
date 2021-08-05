@@ -10,6 +10,7 @@ import {mapDetails, checkIsRowSelected, filterDetails} from './utils';
 import {OPXHUB_SUPPORT_CHANNEL} from '../../../../constants';
 import './styles.less';
 
+
 const CorrectiveActions = ({
     start,
     end,

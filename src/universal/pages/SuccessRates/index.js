@@ -34,6 +34,7 @@ import {
     getAllAvailableLOBs,
     getQueryParams
 } from './utils';
+import {getErrorMessage} from './constants';
 import './styles.less';
 import Annotations from '../../components/Annotations/Annotations';
 import DateFiltersWrapper from '../../components/DateFiltersWrapper/DateFiltersWrapper';
@@ -192,8 +193,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
     useEffect(() => {
         if ([EG_BRAND, EGENCIA_BRAND].includes(selectedBrand)) {
             setIsSupportedBrand(false);
-            setError(`Success rates for ${selectedBrand} is not yet available.
-                If you have any questions, please ping ${OPXHUB_SUPPORT_CHANNEL} or leave a comment via our Feedback form.`);
+            setError(getErrorMessage(selectedBrand));
             setIsFormDisabled(true);
         } else {
             setIsSupportedBrand(true);
