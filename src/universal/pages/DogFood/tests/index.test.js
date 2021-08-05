@@ -6,22 +6,6 @@ import {BrowserRouter} from 'react-router-dom';
 import {VRBO_BRAND} from '../../../constants';
 import {mockIssues} from './mockIssue';
 
-jest.mock('react-router-dom', () => {
-    const originalModule = jest.requireActual('react-router-dom');
-
-    return {
-        ...originalModule,
-        useHistory: () => ({
-            push: jest.fn(),
-        }),
-        useLocation: () => ({
-            pathname: '/test',
-            hash: '',
-            search: '',
-            state: ''
-        })
-    };
-});
 
 describe('<DogFood />', () => {
     let wrapper;
@@ -35,7 +19,9 @@ describe('<DogFood />', () => {
     );
 
     beforeEach(() => {
-        wrapper = mount(<BrowserRouter><DogFood selectedBrands={[VRBO_BRAND]} /></BrowserRouter>);
+        wrapper = mount(<BrowserRouter>
+            <DogFood selectedBrands={[VRBO_BRAND]} />
+        </BrowserRouter>);
     });
 
     afterEach(() => {
