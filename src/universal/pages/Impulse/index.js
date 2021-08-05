@@ -326,8 +326,7 @@ const Impulse = (props) => {
     };
     const renderImage = () => (
         <button className="btn btn-default reset-btn graph-download-button" disabled={!graphImage}>
-            <a className={`download-graph-link ${graphImage && 'active'}`} href={graphImage || ''} download={`Graph ${moment(startDateTime).format()} - ${moment(endDateTime).format()}`}
-            >
+            <a className={`download-graph-link ${graphImage && 'active'}`} href={graphImage || ''} download={`Graph ${moment(startDateTime).format()} - ${moment(endDateTime).format()}`}>
                 {'Download Graph'}
             </a>
         </button>

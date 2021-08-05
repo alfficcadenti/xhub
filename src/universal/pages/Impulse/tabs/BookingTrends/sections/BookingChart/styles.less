@@ -2,16 +2,20 @@
 .bookings-container-box {
   width: 90%;
   height: 500px;
+
   .download-reset-container {
     display: flex;
     justify-content: flex-end;
     margin: 0 @spacing-4x @spacing-2x;
+
     .reset-btn {
       padding: @spacing-1x;
     }
+
     .graph-download-button {
       padding: 0;
       margin-right: @spacing-2x;
+
       .download-graph-link {
         display: flex;
         align-items: center;
@@ -19,6 +23,7 @@
         padding: @spacing-2x @spacing-1x;
         min-height: 58px;
         color: #ddddde;
+
         &.active {
           color: inherit;
         }
@@ -35,15 +40,20 @@
       color: @text-color;
     }
   }
+
   #extra-legends .recharts-legend-item {
+
     &:hover {
       pointer-events: none;
       opacity: 1;
     }
   }
+
   .recharts-legend-item {
     font-size: 14px;
+
     &:hover {
+      
       cursor: pointer;
       opacity: .8;
     }
