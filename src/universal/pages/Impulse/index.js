@@ -128,7 +128,7 @@ const Impulse = (props) => {
             });
 
             for (const refLine of refLines) {
-                refLine.style.display = 'none';
+                refLine.style.display = 'initial';
             }
         }, timeout || 2000);
     };
