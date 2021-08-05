@@ -15,8 +15,13 @@ import {METRIC_NAMES} from './SuccessRates/constants';
 import ALL_PAGES from './index';
 import qs from 'query-string';
 import moment from 'moment';
+import {
+    ENABLED_RESET_GRAPH_BUTTON,
+    DISABLED_RESET_GRAPH_BUTTON
+} from './Impulse/constants';
 const BOOKING_COUNT = 'Booking Counts';
 const PREDICTION_COUNT = 'Prediction Counts';
+export const DEFAULT_DAY_RANGE = 3;
 
 
 export const getVisiblePages = (selectedBrands, pages = [...ALL_PAGES]) => (
@@ -520,3 +525,5 @@ export const getChartDataForFutureEvents = (dateInvalid, chartData, simplifiedPr
 
     return finalChartData;
 };
+
+export const getResetGraphTitle = (daysRange) => daysRange === DEFAULT_DAY_RANGE ? DISABLED_RESET_GRAPH_BUTTON : ENABLED_RESET_GRAPH_BUTTON;

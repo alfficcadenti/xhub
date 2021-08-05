@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {useLocation, withRouter} from 'react-router-dom';
 import {useFetchBlipData} from './customHook';
 import {Navigation} from '@homeaway/react-navigation';
@@ -21,6 +21,7 @@ import BookingsDataTable from './tabs/BookingTrends/sections/BookingChart/Bookin
 import {getValue} from '../utils';
 import {Dropdown, DropdownItem} from '@homeaway/react-dropdown';
 import GroupedBookingTrends from './tabs/BookingTrends/sections/BookingChartGrouped/GroupedBookingTrends';
+import html2canvas from 'html2canvas';
 
 const navLinks = [
     {
@@ -99,16 +100,44 @@ const Impulse = (props) => {
     const [anomalyTableData, setAnomalyTableData] = useState([]);
     const [timeInterval, setTimeInterval] = useState(initialInterval);
     const [timeIntervalOpts, setTimeIntervalOpts] = useState(getTimeIntervals(startDateTime, endDateTime, timeInterval));
+    const [graphImage, setGraphImage] = useState();
+    const imageContainer = useRef(null);
 
     const [activeIndex, setActiveIndex] = useState(getActiveIndex(pathname));
     const [allDataByBrands, setAllDataByBrand] = useState([]);
     const [allDataByLobs, setAllDataByLobs] = useState([]);
     const refreshRange = ((moment(endDateTime).diff(moment(startDateTime), 'days') <= 5) && (moment().diff(moment(endDateTime), 'minutes') < 5));
 
+    const getScreenshot = (timeout) => {
+        setGraphImage(null);
+        const config = {
+            scrollY: -window.scrollY
+        };
+
+        setTimeout(() => {
+            const screenshotTarget = imageContainer.current;
+            const refLines = screenshotTarget.getElementsByClassName('recharts-reference-line') ? screenshotTarget.getElementsByClassName('recharts-reference-line') : [];
+
+            for (const refLine of refLines) {
+                refLine.style.display = 'none';
+            }
+
+            html2canvas(screenshotTarget, config).then((canvas) => {
+                const graphSource = canvas.toDataURL('image/png');
+                setGraphImage(graphSource);
+            });
+
+            for (const refLine of refLines) {
+                refLine.style.display = 'initial';
+            }
+        }, timeout || 2000);
+    };
+
     useQueryParamChange(newBrand, props.onBrandChange);
     useSelectedBrand(newBrand, props.onBrandChange, props.prevSelectedBrand);
     const handleNavigationClick = (e, activeLinkIndex) => {
         setActiveIndex(activeLinkIndex);
+        getScreenshot(6000);
     };
     const [isLoading,
         res,
@@ -151,7 +180,9 @@ const Impulse = (props) => {
         setIsResetClicked,
         allData,
         isChartSliceClicked,
-        setIsChartSliceClicked);
+        setIsChartSliceClicked,
+        getScreenshot,
+        setGraphImage);
 
     const modifyFilters = (newValuesOnChange) => {
         setSelectedLobMulti([]);
@@ -293,7 +324,13 @@ const Impulse = (props) => {
         setTimeInterval(timeIntervalStr);
         setTimeIntervalOpts(getTimeIntervals(startDateTime, endDateTime, timeIntervalStr));
     };
-
+    const renderImage = () => (
+        <button className="btn btn-default reset-btn graph-download-button" disabled={!graphImage}>
+            <a className={`download-graph-link ${graphImage && 'active'}`} href={graphImage || ''} download={`Graph ${moment(startDateTime).format()} - ${moment(endDateTime).format()}`}>
+                {'Download Graph'}
+            </a>
+        </button>
+    );
     useAddToUrl(newBrand, isSubmitClicked, chartSliced, startDateTime, endDateTime, timeInterval, isAutoRefresh, selectedLobMulti, selectedBrandMulti, selectedSiteURLMulti, selectedDeviceTypeMulti, selectedIncidentMulti, selectedAnomaliesMulti, activeIndex);
     const renderTabs = () => {
         switch (activeIndex) {
@@ -314,6 +351,8 @@ const Impulse = (props) => {
                     setTimeInterval={setTimeInterval}
                     setTimeIntervalOpts={setTimeIntervalOpts}
                     setIsSubmitClicked={setIsSubmitClicked}
+                    renderImage={renderImage}
+                    imageContainer={imageContainer}
                 />);
             case 1:
                 return (<GroupedBookingTrends
@@ -333,6 +372,8 @@ const Impulse = (props) => {
                     setTimeIntervalOpts={setTimeIntervalOpts}
                     activeIndex={activeIndex}
                     setIsSubmitClicked={setIsSubmitClicked}
+                    renderImage={renderImage}
+                    imageContainer={imageContainer}
                 />);
             case 2:
                 return (<GroupedBookingTrends
@@ -352,6 +393,8 @@ const Impulse = (props) => {
                     setTimeIntervalOpts={setTimeIntervalOpts}
                     activeIndex={activeIndex}
                     setIsSubmitClicked={setIsSubmitClicked}
+                    renderImage={renderImage}
+                    imageContainer={imageContainer}
                 />);
             case 3:
                 return (<BookingsDataTable
@@ -370,6 +413,8 @@ const Impulse = (props) => {
                     setTimeInterval={setTimeInterval}
                     setTimeIntervalOpts={setTimeIntervalOpts}
                     setIsSubmitClicked={setIsSubmitClicked}
+                    renderImage={renderImage}
+                    imageContainer={imageContainer}
                 />);
         }
     };
@@ -521,6 +566,10 @@ const Impulse = (props) => {
                     </div>
                 </div>
             </LoadingContainer>
+            {graphImage && (<div className="not-visible-graph-container">
+                <img src={graphImage} alt="Graph Image" />
+            </div>)
+            }
         </div>
     );
 };

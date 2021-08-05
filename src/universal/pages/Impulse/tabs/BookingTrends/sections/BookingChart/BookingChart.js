@@ -31,6 +31,7 @@ import {
     INCIDENT_TOOLTIP_COLOR,
     UPSTREAM_UNHEALTHY_COLOR
 } from '../../../../../../constants';
+import {getResetGraphTitle} from '../../../../../utils';
 
 const BOOKING_CHART_COLOR = '#336BFF';
 const THREE_WEEK_AVG_COUNT_COLOR = '#34495E';
@@ -115,7 +116,9 @@ const BookingChart = ({
     setTimeInterval,
     setTimeIntervalOpts,
     setIsChartSliceClicked,
-    setIsSubmitClicked
+    setIsSubmitClicked,
+    renderImage,
+    imageContainer
 }) => {
     let [refAreaLeft, setRefAreaLeft] = useState('');
     let [refAreaRight, setRefAreaRight] = useState('');
@@ -211,14 +214,12 @@ const BookingChart = ({
     };
 
     return (
-        <div className="bookings-container-box">
-            <div className="reset-div"
-                title={daysDifference === 3
-                    ? 'Click to reset graph to default 3 day date time range (Disabled as default range is selected) '
-                    : 'Click to reset graph to default 3 day date time range'}
-            >
+        <div className="bookings-container-box" ref={imageContainer}>
+            <div className="download-reset-container" data-html2canvas-ignore>
+                {renderImage()}
                 <button
                     type="button"
+                    title={getResetGraphTitle(daysDifference)}
                     className={'btn btn-default reset-btn'}
                     disabled={daysDifference === 3}
                     onClick={() => resetGraphToDefault()}

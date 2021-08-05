@@ -15,6 +15,7 @@ import {startTime, endTime, getColor, getDefaultTimeInterval, getTimeIntervals, 
 import AnomalyLabel from '../BookingChart/AnomalyLabel';
 import ReferenceLabel from '../../../../../../components/ReferenceLabel';
 import '/src/universal/pages/Impulse/tabs/BookingTrends/sections/BookingChart/styles.less';
+import {getResetGraphTitle} from '../../../../../utils';
 
 const GroupedBookingTrends = ({
     data = [],
@@ -33,7 +34,9 @@ const GroupedBookingTrends = ({
     activeIndex,
     setIsResetClicked,
     setIsChartSliceClicked,
-    setIsSubmitClicked
+    setIsSubmitClicked,
+    renderImage,
+    imageContainer
 }) => {
     const [left, setLeft] = useState('dataMin');
     const [right, setRight] = useState('dataMax');
@@ -191,17 +194,15 @@ const GroupedBookingTrends = ({
     };
 
     return (
-        <div className="bookings-container-box">
-            <div className="reset-div"
-                title={daysDifference === 3
-                    ? 'Click to reset graph to default 3 day date time range (Disabled as Default Range Selected) '
-                    : 'Click to reset graph to default 3 day date time range'}
-            >
+        <div className="bookings-container-box" ref={imageContainer}>
+            <div className="download-reset-container" data-html2canvas-ignore>
+                {renderImage()}
                 <button
                     type="button"
                     className={'btn btn-default reset-btn'}
                     disabled={daysDifference === 3}
                     onClick={resetGraphToDefault}
+                    title={getResetGraphTitle(daysDifference)}
                 >
                     {'Reset Graph'}
                 </button>
