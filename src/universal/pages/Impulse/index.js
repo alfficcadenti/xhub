@@ -118,10 +118,8 @@ const Impulse = (props) => {
             const screenshotTarget = imageContainer.current;
             const refLines = screenshotTarget.getElementsByClassName('recharts-reference-line') ? screenshotTarget.getElementsByClassName('recharts-reference-line') : [];
 
-            if (refLines.length) {
-                for (let i = 0; i < refLines.length; i++) {
-                    refLines[i].style.display = 'none';
-                }
+            for (const refLine of refLines) {
+                refLine.style.display = 'none';
             }
 
             html2canvas(screenshotTarget, config).then((canvas) => {
@@ -129,12 +127,10 @@ const Impulse = (props) => {
                 setGraphImage(graphSource);
             });
 
-            if (refLines.length) {
-                for (let i = 0; i < refLines.length; i++) {
-                    refLines[i].style.display = 'initial';
-                }
+            for (const refLine of refLines) {
+                refLine.style.display = 'none';
             }
-        }, timeout ? timeout : 2000);
+        }, timeout || 2000);
     };
 
     useQueryParamChange(newBrand, props.onBrandChange);
@@ -330,11 +326,9 @@ const Impulse = (props) => {
     };
     const renderImage = () => (
         <button className="btn btn-default reset-btn graph-download-button" disabled={!graphImage}>
-            <a className="download-graph-link" href={graphImage ? graphImage : ''} style={{
-                'color': `${graphImage ? 'inherit' : '#ddddde'}`
-            }} download={`Graph ${moment(startDateTime).format()} - ${moment(endDateTime).format()}`}
+            <a className={`download-graph-link ${graphImage && 'active'}`} href={graphImage || ''} download={`Graph ${moment(startDateTime).format()} - ${moment(endDateTime).format()}`}
             >
-                {'Download graph'}
+                {'Download Graph'}
             </a>
         </button>
     );
@@ -573,6 +567,10 @@ const Impulse = (props) => {
                     </div>
                 </div>
             </LoadingContainer>
+            {graphImage && (<div className="not-visible-graph-container">
+                <img src={graphImage} alt="Graph Image" />
+            </div>)
+            }
         </div>
     );
 };

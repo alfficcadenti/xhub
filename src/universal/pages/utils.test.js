@@ -25,7 +25,9 @@ import {
     getTableValue,
     getUrlParam,
     checkIsDateInvalid,
-    getChartDataForFutureEvents
+    getChartDataForFutureEvents,
+    getResetGraphTitle,
+    DEFAULT_DAY_RANGE
 } from './utils';
 import {
     EG_BRAND,
@@ -609,6 +611,16 @@ describe('getChartDataForFutureEvents()', () => {
             {time: 123123123, 'Booking Counts': 123, '3 Week Avg Counts': 615, 'Prediction Counts': 123},
             {time: 123123124, 'Booking Counts': 0, '3 Week Avg Counts': 761, 'Prediction Counts': 124}
         ]);
+    });
+});
+
+describe('getResetGraphTitle()', () => {
+    it('getResetGraphTitle should be unavailable if default range is selected', () => {
+        expect(getResetGraphTitle(DEFAULT_DAY_RANGE)).to.be.eql('Click to reset graph to default 3 day date time range (Disabled as default range is selected)');
+    });
+
+    it('getResetGraphTitle should be unavailable if default range is selected', () => {
+        expect(getResetGraphTitle(DEFAULT_DAY_RANGE - 1)).to.be.eql('Click to reset graph to default 3 day date time range');
     });
 });
 

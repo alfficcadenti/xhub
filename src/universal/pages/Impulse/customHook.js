@@ -231,10 +231,11 @@ export const useFetchBlipData = (
             finalChartData = getChartDataForFutureEvents(dateInvalid, chartData, simplifiedPredictionData, chartDataForFutureEvents, simplifiedBookingsData, finalChartData);
 
             setRes(finalChartData);
-            getScreenshot();
         })
             .catch((err) => {
                 console.error(err);
+            })
+            .finally(() => {
                 getScreenshot();
             });
     };

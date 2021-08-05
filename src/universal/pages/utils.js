@@ -17,6 +17,7 @@ import qs from 'query-string';
 import moment from 'moment';
 const BOOKING_COUNT = 'Booking Counts';
 const PREDICTION_COUNT = 'Prediction Counts';
+export const DEFAULT_DAY_RANGE = 3;
 
 
 export const getVisiblePages = (selectedBrands, pages = [...ALL_PAGES]) => (
@@ -520,3 +521,5 @@ export const getChartDataForFutureEvents = (dateInvalid, chartData, simplifiedPr
 
     return finalChartData;
 };
+
+export const getResetGraphTitle = (daysRange) => daysRange === DEFAULT_DAY_RANGE ? 'Click to reset graph to default 3 day date time range (Disabled as default range is selected)' : 'Click to reset graph to default 3 day date time range';
