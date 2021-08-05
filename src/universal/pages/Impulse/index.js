@@ -245,6 +245,13 @@ const Impulse = (props) => {
             setSelectedAnomaliesMulti(newValuesOnChange);
         }
     };
+    const validSelectionRangeOnPointOfSales = () => {
+        if (selectedSiteURLMulti.length > 10) {
+            return <div className="widget-card wrapper1" >Select less than or equals to 10 point of sales and click submit to display trendlines</div>;
+        }
+        return <div className="widget-card wrapper1" >Select 1 or more point of sales from filters above and click submit to display trendlines</div>;
+
+    };
     useEffect(() => {
         setFilterAllData([...res]);
 
@@ -365,7 +372,7 @@ const Impulse = (props) => {
                     setIsSubmitClicked={setIsSubmitClicked}
                 />);
             case 3:
-                return (allDataByPos.length > 0
+                return (allDataByPos.length
                     ? <GroupedBookingTrends
                         data={allDataByPos}
                         setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
@@ -385,7 +392,7 @@ const Impulse = (props) => {
                         setIsSubmitClicked={setIsSubmitClicked}
                         setAllDataByPos={setAllDataByPos}
                     />
-                    : 'Select 1 or more point of sales (less than or equals to 10) from filters above and click submit to display trendlines ');
+                    : validSelectionRangeOnPointOfSales());
             case 4:
                 return (<BookingsDataTable
                     data={allData}

@@ -306,7 +306,7 @@ export const useFetchBlipData = (
 
     const getGroupedBookingsData = (start = startDateTime, end = endDateTime, interval = timeInterval) => {
         let groupTypes = ['brands', 'lobs'];
-        if (selectedSiteURLMulti.length > 0 && selectedSiteURLMulti.length <= 10) {
+        if (selectedSiteURLMulti.length && selectedSiteURLMulti.length <= 10) {
             groupTypes.push('point_of_sales');
         } else {
             setGroupedResByPos([]);
@@ -334,13 +334,13 @@ export const useFetchBlipData = (
                                 return item;
                             });
 
-                            if (selectedSiteURLMulti.length > 0 && selectedSiteURLMulti.length <= 10) {
-                                let newPosGroupedData = [...posGroupedDataFuture];
-                                newPosGroupedData = newPosGroupedData.map((item, i) => {
+                            if (selectedSiteURLMulti.length && selectedSiteURLMulti.length <= 10) {
+                                let newPosGroupedData = posGroupedDataFuture.map((item, i) => {
                                     if (posGroupedData[i]) {
-                                        item = posGroupedData[i];
+                                        return posGroupedData[i];
+                                    } else {
+                                        return item;
                                     }
-                                    return item;
                                 });
                                 setGroupedResByPos(newPosGroupedData);
                             } else {
@@ -355,7 +355,7 @@ export const useFetchBlipData = (
                 } else {
                     setGroupedResByBrands(brandsGroupedData);
                     setGroupedResByLobs(lobsGroupedData);
-                    if (selectedSiteURLMulti.length > 0 && selectedSiteURLMulti.length <= 10) {
+                    if (selectedSiteURLMulti.length && selectedSiteURLMulti.length <= 10) {
                         setGroupedResByPos(posGroupedData);
                     } else {
                         setGroupedResByPos([]);
