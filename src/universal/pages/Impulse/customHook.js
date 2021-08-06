@@ -338,9 +338,8 @@ export const useFetchBlipData = (
                                 let newPosGroupedData = posGroupedDataFuture.map((item, i) => {
                                     if (posGroupedData[i]) {
                                         return posGroupedData[i];
-                                    } else {
-                                        return item;
                                     }
+                                    return item;
                                 });
                                 setGroupedResByPos(newPosGroupedData);
                             } else {

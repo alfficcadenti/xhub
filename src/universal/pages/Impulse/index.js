@@ -250,7 +250,6 @@ const Impulse = (props) => {
             return <div className="widget-card wrapper1" >Select less than or equals to 10 point of sales and click submit to display trendlines</div>;
         }
         return <div className="widget-card wrapper1" >Select 1 or more point of sales from filters above and click submit to display trendlines</div>;
-
     };
     useEffect(() => {
         setFilterAllData([...res]);
