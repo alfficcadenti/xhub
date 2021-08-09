@@ -250,7 +250,7 @@ export const useFetchBlipData = (
     };
     const getPredictions = (start, end, interval, chartData) => {
         const dayRange = moment(endDateTime).diff(moment(startDateTime), 'days');
-        if (dayRange >= 1 && dayRange < 7) {
+        if (dayRange < 7) {
             fetchPredictions(start, end, interval, chartData);
         }
     };
