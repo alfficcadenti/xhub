@@ -433,6 +433,8 @@ const Impulse = (props) => {
                         activeIndex={activeIndex}
                         setIsSubmitClicked={setIsSubmitClicked}
                         setAllDataByPos={setAllDataByPos}
+                        renderImage={renderImage}
+                        imageContainer={imageContainer}
                     />
                     : validSelectionRangeOnPointOfSales());
             case 4:
