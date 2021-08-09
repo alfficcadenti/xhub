@@ -55,7 +55,9 @@ export const useFetchBlipData = (
     setIsResetClicked,
     allData,
     isChartSliceClicked,
-    setIsChartSliceClicked
+    setIsChartSliceClicked,
+    getScreenshot,
+    setGraphImage
 ) => {
     const [res, setRes] = useState([]);
     const [error, setError] = useState('');
@@ -233,6 +235,9 @@ export const useFetchBlipData = (
         })
             .catch((err) => {
                 console.error(err);
+            })
+            .finally(() => {
+                getScreenshot();
             });
     };
 
@@ -252,6 +257,8 @@ export const useFetchBlipData = (
         const dayRange = moment(endDateTime).diff(moment(startDateTime), 'days');
         if (dayRange < 7) {
             fetchPredictions(start, end, interval, chartData);
+        } else {
+            getScreenshot();
         }
     };
 
@@ -381,6 +388,7 @@ export const useFetchBlipData = (
 
     const getData = (start = startDateTime, end = endDateTime, interval = timeInterval) => {
         setIsLoading(true);
+        setGraphImage(null);
         fetchData(start, end, interval)
             .then((chartData) => {
                 setError('');

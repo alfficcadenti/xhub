@@ -8,11 +8,14 @@ chai.use(chaiJestSnapshot);
 
 describe('Booking Trend component testing', () => {
     let wrapper;
+    const renderImage = jest.fn(() => (<button>
+        {'Download graph'}
+    </button>));
 
     beforeEach(() => {
         chaiJestSnapshot.setFilename(`${__filename}.snap`);
         wrapper = shallow(
-            <GroupedBookingTrends data ={fakeData} />
+            <GroupedBookingTrends data={fakeData} renderImage={renderImage} />
         );
     });
     afterEach(() => {
@@ -26,7 +29,7 @@ describe('Booking Trend component testing', () => {
 
     it('matches the snapshot', () => {
         chaiJestSnapshot.setTestName('matches the snapshot');
-        const wrapper1 = render(<GroupedBookingTrends data={fakeData}/>);
+        const wrapper1 = render(<GroupedBookingTrends data={fakeData} renderImage={renderImage}/>);
         expect(wrapper1).to.matchSnapshot();
     });
 });

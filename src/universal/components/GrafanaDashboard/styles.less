@@ -1,17 +1,26 @@
 @import '../../mixins.less';
 
-.page-title {
-    margin-bottom: @spacing-5x;
-}
+.grafana-container {
+    .page-title {
+        margin-bottom: @spacing-5x;
+    }
 
-.grafana-navigation-blocker {
-    height: @spacing-8x;
-    width: 550px;
-    position: absolute;
-    z-index: 10;
+    .grafana-navigation-blocker {
+        height: @spacing-8x;
+        margin-left: -@spacing-9x;
+        width: 662px;
+        position: absolute;
+        z-index: 10;
 
-    &__vertical {
-        width: 62px;
-        height: 948px;
+        &__vertical {
+            width: @spacing-9x;
+            height: 956px;
+            background: @color-bg-default;
+        }
+    }
+
+    .iframe {
+        margin-left: -@spacing-9x;
+        border: none;
     }
 }
