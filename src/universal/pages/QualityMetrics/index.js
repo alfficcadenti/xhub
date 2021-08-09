@@ -6,12 +6,25 @@ import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import LoadingContainer from '../../components/LoadingContainer';
 import HelpText from '../../components/HelpText/HelpText';
 import {VRBO_BRAND, HOTELS_COM_BRAND, OPXHUB_SUPPORT_CHANNEL} from '../../constants';
-import {BarChartPanel, DurationPanel, TwoDimensionalPanel, PriorityLineChartPanel,
-    CreatedVsResolvedPanel, PiePanel, SLADefinitions} from './Panels';
+import {
+    BarChartPanel,
+    DurationPanel,
+    TwoDimensionalPanel,
+    PriorityLineChartPanel,
+    CreatedVsResolvedPanel,
+    PiePanel,
+    SLADefinitions
+} from './Panels';
 import {NOT_PRIORITIZED_LABEL, P1_LABEL, P2_LABEL, P3_LABEL, P4_LABEL, P5_LABEL} from './constants';
-import {getBrandPortfolios, getQueryValues,
-    getQueryString, fetchPanelData, filterBrandProjectKeys} from './utils';
+import {
+    getBrandPortfolios,
+    getQueryValues,
+    getQueryString,
+    fetchPanelData,
+    filterBrandProjectKeys
+} from './utils';
 import './styles.less';
+
 
 const QualityMetrics = ({selectedBrands}) => {
     const history = useHistory();
