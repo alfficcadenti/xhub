@@ -79,6 +79,12 @@ describe('impulseHandler', () => {
         it('should return 2 if /impulse/by-lobs passed in pathname', () => {
             expect(getActiveIndex('impulse/by-lobs')).eql(2);
         });
+        it('should return 3 if /impulse/by-brands passed in pathname', () => {
+            expect(getActiveIndex('impulse/by-siteUrl')).eql(3);
+        });
+        it('should return 4 if /impulse/by-lobs passed in pathname', () => {
+            expect(getActiveIndex('impulse/bookings-data')).eql(4);
+        });
     });
     describe('test mapActiveIndexToTabName ', () => {
         it('should return booking-trends if passed anything', () => {
@@ -89,6 +95,12 @@ describe('impulseHandler', () => {
         });
         it('should return by-lobs if passed 2', () => {
             expect(mapActiveIndexToTabName(2)).eql('by-lobs');
+        });
+        it('should return by-brands if passed 3', () => {
+            expect(mapActiveIndexToTabName(3)).eql('by-siteUrl');
+        });
+        it('should return by-lobs if passed 4', () => {
+            expect(mapActiveIndexToTabName(4)).eql('bookings-data');
         });
     });
     describe('convertRelativeDateRange', () => {
