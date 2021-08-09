@@ -79,14 +79,13 @@ export const getQueryString = (start, end, IMPULSE_MAPPING, globalBrandName, sel
     + `${getGroupType(groupType)}`
 );
 
-export const getQueryStringPrediction = (start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval) => (
+export const getQueryStringPrediction = (start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti) => (
     `?start_time=${start.format('YYYY-MM-DDTHH:mm:ss')}Z&end_time=${end.format('YYYY-MM-DDTHH:mm:ss')}Z`
     + `${getQueryParamMulti('egSiteUrl', selectedSiteURLMulti)}`
     + `${getQueryParamMulti('lob', selectedLobMulti)}`
     + `${getQueryParamMulti('brand', selectedBrandMulti)}`
     + `${getQueryParamMulti('device_type', selectedDeviceTypeMulti)}`
     + `${getBrandQueryParam(IMPULSE_MAPPING, globalBrandName)}`
-    + `&time_interval=${interval}`
 );
 
 export const simplifyBookingsData = (bookingsData) => (
