@@ -169,6 +169,12 @@ const GroupedBookingTrends = ({
                         {LOBS_CHART.map(getGradient)}
                     </defs>
                 );
+            case 3:
+                return (
+                    <defs>
+                        {POS_CHART.map(getGradient)}
+                    </defs>
+                );
             default:
                 return ('');
         }
