@@ -203,7 +203,7 @@ export const useFetchBlipData = (
     const fetchPredictions = (start = startDateTime, end = endDateTime, interval = timeInterval, chartData) => {
         Promise.all([
             fetch(`/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval, '')}`).then(checkResponse),
-            timeInterval === '5m' ? fetch(`/v1/impulse/prediction${getQueryStringPrediction(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti)}`).then(checkResponse) : []
+            timeInterval = ['1m', '5m'].includes(timeInterval) ? fetch(`/v1/impulse/prediction${getQueryStringPrediction(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval)}`).then(checkResponse) : []
         ]).then(([bookingsData, predictionData]) => {
             const simplifiedBookingsData = simplifyBookingsData(bookingsData);
             const simplifiedPredictionData = simplifyPredictionData(predictionData);
@@ -255,7 +255,7 @@ export const useFetchBlipData = (
     };
     const getPredictions = (start, end, interval, chartData) => {
         const dayRange = moment(endDateTime).diff(moment(startDateTime), 'days');
-        if (dayRange >= 1 && dayRange < 7) {
+        if (dayRange < 7) {
             fetchPredictions(start, end, interval, chartData);
         } else {
             getScreenshot();
