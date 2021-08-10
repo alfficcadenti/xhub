@@ -118,14 +118,15 @@ const BookingChart = ({
     setIsChartSliceClicked,
     setIsSubmitClicked,
     renderImage,
-    imageContainer
+    imageContainer,
+    hiddenKeys,
+    setHiddenKeys
 }) => {
     let [refAreaLeft, setRefAreaLeft] = useState('');
     let [refAreaRight, setRefAreaRight] = useState('');
     let [newData, setNewData] = useState(data);
     let [left, setLeft] = useState('dataMin');
     let [right, setRight] = useState('dataMax');
-    const [hiddenKeys, setHiddenKeys] = useState([]);
 
     const getGradient = ({key, color}) => {
         const id = `color${key}`;

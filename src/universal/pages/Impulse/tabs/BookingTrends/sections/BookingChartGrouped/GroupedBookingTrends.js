@@ -36,14 +36,15 @@ const GroupedBookingTrends = ({
     setIsChartSliceClicked,
     setIsSubmitClicked,
     renderImage,
-    imageContainer
+    imageContainer,
+    hiddenKeys,
+    setHiddenKeys
 }) => {
     const [left, setLeft] = useState('dataMin');
     const [right, setRight] = useState('dataMax');
     const [refAreaLeft, setRefAreaLeft] = useState('');
     const [refAreaRight, setRefAreaRight] = useState('');
 
-    const [hiddenKeys, setHiddenKeys] = useState([]);
     const [highlightedKey, setHighlightedKey] = useState('');
 
     const POS_CHART = data.length > 0 ? Object.getOwnPropertyNames(data[0]).slice(1) : [];
@@ -76,12 +77,12 @@ const GroupedBookingTrends = ({
 
     const renderChart = ({name, color}, idx) => {
         const fill = `url(#${idx})`;
-        return data?.[0]?.hasOwnProperty(name) ? <Area type="monotone" dataKey={name} yAxisId={1} stroke={color} fillOpacity={1} fill={fill} hide = {hiddenKeys.includes(name)} onMouseEnter = {handleOnMouseEnter} onMouseLeave = {handleOnMouseLeave}/>
+        return data?.[0]?.hasOwnProperty(name) ? <Area type="monotone" dataKey={name} yAxisId={1} stroke={color} fillOpacity={1} fill={fill} hide={hiddenKeys.includes(name)} onMouseEnter={handleOnMouseEnter} onMouseLeave={handleOnMouseLeave}/>
             : '';
     };
 
     const renderLineChart = (name, idx) => {
-        return data?.[0]?.hasOwnProperty(name) ? <Line type="monotone" dataKey={name} stroke={CHART_COLORS[idx]} yAxisId={1} strokeWidth={1.5} dot={false} hide = {hiddenKeys.includes(name)} onMouseEnter = {handleOnMouseEnter} onMouseLeave = {handleOnMouseLeave}/>
+        return data?.[0]?.hasOwnProperty(name) ? <Line type="monotone" dataKey={name} stroke={CHART_COLORS[idx]} yAxisId={1} strokeWidth={1.5} dot={false} hide={hiddenKeys.includes(name)} onMouseEnter={handleOnMouseEnter} onMouseLeave={handleOnMouseLeave}/>
             : '';
     };
 
