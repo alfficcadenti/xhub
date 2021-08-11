@@ -12,6 +12,7 @@ const PriorityLineChartPanel = ({title, info, tickets, panelData, dataKey, prior
     const [chartData, setChartData] = useState([]);
     const [modalData, setModalData] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [hiddenKeys, setHiddenKeys] = useState({});
 
     useEffect(() => {
         const formattedData = panelData.info && panelData.info.message === 'no data found'
@@ -40,6 +41,14 @@ const PriorityLineChartPanel = ({title, info, tickets, panelData, dataKey, prior
         setModalData({});
     };
 
+    const handleLegendClick = (e) => {
+        if (e && e.dataKey) {
+            const nextHiddenBars = {...hiddenKeys};
+            nextHiddenBars[e.dataKey] = !hiddenKeys[e.dataKey];
+            setHiddenKeys(nextHiddenBars);
+        }
+    };
+
     return (
         <Panel
             title={title}
@@ -56,8 +65,15 @@ const PriorityLineChartPanel = ({title, info, tickets, panelData, dataKey, prior
                     <XAxis dataKey="date" />
                     <YAxis />
                     <Tooltip />
-                    <Legend />
-                    {priorities.map((p) => <Line key={p} dataKey={p} stroke={PRIORITY_COLORS[p]} strokeWidth={2} activeDot={{onClick: getClickHandler(p)}} />)}
+                    <Legend onClick={handleLegendClick} cursor="pointer" />
+                    {priorities.map((p) => (<Line
+                        key={p}
+                        dataKey={p}
+                        stroke={PRIORITY_COLORS[p]}
+                        strokeWidth={2}
+                        activeDot={{onClick: getClickHandler(p)}}
+                        hide={hiddenKeys[p]}
+                    />))}
                 </LineChart>
             </ResponsiveContainer>
             <ChartModal
