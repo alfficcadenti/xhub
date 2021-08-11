@@ -142,8 +142,34 @@ export const getDefaultTimeInterval = (startDate, endDate) => {
 };
 
 
-export const getTimeIntervals = (startDate, endDate, timeInterval) => {
-    const filterCurrentInterval = (item) => item !== timeInterval;
+export const getTimeIntervals = (startDate, endDate) => {
+    const filterCurrentInterval = (item) => {
+        let timeNumber = item.match(/(\d+)/);
+        let timeValue = item.slice(-1);
+
+        switch (timeValue) {
+            case 'm':
+                timeValue = 'minutes';
+                break;
+            case 'h':
+                timeValue = 'hours';
+                break;
+            case 'd':
+                timeValue = 'days';
+                break;
+            case 'w':
+                timeValue = 'weeks';
+                break;
+            default:
+                timeValue = 'minutes';
+                break;
+        }
+
+        if (moment(endDate).subtract(timeNumber[0], timeValue).diff(moment(startDate), 'minutes') <= 1) {
+            return null;
+        }
+        return item;
+    };
     const diff = moment(endDate).diff(moment(startDate), 'days');
     if (diff < 1) {
         return ['1m', '5m', '15m', '30m', '1h'].filter(filterCurrentInterval);
