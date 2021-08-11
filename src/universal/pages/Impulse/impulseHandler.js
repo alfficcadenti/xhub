@@ -142,7 +142,7 @@ export const getDefaultTimeInterval = (startDate, endDate) => {
 };
 
 
-export const getTimeIntervals = (startDate, endDate) => {
+export const getTimeIntervals = (startDate, endDate, timeInterval) => {
     const filterCurrentInterval = (item) => {
         let timeNumber = item.match(/(\d+)/);
         let timeValue = item.slice(-1);
@@ -165,7 +165,7 @@ export const getTimeIntervals = (startDate, endDate) => {
                 break;
         }
 
-        if (moment(endDate).subtract(timeNumber[0], timeValue).diff(moment(startDate), 'minutes') <= 1) {
+        if (moment(endDate).subtract(timeNumber[0], timeValue).diff(moment(startDate), 'minutes') <= 1 || item === timeInterval) {
             return null;
         }
         return item;
