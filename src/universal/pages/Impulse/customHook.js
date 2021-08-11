@@ -78,6 +78,7 @@ export const useFetchBlipData = (
     const [groupedResByBrands, setGroupedResByBrands] = useState([]);
     const [groupedResByLobs, setGroupedResByLobs] = useState([]);
     const [groupedResByPos, setGroupedResByPos] = useState([]);
+    const [groupedResByDeviceType, setGroupedResByDeviceType] = useState([]);
 
     const incidentMultiOptions = [
         {
@@ -312,19 +313,19 @@ export const useFetchBlipData = (
     };
 
     const getGroupedBookingsData = (start = startDateTime, end = endDateTime, interval = timeInterval) => {
-        let groupTypes = ['brands', 'lobs'];
+        let groupTypes = ['brands', 'lobs', 'device_types'];
         if (selectedSiteURLMulti.length && selectedSiteURLMulti.length <= 10) {
             groupTypes.push('point_of_sales');
         } else {
             setGroupedResByPos([]);
         }
         Promise.all(groupTypes.map((groupType) => fetchCallGrouped(start, end, interval, groupType)))
-            .then(([brandsGroupedData, lobsGroupedData, posGroupedData]) => {
+            .then(([brandsGroupedData, lobsGroupedData, deviceTypeGroupedData, posGroupedData]) => {
                 const futureEvent = moment(endDateTime).diff(moment(endTime()), 'minutes') >= 5;
 
                 if (futureEvent) {
                     Promise.all(groupTypes.map((groupType) => fetchCallGrouped(start, endDateTime, interval, groupType)))
-                        .then(([brandsGroupedDataFuture, lobsGroupedDataFuture, posGroupedDataFuture]) => {
+                        .then(([brandsGroupedDataFuture, lobsGroupedDataFuture, deviceTypeGroupedDataFuture, posGroupedDataFuture]) => {
                             let newBrandsGroupedData = [...brandsGroupedDataFuture];
                             newBrandsGroupedData = newBrandsGroupedData.map((item, i) => {
                                 if (brandsGroupedData[i]) {
@@ -337,6 +338,14 @@ export const useFetchBlipData = (
                             newLobsGroupedData = newLobsGroupedData.map((item, i) => {
                                 if (lobsGroupedData[i]) {
                                     item = lobsGroupedData[i];
+                                }
+                                return item;
+                            });
+
+                            let newDeviceTypeGroupedData = [...deviceTypeGroupedDataFuture];
+                            newDeviceTypeGroupedData = newDeviceTypeGroupedData.map((item, i) => {
+                                if (deviceTypeGroupedData[i]) {
+                                    item = deviceTypeGroupedData[i];
                                 }
                                 return item;
                             });
@@ -354,6 +363,7 @@ export const useFetchBlipData = (
                             }
                             setGroupedResByBrands(newBrandsGroupedData);
                             setGroupedResByLobs(newLobsGroupedData);
+                            setGroupedResByDeviceType(newDeviceTypeGroupedData);
                         })
                         .catch((err) => {
                             console.error(err);
@@ -366,6 +376,7 @@ export const useFetchBlipData = (
                     } else {
                         setGroupedResByPos([]);
                     }
+                    setGroupedResByDeviceType(deviceTypeGroupedData);
                 }
             })
             .catch((err) => {
@@ -544,6 +555,7 @@ export const useFetchBlipData = (
         anomalyAnnotations,
         groupedResByBrands,
         groupedResByLobs,
-        groupedResByPos
+        groupedResByPos,
+        groupedResByDeviceType
     ];
 };

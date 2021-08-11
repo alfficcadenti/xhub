@@ -79,16 +79,19 @@ describe('impulseHandler', () => {
         it('should return 2 if /impulse/by-lobs passed in pathname', () => {
             expect(getActiveIndex('impulse/by-lobs')).eql(2);
         });
-        it('should return 3 if /impulse/by-brands passed in pathname', () => {
+        it('should return 3 if /impulse/by_SiteUrl passed in pathname', () => {
             expect(getActiveIndex('impulse/by-siteUrl')).eql(3);
         });
-        it('should return 4 if /impulse/by-lobs passed in pathname', () => {
-            expect(getActiveIndex('impulse/bookings-data')).eql(4);
+        it('should return 4 if /impulse/by-device-types passed in pathname', () => {
+            expect(getActiveIndex('impulse/by-device-types')).eql(4);
+        });
+        it('should return 5 if /impulse/bookings-data passed in pathname', () => {
+            expect(getActiveIndex('impulse/bookings-data')).eql(5);
         });
     });
     describe('test mapActiveIndexToTabName ', () => {
         it('should return booking-trends if passed anything', () => {
-            expect(mapActiveIndexToTabName(5)).eql('booking-trends');
+            expect(mapActiveIndexToTabName(0)).eql('booking-trends');
         });
         it('should return by-brands if passed 1', () => {
             expect(mapActiveIndexToTabName(1)).eql('by-brands');
@@ -99,8 +102,11 @@ describe('impulseHandler', () => {
         it('should return by-brands if passed 3', () => {
             expect(mapActiveIndexToTabName(3)).eql('by-siteUrl');
         });
-        it('should return by-lobs if passed 4', () => {
-            expect(mapActiveIndexToTabName(4)).eql('bookings-data');
+        it('should return by-device-types if passed 4', () => {
+            expect(mapActiveIndexToTabName(4)).eql('by-device-types');
+        });
+        it('should return by-lobs if passed 5', () => {
+            expect(mapActiveIndexToTabName(5)).eql('bookings-data');
         });
     });
     describe('convertRelativeDateRange', () => {
