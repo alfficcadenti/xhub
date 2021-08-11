@@ -131,12 +131,21 @@
     .time-interval-dropdown {
       float: left;
 
+      &.disabled {
+        pointer-events: none;
+      }
+
       .Dropdown__toggle {
         height: 55px;
         font-weight: 400;
         color: @color-text-default;
         border-radius: @spacing-1x;
         margin: 1px 2px 0 -1px;
+      }
+
+
+      &.disabled .Dropdown__toggle {
+        color: #ddddde;
       }
     }
   }
