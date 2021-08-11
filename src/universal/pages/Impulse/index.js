@@ -106,6 +106,7 @@ const Impulse = (props) => {
     const [timeInterval, setTimeInterval] = useState(initialInterval);
     const [timeIntervalOpts, setTimeIntervalOpts] = useState(getTimeIntervals(startDateTime, endDateTime, timeInterval));
     const [graphImage, setGraphImage] = useState();
+    const [hiddenKeys, setHiddenKeys] = useState([]);
     const imageContainer = useRef(null);
 
     const [activeIndex, setActiveIndex] = useState(getActiveIndex(pathname));
@@ -370,6 +371,8 @@ const Impulse = (props) => {
                     setIsSubmitClicked={setIsSubmitClicked}
                     renderImage={renderImage}
                     imageContainer={imageContainer}
+                    hiddenKeys={hiddenKeys}
+                    setHiddenKeys={setHiddenKeys}
                 />);
             case 1:
                 return (<GroupedBookingTrends
@@ -391,6 +394,8 @@ const Impulse = (props) => {
                     setIsSubmitClicked={setIsSubmitClicked}
                     renderImage={renderImage}
                     imageContainer={imageContainer}
+                    hiddenKeys={hiddenKeys}
+                    setHiddenKeys={setHiddenKeys}
                 />);
             case 2:
                 return (<GroupedBookingTrends
@@ -412,6 +417,8 @@ const Impulse = (props) => {
                     setIsSubmitClicked={setIsSubmitClicked}
                     renderImage={renderImage}
                     imageContainer={imageContainer}
+                    hiddenKeys={hiddenKeys}
+                    setHiddenKeys={setHiddenKeys}
                 />);
             case 3:
                 return (allDataByPos.length
@@ -435,6 +442,8 @@ const Impulse = (props) => {
                         setAllDataByPos={setAllDataByPos}
                         renderImage={renderImage}
                         imageContainer={imageContainer}
+                        hiddenKeys={hiddenKeys}
+                        setHiddenKeys={setHiddenKeys}
                     />
                     : validSelectionRangeOnPointOfSales());
             case 4:
@@ -607,7 +616,7 @@ const Impulse = (props) => {
                     </div>
                 </div>
             </LoadingContainer>
-            {graphImage && (<div className="not-visible-graph-container">
+            {graphImage && (<div className="not-visible-graph-container" aria-hidden="true">
                 <img src={graphImage} alt="Graph Image" />
             </div>)
             }

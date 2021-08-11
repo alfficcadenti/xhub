@@ -14,7 +14,7 @@ describe('Booking Trend component testing', () => {
     beforeEach(() => {
         chaiJestSnapshot.setFilename(`${__filename}.snap`);
         wrapper = shallow(
-            <BookingTrends data={fakeData} renderImage={renderImage} />
+            <BookingTrends data={fakeData} renderImage={renderImage} hiddenKeys={[]} />
         );
     });
     afterEach(() => {
@@ -28,7 +28,7 @@ describe('Booking Trend component testing', () => {
 
     it('matches the snapshot', () => {
         chaiJestSnapshot.setTestName('matches the snapshot');
-        const wrapper1 = render(<BookingTrends data={fakeData} renderImage={renderImage} />);
+        const wrapper1 = render(<BookingTrends data={fakeData} renderImage={renderImage} hiddenKeys={[]} />);
         expect(wrapper1).to.matchSnapshot();
     });
 });
