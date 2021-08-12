@@ -10,7 +10,7 @@ import {
     SUPPRESSED_BRANDS
 } from '../../constants';
 import {getFilters, getBrandQueryParam, getQueryString, getRevLoss, startTime, endTime, getCategory, getQueryStringPrediction, simplifyBookingsData, simplifyPredictionData} from './impulseHandler';
-import {checkResponse, checkIsDateInvalid, getChartDataForFutureEvents} from '../utils';
+import {checkResponse, checkIsDateInvalid, getChartDataForFutureEvents, mapGroupedData} from '../utils';
 import moment from 'moment';
 
 const THREE_WEEK_AVG_COUNT = '3 Week Avg Counts';
@@ -326,37 +326,12 @@ export const useFetchBlipData = (
                 if (futureEvent) {
                     Promise.all(groupTypes.map((groupType) => fetchCallGrouped(start, endDateTime, interval, groupType)))
                         .then(([brandsGroupedDataFuture, lobsGroupedDataFuture, deviceTypeGroupedDataFuture, posGroupedDataFuture]) => {
-                            let newBrandsGroupedData = [...brandsGroupedDataFuture];
-                            newBrandsGroupedData = newBrandsGroupedData.map((item, i) => {
-                                if (brandsGroupedData[i]) {
-                                    item = brandsGroupedData[i];
-                                }
-                                return item;
-                            });
-
-                            let newLobsGroupedData = [...lobsGroupedDataFuture];
-                            newLobsGroupedData = newLobsGroupedData.map((item, i) => {
-                                if (lobsGroupedData[i]) {
-                                    item = lobsGroupedData[i];
-                                }
-                                return item;
-                            });
-
-                            let newDeviceTypeGroupedData = [...deviceTypeGroupedDataFuture];
-                            newDeviceTypeGroupedData = newDeviceTypeGroupedData.map((item, i) => {
-                                if (deviceTypeGroupedData[i]) {
-                                    item = deviceTypeGroupedData[i];
-                                }
-                                return item;
-                            });
+                            const newBrandsGroupedData = mapGroupedData(brandsGroupedDataFuture, brandsGroupedData);
+                            const newLobsGroupedData = mapGroupedData(lobsGroupedDataFuture, lobsGroupedData);
+                            const newDeviceTypeGroupedData = mapGroupedData(deviceTypeGroupedDataFuture, deviceTypeGroupedData);
 
                             if (selectedSiteURLMulti.length && selectedSiteURLMulti.length <= 10) {
-                                let newPosGroupedData = posGroupedDataFuture.map((item, i) => {
-                                    if (posGroupedData[i]) {
-                                        return posGroupedData[i];
-                                    }
-                                    return item;
-                                });
+                                const newPosGroupedData = mapGroupedData(posGroupedDataFuture, posGroupedData);
                                 setGroupedResByPos(newPosGroupedData);
                             } else {
                                 setGroupedResByPos([]);

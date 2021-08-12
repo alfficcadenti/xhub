@@ -504,8 +504,9 @@ const Impulse = (props) => {
             <Dropdown
                 id="time-interval-dropdown"
                 label={interval ? interval : 'Time Interval'}
-                className="time-interval-dropdown"
+                className={`time-interval-dropdown ${presets.length ? '' : 'disabled'}`}
                 closeAfterContentClick
+                noArrow={!presets.length}
             >
                 {presets.map((d) => (
                     <DropdownItem

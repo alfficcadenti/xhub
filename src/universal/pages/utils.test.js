@@ -27,7 +27,7 @@ import {
     checkIsDateInvalid,
     getChartDataForFutureEvents,
     getResetGraphTitle,
-    DEFAULT_DAY_RANGE
+    DEFAULT_DAY_RANGE, mapGroupedData
 } from './utils';
 import {
     EG_BRAND,
@@ -412,6 +412,14 @@ describe('addSuggestionType()', () => {
     it('returns unchanged suggestions if property already exists', () => {
         const result = addSuggestionType(suggestions, 'productName', productNames);
         expect(result.productName[0]).to.be.eql(productNames[0]);
+    });
+});
+
+describe('mapGroupedData()', () => {
+    describe('get new grouped data', () => {
+        it('return empty object', () => {
+            expect(mapGroupedData([], [])).to.be.eql([]);
+        });
     });
 });
 
