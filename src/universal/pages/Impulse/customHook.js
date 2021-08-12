@@ -256,6 +256,7 @@ export const useFetchBlipData = (
             fetchPredictions(start, end, interval, chartData);
         } else {
             getScreenshot();
+            setIsLoading(false);
         }
     };
 
