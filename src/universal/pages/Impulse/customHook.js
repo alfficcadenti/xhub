@@ -225,10 +225,6 @@ export const useFetchBlipData = (
 
             const dateInvalid = checkIsDateInvalid(startDateTime, endDateTime);
 
-            if (dateInvalid) {
-                return;
-            }
-
             finalChartData = getChartDataForFutureEvents(dateInvalid, chartData, simplifiedPredictionData, chartDataForFutureEvents, simplifiedBookingsData, finalChartData);
 
             setRes(finalChartData);
@@ -238,6 +234,7 @@ export const useFetchBlipData = (
             })
             .finally(() => {
                 getScreenshot();
+                setIsLoading(false);
             });
     };
 
@@ -393,7 +390,6 @@ export const useFetchBlipData = (
             .then((chartData) => {
                 setError('');
                 setRes(chartData);
-                setIsLoading(false);
             })
             .catch((err) => {
                 setIsLoading(false);
