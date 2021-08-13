@@ -65,7 +65,7 @@ const CreatedVsResolvedPanel = ({title, info, priorities = [], tickets, panelDat
                 <LineChart data={chartData} cursor="pointer">
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <XAxis dataKey="date" />
-                    <YAxis />
+                    <YAxis allowDecimals={false} />
                     <Tooltip />
                     <Legend onClick={handleLegendClick} cursor="pointer" />
                     <Line
