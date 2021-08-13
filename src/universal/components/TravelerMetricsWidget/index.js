@@ -56,7 +56,7 @@ const TravelerMetricsWidget = ({
 }) => {
     const brandLabel = brand.replace(/\s/g, '');
     const fill = `url(#${brandLabel})`;
-    const {color} = getBrand(brand, 'label');
+    const {color, funnelBrand} = getBrand(brand, 'label');
     const yAxisId = `yAxis-${title}`;
     const emptyContainerMessage = 'There is no data available for this time period';
 
@@ -107,7 +107,7 @@ const TravelerMetricsWidget = ({
         const endTime = moment(dataPointTime).utc().format();
         const startTime = moment(dataPointTime).subtract(5, 'minutes').utc().format();
 
-        fetch(`/v1/delta-users-details?brand=${brand}&from_date=${startTime}&to_date=${endTime}&metric=${metricName}`)
+        fetch(`/v1/delta-users-details?brand=${funnelBrand}&from_date=${startTime}&to_date=${endTime}&metric=${metricName}`)
             .then((response) => checkResponse(response))
             .then((deltaUserDetailsData) => {
                 saveData()(deltaUserDetailsData);
