@@ -420,6 +420,12 @@ describe('mapGroupedData()', () => {
         it('return empty object', () => {
             expect(mapGroupedData([], [])).to.be.eql([]);
         });
+        it('return newBrandsGroupedData object', () => {
+            expect(mapGroupedData(['brandsGroupedDataFuture'], ['brandsGroupedData'])).to.be.eql(['brandsGroupedData']);
+        });
+        it('return newBrandsGroupedData object', () => {
+            expect(mapGroupedData(['brandsGroupedDataFuture'], [])).to.be.eql(['brandsGroupedDataFuture']);
+        });
     });
 });
 
