@@ -10,7 +10,7 @@ import {
 } from 'recharts';
 import moment from 'moment';
 
-import {BRANDS_CHART, CHART_COLORS, LOBS_CHART} from '../../../../constants';
+import {BRANDS_CHART, CHART_COLORS, LOBS_CHART, DEVICE_CHART} from '../../../../constants';
 import {startTime, endTime, getColor, getDefaultTimeInterval, getTimeIntervals, isValidTimeInterval} from '../../../../impulseHandler';
 import AnomalyLabel from '../BookingChart/AnomalyLabel';
 import ReferenceLabel from '../../../../../../components/ReferenceLabel';
@@ -176,6 +176,12 @@ const GroupedBookingTrends = ({
                         {POS_CHART.map(getGradient)}
                     </defs>
                 );
+            case 4:
+                return (
+                    <defs>
+                        {DEVICE_CHART.map(getGradient)}
+                    </defs>
+                );
             default:
                 return ('');
         }
@@ -194,6 +200,10 @@ const GroupedBookingTrends = ({
             case 3:
                 return (
                     POS_CHART.map(renderLineChart)
+                );
+            case 4:
+                return (
+                    DEVICE_CHART.map(renderChart)
                 );
             default:
                 return ('');

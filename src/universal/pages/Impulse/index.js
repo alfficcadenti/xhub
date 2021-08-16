@@ -45,6 +45,11 @@ const navLinks = [
         href: '/impulse'
     },
     {
+        id: 'by_device_types',
+        label: 'By Device Types',
+        href: '/impulse'
+    },
+    {
         id: 'bookings-data',
         label: 'Bookings Data',
         href: '/impulse'
@@ -113,6 +118,7 @@ const Impulse = (props) => {
     const [allDataByBrands, setAllDataByBrand] = useState([]);
     const [allDataByLobs, setAllDataByLobs] = useState([]);
     const [allDataByPos, setAllDataByPos] = useState([]);
+    const [allDataByDeviceType, setAllDataByDeviceType] = useState([]);
     const refreshRange = ((moment(endDateTime).diff(moment(startDateTime), 'days') <= 5) && (moment().diff(moment(endDateTime), 'minutes') < 5));
 
     const getScreenshot = (timeout) => {
@@ -166,7 +172,8 @@ const Impulse = (props) => {
         anomalies,
         groupedResByBrands,
         groupedResByLobs,
-        groupedResByPos] = useFetchBlipData(
+        groupedResByPos,
+        groupedResByDeviceType] = useFetchBlipData(
         isApplyClicked,
         setIsApplyClicked,
         startDateTime,
@@ -289,6 +296,7 @@ const Impulse = (props) => {
         setAllDataByBrand([...groupedResByBrands]);
         setAllDataByLobs([...groupedResByLobs]);
         setAllDataByPos([...groupedResByPos]);
+        setAllDataByDeviceType([...groupedResByDeviceType]);
         if (selectedSiteURLMulti.length === 0) {
             setAllDataByPos([]);
         }
@@ -298,7 +306,7 @@ const Impulse = (props) => {
 
         setAnomaliesData(anomalies);
         filterAnomalies(selectedAnomaliesMulti);
-    }, [res, annotations, anomalies, groupedResByBrands, groupedResByLobs, groupedResByPos]);
+    }, [res, annotations, anomalies, groupedResByBrands, groupedResByLobs, groupedResByPos, groupedResByDeviceType]);
     const customStyles = {
         control: (base) => ({
             ...base,
@@ -447,6 +455,29 @@ const Impulse = (props) => {
                     />
                     : validSelectionRangeOnPointOfSales());
             case 4:
+                return (<GroupedBookingTrends
+                    data={allDataByDeviceType}
+                    setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
+                    setIsResetClicked={setIsResetClicked}
+                    setChartSliced={setChartSliced}
+                    setIsChartSliceClicked={setIsChartSliceClicked}
+                    setDaysDifference={setDaysDifference}
+                    daysDifference={daysDifference}
+                    annotations={enableIncidents ? annotationsMulti : []}
+                    setTableData={setTableData}
+                    anomalies={enableAnomalies ? anomaliesData : []}
+                    setAnomalyTableData={setAnomalyTableData}
+                    timeInterval={timeInterval}
+                    setTimeInterval={setTimeInterval}
+                    setTimeIntervalOpts={setTimeIntervalOpts}
+                    activeIndex={activeIndex}
+                    setIsSubmitClicked={setIsSubmitClicked}
+                    renderImage={renderImage}
+                    imageContainer={imageContainer}
+                    hiddenKeys={hiddenKeys}
+                    setHiddenKeys={setHiddenKeys}
+                />);
+            case 5:
                 return (<BookingsDataTable
                     data={allData}
                 />);

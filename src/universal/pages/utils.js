@@ -69,6 +69,15 @@ export const checkResponse = (response) => {
     return response.json();
 };
 
+export const mapGroupedData = (GroupedDataFuture, GroupedData) => (
+    GroupedDataFuture.map((item, i) => {
+        if (GroupedData[i]) {
+            item = GroupedData[i];
+        }
+        return item;
+    })
+);
+
 export const getBrand = (brand, key) => BRANDS.find((b) => brand === b[key]) || {};
 
 export const sortArrayByMostRecentDate = (arr, prop) => arr.sort((a, b) => new Date(b[prop]) - new Date(a[prop]));

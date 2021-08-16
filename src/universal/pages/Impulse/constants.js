@@ -296,6 +296,29 @@ export const LOBS_CHART = [
         color: '#1E90FF'
     }
 ];
+
+export const DEVICE_CHART = [
+    {
+        name: 'Agent Tool',
+        color: '#663399'
+    },
+    {
+        name: 'Mobile App',
+        color: '#DAA520'
+    },
+    {
+        name: 'Mobile Site',
+        color: '#2E8B57'
+    },
+    {
+        name: 'Traditional Browser',
+        color: '#FF6347'
+    },
+    {
+        name: 'Unknown',
+        color: '#85929E'
+    }
+];
 export const CHART_COLORS = ['#3CB371', '#1E90FF', '#DAA520', '#CD5C5C', '#FF69B4', '#0099c6', '#BC8F8F', '#40E0D0', '#000000', '#C0C0C0', '#994499', '#778899', '#dc3912', '#3366cc', '#6633cc', '#e67300', '#8b0707', '#651067', '#329262', '#5574a6', '#3b3eac', '#b77322', '#16d620', '#b91383', '#f4359e', '#9c5935', '#a9c413', '#2a778d', '#668d1c', '#bea413', '#0c5922', '#743411'];
 export const DISABLED_RESET_GRAPH_BUTTON = 'Click to reset graph to default 3 day date time range (Disabled as default range is selected)';
 export const ENABLED_RESET_GRAPH_BUTTON = 'Click to reset graph to default 3 day date time range';
