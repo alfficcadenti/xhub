@@ -137,13 +137,26 @@ class DataTable extends Component {
         return found ? found.setClass(item[col]) : '';
     }
 
+    checkIsContentPercentage = (content) => {
+        if (!Number(content)) {
+            if (content.includes('%')) {
+                if (content.includes('-')) {
+                    return 'negative';
+                }
+                return 'positive';
+            }
+            return '';
+        }
+        return '';
+    };
+
     renderColumn = (item, col) => (
         isValidElement(item[col])
             ? <td key={uuid()} className={this.applyRule(item, col)}>{item[col]}</td>
             : (
                 <td
                     key={uuid()}
-                    className={this.applyRule(item, col)}
+                    className={`${this.checkIsContentPercentage(item[col])} ${this.applyRule(item, col)}`}
                     dangerouslySetInnerHTML={{__html: sanitizeHtml(item[col], sanitizeOption)}} // eslint-disable-line
                 />
             )

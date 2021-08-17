@@ -7,12 +7,18 @@ import moment from 'moment';
 
 const THREE_WEEK_AVG_COUNT = '3 Week Avg Counts';
 const BOOKING_COUNT = 'Booking Counts';
+const THREE_WEEK_COMPARISON = '3 Week comparison';
 const BookingsDataTable = ({data}) => {
+    const threeWeekComparison = (threeWeekAvg, bookingCount) => {
+        const per = (Math.round((threeWeekAvg - bookingCount) * 100) / threeWeekAvg).toFixed(2);
+        return per + '%';
+    };
     const formatBookingsData = () => {
         let finalBookingsData = data.map((item) => ({
             time: `${moment(item.time).format('YYYY-MM-DD HH:mm')} ${moment().tz(moment.tz.guess()).format('z')}`,
             [BOOKING_COUNT]: item[BOOKING_COUNT],
-            [THREE_WEEK_AVG_COUNT ]: item[THREE_WEEK_AVG_COUNT]
+            [THREE_WEEK_AVG_COUNT ]: item[THREE_WEEK_AVG_COUNT],
+            [THREE_WEEK_COMPARISON]: threeWeekComparison(item[THREE_WEEK_AVG_COUNT], item[BOOKING_COUNT])
 
         }));
         return finalBookingsData;
