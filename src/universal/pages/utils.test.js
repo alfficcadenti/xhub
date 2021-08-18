@@ -441,9 +441,9 @@ describe('threeWeekComparison()', () => {
         const result = threeWeekComparison('776', '794');
         expect(result).to.be.eql('-2.32%');
     });
-    it('returns NaN% threeWeekComparison if threeWeekAv and bookingCount is 0', () => {
-        const result = threeWeekComparison('0', '0');
-        expect(result).to.be.eql('NaN%');
+    it('returns null threeWeekComparison if threeWeekAv 0', () => {
+        const result = threeWeekComparison('0', '5');
+        expect(result).to.be.eql('null');
     });
     it('returns 0 threeWeekComparison if threeWeekAv and bookingCount are equal', () => {
         const result = threeWeekComparison('225', '225');

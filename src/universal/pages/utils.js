@@ -79,6 +79,9 @@ export const mapGroupedData = (GroupedDataFuture, GroupedData) => (
 );
 
 export const threeWeekComparison = (threeWeekAvg, bookingCount) => {
+    if (threeWeekAvg === '0') {
+        return 'null';
+    }
     const per = (Math.round((threeWeekAvg - bookingCount) * 100) / threeWeekAvg).toFixed(2);
     return `${per}%`;
 };
