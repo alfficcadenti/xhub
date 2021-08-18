@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 import React, {useState, useEffect, useRef} from 'react';
 import {useLocation, withRouter} from 'react-router-dom';
 import {useFetchBlipData} from './customHook';
