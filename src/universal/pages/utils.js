@@ -80,7 +80,7 @@ export const mapGroupedData = (GroupedDataFuture, GroupedData) => (
 
 export const threeWeekComparison = (threeWeekAvg, bookingCount) => {
     const per = (Math.round((threeWeekAvg - bookingCount) * 100) / threeWeekAvg).toFixed(2);
-    return per + '%';
+    return `${per}%`;
 };
 
 export const checkIsContentPercentage = (content) => {

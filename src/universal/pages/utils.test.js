@@ -416,7 +416,6 @@ describe('addSuggestionType()', () => {
 });
 
 describe('checkIsContentPercentage()', () => {
-
     it('returns positive if percent is postive', () => {
         const result = checkIsContentPercentage('26.65%');
         expect(result).to.be.eql('positive');
@@ -433,7 +432,6 @@ describe('checkIsContentPercentage()', () => {
 });
 
 describe('threeWeekComparison()', () => {
-
     it('returns positive threeWeekComparison if threeWeekAv is greater than bookingCount', () => {
         const result = threeWeekComparison('2132', '1999');
         expect(result).to.be.eql('6.24%');
