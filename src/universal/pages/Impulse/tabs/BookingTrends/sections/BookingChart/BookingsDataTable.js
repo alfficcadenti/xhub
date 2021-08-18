@@ -24,12 +24,23 @@ const BookingsDataTable = ({data}) => {
         return finalBookingsData;
     };
 
+    const checkIsContentPercentage = (content) => {
+        if (!Number(content) && content.includes('%')) {
+            return content.includes('-') ? 'negative' : 'positive';
+        }
+        return '';
+    };
+
     return (<div className="incident-details-container">
         <div className="table-wrapper">
             <strong>{'Bookings Data Table'}</strong>
             <div className="incident-details">
                 <DataTable
                     columns={BOOKINGS_DATA_TABLE_COLUMNS}
+                    rules={[{
+                        column: '3 Week comparison',
+                        setClass: checkIsContentPercentage
+                    }]}
                     columnHeaders={BOOKINGS_DATA_TABLE_HEADERS}
                     data={formatBookingsData()}
                 />
