@@ -78,6 +78,17 @@ export const mapGroupedData = (GroupedDataFuture, GroupedData) => (
     })
 );
 
+export const threeWeekComparison = (threeWeekAvg, bookingCount) => {
+    const per = (Math.round((threeWeekAvg - bookingCount) * 100) / threeWeekAvg).toFixed(2);
+    return per + '%';
+};
+
+export const checkIsContentPercentage = (content) => {
+    if (!Number(content) && content.includes('%')) {
+        return content.includes('-') ? 'negative' : 'positive';
+    }
+    return '';
+};
 export const getBrand = (brand, key) => BRANDS.find((b) => brand === b[key]) || {};
 
 export const sortArrayByMostRecentDate = (arr, prop) => arr.sort((a, b) => new Date(b[prop]) - new Date(a[prop]));

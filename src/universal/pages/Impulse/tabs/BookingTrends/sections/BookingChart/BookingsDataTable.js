@@ -4,22 +4,12 @@ import DataTable from '../../../../../../components/DataTable';
 import {BOOKINGS_DATA_TABLE_COLUMNS, BOOKINGS_DATA_TABLE_HEADERS} from '../BookingChart/constants';
 import react from 'react';
 import moment from 'moment';
+import {checkIsContentPercentage, threeWeekComparison} from '../../../../../utils';
 
 const THREE_WEEK_AVG_COUNT = '3 Week Avg Counts';
 const BOOKING_COUNT = 'Booking Counts';
 const THREE_WEEK_COMPARISON = '3 Week comparison';
 const BookingsDataTable = ({data}) => {
-    const threeWeekComparison = (threeWeekAvg, bookingCount) => {
-        const per = (Math.round((threeWeekAvg - bookingCount) * 100) / threeWeekAvg).toFixed(2);
-        return per + '%';
-    };
-
-    const checkIsContentPercentage = (content) => {
-        if (!Number(content) && content.includes('%')) {
-            return content.includes('-') ? 'negative' : 'positive';
-        }
-        return '';
-    };
     const formatBookingsData = () => {
         let finalBookingsData = data.map((item) => ({
             time: `${moment(item.time).format('YYYY-MM-DD HH:mm')} ${moment().tz(moment.tz.guess()).format('z')}`,
