@@ -1,6 +1,6 @@
 import {getData} from '../utils';
 import {expect} from 'chai';
-
+import React from 'react';
 
 const BLANK = '---';
 
@@ -21,7 +21,7 @@ it('getData', () => {
     const data = row[0];
     expect(getData(row)[0]).to.eql({
         ID: data.id,
-        PRB: 'PRB-1424',
+        PRB: <a href= "https://jira.expedia.biz/browse/PRB-1424" target="_blank">{data.prbId}</a>,
         'Channel ID': data.channelId,
         Email: data.emailAddress,
         'Robbie Reminder': data.robbieReminder,

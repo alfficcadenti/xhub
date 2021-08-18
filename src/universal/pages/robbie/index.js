@@ -15,7 +15,7 @@ const initialStart = moment().subtract(6, 'months').format(DATE_FORMAT);
 const initialEnd = moment().format(DATE_FORMAT);
 
 const Robbie = () => {
-    const columns = ['ID', 'PRB', 'Channel ID', 'Email', 'Robbie Reminder', 'Message', 'Notified', 'Status', 'Assignee'];
+    const columns = ['PRB', 'Email', 'Robbie Reminder', 'Message', 'Notified', 'Status'];
     const [startDate, setstartDate] = useState(initialStart);
     const [endDate, setendDate] = useState(initialEnd);
     const [isApplyClicked, setIsApplyClicked] = useState(false);
