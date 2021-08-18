@@ -27,7 +27,7 @@ import {
     checkIsDateInvalid,
     getChartDataForFutureEvents,
     getResetGraphTitle,
-    DEFAULT_DAY_RANGE, mapGroupedData
+    DEFAULT_DAY_RANGE, mapGroupedData, checkIsContentPercentage, threeWeekComparison
 } from './utils';
 import {
     EG_BRAND,
@@ -412,6 +412,42 @@ describe('addSuggestionType()', () => {
     it('returns unchanged suggestions if property already exists', () => {
         const result = addSuggestionType(suggestions, 'productName', productNames);
         expect(result.productName[0]).to.be.eql(productNames[0]);
+    });
+});
+
+describe('checkIsContentPercentage()', () => {
+    it('returns positive if percent is postive', () => {
+        const result = checkIsContentPercentage('26.65%');
+        expect(result).to.be.eql('positive');
+    });
+
+    it('returns negative if percent is negative', () => {
+        const result = checkIsContentPercentage('-26.65%');
+        expect(result).to.be.eql('negative');
+    });
+    it('returns empty string if not a percent', () => {
+        const result = checkIsContentPercentage('26.65');
+        expect(result).to.be.eql('');
+    });
+});
+
+describe('threeWeekComparison()', () => {
+    it('returns positive threeWeekComparison if threeWeekAv is greater than bookingCount', () => {
+        const result = threeWeekComparison('2132', '1999');
+        expect(result).to.be.eql('6.24%');
+    });
+
+    it('returns negative threeWeekComparison if threeWeekAv is less than bookingCount', () => {
+        const result = threeWeekComparison('776', '794');
+        expect(result).to.be.eql('-2.32%');
+    });
+    it('returns null threeWeekComparison if threeWeekAv 0', () => {
+        const result = threeWeekComparison('0', '5');
+        expect(result).to.be.eql('null');
+    });
+    it('returns 0 threeWeekComparison if threeWeekAv and bookingCount are equal', () => {
+        const result = threeWeekComparison('225', '225');
+        expect(result).to.be.eql('0.00%');
     });
 });
 
