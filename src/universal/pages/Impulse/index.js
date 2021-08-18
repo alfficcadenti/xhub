@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import React, {useState, useEffect, useRef} from 'react';
 import {useLocation, withRouter} from 'react-router-dom';
 import {useFetchBlipData} from './customHook';
@@ -85,6 +86,11 @@ const Impulse = (props) => {
         initialAnomalies
     } = getQueryValues(search);
 
+    let storageEnableIncidents = localStorage.getItem('enableIncidents') || true;
+    storageEnableIncidents = JSON.parse(storageEnableIncidents);
+    let storageEnableAnomalies = localStorage.getItem('enableAnomalies') || true;
+    storageEnableAnomalies = JSON.parse(storageEnableAnomalies);
+
     const [startDateTime, setStartDateTime] = useState(initialStart);
     const [endDateTime, setEndDateTime] = useState(initialEnd);
     const [isApplyClicked, setIsApplyClicked] = useState(false);
@@ -99,13 +105,13 @@ const Impulse = (props) => {
     const [selectedBrandMulti, setSelectedBrandMulti] = useState(initialBrands);
     const [selectedDeviceTypeMulti, setSelectedDeviceTypeMulti] = useState(initialDevices);
     const [selectedIncidentMulti, setSelectedIncidentMulti] = useState(initialIncidents);
-    const [enableIncidents, setEnableIncidents] = useState(true);
+    const [enableIncidents, setEnableIncidents] = useState(storageEnableIncidents);
     const [chartSliced, setChartSliced] = useState(false);
     const [isAutoRefresh, setAutoRefresh] = useState(initialAutoRefresh);
     const [daysDifference, setDaysDifference] = useState(moment(endDateTime).diff(moment(startDateTime), 'days'));
     const [tableData, setTableData] = useState([]);
     const [anomaliesData, setAnomaliesData] = useState([]);
-    const [enableAnomalies, setEnableAnomalies] = useState(true);
+    const [enableAnomalies, setEnableAnomalies] = useState(storageEnableAnomalies);
     const [selectedAnomaliesMulti, setSelectedAnomaliesMulti] = useState(initialAnomalies);
     const [anomalyTableData, setAnomalyTableData] = useState([]);
     const [timeInterval, setTimeInterval] = useState(initialInterval);
@@ -334,6 +340,7 @@ const Impulse = (props) => {
     };
     const handleEnableIncidentChange = () => {
         setEnableIncidents(!enableIncidents);
+        localStorage.setItem('enableIncidents', !enableIncidents);
         setSelectedIncidentMulti([]);
         if (selectedBrandMulti.length > 0) {
             setAnnotationsMulti(filteredAnnotationsOnBrand);
@@ -343,6 +350,7 @@ const Impulse = (props) => {
     };
     const handleEnableAnomalyChange = () => {
         setEnableAnomalies(!enableAnomalies);
+        localStorage.setItem('enableAnomalies', !enableAnomalies);
         setSelectedAnomaliesMulti([]);
         setAnomaliesData(anomalies);
     };
