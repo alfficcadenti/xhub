@@ -13,6 +13,13 @@ const BookingsDataTable = ({data}) => {
         const per = (Math.round((threeWeekAvg - bookingCount) * 100) / threeWeekAvg).toFixed(2);
         return per + '%';
     };
+
+    const checkIsContentPercentage = (content) => {
+        if (!Number(content) && content.includes('%')) {
+            return content.includes('-') ? 'negative' : 'positive';
+        }
+        return '';
+    };
     const formatBookingsData = () => {
         let finalBookingsData = data.map((item) => ({
             time: `${moment(item.time).format('YYYY-MM-DD HH:mm')} ${moment().tz(moment.tz.guess()).format('z')}`,
@@ -22,13 +29,6 @@ const BookingsDataTable = ({data}) => {
 
         }));
         return finalBookingsData;
-    };
-
-    const checkIsContentPercentage = (content) => {
-        if (!Number(content) && content.includes('%')) {
-            return content.includes('-') ? 'negative' : 'positive';
-        }
-        return '';
     };
 
     return (<div className="incident-details-container">
