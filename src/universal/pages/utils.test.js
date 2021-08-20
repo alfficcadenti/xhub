@@ -432,14 +432,14 @@ describe('checkIsContentPercentage()', () => {
 });
 
 describe('threeWeekComparison()', () => {
-    it('returns positive threeWeekComparison if threeWeekAv is greater than bookingCount', () => {
+    it('returns negative threeWeekComparison if threeWeekAv is greater than bookingCount', () => {
         const result = threeWeekComparison('2132', '1999');
-        expect(result).to.be.eql('6.24%');
+        expect(result).to.be.eql('-6.24%');
     });
 
-    it('returns negative threeWeekComparison if threeWeekAv is less than bookingCount', () => {
+    it('returns positive threeWeekComparison if threeWeekAv is less than bookingCount', () => {
         const result = threeWeekComparison('776', '794');
-        expect(result).to.be.eql('-2.32%');
+        expect(result).to.be.eql('2.32%');
     });
     it('returns null threeWeekComparison if threeWeekAv 0', () => {
         const result = threeWeekComparison('0', '5');

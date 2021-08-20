@@ -82,7 +82,7 @@ export const threeWeekComparison = (threeWeekAvg, bookingCount) => {
     if (threeWeekAvg === '0') {
         return 'null';
     }
-    const per = (Math.round((threeWeekAvg - bookingCount) * 100) / threeWeekAvg).toFixed(2);
+    const per = (Math.round((bookingCount - threeWeekAvg) * 100) / threeWeekAvg).toFixed(2);
     return `${per}%`;
 };
 
