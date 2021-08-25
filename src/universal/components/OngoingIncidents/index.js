@@ -28,8 +28,8 @@ const OngoingIncidents = ({selectedBrands}) => {
     useEffect(() => {
         const fetchTickets = () => {
             setIsLoading(true);
-
-            fetch(`/v1/incidents?fromDate=${fromDate}&toDate=${toDate}`)
+            const browserTimezone = moment.tz.guess();
+            fetch(`/v1/incidents?from_datetime=${moment(fromDate).tz(browserTimezone).toISOString()}&to_datetime=${moment(toDate).tz(browserTimezone).toISOString()}`)
                 .then(checkResponse)
                 .then((fetchedIncidents) => {
                     setAllIncidents(fetchedIncidents);

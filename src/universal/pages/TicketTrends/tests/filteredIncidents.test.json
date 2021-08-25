@@ -1,0 +1,46 @@
+[
+    {
+      "Brand": "Expedia Partner Solutions (EPS)",
+      "root_cause": "rollback EAN Edge Service   Expedia-Partner-Solutions/DARK-2027-Integrate-with-PRS-handlers-in-Edge",
+      "Status": "Closed",
+      "duration": "8000",
+      "id": "INC4419505",
+      "priority": "1-Critical",
+      "start_date": "2019-09-25T14:58:24.000Z",
+      "summary": "EAN Degraded",
+      "root_cause_owner": "EAN Release - Deploy"
+    },
+    {
+      "root_cause": "rollback EAN Edge Service   Expedia-Partner-Solutions/DARK-2027-Integrate-with-PRS-handlers-in-Edge",
+      "id": "INC4419505",
+      "startDate": "2019-09-25T14:58:24.000Z"
+    },
+    {
+      "Brand": "Expedia Partner Solutions (EPS)",
+      "root_cause": "rollback EAN Edge Service   Expedia-Partner-Solutions/DARK-2027-Integrate-with-PRS-handlers-in-Edge",
+      "root_cause_owner": "EAN Release - Deploy",
+      "Status": "Closed",
+      "duration": "100000",
+      "id": "INC4419505",
+      "priority": "2-High",
+      "start_date": "2019-09-21T14:58:24.000Z",
+      "summary": "EAN Degraded"
+    },
+    {
+      "Brand": "eCommerce Platform (eCP)",
+      "root_cause": "rollback EAN Edge Service   Expedia-Partner-Solutions/DARK-2027-Integrate-with-PRS-handlers-in-Edge",
+      "root_cause_owner": "EAN Release - Deploy",
+      "Status": "Closed",
+      "duration": "200000",
+      "id": "INC4419505",
+      "priority": "2-High",
+      "start_date": "2019-09-20T14:58:24.000Z",
+      "summary": "EAN Degraded"
+    },
+    {
+      "root_cause": "rollback EAN Edge Service   Expedia-Partner-Solutions/DARK-2027-Integrate-with-PRS-handlers-in-Edge",
+      "id": "INC4419505",
+      "start_date": "2019-09-25T14:58:24.000Z"
+    }
+  ]
+  

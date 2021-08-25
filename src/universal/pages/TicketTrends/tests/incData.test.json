@@ -5,10 +5,10 @@
     "duration": "100000",
     "id": "INC4419505",
     "priority": "1-Critical",
-    "startDate": "2019-09-25T14:58:24.000Z",
+    "start_date": "2019-09-25T14:58:24.000Z",
     "summary": "EAN Degraded",
-    "timeToDetect": "50000",
-    "timeToResolve": "50000"
+    "time_to_detect": "50000",
+    "time_to_resolve": "50000"
   },
   {
     "Brand": "Expedia Partner Solutions (EPS)",
@@ -16,10 +16,10 @@
     "duration": "100000",
     "id": "INC4419505",
     "priority": "2-High",
-    "startDate": "2019-09-21T14:58:24.000Z",
+    "start_date": "2019-09-21T14:58:24.000Z",
     "summary": "EAN Degraded",
-    "timeToDetect": "50000",
-    "timeToResolve": "50000"
+    "time_to_detect": "50000",
+    "time_to_resolve": "50000"
   },
   {
     "Brand": "eCommerce Platform (eCP)",
@@ -27,10 +27,10 @@
     "duration": "100000",
     "id": "INC4419505",
     "priority": "2-High",
-    "startDate": "2019-09-20T14:58:24.000Z",
+    "start_date": "2019-09-20T14:58:24.000Z",
     "summary": "EAN Degraded",
-    "timeToDetect": "50000",
-    "timeToResolve": "50000"
+    "time_to_detect": "50000",
+    "time_to_resolve": "50000"
   },
   {
     "Brand": "eCommerce Platform (eCP)",
@@ -38,9 +38,9 @@
     "duration": "500000",
     "id": "INC4419505",
     "priority": "2-High",
-    "startDate": "2019-09-20T14:58:24.000Z",
+    "start_date": "2019-09-20T14:58:24.000Z",
     "summary": "EAN Degraded",
-    "timeToDetect": "250000",
-    "timeToResolve": "250000"
+    "time_to_detect": "250000",
+    "time_to_resolve": "250000"
   }
 ]

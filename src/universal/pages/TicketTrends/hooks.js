@@ -1,4 +1,5 @@
 import {useState, useEffect} from 'react';
+import moment from 'moment';
 import {adjustTicketProperties, impactedBrandToDivision} from './incidentsHelper';
 import {
     ALL_PRIORITIES_OPTION,
@@ -37,14 +38,20 @@ export const useFetchTickets = (
     const [tags, setTags] = useState([]);
     const [partners, setPartners] = useState([]);
     const isIncidents = url === 'incidents';
+    const browserTimezone = moment.tz.guess();
+    const queryParams = isIncidents
+        ? `from_datetime=${moment(startDate).tz(browserTimezone).toISOString()}&to_datetime=${moment(endDate).tz(browserTimezone).toISOString()}`
+        : `fromDate=${startDate}&toDate=${endDate}`;
 
     const fetchTickets = () => {
         setIsLoading(true);
         setLastStartDate(startDate);
         setLastEndDate(endDate);
-        const paths = [`/v1/${url}?fromDate=${startDate}&toDate=${endDate}`];
+        const paths = [`/v1/${url}?${queryParams}`];
         if ([EXPEDIA_PARTNER_SERVICES_BRAND, EG_BRAND].includes(selectedBrand) && isIncidents) {
-            paths.push(`https://opxhub-data-service.us-west-2.test.expedia.com/v1/eps/${url}?fromDate=${startDate}&toDate=${endDate}`);
+            paths.push(`https://opxhub-data-service.us-west-2.test.expedia.com/v1/eps/${url}`
+                + `?from_datetime=${moment(startDate).tz(browserTimezone).toISOString()}`
+                + `&to_datetime=${moment(endDate).tz(browserTimezone).toISOString()}`);
         }
         const handleFetchError = (err) => {
             // eslint-disable-next-line no-console

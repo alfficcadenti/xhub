@@ -35,6 +35,25 @@ export const getValue = (item, property, transformFn) => {
 };
 
 export const adjustTicketProperties = (tickets = [], type = 'incident') => {
+    if (type === 'incident') {
+        // eslint-disable-next-line complexity
+        return tickets.map((t) => {
+            const result = {
+                ...t,
+                start_date: t.start_date || t.open_date,
+                Division: String(t.divisions || '') || t.brand,
+                Status: t.status,
+                'RC Owner': t.root_cause_owner,
+                Brand: t.impacted_brand
+                    ? t.impacted_brand.split(',').map((b) => divisionToBrand(b)).filter(isNotDuplicate).join(', ')
+                    : divisionToBrand(t.brand)
+            };
+            result.partner_divisions = t.divisions;
+            result['Impacted Partners'] = t.impacted_partners_lobs;
+            result['Notification Sent'] = t.notification_sent;
+            return result;
+        });
+    }
     // eslint-disable-next-line complexity
     return tickets.map((t) => {
         const result = {
@@ -47,15 +66,9 @@ export const adjustTicketProperties = (tickets = [], type = 'incident') => {
                 ? t.impactedBrand.split(',').map((b) => divisionToBrand(b)).filter(isNotDuplicate).join(', ')
                 : divisionToBrand(t.brand)
         };
-        if (type === 'incident') {
-            result.partner_divisions = t.divisions;
-            result['Impacted Partners'] = t.impactedPartnersLobs;
-            result['Notification Sent'] = t.notificationSent;
-        } else if (type === 'defect') {
-            result.duration = (t.openDate && t.resolvedDate)
-                ? moment(t.resolvedDate).diff(t.openDate, 'milliseconds')
-                : '';
-        }
+        result.duration = (t.openDate && t.resolvedDate)
+            ? moment(t.resolvedDate).diff(t.openDate, 'milliseconds')
+            : '';
         return result;
     });
 };
@@ -67,39 +80,39 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
         Priority: getValue(inc, 'priority'),
         Brand: getValue(inc, 'Brand'),
         Division: getValue(inc, 'Division'),
-        Started: moment.utc(inc.startDate).local().isValid() ? moment.utc(inc.startDate).local().format('YYYY-MM-DD HH:mm') : '-',
+        Started: moment.utc(inc.start_date).local().isValid() ? moment.utc(inc.start_date).local().format('YYYY-MM-DD HH:mm') : '-',
         Summary: getValue(inc, 'summary').trim(),
         Duration: getValue(inc, 'duration', formatDurationForTable),
         rawDuration: inc.duration,
-        TTD: getValue(inc, 'timeToDetect', formatDurationForTable),
-        rawTTD: inc.timeToDetect,
-        TTR: getValue(inc, 'timeToResolve', formatDurationForTable),
-        rawTTR: inc.timeToResolve,
-        'Resolution Notes': getValue(inc, 'rootCause'),
-        'Root Cause': getValue(inc, 'rootCause'),
-        'Root Cause Owner': getValue(inc, 'rootCauseOwner'),
+        TTD: getValue(inc, 'time_to_detect', formatDurationForTable),
+        rawTTD: inc.time_to_detect,
+        TTR: getValue(inc, 'time_to_resolve', formatDurationForTable),
+        rawTTR: inc.time_to_resolve,
+        'Resolution Notes': getValue(inc, 'root_cause'),
+        'Root Cause': getValue(inc, 'root_cause'),
+        'Root Cause Owner': getValue(inc, 'root_cause_owner'),
         Status: getValue(inc, 'Status'),
         Tag: getValue(inc, 'tag'),
-        'Executive Summary': getValue(inc, 'executiveSummary'),
+        'Executive Summary': getValue(inc, 'executive_summary'),
         executiveSummary: getValue(inc, 'executiveSummary'),
-        'RC Owner': getValue(inc, 'rootCauseOwner'),
-        'Impacted Brand': getValue(inc, 'impactedBrand'),
+        'RC Owner': getValue(inc, 'root_cause_owner'),
+        'Impacted Brand': getValue(inc, 'impacted_brand'),
         'Owning Division': getValue(inc, 'Division'),
         partner_divisions: getValue(inc, 'divisions'),
-        'Impacted Partners': getValue(inc, 'impactedPartnersLobs'),
-        'Notification Sent': getValue(inc, 'notificationSent'),
+        'Impacted Partners': getValue(inc, 'impacted_partners_lobs'),
+        'Notification Sent': getValue(inc, 'notification_sent'),
         Details: (
             <div className="expandable-row-wrapper">
                 <div className="expandable-row">
                     <span className="expandable-row-header">{'Incident Executive Summary:'}</span>
                     <div className="expandable-row-section">
-                        {getValue(inc, 'executiveSummary')}
+                        {getValue(inc, 'executive_summary')}
                     </div>
                 </div>
                 <div className="expandable-row">
                     <span className="expandable-row-header">{'Resolution Notes:'}</span>
                     <div className="expandable-row-section">
-                        {getValue(inc, 'rootCause')}
+                        {getValue(inc, 'root_cause')}
                     </div>
                 </div>
             </div>
@@ -128,7 +141,7 @@ export const getQualityData = (filteredDefects = []) => filteredDefects
 
 const brandIncidents = (incidents, brand) => incidents.filter((incident) => incident.Brand === brand);
 
-export const incidentsOfTheWeek = (incidents, week = '') => incidents.filter(({startDate}) => moment(startDate).week() === week);
+export const incidentsOfTheWeek = (incidents, week = '') => incidents.filter(({start_date: startDate}) => moment(startDate).week() === week);
 
 export const sumPropertyInArrayOfObjects = (incidents = [], propertyToSum) =>
     incidents.reduce((acc, curr) => {
@@ -142,8 +155,8 @@ export const getMeanValue = (incidents = [], property) => (sumPropertyInArrayOfO
 export const getIncMetricsByBrand = (inc = []) => getListOfUniqueProperties(inc, 'Brand')
     .map((brand) => {
         const brandIncidentsList = brandIncidents(inc, brand);
-        const brandMTTR = formatDurationToHours(getMeanValue(brandIncidentsList, 'timeToResolve'));
-        const brandMTTD = formatDurationToHours(getMeanValue(brandIncidentsList, 'timeToDetect'));
+        const brandMTTR = formatDurationToHours(getMeanValue(brandIncidentsList, 'time_to_resolve'));
+        const brandMTTD = formatDurationToHours(getMeanValue(brandIncidentsList, 'time_to_detect'));
         const P1inc = brandIncidentsList.filter((incident) => incident.priority === '1-Critical').length;
         const P2inc = brandIncidentsList.filter((incident) => incident.priority === '2-High').length;
         const all = brandIncidentsList.length;
@@ -180,8 +193,8 @@ export const weeklyMTTRMTTD = (startDate, endDate, incidents = []) => {
     weeksInterval.forEach((date) => {
         data.push({
             name: date,
-            MTTR: getMeanHours(incidents, date, 'timeToResolve'),
-            MTTD: getMeanHours(incidents, date, 'timeToDetect')
+            MTTR: getMeanHours(incidents, date, 'time_to_resolve'),
+            MTTD: getMeanHours(incidents, date, 'time_to_detect')
         });
     });
     return {data, keys: ['MTTR', 'MTTD']};
