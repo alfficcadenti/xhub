@@ -93,8 +93,8 @@ const GroupedBookingTrends = ({
         setDaysDifference(3);
         setIsResetClicked(true);
         setIsSubmitClicked(false);
+        setTimeInterval('5m');
         if (!isValidTimeInterval(startTime(), endTime(), timeInterval)) {
-            setTimeInterval('5m');
             setTimeIntervalOpts(['15m', '30m', '1h']);
         } else {
             setTimeIntervalOpts(getTimeIntervals(startTime(), endTime(), timeInterval));

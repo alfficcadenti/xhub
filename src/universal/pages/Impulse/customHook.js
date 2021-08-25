@@ -235,7 +235,6 @@ export const useFetchBlipData = (
             })
             .finally(() => {
                 getScreenshot();
-                setIsLoading(false);
             });
     };
 
@@ -257,7 +256,6 @@ export const useFetchBlipData = (
             fetchPredictions(start, end, interval, chartData);
         } else {
             getScreenshot();
-            setIsLoading(false);
         }
     };
 
@@ -377,6 +375,7 @@ export const useFetchBlipData = (
             .then((chartData) => {
                 setError('');
                 setRes(chartData);
+                setIsLoading(false);
             })
             .catch((err) => {
                 setIsLoading(false);
