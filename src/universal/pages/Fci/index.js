@@ -7,7 +7,7 @@ import {Navigation} from '@homeaway/react-navigation';
 import LineChartWrapper from '../../components/LineChartWrapper';
 import LoadingContainer from '../../components/LoadingContainer';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
-import {checkResponse, getPresets} from '../utils';
+import {checkResponse, getBrand, getPresets} from '../utils';
 import FciModal from './FciModal';
 import DeltaUserModal from './DeltaUserModal';
 import {CATEGORY_OPTION, CODE_OPTION, FETCH_FAILED_MSG, CATEGORIES} from './constants';
@@ -171,11 +171,12 @@ const Fci = ({selectedBrands}) => {
         if (!searchDeltaUsers) {
             return;
         }
+        const {funnelBrand} = getBrand(selectedBrands[0], 'label');
         setIsModalLoading(true);
         setModalError();
         setIsDeltaUserModalOpen(true);
         updateHistory();
-        fetch(`/v1/delta-user-by-session-id?from=${pendingStart.toISOString()}&to=${pendingEnd.toISOString()}&brand=hcom&session_id=${searchDeltaUsers}`)
+        fetch(`/v1/delta-user-by-session-id?from=${pendingStart.toISOString()}&to=${pendingEnd.toISOString()}&brand=${funnelBrand}&session_id=${searchDeltaUsers}`)
             .then(checkResponse)
             .then((data) => {
                 processDeltaUserData(data);
