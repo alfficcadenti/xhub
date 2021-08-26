@@ -19,3 +19,10 @@ module.exports.deltaUserDetails = {
     config: getConfig('delta-user-details-get'),
     handler: getHandler(Object.assign(getHandlerParams('deltaUserDetails')))
 };
+
+module.exports.deltaUserBySessionId = {
+    method: 'GET',
+    path: '/v1/delta-user-by-session-id',
+    config: getConfig('delta-user-by-session-id-get'),
+    handler: getHandler(Object.assign(getHandlerParams('deltaUserBySessionId')))
+};

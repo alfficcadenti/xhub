@@ -32,7 +32,7 @@ export const shouldFetchData = (prev, start, end, selectedSite, chartProperty, s
 
 // eslint-disable-next-line complexity
 export const getQueryValues = (search, brand = 'Expedia') => {
-    const {tab, from, to, lobs, code, sites, hide_intentional: hideIntentional, search_id: searchId, bucket, id} = qs.parse(search);
+    const {tab, from, to, lobs, code, sites, hide_intentional: hideIntentional, search_id: searchId, bucket, id, deltaUsersId} = qs.parse(search);
     const isValidDateRange = validDateRange(from, to);
     return {
         initialStart: isValidDateRange ? moment(from) : moment().subtract(24, 'hours').startOf('minute'),
@@ -47,6 +47,7 @@ export const getQueryValues = (search, brand = 'Expedia') => {
         initialErrorCode: code ? code.split(',') : [],
         initialHideIntentionalCheck: hideIntentional === 'true',
         initialSearchId: searchId || '',
+        initialDeltaUsersId: deltaUsersId || '',
         initialSelectedId: id || '',
         initialIndex: ['0', '1'].includes(tab) ? Number(tab) : 0,
         initialBucket: bucket && moment(bucket).isValid ? bucket : null
@@ -163,6 +164,15 @@ export const mapFci = (row = {}) => {
     };
 };
 
+export const mapDeltaUser = (row = {}) => {
+    return {
+        Created: row.timestamp ? moment(row.timestamp).format('YYYY-MM-DD HH:mm') : '-',
+        Brand: getTableValue(row, 'brand'),
+        LoB: (LOB_LIST.find((l) => l.value === row.lineOfBusiness) || {label: '-'}).label,
+        'Funnel Step': getTableValue(row, 'metricName'),
+    };
+};
+
 export const getTableData = (data, onOpenEdit) => {
     const result = data
         .map((row) => {
@@ -200,3 +210,13 @@ export const getTableData = (data, onOpenEdit) => {
 export const getFilteredTraceData = (data) => (
     (data || []).filter(({Error}) => Error === 'true')
 );
+
+export const getDeltaUserTableData = (data) => {
+    if (data && data?.length) {
+        const result = data
+            .map((row) => mapDeltaUser(row));
+        result.sort((a, b) => b.Created.localeCompare(a.Created));
+        return result;
+    }
+    return [];
+};

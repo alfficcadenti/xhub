@@ -44,7 +44,7 @@ import {
 } from './userEventsAnalysisService';
 import {impulseHealth, impulseAnomalies, impulseAnomaliesGrouped} from './impulseDataService';
 import {impulsePrediction} from './anomalyDetector';
-import {deltaUser, deltaUserDetails} from './deltaUserService';
+import {deltaUser, deltaUserDetails, deltaUserBySessionId} from './deltaUserService';
 
 
 const apiRoutes = [
@@ -103,7 +103,8 @@ const apiRoutes = [
     impulsePrediction,
     // delta user  service
     deltaUser,
-    deltaUserDetails
+    deltaUserDetails,
+    deltaUserBySessionId
 ];
 
 export default apiRoutes;

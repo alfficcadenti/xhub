@@ -9,6 +9,7 @@ import LoadingContainer from '../../components/LoadingContainer';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import {checkResponse, getPresets} from '../utils';
 import FciModal from './FciModal';
+import DeltaUserModal from './DeltaUserModal';
 import {CATEGORY_OPTION, CODE_OPTION, FETCH_FAILED_MSG, CATEGORIES} from './constants';
 import {
     shouldFetchData,
@@ -17,7 +18,8 @@ import {
     getQueryValues,
     getFciQueryString,
     getHistoryQueryString,
-    getTableData
+    getTableData,
+    getDeltaUserTableData
 } from './utils';
 import './styles.less';
 
@@ -27,7 +29,8 @@ const Fci = ({selectedBrands}) => {
     const {search, pathname} = useLocation();
     const navLinks = [
         {id: 'trends', label: 'Trends', href: '/fci'},
-        {id: 'search', label: 'Search', href: '/fci'}
+        {id: 'search', label: 'Search', href: '/fci'},
+        {id: 'deltaUsers', label: 'Delta Users', href: '/fci'}
     ];
     const {
         initialStart,
@@ -37,6 +40,7 @@ const Fci = ({selectedBrands}) => {
         initialSite,
         initialHideIntentionalCheck,
         initialSearchId,
+        initialDeltaUsersId,
         initialSelectedId,
         initialIndex,
         initialBucket
@@ -72,6 +76,7 @@ const Fci = ({selectedBrands}) => {
         start: null, end: null, options: [{label: initialSite, value: initialSite}], isLoading: false});
     const [sitesIsLoading, setSitesIsLoading] = useState(false);
     const [searchText, setSearchText] = useState(initialSearchId);
+    const [searchDeltaUsers, setSearchDeltaUsers] = useState(initialDeltaUsersId);
     const [selectedId, setSelectedId] = useState(initialSelectedId);
 
     const [isSupportedBrand, setIsSupportedBrand] = useState(getIsSupportedBrand(selectedBrands));
@@ -80,6 +85,7 @@ const Fci = ({selectedBrands}) => {
     const [lineChartData, setLineChartData] = useState([]);
     const [lineChartKeys, setLineChartKeys] = useState([]);
     const [tableData, setTableData] = useState([]);
+    const [modalDeltaUsers, setModalDeltaUsers] = useState([]);
     const [error, setError] = useState();
     const [isLoading, setIsLoading] = useState(false);
 
@@ -87,6 +93,7 @@ const Fci = ({selectedBrands}) => {
     const [refAreaRight, setRefAreaRight] = useState('');
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isDeltaUserModalOpen, setIsDeltaUserModalOpen] = useState(false);
     const [modalFci, setModalFci] = useState();
     const [modalEditMode, setModalEditMode] = useState(false);
     const [modalFcis, setModalFcis] = useState([]);
@@ -134,6 +141,11 @@ const Fci = ({selectedBrands}) => {
         }
     };
 
+    const processDeltaUserData = (data) => {
+        const deltaUsersDetails = getDeltaUserTableData(data);
+        setModalDeltaUsers(deltaUsersDetails);
+    };
+
     const searchFci = () => {
         if (!searchText) {
             return;
@@ -146,6 +158,27 @@ const Fci = ({selectedBrands}) => {
             .then(checkResponse)
             .then((data) => {
                 processTableData(data);
+            })
+            .catch((err) => {
+                setModalError(FETCH_FAILED_MSG);
+                // eslint-disable-next-line no-console
+                console.error(err);
+            })
+            .finally(() => setIsModalLoading(false));
+    };
+
+    const searchDeltaUserId = () => {
+        if (!searchDeltaUsers) {
+            return;
+        }
+        setIsModalLoading(true);
+        setModalError();
+        setIsDeltaUserModalOpen(true);
+        updateHistory();
+        fetch(`/v1/delta-user-by-session-id?from=${pendingStart.toISOString()}&to=${pendingEnd.toISOString()}&brand=hcom&session_id=${searchDeltaUsers}`)
+            .then(checkResponse)
+            .then((data) => {
+                processDeltaUserData(data);
             })
             .catch((err) => {
                 setModalError(FETCH_FAILED_MSG);
@@ -280,6 +313,12 @@ const Fci = ({selectedBrands}) => {
         setModalEditMode(false);
         setIsModalOpen(false);
         setSelectedId(null);
+        updateHistory(activeIndex, searchText, null);
+    };
+
+    const handleDeltaUsersModalClose = () => {
+        setModalFci(null);
+        setIsDeltaUserModalOpen(false);
         updateHistory(activeIndex, searchText, null);
     };
 
@@ -483,6 +522,49 @@ const Fci = ({selectedBrands}) => {
         </>
     );
 
+    const renderDeltaUserTab = () => (
+        <>
+            {isSupportedBrand && <div className="form-container">
+                <DatetimeRangePicker
+                    onChange={handleDatetimeChange}
+                    startDate={pendingStart.toDate()}
+                    endDate={pendingEnd.toDate()}
+                    presets={getPresets()}
+                    showTimePicker
+                />
+                <FormInput
+                    id="delta-user-input"
+                    name="deltaUserInput"
+                    label="Search by sessionid"
+                    className="delta-user-input"
+                    onChange={(event) => setSearchDeltaUsers(event.target.value)}
+                    value={searchDeltaUsers}
+                />
+                <button
+                    className="btn btn-primary apply-btn"
+                    type="button"
+                    onClick={searchDeltaUserId}
+                >
+                    {'Search'}
+                </button>
+            </div>}
+            <LoadingContainer isLoading={isLoading} error={error} className="fci-loading-container" />
+        </>
+    );
+
+    const renderTabs = () => {
+        switch (activeIndex) {
+            case 0:
+                return renderTrendsTab();
+            case 1:
+                return renderSearchTab();
+            case 2:
+                return renderDeltaUserTab();
+            default:
+                return renderTrendsTab();
+        }
+    };
+
     return (
         <div className="fci-container">
             <h1 className="page-title">{'Failed Customer Interactions (FCI)'}</h1>
@@ -492,7 +574,7 @@ const Fci = ({selectedBrands}) => {
                 links={navLinks}
                 onLinkClick={handleNavigationClick}
             />
-            {activeIndex === 0 ? renderTrendsTab() : renderSearchTab()}
+            {renderTabs()}
             <FciModal
                 fci={modalFci}
                 fcis={modalFcis}
@@ -501,6 +583,13 @@ const Fci = ({selectedBrands}) => {
                 onEditBack={handleEditBack}
                 onClose={handleModalClose}
                 onSaveComment={handleSaveComment}
+                isLoading={isModalLoading}
+                error={modalError}
+            />
+            <DeltaUserModal
+                deltaUsersData={modalDeltaUsers}
+                isOpen={isDeltaUserModalOpen}
+                onClose={handleDeltaUsersModalClose}
                 isLoading={isModalLoading}
                 error={modalError}
             />

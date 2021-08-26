@@ -930,6 +930,11 @@
               "path": "/v1/delta-users-details",
               "method": "GET",
               "operation": "GET_delta_user_details_api_v1"
+            },
+            "deltaUserBySessionId": {
+              "path": "/v1/delta-user-by-session-id",
+              "method": "GET",
+              "operation": "GET_delta_user_by_session_id_api_v1"
             }
           }
         },
@@ -946,6 +951,11 @@
               "path": "/v1/delta-users-details",
               "method": "GET",
               "operation": "GET_delta_user_details_api_v1"
+            },
+            "deltaUserBySessionId": {
+              "path": "/v1/delta-user-by-session-id",
+              "method": "GET",
+              "operation": "GET_delta_user_by_session_id_api_v1"
             }
           }
         }
