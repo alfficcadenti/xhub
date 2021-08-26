@@ -50,8 +50,8 @@ export const useFetchTickets = (
         const paths = [`/v1/${url}?${queryParams}`];
         if ([EXPEDIA_PARTNER_SERVICES_BRAND, EG_BRAND].includes(selectedBrand) && isIncidents) {
             paths.push(`https://opxhub-data-service.us-west-2.test.expedia.com/v1/eps/${url}`
-                + `?from_datetime=${moment(startDate).tz(browserTimezone).toISOString()}`
-                + `&to_datetime=${moment(endDate).tz(browserTimezone).toISOString()}`);
+                + `?fromDate=${startDate}`
+                + `&toDate=${endDate}`);
         }
         const handleFetchError = (err) => {
             // eslint-disable-next-line no-console
@@ -59,8 +59,13 @@ export const useFetchTickets = (
             setIsLoading(false);
             setError(`Not all incidents and/or defects are available. Check your VPN or refresh the page to try again. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`);
         };
-        Promise.all(paths.map((path) => fetch(path).catch(handleFetchError)))
-            .then((responses) => Promise.all(responses.map(checkResponse)))
+        Promise.all([
+            fetch(paths[0]).catch(handleFetchError),
+            // Display error if incidents fails - ignore if EPS incident fails
+            // eslint-disable-next-line no-console
+            fetch(paths[1]).catch(() => console.error('Failed to fetch EPS incidents'))
+        ])
+            .then((responses) => Promise.all([checkResponse(responses[0]), checkResponse(responses[1]).catch(() => [])]))
             .then(([ticketsData, epsTicketsData = []]) => {
                 const epsTickets = epsTicketsData.map(mapEpsData);
                 const tickets = (isIncidents)
@@ -81,7 +86,7 @@ export const useFetchTickets = (
                 setAllTickets(tickets);
                 setIsLoading(false);
             }).catch((err) => {
-            // eslint-disable-next-line no-console
+                // eslint-disable-next-line no-console
                 console.error(JSON.stringify(err, null, 4));
                 setIsLoading(false);
                 setError(`Error occurred when reading tickets. Please try refreshing the page. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`);

@@ -118,7 +118,7 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
             </div>
         )
     }))
-    .sort((a, b) => moment(a.Started).isBefore(b.Started));
+    .sort((a, b) => b.Started.localeCompare(a.Started));
 
 export const getQualityData = (filteredDefects = []) => filteredDefects
     // eslint-disable-next-line complexity

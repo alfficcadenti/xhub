@@ -274,13 +274,22 @@ export const mapEpsData = (t) => {
     if (t.id && t.incidentNumber) {
         result.id = `${t.id},${t.incidentNumber}`;
     }
+    result.incident_number = t.incidentNumber;
+    result.start_date = t.startDate;
+    result.end_date = t.endDate;
+    result.identified_time = t.identifiedTime;
+    result.root_cause = t.rootCause;
+    result.root_cause_owner = t.rootCauseOwner;
+    result.root_cause_category = t.rootCauseCategory;
     result.brand = EXPEDIA_PARTNER_SERVICES_BRAND;
-    result.impactedBrand = EXPEDIA_PARTNER_SERVICES_BRAND;
+    result.impacted_brand = EXPEDIA_PARTNER_SERVICES_BRAND;
+    result.resolution_notes = t.resolutionNotes;
+    result.notification_sent = t.notificationSent;
     result.duration = parseDurationToMs(t.duration);
-    result.timeToDetect = parseDurationToMs(t.timeToDetect);
-    result.timeToResolve = parseDurationToMs(t.timeToResolve);
-    result.impactedPartners = getImpactedPartners(t.impactedPartners);
-    result.impactedPartnersLobs = getImpactedPartners(t.impactedPartners, t.impactedLobs || []);
+    result.time_to_detect = parseDurationToMs(t.timeToDetect);
+    result.time_to_resolve = parseDurationToMs(t.timeToResolve);
+    result.impacted_partners = getImpactedPartners(t.impactedPartners);
+    result.impacted_partners_lobs = getImpactedPartners(t.impactedPartners, t.impactedLobs || []);
     return result;
 };
 

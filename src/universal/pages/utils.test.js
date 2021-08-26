@@ -294,16 +294,15 @@ describe('mapEpsData', () => {
             timeToDetect: '10 minutes',
             timeToResolve: '50 minutes'
         };
-        expect(mapEpsData(data)).to.eql({
-            id: 'INC1999',
-            brand: EXPEDIA_PARTNER_SERVICES_BRAND,
-            impactedBrand: EXPEDIA_PARTNER_SERVICES_BRAND,
-            duration: 1 * 60 * 60 * 1000,
-            timeToDetect: 10 * 60 * 1000,
-            timeToResolve: 50 * 60 * 1000,
-            impactedPartners: null,
-            impactedPartnersLobs: null
-        });
+        const mappedData = mapEpsData(data);
+        expect(mappedData.id).to.eql(data.id);
+        expect(mappedData.brand).to.eql(EXPEDIA_PARTNER_SERVICES_BRAND);
+        expect(mappedData.impacted_brand).to.eql(EXPEDIA_PARTNER_SERVICES_BRAND);
+        expect(mappedData.duration).to.eql(1 * 60 * 60 * 1000);
+        expect(mappedData.time_to_detect).to.eql(10 * 60 * 1000);
+        expect(mappedData.time_to_resolve).to.eql(50 * 60 * 1000);
+        expect(mappedData.impacted_partners).to.eql(null);
+        expect(mappedData.impacted_partners_lobs).to.eql(null);
     });
     it('parses numeric time to metrics correctly', () => {
         const data = {
@@ -312,16 +311,15 @@ describe('mapEpsData', () => {
             timeToDetect: 20000,
             timeToResolve: 10000
         };
-        expect(mapEpsData(data)).to.eql({
-            incidentNumber: 'INC1999',
-            brand: EXPEDIA_PARTNER_SERVICES_BRAND,
-            impactedBrand: EXPEDIA_PARTNER_SERVICES_BRAND,
-            duration: data.duration,
-            timeToDetect: data.timeToDetect,
-            timeToResolve: data.timeToResolve,
-            impactedPartners: null,
-            impactedPartnersLobs: null
-        });
+        const mappedData = mapEpsData(data);
+        expect(mappedData.incident_number).to.eql(data.incidentNumber);
+        expect(mappedData.brand).to.eql(EXPEDIA_PARTNER_SERVICES_BRAND);
+        expect(mappedData.impacted_brand).to.eql(EXPEDIA_PARTNER_SERVICES_BRAND);
+        expect(mappedData.duration).to.eql(data.duration);
+        expect(mappedData.time_to_detect).to.eql(data.timeToDetect);
+        expect(mappedData.time_to_resolve).to.eql(data.timeToResolve);
+        expect(mappedData.impacted_partners).to.eql(null);
+        expect(mappedData.impacted_partners_lobs).to.eql(null);
     });
     it('merged ids when given more than one', () => {
         const data = {
@@ -331,17 +329,16 @@ describe('mapEpsData', () => {
             timeToDetect: 20000,
             timeToResolve: 10000
         };
-        expect(mapEpsData(data)).to.eql({
-            id: 'EPS-0001,INC1234567',
-            incidentNumber: 'INC1234567',
-            brand: EXPEDIA_PARTNER_SERVICES_BRAND,
-            impactedBrand: EXPEDIA_PARTNER_SERVICES_BRAND,
-            duration: data.duration,
-            timeToDetect: data.timeToDetect,
-            timeToResolve: data.timeToResolve,
-            impactedPartners: null,
-            impactedPartnersLobs: null
-        });
+        const mappedData = mapEpsData(data);
+        expect(mappedData.id).to.eql('EPS-0001,INC1234567');
+        expect(mappedData.incident_number).to.eql('INC1234567');
+        expect(mappedData.brand).to.eql(EXPEDIA_PARTNER_SERVICES_BRAND);
+        expect(mappedData.impacted_brand).to.eql(EXPEDIA_PARTNER_SERVICES_BRAND);
+        expect(mappedData.duration).to.eql(data.duration);
+        expect(mappedData.time_to_detect).to.eql(data.timeToDetect);
+        expect(mappedData.time_to_resolve).to.eql(data.timeToResolve);
+        expect(mappedData.impacted_partners).to.eql(null);
+        expect(mappedData.impacted_partners_lobs).to.eql(null);
     });
 });
 
