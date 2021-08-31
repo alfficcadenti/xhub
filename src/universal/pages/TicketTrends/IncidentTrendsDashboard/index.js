@@ -1,7 +1,6 @@
-/* eslint-disable no-use-before-define */
 import React, {useState, useEffect, useCallback} from 'react';
-import {withRouter} from 'react-router-dom';
 import moment from 'moment';
+import {withRouter, useHistory, useLocation} from 'react-router-dom';
 import {Divider} from '@homeaway/react-collapse';
 import {Checkbox} from '@homeaway/react-form-components';
 import {Navigation} from '@homeaway/react-navigation';
@@ -24,61 +23,33 @@ import {useFetchTickets, useRootCauseOwner} from '../hooks';
 import {useSelectedBrand, useQueryParamChange} from '../../hooks';
 import {impactedBrandToDivision} from '../incidentsHelper';
 import {DatetimeRangePicker} from '../../../components/DatetimeRangePicker';
+import {
+    DIVISION_CHECKBOXES,
+    NAV_LINKS
+} from './constants';
+import {getQueryValues} from './utils';
 import './styles.less';
 
 
-const statusDefaultValue = ALL_STATUSES_OPTION;
-const priorityDefaultValue = ALL_PRIORITIES_OPTION;
-const tagDefaultValue = ALL_TAGS_OPTION;
-const rcOwnerDefaultValue = ALL_RC_OWNERS_OPTION;
-const startDateDefaultValue = moment().subtract(14, 'days').format(DATE_FORMAT);
-const endDateDefaultValue = moment().format(DATE_FORMAT);
-const partnerDefaultValue = ALL_PARTNERS_OPTION;
-const divisionCheckboxesDefaultValue = [
-    {text: 'E4P', checked: true},
-    {text: 'Rapid', checked: true},
-    {text: 'TAAP', checked: true}
-];
+const IncidentTrendsDashboard = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
+    const {search} = useLocation();
+    const history = useHistory();
+    const {initialStart, initialEnd, initialStatus, initialPriority, initialTag} = getQueryValues(search);
 
-const navLinks = [
-    {
-        id: 'overview',
-        label: 'Overview',
-        href: '/incident-trends'
-    },
-    {
-        id: 'incidents',
-        label: 'Incidents',
-        href: '/incident-trends'
-    },
-    {
-        id: 'top5',
-        label: 'Top 5',
-        href: '/incident-trends'
-    },
-    // {
-    //     id: 'financialImpact',
-    //     label: 'Financial Impact',
-    //     href: '/incident-trends'
-    // },
-];
-
-
-const IncidentTrendsDashboard = (props) => {
-    const selectedBrand = props.selectedBrands[0];
+    const selectedBrand = selectedBrands[0];
     const isPartnerBrand = selectedBrand === EXPEDIA_PARTNER_SERVICES_BRAND;
 
     const [activeIndex, setActiveIndex] = useState(1);
-    const [selectedStatus, setSelectedStatus] = useState(statusDefaultValue);
-    const [pendingStart, setPendingStart] = useState(startDateDefaultValue);
-    const [start, setStart] = useState(pendingStart);
-    const [pendingEnd, setPendingEnd] = useState(endDateDefaultValue);
-    const [end, setEnd] = useState(pendingEnd);
-    const [selectedPriority, setSelectedPriority] = useState(priorityDefaultValue);
-    const [selectedTag, setSelectedTag] = useState(tagDefaultValue);
-    const [selectedRcOwner, setSelectedRcOwner] = useState(rcOwnerDefaultValue);
-    const [selectedPartner, setSelectedPartner] = useState(partnerDefaultValue);
-    const [divisionCheckboxes, setDivisionCheckboxes] = useState(divisionCheckboxesDefaultValue);
+    const [selectedStatus, setSelectedStatus] = useState(initialStatus);
+    const [pendingStart, setPendingStart] = useState(initialStart);
+    const [start, setStart] = useState(initialStart);
+    const [pendingEnd, setPendingEnd] = useState(initialEnd);
+    const [end, setEnd] = useState(initialEnd);
+    const [selectedPriority, setSelectedPriority] = useState(initialPriority);
+    const [selectedTag, setSelectedTag] = useState(initialTag);
+    const [selectedRcOwner, setSelectedRcOwner] = useState(ALL_RC_OWNERS_OPTION);
+    const [selectedPartner, setSelectedPartner] = useState(ALL_PARTNERS_OPTION);
+    const [divisionCheckboxes, setDivisionCheckboxes] = useState(DIVISION_CHECKBOXES);
 
     const [isDirtyForm, setIsDirtyForm] = useState(false);
     const [showMoreFilters, setShowMoreFilters] = useState(false);
@@ -99,33 +70,42 @@ const IncidentTrendsDashboard = (props) => {
         isApplyClicked,
         pendingStart,
         pendingEnd,
+        // eslint-disable-next-line no-use-before-define
         applyFilters,
         setIsApplyClicked,
         'incidents',
         selectedBrand
     );
     const rootCauseOwners = useRootCauseOwner(selectedBrand, allUniqueIncidents);
-    useQueryParamChange(selectedBrand, props.onBrandChange);
-    useSelectedBrand(selectedBrand, props.onBrandChange, props.prevSelectedBrand);
+    useQueryParamChange(selectedBrand, onBrandChange);
+    useSelectedBrand(selectedBrand, onBrandChange, prevSelectedBrand);
 
     function applyFilters() {
-        const matchesPriority = (t) => selectedPriority === priorityDefaultValue || t.priority === selectedPriority;
+        const matchesPriority = (t) => selectedPriority === ALL_PRIORITIES_OPTION || t.priority === selectedPriority;
         const matchesBrand = (t) => (selectedBrand === EG_BRAND
             || (t.impactedBrand || '').split(',').some((iBrand) => selectedBrand === impactedBrandToDivision(iBrand)));
-        const matchesStatus = (t) => selectedStatus === statusDefaultValue || t.status === selectedStatus;
-        const matchesTag = (t) => selectedTag === tagDefaultValue || t.tag === selectedTag || (Array.isArray(t.tag) && t.tag.includes(selectedTag));
-        const matchesRcOwner = (t) => selectedRcOwner === rcOwnerDefaultValue || t['RC Owner'] === selectedRcOwner;
+        const matchesStatus = (t) => selectedStatus === ALL_STATUSES_OPTION || t.status === selectedStatus;
+        const matchesTag = (t) => selectedTag === ALL_TAGS_OPTION || t.tag === selectedTag || (Array.isArray(t.tag) && t.tag.includes(selectedTag));
+        const matchesRcOwner = (t) => selectedRcOwner === ALL_RC_OWNERS_OPTION || t['RC Owner'] === selectedRcOwner;
         const matchesDivision = (t) => !isPartnerBrand || divisionCheckboxes.find((cbox) => cbox.checked && (t.partner_divisions || []).includes(cbox.text));
-        const matchesPartner = (t) => !isPartnerBrand || selectedPartner === partnerDefaultValue ||
+        const matchesPartner = (t) => !isPartnerBrand || selectedPartner === ALL_PARTNERS_OPTION ||
             (t.impactedPartnersLobs && t.impactedPartnersLobs.includes(selectedPartner));
         // eslint-disable-next-line complexity
         const filterTickets = (t) => (matchesPriority(t) && matchesBrand(t) && matchesStatus(t) && matchesTag(t) && matchesRcOwner(t)
             && matchesPartner(t) && matchesDivision(t));
+        const browserTimezone = moment.tz.guess();
         setTickets([...allUniqueIncidents].filter(filterTickets));
-
-        setStart(pendingStart);
-        setEnd(pendingEnd);
+        setStart(moment(pendingStart).tz(browserTimezone).toISOString());
+        setEnd(moment(pendingEnd).tz(browserTimezone).toISOString());
         setIsDirtyForm(false);
+
+        history.push(`/incident-trends?selectedBrand=${selectedBrands[0]}`
+            + `&from=${encodeURIComponent(pendingStart)}`
+            + `&to=${encodeURIComponent(pendingEnd)}`
+            + `&priority=${selectedPriority}`
+            + `&status=${selectedStatus}`
+            + `&tag=${selectedTag}`
+        );
     }
 
     useEffect(() => {
@@ -188,8 +168,6 @@ const IncidentTrendsDashboard = (props) => {
                 return <Incidents tickets={tickets} selectedBrand={selectedBrand} />;
             case 2:
                 return <Top5 tickets={tickets} />;
-            // case 3:
-            //     return <FinancialImpact startDate={appliedStartDate} endDate={appliedEndDate} tickets={tickets} brand={selectedBrand} />;
             default:
                 return <Incidents tickets={tickets} />;
         }
@@ -229,6 +207,7 @@ const IncidentTrendsDashboard = (props) => {
                     onChange={handleDateRangeChange}
                     startDate={moment(pendingStart).toDate()}
                     endDate={moment(pendingEnd).toDate()}
+                    showTimePicker
                     hidePresets
                 />
                 <FilterDropDown
@@ -289,7 +268,7 @@ const IncidentTrendsDashboard = (props) => {
             <Navigation
                 noMobileSelect
                 activeIndex={activeIndex}
-                links={navLinks}
+                links={NAV_LINKS}
                 onLinkClick={handleNavigationClick}
             />
             <LoadingContainer isLoading={isLoading} error={error} className="incident-main">
