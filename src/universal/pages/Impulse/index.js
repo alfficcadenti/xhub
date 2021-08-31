@@ -50,6 +50,11 @@ const navLinks = [
         href: '/impulse'
     },
     {
+        id: 'by_region',
+        label: 'By Region',
+        href: '/impulse'
+    },
+    {
         id: 'bookings-data',
         label: 'Bookings Data',
         href: '/impulse'
@@ -124,6 +129,7 @@ const Impulse = (props) => {
     const [allDataByLobs, setAllDataByLobs] = useState([]);
     const [allDataByPos, setAllDataByPos] = useState([]);
     const [allDataByDeviceType, setAllDataByDeviceType] = useState([]);
+    const [allDataByRegion, setAllDataByRegion] = useState([]);
     const refreshRange = ((moment(endDateTime).diff(moment(startDateTime), 'days') <= 5) && (moment().diff(moment(endDateTime), 'minutes') < 5));
 
     const getScreenshot = (timeout) => {
@@ -154,6 +160,7 @@ const Impulse = (props) => {
     useQueryParamChange(newBrand, props.onBrandChange);
     useSelectedBrand(newBrand, props.onBrandChange, props.prevSelectedBrand);
     const handleNavigationClick = (e, activeLinkIndex) => {
+        console.log(activeLinkIndex, 'TUTAJ');
         setActiveIndex(activeLinkIndex);
         getScreenshot(6000);
     };
@@ -178,7 +185,8 @@ const Impulse = (props) => {
         groupedResByBrands,
         groupedResByLobs,
         groupedResByPos,
-        groupedResByDeviceType] = useFetchBlipData(
+        groupedResByDeviceType,
+        groupedResByRegion] = useFetchBlipData(
         isApplyClicked,
         setIsApplyClicked,
         startDateTime,
@@ -302,6 +310,7 @@ const Impulse = (props) => {
         setAllDataByLobs([...groupedResByLobs]);
         setAllDataByPos([...groupedResByPos]);
         setAllDataByDeviceType([...groupedResByDeviceType]);
+        setAllDataByRegion([...groupedResByRegion]);
         if (selectedSiteURLMulti.length === 0) {
             setAllDataByPos([]);
         }
@@ -311,7 +320,7 @@ const Impulse = (props) => {
 
         setAnomaliesData(anomalies);
         filterAnomalies(selectedAnomaliesMulti);
-    }, [res, annotations, anomalies, groupedResByBrands, groupedResByLobs, groupedResByPos, groupedResByDeviceType]);
+    }, [res, annotations, anomalies, groupedResByBrands, groupedResByLobs, groupedResByPos, groupedResByDeviceType, groupedResByRegion]);
     const customStyles = {
         control: (base) => ({
             ...base,
@@ -485,6 +494,29 @@ const Impulse = (props) => {
                     setHiddenKeys={setHiddenKeys}
                 />);
             case 5:
+                return (<GroupedBookingTrends
+                    data={allDataByRegion}
+                    setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
+                    setIsResetClicked={setIsResetClicked}
+                    setChartSliced={setChartSliced}
+                    setIsChartSliceClicked={setIsChartSliceClicked}
+                    setDaysDifference={setDaysDifference}
+                    daysDifference={daysDifference}
+                    annotations={enableIncidents ? annotationsMulti : []}
+                    setTableData={setTableData}
+                    anomalies={enableAnomalies ? anomaliesData : []}
+                    setAnomalyTableData={setAnomalyTableData}
+                    timeInterval={timeInterval}
+                    setTimeInterval={setTimeInterval}
+                    setTimeIntervalOpts={setTimeIntervalOpts}
+                    activeIndex={activeIndex}
+                    setIsSubmitClicked={setIsSubmitClicked}
+                    renderImage={renderImage}
+                    imageContainer={imageContainer}
+                    hiddenKeys={hiddenKeys}
+                    setHiddenKeys={setHiddenKeys}
+                />);
+            case 6:
                 return (<BookingsDataTable
                     data={allData}
                 />);
