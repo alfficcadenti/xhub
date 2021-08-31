@@ -160,7 +160,6 @@ const Impulse = (props) => {
     useQueryParamChange(newBrand, props.onBrandChange);
     useSelectedBrand(newBrand, props.onBrandChange, props.prevSelectedBrand);
     const handleNavigationClick = (e, activeLinkIndex) => {
-        console.log(activeLinkIndex, 'TUTAJ');
         setActiveIndex(activeLinkIndex);
         getScreenshot(6000);
     };
