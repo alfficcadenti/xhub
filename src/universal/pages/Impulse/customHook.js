@@ -79,6 +79,7 @@ export const useFetchBlipData = (
     const [groupedResByLobs, setGroupedResByLobs] = useState([]);
     const [groupedResByPos, setGroupedResByPos] = useState([]);
     const [groupedResByDeviceType, setGroupedResByDeviceType] = useState([]);
+    const [groupedResByRegion, setGroupedResByRegion] = useState([]);
 
     const incidentMultiOptions = [
         {
@@ -309,22 +310,23 @@ export const useFetchBlipData = (
     };
 
     const getGroupedBookingsData = (start = startDateTime, end = endDateTime, interval = timeInterval) => {
-        let groupTypes = ['brands', 'lobs', 'device_types'];
+        let groupTypes = ['brands', 'lobs', 'device_types', 'region'];
         if (selectedSiteURLMulti.length && selectedSiteURLMulti.length <= 10) {
             groupTypes.push('point_of_sales');
         } else {
             setGroupedResByPos([]);
         }
         Promise.all(groupTypes.map((groupType) => fetchCallGrouped(start, end, interval, groupType)))
-            .then(([brandsGroupedData, lobsGroupedData, deviceTypeGroupedData, posGroupedData]) => {
+            .then(([brandsGroupedData, lobsGroupedData, deviceTypeGroupedData, regionGroupedData, posGroupedData]) => {
                 const futureEvent = moment(endDateTime).diff(moment(endTime()), 'minutes') >= 5;
 
                 if (futureEvent) {
                     Promise.all(groupTypes.map((groupType) => fetchCallGrouped(start, endDateTime, interval, groupType)))
-                        .then(([brandsGroupedDataFuture, lobsGroupedDataFuture, deviceTypeGroupedDataFuture, posGroupedDataFuture]) => {
+                        .then(([brandsGroupedDataFuture, lobsGroupedDataFuture, deviceTypeGroupedDataFuture, regionGroupedDataFuture, posGroupedDataFuture]) => {
                             const newBrandsGroupedData = mapGroupedData(brandsGroupedDataFuture, brandsGroupedData);
                             const newLobsGroupedData = mapGroupedData(lobsGroupedDataFuture, lobsGroupedData);
                             const newDeviceTypeGroupedData = mapGroupedData(deviceTypeGroupedDataFuture, deviceTypeGroupedData);
+                            const newRegionGroupedDataFuture = mapGroupedData(regionGroupedDataFuture, regionGroupedData);
 
                             if (selectedSiteURLMulti.length && selectedSiteURLMulti.length <= 10) {
                                 const newPosGroupedData = mapGroupedData(posGroupedDataFuture, posGroupedData);
@@ -335,6 +337,7 @@ export const useFetchBlipData = (
                             setGroupedResByBrands(newBrandsGroupedData);
                             setGroupedResByLobs(newLobsGroupedData);
                             setGroupedResByDeviceType(newDeviceTypeGroupedData);
+                            setGroupedResByRegion(newRegionGroupedDataFuture);
                         })
                         .catch((err) => {
                             console.error(err);
@@ -348,6 +351,7 @@ export const useFetchBlipData = (
                         setGroupedResByPos([]);
                     }
                     setGroupedResByDeviceType(deviceTypeGroupedData);
+                    setGroupedResByRegion(regionGroupedData);
                 }
             })
             .catch((err) => {
@@ -527,6 +531,7 @@ export const useFetchBlipData = (
         groupedResByBrands,
         groupedResByLobs,
         groupedResByPos,
-        groupedResByDeviceType
+        groupedResByDeviceType,
+        groupedResByRegion
     ];
 };
