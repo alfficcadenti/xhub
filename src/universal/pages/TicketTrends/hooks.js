@@ -54,20 +54,16 @@ export const useFetchTickets = (
                 + `?fromDate=${moment(startDate).format(DATE_FORMAT)}`
                 + `&toDate=${moment(endDate).format(DATE_FORMAT)}`);
         }
-        const handleFetchError = (err) => {
-            // eslint-disable-next-line no-console
-            console.error(JSON.stringify(err, null, 4));
-            setIsLoading(false);
-            setError(`Not all incidents and/or defects are available. Check your VPN or refresh the page to try again. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`);
-        };
-        Promise.all([
-            fetch(paths[0]).catch(handleFetchError),
-            // Display error if incidents fails - ignore if EPS incident fails
-            // eslint-disable-next-line no-console
-            fetch(paths[1]).catch(() => console.error('Failed to fetch EPS incidents'))
-        ])
-            .then((responses) => Promise.all([checkResponse(responses[0]), checkResponse(responses[1]).catch(() => [])]))
-            .then(([ticketsData, epsTicketsData = []]) => {
+        fetch(paths[0])
+            .then(checkResponse)
+            .then(async (ticketsData) => {
+                const epsTicketsData = await fetch(paths[1])
+                    .then(checkResponse)
+                    .then((data) => data)
+                    .catch(() => {
+                        console.error('Failed to fetch EPS data');
+                        return [];
+                    });
                 const epsTickets = epsTicketsData.map(mapEpsData);
                 const tickets = (isIncidents)
                     ? sortArrayByMostRecentDate([...ticketsData, ...epsTickets], 'startDate')
