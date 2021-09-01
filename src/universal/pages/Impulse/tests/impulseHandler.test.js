@@ -85,8 +85,11 @@ describe('impulseHandler', () => {
         it('should return 4 if /impulse/by-device-types passed in pathname', () => {
             expect(getActiveIndex('impulse/by-device-types')).eql(4);
         });
-        it('should return 5 if /impulse/bookings-data passed in pathname', () => {
-            expect(getActiveIndex('impulse/bookings-data')).eql(5);
+        it('should return 5 if /impulse/by-region passed in pathname', () => {
+            expect(getActiveIndex('impulse/by-region')).eql(5);
+        });
+        it('should return 6 if /impulse/bookings-data passed in pathname', () => {
+            expect(getActiveIndex('impulse/bookings-data')).eql(6);
         });
     });
     describe('test mapActiveIndexToTabName ', () => {
@@ -105,8 +108,11 @@ describe('impulseHandler', () => {
         it('should return by-device-types if passed 4', () => {
             expect(mapActiveIndexToTabName(4)).eql('by-device-types');
         });
-        it('should return by-lobs if passed 5', () => {
-            expect(mapActiveIndexToTabName(5)).eql('bookings-data');
+        it('should return by-region if passed 5', () => {
+            expect(mapActiveIndexToTabName(5)).eql('by-region');
+        });
+        it('should return by-lobs if passed 6', () => {
+            expect(mapActiveIndexToTabName(6)).eql('bookings-data');
         });
     });
     describe('convertRelativeDateRange', () => {
