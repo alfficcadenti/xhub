@@ -122,8 +122,11 @@ export const getActiveIndex = (pathname = '') => {
     if (pathname.includes('impulse/by-device-types')) {
         return 4;
     }
-    if (pathname.includes('impulse/bookings-data')) {
+    if (pathname.includes('impulse/by-region')) {
         return 5;
+    }
+    if (pathname.includes('impulse/bookings-data')) {
+        return 6;
     }
     return 0;
 };
@@ -269,6 +272,9 @@ export const mapActiveIndexToTabName = (idx) => {
         return 'by-device-types';
     }
     if (idx === 5) {
+        return 'by-region';
+    }
+    if (idx === 6) {
         return 'bookings-data';
     }
     return 'booking-trends';
