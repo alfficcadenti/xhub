@@ -74,7 +74,7 @@ const IncidentTrendsDashboard = ({selectedBrands, onBrandChange, prevSelectedBra
         applyFilters,
         setIsApplyClicked,
         'incidents',
-        selectedBrand
+        selectedBrands
     );
     const rootCauseOwners = useRootCauseOwner(selectedBrand, allUniqueIncidents);
     useQueryParamChange(selectedBrand, onBrandChange);

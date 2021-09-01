@@ -61,6 +61,6 @@ describe('<IncidentTrendsDashboard/>', () => {
     it('LoadingContainer should have right props', async () => {
         const props = wrapper.find('LoadingContainer').props();
         expect(props.isLoading).equal(false);
-        expect(props.error).equal(`Not all incidents and/or defects are available. Check your VPN or refresh the page to try again. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`);
+        expect(props.error).equal(`Error occurred when reading tickets. Please try refreshing the page. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`);
     });
 });
