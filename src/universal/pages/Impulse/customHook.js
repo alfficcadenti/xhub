@@ -22,7 +22,7 @@ const IMPULSE_MAPPING = [
     {globalFilter: EXPEDIA_PARTNER_SERVICES_BRAND, impulseFilter: 'Expedia Business Services'},
     {globalFilter: HOTELS_COM_BRAND, impulseFilter: HOTELS_COM_BRAND},
     {globalFilter: EGENCIA_BRAND, impulseFilter: EGENCIA_BRAND},
-    {globalFilter: VRBO_BRAND, impulseFilter: 'VRBO'}
+    {globalFilter: VRBO_BRAND, impulseFilter: 'Vrbo'}
 ];
 const bookingTimeInterval = 300000;
 const incidentTimeInterval = 900000;
