@@ -23,7 +23,8 @@ const detailsStore = [];
 const ScoreCard = ({
     start,
     end,
-    isApplyClicked
+    isApplyClicked,
+    setIsApplyClicked
 }) => {
     const dateQuery = `fromDate=${start}&toDate=${end}`;
     const [l1Data, setL1Data] = useState([]);
@@ -64,7 +65,10 @@ const ScoreCard = ({
                 // eslint-disable-next-line no-console
                 console.error(err);
             })
-            .finally(() => setIsLoading(false));
+            .finally(() => {
+                setIsLoading(false);
+                setIsApplyClicked(false);
+            });
     };
 
     useEffect(() => {

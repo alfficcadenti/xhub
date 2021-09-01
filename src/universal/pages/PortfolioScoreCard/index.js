@@ -62,6 +62,7 @@ const PortfolioScoreCard = ({selectedBrands, onBrandChange, prevSelectedBrand}) 
                 start={startDate}
                 end={endDate}
                 isApplyClicked={isApplyClicked}
+                setIsApplyClicked={setIsApplyClicked}
             />
         </div>
     );
