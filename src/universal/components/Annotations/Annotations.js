@@ -188,10 +188,10 @@ const Annotations = ({
             setIsIncidentsAnnotationsLoading(true);
             setIncidentAnnotations([]);
             const dateQuery = start && end
-                ? `?fromDate=${moment(start).utc().format()}&toDate=${moment(end).utc().format()}`
+                ? `?from_Date=${moment(start).utc().format()}&to_Date=${moment(end).utc().format()}`
                 : '';
 
-            fetch(`/v2/incidents${dateQuery}`)
+            fetch(`/v1/incidents${dateQuery}`)
                 .then(checkResponse)
                 .then((data) => {
                     const uniqueTickets = getUniqueByProperty(data, 'id');
