@@ -81,6 +81,8 @@ export const useFetchBlipData = (
     const [groupedResByDeviceType, setGroupedResByDeviceType] = useState([]);
     const [groupedResByRegion, setGroupedResByRegion] = useState([]);
 
+    const [averageCount, setAverageCount] = useState(null);
+
     const incidentMultiOptions = [
         {
             value: '0-Code Red',
@@ -398,6 +400,76 @@ export const useFetchBlipData = (
             intervalForAnomalies = setIntervalForRealTimeData(anomalyTimeInterval, 'anomaly');
         }
     };
+
+    useEffect(() => {
+        const data = {
+            yearly: 'N/A',
+            monthly: {
+                brands: {
+                    'Vrbo': -12.7,
+                    'Egencia': 84.97,
+                    'Travelocity': -17.07,
+                    'CarRentals.com': 7.82,
+                    'MrJet': -8.61,
+                    'Wotif': -33.24,
+                    'ebookers': -13.46,
+                    'Expedia Partner Solutions': 11.16,
+                    'Orbitz': -13.91,
+                    'Unknown': 11.29,
+                    'lastminute': -36.11,
+                    'Hotwire': -16.88,
+                    'CheapTickets': -14.88,
+                    'Hotels.com': -8.3,
+                    'Brand Expedia': -14.64
+                },
+                lobs: {
+                    'Activities': -19.28,
+                    'Cruise': -29.95,
+                    'Rail': 11.29,
+                    'Car': -2.23,
+                    'Insurance': -10.52,
+                    'Lodging': -10.14,
+                    'Air': -8.27,
+                    'Package': -4.98
+                },
+                overall: -9.09
+            },
+            weekly: {
+                brands: {
+                    'Vrbo': -6.41,
+                    'Egencia': 75.09,
+                    'Travelocity': -11.14,
+                    'CarRentals.com': -8.93,
+                    'MrJet': -16.76,
+                    'Wotif': 1.09,
+                    'ebookers': -12.46,
+                    'unknown': 268.0,
+                    'Expedia Partner Solutions': 26.19,
+                    'Orbitz': -9.05,
+                    'Unknown': 40.32,
+                    'lastminute': 12.21,
+                    'Hotwire': -12.73,
+                    'CheapTickets': -14.75,
+                    'Hotels.com': -6.88,
+                    'Brand Expedia': -16.92
+                },
+                lobs: {
+                    'Activities': -17.11,
+                    'Cruise': -19.71,
+                    'Rail': 40.32,
+                    'Car': -7.47,
+                    'Insurance': -10.49,
+                    'Lodging': -4.77,
+                    'Air': -4.76,
+                    'Package': 2.67
+                },
+                overall: -4.8
+            }
+        };
+
+        setAverageCount(data);
+    }, []);
+
     useEffect(() => {
         if (SUPPRESSED_BRANDS.includes(globalBrandName)) {
             setError(`Booking data for ${globalBrandName} is not yet available. The following brands are supported at this time: "Expedia", "Hotels.com Retail", and "Expedia Partner Solutions".`);
@@ -532,6 +604,7 @@ export const useFetchBlipData = (
         groupedResByLobs,
         groupedResByPos,
         groupedResByDeviceType,
-        groupedResByRegion
+        groupedResByRegion,
+        averageCount
     ];
 };

@@ -22,6 +22,7 @@ import {getValue} from '../utils';
 import {Dropdown, DropdownItem} from '@homeaway/react-dropdown';
 import GroupedBookingTrends from './tabs/BookingTrends/sections/BookingChartGrouped/GroupedBookingTrends';
 import html2canvas from 'html2canvas';
+import ImpulseAverageCountPanel from '../../components/ImpulseAverageCountPanel';
 
 const navLinks = [
     {
@@ -185,7 +186,8 @@ const Impulse = (props) => {
         groupedResByLobs,
         groupedResByPos,
         groupedResByDeviceType,
-        groupedResByRegion] = useFetchBlipData(
+        groupedResByRegion,
+        averageCount] = useFetchBlipData(
         isApplyClicked,
         setIsApplyClicked,
         startDateTime,
@@ -677,6 +679,7 @@ const Impulse = (props) => {
                 links={navLinks}
                 onLinkClick={handleNavigationClick}
             />
+            <ImpulseAverageCountPanel data={averageCount} activeIndex={activeIndex} />
             <LoadingContainer isLoading={isLoading} error={error} className="impulse-loading-container">
                 <div className="impulse-chart-container">
                     <div className="impulse-bookings-container">
