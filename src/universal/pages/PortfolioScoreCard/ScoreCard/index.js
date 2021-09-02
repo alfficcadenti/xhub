@@ -26,7 +26,7 @@ const ScoreCard = ({
     isApplyClicked,
     setIsApplyClicked
 }) => {
-    const dateQuery = `fromDate=${start}&toDate=${end}`;
+    const dateQuery = `from_date=${start}&to_date=${end}`;
     const [l1Data, setL1Data] = useState([]);
     const [l2Data, setL2Data] = useState([]);
     const [l3Data, setL3Data] = useState([]);
