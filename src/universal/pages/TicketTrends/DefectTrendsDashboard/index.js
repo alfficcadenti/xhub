@@ -19,8 +19,8 @@ const startDateDefaultValue = moment().subtract(14, 'days').format(DATE_FORMAT);
 const endDateDefaultValue = moment().format(DATE_FORMAT);
 
 
-const IncidentTrendsDashboard = (props) => {
-    const selectedBrand = props.selectedBrands[0];
+const IncidentTrendsDashboard = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
+    const selectedBrand = selectedBrands[0];
 
     const [selectedStatus, setSelectedStatus] = useState(statusDefaultValue);
     const [pendingStart, setPendingStart] = useState(startDateDefaultValue);
@@ -47,10 +47,10 @@ const IncidentTrendsDashboard = (props) => {
         applyFilters,
         setIsApplyClicked,
         'defects',
-        selectedBrand
+        selectedBrands
     );
-    useQueryParamChange(selectedBrand, props.onBrandChange);
-    useSelectedBrand(selectedBrand, props.onBrandChange, props.prevSelectedBrand);
+    useQueryParamChange(selectedBrand, onBrandChange);
+    useSelectedBrand(selectedBrand, onBrandChange, prevSelectedBrand);
 
     function applyFilters() {
         const matchesPriority = (t) => selectedPriority === priorityDefaultValue || t.priority === selectedPriority;
