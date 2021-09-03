@@ -260,6 +260,8 @@ const ScoreCard = ({
 
             <TicketDetailsModal
                 isOpen={isTicketDetailsModalOpen}
+                start={start}
+                end={end}
                 currentL={ticketDetailsBusinessOwnerType}
                 currentClickedOrg={ticketDetailsOrgName}
                 onBack={handleModalClose}
