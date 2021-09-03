@@ -5,6 +5,7 @@
     background: @color-bg-contrast;
     border-radius: @spacing-1x;
     padding: @spacing-2x;
+    margin-top: 50px;
 
     h3 {
         margin-bottom: @spacing-1x;
@@ -16,6 +17,7 @@
 
     .percentage-change-card-container {
         display: flex;
+        flex-direction: row-reverse;
 
         .percentage-change-card {
             width: 100%;
@@ -24,7 +26,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             text-align: center;
-            margin-right: 15px;
+            margin-left: 15px;
 
             .percentage-change-label {
                 grid-column-start: 1;
@@ -35,6 +37,7 @@
             .percentage-change {
                 font-size: @h3-font-size;
                 padding-top: @spacing-1x;
+                grid-auto-rows: 1fr;
 
                 &.big {
                     grid-column-start: 1;
@@ -43,7 +46,7 @@
             }
 
             &:last-child {
-                margin-right: 0;
+                margin-left: 0;
             }
         }
     }
