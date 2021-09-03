@@ -137,7 +137,7 @@ export const useFetchBlipData = (
     };
 
     const fetchIncidents = (start = startDateTime, end = endDateTime) => {
-        const queryString = `fromDate=${moment(start).utc().format('YYYY-MM-DD')}&toDate=${moment(end).utc().format('YYYY-MM-DD')}`;
+        const queryString = `from_Date=${moment(start).utc().format('YYYY-MM-DD')}&to_Date=${moment(end).utc().format('YYYY-MM-DD')}`;
         fetch(`/v1/incidents/impulse?${queryString}`)
             .then(checkResponse)
             .then((incidents) => {
