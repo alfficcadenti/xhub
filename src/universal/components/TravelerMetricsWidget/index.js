@@ -76,6 +76,7 @@ const TravelerMetricsWidget = ({
             lobs.forEach((lob) => {
                 if (!newEntry[lob]) {
                     newEntry[lob] = 0;
+                    minChartValue = 0;
                 }
             });
 
