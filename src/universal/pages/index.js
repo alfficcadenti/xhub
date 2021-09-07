@@ -28,7 +28,7 @@ import FencePostEvents from './FencePostEvents';
 import ShoppingFencePostEvents from './ShoppingFencePostEvents';
 import RealTimeSitePerformance from './RealTimeSitePerformance';
 import CheckoutBookingRequests from './CheckoutBookingRequests';
-import Robbie from './robbie';
+import Robbie from './Robbie';
 import MTTDAndMTTRReport from './MTTDAndMTTRReport';
 
 
