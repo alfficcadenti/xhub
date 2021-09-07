@@ -10,7 +10,7 @@ const MTTDAndMTTRReport = () => {
             <h1 className="page-title">{'MTTD and MTTR Report'}</h1>
             <div className="mttd-and-mttr-report">
                 <Iframe
-                    url="https://tableau.sea.corp.expecn.com/views/MTTDandMTTROKRTrending/MTTDandMTTROKRTrending?:embed=y&:showVizHome=no&:host_url=https%3A%2F%2Ftableau.sea.corp.expecn.com%2F&embed_code_version=3&:tabs=yes&:toolbar=yes&:showAppBanner=false&:display_spinner=no&:loadOrderID=0"
+                    url="https://tableau.sea.corp.expecn.com/views/MTTDandMTTROKRTrending/MTTDandMTTROKRTrending?:embed=y&:showVizHome=no&:host_url=https%3A%2F%2Ftableau.sea.corp.expecn.com%2F&:embed_code_version=3&:tabs=yes&:toolbar=yes&:showAppBanner=false&:display_spinner=no&:loadOrderID=0"
                     key="iframe"
                     width="1600px"
                     height="970px"
