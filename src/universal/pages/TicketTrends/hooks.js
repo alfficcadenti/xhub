@@ -23,10 +23,11 @@ export const useFetchTickets = (
     applyFilters,
     setIsApplyClicked,
     url,
-    selectedBrand
+    selectedBrands
 ) => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
+    const [selectedBrand, setSelectedBrand] = useState();
 
     const [allUniqueTickets, setAllUniqueTickets] = useState([]);
     const [allTickets, setAllTickets] = useState([]);
@@ -48,27 +49,20 @@ export const useFetchTickets = (
         setIsLoading(true);
         setLastStartDate(startDate);
         setLastEndDate(endDate);
-        const paths = [`/v1/${url}?${queryParams}`];
-        if ([EXPEDIA_PARTNER_SERVICES_BRAND, EG_BRAND].includes(selectedBrand) && isIncidents) {
-            paths.push(`https://opxhub-data-service.us-west-2.test.expedia.com/v1/eps/${url}`
-                + `?fromDate=${moment(startDate).format(DATE_FORMAT)}`
-                + `&toDate=${moment(endDate).format(DATE_FORMAT)}`);
-        }
-        const handleFetchError = (err) => {
-            // eslint-disable-next-line no-console
-            console.error(JSON.stringify(err, null, 4));
-            setIsLoading(false);
-            setError(`Not all incidents and/or defects are available. Check your VPN or refresh the page to try again. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`);
-        };
-        Promise.all([
-            fetch(paths[0]).catch(handleFetchError),
-            // Display error if incidents fails - ignore if EPS incident fails
-            // eslint-disable-next-line no-console
-            fetch(paths[1]).catch(() => console.error('Failed to fetch EPS incidents'))
-        ])
-            .then((responses) => Promise.all([checkResponse(responses[0]), checkResponse(responses[1]).catch(() => [])]))
-            .then(([ticketsData, epsTicketsData = []]) => {
-                const epsTickets = epsTicketsData.map(mapEpsData);
+        fetch(`/v1/${url}?${queryParams}`)
+            .then(checkResponse)
+            .then(async (ticketsData) => {
+                let epsTickets = [];
+                if ([EXPEDIA_PARTNER_SERVICES_BRAND, EG_BRAND].includes(selectedBrands[0]) && isIncidents) {
+                    const epsTicketsData = await fetch(`https://opxhub-data-service.us-west-2.test.expedia.com/v1/eps/${url}?fromDate=${moment(startDate).format(DATE_FORMAT)}&toDate=${moment(endDate).format(DATE_FORMAT)}`)
+                        .then(checkResponse)
+                        .then((data) => data)
+                        .catch(() => {
+                            console.error('Failed to fetch EPS data');
+                            return [];
+                        });
+                    epsTickets = epsTicketsData.map(mapEpsData);
+                }
                 const tickets = (isIncidents)
                     ? sortArrayByMostRecentDate([...ticketsData, ...epsTickets], 'startDate')
                     : sortArrayByMostRecentDate([...ticketsData, ...epsTickets], 'openDate');
@@ -95,10 +89,6 @@ export const useFetchTickets = (
     };
 
     useEffect(() => {
-        fetchTickets();
-    }, []);
-
-    useEffect(() => {
         if (isApplyClicked) {
             if (lastStartDate !== startDate || lastEndDate !== endDate) {
                 fetchTickets();
@@ -113,8 +103,12 @@ export const useFetchTickets = (
     }, [isApplyClicked]);
 
     useEffect(() => {
+        if (selectedBrand !== selectedBrands[0]) {
+            fetchTickets();
+            setSelectedBrand(selectedBrands[0]);
+        }
         applyFilters();
-    }, [selectedBrand]);
+    }, [selectedBrands]);
 
     return [
         isLoading,
