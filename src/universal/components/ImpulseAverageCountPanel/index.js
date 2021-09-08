@@ -2,57 +2,69 @@ import React from 'react';
 import LoadingContainer from '../LoadingContainer';
 import HelpText from '../HelpText/HelpText';
 import './styles.less';
+import PropTypes from 'prop-types';
 
 
-const ImpulseAverageCountPanel = ({data, activeIndex}) => {
+const ImpulseAverageCountPanel = ({data, activeIndex, isLoading}) => {
     let selectedData;
+    let selectedIndex;
     switch (activeIndex) {
         case 0:
             selectedData = 'overall';
+            selectedIndex = 2;
             break;
         case 1:
             selectedData = 'brands';
+            selectedIndex = 1;
             break;
         case 2:
             selectedData = 'lobs';
+            selectedIndex = 0;
             break;
         default:
             selectedData = 'overall';
+            selectedIndex = 2;
             break;
     }
 
+    const setError = () => (!isLoading && !data ? 'NO DATA AVAILABLE' : false);
+
     const renderPanelData = (periodData) => {
-        if (periodData === 'N/A') {
-            return <div className="percentage-change big">{'TBA'}</div>;
-        } else if (typeof periodData[selectedData] === 'object') {
-            return Object.entries(periodData[selectedData]).map(([key, value]) => (<div className="percentage-change">{`${key}: ${value}%`}</div>));
+        if (Array.isArray(periodData)) {
+            if (typeof periodData[selectedIndex][selectedData] === 'object') {
+                return Object.entries(periodData[selectedIndex][selectedData]).map(([key, value]) => (<div className="percentage-change">{`${key}: ${value}%`}</div>));
+            }
+            return <div className="percentage-change big">{`${selectedData}: ${periodData[selectedIndex][selectedData]}%`}</div>;
         }
-
-        return <div className="percentage-change big">{`${selectedData}: ${periodData[selectedData]}%`}</div>;
+        return <div className="percentage-change big">{'TBA'}</div>;
     };
 
-    const renderPanel = ([period, periodData]) => {
-        return (
-            <div key={`percentage-change-${period}`} className="card percentage-change-card">
-                <div className="percentage-change-label">{period}</div>
-                {renderPanelData(periodData)}
-            </div>
-        );
-    };
+    const renderPanel = ([period, periodData]) => (
+        <div key={`percentage-change-${period}`} className="card percentage-change-card">
+            <div className="percentage-change-label">{period}</div>
+            {renderPanelData(periodData)}
+        </div>
+    );
 
     return (
         <div className="summary-container">
             <h3>
                 {'Percentage Change'}
-                <HelpText className="percentage-change-info" text={'tooltipLabel'} placement="top"/>
+                <HelpText className="percentage-change-info" text={'Booking trends change in percentage'} placement="top"/>
             </h3>
-            <LoadingContainer isLoading={data ? false : true} error={!data ? 'No data' : null} className="percentage-loading-container">
+            <LoadingContainer isLoading={isLoading} error={setError()} className="percentage-loading-container">
                 <div className="percentage-change-card-container">
-                    {data && Object.entries(data).map(renderPanel)}
+                    {Object.entries(data).map(renderPanel)}
                 </div>
             </LoadingContainer>
         </div>
     );
+};
+
+ImpulseAverageCountPanel.propTypes = {
+    data: PropTypes.shape(),
+    activeIndex: PropTypes.number,
+    isLoading: PropTypes.bool.isRequired,
 };
 
 export default ImpulseAverageCountPanel;

@@ -17,7 +17,6 @@
 
     .percentage-change-card-container {
         display: flex;
-        flex-direction: row-reverse;
 
         .percentage-change-card {
             width: 100%;
@@ -26,7 +25,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             text-align: center;
-            margin-left: 15px;
+            margin-right: 15px;
 
             .percentage-change-label {
                 grid-column-start: 1;
@@ -46,7 +45,7 @@
             }
 
             &:last-child {
-                margin-left: 0;
+                margin-right: 0;
             }
         }
     }
