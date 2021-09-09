@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
+import {mount, shallow} from 'enzyme';
 import TicketDetailsModal from '../';
 
 
@@ -27,7 +27,7 @@ describe('<TicketDetailsModal>', () => {
         expect(wrapper).toHaveLength(1);
     });
 
-    it('checks OngoingIncidents renders incidents', () => {
+    it('checks fetch is called successfully', () => {
         wrapper = mount(<TicketDetailsModal />);
         expect(fetch).toHaveBeenCalledTimes(1);
     });
