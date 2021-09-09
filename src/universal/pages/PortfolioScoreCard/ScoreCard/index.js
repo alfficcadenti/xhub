@@ -15,7 +15,7 @@ import {OPXHUB_SUPPORT_CHANNEL} from '../../../constants';
 import './styles.less';
 import {ARROW_LEFT__16} from '@homeaway/svg-defs';
 import {SVGIcon} from '@homeaway/react-svg';
-import TicketDetailsModal from '../TicketDetailsModal/TicketDetailsModal';
+import TicketDetailsModal from '../TicketDetailsModal';
 
 
 const detailsStore = [];

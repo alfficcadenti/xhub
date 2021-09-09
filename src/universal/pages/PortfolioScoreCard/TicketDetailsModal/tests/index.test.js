@@ -1,11 +1,9 @@
 import React from 'react';
 import {mount, shallow} from 'enzyme';
-import ScoreCard from '../index';
-import {EG_BRAND} from '../../../../constants';
-import TicketDetailsModal from '../../TicketDetailsModal';
+import TicketDetailsModal from '../';
 
 
-describe('<ScoreCard />', () => {
+describe('<TicketDetailsModal>', () => {
     let wrapper;
 
     global.fetch = jest.fn(() =>
@@ -25,7 +23,7 @@ describe('<ScoreCard />', () => {
     );
 
     it('renders successfully', () => {
-        wrapper = shallow(<ScoreCard selectedBrands={[EG_BRAND]} />);
+        wrapper = shallow(<TicketDetailsModal />);
         expect(wrapper).toHaveLength(1);
     });
 
