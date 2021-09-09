@@ -62,8 +62,8 @@ export const adjustTicketProperties = (tickets = [], type = 'incident') => {
             Division: String(t.divisions || '') || t.brand,
             Status: t.status,
             'RC Owner': t.rootCauseOwner,
-            Brand: t.impactedBrand
-                ? t.impactedBrand.split(',').map((b) => divisionToBrand(b)).filter(isNotDuplicate).join(', ')
+            Brand: t.impacted_brand
+                ? t.impacted_brand.split(',').map((b) => divisionToBrand(b)).filter(isNotDuplicate).join(', ')
                 : divisionToBrand(t.brand)
         };
         result.duration = (t.openDate && t.resolvedDate)
