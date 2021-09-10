@@ -27,7 +27,7 @@ const makeRequest = async (option, testData, req, refreshClient) => {
         clients[clientKey] = ServiceClient.create(serviceName, {hostname, protocol});
     }
     const {method, path, operation} = routes[routeKey];
-    const {payload, statusCode} = await clients[clientKey].request({
+    const request = {
         method,
         path: pathParam ? `${path}/${req.params[pathParam] || ''}` : path,
         operation,
@@ -36,8 +36,9 @@ const makeRequest = async (option, testData, req, refreshClient) => {
         timeout,
         connectionTimeout,
         maxConnectRetry
-    });
-    req.log('[API-REQUEST-DETAILS]', method, operation);
+    };
+    const {payload, statusCode} = await clients[clientKey].request(request);
+    req.log('[API-REQUEST-DETAILS]', Object.assign(request, {hostname, protocol}));
     if (statusCode === 204) {
         return {};
     }
