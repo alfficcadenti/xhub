@@ -520,6 +520,8 @@ export const getPresets = () => [
 
 export const getTableValue = (row, property) => row && property ? row[property] || '-' : '-';
 
+export const getTableNumValue = (row, property) => row && property && row[property] !== null ? row[property] : '-';
+
 export const getUrlParam = (label, value, defaultValue) => {
     return value && value !== defaultValue
         ? `&${label}=${encodeURIComponent(value)}`

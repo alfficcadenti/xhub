@@ -1,5 +1,3 @@
-import {OPXHUB_SUPPORT_CHANNEL} from '../../constants';
-
 export const DELTA_USERS_TABLE_COLUMNS = [
     'Created',
     'Funnel Step'
@@ -59,9 +57,6 @@ export const TRACE_TABLE_COLUMNS = [
     'External Error Code',
     'External Description'
 ];
-
-export const FETCH_FAILED_MSG = 'Failed to retrieve data. Try refreshing the page. '
-    + `If the problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`;
 
 export const CATEGORY_OPTION = 'category';
 export const CODE_OPTION = 'errorCode';
