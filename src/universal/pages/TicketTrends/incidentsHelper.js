@@ -17,19 +17,19 @@ import {formatDurationForTable, formatDurationToH, formatDurationToHours} from '
 
 export const getTableColumns = (selectedBrand) => {
     if (selectedBrand === EXPEDIA_PARTNER_SERVICES_BRAND) {
-        return ['Incident', 'Priority', 'Division', 'Started', 'Summary', 'Impacted Partners', 'RC Owner', 'TTD', 'TTR', 'Notification Sent', 'Status'];
+        return ['Incident', 'Priority', 'Division', 'Started', 'Summary', 'Impacted Partners', 'RC Owner', 'TTD', 'TTK', 'TTF', 'TTR', 'Notification Sent', 'Status'];
     } else if (selectedBrand === EG_BRAND) {
-        return ['Incident', 'Priority', 'Brand', 'Division', 'Started', 'Summary', 'RC Owner', 'TTD', 'TTR', 'Status'];
+        return ['Incident', 'Priority', 'Brand', 'Division', 'Started', 'Summary', 'RC Owner', 'TTD', 'TTK', 'TTF', 'TTR', 'Status'];
     }
-    return ['Incident', 'Priority', 'Division', 'Started', 'Summary', 'RC Owner', 'TTD', 'TTR', 'Status'];
+    return ['Incident', 'Priority', 'Division', 'Started', 'Summary', 'RC Owner', 'TTD', 'TTK', 'TTF', 'TTR', 'Status'];
 };
 
-export const getValue = (item, property, transformFn) => {
+export const getValue = (item, property, transformFn, transformFnParam) => {
     if (!item || !item[property]) {
         return '-';
     }
     if (transformFn) {
-        return transformFn(item[property]) || '-';
+        return transformFn(item[property], transformFnParam) || '-';
     }
     return item[property];
 };
@@ -84,10 +84,10 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
         Summary: getValue(inc, 'summary').trim(),
         Duration: getValue(inc, 'duration', formatDurationForTable),
         rawDuration: inc.duration,
-        TTD: getValue(inc, 'time_to_detect', formatDurationForTable),
-        rawTTD: inc.time_to_detect,
-        TTR: getValue(inc, 'time_to_resolve', formatDurationForTable),
-        rawTTR: inc.time_to_resolve,
+        TTD: getValue(inc, 'time_to_detect', formatDurationForTable, 'minutes'),
+        TTK: getValue(inc, 'time_to_know', formatDurationForTable, 'minutes'),
+        TTF: getValue(inc, 'time_to_fix', formatDurationForTable, 'minutes'),
+        TTR: getValue(inc, 'time_to_restore', formatDurationForTable, 'minutes'),
         'Resolution Notes': getValue(inc, 'root_cause'),
         'Root Cause': getValue(inc, 'root_cause'),
         'Root Cause Owner': getValue(inc, 'root_cause_owner'),
