@@ -7,10 +7,11 @@ import {Navigation} from '@homeaway/react-navigation';
 import LineChartWrapper from '../../components/LineChartWrapper';
 import LoadingContainer from '../../components/LoadingContainer';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
+import {FETCH_FAILED_MSG} from '../../constants';
 import {checkResponse, getBrand, getPresets} from '../utils';
 import FciModal from './FciModal';
 import DeltaUserModal from './DeltaUserModal';
-import {CATEGORY_OPTION, CODE_OPTION, FETCH_FAILED_MSG, CATEGORIES} from './constants';
+import {CATEGORY_OPTION, CODE_OPTION, CATEGORIES} from './constants';
 import {
     shouldFetchData,
     getIsSupportedBrand,

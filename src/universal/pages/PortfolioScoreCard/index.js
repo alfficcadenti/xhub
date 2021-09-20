@@ -9,25 +9,29 @@ import {getQueryValues} from './utils';
 import './styles.less';
 
 
-// eslint-disable-next-line complexity
 const PortfolioScoreCard = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const {search} = useLocation();
     const {initialStart, initialEnd} = getQueryValues(search);
-    const [startDate, setStartDate] = useState(initialStart);
-    const [endDate, setEndDate] = useState(initialEnd);
+
+    const [from, setFrom] = useState(initialStart);
+    const [to, setTo] = useState(initialEnd);
+    const [pendingFrom, setPendingFrom] = useState(initialStart);
+    const [pendingTo, setPendingTo] = useState(initialEnd);
     const [isDirtyForm, setIsDirtyForm] = useState(false);
-    const [isApplyClicked, setIsApplyClicked] = useState(false);
 
     useQueryParamChange(selectedBrands[0], onBrandChange);
     useSelectedBrand(selectedBrands[0], onBrandChange, prevSelectedBrand);
 
+    const applyFilters = () => {
+        setFrom(pendingFrom);
+        setTo(pendingTo);
+        setIsDirtyForm(false);
+    };
+
     const handleDateRangeChange = ({start, end}) => {
-        setStartDate(moment(start).format(DATE_FORMAT));
-
-        if (!!end || (!end && moment(start).isAfter(endDate))) {
-            setEndDate(moment(end).format(DATE_FORMAT));
-        }
-
+        const nextPendingFrom = moment(start).format(DATE_FORMAT);
+        setPendingFrom(nextPendingFrom);
+        setPendingTo(moment(end).format(DATE_FORMAT));
         setIsDirtyForm(true);
     };
 
@@ -36,16 +40,14 @@ const PortfolioScoreCard = ({selectedBrands, onBrandChange, prevSelectedBrand}) 
             <div className="filters-wrapper">
                 <DatetimeRangePicker
                     onChange={handleDateRangeChange}
-                    startDate={moment(startDate).toDate()}
-                    endDate={moment(endDate).toDate()}
+                    startDate={moment(pendingFrom).toDate()}
+                    endDate={moment(pendingTo).toDate()}
                     hidePresets
                 />
                 <button
                     type="button"
                     className="apply-button btn btn-primary active"
-                    onClick={() => {
-                        setIsApplyClicked(true);
-                    }}
+                    onClick={applyFilters}
                     disabled={!isDirtyForm}
                 >
                     {'Apply'}
@@ -58,12 +60,7 @@ const PortfolioScoreCard = ({selectedBrands, onBrandChange, prevSelectedBrand}) 
         <div className="portfolio-score-card-container">
             <h1 className="page-title">{'Portfolio ScoreCard'}</h1>
             {renderFilters()}
-            <ScoreCard
-                start={startDate}
-                end={endDate}
-                isApplyClicked={isApplyClicked}
-                setIsApplyClicked={setIsApplyClicked}
-            />
+            <ScoreCard start={from} end={to} selectedBrand={selectedBrands[0]} />
         </div>
     );
 };

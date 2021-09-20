@@ -1,273 +1,136 @@
 import React, {useEffect, useState} from 'react';
-import Modal from '@homeaway/react-modal';
-import {checkResponse} from '../../utils';
-import DataTable from '../../../components/DataTable';
-import NoResults from '../../../components/NoResults';
-import LoadingContainer from '../../../components/LoadingContainer';
-import {
-    mapDetails,
-    detectThreshold,
-    doesHaveSubOrgs,
-    getCurrentSubOrgDetails,
-    getNextL
-} from '../utils';
-import {OPXHUB_SUPPORT_CHANNEL} from '../../../constants';
-import './styles.less';
-import {ARROW_LEFT__16} from '@homeaway/svg-defs';
+import {useHistory, useLocation} from 'react-router-dom';
 import {SVGIcon} from '@homeaway/react-svg';
-import TicketDetailsModal from '../TicketDetailsModal/TicketDetailsModal';
+import {CHEVRON_RIGHT__12} from '@homeaway/svg-defs';
+import LoadingContainer from '../../../components/LoadingContainer';
+import DataTable from '../../../components/DataTable';
+import {FETCH_FAILED_MSG} from '../../../constants';
+import {checkResponse} from '../../utils';
+import TicketDetailsModal from './TicketDetailsModal';
+import {mapOrgDetails} from '../utils';
+import {
+    ORGS,
+    L1_ORGS_LABEL,
+    SCORECARD_COLUMNS,
+    SCORECARD_COLUMNS_INFO,
+    SCORECARD_RULES
+} from './constants';
+import './styles.less';
 
 
-const detailsStore = [];
-
-const ScoreCard = ({
-    start,
-    end,
-    isApplyClicked,
-    setIsApplyClicked
-}) => {
-    const dateQuery = `from_date=${start}&to_date=${end}`;
-    const [l1Data, setL1Data] = useState([]);
-    const [l2Data, setL2Data] = useState([]);
-    const [l3Data, setL3Data] = useState([]);
-    const [l4Data, setL4Data] = useState([]);
-    const [detailsData, setDetailsData] = useState([]);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isTicketDetailsModalOpen, setIsTicketDetailsModalOpen] = useState(false);
-    const [currentClickedOrg, setCurrentClickedOrg] = useState('');
-    const [currentL, setCurrentL] = useState('');
-    const [currentId, setCurrentId] = useState(0);
+const ScoreCard = ({start, end, selectedBrand}) => {
+    const history = useHistory();
+    const {pathname} = useLocation();
+    const [data, setData] = useState({});
     const [error, setError] = useState();
     const [isLoading, setIsLoading] = useState(true);
-    const [ticketDetailsBusinessOwnerType, setTicketDetailsBusinessOwnerType] = useState(null);
-    const [ticketDetailsOrgName, setTicketDetailsOrgName] = useState(null);
-    const [currentP, setCurrentP] = useState('');
+    const [parentOrg, setParentOrg] = useState(L1_ORGS_LABEL);
+    const [orgDetails, setOrgDetails] = useState([]);
+    const [breadcrumbs, setBreadcrumbs] = useState([L1_ORGS_LABEL]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalData, setModalData] = useState({priority: 'p1', org: null, level: 'l1'});
 
-    const fetchLData = () => {
+    useEffect(() => {
         setIsLoading(true);
-
-        Promise.all(['l1', 'l2', 'l3', 'l4'].map((l) => fetch(`/v1/org-metrics/business-owner-type/${l}?${dateQuery}`)))
+        Promise.all(ORGS.map((l) => fetch(`/v1/org-metrics/business-owner-type/${l}?from_date=${start}&to_date=${end}`)))
             .then((responses) => Promise.all(responses.map(checkResponse)))
-            .then(([
-                {data: l1Response},
-                {data: l2Response},
-                {data: l3Response},
-                {data: l4Response}
-            ]) => {
-                setL1Data(l1Response);
-                setL2Data(l2Response);
-                setL3Data(l3Response);
-                setL4Data(l4Response);
+            .then(([{data: l1}, {data: l2}, {data: l3}, {data: l4}]) => {
+                setData({l1, l2, l3, l4});
+                setOrgDetails(l1);
+                history.push(`${pathname}?selectedBrand=${selectedBrand}&start=${start}&end=${end}`);
             })
-            .catch((err) => {
-                setError('Failed to retrieve data. Try refreshing the page. '
-                    + `If the problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`);
-                // eslint-disable-next-line no-console
-                console.error(err);
-            })
-            .finally(() => {
-                setIsLoading(false);
-                setIsApplyClicked(false);
-            });
-    };
+            .catch(() => setError(FETCH_FAILED_MSG))
+            .finally(() => setIsLoading(false));
+    }, [start, end, selectedBrand, history, pathname]);
 
-    useEffect(() => {
-        fetchLData();
-    }, []);
-
-    useEffect(() => {
-        if (isApplyClicked) {
-            fetchLData();
-        }
-    }, [isApplyClicked]);
-
-    const closeModalHandler = () => {
-        setIsModalOpen(false);
-        detailsStore.length = 0;
-        setCurrentId(0);
-    };
-
-    const showDetails = (detailsId, subOrgDetails = [], name = '', businessOwnerType = '') => {
-        let details;
-
-        if (detailsId === -1) {
-            closeModalHandler();
+    // eslint-disable-next-line complexity
+    const handleSelectOrg = (org, businessOwnerType, subOrgDetails) => {
+        if (!ORGS.includes(businessOwnerType) || !subOrgDetails?.length) {
             return;
         }
-
-        if (detailsStore[detailsId]) {
-            const {details: prevDetails, name: prevName, businessOwnerType: prevBusinessOwnerType} = detailsStore[detailsId];
-            details = prevDetails;
-            setCurrentId((currId) => currId - 1);
-            setCurrentClickedOrg(prevName);
-            setCurrentL(prevBusinessOwnerType.toUpperCase());
-            detailsStore.pop();
+        if (businessOwnerType === ORGS.at(-1)) {
+            // If last businessOwnerType (l4), then just return its subOrgDetails
+            setOrgDetails(subOrgDetails);
         } else {
-            details = subOrgDetails.map((detail) => {
-                return {
-                    isDisabled: !doesHaveSubOrgs(detail.name, businessOwnerType, l2Data, l3Data, l4Data),
-                    subOrgDetails: getCurrentSubOrgDetails(detail.name, businessOwnerType, l2Data, l3Data, l4Data),
-                    showDetails,
-                    ...detail
-                };
-            });
-            detailsStore.push({
-                details,
-                name,
-                businessOwnerType
-            });
-            setCurrentId((currId) => currId + 1);
-            setCurrentClickedOrg(name);
-            setCurrentL(businessOwnerType.toUpperCase());
+            // Need to know if subOrgDetails has its own subOrgDetails for enabling/disabling link purposes
+            const subOrgs = (subOrgDetails || []).map((subOrg) => subOrg.name);
+            const nextBusinessOwnerType = `l${Number(businessOwnerType[1]) + 1}`;
+            const nextOrgDetails = (data[nextBusinessOwnerType] || []).filter((row) => subOrgs.includes(row.name));
+            if (!nextOrgDetails.length) {
+                return;
+            }
+            setOrgDetails(nextOrgDetails);
         }
-
-        setDetailsData(details.map(mapDetails.bind(
-            null,
-            setTicketDetailsBusinessOwnerType,
-            setTicketDetailsOrgName,
-            setIsTicketDetailsModalOpen,
-            setCurrentP
-        )));
-        setIsModalOpen(true);
+        setParentOrg(org);
+        setBreadcrumbs([...breadcrumbs, org]);
     };
 
-    const renderRow = (row) => {
-        const {
-            name,
-            businessOwnerType,
-            correctiveActionsTicketCount,
-            p1IncidentCount,
-            p2IncidentCount,
-            percentIncidentsTtdWithin15MinSlo,
-            percentIncidentsTtfWithin15MinSlo,
-            percentIncidentsTtkWithin30MinSlo,
-            percentIncidentsTtrWithin60MinSlo,
-            subOrgDetails
-        } = row;
-        const isP1HasIncidents = p1IncidentCount > 0;
-        const isP2HasIncidents = p2IncidentCount > 0;
+    const handleSelectTickets = (count, priority, org, level) => {
+        if (count) {
+            setModalData({priority, org, level});
+            setIsModalOpen(true);
+        }
+    };
 
-        return (
+    const handleBreadcrumbClick = (idx) => {
+        if (idx === breadcrumbs.length - 1) {
+            return;
+        }
+        setParentOrg(breadcrumbs[idx]);
+        setBreadcrumbs(breadcrumbs.slice(0, idx + 1));
+        if (idx === 0) {
+            setOrgDetails(data.l1);
+        } else {
+            const breadcrumbOrg = breadcrumbs[idx];
+            const subOrgDetails = data[`l${idx}`].find((row) => row.name === breadcrumbOrg).subOrgDetails;
+            const subOrgs = (subOrgDetails || []).map((subOrg) => subOrg.name);
+            const nextBusinessOwnerType = `l${idx + 1}`;
+            const nextOrgDetails = (data[nextBusinessOwnerType] || []).filter((row) => subOrgs.includes(row.name));
+            setOrgDetails(nextOrgDetails);
+        }
+    };
+
+    const renderBreadcrumb = (breadcrumb, idx) => (
+        <div className="breadcrumb-container" key={breadcrumb}>
+            {idx > 0 && <SVGIcon inlineFlex markup={CHEVRON_RIGHT__12} />}
             <div
-                key={`${businessOwnerType}-${name}`}
-                className="score-card-row"
+                key={breadcrumb}
+                role="button"
+                tabIndex="0"
+                className={`breadcrumb-text ${idx !== breadcrumbs.length - 1 ? 'link' : ''}`}
+                onClick={() => handleBreadcrumbClick(idx)}
+                onKeyUp={(e) => e.key === 'Enter' && handleBreadcrumbClick(idx)}
             >
-                <div
-                    className={`name ${!subOrgDetails.length ? 'disabled' : ''}`}
-                    onClick={() => showDetails(null, subOrgDetails, name, businessOwnerType)}
-                >
-                    {name}
-                </div>
-                <div className={`cell-value ${isP1HasIncidents ? 'clickable' : ''}`} onClick={() => {
-                    if (isP1HasIncidents) {
-                        setTicketDetailsBusinessOwnerType(businessOwnerType);
-                        setTicketDetailsOrgName(name);
-                        setIsTicketDetailsModalOpen(true);
-                        setCurrentP('p1');
-                    }
-                }}
-                >
-                    <span>{p1IncidentCount}</span>
-                </div>
-                <div className={`cell-value ${isP2HasIncidents ? 'clickable' : ''}`} onClick={() => {
-                    if (isP2HasIncidents) {
-                        setTicketDetailsBusinessOwnerType(businessOwnerType);
-                        setTicketDetailsOrgName(name);
-                        setIsTicketDetailsModalOpen(true);
-                        setCurrentP('p2');
-                    }
-                }}
-                >
-                    <span>{p2IncidentCount}</span>
-                </div>
-                <div className={`cell-value ${detectThreshold(percentIncidentsTtdWithin15MinSlo)}`}>
-                    <span>{`${percentIncidentsTtdWithin15MinSlo}%`}</span>
-                </div>
-                <div className={`cell-value ${detectThreshold(percentIncidentsTtfWithin15MinSlo)}`}>
-                    <span>{`${percentIncidentsTtfWithin15MinSlo}%`}</span>
-                </div>
-                <div className={`cell-value ${detectThreshold(percentIncidentsTtkWithin30MinSlo)}`}>
-                    <span>{`${percentIncidentsTtkWithin30MinSlo}%`}</span>
-                </div>
-                <div className={`cell-value ${detectThreshold(percentIncidentsTtrWithin60MinSlo)}`}>
-                    <span>{`${percentIncidentsTtrWithin60MinSlo}%`}</span>
-                </div>
-                <div className="cell-value">
-                    <span>{correctiveActionsTicketCount}</span>
-                </div>
+                {breadcrumb}
             </div>
-        );
-    };
-
-    const renderL1Table = () => (
-        <div className="score-card-table">
-            <h3>{'L1'}</h3>
-            <div className="score-card-row">
-                <div className="name">{name}</div>
-                <div className="header-label">
-                    <span>{'P1'}</span>
-                </div>
-                <div className="header-label">
-                    <span>{'P2'}</span>
-                </div>
-                <div className="header-label">
-                    <span>{'TTD<=15M'}</span>
-                </div>
-                <div className="header-label">
-                    <span>{'TTF<=15M'}</span>
-                </div>
-                <div className="header-label">
-                    <span>{'TTK<=30M'}</span>
-                </div>
-                <div className="header-label">
-                    <span>{'TTR<=30M'}</span>
-                </div>
-                <div className="header-label">
-                    <span>{'Corrective Actions'}</span>
-                </div>
-            </div>
-            {l1Data.map(renderRow)}
         </div>
     );
-
-    const handleModalClose = () => {
-        setIsTicketDetailsModalOpen(false);
-    };
 
     return (
         <div className="score-card-container">
             <LoadingContainer isLoading={isLoading} error={error}>
-                {l1Data.length ? renderL1Table() : <NoResults />}
-            </LoadingContainer>
-            <Modal
-                id="corrective-actions-modal"
-                isOpen={isModalOpen}
-                onClose={() => closeModalHandler()}
-            >
-                <div className="back-button" onClick={() => showDetails(currentId - 2)}>
-                    <SVGIcon markup={ARROW_LEFT__16} />
-                    <span className="prev-details">{`${currentL} - ${currentClickedOrg}`}</span>
+                <div className="breadcrumbs">
+                    {breadcrumbs.length > 1 && breadcrumbs.map(renderBreadcrumb)}
                 </div>
                 <DataTable
-                    title={`${getNextL(currentL)} Details`}
-                    data={detailsData}
-                    columns={['Name', 'P1', 'P2', 'TTD<=15M', 'TTF<=15M', 'TTK<=30M', 'TTR<=30M']}
+                    title={parentOrg}
+                    data={orgDetails
+                        .map((org) => mapOrgDetails(org, handleSelectOrg, handleSelectTickets))
+                        .sort((a, b) => a.org.localeCompare(b.org))}
+                    columns={SCORECARD_COLUMNS}
+                    rules={SCORECARD_RULES}
+                    columnsInfo={SCORECARD_COLUMNS_INFO}
                     enableColumnDisplaySettings
                     enableCSVDownload
-                    paginated
                 />
-            </Modal>
-
-            <TicketDetailsModal
-                isOpen={isTicketDetailsModalOpen}
-                start={start}
-                end={end}
-                currentL={ticketDetailsBusinessOwnerType}
-                currentClickedOrg={ticketDetailsOrgName}
-                onBack={handleModalClose}
-                onClose={handleModalClose}
-                currentP={currentP}
-            />
+                <TicketDetailsModal
+                    isOpen={isModalOpen}
+                    onClose={() => setIsModalOpen(false)}
+                    start={start}
+                    end={end}
+                    data={modalData}
+                />
+            </LoadingContainer>
         </div>
     );
 };

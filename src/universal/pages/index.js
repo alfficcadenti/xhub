@@ -85,6 +85,15 @@ export default [
     },
     {
         category: AAT,
+        id: 'checkout-and-booking-requests',
+        link: '/checkout-and-booking-requests',
+        text: 'Checkout and Booking Requests',
+        component: CheckoutBookingRequests,
+        brands: [VRBO_BRAND],
+        hidden: false
+    },
+    {
+        category: AAT,
         id: 'initial-bookings',
         link: '/initial-bookings',
         text: 'Initial Bookings',
@@ -329,14 +338,5 @@ export default [
         component: RealTimeSitePerformance,
         brands: [VRBO_BRAND],
         hidden: false
-    },
-    {
-        category: SP,
-        id: 'checkout-and-booking-requests',
-        link: '/checkout-and-booking-requests',
-        text: 'Checkout and Booking Requests',
-        component: CheckoutBookingRequests,
-        brands: [VRBO_BRAND],
-        hidden: false
-    },
+    }
 ];

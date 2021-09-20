@@ -45,6 +45,9 @@ describe('formatDurationForTable', () => {
     it('returns the duration from milliseconds in HH:mm:ss format', async () => {
         expect(formatDurationForTable(5000000).toString().replace(/\s/g, '')).to.be.eql('<divvalue=5000000>1h23m</div>');
     });
+    it('returns the duration from minutes in HH:mm:ss format', async () => {
+        expect(formatDurationForTable(1501, 'minutes').toString().replace(/\s/g, '')).to.be.eql('<divvalue=1501>1d1h1m</div>');
+    });
 });
 
 describe('getAnnotationStrokeColor', () => {

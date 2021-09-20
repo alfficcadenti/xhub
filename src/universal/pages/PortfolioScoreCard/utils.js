@@ -1,11 +1,12 @@
+import React from 'react';
 import moment from 'moment';
 import qs from 'query-string';
 import {DATE_FORMAT} from '../../constants';
-import {validDateRange, getTableValue, buildTicketLink} from '../utils';
-import React from 'react';
+import {validDateRange, getTableValue, getTableNumValue, buildTicketLink} from '../utils';
 
 
-// eslint-disable-next-line complexity
+export const formatPercentage = (percent) => percent === null ? '-' : `${percent}%`;
+
 export const getQueryValues = (search) => {
     const {start, end} = qs.parse(search);
     const isValidDateRange = validDateRange(start, end);
@@ -20,112 +21,56 @@ export const getQueryValues = (search) => {
     };
 };
 
-const addPercentageSign = (value) => {
-    return value === '-' ? '-' : `${value}%`;
-};
-
-export const detectThreshold = (value) => {
-    return value >= 75 ? 'under-threshold' : '';
-};
-
-export const mapDetails = (
-    setTicketDetailsBusinessOwnerType,
-    setTicketDetailsOrgName,
-    setIsTicketDetailsModalOpen,
-    setCurrentP,
-    row
-) => {
-    const ttdValue = getTableValue(row, 'percentIncidentsTtdWithin15MinSlo');
-    const ttfValue = getTableValue(row, 'percentIncidentsTtfWithin15MinSlo');
-    const ttkValue = getTableValue(row, 'percentIncidentsTtkWithin30MinSlo');
-    const ttrValue = getTableValue(row, 'percentIncidentsTtrWithin60MinSlo');
-    const isP1HasIncidents = row.p1IncidentCount > 0;
-    const isP2HasIncidents = row.p2IncidentCount > 0;
-
-    return {
-        Name: <span className={`link ${row.isDisabled ? 'disabled' : ''}`} onClick={() => row.showDetails(null, row.subOrgDetails, row.name, row.businessOwnerType)}>{getTableValue(row, 'name')}</span>,
-        P1: (<span
-            className={isP1HasIncidents ? 'link' : 'disabled'}
-            onClick={() => {
-                if (isP1HasIncidents) {
-                    setTicketDetailsBusinessOwnerType(row.businessOwnerType);
-                    setTicketDetailsOrgName(row.name);
-                    setIsTicketDetailsModalOpen(true);
-                    setCurrentP('p1');
-                }
-            }}
-        >{getTableValue(row, 'p1IncidentCount')}
-        </span>),
-        P2: (<span
-            className={isP2HasIncidents ? 'link' : 'disabled'}
-            onClick={() => {
-                if (isP2HasIncidents) {
-                    setTicketDetailsBusinessOwnerType(row.businessOwnerType);
-                    setTicketDetailsOrgName(row.name);
-                    setIsTicketDetailsModalOpen(true);
-                    setCurrentP('p2');
-                }
-            }}
-        >{getTableValue(row, 'p2IncidentCount')}
-        </span>),
-        ['TTD<=15M']: <span className={`${detectThreshold(ttdValue)}`}>{addPercentageSign(ttdValue)}</span>,
-        ['TTF<=15M']: <span className={`${detectThreshold(ttfValue)}`}>{addPercentageSign(ttfValue)}</span>,
-        ['TTK<=30M']: <span className={`${detectThreshold(ttkValue)}`}>{addPercentageSign(ttkValue)}</span>,
-        ['TTR<=30M']: <span className={`${detectThreshold(ttrValue)}`}>{addPercentageSign(ttrValue)}</span>
-    };
-};
-
-export const findCorrectLName = (lName) => ({name}) => name === lName;
-
-export const findSubOrgDetails = (data, lName) => data
-    .find(findCorrectLName(lName))
-    ?.subOrgDetails;
-
-export const doesHaveSubOrgs = (lName, businessOwnerType, l2Data, l3Data, l4Data) => {
-    let result;
-
-    if (businessOwnerType === 'l1') {
-        result = !!findSubOrgDetails(l2Data, lName)?.length;
-    } else if (businessOwnerType === 'l2') {
-        result = !!findSubOrgDetails(l3Data, lName)?.length;
-    } else if (businessOwnerType === 'l3') {
-        result = !!findSubOrgDetails(l4Data, lName)?.length;
-    } else {
-        result = false;
-    }
-
-    return result;
-};
-
-export const getCurrentSubOrgDetails = (lName, businessOwnerType, l2Data, l3Data, l4Data) => {
-    let result;
-
-    if (businessOwnerType === 'l1') {
-        result = findSubOrgDetails(l2Data, lName);
-    } else if (businessOwnerType === 'l2') {
-        result = findSubOrgDetails(l3Data, lName);
-    } else if (businessOwnerType === 'l3') {
-        result = findSubOrgDetails(l4Data, lName);
-    } else {
-        result = [];
-    }
-
-    return result;
-};
-
-export const getNextL = (currentySelectedL) => {
-    const currentLDigit = currentySelectedL.split('')[1];
-    return `L${parseInt(currentLDigit, 10) + 1}`;
-};
+export const mapOrgDetails = (row, handleSelectOrg, handleSelectTickets) => ({
+    org: row.name || '',
+    Organization: (
+        <div
+            className={`${row.subOrgDetails?.length ? 'link' : ''}`}
+            role="link"
+            tabIndex="0"
+            onClick={() => handleSelectOrg(row.name, row.businessOwnerType, row.subOrgDetails)}
+            onKeyUp={(e) => e.key === 'Enter' && handleSelectOrg(row.name, row.businessOwnerType, row.subOrgDetails)}
+        >
+            {row.name}
+        </div>
+    ),
+    P1: (
+        <div
+            className={`${row.p1IncidentCount ? 'link' : ''}`}
+            role="link"
+            tabIndex="0"
+            onClick={() => handleSelectTickets(row.p1IncidentCount, 'p1', row.name, row.businessOwnerType)}
+            onKeyUp={(e) => e.key === 'Enter' && handleSelectTickets(row.p1IncidentCount, 'p1', row.name, row.businessOwnerType)}
+        >
+            {row.p1IncidentCount}
+        </div>
+    ),
+    P2: (
+        <div
+            className={`${row.p2IncidentCount ? 'link' : ''}`}
+            role="link"
+            tabIndex="0"
+            onClick={() => handleSelectTickets(row.p2IncidentCount, 'p2', row.name, row.businessOwnerType)}
+            onKeyUp={(e) => e.key === 'Enter' && handleSelectTickets(row.p2IncidentCount, 'p2', row.name, row.businessOwnerType)}
+        >
+            {row.p2IncidentCount}
+        </div>
+    ),
+    'TTD<=15m': formatPercentage(row.percentIncidentsTtdWithin15MinSlo),
+    'TTF<=15m': formatPercentage(row.percentIncidentsTtfWithin15MinSlo),
+    'TTK<=30m': formatPercentage(row.percentIncidentsTtkWithin30MinSlo),
+    'TTR<=60m': formatPercentage(row.percentIncidentsTtrWithin60MinSlo),
+    'Corrective Actions': row.correctiveActionsTicketCount
+});
 
 export const mapTicketDetails = (ticketDetails = []) => {
     return ticketDetails.map((ticketDetail) => ({
         Number: buildTicketLink(getTableValue(ticketDetail, 'number')),
         Priority: getTableValue(ticketDetail, 'priority'),
         Title: getTableValue(ticketDetail, 'title'),
-        'Time To Detect': getTableValue(ticketDetail, 'timeToDetect'),
-        'Time To Know': getTableValue(ticketDetail, 'timeToKnow'),
-        'Time To Fix': getTableValue(ticketDetail, 'timeToFix'),
-        'Time To Restore': getTableValue(ticketDetail, 'timeToRestore'),
+        'Time To Detect': getTableNumValue(ticketDetail, 'timeToDetect'),
+        'Time To Know': getTableNumValue(ticketDetail, 'timeToKnow'),
+        'Time To Fix': getTableNumValue(ticketDetail, 'timeToFix'),
+        'Time To Restore': getTableNumValue(ticketDetail, 'timeToRestore'),
     }));
 };

@@ -79,50 +79,50 @@ describe('divisionToBrand', () => {
 });
 
 describe('consolidateTicketsById', () => {
-    it('consolidates impactedBrands, revenue loss, and gross loss for tickets with same id', () => {
+    it('consolidates impacted brands, revenue loss, and gross loss for tickets with same id', () => {
         const tickets = [{
             id: 'INC-0001',
-            impactedBrand: 'vrbo',
-            estimatedRevenueLoss: '1000',
-            estimatedGrossLoss: '2222',
+            impacted_brand: 'vrbo',
+            estimated_revenue_loss: '1000',
+            estimated_gross_loss: '2222',
             divisions: ['E4P', 'Total Retail']
         }, {
             id: 'INC-0001',
-            impactedBrand: 'expedia',
-            estimatedRevenueLoss: '2005',
-            estimatedGrossLoss: '15',
+            impacted_brand: 'expedia',
+            estimated_revenue_loss: '2005',
+            estimated_gross_loss: '15',
             divisions: ['vrbo']
         }, {
             id: 'INC-0001',
-            impactedBrand: 'expedia',
-            estimatedRevenueLoss: '0',
-            estimatedGrossLoss: '0',
+            impacted_brand: 'expedia',
+            estimated_revenue_loss: '0',
+            estimated_gross_loss: '0',
             divisions: ['division']
         }, {
             id: 'INC-0002',
-            impactedBrand: 'hotels',
-            estimatedRevenueLoss: '1',
-            estimatedGrossLoss: '2',
+            impacted_brand: 'hotels',
+            estimated_revenue_loss: '1',
+            estimated_gross_loss: '2',
             divisions: ['E4P']
         }, {
             id: 'INC-0002,INC-0003',
-            impactedBrand: 'hotels',
-            estimatedRevenueLoss: '1',
-            estimatedGrossLoss: '2',
+            impacted_brand: 'hotels',
+            estimated_revenue_loss: '1',
+            estimated_gross_loss: '2',
             divisions: ['E4P']
         }];
         const result = consolidateTicketsById(tickets);
         expect(result).to.be.eql([{
             id: 'INC-0001',
-            impactedBrand: 'vrbo,expedia',
-            estimatedRevenueLoss: '3005',
-            estimatedGrossLoss: '2237',
+            impacted_brand: 'vrbo,expedia',
+            estimated_revenue_loss: '3005',
+            estimated_gross_loss: '2237',
             divisions: ['E4P', 'Total Retail', 'vrbo', 'division']
         }, {
             id: 'INC-0002,INC-0003',
-            impactedBrand: 'hotels',
-            estimatedRevenueLoss: '2',
-            estimatedGrossLoss: '4',
+            impacted_brand: 'hotels',
+            estimated_revenue_loss: '2',
+            estimated_gross_loss: '4',
             divisions: ['E4P']
         }]);
     });
@@ -130,23 +130,23 @@ describe('consolidateTicketsById', () => {
     it('ignores tickets with null id', () => {
         const tickets = [{
             id: null,
-            impactedBrand: 'hotels',
-            estimatedRevenueLoss: '1',
-            estimatedGrossLoss: '2',
+            impacted_brand: 'hotels',
+            estimated_revenue_loss: '1',
+            estimated_gross_loss: '2',
             divisions: ['E4P']
         }, {
             id: 'INC-0002,INC-0003',
-            impactedBrand: 'hotels',
-            estimatedRevenueLoss: '1',
-            estimatedGrossLoss: '2',
+            impacted_brand: 'hotels',
+            estimated_revenue_loss: '1',
+            estimated_gross_loss: '2',
             divisions: ['E4P']
         }];
         const result = consolidateTicketsById(tickets);
         expect(result).to.be.eql([{
             id: 'INC-0002,INC-0003',
-            impactedBrand: 'hotels',
-            estimatedRevenueLoss: '1',
-            estimatedGrossLoss: '2',
+            impacted_brand: 'hotels',
+            estimated_revenue_loss: '1',
+            estimated_gross_loss: '2',
             divisions: ['E4P']
         }]);
     });

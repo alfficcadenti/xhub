@@ -2,100 +2,42 @@
 
 
 .score-card-container {
-    margin-top: 60px;
+    .breadcrumbs {
+        margin: @spacing-1x 0;
+        height: @spacing-3x;
 
-    .loading-container {
-        min-height: 50vh;
-    }
+        .breadcrumb-container {
+            font-size: 12px;
+            float: left;
 
-    .score-card-table {
-        padding: @spacing-2x;
-        width: 960px;
-        border: 1px solid @border-color-dark;
-        border-radius: @border-radius-large;
+            .breadcrumb-text {
+                float: left;
+            }
 
-        h3 {
-            font-size: 35px;
-            color: dimgray;;
-        }
-
-        .score-card-row {
-            display: grid;
-            grid-gap: 10px;
-            grid-template-columns: 170px 50px 50px 120px 120px 120px 120px 90px;
-            padding: @spacing-1x;
-
-            .name {
+            .link {
                 color: @color-link-default;
                 cursor: pointer;
 
                 &:hover {
                     color: @color-link-hover;
                 }
-
-                &.disabled {
-                    pointer-events: none;
-                    color: @color-link-darkmode;
-                }
             }
 
-            .header-label {
-                display: flex;
-                align-items: center;
-                background-color: rgba(0, 0, 0, 0.04);
-                color: dimgray;
-
-                span {
-                    padding: 10px 5px;
-                }
-            }
-
-            .cell-value {
-                display: flex;
-                align-items: center;
-                padding-left: 5px;
-                border-left: 2px solid rgba(0, 0, 0, .2);
-                color: darkslategray;
-
-                &.under-threshold {
-                    background-color: lightgreen;
-                    color: darkslategray;
-                    border-left-width: 3px;
-                }
-
-                &.clickable {
-                    color: @color-link-default;
-                    cursor: pointer;
-
-                    &:hover {
-                        color: @color-link-hover;
-                    }
-                }
+            .SVGIcon {
+                float: left;
+                margin: 0 @spacing-1x;
+                margin-top: 5px;
             }
         }
+    }
+
+    .success-cell {
+        color: @color-text-inverse;
+        background: @color-positive;
     }
 
     .Modal__dialog {
         width: 90%;
-    }
-
-    .back-button {
-        display: inline-flex;
-        margin-bottom: 20px;
-        color: @color-link-default;
-        cursor: pointer;
-        border-bottom: 1px solid;
-        padding-bottom: 3px;
-
-        &:hover {
-            color: @color-link-hover;
-            border-bottom-width: 2px;
-            padding-bottom: 2px;
-        }
-
-        .prev-details {
-            margin-left: 10px;
-        }
     }
 
     .data-table {
@@ -111,13 +53,6 @@
                 pointer-events: none;
                 color: @color-link-darkmode;
             }
-        }
-
-        .under-threshold {
-            background-color: lightgreen;
-            color: darkslategray;
-            padding: 5px;
-            border-radius: @card-border-radius;
         }
     }
 }

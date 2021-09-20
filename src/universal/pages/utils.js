@@ -130,8 +130,8 @@ export const consolidateTicketsById = (tickets) => {
         const ids = id.split(',');
         if (ids.some((i) => ticketIdSet.has(i))) {
             const found = results.find((t) => ids.some((i) => t.id && t.id.split(',').some((j) => i === j)));
-            if (found.impactedBrand && ticket.impactedBrand && !found.impactedBrand.split(',').some((b) => ticket.impactedBrand.split(',').includes(b))) {
-                found.impactedBrand += `,${ticket.impactedBrand}`;
+            if (found.impacted_brand && ticket.impacted_brand && !found.impacted_brand.split(',').some((b) => ticket.impacted_brand.split(',').includes(b))) {
+                found.impacted_brand += `,${ticket.impacted_brand}`;
             }
             const foundIds = found.id.split(',');
             ids.forEach((i) => {
@@ -148,8 +148,8 @@ export const consolidateTicketsById = (tickets) => {
                     }
                 });
             }
-            found.estimatedRevenueLoss = `${parseFloat(found.estimatedRevenueLoss) + parseFloat(ticket.estimatedRevenueLoss || 0)}`;
-            found.estimatedGrossLoss = `${parseFloat(found.estimatedGrossLoss) + parseFloat(ticket.estimatedGrossLoss || 0)}`;
+            found.estimated_revenue_loss = `${parseFloat(found.estimated_revenue_loss) + parseFloat(ticket.estimated_revenue_loss || 0)}`;
+            found.estimated_gross_loss = `${parseFloat(found.estimated_gross_loss) + parseFloat(ticket.estimated_gross_loss || 0)}`;
         } else {
             results.push(ticket);
         }
@@ -519,6 +519,8 @@ export const getPresets = () => [
 ];
 
 export const getTableValue = (row, property) => row && property ? row[property] || '-' : '-';
+
+export const getTableNumValue = (row, property) => row && property && row[property] !== null ? row[property] : '-';
 
 export const getUrlParam = (label, value, defaultValue) => {
     return value && value !== defaultValue

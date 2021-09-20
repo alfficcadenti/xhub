@@ -128,7 +128,7 @@ export const useRootCauseOwner = (selectedBrand, allUniqueIncidents) => {
         const filteredIncidents = selectedBrand === EG_BRAND
             ? allUniqueIncidents
             : allUniqueIncidents.filter(
-                ({impactedBrand}) => (impactedBrand && impactedBrand.split(',').some((iBrand) => (selectedBrand === impactedBrandToDivision(iBrand))))
+                ({impacted_brand: impactedBrand}) => (impactedBrand && impactedBrand.split(',').some((iBrand) => (selectedBrand === impactedBrandToDivision(iBrand))))
             );
         const rcOwners = getListOfUniqueProperties(filteredIncidents, 'RC Owner');
         setRootCauseOwners([ALL_RC_OWNERS_OPTION, ...rcOwners]);

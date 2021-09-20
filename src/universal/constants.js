@@ -166,3 +166,6 @@ export const BRANDS = [
 
 export const OPXHUB_SUPPORT_CHANNEL = '#opxhub-support';
 export const PAGE_VIEWS_PAGE_NAME = 'Page Views';
+
+export const FETCH_FAILED_MSG = 'Failed to retrieve data. Try refreshing the page. '
+    + `If the problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`;

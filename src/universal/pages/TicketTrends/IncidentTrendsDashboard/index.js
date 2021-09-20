@@ -83,7 +83,7 @@ const IncidentTrendsDashboard = ({selectedBrands, onBrandChange, prevSelectedBra
     function applyFilters() {
         const matchesPriority = (t) => selectedPriority === ALL_PRIORITIES_OPTION || t.priority === selectedPriority;
         const matchesBrand = (t) => (selectedBrand === EG_BRAND
-            || (t.impactedBrand || '').split(',').some((iBrand) => selectedBrand === impactedBrandToDivision(iBrand)));
+            || (t.impacted_brand || '').split(',').some((iBrand) => selectedBrand === impactedBrandToDivision(iBrand)));
         const matchesStatus = (t) => selectedStatus === ALL_STATUSES_OPTION || t.status === selectedStatus;
         const matchesTag = (t) => selectedTag === ALL_TAGS_OPTION || t.tag === selectedTag || (Array.isArray(t.tag) && t.tag.includes(selectedTag));
         const matchesRcOwner = (t) => selectedRcOwner === ALL_RC_OWNERS_OPTION || t['RC Owner'] === selectedRcOwner;

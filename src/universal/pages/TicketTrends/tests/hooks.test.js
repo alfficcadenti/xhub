@@ -42,7 +42,7 @@ describe('Incident Trends Dashboard custom hooks', () => {
     });
 
     it('useRootCauseOwner', () => {
-        const tickets = [{impactedBrand: 'Hotels', 'RC Owner': 'bob'}, {impactedBrands: 'vrbo', 'RC Owner': 'joe'}];
+        const tickets = [{impacted_brand: 'Hotels', 'RC Owner': 'bob'}, {impacted_brand: 'vrbo', 'RC Owner': 'joe'}];
         const wrapper = shallow(<HookWrapper hook={() => useRootCauseOwner(HOTELS_COM_BRAND, tickets)} />);
         const {hook} = wrapper.find('div').props();
         expect(hook).to.eql([]);
