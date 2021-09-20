@@ -39,7 +39,7 @@ class BaseDateTimeRangePicker extends Component {
         };
 
         if (this.state.end.isBefore(date)) {
-            options.end = date.add(1, 'd');
+            options.end = moment(date).add(1, 'd');
         }
 
         this.setState(options, () => {
