@@ -680,7 +680,7 @@ const Impulse = (props) => {
                 links={navLinks}
                 onLinkClick={handleNavigationClick}
             />
-            <ImpulseAverageCountPanel data={averageCount} activeIndex={activeIndex} isLoading={isAverageCountLoading} />
+            <ImpulseAverageCountPanel data={averageCount} isLoading={isAverageCountLoading} />
             <LoadingContainer isLoading={isLoading} error={error} className="impulse-loading-container">
                 <div className="impulse-chart-container">
                     <div className="impulse-bookings-container">

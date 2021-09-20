@@ -89,6 +89,12 @@ export const getQueryStringPrediction = (start, end, IMPULSE_MAPPING, globalBran
     + `&time_interval=${interval}`
 );
 
+export const getQueryStringPercentageChange = (selectedLobMulti, selectedBrandMulti) => (
+    '?'
+    + `${getQueryParamMulti('lobs', selectedLobMulti)}`
+    + `${getQueryParamMulti('brands', selectedBrandMulti)}`
+);
+
 export const simplifyBookingsData = (bookingsData) => (
     bookingsData.map(({time, count, prediction}) => ({
         time: moment.utc(time).valueOf(),

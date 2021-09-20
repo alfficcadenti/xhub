@@ -9,7 +9,18 @@ import {
     VRBO_BRAND,
     SUPPRESSED_BRANDS
 } from '../../constants';
-import {getFilters, getBrandQueryParam, getQueryString, getRevLoss, startTime, endTime, getCategory, getQueryStringPrediction, simplifyBookingsData, simplifyPredictionData} from './impulseHandler';
+import {
+    getFilters,
+    getBrandQueryParam,
+    getQueryString,
+    getRevLoss,
+    startTime,
+    endTime,
+    getCategory,
+    getQueryStringPrediction,
+    simplifyBookingsData,
+    simplifyPredictionData, getQueryStringPercentageChange
+} from './impulseHandler';
 import {checkResponse, checkIsDateInvalid, getChartDataForFutureEvents, mapGroupedData} from '../utils';
 import moment from 'moment';
 
@@ -257,10 +268,11 @@ export const useFetchBlipData = (
 
     const fetchAverage = () => {
         setIsAverageCountLoading(true);
-        fetch('/v1/bookings/change/percentage')
+        fetch(`/v1/bookings/change/percentage${getQueryStringPercentageChange(selectedLobMulti, selectedBrandMulti)}`)
             .then(checkResponse)
             .then((respJson) => {
                 setAverageCount({
+                    selectedLobs: respJson.selectedLobs,
                     weekly: respJson.weekly,
                     monthly: respJson.monthly,
                     yearly: respJson.yearly
@@ -423,7 +435,7 @@ export const useFetchBlipData = (
 
     useEffect(() => {
         fetchAverage();
-    }, []);
+    }, [isApplyClicked]);
 
     useEffect(() => {
         if (SUPPRESSED_BRANDS.includes(globalBrandName)) {

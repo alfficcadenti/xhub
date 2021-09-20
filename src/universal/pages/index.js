@@ -28,7 +28,8 @@ import FencePostEvents from './FencePostEvents';
 import ShoppingFencePostEvents from './ShoppingFencePostEvents';
 import RealTimeSitePerformance from './RealTimeSitePerformance';
 import CheckoutBookingRequests from './CheckoutBookingRequests';
-import Robbie from './robbie';
+import Robbie from './Robbie';
+import MTTDAndMTTRReport from './MTTDAndMTTRReport';
 
 
 import {
@@ -294,6 +295,13 @@ export default [
         link: '/portfolio-score-card',
         text: 'Portfolio ScoreCard',
         component: PortfolioScoreCard
+    },
+    {
+        category: PHAR,
+        id: 'mttd-and-mttr-report',
+        link: '/mttd-and-mttr-report',
+        text: 'MTTD and MTTR Report',
+        component: MTTDAndMTTRReport
     },
     // OR Dashboards
     {

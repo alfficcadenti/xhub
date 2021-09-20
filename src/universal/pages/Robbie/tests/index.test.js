@@ -1,14 +1,14 @@
 import React from 'react';
 import {expect} from 'chai';
 import {shallow} from 'enzyme';
-import robbie from '../';
+import Robbie from '../';
 
 
-describe('robbie component testing', () => {
+describe('<Robbie />', () => {
     let wrapper;
 
     beforeEach(() => {
-        wrapper = shallow(<robbie />);
+        wrapper = shallow(<Robbie />);
     });
 
     afterEach(() => {
