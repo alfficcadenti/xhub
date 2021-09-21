@@ -304,7 +304,6 @@ export const useAddToUrl = (
 ) => {
     const history = useHistory();
     const {pathname} = useLocation();
-
     // eslint-disable-next-line complexity
     useEffect(() => {
         history.push(`${`/impulse/${mapActiveIndexToTabName(activeIndex)}?selectedBrand=${selectedBrands}`

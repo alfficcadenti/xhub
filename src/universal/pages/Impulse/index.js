@@ -90,7 +90,6 @@ const Impulse = (props) => {
         initialIncidents,
         initialAnomalies
     } = getQueryValues(search);
-
     let storageEnableIncidents = localStorage.getItem('enableIncidents') || true;
     storageEnableIncidents = JSON.parse(storageEnableIncidents);
     let storageEnableAnomalies = localStorage.getItem('enableAnomalies') || true;

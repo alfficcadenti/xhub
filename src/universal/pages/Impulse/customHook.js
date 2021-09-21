@@ -270,16 +270,10 @@ export const useFetchBlipData = (
         setIsAverageCountLoading(true);
         fetch(`/v1/bookings/change/percentage${getQueryStringPercentageChange(selectedLobMulti, selectedBrandMulti)}`)
             .then(checkResponse)
-            .then((respJson) => {
-                setAverageCount({
-                    selectedLobs: respJson.selectedLobs,
-                    weekly: respJson.weekly,
-                    monthly: respJson.monthly,
-                    yearly: respJson.yearly
-                });
-            })
+            .then(({selectedLobs, weekly, monthly, yearly}) => setAverageCount({selectedLobs, weekly, monthly, yearly}))
             .catch((err) => {
                 // eslint-disable-next-line no-console
+                setError('No data found for this selection.');
                 console.error(err);
             })
             .finally(() => setIsAverageCountLoading(false));
