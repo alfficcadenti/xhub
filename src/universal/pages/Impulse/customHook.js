@@ -9,7 +9,18 @@ import {
     VRBO_BRAND,
     SUPPRESSED_BRANDS
 } from '../../constants';
-import {getFilters, getBrandQueryParam, getQueryString, getRevLoss, startTime, endTime, getCategory, getQueryStringPrediction, simplifyBookingsData, simplifyPredictionData} from './impulseHandler';
+import {
+    getFilters,
+    getBrandQueryParam,
+    getQueryString,
+    getRevLoss,
+    startTime,
+    endTime,
+    getCategory,
+    getQueryStringPrediction,
+    simplifyBookingsData,
+    simplifyPredictionData, getQueryStringPercentageChange
+} from './impulseHandler';
 import {checkResponse, checkIsDateInvalid, getChartDataForFutureEvents, mapGroupedData} from '../utils';
 import moment from 'moment';
 
@@ -80,6 +91,9 @@ export const useFetchBlipData = (
     const [groupedResByPos, setGroupedResByPos] = useState([]);
     const [groupedResByDeviceType, setGroupedResByDeviceType] = useState([]);
     const [groupedResByRegion, setGroupedResByRegion] = useState([]);
+
+    const [averageCount, setAverageCount] = useState({});
+    const [isAverageCountLoading, setIsAverageCountLoading] = useState(false);
 
     const incidentMultiOptions = [
         {
@@ -251,6 +265,20 @@ export const useFetchBlipData = (
                 console.error(err);
             });
     };
+
+    const fetchAverage = () => {
+        setIsAverageCountLoading(true);
+        fetch(`/v1/bookings/change/percentage${getQueryStringPercentageChange(selectedLobMulti, selectedBrandMulti)}`)
+            .then(checkResponse)
+            .then(({selectedLobs, weekly, monthly, yearly}) => setAverageCount({selectedLobs, weekly, monthly, yearly}))
+            .catch((err) => {
+                // eslint-disable-next-line no-console
+                setError('No data found for this selection.');
+                console.error(err);
+            })
+            .finally(() => setIsAverageCountLoading(false));
+    };
+
     const getPredictions = (start, end, interval, chartData) => {
         const dayRange = moment(endDateTime).diff(moment(startDateTime), 'days');
         if (dayRange < 7) {
@@ -398,6 +426,11 @@ export const useFetchBlipData = (
             intervalForAnomalies = setIntervalForRealTimeData(anomalyTimeInterval, 'anomaly');
         }
     };
+
+    useEffect(() => {
+        fetchAverage();
+    }, [isApplyClicked]);
+
     useEffect(() => {
         if (SUPPRESSED_BRANDS.includes(globalBrandName)) {
             setError(`Booking data for ${globalBrandName} is not yet available. The following brands are supported at this time: "Expedia", "Hotels.com Retail", and "Expedia Partner Solutions".`);
@@ -532,6 +565,8 @@ export const useFetchBlipData = (
         groupedResByLobs,
         groupedResByPos,
         groupedResByDeviceType,
-        groupedResByRegion
+        groupedResByRegion,
+        averageCount,
+        isAverageCountLoading
     ];
 };

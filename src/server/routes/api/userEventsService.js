@@ -63,6 +63,13 @@ module.exports.impulseBrandsService = {
     handler: getHandler(getHandlerParams('bookingsImpulseBrands'))
 };
 
+module.exports.impulseChangePercentage = {
+    method: 'GET',
+    path: '/v1/bookings/change/percentage',
+    config: getConfig('impulse-change-percentage-api-v1-get'),
+    handler: getHandler(getHandlerParams('bookingsImpulseChangePercentage'))
+};
+
 module.exports.impulseFiltersService = {
     method: 'GET',
     path: '/v1/bookings/filters',

@@ -31,7 +31,7 @@ describe('<Impulse />', () => {
         expect(wrapper).to.have.length(1);
     });
     it('LoadingContainer should have right props', async () => {
-        const props = wrapper.find('LoadingContainer').props();
+        const props = wrapper.find('LoadingContainer').at(1).props();
         expect(props.isLoading).equal(true);
         expect(props.error).equal('');
     });
