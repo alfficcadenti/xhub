@@ -188,7 +188,7 @@ const Annotations = ({
             setIsIncidentsAnnotationsLoading(true);
             setIncidentAnnotations([]);
             const dateQuery = start && end
-                ? `?from_Date=${moment(start).utc().format()}&to_Date=${moment(end).utc().format()}`
+                ? `?from_datetime=${moment(start).utc().format()}&to_datetime=${moment(end).utc().format()}`
                 : '';
 
             fetch(`/v1/incidents${dateQuery}`)
@@ -197,11 +197,10 @@ const Annotations = ({
                     const uniqueTickets = getUniqueByProperty(data, 'id');
                     const adjustedUniqueTickets = adjustTicketProperties(uniqueTickets, INCIDENT_ANNOTATION_CATEGORY)
                         .map((incident) => {
-                            incident.time = moment.utc(incident.startDate).local().isValid() ? moment.utc(incident.startDate).valueOf() : '-';
+                            incident.time = moment.utc(incident.start_date).local().isValid() ? moment.utc(incident.start_date).valueOf() : '-';
                             incident.category = INCIDENT_ANNOTATION_CATEGORY;
                             return incident;
                         });
-
                     const incidentPriority = getListOfUniqueProperties(adjustedUniqueTickets, 'priority');
                     const incidentStatus = getListOfUniqueProperties(adjustedUniqueTickets, 'status');
                     setIncidentPrioritySuggestions(incidentPriority);
