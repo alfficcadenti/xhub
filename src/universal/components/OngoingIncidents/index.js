@@ -1,5 +1,4 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, {Fragment, useEffect, useState} from 'react';
+import React, {Fragment, useEffect, useState, useCallback} from 'react';
 import {Divider} from '@homeaway/react-collapse';
 import LoadingContainer from '../LoadingContainer';
 import {DATE_FORMAT} from '../../constants';
@@ -20,10 +19,10 @@ const OngoingIncidents = ({selectedBrands}) => {
     const [isLoading, setIsLoading] = useState(true);
 
     const isOngoingIncident = (incident) => (incident.status === 'In Progress' || incident.status === 'Escalated') && (incident.priority === '1-Critical' || incident.priority === '2-High');
-    const filterByBrand = (incident) => divisionToBrand(incident.brand) === selectedBrand;
-    const filterOngoingIncidents = (incidents) =>
-        (selectedBrand === EG_BRAND ? incidents : incidents.filter(filterByBrand))
-            .filter(isOngoingIncident);
+
+    const filterOngoingIncidents = useCallback((incidents) =>
+        (selectedBrand === EG_BRAND ? incidents : incidents.filter((incident) => divisionToBrand(incident.brand) === selectedBrand))
+            .filter(isOngoingIncident), [selectedBrand]);
 
     useEffect(() => {
         const fetchTickets = () => {
@@ -44,11 +43,11 @@ const OngoingIncidents = ({selectedBrands}) => {
         };
 
         fetchTickets();
-    }, []);
+    }, [filterOngoingIncidents]);
 
     useEffect(() => {
         setOngoingIncidents(filterOngoingIncidents(allIncidents));
-    }, [selectedBrand]);
+    }, [selectedBrand, filterOngoingIncidents, allIncidents]);
 
     const getDateDetails = (date) => moment(date).format('dddd, MMMM Do YYYY, h:mm a [GMT]Z');
     return (

@@ -27,9 +27,4 @@ describe('<LoadingContainer />', () => {
         wrapper = render(<LoadingContainer isLoading error={{ErrorMessage: 'test'}}/>);
         expect(wrapper.text()).to.be.eql('Error');
     });
-
-    it('renders correctly and display the standard alert message: Error', () => {
-        wrapper = render(<LoadingContainer isLoading error={[1, 2, 3]}/>);
-        expect(wrapper.text()).to.be.eql('Error');
-    });
 });

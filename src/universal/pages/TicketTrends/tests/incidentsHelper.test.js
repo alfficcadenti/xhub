@@ -95,7 +95,7 @@ describe('incidentsHelper', () => {
                 impacted_partners_lobs: 'CHASE-Air',
                 notification_sent: 'chase'
             };
-            expect(adjustTicketProperties([ticketA, ticketB], 'incident')).to.eql([
+            expect(adjustTicketProperties([ticketA, ticketB])).to.eql([
                 Object.assign(ticketA, {
                     start_date: ticketA.start_date,
                     time_to_resolve: ticketA.time_to_resolve,
@@ -105,7 +105,8 @@ describe('incidentsHelper', () => {
                     Brand: `${VRBO_BRAND}, ${EXPEDIA_PARTNER_SERVICES_BRAND}`,
                     partner_divisions: ticketA.divisions,
                     'Impacted Partners': ticketA.impacted_partners_lobs,
-                    'Notification Sent': ticketA.notification_sent
+                    'Notification Sent': ticketA.notification_sent,
+                    duration: ''
                 }), Object.assign(ticketB, {
                     start_date: ticketB.open_date,
                     time_to_resolve: ticketB.time_to_resolve,
@@ -115,7 +116,8 @@ describe('incidentsHelper', () => {
                     Brand: EXPEDIA_BRAND,
                     partner_divisions: ticketB.divisions,
                     'Impacted Partners': ticketB.impacted_partners_lobs,
-                    'Notification Sent': ticketB.notification_sent
+                    'Notification Sent': ticketB.notification_sent,
+                    duration: ''
                 })]);
         });
     });

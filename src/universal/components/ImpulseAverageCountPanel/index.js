@@ -5,13 +5,13 @@ import {FETCH_FAILED_MSG} from '../../constants';
 import './styles.less';
 
 const ImpulseAverageCountPanel = ({data, isLoading}) => {
-    const setError = () => (!isLoading && !data ? FETCH_FAILED_MSG : false);
+    const setError = () => (!isLoading && !data ? FETCH_FAILED_MSG : null);
     return (
         <LoadingContainer isLoading={isLoading} error={setError()}>
             <div className="impulse-container-percentage-change">
-                <div className="widget-card percentage-change-boundary percentage-change-container" >{data.selectedLobs} BOOKING TRENDS
+                <div className="widget-card percentage-change-boundary percentage-change-container" >{data.selectedLobs}{' BOOKING TRENDS'}
                     <div className="percentage-change-container-text">
-                        <p>Change Percentage: Monthly <span className="weekly-monthly-data-color">{data.weekly}%</span>; Weekly <span className="weekly-monthly-data-color">{data.monthly}%</span></p>
+                        <p>{'Change Percentage: Monthly '}<span className="weekly-monthly-data-color">{data.weekly}{'%'}</span>{'; Weekly '}<span className="weekly-monthly-data-color">{data.monthly}{'%'}</span></p>
                     </div>
                 </div>
             </div>

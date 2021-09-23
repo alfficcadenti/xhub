@@ -38,7 +38,7 @@ describe('<ScoreCard />', () => {
     );
 
     it('renders successfully', () => {
-        wrapper = shallow(<ScoreCard selectedBrands={[EG_BRAND]} />);
+        wrapper = shallow(<ScoreCard start="2021-08-01" end="2021-08-02" selectedBrands={[EG_BRAND]} />);
         expect(wrapper).toHaveLength(1);
     });
 });

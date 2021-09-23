@@ -11,7 +11,7 @@ import {
     EXPEDIA_PARTNER_SERVICES_BRAND,
     ALL_PARTNERS_OPTION,
     ALL_RC_OWNERS_OPTION,
-    OPXHUB_SUPPORT_CHANNEL
+    FETCH_FAILED_MSG
 } from '../../constants';
 import {checkResponse, getListOfUniqueProperties, consolidateTicketsById, sortArrayByMostRecentDate, mapEpsData} from '../utils';
 
@@ -41,9 +41,7 @@ export const useFetchTickets = (
     const [partners, setPartners] = useState([]);
     const isIncidents = url === 'incidents';
     const browserTimezone = moment.tz.guess();
-    const queryParams = isIncidents
-        ? `from_datetime=${moment(startDate).tz(browserTimezone).toISOString()}&to_datetime=${moment(endDate).tz(browserTimezone).toISOString()}`
-        : `fromDate=${moment(startDate).format(DATE_FORMAT)}&toDate=${moment(endDate).format(DATE_FORMAT)}`;
+    const queryParams = `from_datetime=${moment(startDate).tz(browserTimezone).toISOString()}&to_datetime=${moment(endDate).tz(browserTimezone).toISOString()}`;
 
     const fetchTickets = () => {
         setIsLoading(true);
@@ -58,16 +56,16 @@ export const useFetchTickets = (
                         .then(checkResponse)
                         .then((data) => data)
                         .catch(() => {
+                            // eslint-disable-next-line no-console
                             console.error('Failed to fetch EPS data');
                             return [];
                         });
                     epsTickets = epsTicketsData.map(mapEpsData);
                 }
-                const tickets = (isIncidents)
-                    ? sortArrayByMostRecentDate([...ticketsData, ...epsTickets], 'startDate')
-                    : sortArrayByMostRecentDate([...ticketsData, ...epsTickets], 'openDate');
+                const sortBy = isIncidents ? 'start_date' : 'open_date';
+                const tickets = sortArrayByMostRecentDate([...ticketsData, ...epsTickets], sortBy);
                 const uniqueTickets = consolidateTicketsById(tickets);
-                const adjustedUniqueTickets = adjustTicketProperties(uniqueTickets, isIncidents ? 'incident' : 'defect');
+                const adjustedUniqueTickets = adjustTicketProperties(uniqueTickets);
                 const ticketPriorities = getListOfUniqueProperties(adjustedUniqueTickets, 'priority');
                 const ticketStatuses = getListOfUniqueProperties(adjustedUniqueTickets, 'Status');
                 const ticketPartners = getListOfUniqueProperties(adjustedUniqueTickets, 'impactedPartners');
@@ -84,7 +82,7 @@ export const useFetchTickets = (
                 // eslint-disable-next-line no-console
                 console.error(JSON.stringify(err, null, 4));
                 setIsLoading(false);
-                setError(`Error occurred when reading tickets. Please try refreshing the page. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`);
+                setError(FETCH_FAILED_MSG);
             });
     };
 

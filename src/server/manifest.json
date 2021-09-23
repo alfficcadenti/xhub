@@ -45,11 +45,6 @@
               "method": "GET",
               "operation": "GET_INCIDENTS_V1"
             },
-            "incidentsV2": {
-              "path": "/v2/incidents",
-              "method": "GET",
-              "operation": "GET_INCIDENTS_V2"
-            },
             "epsIncidents": {
               "path": "/v1/eps/incidents",
               "method": "GET",
@@ -106,11 +101,6 @@
               "method": "GET",
               "operation": "GET_INCIDENTS_V1"
             },
-            "incidentsV2": {
-              "path": "/v2/incidents",
-              "method": "GET",
-              "operation": "GET_INCIDENTS_V2"
-            },
             "epsIncidents": {
               "path": "/v1/eps/incidents",
               "method": "GET",
@@ -166,11 +156,6 @@
               "path": "/v1/incidents",
               "method": "GET",
               "operation": "GET_INCIDENTS_V1"
-            },
-            "incidentsV2": {
-              "path": "/v2/incidents",
-              "method": "GET",
-              "operation": "GET_INCIDENTS_V2"
             },
             "epsIncidents": {
               "path": "/v1/eps/incidents",

@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect, Fragment} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import UniversalSearch from '../UniversalSearch';
 import {SVGIcon} from '@homeaway/react-svg';
 import {FILTER__16} from '@homeaway/svg-defs';
@@ -91,7 +91,6 @@ const Annotations = ({
         const deployments = deploymentCategory ? deploymentAnnotations : [];
         const incidents = incidentCategory ? incidentAnnotations : [];
         const abTests = abTestsCategory ? abTestsAnnotations : [];
-
         setFilteredAnnotations(filterAnnotations(deployments, incidents, abTests));
     }, [
         selectedProducts,
@@ -195,7 +194,7 @@ const Annotations = ({
                 .then(checkResponse)
                 .then((data) => {
                     const uniqueTickets = getUniqueByProperty(data, 'id');
-                    const adjustedUniqueTickets = adjustTicketProperties(uniqueTickets, INCIDENT_ANNOTATION_CATEGORY)
+                    const adjustedUniqueTickets = adjustTicketProperties(uniqueTickets)
                         .map((incident) => {
                             incident.time = moment.utc(incident.start_date).local().isValid() ? moment.utc(incident.start_date).valueOf() : '-';
                             incident.category = INCIDENT_ANNOTATION_CATEGORY;
@@ -319,15 +318,15 @@ const Annotations = ({
     }, [deploymentAnnotationsError, incidentAnnotationsError, abTestsAnnotationsError]);
 
     return (
-        <Fragment>
+        <div className={`annotations-container advanced-filter-${openAdvancedFilter ? 'active' : 'inactive'}`}>
             <button
                 onClick={() => setOpenAdvancedFilter(!openAdvancedFilter)}
-                className={`btn btn-default display-annotations-btn ${openAdvancedFilter ? 'active' : ''}`}
+                className="btn btn-default display-annotations-btn"
                 type="button"
             >
-                <SVGIcon usefill markup={FILTER__16} />{' Display Annotations'}
+                <SVGIcon usefill markup={FILTER__16} />{'Display Annotations'}
             </button>
-            <div className={`${openAdvancedFilter ? 'open' : 'closed'} annotations-wrapper`} ref={ref}>
+            <div className="annotations-wrapper" ref={ref}>
                 <LoadingContainer
                     isLoading={isDeploymentsAnnotationsLoading || isIncidentsAnnotationsLoading || isAbTestsAnnotationsLoading}
                     error={displayError}
@@ -371,7 +370,7 @@ const Annotations = ({
                     }
                 </LoadingContainer>
             </div>
-        </Fragment>
+        </div>
     );
 };
 

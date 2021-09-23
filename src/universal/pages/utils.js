@@ -332,7 +332,7 @@ export const filterNewSelectedItems = (input, key) => {
 export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pageBrand = '', deltaUserData = []) => {
     let minValue;
 
-    const formatRate = (rate) => parseFloat((Number(rate) || 0).toFixed(2));
+    const formatRate = (rate) => rate ? parseFloat((Number(rate) || 0).toFixed(2)) : null;
     // eslint-disable-next-line complexity
     return SUCCESS_RATES_PAGES_LIST.map((chartName, i) => {
         const aggregatedData = [];
@@ -354,20 +354,18 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
                 const found = aggregatedData.findIndex((d) => d.time === moment.utc(time).valueOf());
 
                 if (found > -1) {
-                    aggregatedData[found].value = brandWiseSuccessRateData.rate === null ? null : formatRate(brandWiseSuccessRateData.rate);
+                    aggregatedData[found].value = formatRate(brandWiseSuccessRateData.rate);
                 } else {
                     aggregatedData.push({
                         label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
                         time: moment.utc(time).valueOf(),
-                        value: brandWiseSuccessRateData.rate === null ? null : formatRate(brandWiseSuccessRateData.rate),
+                        value: formatRate(brandWiseSuccessRateData.rate),
                         deltaUserCount
                     });
                 }
             }
 
-            localMin = brandWiseSuccessRateData.rate ? Math.min(localMin, formatRate(brandWiseSuccessRateData.rate)) : localMin;
-
-            return localMin;
+            return brandWiseSuccessRateData.rate ? Math.min(localMin, formatRate(brandWiseSuccessRateData.rate)) : localMin;
         }, (data[0] && data[0][0]) ? data[0][0].brandWiseSuccessRateData.rate : 0);
 
         if (i === 0) {
@@ -518,8 +516,6 @@ export const getPresets = () => [
     {text: 'Last 24 hours', value: getValue(24, 'hours')}
 ];
 
-export const getTableValue = (row, property) => row && property ? row[property] || '-' : '-';
-
 export const getTableNumValue = (row, property) => row && property && row[property] !== null ? row[property] : '-';
 
 export const getUrlParam = (label, value, defaultValue) => {
@@ -530,15 +526,20 @@ export const getUrlParam = (label, value, defaultValue) => {
 
 export const checkIsDateInvalid = (start, end) => (moment(end).diff(moment(start), 'days') >= 5) || (moment().diff(moment(end), 'minutes') > 5);
 
+const getPredictionCount = (simplifiedPredictionData, item) => {
+    let predictionCount = null;
+    for (let predItem of simplifiedPredictionData) {
+        if (predItem.time === item.time) {
+            predictionCount = Math.round(predItem.count);
+        }
+    }
+    return predictionCount;
+};
+
 export const getChartDataForFutureEvents = (dateInvalid, chartData, simplifiedPredictionData, chartDataForFutureEvents, simplifiedBookingsData, finalChartData) => {
     if (!dateInvalid && chartData && chartData.length && chartData.length < simplifiedPredictionData.length) {
         chartDataForFutureEvents = simplifiedBookingsData.map((item, i) => {
-            let predictionCount = null;
-            for (let predItem of simplifiedPredictionData) {
-                if (predItem.time === item.time) {
-                    predictionCount = Math.round(predItem.count);
-                }
-            }
+            const predictionCount = getPredictionCount(simplifiedPredictionData, item);
 
             if (item.time === chartData[i]?.time) {
                 return {

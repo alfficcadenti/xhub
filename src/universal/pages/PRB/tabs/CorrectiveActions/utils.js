@@ -1,23 +1,23 @@
 import React from 'react';
-import {getTableValue} from '../../../utils';
+import {getOrDefault} from '../../../../utils';
 
 
 export const mapDetails = (row) => ({
-    ID: <a href={row.url} target="_blank" rel="noop">{getTableValue(row, 'id')}</a>,
-    Assignee: getTableValue(row, 'assignee'),
-    Project: getTableValue(row, 'projectName'),
-    Summary: getTableValue(row, 'summary'),
-    Status: getTableValue(row, 'status'),
-    Priority: getTableValue(row, 'priority'),
-    Department: getTableValue(row, 'department'),
-    Created: getTableValue(row, 'createdDate'),
-    Resolved: getTableValue(row, 'resolvedDate'),
-    Updated: getTableValue(row, 'updatedDateTime'),
-    L1: getTableValue(row, 'l1'),
-    L2: getTableValue(row, 'l2'),
-    L3: getTableValue(row, 'l3'),
-    L4: getTableValue(row, 'l4'),
-    L5: getTableValue(row, 'l5')
+    ID: <a href={row.url} target="_blank" rel="noop">{getOrDefault(row, 'id')}</a>,
+    Assignee: getOrDefault(row, 'assignee'),
+    Project: getOrDefault(row, 'projectName'),
+    Summary: getOrDefault(row, 'summary'),
+    Status: getOrDefault(row, 'status'),
+    Priority: getOrDefault(row, 'priority'),
+    Department: getOrDefault(row, 'department'),
+    Created: getOrDefault(row, 'createdDate'),
+    Resolved: getOrDefault(row, 'resolvedDate'),
+    Updated: getOrDefault(row, 'updatedDateTime'),
+    L1: getOrDefault(row, 'l1'),
+    L2: getOrDefault(row, 'l2'),
+    L3: getOrDefault(row, 'l3'),
+    L4: getOrDefault(row, 'l4'),
+    L5: getOrDefault(row, 'l5')
 });
 
 // eslint-disable-next-line complexity
