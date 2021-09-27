@@ -4,16 +4,18 @@ import {LoadingOverlay} from '@homeaway/react-loading-overlay';
 import {Alert} from '@homeaway/react-alerts';
 import './styles.less';
 
-class LoadingContainer extends React.PureComponent {
-    render() {
-        const {isLoading, error, children, id, className = ''} = this.props;
-        const errorMessage = typeof error === 'string' ? error : 'Error';
-        return (<div className={`loading-container ${className}`} id= {id}>
-            {isLoading && !error && <LoadingOverlay />}
-            {error ? <Alert className="loading-alert" msg={errorMessage} /> : !isLoading && children}
-        </div>);
-    }
-}
+const LoadingContainer = ({isLoading, error, children, id, className = ''}) => {
+    const errorMessage = typeof error === 'string' ? error : 'Error';
+
+    const renderChildren = () => {
+        return error ? <Alert className="loading-alert" msg={errorMessage} /> : !isLoading && children;
+    };
+
+    return (<div className={`loading-container ${className}`} id= {id}>
+        {isLoading && !error && <LoadingOverlay />}
+        {renderChildren()}
+    </div>);
+};
 
 LoadingContainer.defaultProps = {
     error: null,

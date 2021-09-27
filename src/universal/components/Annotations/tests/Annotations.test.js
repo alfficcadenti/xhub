@@ -84,12 +84,12 @@ describe('Annotations component testing', () => {
 
     it('renders .display-annotations-btn button with wrapper closed by default', () => {
         expect(wrapper.find('.display-annotations-btn')).to.have.length(1);
-        expect(wrapper.find('.annotations-wrapper.closed')).to.have.length(1);
+        expect(wrapper.find('.advanced-filter-inactive')).to.have.length(1);
     });
 
     it('open .annotations-wrapper when clicks on .display-annotations-btn', () => {
         wrapper.find('.display-annotations-btn').simulate('click');
-        expect(wrapper.find('.annotations-wrapper')).to.have.length(1);
+        expect(wrapper.find('.advanced-filter-active')).to.have.length(1);
     });
 
     it('renders 3 checkboxes', () => {

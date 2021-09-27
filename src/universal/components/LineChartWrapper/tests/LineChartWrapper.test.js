@@ -78,23 +78,25 @@ describe('<LineChartWrapper />', () => {
             value: 0,
         }];
 
-        wrapper = mount(<LineChartWrapper
-            width={700}
-            height={300}
-            title="title" data={[{name: 'name', value: 'value'}]}
-            keys={['value']}
-            active
-            selectedLine="Expedia"
-            tooltipData={tooltipData}
-            renderTooltipContent={TooltipContent}
-            margin={{top: 5, right: 30, left: 20, bottom: 5}}
-            cursor={onDotClick ? 'pointer' : ''}
-            onMouseDown={onMouseDown}
-            onMouseMove={onMouseMove}
-            onMouseUp={onMouseUp}
-            label="2021-06-20"
-            payload={payload}
-        />);
+        wrapper = mount(
+            <LineChartWrapper
+                width={700}
+                height={300}
+                title="title" data={[{name: 'name', value: 'value'}]}
+                keys={['value']}
+                active
+                selectedLine="Expedia"
+                tooltipData={tooltipData}
+                renderTooltipContent={TooltipContent}
+                margin={{top: 5, right: 30, left: 20, bottom: 5}}
+                cursor={onDotClick ? 'pointer' : ''}
+                onMouseDown={onMouseDown}
+                onMouseMove={onMouseMove}
+                onMouseUp={onMouseUp}
+                label="2021-06-20"
+                payload={payload}
+            />
+        );
 
         expect(wrapper.find('.recharts-tooltip-wrapper')).to.have.length(1);
         expect(wrapper.find('.recharts-legend-wrapper')).to.have.length(1);

@@ -10,7 +10,6 @@ import {
     formatDuration,
     formatDurationForTable,
     formatDurationToH,
-    formatDurationToHours,
     getAnnotationStrokeColor
 } from './utils';
 
@@ -25,13 +24,6 @@ describe('formatDuration', () => {
     it('returns the duration in HH:mm:ss format', async () => {
         expect(formatDuration(61, 'minutes')).to.be.eql('1h 1m');
         expect(formatDuration(360000)).to.be.eql('6m');
-    });
-});
-
-describe('formatDurationToHours', () => {
-    it('returns the duration from milliseconds in HH:mm:ss format', async () => {
-        expect(formatDurationToHours(5000000)).to.be.eql('1h 23m ');
-        expect(formatDurationToHours(500000000)).to.be.eql('5d 18h 53m ');
     });
 });
 

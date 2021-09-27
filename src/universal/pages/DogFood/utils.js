@@ -1,6 +1,7 @@
 import qs from 'query-string';
 import {validDateRange, getUrlParam, getValue} from '../utils';
 import moment from 'moment';
+import {getOrDefault} from '../../utils';
 import {DATE_FORMAT, ALL_PROJECTS_OPTION, ALL_STATUSES_OPTION} from '../../constants';
 
 
@@ -64,19 +65,19 @@ const formatDate = (dateString) => dateString && moment(dateString).isValid ? mo
 export const mapIssues = (x) => {
     return ({
         'Ticket Id': `<a href="${x.url}" target="_blank">${x.id}</a>`,
-        Priority: x.priority || '-',
-        Severity: x.severity || '-',
-        Brand: x.brand || '-',
-        Summary: x.summary || '-',
-        Project: x.project || '-',
-        'Project Key': x.projectKey || '-',
-        Status: x.status,
-        Tag: x.tag,
-        Resolution: x.resolution || '-',
-        'Impacted Brand': x.impactedBrand || '-',
-        'Last Update': formatDate(x.updatedDateTime),
-        'Open Date': formatDate(x.openDate),
-        'Resolved Date': formatDate(x.resolvedDate),
+        Priority: getOrDefault(x, 'priority'),
+        Severity: getOrDefault(x, 'severity'),
+        Brand: getOrDefault(x, 'brand'),
+        Summary: getOrDefault(x, 'summary'),
+        Project: getOrDefault(x, 'project'),
+        'Project Key': getOrDefault(x, 'project_key'),
+        Status: getOrDefault(x, 'status'),
+        Tag: getOrDefault(x, 'tag'),
+        Resolution: getOrDefault(x, 'resolution'),
+        'Impacted Brand': getOrDefault(x, 'impacted_brand'),
+        'Last Update': formatDate(x.updated_date_time),
+        'Open Date': formatDate(x.open_date),
+        'Resolved Date': formatDate(x.resolved_date),
         'Labels': x.labels && Array.isArray(x.labels) ? x.labels.slice(',') : []
     });
 };

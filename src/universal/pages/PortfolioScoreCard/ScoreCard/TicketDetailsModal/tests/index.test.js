@@ -35,13 +35,15 @@ describe('<TicketDetailsModal>', () => {
     });
 
     it('checks fetch is called successfully', () => {
-        wrapper = mount(<TicketDetailsModal
-            isOpen
-            onClose={() => {}}
-            start={'2021-08-01'}
-            end={'2021-09-01'}
-            data={{priority: 'P1', org: 'Org', level: 'l1'}}
-        />);
+        wrapper = mount(
+            <TicketDetailsModal
+                isOpen
+                onClose={() => {}}
+                start={'2021-08-01'}
+                end={'2021-09-01'}
+                data={{priority: 'P1', org: 'Org', level: 'l1'}}
+            />
+        );
         expect(fetch).toHaveBeenCalledTimes(1);
     });
 });

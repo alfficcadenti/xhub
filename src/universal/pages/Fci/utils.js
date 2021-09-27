@@ -7,7 +7,8 @@ import DataTable from '../../components/DataTable';
 import {LOB_LIST} from '../../constants';
 import {TRACE_TABLE_COLUMNS, SITES, CATEGORY_OPTION} from './constants';
 import {EXPEDIA_PARTNER_SERVICES_BRAND, EXPEDIA_BRAND, OPXHUB_SUPPORT_CHANNEL} from '../../constants';
-import {validDateRange, getTableValue} from '../utils';
+import {getOrDefault} from '../../utils';
+import {validDateRange} from '../utils';
 
 
 export const getBrandSites = (brand) => SITES[brand] || ['travel.chase.com'];
@@ -111,8 +112,8 @@ export const mapTrace = (t) => {
     const tags = t.tags || [];
     const hasError = traceHasError(t);
     const result = {
-        Service: getTableValue(t, 'service_name'),
-        Operation: getTableValue(t, 'operation_name'),
+        Service: getOrDefault(t, 'service_name'),
+        Operation: getOrDefault(t, 'operation_name'),
         Error: String(hasError),
         'External Error Code': '-',
         'External Description': '-',
@@ -135,9 +136,9 @@ export const mapTrace = (t) => {
 };
 
 export const mapComment = (row) => ({
-    Created: getTableValue(row, 'timestamp'),
-    Author: getTableValue(row, 'author'),
-    Comment: getTableValue(row, 'comment'),
+    Created: getOrDefault(row, 'timestamp'),
+    Author: getOrDefault(row, 'author'),
+    Comment: getOrDefault(row, 'comment'),
     'Is FCI': String(row.isFci)
 });
 
@@ -145,21 +146,21 @@ export const mapFci = (row = {}) => {
     const {fci = {}, category = []} = JSON.parse(JSON.stringify(row));
     return {
         Created: fci.timestamp ? moment(fci.timestamp).format('YYYY-MM-DD HH:mm') : '-',
-        Session: getTableValue(fci, 'session_id'),
-        Trace: getTableValue(fci, 'trace_id'),
-        Failure: getTableValue(fci, 'failure'),
-        'Intentional': getTableValue(fci, 'is_intentional'),
-        'Error Code': getTableValue(fci, 'error_code'),
-        Site: getTableValue(fci, 'site'),
-        TPID: getTableValue(fci, 'tp_id'),
-        EAPID: getTableValue(fci, 'eap_id'),
-        'SiteID': getTableValue(fci, 'site_id'),
+        Session: getOrDefault(fci, 'session_id'),
+        Trace: getOrDefault(fci, 'trace_id'),
+        Failure: getOrDefault(fci, 'failure'),
+        'Intentional': getOrDefault(fci, 'is_intentional'),
+        'Error Code': getOrDefault(fci, 'error_code'),
+        Site: getOrDefault(fci, 'site'),
+        TPID: getOrDefault(fci, 'tp_id'),
+        EAPID: getOrDefault(fci, 'eap_id'),
+        'SiteID': getOrDefault(fci, 'site_id'),
         Category: category.join(', ') || '-',
         LoB: (LOB_LIST.find((l) => l.value === fci.line_of_business) || {label: '-'}).label,
-        'Device User Agent ID': getTableValue(fci, 'dua_id'),
-        Comment: getTableValue(fci, 'comment'),
+        'Device User Agent ID': getOrDefault(fci, 'dua_id'),
+        Comment: getOrDefault(fci, 'comment'),
         'Is FCI': String(fci.is_fci),
-        recordedSessionUrl: getTableValue(row, 'recorded_session_url'),
+        recordedSessionUrl: getOrDefault(row, 'recorded_session_url'),
         traces: (fci.traces || []).map(mapTrace)
     };
 };
@@ -167,9 +168,9 @@ export const mapFci = (row = {}) => {
 export const mapDeltaUser = (row = {}) => {
     return {
         Created: row.timestamp ? moment(row.timestamp).format('YYYY-MM-DD HH:mm') : '-',
-        Brand: getTableValue(row, 'brand'),
+        Brand: getOrDefault(row, 'brand'),
         LoB: (LOB_LIST.find((l) => l.value === row.lineOfBusiness) || {label: '-'}).label,
-        'Funnel Step': getTableValue(row, 'metricName'),
+        'Funnel Step': getOrDefault(row, 'metricName'),
     };
 };
 

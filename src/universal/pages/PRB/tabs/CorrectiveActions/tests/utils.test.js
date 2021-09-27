@@ -12,14 +12,14 @@ describe('CorrectiveActions Utils', () => {
         const row = {
             id: 'ID',
             assignee: 'assignee',
-            projectName: 'Project',
+            project_name: 'Project',
             summary: 'Summary',
             status: 'Status',
             priority: 'Priority',
             department: 'Department',
-            createdDate: '12-12-2020',
-            resolvedDate: '12-13-2020',
-            updatedDateTime: '12-14-2020',
+            created_date: '12-12-2020',
+            resolved_date: '12-13-2020',
+            updated_date_time: '12-14-2020',
             l1: 'L1',
             l2: 'L2',
             l3: 'L3',
@@ -30,14 +30,14 @@ describe('CorrectiveActions Utils', () => {
             Assignee, Project, Summary, Status, Priority, Department, Created, Resolved, Updated, L1, L2, L3, L4, L5
         } = mapDetails(row);
         expect(Assignee).to.be.eql(row.assignee);
-        expect(Project).to.be.eql(row.projectName);
+        expect(Project).to.be.eql(row.project_name);
         expect(Summary).to.be.eql(row.summary);
         expect(Status).to.be.eql(row.status);
         expect(Priority).to.be.eql(row.priority);
         expect(Department).to.be.eql(row.department);
-        expect(Created).to.be.eql(row.createdDate);
-        expect(Resolved).to.be.eql(row.resolvedDate);
-        expect(Updated).to.be.eql(row.updatedDateTime);
+        expect(Created).to.be.eql(row.created_date);
+        expect(Resolved).to.be.eql(row.resolved_date);
+        expect(Updated).to.be.eql(row.updated_date_time);
         expect(L1).to.be.eql(row.l1);
         expect(L2).to.be.eql(row.l2);
         expect(L3).to.be.eql(row.l3);

@@ -2,7 +2,8 @@ import React from 'react';
 import moment from 'moment';
 import qs from 'query-string';
 import {DATE_FORMAT} from '../../constants';
-import {validDateRange, getTableValue, getTableNumValue, buildTicketLink} from '../utils';
+import {getOrDefault} from '../../utils';
+import {validDateRange, getTableNumValue, buildTicketLink} from '../utils';
 
 
 export const formatPercentage = (percent) => percent === null ? '-' : `${percent}%`;
@@ -65,9 +66,9 @@ export const mapOrgDetails = (row, handleSelectOrg, handleSelectTickets) => ({
 
 export const mapTicketDetails = (ticketDetails = []) => {
     return ticketDetails.map((ticketDetail) => ({
-        Number: buildTicketLink(getTableValue(ticketDetail, 'number')),
-        Priority: getTableValue(ticketDetail, 'priority'),
-        Title: getTableValue(ticketDetail, 'title'),
+        Number: buildTicketLink(getOrDefault(ticketDetail, 'number')),
+        Priority: getOrDefault(ticketDetail, 'priority'),
+        Title: getOrDefault(ticketDetail, 'title'),
         'Time To Detect': getTableNumValue(ticketDetail, 'timeToDetect'),
         'Time To Know': getTableNumValue(ticketDetail, 'timeToKnow'),
         'Time To Fix': getTableNumValue(ticketDetail, 'timeToFix'),

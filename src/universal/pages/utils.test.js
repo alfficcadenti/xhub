@@ -12,7 +12,7 @@ import {
     getVisiblePages,
     getImpactedPartners,
     mapEpsData,
-    parseDurationToMs,
+    parseDurationToMinutes,
     getBrand,
     adjustInputValue,
     addSuggestionType,
@@ -22,7 +22,6 @@ import {
     getQueryParams,
     validDateRange,
     getLobPlaceholder,
-    getTableValue,
     getUrlParam,
     checkIsDateInvalid,
     getChartDataForFutureEvents,
@@ -292,15 +291,15 @@ describe('mapEpsData', () => {
             id: 'INC1999',
             duration: '1 hour',
             timeToDetect: '10 minutes',
-            timeToResolve: '50 minutes'
+            timeToRestore: '50 minutes'
         };
         const mappedData = mapEpsData(data);
         expect(mappedData.id).to.eql(data.id);
         expect(mappedData.brand).to.eql(EXPEDIA_PARTNER_SERVICES_BRAND);
         expect(mappedData.impacted_brand).to.eql(EXPEDIA_PARTNER_SERVICES_BRAND);
         expect(mappedData.duration).to.eql(1 * 60 * 60 * 1000);
-        expect(mappedData.time_to_detect).to.eql(10 * 60 * 1000);
-        expect(mappedData.time_to_resolve).to.eql(50 * 60 * 1000);
+        expect(mappedData.time_to_detect).to.eql(10);
+        expect(mappedData.time_to_restore).to.eql(50);
         expect(mappedData.impacted_partners).to.eql(null);
         expect(mappedData.impacted_partners_lobs).to.eql(null);
     });
@@ -309,7 +308,7 @@ describe('mapEpsData', () => {
             incidentNumber: 'INC1999',
             duration: 30000,
             timeToDetect: 20000,
-            timeToResolve: 10000
+            timeToRestore: 10000
         };
         const mappedData = mapEpsData(data);
         expect(mappedData.incident_number).to.eql(data.incidentNumber);
@@ -317,7 +316,7 @@ describe('mapEpsData', () => {
         expect(mappedData.impacted_brand).to.eql(EXPEDIA_PARTNER_SERVICES_BRAND);
         expect(mappedData.duration).to.eql(data.duration);
         expect(mappedData.time_to_detect).to.eql(data.timeToDetect);
-        expect(mappedData.time_to_resolve).to.eql(data.timeToResolve);
+        expect(mappedData.time_to_restore).to.eql(data.timeToRestore);
         expect(mappedData.impacted_partners).to.eql(null);
         expect(mappedData.impacted_partners_lobs).to.eql(null);
     });
@@ -327,7 +326,7 @@ describe('mapEpsData', () => {
             incidentNumber: 'INC1234567',
             duration: 30000,
             timeToDetect: 20000,
-            timeToResolve: 10000
+            timeToRestore: 10000
         };
         const mappedData = mapEpsData(data);
         expect(mappedData.id).to.eql('EPS-0001,INC1234567');
@@ -336,25 +335,24 @@ describe('mapEpsData', () => {
         expect(mappedData.impacted_brand).to.eql(EXPEDIA_PARTNER_SERVICES_BRAND);
         expect(mappedData.duration).to.eql(data.duration);
         expect(mappedData.time_to_detect).to.eql(data.timeToDetect);
-        expect(mappedData.time_to_resolve).to.eql(data.timeToResolve);
+        expect(mappedData.time_to_restore).to.eql(data.timeToRestore);
         expect(mappedData.impacted_partners).to.eql(null);
         expect(mappedData.impacted_partners_lobs).to.eql(null);
     });
 });
 
-describe('parseDurationToMs', () => {
-    const minutesToMs = (m) => m * 60000;
-    const hoursToMs = (h) => h * 60 * minutesToMs(1);
-    const daysToMs = (d) => d * 24 * hoursToMs(1);
+describe('parseDurationToMinutes', () => {
+    const hoursToMinutes = (h) => h * 60;
+    const daysToMinutes = (d) => hoursToMinutes(d * 24);
     it('parses duration correctly', () => {
-        expect(parseDurationToMs('1 minute')).to.be.equal(minutesToMs(1));
-        expect(parseDurationToMs('59 minutes')).to.be.equal(minutesToMs(59));
-        expect(parseDurationToMs('61 minutes')).to.be.equal(minutesToMs(61));
-        expect(parseDurationToMs('1 hour')).to.be.equal(hoursToMs(1));
-        expect(parseDurationToMs('3 hours 2 minutes')).to.be.equal(hoursToMs(3) + minutesToMs(2));
-        expect(parseDurationToMs('1 day')).to.be.equal(daysToMs(1));
-        expect(parseDurationToMs('1 day 1 minute')).to.be.equal(daysToMs(1) + minutesToMs(1));
-        expect(parseDurationToMs('2 days 2 hours 3 minutes')).to.be.equal(daysToMs(2) + hoursToMs(2) + minutesToMs(3));
+        expect(parseDurationToMinutes('1 minute')).to.be.equal(1);
+        expect(parseDurationToMinutes('59 minutes')).to.be.equal(59);
+        expect(parseDurationToMinutes('61 minutes')).to.be.equal(61);
+        expect(parseDurationToMinutes('1 hour')).to.be.equal(hoursToMinutes(1));
+        expect(parseDurationToMinutes('3 hours 2 minutes')).to.be.equal(hoursToMinutes(3) + 2);
+        expect(parseDurationToMinutes('1 day')).to.be.equal(daysToMinutes(1));
+        expect(parseDurationToMinutes('1 day 1 minute')).to.be.equal(daysToMinutes(1) + 1);
+        expect(parseDurationToMinutes('2 days 2 hours 3 minutes')).to.be.equal(daysToMinutes(2) + hoursToMinutes(2) + 3);
     });
 });
 
@@ -606,16 +604,6 @@ describe('getLobPlaceholder()', () => {
 
     it('getLobPlaceholder should return Select Line of Business when isLoading & lobWidgetsLength false', () => {
         expect(getLobPlaceholder(false, 0)).to.be.eql('Line of Business Data not available. Try to refresh');
-    });
-});
-
-describe('getTableValue()', () => {
-    it('getTableValue', () => {
-        expect(getTableValue()).to.be.eql('-');
-        expect(getTableValue(null, null)).to.be.eql('-');
-        expect(getTableValue({a: 'hello'}, 'b')).to.be.eql('-');
-        expect(getTableValue({a: 'hello'}, 'a')).to.be.eql('hello');
-        expect(getTableValue({a: ''}, 'a')).to.be.eql('-');
     });
 });
 

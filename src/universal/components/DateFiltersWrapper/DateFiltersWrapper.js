@@ -28,6 +28,9 @@ const DateFiltersWrapper = ({isFormDisabled, pendingStart, pendingEnd, handleApp
             <div
                 className={`btn btn-default dates-button ${openDateFilter ? 'active' : ''}`}
                 onClick={() => setOpenDateFilter(!openDateFilter)}
+                onKeyUp={(e) => e.key === 'Enter' && setOpenDateFilter(!openDateFilter)}
+                role="button"
+                tabIndex="0"
             >
                 <span><SVGIcon usefill markup={CALENDAR__16} /></span>
                 <div className="dates">

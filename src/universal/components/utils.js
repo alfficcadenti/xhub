@@ -44,17 +44,8 @@ export function formatDurationForTable(m, unit = 'milliseconds') {
     return `<div value=${paddedStrValue}>${formatDuration(m, unit)}</div>`;
 }
 
-export function formatDurationToH(duration) {
-    return Number(moment.duration(Number(duration), 'milliseconds').as('hours')).toFixed(2);
-}
-
-export function formatDurationToHours(duration) {
-    return moment.duration(Number(duration)).get('days') > 0 ?
-        `${String(moment.duration(Number(duration)).get('days'))}d ${
-            String(moment.duration(Number(duration)).get('hours'))}h ${
-            String(moment.duration(Number(duration)).get('minutes'))}m ` :
-        `${String(moment.duration(Number(duration)).get('hours'))}h ${
-            String(moment.duration(Number(duration)).get('minutes'))}m `;
+export function formatDurationToH(duration, unit = 'milliseconds') {
+    return Number(moment.duration(Number(duration), unit).as('hours')).toFixed(2);
 }
 
 export const getAnnotationStrokeColor = (category) => {

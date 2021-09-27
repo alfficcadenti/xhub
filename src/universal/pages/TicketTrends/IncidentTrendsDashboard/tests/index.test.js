@@ -4,7 +4,7 @@ import {mount} from 'enzyme';
 import {BrowserRouter as Router} from 'react-router-dom';
 import IncidentTrendsDashboard from '../index';
 import {DATE_FORMAT} from '../../../../constants';
-import {EG_BRAND, ALL_PRIORITIES_OPTION, OPXHUB_SUPPORT_CHANNEL} from '../../../../constants';
+import {EG_BRAND, ALL_PRIORITIES_OPTION, FETCH_FAILED_MSG} from '../../../../constants';
 import moment from 'moment/moment';
 import {expect} from 'chai';
 
@@ -61,6 +61,6 @@ describe('<IncidentTrendsDashboard/>', () => {
     it('LoadingContainer should have right props', async () => {
         const props = wrapper.find('LoadingContainer').props();
         expect(props.isLoading).equal(false);
-        expect(props.error).equal(`Error occurred when reading tickets. Please try refreshing the page. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`);
+        expect(props.error).equal(FETCH_FAILED_MSG);
     });
 });

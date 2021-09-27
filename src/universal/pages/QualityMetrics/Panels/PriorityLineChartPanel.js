@@ -66,14 +66,16 @@ const PriorityLineChartPanel = ({title, info, tickets, panelData, dataKey, prior
                     <YAxis allowDecimals={false} />
                     <Tooltip />
                     <Legend onClick={handleLegendClick} cursor="pointer" />
-                    {priorities.map((p) => (<Line
-                        key={p}
-                        dataKey={p}
-                        stroke={PRIORITY_COLORS[p]}
-                        strokeWidth={2}
-                        activeDot={{onClick: getClickHandler(p)}}
-                        hide={hiddenKeys[p]}
-                    />))}
+                    {priorities.map((p) => (
+                        <Line
+                            key={p}
+                            dataKey={p}
+                            stroke={PRIORITY_COLORS[p]}
+                            strokeWidth={2}
+                            activeDot={{onClick: getClickHandler(p)}}
+                            hide={hiddenKeys[p]}
+                        />
+                    ))}
                 </LineChart>
             </ResponsiveContainer>
             <ChartModal

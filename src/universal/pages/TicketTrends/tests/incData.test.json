@@ -7,8 +7,8 @@
     "priority": "1-Critical",
     "start_date": "2019-09-25T14:58:24.000Z",
     "summary": "EAN Degraded",
-    "time_to_detect": "50000",
-    "time_to_resolve": "50000"
+    "time_to_detect": "0",
+    "time_to_restore": "0"
   },
   {
     "Brand": "Expedia Partner Solutions (EPS)",
@@ -18,8 +18,8 @@
     "priority": "2-High",
     "start_date": "2019-09-21T14:58:24.000Z",
     "summary": "EAN Degraded",
-    "time_to_detect": "50000",
-    "time_to_resolve": "50000"
+    "time_to_detect": "0",
+    "time_to_restore": "0"
   },
   {
     "Brand": "eCommerce Platform (eCP)",
@@ -29,8 +29,8 @@
     "priority": "2-High",
     "start_date": "2019-09-20T14:58:24.000Z",
     "summary": "EAN Degraded",
-    "time_to_detect": "50000",
-    "time_to_resolve": "50000"
+    "time_to_detect": "0",
+    "time_to_restore": "0"
   },
   {
     "Brand": "eCommerce Platform (eCP)",
@@ -40,7 +40,7 @@
     "priority": "2-High",
     "start_date": "2019-09-20T14:58:24.000Z",
     "summary": "EAN Degraded",
-    "time_to_detect": "250000",
-    "time_to_resolve": "250000"
+    "time_to_detect": "4",
+    "time_to_restore": "4"
   }
 ]

@@ -6,10 +6,10 @@ import {getTableColumns, getIncidentsData} from '../../../incidentsHelper';
 const renderTable = (tickets, selectedBrand) => {
     const columns = getTableColumns(selectedBrand);
     const columnsInfo = {
-        TTD: <div>{'Time to Detect'}</div>,
-        TTK: <div>{'Time to Know'}</div>,
-        TTF: <div>{'Time to Fix'}</div>,
-        TTR: <div>{'Time to Restore'}</div>
+        TTD: <div>{'Time to Detect: target <=15m'}</div>,
+        TTK: <div>{'Time to Know: target <=30m'}</div>,
+        TTF: <div>{'Time to Fix: target <=15m'}</div>,
+        TTR: <div>{'Time to Restore: target <=60m'}</div>
     };
     const csvColumns = columns.concat(['Executive Summary', 'Resolution Notes']);
     return (

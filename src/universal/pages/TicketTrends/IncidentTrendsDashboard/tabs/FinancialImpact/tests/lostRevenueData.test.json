@@ -1,11 +1,11 @@
 [
   {
     "brand": "Expedia",
-    "estimatedRevenueLoss": "6783.00",
-    "estimatedGrossLoss": "111365.00",
-    "impactedBrand": "Cheap Tickets",
+    "estimated_revenue_loss": "6783.00",
+    "estimated_gross_loss": "111365.00",
+    "impacted_brand": "Cheap Tickets",
     "id": "INC4161073",
-    "resolvedDate": "2019-06-05 13:00:00.0000000",
-    "startDate": "2019-06-05 09:30:00.0000000"
+    "resolved_date": "2019-06-05 13:00:00.0000000",
+    "start_date": "2019-06-05 09:30:00.0000000"
   }
 ]

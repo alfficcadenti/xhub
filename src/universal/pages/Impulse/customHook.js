@@ -190,6 +190,7 @@ export const useFetchBlipData = (
                 setAnomaliesMulti(anomalyMultiOptions);
             })
             .catch((err) => {
+                // eslint-disable-next-line no-console
                 console.error(err);
             });
     };
@@ -246,6 +247,7 @@ export const useFetchBlipData = (
             setRes(finalChartData);
         })
             .catch((err) => {
+                // eslint-disable-next-line no-console
                 console.error(err);
             })
             .finally(() => {
@@ -272,8 +274,8 @@ export const useFetchBlipData = (
             .then(checkResponse)
             .then(({selectedLobs, weekly, monthly, yearly}) => setAverageCount({selectedLobs, weekly, monthly, yearly}))
             .catch((err) => {
-                // eslint-disable-next-line no-console
                 setError('No data found for this selection.');
+                // eslint-disable-next-line no-console
                 console.error(err);
             })
             .finally(() => setIsAverageCountLoading(false));
@@ -383,6 +385,7 @@ export const useFetchBlipData = (
                 }
             })
             .catch((err) => {
+                // eslint-disable-next-line no-console
                 console.error(err);
             });
     };

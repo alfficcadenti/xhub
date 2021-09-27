@@ -131,7 +131,7 @@ export const filterType = (tickets, selectedType) => {
     // eslint-disable-next-line complexity
     tickets.forEach((t) => {
         const ticket = t;
-        const {linkedIssues = [], brandsAffected = [], linesOfBusinessImpacted} = ticket;
+        const {linked_issues: linkedIssues = [], brands_affected: brandsAffected = [], lobs: linesOfBusinessImpacted} = ticket;
         const filteredLinkedIssues = linkedIssues.filter(matchesType);
         if (selectedType !== EPIC_ISSUE_TYPE && filteredLinkedIssues.length > 0) {
             ticket['Linked Issues'] = (
@@ -163,7 +163,7 @@ export const filterType = (tickets, selectedType) => {
 };
 
 const mapLinkedIssues = (i) => {
-    const linkedIssues = (i.linkedIssues || []).map((l) => ({
+    const linkedIssues = (i.linked_issues || []).map((l) => ({
         Ticket: `<a href="https://jira.expedia.biz/browse/${l.id}" target="_blank">${l.id}</a>`,
         Summary: l.summary,
         Status: l.status,
@@ -172,7 +172,7 @@ const mapLinkedIssues = (i) => {
     return ({
         Ticket: `<a href="https://jira.expedia.biz/browse/${i.id}" target="_blank">${i.id}</a>`,
         Summary: i.summary,
-        'Issue Type': i.issueType,
+        'Issue Type': i.issue_type,
         Status: i.status,
         Assignee: i.assignee || '-',
         'Linked Issues': !linkedIssues.length
@@ -192,19 +192,19 @@ const mapLinkedIssues = (i) => {
 
 // eslint-disable-next-line complexity
 export const mapTickets = (t) => {
-    const linkedIssues = (t.linkedIssues || []).map(mapLinkedIssues);
+    const linkedIssues = (t.linked_issues || []).map(mapLinkedIssues);
     return ({
         Ticket: `<a href="https://jira.expedia.biz/browse/${t.id}" target="_blank">${t.id}</a>`,
         Priority: t.priority,
-        Opened: !t.createdDate ? '-' : moment(t.createdDate).format('YYYY-MM-DD HH:mm'),
+        Opened: !t.created_date ? '-' : moment(t.created_date).format('YYYY-MM-DD HH:mm'),
         'Epic Name': t.summary,
-        'Owning Org': t.owningOrganization,
-        'RC Owner': t.rootCauseOwner,
-        'RC Category': t.rootCauseCategory || '-',
+        'Owning Org': t.owning_organization,
+        'RC Owner': t.root_cause_owner,
+        'RC Category': t.root_cause_category || '-',
         Status: t.status,
-        linkedIssues, // for filtering purposes
-        brandsAffected: t.brandsAffected ? t.brandsAffected.split(',') : [],
-        linesOfBusinessImpacted: t.linesOfBusinessImpacted,
+        linked_issues: linkedIssues, // for filtering purposes
+        brands_affected: t.brands_affected ? t.brands_affected.split(',') : [],
+        lobs: t.lobs,
         'Linked Issues': !linkedIssues.length
             ? null
             : (
