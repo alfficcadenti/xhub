@@ -34,17 +34,17 @@ export const useFetchTickets = (
         setLastStartDate(startDate);
         setLastEndDate(endDate);
         // TODO: replace incidents API call with problem management tickets API call
-        fetch(`/v1/prbs?fromDate=${startDate}&toDate=${endDate}`)
+        fetch(`/v1/prbs?from_date=${startDate}&to_date=${endDate}`)
             .then(checkResponse)
             .then((data) => {
-                const tickets = sortArrayByMostRecentDate(data, 'createdDate');
+                const tickets = sortArrayByMostRecentDate(data, 'created_date');
                 // TODO: temporarily ignore data and replace with mockData
                 setAllTickets(tickets.map(mapTickets));
-                setCurrentOrgs(getListOfUniqueProperties(tickets, 'owningOrganization'));
-                setCurrentRcOwners(getListOfUniqueProperties(tickets, 'rootCauseOwner'));
+                setCurrentOrgs(getListOfUniqueProperties(tickets, 'owning_organization'));
+                setCurrentRcOwners(getListOfUniqueProperties(tickets, 'root_cause_owner'));
                 setCurrentPriorities(getListOfUniqueProperties(tickets, 'priority'));
                 setCurrentStatuses(getListOfUniqueProperties(tickets, 'status'));
-                setCurrentRcCategories(getListOfUniqueProperties(tickets, 'rootCauseCategory'));
+                setCurrentRcCategories(getListOfUniqueProperties(tickets, 'root_cause_category'));
                 setIsLoading(false);
             })
             .catch((err) => {

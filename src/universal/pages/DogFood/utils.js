@@ -70,14 +70,14 @@ export const mapIssues = (x) => {
         Brand: getOrDefault(x, 'brand'),
         Summary: getOrDefault(x, 'summary'),
         Project: getOrDefault(x, 'project'),
-        'Project Key': getOrDefault(x, 'projectKey'),
+        'Project Key': getOrDefault(x, 'project_key'),
         Status: getOrDefault(x, 'status'),
         Tag: getOrDefault(x, 'tag'),
         Resolution: getOrDefault(x, 'resolution'),
-        'Impacted Brand': getOrDefault(x, 'impactedBrand'),
-        'Last Update': formatDate(x.updatedDateTime),
-        'Open Date': formatDate(x.openDate),
-        'Resolved Date': formatDate(x.resolvedDate),
+        'Impacted Brand': getOrDefault(x, 'impacted_brand'),
+        'Last Update': formatDate(x.updated_date_time),
+        'Open Date': formatDate(x.open_date),
+        'Resolved Date': formatDate(x.resolved_date),
         'Labels': x.labels && Array.isArray(x.labels) ? x.labels.slice(',') : []
     });
 };

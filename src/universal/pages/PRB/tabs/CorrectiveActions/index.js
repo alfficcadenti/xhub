@@ -29,7 +29,7 @@ const CorrectiveActions = ({
     onL4Change,
     isApplyClicked
 }) => {
-    const dateQuery = `fromDate=${start}&toDate=${end}`;
+    const dateQuery = `from_date=${start}&to_date=${end}`;
     const fetchQuery = statuses && statuses.length
         ? `${dateQuery}&${statuses.map(({value}) => `status=${value}`).join('&')}`
         : dateQuery;

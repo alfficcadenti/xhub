@@ -15,8 +15,8 @@ import {
     weeklyMeanTimebyBrand
 } from '../incidentsHelper';
 import {EG_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, VRBO_BRAND, EXPEDIA_BRAND} from '../../../constants';
-import mockData from './filteredIncidents.test.json';
-import mockData2 from './incData.test.json';
+import filteredIncData from './filteredIncidents.test.json';
+import incData from './incData.test.json';
 
 const dataResult = {
     'Brand': 'Expedia Partner Solutions (EPS)',
@@ -27,27 +27,6 @@ const dataResult = {
     'Status': 'Closed',
     'Summary': 'EAN Degraded',
 };
-
-const incMetricsByBrand = [
-    {
-        'Brand': 'Expedia Partner Solutions (EPS)',
-        'MTTR': '0h 0m ',
-        'MTTD': '0h 0m ',
-        'P1': 1,
-        'P2': 1,
-        'All': 2,
-        'Total Duration': '0h 3m '
-    },
-    {
-        'Brand': 'eCommerce Platform (eCP)',
-        'MTTR': '0h 2m ',
-        'MTTD': '0h 2m ',
-        'P1': 0,
-        'P2': 2,
-        'All': 2,
-        'Total Duration': '0h 10m '
-    }
-];
 
 describe('incidentsHelper', () => {
     describe('getTableColumns', () => {
@@ -74,7 +53,7 @@ describe('incidentsHelper', () => {
         it('maps incidents correctly', () => {
             const ticketA = {
                 summary: 'summary',
-                time_to_resolve: '20000',
+                time_to_restore: '20000',
                 start_date: '2020-01-01',
                 divisions: ['E4P', 'Other'],
                 status: 'To Do',
@@ -86,7 +65,7 @@ describe('incidentsHelper', () => {
             };
             const ticketB = {
                 summary: 'summary',
-                time_to_resolve: '2 hours 2 minutes',
+                time_to_restore: '2 hours 2 minutes',
                 open_date: '2020-01-02',
                 status: 'To DO',
                 root_cause_owner: 'owner',
@@ -98,7 +77,7 @@ describe('incidentsHelper', () => {
             expect(adjustTicketProperties([ticketA, ticketB])).to.eql([
                 Object.assign(ticketA, {
                     start_date: ticketA.start_date,
-                    time_to_resolve: ticketA.time_to_resolve,
+                    time_to_restore: ticketA.time_to_restore,
                     Division: 'E4P,Other',
                     Status: ticketA.status,
                     'RC Owner': ticketA.root_cause_owner,
@@ -109,7 +88,7 @@ describe('incidentsHelper', () => {
                     duration: ''
                 }), Object.assign(ticketB, {
                     start_date: ticketB.open_date,
-                    time_to_resolve: ticketB.time_to_resolve,
+                    time_to_restore: ticketB.time_to_restore,
                     Division: ticketB.brand,
                     Status: ticketB.status,
                     'RC Owner': ticketB.root_cause_owner,
@@ -129,7 +108,7 @@ describe('incidentsHelper', () => {
         });
 
         it('returns array populated if filteredIncidents are passed', () => {
-            const result = getIncidentsData([mockData[0]]);
+            const result = getIncidentsData([filteredIncData[0]]);
             expect(result[0].Brand).to.be.eql(dataResult.Brand);
             expect(result[0].Duration.toString().replace(/\s/g, '')).to.be.eql(dataResult.Duration);
             expect(result[0].Incident).to.be.eql(dataResult.Incident);
@@ -140,7 +119,7 @@ describe('incidentsHelper', () => {
         });
 
         it('returns empty string when values are null', () => {
-            const result = getIncidentsData([mockData[1]]);
+            const result = getIncidentsData([filteredIncData[1]]);
             expect(result[0]['Root Cause Owner']).to.be.eql('-');
             expect(result[0].Summary).to.be.eql('-');
             expect(result[0].Duration).to.be.eql('-');
@@ -151,8 +130,27 @@ describe('incidentsHelper', () => {
 
     describe('getIncMetricsByBrand', () => {
         it('returns array with metrics by Brand for a given array of incidents', () => {
-            const result = getIncMetricsByBrand(mockData2);
-            expect(result).to.be.eql(incMetricsByBrand);
+            const result = getIncMetricsByBrand(incData);
+            expect(result).to.be.eql([
+                {
+                    'Brand': 'Expedia Partner Solutions (EPS)',
+                    'MTTR': '0m',
+                    'MTTD': '0m',
+                    'P1': 1,
+                    'P2': 1,
+                    'All': 2,
+                    'Total Duration': '3m'
+                },
+                {
+                    'Brand': 'eCommerce Platform (eCP)',
+                    'MTTR': '2m',
+                    'MTTD': '2m',
+                    'P1': 0,
+                    'P2': 2,
+                    'All': 2,
+                    'Total Duration': '10m'
+                }
+            ]);
         });
 
         it('returns empty array if input is empty', () => {
@@ -163,7 +161,7 @@ describe('incidentsHelper', () => {
 
     describe('totalDuration', () => {
         it('returns the total duration of a given array of incidents', () => {
-            const result = sumPropertyInArrayOfObjects(mockData2, 'duration');
+            const result = sumPropertyInArrayOfObjects(incData, 'duration');
             expect(result).to.be.eql(800000);
         });
 
@@ -184,7 +182,7 @@ describe('incidentsHelper', () => {
 
     describe('getMeanValue', () => {
         it('returns mean value', () => {
-            const property = 'time_to_resolve';
+            const property = 'time_to_restore';
             const incidents = [
                 {[property]: 360000},
                 {[property]: 720000}
@@ -195,44 +193,44 @@ describe('incidentsHelper', () => {
 
     describe('getMeanHours', () => {
         it('returns mean hours given valid date range', () => {
-            const property = 'time_to_resolve';
+            const property = 'time_to_restore';
             const date = '2020-08-02';
             const incidents = [
-                {start_date: '2020-08-07', [property]: 3600000},
-                {start_date: '2020-08-08', [property]: 7200000}
+                {start_date: '2020-08-07', [property]: 60},
+                {start_date: '2020-08-08', [property]: 90}
             ];
             expect(getMeanHours(incidents, date, property)).to.be.eql(
-                incidents.reduce((acc, curr) => curr[property] + acc, 0) / incidents.length / 3600000);
+                incidents.reduce((acc, curr) => curr[property] + acc, 0) / incidents.length / 60);
         });
         it('returns mean hours and ignores those outside date range', () => {
-            const property = 'time_to_resolve';
+            const property = 'time_to_restore';
             const date = '2020-08-02';
             const incidents = [
-                {start_date: '2020-08-07', [property]: 3600000},
-                {start_date: '2020-09-08', [property]: 7200000}
+                {start_date: '2020-08-07', [property]: 60},
+                {start_date: '2020-09-08', [property]: 90}
             ];
-            expect(getMeanHours(incidents, date, property)).to.be.eql(incidents[0][property] / 3600000);
+            expect(getMeanHours(incidents, date, property)).to.be.eql(incidents[0][property] / 60);
         });
     });
 
     describe('weeklyMTTRMTTD', () => {
         it('returns MTTR and MTTD for given date range and array of incidents bucketed by week', () => {
             const incidents = [
-                {start_date: '2020-07-23T12:00:00Z', time_to_resolve: '1100000', time_to_detect: '80000'},
-                {start_date: '2020-08-03T12:00:00Z', time_to_resolve: '200000', time_to_detect: '50000'},
-                {start_date: '2020-08-03T12:00:00Z', time_to_resolve: '500000', time_to_detect: '10000'},
-                {start_date: '2020-08-10T12:00:00Z', time_to_resolve: '60000', time_to_detect: '30000'},
-                {start_date: '2020-08-23T12:00:00Z', time_to_resolve: '1100000', time_to_detect: '100000'},
+                {start_date: '2020-07-23T12:00:00Z', time_to_restore: '18', time_to_detect: '1'},
+                {start_date: '2020-08-03T12:00:00Z', time_to_restore: '3', time_to_detect: '1'},
+                {start_date: '2020-08-03T12:00:00Z', time_to_restore: '8', time_to_detect: '0'},
+                {start_date: '2020-08-10T12:00:00Z', time_to_restore: '1', time_to_detect: '1'},
+                {start_date: '2020-08-23T12:00:00Z', time_to_restore: '18', time_to_detect: '2'},
             ];
             expect(weeklyMTTRMTTD('2020-08-02', '2020-08-09', incidents)).to.be.eql({
                 data: [{
                     name: '2020-08-02',
-                    MTTR: Number(moment.duration((200000 + 500000) / 2, 'milliseconds').as('hours').toFixed(2)),
-                    MTTD: Number(moment.duration((50000 + 10000) / 2, 'milliseconds').as('hours').toFixed(2))
+                    MTTR: Number(moment.duration((3 + 8) / 2, 'minutes').as('hours').toFixed(2)),
+                    MTTD: Number(moment.duration((1 + 0) / 2, 'minutes').as('hours').toFixed(2))
                 }, {
                     name: '2020-08-09',
-                    MTTR: Number(moment.duration(60000, 'milliseconds').as('hours').toFixed(2)),
-                    MTTD: Number(moment.duration(30000, 'milliseconds').as('hours').toFixed(2))
+                    MTTR: Number(moment.duration(1, 'minutes').as('hours').toFixed(2)),
+                    MTTD: Number(moment.duration(1, 'minutes').as('hours').toFixed(2))
                 }],
                 keys: ['MTTR', 'MTTD']
             });
@@ -242,25 +240,25 @@ describe('incidentsHelper', () => {
     describe('weeklyMeanTimebyBrand', () => {
         it('returns MTTR for given date range and array of incidents bucketed by week and brand', () => {
             const incidents = [
-                {Brand: 'hotels, eps', start_date: '2020-07-23T12:00:00Z', time_to_detect: '1100000'},
-                {Brand: 'vrbo', start_date: '2020-08-03T12:00:00Z', time_to_detect: '200000'},
-                {Brand: 'vrbo', start_date: '2020-08-03T12:00:00Z', time_to_detect: '500000'},
-                {Brand: 'expedia', start_date: '2020-08-10T12:00:00Z', time_to_detect: '60000'},
-                {Brand: 'expedia', start_date: '2020-08-23T12:00:00Z', time_to_detect: '1100000'},
+                {Brand: 'hotels, eps', start_date: '2020-07-23T12:00:00Z', time_to_detect: '18'},
+                {Brand: 'vrbo', start_date: '2020-08-03T12:00:00Z', time_to_detect: '3'},
+                {Brand: 'vrbo', start_date: '2020-08-03T12:00:00Z', time_to_detect: '8'},
+                {Brand: 'expedia', start_date: '2020-08-10T12:00:00Z', time_to_detect: '7'},
+                {Brand: 'expedia', start_date: '2020-08-23T12:00:00Z', time_to_detect: '18'},
             ];
             expect(weeklyMeanTimebyBrand('2020-08-02', '2020-08-09', incidents, EG_BRAND, 'time_to_detect')).to.be.eql({
                 data: [{
                     name: '2020-08-02',
                     eps: 0,
                     hotels: 0,
-                    vrbo: Number(moment.duration((200000 + 500000) / 2, 'milliseconds').as('hours').toFixed(2)),
+                    vrbo: Number(moment.duration((3 + 8) / 2, 'minutes').as('hours').toFixed(2)),
                     expedia: 0
                 }, {
                     name: '2020-08-09',
                     eps: 0,
                     hotels: 0,
                     vrbo: 0,
-                    expedia: Number(moment.duration(60000, 'milliseconds').as('hours').toFixed(2)),
+                    expedia: Number(moment.duration(7, 'minutes').as('hours').toFixed(2)),
                 }],
                 keys: ['eps', 'expedia', 'hotels', 'vrbo']
             });
@@ -268,23 +266,23 @@ describe('incidentsHelper', () => {
 
         it('returns MTTD for given date range and array of incidents bucketed by week and brand', () => {
             const incidents = [
-                {Brand: 'hotels', start_date: '2020-07-23T12:00:00Z', time_to_detect: '80000'},
-                {Brand: 'vrbo', start_date: '2020-08-03T12:00:00Z', time_to_detect: '50000'},
-                {Brand: 'vrbo', start_date: '2020-08-03T12:00:00Z', time_to_detect: '10000'},
-                {Brand: 'expedia', start_date: '2020-08-10T12:00:00Z', time_to_detect: '30000'},
-                {Brand: 'expedia', start_date: '2020-08-23T12:00:00Z', time_to_detect: '100000'},
+                {Brand: 'hotels', start_date: '2020-07-23T12:00:00Z', time_to_detect: '80'},
+                {Brand: 'vrbo', start_date: '2020-08-03T12:00:00Z', time_to_detect: '50'},
+                {Brand: 'vrbo', start_date: '2020-08-03T12:00:00Z', time_to_detect: '10'},
+                {Brand: 'expedia', start_date: '2020-08-10T12:00:00Z', time_to_detect: '30'},
+                {Brand: 'expedia', start_date: '2020-08-23T12:00:00Z', time_to_detect: '100'},
             ];
             expect(weeklyMeanTimebyBrand('2020-08-02', '2020-08-09', incidents, EG_BRAND, 'time_to_detect')).to.be.eql({
                 data: [{
                     name: '2020-08-02',
                     expedia: 0,
                     hotels: 0,
-                    vrbo: Number(moment.duration((50000 + 10000) / 2, 'milliseconds').as('hours').toFixed(2))
+                    vrbo: Number(moment.duration((50 + 10) / 2, 'minutes').as('hours').toFixed(2))
                 }, {
                     name: '2020-08-09',
                     hotels: 0,
                     vrbo: 0,
-                    expedia: Number(moment.duration(30000, 'milliseconds').as('hours').toFixed(2)),
+                    expedia: Number(moment.duration(30, 'minutes').as('hours').toFixed(2)),
                 }],
                 keys: ['expedia', 'hotels', 'vrbo']
             });
@@ -293,12 +291,12 @@ describe('incidentsHelper', () => {
 
     describe('incidentsOfTheWeek', () => {
         it('returns the incidents of a specific week from an array of incidents in input', () => {
-            const result = incidentsOfTheWeek(mockData2, 38);
+            const result = incidentsOfTheWeek(incData, 38);
             expect(result.length).to.be.eql(3);
         });
 
         it('returns empty array if the week is not a number', () => {
-            const result = incidentsOfTheWeek(mockData2);
+            const result = incidentsOfTheWeek(incData);
             expect(result).to.be.eql([]);
         });
 

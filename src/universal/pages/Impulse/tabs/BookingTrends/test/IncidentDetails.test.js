@@ -4,8 +4,10 @@ import React from 'react';
 import chai, {expect} from 'chai';
 import chaiJestSnapshot from 'chai-jest-snapshot';
 import fakeData from './incidentData.test.json';
+
 chai.use(chaiJestSnapshot);
-describe('Incident Detials component testing', () => {
+
+describe('Incident Details component testing', () => {
     let wrapper;
 
     beforeEach(() => {

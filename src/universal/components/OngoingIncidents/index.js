@@ -28,7 +28,7 @@ const OngoingIncidents = ({selectedBrands}) => {
         const fetchTickets = () => {
             setIsLoading(true);
             const browserTimezone = moment.tz.guess();
-            fetch(`/v1/incidents?from_datetime=${moment(fromDate).tz(browserTimezone).toISOString()}&to_datetime=${moment(toDate).tz(browserTimezone).toISOString()}`)
+            fetch(`/v1/incidents?from_date=${moment(fromDate).tz(browserTimezone).toISOString()}&to_date=${moment(toDate).tz(browserTimezone).toISOString()}`)
                 .then(checkResponse)
                 .then((fetchedIncidents) => {
                     setAllIncidents(fetchedIncidents);

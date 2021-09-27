@@ -39,7 +39,7 @@ describe('OngoingIncidents component testing', () => {
                         summary: 'Egencia EMEA/APAC Call Center Interface (CCI) Degraded',
                         tag: null,
                         time_to_detect: null,
-                        time_to_resolve: '11700000',
+                        time_to_restore: '11700000',
                         url: 'https://expedia.service-now.com/go.do?id=INC5689555',
                     }
                 ];

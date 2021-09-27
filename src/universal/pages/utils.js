@@ -232,7 +232,7 @@ export const buildTicketLinks = (id = '', brand = '', url = '') => {
     return buildTicketLink(id, brand, url);
 };
 
-export const parseDurationToMs = (strDuration = '') => {
+export const parseDurationToMinutes = (strDuration = '') => {
     if (typeof strDuration === 'number') {
         return strDuration;
     }
@@ -249,7 +249,7 @@ export const parseDurationToMs = (strDuration = '') => {
     const hours = getNumValue('h');
     const minutes = getNumValue('m');
     const totalMinutes = (days * 24 * 60) + (hours * 60) + minutes;
-    return totalMinutes * 60000;
+    return totalMinutes;
 };
 
 const getArray = (item) => {
@@ -285,9 +285,9 @@ export const mapEpsData = (t) => {
     result.impacted_brand = EXPEDIA_PARTNER_SERVICES_BRAND;
     result.resolution_notes = t.resolutionNotes;
     result.notification_sent = t.notificationSent;
-    result.duration = parseDurationToMs(t.duration);
-    result.time_to_detect = parseDurationToMs(t.timeToDetect);
-    result.time_to_resolve = parseDurationToMs(t.timeToResolve);
+    result.duration = parseDurationToMinutes(t.duration) * 60 * 1000;
+    result.time_to_detect = parseDurationToMinutes(t.timeToDetect);
+    result.time_to_restore = parseDurationToMinutes(t.timeToRestore);
     result.impacted_partners = getImpactedPartners(t.impactedPartners);
     result.impacted_partners_lobs = getImpactedPartners(t.impactedPartners, t.impactedLobs || []);
     return result;

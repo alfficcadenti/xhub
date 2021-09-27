@@ -14,7 +14,7 @@ import {
 } from '../../constants';
 import {getOrDefault} from '../../utils';
 import {buildTicketLinks, divisionToBrand, getListOfUniqueProperties, isNotDuplicate} from '../utils';
-import {formatDurationForTable, formatDurationToH, formatDurationToHours} from '../../components/utils';
+import {formatDurationForTable, formatDurationToH, formatDuration} from '../../components/utils';
 
 export const getTableColumns = (selectedBrand) => {
     if (selectedBrand === EXPEDIA_PARTNER_SERVICES_BRAND) {
@@ -104,13 +104,13 @@ export const getQualityData = (filteredDefects = []) => filteredDefects
         Priority: getOrDefault(t, 'priority'),
         Brand: getOrDefault(t, 'Brand'),
         Division: getOrDefault(t, 'Division'),
-        Opened: moment.utc(t.openDate).local().isValid() ? moment(t.openDate).local().format('YYYY-MM-DD HH:mm') : '-',
-        Resolved: moment.utc(t.resolvedDate).local().isValid() ? moment(t.resolvedDate).local().format('YYYY-MM-DD HH:mm') : '-',
-        Duration: t.duration && t.resolvedDate ? formatDurationForTable(t.duration) : '-',
+        Opened: moment.utc(t.open_date).local().isValid() ? moment(t.open_date).local().format('YYYY-MM-DD HH:mm') : '-',
+        Resolved: moment.utc(t.resolved_date).local().isValid() ? moment(t.resolved_date).local().format('YYYY-MM-DD HH:mm') : '-',
+        Duration: t.duration && t.resolved_date ? formatDurationForTable(t.duration) : '-',
         Summary: getOrDefault(t, 'summary'),
         Project: getOrDefault(t, 'project'),
         rawDuration: t.duration,
-        'Impacted Brand': getOrDefault(t, 'impactedBrand'),
+        'Impacted Brand': getOrDefault(t, 'impacted_brand'),
         Status: getOrDefault(t, 'Status'),
         Tag: getOrDefault(t, 'tag'),
     }))
@@ -132,12 +132,12 @@ export const getMeanValue = (incidents = [], property) => (sumPropertyInArrayOfO
 export const getIncMetricsByBrand = (inc = []) => getListOfUniqueProperties(inc, 'Brand')
     .map((brand) => {
         const brandIncidentsList = brandIncidents(inc, brand);
-        const brandMTTR = formatDurationToHours(getMeanValue(brandIncidentsList, 'time_to_resolve'));
-        const brandMTTD = formatDurationToHours(getMeanValue(brandIncidentsList, 'time_to_detect'));
+        const brandMTTR = formatDuration(getMeanValue(brandIncidentsList, 'time_to_restore'), 'minutes');
+        const brandMTTD = formatDuration(getMeanValue(brandIncidentsList, 'time_to_detect'), 'minutes');
         const P1inc = brandIncidentsList.filter((incident) => incident.priority === '1-Critical').length;
         const P2inc = brandIncidentsList.filter((incident) => incident.priority === '2-High').length;
         const all = brandIncidentsList.length;
-        const brandTotalDuration = formatDurationToHours(sumPropertyInArrayOfObjects(brandIncidentsList, 'duration'));
+        const brandTotalDuration = formatDuration(sumPropertyInArrayOfObjects(brandIncidentsList, 'duration'));
 
         return {
             'Brand': brand,
@@ -161,7 +161,7 @@ export const getWeeks = (start = '', end = '') => {
 };
 
 export const getMeanHours = (incidents, date, property) => Number.parseFloat(formatDurationToH(
-    getMeanValue(incidentsOfTheWeek(incidents, moment(date).week()), property)
+    getMeanValue(incidentsOfTheWeek(incidents, moment(date).week()), property), 'minutes'
 ));
 
 export const weeklyMTTRMTTD = (startDate, endDate, incidents = []) => {
@@ -170,7 +170,7 @@ export const weeklyMTTRMTTD = (startDate, endDate, incidents = []) => {
     weeksInterval.forEach((date) => {
         data.push({
             name: date,
-            MTTR: getMeanHours(incidents, date, 'time_to_resolve'),
+            MTTR: getMeanHours(incidents, date, 'time_to_restore'),
             MTTD: getMeanHours(incidents, date, 'time_to_detect')
         });
     });

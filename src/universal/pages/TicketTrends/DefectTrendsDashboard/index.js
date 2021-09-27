@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 import React, {useState, useEffect, useCallback} from 'react';
 import {withRouter} from 'react-router-dom';
 import moment from 'moment/moment';
@@ -44,6 +43,7 @@ const IncidentTrendsDashboard = ({selectedBrands, onBrandChange, prevSelectedBra
         isApplyClicked,
         pendingStart,
         pendingEnd,
+        // eslint-disable-next-line no-use-before-define
         applyFilters,
         setIsApplyClicked,
         'defects',

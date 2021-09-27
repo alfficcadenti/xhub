@@ -17,7 +17,7 @@ const Overview = ({startDate, endDate, tickets, brand}) => {
     const {data: countData, keys: countKeys, yMax: countYMax} = getWeeklyCounts(startDate, endDate, tickets, 'open_date');
     const {data: mttdMttrData, keys: mttdMttrKeys, yMax: mttdMttrYMax} = weeklyMTTRMTTD(startDate, endDate, tickets);
     const {data: mttdData, keys: mttdKeys, yMax: mttdYMax} = weeklyMeanTimebyBrand(startDate, endDate, tickets, brand, 'time_to_detect');
-    const {data: mttrData, keys: mttrKeys, yMax: mttrYMax} = weeklyMeanTimebyBrand(startDate, endDate, tickets, brand, 'time_to_resolve');
+    const {data: mttrData, keys: mttrKeys, yMax: mttrYMax} = weeklyMeanTimebyBrand(startDate, endDate, tickets, brand, 'time_to_restore');
     return (
         <div data-wdio="incidents-byBrand-table" id="inc-overview-table">
             <LineChartWrapper title="Incident Trends" data={countData} keys={countKeys} yMax={countYMax} helpText="Number of incidents per week by open date" />

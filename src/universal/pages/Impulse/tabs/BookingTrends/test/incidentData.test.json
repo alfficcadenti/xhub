@@ -4,7 +4,7 @@
     "rootCause": "Support teams Migrated all traffic from us-east-1 to us-west 2 to mitigate impact caused by an AWS outage in that region",
     "duration": "2520000",
     "timeToDetect": "540000",
-    "timeToResolve": "1980000",
+    "timeToRestore": "1980000",
     "brand": "Total Retail",
     "summary": "Multiple Points of Sale Air Degraded\t",
     "executiveSummary": "AWS experienced issues on their end with traffic region US-EAST-1, this caused errors with air and all traffic was migrated to us-west 2 to resolve our impact untill AWS issues are fixed.",
