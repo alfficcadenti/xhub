@@ -41,6 +41,13 @@ module.exports.incidents = {
     handler: getHandler(Object.assign(getHandlerParams('incidents'), {pathParam: 'impulse'}))
 };
 
+module.exports.incidentsV2 = {
+    method: 'GET',
+    path: '/v2/incidents/{param*}',
+    config: getConfig('incidents-get-v2'),
+    handler: getHandler(getHandlerParams('incidentsV2'))
+};
+
 module.exports.impulseIncidents = {
     method: 'GET',
     path: '/v1/incidents/impulse',
