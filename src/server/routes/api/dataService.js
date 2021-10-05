@@ -8,7 +8,7 @@ const getHandlerParams = (routeKey) => ({
 
 module.exports.correctiveActionsDetails = {
     method: 'GET',
-    path: '/v1/corrective-actions-details/{param*}',
+    path: '/v1/corrective-actions/{param*}',
     config: getConfig('corrective-actions-details'),
     handler: getHandler(Object.assign(getHandlerParams('correctiveActionsDetails')))
 };

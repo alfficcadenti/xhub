@@ -21,7 +21,7 @@
           "protocol": "https:",
           "routes": {
             "correctiveActionsDetails": {
-              "path": "/v1/corrective-actions-details",
+              "path": "/v1/corrective-actions",
               "method": "GET",
               "operation": "GET_CORRECTIVE_ACTIONS_DETAILS_V1"
             },
@@ -82,7 +82,7 @@
           "protocol": "https:",
           "routes": {
             "correctiveActionsDetails": {
-              "path": "/v1/corrective-actions-details",
+              "path": "/v1/corrective-actions",
               "method": "GET",
               "operation": "GET_CORRECTIVE_ACTIONS_DETAILS_V1"
             },
@@ -143,7 +143,7 @@
           "protocol": "https:",
           "routes": {
             "correctiveActionsDetails": {
-              "path": "/v1/corrective-actions-details",
+              "path": "/v1/corrective-actions",
               "method": "GET",
               "operation": "GET_CORRECTIVE_ACTIONS_DETAILS_V1"
             },
