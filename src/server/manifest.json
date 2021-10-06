@@ -935,12 +935,17 @@
           }
         }
       },
-      "apiDeltaUserConfig": {
+      "apiFciDataServiceConfig": {
         "$filter": "env.EXPEDIA_ENVIRONMENT",
         "$default": {
           "hostname": "eg-fci-data-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black",
           "protocol": "http:",
           "routes": {
+            "checkoutFailureErrorCategories": {
+              "path": "/v1/checkout-failures/error-categories",
+              "method": "GET",
+              "operation": "GET_checkout_failure_error_categories_api_v1"
+            },
             "deltaUser": {
               "path": "/v1/delta-users-counts-by-metrics",
               "method": "GET",
@@ -962,6 +967,11 @@
           "hostname": "eg-fci-data-service-egdp-prod-us-east-1.eglocal.exp-prod.net",
           "protocol": "http:",
           "routes": {
+            "checkoutFailureErrorCategories": {
+              "path": "/v1/checkout-failure/error-categories",
+              "method": "GET",
+              "operation": "GET_checkout_failure_error_categories_api_v1"
+            },
             "deltaUser": {
               "path": "/v1/delta-users-counts-by-metrics",
               "method": "GET",

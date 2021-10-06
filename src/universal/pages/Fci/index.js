@@ -266,16 +266,16 @@ const Fci = ({selectedBrands}) => {
         if (errorCodesIsLoading) {
             const path = chartProperty === CODE_OPTION
                 ? '/v2/checkout-failure-error-codes'
-                : '/v2/checkout-failure-error-categories';
+                : '/v1/checkout-failures/error-categories';
             setErrorCodesIsLoading(true);
             fetch(`${path}?from=${pendingStart.toISOString()}&to=${pendingEnd.toISOString()}`)
                 .then(checkResponse)
                 .then((data) => setErrorCodesData({
                     start: pendingStart,
                     end: pendingEnd,
-                    options: data[0].map((x) => ({label: x, value: x}))
-                }))
-                .finally(() => setErrorCodesIsLoading(false));
+                    options: chartProperty === CODE_OPTION ? data[0].map((x) => ({label: x, value: x})) : data.map((x) => ({label: x, value: x})) // temporary solution waiting for checkout-failure-error-codes to be migrated
+                })
+                ).finally(() => setErrorCodesIsLoading(false));
         }
     }, [pendingStart, pendingEnd, errorCodesIsLoading, chartProperty]);
 

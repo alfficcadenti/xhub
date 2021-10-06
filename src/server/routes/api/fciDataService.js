@@ -2,9 +2,16 @@ import {getConfig, getHandler} from './utils';
 
 const getHandlerParams = (routeKey) => ({
     routeKey,
-    configKey: 'apiDeltaUserConfig',
-    serviceName: 'api-v1-delta-user'
+    configKey: 'apiFciDataServiceConfig',
+    serviceName: 'api-v1-fci-data-service'
 });
+
+module.exports.checkoutFailureErrorCategories = {
+    method: 'GET',
+    path: '/v1/checkout-failures/error-categories/{param*}',
+    config: getConfig('checkout-failure-error-categories-get'),
+    handler: getHandler(Object.assign(getHandlerParams('checkoutFailureErrorCategories')))
+};
 
 module.exports.deltaUser = {
     method: 'GET',

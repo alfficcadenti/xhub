@@ -45,7 +45,7 @@ import {
 } from './userEventsAnalysisService';
 import {impulseHealth, impulseAnomalies, impulseAnomaliesGrouped} from './impulseDataService';
 import {impulsePrediction} from './anomalyDetector';
-import {deltaUser, deltaUserDetails, deltaUserBySessionId} from './deltaUserService';
+import {checkoutFailureErrorCategories, deltaUser, deltaUserDetails, deltaUserBySessionId} from './fciDataService';
 
 
 const apiRoutes = [
@@ -103,7 +103,8 @@ const apiRoutes = [
     impulseAnomaliesGrouped,
     // opxhub booking anomaly detector
     impulsePrediction,
-    // delta user  service
+    // fci data service
+    checkoutFailureErrorCategories,
     deltaUser,
     deltaUserDetails,
     deltaUserBySessionId
