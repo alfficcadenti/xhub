@@ -6,8 +6,6 @@ import {
     getFciErrorCategoryTestData,
     getCommentTestData,
     getFciSites,
-    getFciErrorCodes,
-    getFciErrorCategories
 } from './testData/fciTestService';
 
 const getHandlerParams = (routeKey) => ({
@@ -49,20 +47,6 @@ module.exports.fciSites = {
     path: '/v2/checkout-failure-sites/{param*}',
     config: getConfig('fci-sites-v2-get'),
     handler: getHandler(Object.assign(getHandlerParams('checkout-failure-sites'), {timeout: 120000, connectionTimeout: 120000}), getFciSites)
-};
-
-module.exports.fciErrorCodes = {
-    method: 'GET',
-    path: '/v2/checkout-failure-error-codes/{param*}',
-    config: getConfig('fci-error-codes-v2-get'),
-    handler: getHandler(Object.assign(getHandlerParams('checkout-failure-error-codes'), {timeout: 120000, connectionTimeout: 120000}), getFciErrorCodes)
-};
-
-module.exports.fciErrorCategories = {
-    method: 'GET',
-    path: '/v2/checkout-failure-error-categories/{param*}',
-    config: getConfig('fci-error-categories-v2-get'),
-    handler: getHandler(Object.assign(getHandlerParams('checkout-failure-error-categories'), {timeout: 120000, connectionTimeout: 120000}), getFciErrorCategories)
 };
 
 module.exports.getFciComments = {

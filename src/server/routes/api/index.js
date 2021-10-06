@@ -38,14 +38,12 @@ import {
     fciErrorCounts,
     fciCategoryCounts,
     fciSites,
-    fciErrorCodes,
-    fciErrorCategories,
     getFciComments,
     postFciComment
 } from './userEventsAnalysisService';
 import {impulseHealth, impulseAnomalies, impulseAnomaliesGrouped} from './impulseDataService';
 import {impulsePrediction} from './anomalyDetector';
-import {checkoutFailureErrorCategories, deltaUser, deltaUserDetails, deltaUserBySessionId} from './fciDataService';
+import {checkoutFailuresErrorCategories, checkoutFailuresErrorCodes, deltaUser, deltaUserDetails, deltaUserBySessionId} from './fciDataService';
 
 
 const apiRoutes = [
@@ -93,8 +91,6 @@ const apiRoutes = [
     fciErrorCounts,
     fciCategoryCounts,
     fciSites,
-    fciErrorCodes,
-    fciErrorCategories,
     getFciComments,
     postFciComment,
     // impulse data service
@@ -104,7 +100,8 @@ const apiRoutes = [
     // opxhub booking anomaly detector
     impulsePrediction,
     // fci data service
-    checkoutFailureErrorCategories,
+    checkoutFailuresErrorCategories,
+    checkoutFailuresErrorCodes,
     deltaUser,
     deltaUserDetails,
     deltaUserBySessionId
