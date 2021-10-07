@@ -82,7 +82,7 @@ const ScoreCard = ({start, end, selectedBrand}) => {
             setOrgDetails(data.l1);
         } else {
             const breadcrumbOrg = breadcrumbs[idx];
-            const subOrgDetails = data[`l${idx}`].find((row) => row.name === breadcrumbOrg).subOrgDetails;
+            const subOrgDetails = data[`l${idx}`].find((row) => row.name === breadcrumbOrg).sub_org_details;
             const subOrgs = (subOrgDetails || []).map((subOrg) => subOrg.name);
             const nextBusinessOwnerType = `l${idx + 1}`;
             const nextOrgDetails = (data[nextBusinessOwnerType] || []).filter((row) => subOrgs.includes(row.name));

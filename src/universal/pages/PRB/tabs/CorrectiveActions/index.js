@@ -43,12 +43,12 @@ const CorrectiveActions = ({
     const [isLoading, setIsLoading] = useState(true);
 
     const initData = (response, initialValue, setData, onLChange) => {
-        if (!response || !response.data) {
+        if (!response) {
             throw Error();
         }
-        setData(response.data);
+        setData(response);
         if (initialValue) {
-            const found = response.data.find(({name}) => name === initialValue);
+            const found = response.find(({name}) => name === initialValue);
             onLChange(found);
         }
     };
@@ -86,7 +86,7 @@ const CorrectiveActions = ({
     const handleRowClick = (row) => {
         if (row) {
             const findName = (d) => d && d.name === row.name;
-            switch (row.businessOwnerType) {
+            switch (row.business_owner_type) {
                 case 'l1':
                     onL1Change(row);
                     onL2Change(null);
@@ -117,7 +117,7 @@ const CorrectiveActions = ({
     };
 
     const fetchDetails = (businessOwnerType, businessOwnerValue) => {
-        fetch(`/v1/corrective-actions-details?${fetchQuery}`)
+        fetch(`/v1/corrective-actions?${fetchQuery}`)
             .then(checkResponse)
             .then((response) => {
                 if (response && response.length) {
@@ -129,7 +129,7 @@ const CorrectiveActions = ({
     };
 
     const renderRow = (row) => {
-        const {name, businessOwnerType, ticketsCount} = row;
+        const {name, business_owner_type: businessOwnerType, tickets_count: ticketsCount} = row;
         const isSelected = checkIsRowSelected(businessOwnerType, selectedL1, selectedL2, selectedL3, selectedL4, name);
         return (
             <div
@@ -162,25 +162,25 @@ const CorrectiveActions = ({
     };
 
     const handleL1Close = () => {
-        onL1Change({name: null, subOrgDetails: []});
-        onL2Change({name: null, subOrgDetails: []});
-        onL3Change({name: null, subOrgDetails: []});
-        onL4Change({name: null, subOrgDetails: []});
+        onL1Change({name: null, sub_org_details: []});
+        onL2Change({name: null, sub_org_details: []});
+        onL3Change({name: null, sub_org_details: []});
+        onL4Change({name: null, sub_org_details: []});
     };
 
     const handleL2Close = () => {
-        onL2Change({name: null, subOrgDetails: []});
-        onL3Change({name: null, subOrgDetails: []});
-        onL4Change({name: null, subOrgDetails: []});
+        onL2Change({name: null, sub_org_details: []});
+        onL3Change({name: null, sub_org_details: []});
+        onL4Change({name: null, sub_org_details: []});
     };
 
     const handleL3Close = () => {
-        onL3Change({name: null, subOrgDetails: []});
-        onL4Change({name: null, subOrgDetails: []});
+        onL3Change({name: null, sub_org_details: []});
+        onL4Change({name: null, sub_org_details: []});
     };
 
     const handleL4Close = () => {
-        onL4Change({name: null, subOrgDetails: []});
+        onL4Change({name: null, sub_org_details: []});
     };
 
     const renderDetailsTable = () => {
@@ -216,7 +216,7 @@ const CorrectiveActions = ({
             >
                 <SVGIcon usefill markup={CLOSE__24} />
             </div>
-            {(selectedL || {subOrgDetails: []}).subOrgDetails.map(renderRow)}
+            {(selectedL || {sub_org_details: []}).sub_org_details.map(renderRow)}
         </div>
     );
 

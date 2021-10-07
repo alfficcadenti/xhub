@@ -265,17 +265,17 @@ const Fci = ({selectedBrands}) => {
     useEffect(() => {
         if (errorCodesIsLoading) {
             const path = chartProperty === CODE_OPTION
-                ? '/v2/checkout-failure-error-codes'
-                : '/v2/checkout-failure-error-categories';
+                ? '/v1/checkout-failures/error-codes'
+                : '/v1/checkout-failures/error-categories';
             setErrorCodesIsLoading(true);
             fetch(`${path}?from=${pendingStart.toISOString()}&to=${pendingEnd.toISOString()}`)
                 .then(checkResponse)
                 .then((data) => setErrorCodesData({
                     start: pendingStart,
                     end: pendingEnd,
-                    options: data[0].map((x) => ({label: x, value: x}))
-                }))
-                .finally(() => setErrorCodesIsLoading(false));
+                    options: data.map((x) => ({label: x, value: x}))
+                })
+                ).finally(() => setErrorCodesIsLoading(false));
         }
     }, [pendingStart, pendingEnd, errorCodesIsLoading, chartProperty]);
 
