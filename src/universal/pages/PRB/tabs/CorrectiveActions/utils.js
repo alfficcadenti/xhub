@@ -28,4 +28,18 @@ export const checkIsRowSelected = (businessOwnerType, selectedL1, selectedL2, se
     || (selectedL3 !== null && businessOwnerType === 'l4' && selectedL4 !== null && selectedL4.name === name)
 );
 
-export const filterDetails = (data, businessOwnerType, businessOwnerValue) => data && businessOwnerType && businessOwnerValue && data.length && data.filter((x) => x[businessOwnerType] && x[businessOwnerType] === businessOwnerValue) || data;
+// eslint-disable-next-line complexity
+export const filterDetails = (data, businessOwnerType, businessOwnerValue) => {
+    if (!data || !data.length) {
+        return [];
+    }
+    if (!businessOwnerType) {
+        return data;
+    }
+    const businessOwnerValueStr = String(businessOwnerValue);
+    if (businessOwnerValueStr.startsWith('Undefined')) {
+        const levels = businessOwnerValueStr.split(' < ').reverse().map((a) => a === 'Undefined' ? '' : a);
+        return data.filter((x) => levels.reduce((acc, curr, idx) => x[`l${idx + 3}`] === curr && acc, true)) || data;
+    }
+    return data.filter((x) => x[businessOwnerType] && x[businessOwnerType] === businessOwnerValueStr) || data;
+};

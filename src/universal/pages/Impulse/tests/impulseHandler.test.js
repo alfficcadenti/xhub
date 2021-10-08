@@ -116,25 +116,31 @@ describe('impulseHandler', () => {
         });
     });
     describe('convertRelativeDateRange', () => {
+        const isWithinMinutes = (a, b) => moment(a).diff(b, 'minutes') < 2;
         it('should return future date by day', () => {
-            const expectedDate = moment().add(1, 'day').format();
-            expect(convertRelativeDateRange('now+1d')).eql(expectedDate);
+            const expected = moment().add(1, 'day');
+            const result = convertRelativeDateRange('now+1d');
+            expect(isWithinMinutes(result, expected)).eql(true);
         });
         it('should return future date by hour', () => {
-            const expectedDate = moment().add(1, 'hour').format();
-            expect(convertRelativeDateRange('now+1h')).eql(expectedDate);
+            const expected = moment().add(1, 'hour');
+            const result = convertRelativeDateRange('now+1h');
+            expect(isWithinMinutes(result, expected)).eql(true);
         });
         it('should return past date by day', () => {
-            const expectedDate = moment().subtract(1, 'day').format();
-            expect(convertRelativeDateRange('now-1d')).eql(expectedDate);
+            const expected = moment().subtract(1, 'day');
+            const result = convertRelativeDateRange('now-1d');
+            expect(isWithinMinutes(result, expected)).eql(true);
         });
         it('should return past date by hour', () => {
-            const expectedDate = moment().subtract(1, 'hour').format();
-            expect(convertRelativeDateRange('now-1h')).eql(expectedDate);
+            const expected = moment().subtract(1, 'hour');
+            const result = convertRelativeDateRange('now-1h');
+            expect(isWithinMinutes(result, expected)).eql(true);
         });
         it('should return current date', () => {
-            const expectedDate = moment().format();
-            expect(convertRelativeDateRange('now')).eql(expectedDate);
+            const expected = moment();
+            const result = convertRelativeDateRange('now');
+            expect(isWithinMinutes(result, expected)).eql(true);
         });
     });
     describe('convertRelativeDateInString', () => {

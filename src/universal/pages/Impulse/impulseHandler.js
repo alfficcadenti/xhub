@@ -112,6 +112,7 @@ export const simplifyPredictionData = (predictionData) => (
 export const startTime = () => moment().utc().subtract(3, 'days').startOf('minute');
 export const endTime = () => moment().utc().endOf('minute');
 
+// eslint-disable-next-line complexity
 export const getActiveIndex = (pathname = '') => {
     if (pathname.includes('impulse/booking-trends')) {
         return 0;
@@ -137,6 +138,7 @@ export const getActiveIndex = (pathname = '') => {
     return 0;
 };
 
+// eslint-disable-next-line complexity
 export const getDefaultTimeInterval = (startDate, endDate) => {
     const diff = moment(endDate).diff(moment(startDate), 'days');
     if (diff < 1) {
@@ -154,7 +156,9 @@ export const getDefaultTimeInterval = (startDate, endDate) => {
 };
 
 
+// eslint-disable-next-line complexity
 export const getTimeIntervals = (startDate, endDate, timeInterval) => {
+    // eslint-disable-next-line complexity
     const filterCurrentInterval = (item) => {
         let timeNumber = item.match(/(\d+)/);
         let timeValue = item.slice(-1);
@@ -199,6 +203,7 @@ export const isValidTimeInterval = (startDate, endDate, timeInterval) => (
     !!timeInterval && !!startDate && !!endDate && getTimeIntervals(startDate, endDate).includes(timeInterval)
 );
 
+// eslint-disable-next-line complexity
 export const convertRelativeDateRange = (date = '') => {
     const regex = /^(now)([ +-][0-9]*[hd])?$/;
 
@@ -244,6 +249,7 @@ export const getQueryValues = (search) => {
     };
 };
 
+// eslint-disable-next-line complexity
 export const convertRelativeDateInString = (date) => {
     const utcDateTimeRegex = /^([0-9]{4,4})[-]([0-9]{2,2})[-]([0-9]{2,2})[T]([0-9]{2,2})[:]([0-9]{2,2})[:]([0-9]{2,2})[Z]$/;
     const [, , months, days, hours] = utcDateTimeRegex.exec(date);
@@ -264,6 +270,7 @@ export const convertRelativeDateInString = (date) => {
     return (d > 0) ? `now-${d}d` : `now+${-d}d`;
 };
 
+// eslint-disable-next-line complexity
 export const mapActiveIndexToTabName = (idx) => {
     if (idx === 1) {
         return 'by-brands';

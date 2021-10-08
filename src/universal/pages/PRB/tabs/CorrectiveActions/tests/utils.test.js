@@ -61,10 +61,16 @@ describe('CorrectiveActions Utils', () => {
     });
 
     it('filterDetails', () => {
+        const numDetails = mockDetails.length;
+        expect(filterDetails(null, 'l2', 'Egencia Product')).to.have.length(0);
+        expect(filterDetails(mockDetails, null, 'Egencia Product')).to.have.length(numDetails);
+        expect(filterDetails(mockDetails, 'l2', null)).to.have.length(0);
+        expect(filterDetails(mockDetails, 'l5', 'Undefined < Egencia Product and Tech < Egencia Tech - Global')).to.have.length(1);
+        expect(filterDetails(mockDetails, 'l5', 'Undefined < Egencia Product and Tech < Egencia Tech - Invalid')).to.have.length(0);
         expect(filterDetails(mockDetails, 'l2', 'Egencia Product')).to.have.length(1);
-        expect(filterDetails(mockDetails, 'l2', 'Egencia Product and Tech')).to.have.length(2);
+        expect(filterDetails(mockDetails, 'l2', 'Egencia Product and Tech')).to.have.length(3);
         expect(filterDetails([], 'l2', 'Egencia Product and Tech')).to.have.length(0);
         expect(filterDetails([], null, null)).to.have.length(0);
-        expect(filterDetails(mockDetails, null, null)).to.have.length(3);
+        expect(filterDetails(mockDetails, null, null)).to.have.length(numDetails);
     });
 });
