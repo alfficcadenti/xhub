@@ -251,12 +251,12 @@ const Fci = ({selectedBrands}) => {
 
     useEffect(() => {
         if (sitesIsLoading) {
-            fetch(`/v2/checkout-failure-sites?from=${pendingStart.toISOString()}&to=${pendingEnd.toISOString()}`)
+            fetch(`/v1/checkout-failures/sites?from=${pendingStart.toISOString()}&to=${pendingEnd.toISOString()}`)
                 .then(checkResponse)
                 .then((data) => setSitesData({
                     start: pendingStart,
                     end: pendingEnd,
-                    options: data[0].map((x) => ({label: x, value: x}))
+                    options: data?.map((x) => ({label: x, value: x}))
                 }))
                 .finally(() => setSitesIsLoading(false));
         }
