@@ -155,7 +155,7 @@ const Fci = ({selectedBrands}) => {
         setModalError();
         setIsModalOpen(true);
         updateHistory();
-        fetch(`/v2/checkout-failure?search_id=${searchText}`)
+        fetch(`/v1/checkout-failures/search?id=${searchText}`)
             .then(checkResponse)
             .then((data) => {
                 processTableData(data);
