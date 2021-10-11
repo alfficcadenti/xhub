@@ -33,18 +33,23 @@ import {
 } from './userEventsService';
 import {changeRequests, annotations, productMapping, abTests} from './changeRequestService';
 import {
-    fciUserEvent,
     fciUserEvents,
     fciErrorCounts,
     fciCategoryCounts,
-    fciSites,
     getFciComments,
     postFciComment
 } from './userEventsAnalysisService';
 import {impulseHealth, impulseAnomalies, impulseAnomaliesGrouped} from './impulseDataService';
 import {impulsePrediction} from './anomalyDetector';
-import {checkoutFailuresErrorCategories, checkoutFailuresErrorCodes, checkoutFailuresSearch, deltaUser, deltaUserDetails, deltaUserBySessionId} from './fciDataService';
-
+import {
+    checkoutFailuresErrorCategories,
+    checkoutFailuresErrorCodes,
+    checkoutFailuresSearch,
+    checkoutFailuresSites,
+    deltaUser,
+    deltaUserDetails,
+    deltaUserBySessionId
+} from './fciDataService';
 
 const apiRoutes = [
     // oauth
@@ -86,11 +91,9 @@ const apiRoutes = [
     productMapping,
     abTests,
     // user events analysis service
-    fciUserEvent,
     fciUserEvents,
     fciErrorCounts,
     fciCategoryCounts,
-    fciSites,
     getFciComments,
     postFciComment,
     // impulse data service
@@ -103,6 +106,7 @@ const apiRoutes = [
     checkoutFailuresErrorCategories,
     checkoutFailuresErrorCodes,
     checkoutFailuresSearch,
+    checkoutFailuresSites,
     deltaUser,
     deltaUserDetails,
     deltaUserBySessionId

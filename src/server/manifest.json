@@ -896,6 +896,11 @@
               "method": "GET",
               "operation": "GET_checkout_failures_search_api_v1"
             },
+            "checkoutFailuresSites": {
+              "path": "/v1/checkout-failures/sites",
+              "method": "GET",
+              "operation": "GET_checkout_failures_sites_api_v1"
+            },
             "deltaUser": {
               "path": "/v1/delta-users-counts-by-metrics",
               "method": "GET",
@@ -931,6 +936,11 @@
               "path": "/v1/checkout-failures/search",
               "method": "GET",
               "operation": "GET_checkout_failures_search_api_v1"
+            },
+            "checkoutFailuresSites": {
+              "path": "/v1/checkout-failures/sites",
+              "method": "GET",
+              "operation": "GET_checkout_failures_sites_api_v1"
             },
             "deltaUser": {
               "path": "/v1/delta-users-counts-by-metrics",

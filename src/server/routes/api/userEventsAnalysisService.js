@@ -3,8 +3,7 @@ import {
     getFcisTestData,
     getFciErrorCountsTestData,
     getFciErrorCategoryTestData,
-    getCommentTestData,
-    getFciSites,
+    getCommentTestData
 } from './testData/fciTestService';
 
 const getHandlerParams = (routeKey) => ({
@@ -32,13 +31,6 @@ module.exports.fciCategoryCounts = {
     path: '/v2/checkout-failure-category-counts/{param*}',
     config: getConfig('fci-category-counts-v2-get'),
     handler: getHandler(Object.assign(getHandlerParams('fciCategoryCounts'), {timeout: 120000, connectionTimeout: 120000}), getFciErrorCategoryTestData)
-};
-
-module.exports.fciSites = {
-    method: 'GET',
-    path: '/v2/checkout-failure-sites/{param*}',
-    config: getConfig('fci-sites-v2-get'),
-    handler: getHandler(Object.assign(getHandlerParams('checkout-failure-sites'), {timeout: 120000, connectionTimeout: 120000}), getFciSites)
 };
 
 module.exports.getFciComments = {
