@@ -20,6 +20,13 @@ module.exports.checkoutFailuresErrorCodes = {
     handler: getHandler(Object.assign(getHandlerParams('checkoutFailuresErrorCodes')))
 };
 
+module.exports.checkoutFailuresSearch = {
+    method: 'GET',
+    path: '/v1/checkout-failures/search/{param*}',
+    config: getConfig('checkout-failures-search-get'),
+    handler: getHandler(Object.assign(getHandlerParams('checkoutFailuresSearch')))
+};
+
 module.exports.deltaUser = {
     method: 'GET',
     path: '/v1/delta-users-counts-by-metrics',
