@@ -206,11 +206,6 @@
           "hostname": "user-events-analysis-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black",
           "protocol": "http:",
           "routes": {
-            "fci": {
-              "path": "/v2/checkout-failure",
-              "method": "GET",
-              "operation": "GET_user_events_analysis_fci_api_v2"
-            },
             "fcis": {
               "path": "/v2/checkout-failures",
               "method": "GET",
