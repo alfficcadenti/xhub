@@ -206,11 +206,6 @@
           "hostname": "user-events-analysis-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black",
           "protocol": "http:",
           "routes": {
-            "fci": {
-              "path": "/v2/checkout-failure",
-              "method": "GET",
-              "operation": "GET_user_events_analysis_fci_api_v2"
-            },
             "fcis": {
               "path": "/v2/checkout-failures",
               "method": "GET",
@@ -247,11 +242,6 @@
           "hostname": "user-events-analysis-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black",
           "protocol": "http:",
           "routes": {
-            "fci": {
-              "path": "/v2/checkout-failure",
-              "method": "GET",
-              "operation": "GET_user_events_analysis_fci_api_v2"
-            },
             "fcis": {
               "path": "/v2/checkout-failures",
               "method": "GET",
@@ -288,11 +278,6 @@
           "hostname": "user-events-analysis-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black",
           "protocol": "http:",
           "routes": {
-            "fci": {
-              "path": "/v2/checkout-failure",
-              "method": "GET",
-              "operation": "GET_user_events_analysis_fci_api_v2"
-            },
             "fcis": {
               "path": "/v2/checkout-failures",
               "method": "GET",
@@ -329,11 +314,6 @@
           "hostname": "user-events-analysis-service-egdp-prod-us-east-1.eglocal.exp-prod.net",
           "protocol": "http:",
           "routes": {
-            "fci": {
-              "path": "/v2/checkout-failure",
-              "method": "GET",
-              "operation": "GET_user_events_analysis_fci_api_v2"
-            },
             "fcis": {
               "path": "/v2/checkout-failures",
               "method": "GET",
@@ -911,6 +891,11 @@
               "method": "GET",
               "operation": "GET_checkout_failures_error_codes_api_v1"
             },
+            "checkoutFailuresSearch": {
+              "path": "/v1/checkout-failures/search",
+              "method": "GET",
+              "operation": "GET_checkout_failures_search_api_v1"
+            },
             "checkoutFailuresSites": {
               "path": "/v1/checkout-failures/sites",
               "method": "GET",
@@ -946,6 +931,11 @@
               "path": "/v1/checkout-failures/error-codes",
               "method": "GET",
               "operation": "GET_checkout_failures_error_codes_api_v1"
+            },
+            "checkoutFailuresSearch": {
+              "path": "/v1/checkout-failures/search",
+              "method": "GET",
+              "operation": "GET_checkout_failures_search_api_v1"
             },
             "checkoutFailuresSites": {
               "path": "/v1/checkout-failures/sites",
