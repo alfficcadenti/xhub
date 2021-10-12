@@ -32,19 +32,19 @@ describe('incidentsHelper', () => {
     describe('getTableColumns', () => {
         it('returns correct columns for EPS brand', () => {
             expect(getTableColumns(EXPEDIA_PARTNER_SERVICES_BRAND)).to.eql([
-                'Incident', 'Priority', 'Division', 'Started', 'Summary', 'Impacted Partners', 'RC Owner', 'TTD', 'TTK', 'TTF', 'TTR', 'Notification Sent', 'Status'
+                'Incident', 'Priority', 'Division', 'Started', 'Summary', 'Impacted Partners', 'RC Owner', 'TTD', 'TTK', 'TTF', 'TTR', 'Notification Sent', 'Status', 'Success Rates', 'Page Views'
             ]);
         });
 
         it('returns correct columns for EG brand', () => {
             expect(getTableColumns(EG_BRAND)).to.eql([
-                'Incident', 'Priority', 'Brand', 'Division', 'Started', 'Summary', 'RC Owner', 'TTD', 'TTK', 'TTF', 'TTR', 'Status'
+                'Incident', 'Priority', 'Brand', 'Division', 'Started', 'Summary', 'RC Owner', 'TTD', 'TTK', 'TTF', 'TTR', 'Status', 'Success Rates', 'Page Views'
             ]);
         });
 
         it('returns correct columns for non-EPS and non-EG brand', () => {
             expect(getTableColumns(VRBO_BRAND)).to.eql([
-                'Incident', 'Priority', 'Division', 'Started', 'Summary', 'RC Owner', 'TTD', 'TTK', 'TTF', 'TTR', 'Status'
+                'Incident', 'Priority', 'Division', 'Started', 'Summary', 'RC Owner', 'TTD', 'TTK', 'TTF', 'TTR', 'Status', 'Success Rates', 'Page Views'
             ]);
         });
     });

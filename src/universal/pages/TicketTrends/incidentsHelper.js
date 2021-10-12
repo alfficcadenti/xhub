@@ -18,11 +18,11 @@ import {formatDurationForTable, formatDurationToH, formatDuration} from '../../c
 
 export const getTableColumns = (selectedBrand) => {
     if (selectedBrand === EXPEDIA_PARTNER_SERVICES_BRAND) {
-        return ['Incident', 'Priority', 'Division', 'Started', 'Summary', 'Impacted Partners', 'RC Owner', 'TTD', 'TTK', 'TTF', 'TTR', 'Notification Sent', 'Status'];
+        return ['Incident', 'Priority', 'Division', 'Started', 'Summary', 'Impacted Partners', 'RC Owner', 'TTD', 'TTK', 'TTF', 'TTR', 'Notification Sent', 'Status', 'Success Rates', 'Page Views'];
     } else if (selectedBrand === EG_BRAND) {
-        return ['Incident', 'Priority', 'Brand', 'Division', 'Started', 'Summary', 'RC Owner', 'TTD', 'TTK', 'TTF', 'TTR', 'Status'];
+        return ['Incident', 'Priority', 'Brand', 'Division', 'Started', 'Summary', 'RC Owner', 'TTD', 'TTK', 'TTF', 'TTR', 'Status', 'Success Rates', 'Page Views'];
     }
-    return ['Incident', 'Priority', 'Division', 'Started', 'Summary', 'RC Owner', 'TTD', 'TTK', 'TTF', 'TTR', 'Status'];
+    return ['Incident', 'Priority', 'Division', 'Started', 'Summary', 'RC Owner', 'TTD', 'TTK', 'TTF', 'TTR', 'Status', 'Success Rates', 'Page Views'];
 };
 
 export const adjustTicketProperties = (tickets = []) => (
@@ -49,6 +49,13 @@ export const adjustTicketProperties = (tickets = []) => (
         return result;
     })
 );
+
+export const getUrlParams = (brand, incStart) => {
+    const start = moment(incStart);
+    return `?selectedBrand=${brand}`
+        + `&from=${encodeURIComponent(start.subtract(2, 'hours').startOf('hour').format())}`
+        + `&to=${encodeURIComponent(start.add(3, 'hours').startOf('hour'))}`;
+};
 
 export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
     .map((inc) => ({
@@ -78,6 +85,8 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
         partner_divisions: getOrDefault(inc, 'divisions'),
         'Impacted Partners': getOrDefault(inc, 'impacted_partners_lobs'),
         'Notification Sent': getOrDefault(inc, 'notification_sent'),
+        'Success Rates': <a href={`/success-rates${getUrlParams(inc.Brand, inc.start_date)}`} target="_blank" >{'View'}</a>,
+        'Page Views': <a href={`/funnel-view${getUrlParams(inc.Brand, inc.start_date)}`} target="_blank" >{'View'}</a>,
         Details: (
             <div className="expandable-row-wrapper">
                 <div className="expandable-row">

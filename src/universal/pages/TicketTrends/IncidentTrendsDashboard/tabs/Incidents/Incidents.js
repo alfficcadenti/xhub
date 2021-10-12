@@ -11,13 +11,14 @@ const renderTable = (tickets, selectedBrand) => {
         TTF: <div>{'Time to Fix: target <=15m'}</div>,
         TTR: <div>{'Time to Restore: target <=60m'}</div>
     };
-    const csvColumns = columns.concat(['Executive Summary', 'Resolution Notes']);
+    const csvColumns = columns.filter((c) => !['Success Rates', 'Page Views'].includes(c)).concat(['Executive Summary', 'Resolution Notes']);
     return (
         <DataTable
             title={`Incidents (${tickets.length} results)`}
             info="Refreshes every 15 minutes"
             data={getIncidentsData(tickets)}
             columns={columns}
+            hiddenColumns={['Success Rates', 'Page Views']}
             columnsInfo={columnsInfo}
             expandableColumns={['Details']}
             pageSize={25}
@@ -25,6 +26,7 @@ const renderTable = (tickets, selectedBrand) => {
             csvColumns={csvColumns}
             csvFilename="IncidentsResults.csv"
             enableCSVDownload
+            enableColumnDisplaySettings
         />
     );
 };
