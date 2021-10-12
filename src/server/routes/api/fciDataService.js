@@ -46,6 +46,7 @@ module.exports.checkoutFailuresComments = {
     path: '/v1/checkout-failures/comments/{param*}',
     config: getConfig('checkout-failures-comments-get'),
     handler: getHandler(Object.assign(getHandlerParams('checkoutFailuresComments')))
+};
 
 module.exports.checkoutFailuresErrorCounts = {
     method: 'GET',
