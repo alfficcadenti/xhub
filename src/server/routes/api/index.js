@@ -33,7 +33,7 @@ import {
 } from './userEventsService';
 import {changeRequests, annotations, productMapping, abTests} from './changeRequestService';
 import {
-    fciUserEvents
+    fciUserEvents,
     postFciComment
 } from './userEventsAnalysisService';
 import {impulseHealth, impulseAnomalies, impulseAnomaliesGrouped} from './impulseDataService';
