@@ -1,12 +1,22 @@
 @import '../../mixins.less';
 
 .annotations-container {
-    .advanced-filter-active {
+    &.advanced-filter-active {
         .display-annotations-btn {
             background: @color-bg-accent;
             border-radius: @spacing-1x @spacing-1x 0 0;
             border: @border-color-dark 1px solid;
             box-shadow: none;
+        }
+
+        .annotations-wrapper {
+            display: block;
+        }
+    }
+
+    &.advanced-filter-inactive {
+        .annotations-wrapper {
+            display: none;
         }
     }
 
@@ -21,23 +31,19 @@
         &:hover {
             box-shadow: none;
         }
-
-        .annotations-wrapper {
-            display: block;
-        }
     }
 
     .annotations-wrapper {
         position: absolute;
         top: @filter-size + @spacing-1x;
         min-width: 600px;
-        width: 100%;
         background-color: @color-bg-accent;
         border: @border-color-dark 1px solid;
         border-radius: @spacing-1x;
         padding: @spacing-1x;
         z-index: 100;
-        display: none;
+        margin-left: @spacing-1x;
+        border-top-left-radius: 0;
 
         .annotations-filters-container {
             display: flex;
