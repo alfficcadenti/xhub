@@ -35,7 +35,6 @@ import {changeRequests, annotations, productMapping, abTests} from './changeRequ
 import {
     fciUserEvents,
     fciErrorCounts,
-    getFciComments,
     postFciComment
 } from './userEventsAnalysisService';
 import {impulseHealth, impulseAnomalies, impulseAnomaliesGrouped} from './impulseDataService';
@@ -46,6 +45,7 @@ import {
     checkoutFailuresSearch,
     checkoutFailuresSites,
     checkoutFailuresCategoryCounts,
+    checkoutFailuresComments,
     deltaUser,
     deltaUserDetails,
     deltaUserBySessionId
@@ -93,7 +93,6 @@ const apiRoutes = [
     // user events analysis service
     fciUserEvents,
     fciErrorCounts,
-    getFciComments,
     postFciComment,
     // impulse data service
     impulseHealth,
@@ -107,6 +106,7 @@ const apiRoutes = [
     checkoutFailuresSearch,
     checkoutFailuresSites,
     checkoutFailuresCategoryCounts,
+    checkoutFailuresComments,
     deltaUser,
     deltaUserDetails,
     deltaUserBySessionId
