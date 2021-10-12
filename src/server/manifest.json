@@ -211,11 +211,6 @@
               "method": "GET",
               "operation": "GET_user_events_analysis_api_v2"
             },
-            "fciErrorCounts": {
-              "path": "/v2/checkout-failure-error-counts",
-              "method": "GET",
-              "operation": "GET_user_events_analysis_error_counts_api_v2"
-            },
             "postFciComment": {
               "path": "/v2/comment",
               "method": "POST",
@@ -231,11 +226,6 @@
               "path": "/v2/checkout-failures",
               "method": "GET",
               "operation": "GET_user_events_analysis_api_v2"
-            },
-            "fciErrorCounts": {
-              "path": "/v2/checkout-failure-error-counts",
-              "method": "GET",
-              "operation": "GET_user_events_analysis_error_counts_api_v2"
             },
             "postFciComment": {
               "path": "/v2/comment",
@@ -253,11 +243,6 @@
               "method": "GET",
               "operation": "GET_user_events_analysis_api_v2"
             },
-            "fciErrorCounts": {
-              "path": "/v2/checkout-failure-error-counts",
-              "method": "GET",
-              "operation": "GET_user_events_analysis_error_counts_api_v2"
-            },
             "postFciComment": {
               "path": "/v2/comment",
               "method": "POST",
@@ -273,11 +258,6 @@
               "path": "/v2/checkout-failures",
               "method": "GET",
               "operation": "GET_user_events_analysis_api_v2"
-            },
-            "fciErrorCounts": {
-              "path": "/v2/checkout-failure-error-counts",
-              "method": "GET",
-              "operation": "GET_user_events_analysis_error_counts_api_v2"
             },
             "postFciComment": {
               "path": "/v2/comment",
@@ -851,6 +831,11 @@
               "method": "GET",
               "operation": "GET_checkout_failures_comments_api_v1"
             },
+            "checkoutFailuresErrorCounts": {
+              "path": "/v1/checkout-failures/error-counts",
+              "method": "GET",
+              "operation": "GET_checkout_failures_error_counts_api_v1"
+            },
             "deltaUser": {
               "path": "/v1/delta-users-counts-by-metrics",
               "method": "GET",
@@ -901,6 +886,11 @@
               "path": "/v1/checkout-failures/comments",
               "method": "GET",
               "operation": "GET_checkout_failures_comments_api_v1"
+            },
+            "checkoutFailuresErrorCounts": {
+              "path": "/v1/checkout-failures/error-counts",
+              "method": "GET",
+              "operation": "GET_checkout_failures_error_counts_api_v1"
             },
             "deltaUser": {
               "path": "/v1/delta-users-counts-by-metrics",

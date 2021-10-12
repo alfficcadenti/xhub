@@ -66,6 +66,7 @@ const getPresets = () => [
     {text: 'Last 5 Minutes', value: getValue(6, 'minute')},
     {text: 'Last 15 Minutes', value: getValue(15, 'minute')},
     {text: 'Last 60 Minutes', value: getValue(60, 'minute')},
+    {text: 'Last 4 Hours', value: getValue(4, 'hours')},
     {text: 'Last 24 Hours', value: getValue(23.98, 'hours')},
 
 ];

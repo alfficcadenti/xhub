@@ -1,7 +1,6 @@
 import {getConfig, getHandler} from './utils';
 import {
     getFcisTestData,
-    getFciErrorCountsTestData
 } from './testData/fciTestService';
 
 const getHandlerParams = (routeKey) => ({
@@ -15,13 +14,6 @@ module.exports.fciUserEvents = {
     path: '/v2/checkout-failures/{param*}',
     config: getConfig('fci-api-v2-get'),
     handler: getHandler(Object.assign(getHandlerParams('fcis'), {timeout: 120000, connectionTimeout: 120000}), getFcisTestData)
-};
-
-module.exports.fciErrorCounts = {
-    method: 'GET',
-    path: '/v2/checkout-failure-error-counts/{param*}',
-    config: getConfig('fci-error-counts-v2-get'),
-    handler: getHandler(Object.assign(getHandlerParams('fciErrorCounts'), {timeout: 120000, connectionTimeout: 120000}), getFciErrorCountsTestData)
 };
 
 module.exports.postFciComment = {

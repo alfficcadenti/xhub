@@ -46,6 +46,12 @@ module.exports.checkoutFailuresComments = {
     path: '/v1/checkout-failures/comments/{param*}',
     config: getConfig('checkout-failures-comments-get'),
     handler: getHandler(Object.assign(getHandlerParams('checkoutFailuresComments')))
+
+module.exports.checkoutFailuresErrorCounts = {
+    method: 'GET',
+    path: '/v1/checkout-failures/error-counts/{param*}',
+    config: getConfig('checkout-failures-error-counts-get'),
+    handler: getHandler(Object.assign(getHandlerParams('checkoutFailuresErrorCounts')))
 };
 
 module.exports.deltaUser = {
