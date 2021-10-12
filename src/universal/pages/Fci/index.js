@@ -208,7 +208,7 @@ const Fci = ({selectedBrands}) => {
         if (shouldFetchData(prev, start, end, selectedSite, chartProperty, selectedErrorCode, hideIntentionalCheck)) {
             const fciQuery = getFciQueryString(start, end, selectedErrorCode, selectedSite, hideIntentionalCheck, chartProperty);
             const url = chartProperty === CATEGORY_OPTION
-                ? `/v2/checkout-failure-category-counts?${fciQuery}`
+                ? `/v1/checkout-failures/category-counts?${fciQuery}`
                 : `/v2/checkout-failure-error-counts?${fciQuery}`;
             fetch(url)
                 .then(checkResponse)

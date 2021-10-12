@@ -2,7 +2,6 @@ import {getConfig, getHandler} from './utils';
 import {
     getFcisTestData,
     getFciErrorCountsTestData,
-    getFciErrorCategoryTestData,
     getCommentTestData
 } from './testData/fciTestService';
 
@@ -24,13 +23,6 @@ module.exports.fciErrorCounts = {
     path: '/v2/checkout-failure-error-counts/{param*}',
     config: getConfig('fci-error-counts-v2-get'),
     handler: getHandler(Object.assign(getHandlerParams('fciErrorCounts'), {timeout: 120000, connectionTimeout: 120000}), getFciErrorCountsTestData)
-};
-
-module.exports.fciCategoryCounts = {
-    method: 'GET',
-    path: '/v2/checkout-failure-category-counts/{param*}',
-    config: getConfig('fci-category-counts-v2-get'),
-    handler: getHandler(Object.assign(getHandlerParams('fciCategoryCounts'), {timeout: 120000, connectionTimeout: 120000}), getFciErrorCategoryTestData)
 };
 
 module.exports.getFciComments = {
