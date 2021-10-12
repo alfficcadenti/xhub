@@ -34,6 +34,13 @@ module.exports.checkoutFailuresSites = {
     handler: getHandler(Object.assign(getHandlerParams('checkoutFailuresSites')))
 };
 
+module.exports.checkoutFailuresCategoryCounts = {
+    method: 'GET',
+    path: '/v1/checkout-failures/category-counts/{param*}',
+    config: getConfig('checkout-failures-category-counts-get'),
+    handler: getHandler(Object.assign(getHandlerParams('checkoutFailuresCategoryCounts')))
+};
+
 module.exports.deltaUser = {
     method: 'GET',
     path: '/v1/delta-users-counts-by-metrics',
