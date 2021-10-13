@@ -26,7 +26,7 @@ const FciModal = ({fci, fcis, editMode, isOpen, onClose, onSaveComment, onEditBa
         if (editMode && fci) {
             setIsLoadingComments(true);
             setCommentsError();
-            fetch(`/v2/comments?trace_id=${fci.Trace}`)
+            fetch(`/v1/checkout-failures/comments?trace_id=${fci.Trace}`)
                 .then(checkResponse)
                 .then((response) => {
                     const mappedComments = (response || [])

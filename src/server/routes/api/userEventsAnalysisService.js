@@ -1,7 +1,6 @@
 import {getConfig, getHandler} from './utils';
 import {
     getFcisTestData,
-    getCommentTestData
 } from './testData/fciTestService';
 
 const getHandlerParams = (routeKey) => ({
@@ -15,13 +14,6 @@ module.exports.fciUserEvents = {
     path: '/v2/checkout-failures/{param*}',
     config: getConfig('fci-api-v2-get'),
     handler: getHandler(Object.assign(getHandlerParams('fcis'), {timeout: 120000, connectionTimeout: 120000}), getFcisTestData)
-};
-
-module.exports.getFciComments = {
-    method: 'GET',
-    path: '/v2/comments/{param*}',
-    config: getConfig('fci-comment-api-v2-get'),
-    handler: getHandler(Object.assign(getHandlerParams('getFciComments'), {timeout: 120000, connectionTimeout: 120000}), getCommentTestData)
 };
 
 module.exports.postFciComment = {
