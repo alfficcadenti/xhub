@@ -6,6 +6,13 @@ const getHandlerParams = (routeKey) => ({
     serviceName: 'api-v1-fci-data-service'
 });
 
+module.exports.checkoutFailures = {
+    method: 'GET',
+    path: '/v1/checkout-failures/{param*}',
+    config: getConfig('checkout-failures-get'),
+    handler: getHandler(Object.assign(getHandlerParams('checkoutFailures')))
+};
+
 module.exports.checkoutFailuresErrorCategories = {
     method: 'GET',
     path: '/v1/checkout-failures/error-categories/{param*}',

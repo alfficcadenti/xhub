@@ -237,7 +237,7 @@ const Fci = ({selectedBrands}) => {
             setIsModalLoading(true);
             setModalError();
             setIsModalOpen(true);
-            fetch(`/v2/checkout-failures?${query}`)
+            fetch(`/v1/checkout-failures?${query}`)
                 .then(checkResponse)
                 .then((data) => processTableData(data))
                 .catch((err) => {

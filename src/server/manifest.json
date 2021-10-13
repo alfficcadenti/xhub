@@ -206,11 +206,6 @@
           "hostname": "user-events-analysis-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black",
           "protocol": "http:",
           "routes": {
-            "fcis": {
-              "path": "/v2/checkout-failures",
-              "method": "GET",
-              "operation": "GET_user_events_analysis_api_v2"
-            },
             "postFciComment": {
               "path": "/v2/comment",
               "method": "POST",
@@ -222,11 +217,6 @@
           "hostname": "user-events-analysis-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black",
           "protocol": "http:",
           "routes": {
-            "fcis": {
-              "path": "/v2/checkout-failures",
-              "method": "GET",
-              "operation": "GET_user_events_analysis_api_v2"
-            },
             "postFciComment": {
               "path": "/v2/comment",
               "method": "POST",
@@ -238,11 +228,6 @@
           "hostname": "user-events-analysis-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black",
           "protocol": "http:",
           "routes": {
-            "fcis": {
-              "path": "/v2/checkout-failures",
-              "method": "GET",
-              "operation": "GET_user_events_analysis_api_v2"
-            },
             "postFciComment": {
               "path": "/v2/comment",
               "method": "POST",
@@ -254,11 +239,6 @@
           "hostname": "user-events-analysis-service-egdp-prod-us-east-1.eglocal.exp-prod.net",
           "protocol": "http:",
           "routes": {
-            "fcis": {
-              "path": "/v2/checkout-failures",
-              "method": "GET",
-              "operation": "GET_user_events_analysis_api_v2"
-            },
             "postFciComment": {
               "path": "/v2/comment",
               "method": "POST",
@@ -801,6 +781,11 @@
           "hostname": "eg-fci-data-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black",
           "protocol": "http:",
           "routes": {
+            "checkoutFailures": {
+              "path": "/v1/checkout-failures",
+              "method": "GET",
+              "operation": "GET_checkout_failures_api_v1"
+            },
             "checkoutFailuresErrorCategories": {
               "path": "/v1/checkout-failures/error-categories",
               "method": "GET",
@@ -857,6 +842,11 @@
           "hostname": "eg-fci-data-service-egdp-prod-us-east-1.eglocal.exp-prod.net",
           "protocol": "http:",
           "routes": {
+            "checkoutFailures": {
+              "path": "/v1/checkout-failures",
+              "method": "GET",
+              "operation": "GET_checkout_failures_api_v1"
+            },
             "checkoutFailuresErrorCategories": {
               "path": "/v1/checkout-failures/error-categories",
               "method": "GET",

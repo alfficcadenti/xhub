@@ -33,12 +33,12 @@ import {
 } from './userEventsService';
 import {changeRequests, annotations, productMapping, abTests} from './changeRequestService';
 import {
-    fciUserEvents,
     postFciComment
 } from './userEventsAnalysisService';
 import {impulseHealth, impulseAnomalies, impulseAnomaliesGrouped} from './impulseDataService';
 import {impulsePrediction} from './anomalyDetector';
 import {
+    checkoutFailures,
     checkoutFailuresErrorCategories,
     checkoutFailuresErrorCodes,
     checkoutFailuresSearch,
@@ -91,7 +91,6 @@ const apiRoutes = [
     productMapping,
     abTests,
     // user events analysis service
-    fciUserEvents,
     postFciComment,
     // impulse data service
     impulseHealth,
@@ -100,6 +99,7 @@ const apiRoutes = [
     // opxhub booking anomaly detector
     impulsePrediction,
     // fci data service
+    checkoutFailures,
     checkoutFailuresErrorCategories,
     checkoutFailuresErrorCodes,
     checkoutFailuresSearch,
