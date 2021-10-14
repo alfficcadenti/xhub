@@ -6,7 +6,6 @@ import FunnelView from './FunnelView';
 import Home from './Home';
 import Impulse from './Impulse';
 import LandingPage from './LandingPage';
-import OutageReport from './OutageReport';
 import PRB from './PRB';
 import QualityMetrics from './QualityMetrics';
 import IncidentTrendsDashboard from './TicketTrends/IncidentTrendsDashboard';
@@ -29,8 +28,7 @@ import ShoppingFencePostEvents from './ShoppingFencePostEvents';
 import RealTimeSitePerformance from './RealTimeSitePerformance';
 import CheckoutBookingRequests from './CheckoutBookingRequests';
 import Robbie from './Robbie';
-import MTTDAndMTTRReport from './MTTDAndMTTRReport';
-
+import IframeDashboard from './IframeDashboard';
 
 import {
     EXPEDIA_BRAND,
@@ -71,8 +69,7 @@ export default [
         link: '/bots',
         text: 'Bots',
         component: Bots,
-        brands: [HOTELS_COM_BRAND],
-        hidden: false
+        brands: [HOTELS_COM_BRAND]
     },
     {
         category: AAT,
@@ -80,8 +77,7 @@ export default [
         link: '/booking-requests',
         text: 'Booking Requests',
         component: BookingRequests,
-        brands: [VRBO_BRAND],
-        hidden: false
+        brands: [VRBO_BRAND]
     },
     {
         category: AAT,
@@ -89,8 +85,7 @@ export default [
         link: '/checkout-and-booking-requests',
         text: 'Checkout and Booking Requests',
         component: CheckoutBookingRequests,
-        brands: [VRBO_BRAND],
-        hidden: false
+        brands: [VRBO_BRAND]
     },
     {
         category: AAT,
@@ -98,8 +93,7 @@ export default [
         link: '/initial-bookings',
         text: 'Initial Bookings',
         component: InitialBookings,
-        brands: [VRBO_BRAND],
-        hidden: false
+        brands: [VRBO_BRAND]
     },
     {
         category: AAT,
@@ -107,8 +101,7 @@ export default [
         link: '/checkout-success-rate',
         text: 'Checkout Success Rate',
         component: CheckoutSuccessRate,
-        brands: [HOTELS_COM_BRAND],
-        hidden: false
+        brands: [HOTELS_COM_BRAND]
     },
     {
         category: AAT,
@@ -116,16 +109,14 @@ export default [
         link: '/data-center-traffic',
         text: 'Data Center Traffic',
         component: DataCenterTraffic,
-        brands: [HOTELS_COM_BRAND],
-        hidden: false
+        brands: [HOTELS_COM_BRAND]
     },
     {
         category: AAT,
         id: 'impulse',
         link: '/impulse',
         text: 'Impulse Dashboard',
-        component: Impulse,
-        hidden: false
+        component: Impulse
     },
     {
         category: AAT,
@@ -133,8 +124,7 @@ export default [
         link: '/fci',
         text: 'FCI',
         component: Fci,
-        brands: [EXPEDIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND],
-        hidden: false
+        brands: [EXPEDIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND]
     },
     {
         category: AAT,
@@ -150,8 +140,7 @@ export default [
         link: '/operational-dashboard',
         text: 'Operational Dashboard',
         component: OperationalDashboard,
-        brands: [HOTELS_COM_BRAND],
-        hidden: false
+        brands: [HOTELS_COM_BRAND]
     },
     {
         category: AAT,
@@ -159,8 +148,7 @@ export default [
         link: '/operational-tv',
         text: 'Operational TV',
         component: OperationalTV,
-        brands: [HOTELS_COM_BRAND],
-        hidden: false
+        brands: [HOTELS_COM_BRAND]
     },
     {
         category: AAT,
@@ -168,8 +156,7 @@ export default [
         link: '/operational-ios',
         text: 'Operational iOS Dashboard',
         component: OperationalIos,
-        brands: [HOTELS_COM_BRAND],
-        hidden: false
+        brands: [HOTELS_COM_BRAND]
     },
     {
         category: AAT,
@@ -177,8 +164,7 @@ export default [
         link: '/partner-business-metrics',
         text: 'Partner Business Metrics',
         component: PartnerBusinessMetrics,
-        brands: [VRBO_BRAND],
-        hidden: false
+        brands: [VRBO_BRAND]
     },
     {
         category: AAT,
@@ -186,8 +172,7 @@ export default [
         link: '/reservations',
         text: 'Reservations',
         component: Reservations,
-        brands: [HOTELS_COM_BRAND],
-        hidden: false
+        brands: [HOTELS_COM_BRAND]
     },
     {
         category: AAT,
@@ -195,8 +180,7 @@ export default [
         link: '/success-rates',
         text: 'Success Rates',
         component: SuccessRates,
-        brands: [EXPEDIA_BRAND, HOTELS_COM_BRAND, VRBO_BRAND],
-        hidden: false
+        brands: [EXPEDIA_BRAND, HOTELS_COM_BRAND, VRBO_BRAND]
     },
     {
         category: AAT,
@@ -204,8 +188,7 @@ export default [
         link: '/fence-post-events-booking-journey',
         text: 'Fence Post Events - Booking Journey',
         component: FencePostEvents,
-        brands: [VRBO_BRAND],
-        hidden: false
+        brands: [VRBO_BRAND]
     },
     {
         category: AAT,
@@ -213,8 +196,14 @@ export default [
         link: '/fence-post-events-shopping-journey',
         text: 'Fence Post Events - Shopping Journey',
         component: ShoppingFencePostEvents,
-        brands: [VRBO_BRAND],
-        hidden: false
+        brands: [VRBO_BRAND]
+    },
+    {
+        category: AAT,
+        id: 'incident-driven-availability',
+        link: '/incident-driven-availability',
+        text: 'Incident Driven Availability',
+        component: IframeDashboard
     },
     // CEA Dashboards
     {
@@ -223,8 +212,7 @@ export default [
         link: '/sales-force-cases',
         text: 'SalesForce Cases',
         component: SalesForceCases,
-        brands: [VRBO_BRAND],
-        hidden: false
+        brands: [VRBO_BRAND]
     },
     {
         category: CEA,
@@ -232,8 +220,7 @@ export default [
         link: '/dog-food',
         text: 'Dog Food',
         component: DogFood,
-        brands: [VRBO_BRAND],
-        hidden: false
+        brands: [VRBO_BRAND]
     },
     // MP Dashboards
     {
@@ -242,7 +229,6 @@ export default [
         link: 'https://console.firebase.google.com/project/homeaway.com:api-project-42464624060/performance/app/android:com.vrbo.android/trends',
         text: 'Performance - Android Traveller',
         brands: [VRBO_BRAND],
-        hidden: false,
         external: true
     },
     {
@@ -251,7 +237,6 @@ export default [
         link: 'https://console.firebase.google.com/project/homeaway.com:api-project-42464624060/performance/app/ios:com.vrbo.traveler/trends',
         text: 'Performance - iOS Traveller',
         brands: [VRBO_BRAND],
-        hidden: false,
         external: true
     },
     // PHAR Dashboards
@@ -310,7 +295,7 @@ export default [
         id: 'mttd-and-mttr-report',
         link: '/mttd-and-mttr-report',
         text: 'MTTD and MTTR Report',
-        component: MTTDAndMTTRReport
+        component: IframeDashboard
     },
     // OR Dashboards
     {
@@ -318,7 +303,7 @@ export default [
         id: 'outage-report',
         link: '/outage-report',
         text: 'Outage Report',
-        component: OutageReport
+        component: IframeDashboard
     },
     // SP Dashboards
     {
@@ -327,8 +312,7 @@ export default [
         link: '/google-crux',
         text: 'Google CrUx (RUM)',
         component: GoogleCrUx,
-        brands: [VRBO_BRAND],
-        hidden: false
+        brands: [VRBO_BRAND]
     },
     {
         category: SP,
@@ -336,7 +320,6 @@ export default [
         link: '/real-time-site-performance',
         text: 'Real-Time Site Performance (RUM)',
         component: RealTimeSitePerformance,
-        brands: [VRBO_BRAND],
-        hidden: false
+        brands: [VRBO_BRAND]
     }
 ];

@@ -1151,6 +1151,11 @@
             "route": "require:./routes/pages/checkout-and-booking-requests",
             "component": "require:../universal/components/App/ServerApp.js",
             "template": "templates/welcome.hbs"
+          },
+          {
+            "route": "require:./routes/pages/incident-driven-availability",
+            "component": "require:../universal/components/App/ServerApp.js",
+            "template": "templates/welcome.hbs"
           }
         ]
       }
