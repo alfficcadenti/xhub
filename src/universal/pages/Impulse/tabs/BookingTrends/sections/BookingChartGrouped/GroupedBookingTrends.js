@@ -49,6 +49,8 @@ const GroupedBookingTrends = ({
 
     const POS_CHART = data.length > 0 ? Object.getOwnPropertyNames(data[0]).slice(1) : [];
 
+    const INDEX_CHART_MAP = [...BRANDS_CHART, ...LOBS_CHART, ...POS_CHART, ...DEVICE_CHART, ...REGION_CHART];
+
     const formatDateTimeLocal = (date) => moment(date).format('MM/DD HH:mm');
 
     const CustomTooltip = ({active, payload}) => {
@@ -137,7 +139,7 @@ const GroupedBookingTrends = ({
     };
 
     const handleLegendClick = (e) => {
-        if (e && e.dataKey) {
+        if (e?.dataKey) {
             const nextHiddenKeys = [...hiddenKeys];
             const foundIdx = hiddenKeys.findIndex((h) => h === e.dataKey);
             if (foundIdx > -1) {
@@ -157,67 +159,22 @@ const GroupedBookingTrends = ({
     );
 
     const renderGradient = () => {
-        switch (activeIndex) {
-            case 1:
-                return (
-                    <defs>
-                        {BRANDS_CHART.map(getGradient)}
-                    </defs>
-                );
-            case 2:
-                return (
-                    <defs>
-                        {LOBS_CHART.map(getGradient)}
-                    </defs>
-                );
-            case 3:
-                return (
-                    <defs>
-                        {POS_CHART.map(getGradient)}
-                    </defs>
-                );
-            case 4:
-                return (
-                    <defs>
-                        {DEVICE_CHART.map(getGradient)}
-                    </defs>
-                );
-            case 5:
-                return (
-                    <defs>
-                        {REGION_CHART.map(getGradient)}
-                    </defs>
-                );
-            default:
-                return ('');
+        const activeChart = INDEX_CHART_MAP[activeIndex];
+        if (activeChart?.length) {
+            return <defs>{activeChart.map(getGradient)}</defs>;
         }
+        return '';
     };
 
     const renderMultiViewPanel = () => {
-        switch (activeIndex) {
-            case 1:
-                return (
-                    BRANDS_CHART.map(renderChart)
-                );
-            case 2:
-                return (
-                    LOBS_CHART.map(renderChart)
-                );
-            case 3:
-                return (
-                    POS_CHART.map(renderLineChart)
-                );
-            case 4:
-                return (
-                    DEVICE_CHART.map(renderChart)
-                );
-            case 5:
-                return (
-                    REGION_CHART.map(renderChart)
-                );
-            default:
-                return ('');
+        if (activeIndex === 3) {
+            return POS_CHART.map(renderLineChart);
         }
+        const activeChart = INDEX_CHART_MAP[activeIndex];
+        if (activeChart?.length) {
+            return <defs>{activeChart.map(renderChart)}</defs>;
+        }
+        return '';
     };
 
     return (
@@ -250,7 +207,7 @@ const GroupedBookingTrends = ({
                     <CartesianGrid strokeDasharray="3 3"/>
                     <Tooltip offset={15} content={CustomTooltip}/>
                     {
-                        anomalies && anomalies.map((anomaly) => (
+                        anomalies?.map((anomaly) => (
                             <ReferenceLine
                                 key={Math.random()}
                                 yAxisId={1}
@@ -262,7 +219,7 @@ const GroupedBookingTrends = ({
                         ))
                     }
                     {
-                        annotations && annotations.map((annotation) => (
+                        annotations?.map((annotation) => (
                             <ReferenceLine
                                 key={Math.random()}
                                 yAxisId={1}

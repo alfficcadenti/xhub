@@ -188,17 +188,21 @@ const BookingChart = ({
     };
     const renderChart = ({key, color, name, chartType}) => {
         const fill = `url(#color${key})`;
-        return chartType === 'Area' ? <Area
-            type="monotone"
-            dataKey={name}
-            stroke={color}
-            fillOpacity={1}
-            fill={fill}
-            yAxisId={1}
-            key={`area${name}`}
-            animationDuration={300}
-            hide = {hiddenKeys.includes(name)}
-        /> : <Bar dataKey={name} fillOpacity={1} yAxisId={1} key={`bar${name}`} fill={fill} animationDuration={300} hide = {hiddenKeys.includes(name)}/>;
+        return chartType === 'Area'
+            ? (
+                <Area
+                    type="monotone"
+                    dataKey={name}
+                    stroke={color}
+                    fillOpacity={1}
+                    fill={fill}
+                    yAxisId={1}
+                    key={`area${name}`}
+                    animationDuration={300}
+                    hide = {hiddenKeys.includes(name)}
+                />
+            )
+            : <Bar dataKey={name} fillOpacity={1} yAxisId={1} key={`bar${name}`} fill={fill} animationDuration={300} hide = {hiddenKeys.includes(name)}/>;
     };
 
     const handleLegendClick = (e) => {

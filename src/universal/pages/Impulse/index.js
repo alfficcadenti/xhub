@@ -301,9 +301,9 @@ const Impulse = (props) => {
     };
     const validSelectionRangeOnPointOfSales = () => {
         if (selectedSiteURLMulti.length > 10) {
-            return <div className="widget-card wrapper1" >Select less than or equals to 10 point of sales and click submit to display trendlines</div>;
+            return <div className="widget-card wrapper1" >{'Select less than or equals to 10 point of sales and click submit to display trendlines'}</div>;
         }
-        return <div className="widget-card wrapper1" >Select 1 or more point of sales from filters above and click submit to display trendlines</div>;
+        return <div className="widget-card wrapper1" >{'Select 1 or more point of sales from filters above and click submit to display trendlines'}</div>;
     };
     useEffect(() => {
         setFilterAllData([...res]);
@@ -379,77 +379,33 @@ const Impulse = (props) => {
     const renderTabs = () => {
         switch (activeIndex) {
             case 0:
-                return (<BookingTrends
-                    data={allData}
-                    setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
-                    setChartSliced={setChartSliced}
-                    setIsResetClicked={setIsResetClicked}
-                    setIsChartSliceClicked={setIsChartSliceClicked}
-                    annotations={enableIncidents ? annotationsMulti : []}
-                    setDaysDifference={setDaysDifference}
-                    daysDifference={daysDifference}
-                    setTableData={setTableData}
-                    anomalies={enableAnomalies ? anomaliesData : []}
-                    setAnomalyTableData={setAnomalyTableData}
-                    timeInterval={timeInterval}
-                    setTimeInterval={setTimeInterval}
-                    setTimeIntervalOpts={setTimeIntervalOpts}
-                    setIsSubmitClicked={setIsSubmitClicked}
-                    renderImage={renderImage}
-                    imageContainer={imageContainer}
-                    hiddenKeys={hiddenKeys}
-                    setHiddenKeys={setHiddenKeys}
-                />);
+                return (
+                    <BookingTrends
+                        data={allData}
+                        setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
+                        setChartSliced={setChartSliced}
+                        setIsResetClicked={setIsResetClicked}
+                        setIsChartSliceClicked={setIsChartSliceClicked}
+                        annotations={enableIncidents ? annotationsMulti : []}
+                        setDaysDifference={setDaysDifference}
+                        daysDifference={daysDifference}
+                        setTableData={setTableData}
+                        anomalies={enableAnomalies ? anomaliesData : []}
+                        setAnomalyTableData={setAnomalyTableData}
+                        timeInterval={timeInterval}
+                        setTimeInterval={setTimeInterval}
+                        setTimeIntervalOpts={setTimeIntervalOpts}
+                        setIsSubmitClicked={setIsSubmitClicked}
+                        renderImage={renderImage}
+                        imageContainer={imageContainer}
+                        hiddenKeys={hiddenKeys}
+                        setHiddenKeys={setHiddenKeys}
+                    />
+                );
             case 1:
-                return (<GroupedBookingTrends
-                    data={allDataByBrands}
-                    setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
-                    setIsResetClicked={setIsResetClicked}
-                    setChartSliced={setChartSliced}
-                    setIsChartSliceClicked={setIsChartSliceClicked}
-                    setDaysDifference={setDaysDifference}
-                    daysDifference={daysDifference}
-                    annotations={enableIncidents ? annotationsMulti : []}
-                    setTableData={setTableData}
-                    anomalies={enableAnomalies ? anomaliesData : []}
-                    setAnomalyTableData={setAnomalyTableData}
-                    timeInterval={timeInterval}
-                    setTimeInterval={setTimeInterval}
-                    setTimeIntervalOpts={setTimeIntervalOpts}
-                    activeIndex={activeIndex}
-                    setIsSubmitClicked={setIsSubmitClicked}
-                    renderImage={renderImage}
-                    imageContainer={imageContainer}
-                    hiddenKeys={hiddenKeys}
-                    setHiddenKeys={setHiddenKeys}
-                />);
-            case 2:
-                return (<GroupedBookingTrends
-                    data={allDataByLobs}
-                    setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
-                    setIsResetClicked={setIsResetClicked}
-                    setChartSliced={setChartSliced}
-                    setIsChartSliceClicked={setIsChartSliceClicked}
-                    setDaysDifference={setDaysDifference}
-                    daysDifference={daysDifference}
-                    annotations={enableIncidents ? annotationsMulti : []}
-                    setTableData={setTableData}
-                    anomalies={enableAnomalies ? anomaliesData : []}
-                    setAnomalyTableData={setAnomalyTableData}
-                    timeInterval={timeInterval}
-                    setTimeInterval={setTimeInterval}
-                    setTimeIntervalOpts={setTimeIntervalOpts}
-                    activeIndex={activeIndex}
-                    setIsSubmitClicked={setIsSubmitClicked}
-                    renderImage={renderImage}
-                    imageContainer={imageContainer}
-                    hiddenKeys={hiddenKeys}
-                    setHiddenKeys={setHiddenKeys}
-                />);
-            case 3:
-                return (allDataByPos.length
-                    ? <GroupedBookingTrends
-                        data={allDataByPos}
+                return (
+                    <GroupedBookingTrends
+                        data={allDataByBrands}
                         setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
                         setIsResetClicked={setIsResetClicked}
                         setChartSliced={setChartSliced}
@@ -465,79 +421,139 @@ const Impulse = (props) => {
                         setTimeIntervalOpts={setTimeIntervalOpts}
                         activeIndex={activeIndex}
                         setIsSubmitClicked={setIsSubmitClicked}
-                        setAllDataByPos={setAllDataByPos}
                         renderImage={renderImage}
                         imageContainer={imageContainer}
                         hiddenKeys={hiddenKeys}
                         setHiddenKeys={setHiddenKeys}
                     />
+                );
+            case 2:
+                return (
+                    <GroupedBookingTrends
+                        data={allDataByLobs}
+                        setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
+                        setIsResetClicked={setIsResetClicked}
+                        setChartSliced={setChartSliced}
+                        setIsChartSliceClicked={setIsChartSliceClicked}
+                        setDaysDifference={setDaysDifference}
+                        daysDifference={daysDifference}
+                        annotations={enableIncidents ? annotationsMulti : []}
+                        setTableData={setTableData}
+                        anomalies={enableAnomalies ? anomaliesData : []}
+                        setAnomalyTableData={setAnomalyTableData}
+                        timeInterval={timeInterval}
+                        setTimeInterval={setTimeInterval}
+                        setTimeIntervalOpts={setTimeIntervalOpts}
+                        activeIndex={activeIndex}
+                        setIsSubmitClicked={setIsSubmitClicked}
+                        renderImage={renderImage}
+                        imageContainer={imageContainer}
+                        hiddenKeys={hiddenKeys}
+                        setHiddenKeys={setHiddenKeys}
+                    />
+                );
+            case 3:
+                return (allDataByPos.length
+                    ? (
+                        <GroupedBookingTrends
+                            data={allDataByPos}
+                            setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
+                            setIsResetClicked={setIsResetClicked}
+                            setChartSliced={setChartSliced}
+                            setIsChartSliceClicked={setIsChartSliceClicked}
+                            setDaysDifference={setDaysDifference}
+                            daysDifference={daysDifference}
+                            annotations={enableIncidents ? annotationsMulti : []}
+                            setTableData={setTableData}
+                            anomalies={enableAnomalies ? anomaliesData : []}
+                            setAnomalyTableData={setAnomalyTableData}
+                            timeInterval={timeInterval}
+                            setTimeInterval={setTimeInterval}
+                            setTimeIntervalOpts={setTimeIntervalOpts}
+                            activeIndex={activeIndex}
+                            setIsSubmitClicked={setIsSubmitClicked}
+                            setAllDataByPos={setAllDataByPos}
+                            renderImage={renderImage}
+                            imageContainer={imageContainer}
+                            hiddenKeys={hiddenKeys}
+                            setHiddenKeys={setHiddenKeys}
+                        />
+                    )
                     : validSelectionRangeOnPointOfSales());
             case 4:
-                return (<GroupedBookingTrends
-                    data={allDataByDeviceType}
-                    setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
-                    setIsResetClicked={setIsResetClicked}
-                    setChartSliced={setChartSliced}
-                    setIsChartSliceClicked={setIsChartSliceClicked}
-                    setDaysDifference={setDaysDifference}
-                    daysDifference={daysDifference}
-                    annotations={enableIncidents ? annotationsMulti : []}
-                    setTableData={setTableData}
-                    anomalies={enableAnomalies ? anomaliesData : []}
-                    setAnomalyTableData={setAnomalyTableData}
-                    timeInterval={timeInterval}
-                    setTimeInterval={setTimeInterval}
-                    setTimeIntervalOpts={setTimeIntervalOpts}
-                    activeIndex={activeIndex}
-                    setIsSubmitClicked={setIsSubmitClicked}
-                    renderImage={renderImage}
-                    imageContainer={imageContainer}
-                    hiddenKeys={hiddenKeys}
-                    setHiddenKeys={setHiddenKeys}
-                />);
+                return (
+                    <GroupedBookingTrends
+                        data={allDataByDeviceType}
+                        setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
+                        setIsResetClicked={setIsResetClicked}
+                        setChartSliced={setChartSliced}
+                        setIsChartSliceClicked={setIsChartSliceClicked}
+                        setDaysDifference={setDaysDifference}
+                        daysDifference={daysDifference}
+                        annotations={enableIncidents ? annotationsMulti : []}
+                        setTableData={setTableData}
+                        anomalies={enableAnomalies ? anomaliesData : []}
+                        setAnomalyTableData={setAnomalyTableData}
+                        timeInterval={timeInterval}
+                        setTimeInterval={setTimeInterval}
+                        setTimeIntervalOpts={setTimeIntervalOpts}
+                        activeIndex={activeIndex}
+                        setIsSubmitClicked={setIsSubmitClicked}
+                        renderImage={renderImage}
+                        imageContainer={imageContainer}
+                        hiddenKeys={hiddenKeys}
+                        setHiddenKeys={setHiddenKeys}
+                    />
+                );
             case 5:
-                return (<GroupedBookingTrends
-                    data={allDataByRegion}
-                    setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
-                    setIsResetClicked={setIsResetClicked}
-                    setChartSliced={setChartSliced}
-                    setIsChartSliceClicked={setIsChartSliceClicked}
-                    setDaysDifference={setDaysDifference}
-                    daysDifference={daysDifference}
-                    annotations={enableIncidents ? annotationsMulti : []}
-                    setTableData={setTableData}
-                    anomalies={enableAnomalies ? anomaliesData : []}
-                    setAnomalyTableData={setAnomalyTableData}
-                    timeInterval={timeInterval}
-                    setTimeInterval={setTimeInterval}
-                    setTimeIntervalOpts={setTimeIntervalOpts}
-                    activeIndex={activeIndex}
-                    setIsSubmitClicked={setIsSubmitClicked}
-                    renderImage={renderImage}
-                    imageContainer={imageContainer}
-                    hiddenKeys={hiddenKeys}
-                    setHiddenKeys={setHiddenKeys}
-                />);
+                return (
+                    <GroupedBookingTrends
+                        data={allDataByRegion}
+                        setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
+                        setIsResetClicked={setIsResetClicked}
+                        setChartSliced={setChartSliced}
+                        setIsChartSliceClicked={setIsChartSliceClicked}
+                        setDaysDifference={setDaysDifference}
+                        daysDifference={daysDifference}
+                        annotations={enableIncidents ? annotationsMulti : []}
+                        setTableData={setTableData}
+                        anomalies={enableAnomalies ? anomaliesData : []}
+                        setAnomalyTableData={setAnomalyTableData}
+                        timeInterval={timeInterval}
+                        setTimeInterval={setTimeInterval}
+                        setTimeIntervalOpts={setTimeIntervalOpts}
+                        activeIndex={activeIndex}
+                        setIsSubmitClicked={setIsSubmitClicked}
+                        renderImage={renderImage}
+                        imageContainer={imageContainer}
+                        hiddenKeys={hiddenKeys}
+                        setHiddenKeys={setHiddenKeys}
+                    />
+                );
             case 6:
-                return (<BookingsDataTable
-                    data={allData}
-                />);
+                return (
+                    <BookingsDataTable
+                        data={allData}
+                    />
+                );
             default:
-                return (<BookingTrends
-                    data={allData}
-                    setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
-                    setChartSliced={setChartSliced}
-                    setIsChartSliceClicked={setIsChartSliceClicked}
-                    annotations={enableIncidents ? annotationsMulti : []}
-                    setDaysDifference={setDaysDifference}
-                    daysDifference={daysDifference}
-                    timeInterval={timeInterval}
-                    setTimeInterval={setTimeInterval}
-                    setTimeIntervalOpts={setTimeIntervalOpts}
-                    setIsSubmitClicked={setIsSubmitClicked}
-                    renderImage={renderImage}
-                    imageContainer={imageContainer}
-                />);
+                return (
+                    <BookingTrends
+                        data={allData}
+                        setStartDateTime={setStartDateTime} setEndDateTime={setEndDateTime}
+                        setChartSliced={setChartSliced}
+                        setIsChartSliceClicked={setIsChartSliceClicked}
+                        annotations={enableIncidents ? annotationsMulti : []}
+                        setDaysDifference={setDaysDifference}
+                        daysDifference={daysDifference}
+                        timeInterval={timeInterval}
+                        setTimeInterval={setTimeInterval}
+                        setTimeIntervalOpts={setTimeIntervalOpts}
+                        setIsSubmitClicked={setIsSubmitClicked}
+                        renderImage={renderImage}
+                        imageContainer={imageContainer}
+                    />
+                );
         }
     };
     const renderTimeInterval = (interval, presets, onChange) => (
@@ -588,9 +604,9 @@ const Impulse = (props) => {
             >
                 {'TP99: '}{sourceLatency ? `${sourceLatency}s` : 'NA'}
                 <span className="health-desc-tooltip">
-                    <div className="health-desc">Performance Indicator (Data Ingestion)</div>
-                    <div className="healthy-desc">Latency is between 3 to 60 sec</div>
-                    <div className="unhealthy-desc">Latency is above 60 sec or no data</div>
+                    <div className="health-desc">{'Performance Indicator (Data Ingestion)'}</div>
+                    <div className="healthy-desc">{'Latency is between 3 to 60 sec'}</div>
+                    <div className="unhealthy-desc">{'Latency is above 60 sec or no data'}</div>
                 </span>
             </div></a>
     );
@@ -636,6 +652,13 @@ const Impulse = (props) => {
                             setTableData([]);
                             setIsSubmitClicked(true);
                         }}
+                        onKeyUp={() => {
+                            setIsApplyClicked(true);
+                            setDaysDifference(moment(endDateTime).diff(moment(startDateTime), 'days'));
+                            setTableData([]);
+                            setIsSubmitClicked(true);
+                        }}
+                        tabIndex="0"
                     >
                         {'Submit'}
                     </button>
@@ -646,10 +669,19 @@ const Impulse = (props) => {
                         className={`btn btn-default more-filters-btn ${showMoreFilters ? 'active' : ''}`}
                         title="Click to expand and see more filters"
                         onClick={handleShowMoreFilters}
+                        onKeyUp={handleShowMoreFilters}
+                        tabIndex="0"
                     >
                         <SVGIcon usefill markup={FILTER__16}/>{'Advance Filters'}
                     </button>
-                    <div className="filter-option" title="Toggle checkbox to enable/ disable incidents category selector" onClick={() => setShowMoreFilters(false)}>
+                    <div
+                        className="filter-option"
+                        title="Toggle checkbox to enable/ disable incidents category selector"
+                        onClick={() => setShowMoreFilters(false)}
+                        onKeyUp={() => setShowMoreFilters(false)}
+                        role="button"
+                        tabIndex="0"
+                    >
                         <Checkbox
                             name="incidents-сheckbox"
                             label="Booking Impacting INCs"
@@ -660,7 +692,14 @@ const Impulse = (props) => {
                         />
                         {enableIncidents ? renderMultiSelectFilters(selectedIncidentMulti, incidentMulti, 'incidentCategory', ALL_INCIDENTS, filterSelectionClass) : null}
                     </div>
-                    <div className="filter-option" title="Toggle checkbox to enable/ disable anomalies category selector" onClick={() => setShowMoreFilters(false)}>
+                    <div
+                        className="filter-option"
+                        title="Toggle checkbox to enable/ disable anomalies category selector"
+                        onClick={() => setShowMoreFilters(false)}
+                        onKeyUp={() => setShowMoreFilters(false)}
+                        role="button"
+                        tabIndex="0"
+                    >
                         <Checkbox
                             name="Anomalies-сheckbox"
                             label="Anomalies"

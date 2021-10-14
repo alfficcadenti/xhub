@@ -1,4 +1,6 @@
 import React from 'react';
+import {SVGIcon} from '@homeaway/react-svg';
+import {CLOSE__24} from '@homeaway/svg-defs';
 import DataTable from '../../../../../../components/DataTable';
 import {
     ANOMALY_TABLE_COLUMN_HEADERS,
@@ -13,6 +15,7 @@ const AnomalyDetails = ({data = [], setAnomalyTableData}) => {
         let percentage = ((count - predicted) / predicted) * 100;
         return `${Math.round(percentage)}%`;
     };
+
     const formatAnomalyData = () => {
         let finalAnomalyData = data[0].impact.map((impactObj) => ({
             ...impactObj,
@@ -25,11 +28,15 @@ const AnomalyDetails = ({data = [], setAnomalyTableData}) => {
         return finalAnomalyData;
     };
 
+    const handleOnClose = () => setAnomalyTableData([]);
+
     return (
         <div className="incident-details-container">
             <div className="table-wrapper">
                 <strong>{data[0].category}</strong>
-                <span className="close-button" onClick={() => setAnomalyTableData([])}>&#10006;</span>
+                <span className="close-button" onClick={handleOnClose} onKeyUp={handleOnClose} role="button" tabIndex="0">
+                    <SVGIcon usefill markup={CLOSE__24} />
+                </span>
                 <div className="incident-details">
                     <DataTable
                         columns={ANOMALY_TABLE_COLUMNS}

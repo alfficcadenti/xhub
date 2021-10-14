@@ -41,6 +41,12 @@ export const makePageViewLoBObjects = (data = [], start, end, pageBrand = '') =>
     });
 };
 
+const getInitialPageViews = (data, pageName) => {
+    const pageViewsData = data?.[0]?.pageViewsData;
+    const views = pageViewsData?.find((item) => item.page === pageName)?.views;
+    return views || 0;
+};
+
 export const makePageViewObjects = (data = [], start, end, pageBrand = '') => {
     let minValue;
 
@@ -60,7 +66,7 @@ export const makePageViewObjects = (data = [], start, end, pageBrand = '') => {
             }
 
             return Math.min(prev, currentPageViews ? currentPageViews.views : prev);
-        }, data[0] && data[0].pageViewsData ? data[0].pageViewsData.find((item) => item.page === name) && data[0].pageViewsData.find((item) => item.page === name).views || 0 : 0);
+        }, getInitialPageViews(data, name));
 
         if (i === 0) {
             minValue = tempMinValue;

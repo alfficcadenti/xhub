@@ -370,6 +370,7 @@ export const useFetchBlipData = (
                             setGroupedResByRegion(newRegionGroupedDataFuture);
                         })
                         .catch((err) => {
+                            // eslint-disable-next-line no-console
                             console.error(err);
                         });
                 } else {
