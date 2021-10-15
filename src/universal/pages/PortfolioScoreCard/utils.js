@@ -29,8 +29,8 @@ export const mapOrgDetails = (row, handleSelectOrg, handleSelectTickets) => ({
             className={`${row.sub_org_details?.length ? 'link' : ''}`}
             role="link"
             tabIndex="0"
-            onClick={() => handleSelectOrg(row.name, row.business_owner_type, row.sub_org_details)}
-            onKeyUp={(e) => e.key === 'Enter' && handleSelectOrg(row.name, row.business_owner_type, row.sub_org_details)}
+            onClick={() => handleSelectOrg(row.name, row.businessOwnerType, row.subOrgDetails)}
+            onKeyUp={(e) => e.key === 'Enter' && handleSelectOrg(row.name, row.businessOwnerType, row.subOrgDetails)}
         >
             {row.name}
         </div>
@@ -40,8 +40,8 @@ export const mapOrgDetails = (row, handleSelectOrg, handleSelectTickets) => ({
             className={`${row.p1IncidentCount ? 'link' : ''}`}
             role="link"
             tabIndex="0"
-            onClick={() => handleSelectTickets(row.p1IncidentCount, 'p1', row.name, row.business_owner_type)}
-            onKeyUp={(e) => e.key === 'Enter' && handleSelectTickets(row.p1IncidentCount, 'p1', row.name, row.business_owner_type)}
+            onClick={() => handleSelectTickets(row.p1IncidentCount, 'p1', row.name, row.businessOwnerType)}
+            onKeyUp={(e) => e.key === 'Enter' && handleSelectTickets(row.p1IncidentCount, 'p1', row.name, row.businessOwnerType)}
         >
             {row.p1IncidentCount}
         </div>
@@ -51,8 +51,8 @@ export const mapOrgDetails = (row, handleSelectOrg, handleSelectTickets) => ({
             className={`${row.p2IncidentCount ? 'link' : ''}`}
             role="link"
             tabIndex="0"
-            onClick={() => handleSelectTickets(row.p2IncidentCount, 'p2', row.name, row.business_owner_type)}
-            onKeyUp={(e) => e.key === 'Enter' && handleSelectTickets(row.p2IncidentCount, 'p2', row.name, row.business_owner_type)}
+            onClick={() => handleSelectTickets(row.p2IncidentCount, 'p2', row.name, row.businessOwnerType)}
+            onKeyUp={(e) => e.key === 'Enter' && handleSelectTickets(row.p2IncidentCount, 'p2', row.name, row.businessOwnerType)}
         >
             {row.p2IncidentCount}
         </div>
