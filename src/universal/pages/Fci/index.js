@@ -4,6 +4,7 @@ import Select from 'react-select';
 import moment from 'moment';
 import {Checkbox, RadioGroup, RadioButton, FormInput} from '@homeaway/react-form-components';
 import {Navigation} from '@homeaway/react-navigation';
+import Tooltip from '@homeaway/react-tooltip';
 import LineChartWrapper from '../../components/LineChartWrapper';
 import LoadingContainer from '../../components/LoadingContainer';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
@@ -11,8 +12,9 @@ import {FETCH_FAILED_MSG} from '../../constants';
 import {checkResponse, getBrand, getPresets} from '../utils';
 import FciModal from './FciModal';
 import DeltaUserModal from './DeltaUserModal';
-import {CATEGORY_OPTION, CODE_OPTION, CATEGORIES} from './constants';
+import {NAV_LINKS, CATEGORY_OPTION, CODE_OPTION, CATEGORIES} from './constants';
 import {
+    getInitialSelectData,
     shouldFetchData,
     getIsSupportedBrand,
     getUnsupportedBrandMsg,
@@ -28,11 +30,6 @@ import './styles.less';
 const Fci = ({selectedBrands}) => {
     const history = useHistory();
     const {search, pathname} = useLocation();
-    const navLinks = [
-        {id: 'trends', label: 'Trends', href: '/fci'},
-        {id: 'search', label: 'Search', href: '/fci'},
-        {id: 'deltaUsers', label: 'Delta Users', href: '/fci'}
-    ];
     const {
         initialStart,
         initialEnd,
@@ -44,7 +41,8 @@ const Fci = ({selectedBrands}) => {
         initialDeltaUsersId,
         initialSelectedId,
         initialIndex,
-        initialBucket
+        initialBucket,
+        initialLobs
     } = getQueryValues(search, selectedBrands[0]);
     const [isDirtyForm, setIsDirtyForm] = useState(false);
     const [activeIndex, setActiveIndex] = useState(initialIndex);
@@ -53,12 +51,14 @@ const Fci = ({selectedBrands}) => {
     const [end, setEnd] = useState(initialEnd);
     const [selectedErrorCode, setSelectedErrorCode] = useState(initialErrorCode);
     const [selectedSite, setSelectedSite] = useState(initialSite);
+    const [selectedLob, setSelectedLob] = useState(initialLobs);
     const [hideIntentionalCheck, setHideIntentionalCheck] = useState(initialHideIntentionalCheck);
     const [pendingStart, setPendingStart] = useState(initialStart);
     const [pendingEnd, setPendingEnd] = useState(initialEnd);
     const [pendingTimeRange, setPendingTimeRange] = useState(initialTimeRange);
     const [pendingErrorCode, setPendingErrorCode] = useState(initialErrorCode);
-    const [pendingSite, setPendingSite] = useState(initialSite);
+    const [pendingSite, setPendingSite] = useState(initialLobs);
+    const [pendingLob, setPendingLob] = useState(initialLobs);
     const [pendingHideIntentionalCheck, setPendingHideIntentionalCheck] = useState(initialHideIntentionalCheck);
     const [selectedBucket, setSelectedBucket] = useState(initialBucket);
     const [prev, setPrev] = useState({
@@ -68,14 +68,15 @@ const Fci = ({selectedBrands}) => {
         chartProperty: null,
         selectedSite: initialSite,
         selectedErrorCode: initialErrorCode,
+        selectedLob: initialLobs,
         hideIntentionalCheck: initialHideIntentionalCheck
     });
-    const [errorCodesData, setErrorCodesData] = useState({
-        start: null, end: null, options: [{label: initialErrorCode, value: initialErrorCode}], isLoading: false});
+    const [errorCodesData, setErrorCodesData] = useState(getInitialSelectData(initialErrorCode));
     const [errorCodesIsLoading, setErrorCodesIsLoading] = useState(false);
-    const [sitesData, setSitesData] = useState({
-        start: null, end: null, options: [{label: initialSite, value: initialSite}], isLoading: false});
+    const [sitesData, setSitesData] = useState(getInitialSelectData(initialSite));
     const [sitesIsLoading, setSitesIsLoading] = useState(false);
+    const [lobsData, setLobsData] = useState(getInitialSelectData(initialLobs));
+    const [lobsIsLoading, setLobsIsLoading] = useState(false);
     const [searchText, setSearchText] = useState(initialSearchId);
     const [searchDeltaUsers, setSearchDeltaUsers] = useState(initialDeltaUsersId);
     const [selectedId, setSelectedId] = useState(initialSelectedId);
@@ -115,7 +116,7 @@ const Fci = ({selectedBrands}) => {
 
     const updateHistory = (tabIndex = activeIndex, searchId = searchText, bucket = selectedBucket, id = selectedId) => {
         const historyQuery = getHistoryQueryString(selectedBrands, start, end, selectedErrorCode,
-            selectedSite, hideIntentionalCheck, chartProperty, searchId, tabIndex, bucket, id);
+            selectedSite, selectedLob, hideIntentionalCheck, chartProperty, searchId, tabIndex, bucket, id);
         history.push(`${pathname}?${historyQuery}`);
     };
 
@@ -206,7 +207,7 @@ const Fci = ({selectedBrands}) => {
         setError(null);
         updateHistory();
         if (shouldFetchData(prev, start, end, selectedSite, chartProperty, selectedErrorCode, hideIntentionalCheck)) {
-            const fciQuery = getFciQueryString(start, end, selectedErrorCode, selectedSite, hideIntentionalCheck, chartProperty);
+            const fciQuery = getFciQueryString(start, end, selectedErrorCode, selectedSite, selectedLob, hideIntentionalCheck, chartProperty);
             const url = chartProperty === CATEGORY_OPTION
                 ? `/v1/checkout-failures/category-counts?${fciQuery}`
                 : `/v1/checkout-failures/error-counts?${fciQuery}`;
@@ -232,7 +233,7 @@ const Fci = ({selectedBrands}) => {
         if (selectedBucket) {
             const bucketStart = moment(selectedBucket);
             const bucketEnd = moment(selectedBucket).add(1, 'hour');
-            const query = getFciQueryString(bucketStart, bucketEnd, selectedErrorCode, selectedSite, hideIntentionalCheck, chartProperty);
+            const query = getFciQueryString(bucketStart, bucketEnd, selectedErrorCode, selectedSite, selectedLob, hideIntentionalCheck, chartProperty);
             updateHistory();
             setIsModalLoading(true);
             setModalError();
@@ -279,6 +280,19 @@ const Fci = ({selectedBrands}) => {
         }
     }, [pendingStart, pendingEnd, errorCodesIsLoading, chartProperty]);
 
+    useEffect(() => {
+        if (lobsIsLoading) {
+            fetch(`/v1/checkout-failures/lob?from=${pendingStart.toISOString()}&to=${pendingEnd.toISOString()}&sites=${selectedSite.join(',')}`)
+                .then(checkResponse)
+                .then((data) => setLobsData({
+                    start: pendingStart,
+                    end: pendingEnd,
+                    options: data.map((x) => ({label: x, value: x}))
+                }))
+                .finally(() => setLobsIsLoading(false));
+        }
+    }, [pendingStart, pendingEnd, lobsIsLoading, selectedSite]);
+
     const fetchSites = () => {
         if (!sitesData.start || !sitesData.start.isSame(pendingStart, 'minute')) {
             setSitesIsLoading(true);
@@ -288,6 +302,12 @@ const Fci = ({selectedBrands}) => {
     const fetchErrorCodes = () => {
         if (!errorCodesData.start || !errorCodesData.start.isSame(pendingStart, 'minute')) {
             setErrorCodesIsLoading(true);
+        }
+    };
+
+    const fetchLobs = () => {
+        if (!lobsData.start || !lobsData.start.isSame(pendingStart, 'minute')) {
+            setLobsIsLoading(true);
         }
     };
 
@@ -329,6 +349,7 @@ const Fci = ({selectedBrands}) => {
         setEnd(pendingEnd);
         setSelectedErrorCode(pendingErrorCode);
         setSelectedSite(pendingSite);
+        setSelectedLob(pendingLob);
         setHideIntentionalCheck(pendingHideIntentionalCheck);
         setIsDirtyForm(false);
     };
@@ -348,6 +369,11 @@ const Fci = ({selectedBrands}) => {
 
     const handleSiteChange = (e) => {
         setPendingSite(e || '');
+        setIsDirtyForm(true);
+    };
+
+    const handleLobChange = (e) => {
+        setPendingLob(e || '');
         setIsDirtyForm(true);
     };
 
@@ -407,6 +433,7 @@ const Fci = ({selectedBrands}) => {
         }
     };
 
+    // eslint-disable-next-line complexity
     const renderTrendsTab = () => (
         <>
             {isSupportedBrand && <div className="form-container">
@@ -442,6 +469,20 @@ const Fci = ({selectedBrands}) => {
                         isLoading={sitesIsLoading}
                         isSearchable
                     />
+                    <Tooltip tooltipType="tooltip--lg" content={'Line of business data only available for FCIs starting Oct 8, 2021'} placement="top">
+                        <Select
+                            isMulti
+                            classNamePrefix="lob-dropdown"
+                            className="lob-dropdown"
+                            options={lobsData.options}
+                            onChange={handleLobChange}
+                            onFocus={fetchLobs}
+                            placeholder={'All LoBs'}
+                            defaultValue={(pendingLob || []).map((e) => ({label: e, value: e}))}
+                            isLoading={lobsIsLoading}
+                            isSearchable
+                        />
+                    </Tooltip>
                     <Checkbox
                         name="intent-cbox"
                         label="Hide Intentional Errors"
@@ -573,7 +614,7 @@ const Fci = ({selectedBrands}) => {
             <Navigation
                 noMobileSelect
                 activeIndex={activeIndex}
-                links={navLinks}
+                links={NAV_LINKS}
                 onLinkClick={handleNavigationClick}
             />
             {renderTabs()}

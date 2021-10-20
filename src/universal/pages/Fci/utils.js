@@ -11,6 +11,12 @@ import {getOrDefault} from '../../utils';
 import {validDateRange} from '../utils';
 
 
+export const getInitialSelectData = (initialOption) => ({
+    start: null,
+    end: null,
+    options: [{label: initialOption, value: initialOption}]
+});
+
 export const getBrandSites = (brand) => SITES[brand] || ['travel.chase.com'];
 
 export const getIsSupportedBrand = (selectedBrands) => [EXPEDIA_PARTNER_SERVICES_BRAND, EXPEDIA_BRAND].includes(selectedBrands[0]);
@@ -57,14 +63,14 @@ export const getQueryValues = (search, brand = 'Expedia') => {
 
 export const stringifyQueryParams = (selectedValue) => Array.isArray(selectedValue) ? selectedValue.map((v) => v.value || v).join(',') : selectedValue;
 
-// eslint-disable-next-line complexity
-export const getFciQueryString = (start, end, selectedErrorCode, selectedSite, hideIntentionalCheck, chartProperty) => {
+export const getFciQueryString = (start, end, selectedErrorCode, selectedSite, selectedLob, hideIntentionalCheck, chartProperty) => {
     const dateQuery = `from=${start.toISOString()}&to=${end.toISOString()}`;
     const errorProperty = chartProperty === CATEGORY_OPTION ? 'category' : 'code';
-    const errorQuery = selectedErrorCode && selectedErrorCode.length ? `&${errorProperty}=${stringifyQueryParams(selectedErrorCode)}` : '';
-    const siteQuery = selectedSite && selectedSite.length ? `&sites=${stringifyQueryParams(selectedSite)}` : '';
+    const errorQuery = selectedErrorCode?.length ? `&${errorProperty}=${stringifyQueryParams(selectedErrorCode)}` : '';
+    const siteQuery = selectedSite?.length ? `&sites=${stringifyQueryParams(selectedSite)}` : '';
+    const lobQuery = selectedLob?.length ? `&line_of_business=${stringifyQueryParams(selectedLob)}` : '';
     const hideIntentionalCheckQuery = `&hide_intentional=${hideIntentionalCheck}`;
-    return `${dateQuery}${errorQuery}${siteQuery}${hideIntentionalCheckQuery}`;
+    return `${dateQuery}${errorQuery}${siteQuery}${lobQuery}${hideIntentionalCheckQuery}`;
 };
 
 // eslint-disable-next-line complexity
@@ -152,6 +158,7 @@ export const mapFci = (row = {}) => {
         'Intentional': getOrDefault(fci, 'is_intentional'),
         'Error Code': getOrDefault(fci, 'error_code'),
         Site: getOrDefault(fci, 'site'),
+        LOB: getOrDefault(fci, 'lob'),
         TPID: getOrDefault(fci, 'tp_id'),
         EAPID: getOrDefault(fci, 'eap_id'),
         'SiteID': getOrDefault(fci, 'site_id'),

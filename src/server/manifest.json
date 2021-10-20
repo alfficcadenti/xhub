@@ -796,6 +796,11 @@
               "method": "GET",
               "operation": "GET_checkout_failures_error_codes_api_v1"
             },
+            "checkoutFailuresLobs": {
+              "path": "/v1/checkout-failures/lob",
+              "method": "GET",
+              "operation": "GET_checkout_failures_lobs_api_v1"
+            },
             "checkoutFailuresSearch": {
               "path": "/v1/checkout-failures/search",
               "method": "GET",
