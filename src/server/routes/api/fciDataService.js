@@ -27,6 +27,13 @@ module.exports.checkoutFailuresErrorCodes = {
     handler: getHandler(Object.assign(getHandlerParams('checkoutFailuresErrorCodes')))
 };
 
+module.exports.checkoutFailuresLobs = {
+    method: 'GET',
+    path: '/v1/checkout-failures/lob/{param*}',
+    config: getConfig('checkout-failures-lobs-get'),
+    handler: getHandler(Object.assign(getHandlerParams('checkoutFailuresLobs')))
+};
+
 module.exports.checkoutFailuresSearch = {
     method: 'GET',
     path: '/v1/checkout-failures/search/{param*}',

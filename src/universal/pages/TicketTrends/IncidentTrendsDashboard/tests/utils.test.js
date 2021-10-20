@@ -16,8 +16,8 @@ describe('Fci Utils', () => {
 
     it('getQueryValues - default', () => {
         const result = getQueryValues();
-        expect(result.initialStart).to.be.eql(convertDateToISOString(moment().subtract(14, 'days')));
-        expect(result.initialEnd).to.be.eql(convertDateToISOString(moment()));
+        expect(moment(result.initialStart).diff(moment().subtract(14, 'days'), 'minutes')).to.be.lessThan(2);
+        expect(moment(result.initialEnd).diff(moment(), 'minutes')).to.be.lessThan(2);
         expect(result.initialStatus).to.be.eql(ALL_STATUSES_OPTION);
         expect(result.initialPriority).to.be.eql(ALL_PRIORITIES_OPTION);
         expect(result.initialTag).to.be.eql(ALL_TAGS_OPTION);

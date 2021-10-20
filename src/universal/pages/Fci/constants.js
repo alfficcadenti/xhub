@@ -11,6 +11,7 @@ export const FCI_TABLE_COLUMNS = [
     'Error Code',
     'Intentional',
     'Site',
+    'LOB',
     'TPID',
     'EAPID',
     'SiteID',
@@ -29,6 +30,7 @@ export const FCI_DETAIL_COLUMNS = [
     'Error Code',
     'Intentional',
     'Site',
+    'LOB',
     'TPID',
     'EAPID',
     'SiteID',
@@ -40,9 +42,7 @@ export const FCI_HIDDEN_TABLE_COLUMNS = [
     'TPID',
     'EAPID',
     'SiteID',
-    'Device User Agent ID',
-    // 'Comment',
-    // 'Is FCI'
+    'Device User Agent ID'
 ];
 export const COMMENT_TABLE_COLUMNS = [
     'Created',
@@ -171,4 +171,10 @@ export const CATEGORIES = [
     'Schedule Change',
     'Supply Error',
     'User Error'
+];
+
+export const NAV_LINKS = [
+    {id: 'trends', label: 'Trends', href: '/fci'},
+    {id: 'search', label: 'Search', href: '/fci'},
+    {id: 'deltaUsers', label: 'Delta Users', href: '/fci'}
 ];

@@ -49,7 +49,7 @@ const GroupedBookingTrends = ({
 
     const POS_CHART = data.length > 0 ? Object.getOwnPropertyNames(data[0]).slice(1) : [];
 
-    const INDEX_CHART_MAP = [...BRANDS_CHART, ...LOBS_CHART, ...POS_CHART, ...DEVICE_CHART, ...REGION_CHART];
+    const INDEX_CHART_MAP = [[], BRANDS_CHART, LOBS_CHART, POS_CHART, DEVICE_CHART, REGION_CHART];
 
     const formatDateTimeLocal = (date) => moment(date).format('MM/DD HH:mm');
 
@@ -172,7 +172,7 @@ const GroupedBookingTrends = ({
         }
         const activeChart = INDEX_CHART_MAP[activeIndex];
         if (activeChart?.length) {
-            return <defs>{activeChart.map(renderChart)}</defs>;
+            return activeChart.map(renderChart);
         }
         return '';
     };

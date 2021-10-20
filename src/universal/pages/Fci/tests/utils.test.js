@@ -113,7 +113,7 @@ describe('Fci Utils', () => {
         const start = moment().subtract(1, 'day');
         const end = moment();
         const hideIntentionalCheck = false;
-        expect(getFciQueryString(start, end, null, null, hideIntentionalCheck, null)).to.eql(
+        expect(getFciQueryString(start, end, null, null, null, hideIntentionalCheck, null)).to.eql(
             `from=${start.toISOString()}&to=${end.toISOString()}&hide_intentional=${hideIntentionalCheck}`
         );
     });
@@ -123,11 +123,12 @@ describe('Fci Utils', () => {
         const end = moment();
         const selectedErrorCode = '404';
         const selectedSite = 'www.expedia.com';
+        const selectedLob = 'Car';
         const hideIntentionalCheck = false;
         const chartProperty = CATEGORY_OPTION;
-        expect(getFciQueryString(start, end, selectedErrorCode, selectedSite, hideIntentionalCheck, chartProperty)).to.eql(
+        expect(getFciQueryString(start, end, selectedErrorCode, selectedSite, selectedLob, hideIntentionalCheck, chartProperty)).to.eql(
             `from=${start.toISOString()}&to=${end.toISOString()}&category=${selectedErrorCode}`
-            + `&sites=${selectedSite}&hide_intentional=${hideIntentionalCheck}`
+            + `&sites=${selectedSite}&line_of_business=${selectedLob}&hide_intentional=${hideIntentionalCheck}`
         );
     });
 
@@ -278,6 +279,7 @@ describe('Fci Utils', () => {
                 is_intentional: 'true',
                 error_code: 'errorCode',
                 site: 'site',
+                lob: 'lob',
                 tp_id: 'tpId',
                 eap_id: 'eapId',
                 site_id: 'siteId',
@@ -298,6 +300,7 @@ describe('Fci Utils', () => {
             Intentional: fci.is_intentional,
             'Error Code': fci.error_code,
             Site: fci.site,
+            LOB: fci.lob,
             TPID: fci.tp_id,
             EAPID: fci.eap_id,
             'SiteID': fci.site_id,
@@ -321,6 +324,7 @@ describe('Fci Utils', () => {
             Intentional: BLANK,
             'Error Code': BLANK,
             Site: BLANK,
+            LOB: BLANK,
             TPID: BLANK,
             EAPID: BLANK,
             'SiteID': BLANK,
