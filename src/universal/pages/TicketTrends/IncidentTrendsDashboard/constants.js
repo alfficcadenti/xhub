@@ -19,5 +19,10 @@ export const NAV_LINKS = [
         id: 'top5',
         label: 'Top 5',
         href: '/incident-trends'
+    },
+    {
+        id: 'incident',
+        label: 'Incident',
+        href: '/incident-trends'
     }
 ];
