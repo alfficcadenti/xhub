@@ -79,6 +79,11 @@ export const getQueryString = (start, end, IMPULSE_MAPPING, globalBrandName, sel
     + `${getGroupType(groupType)}`
 );
 
+export const getQueryStringYOY = (start, end, interval) => (
+    `?start_time=${start.format('YYYY-MM-DDTHH:mm:ss')}Z&end_time=${end.format('YYYY-MM-DDTHH:mm:ss')}Z`
+    + `&time_interval=${interval}`
+);
+
 export const getQueryStringPrediction = (start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval) => (
     `?start_time=${start.format('YYYY-MM-DDTHH:mm:ss')}Z&end_time=${end.format('YYYY-MM-DDTHH:mm:ss')}Z`
     + `${getQueryParamMulti('egSiteUrl', selectedSiteURLMulti)}`

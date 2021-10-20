@@ -303,6 +303,11 @@
               "method": "GET",
               "operation": "GET_booking_change_percentage"
             },
+            "bookingsImpulseYOY": {
+              "path": "/v1/bookings/count/YOY",
+              "method": "GET",
+              "operation": "GET_booking_YOY"
+            },
             "bookingsImpulseFilters": {
               "path": "/v1/bookings/filters",
               "method": "GET",
@@ -404,6 +409,11 @@
               "method": "GET",
               "operation": "GET_booking_change_percentage"
             },
+            "bookingsImpulseYOY": {
+              "path": "/v1/bookings/count/YOY",
+              "method": "GET",
+              "operation": "GET_booking_YOY"
+            },
             "bookingsImpulseFilters": {
               "path": "/v1/bookings/filters",
               "method": "GET",
@@ -500,6 +510,11 @@
               "method": "GET",
               "operation": "GET_booking_change_percentage"
             },
+            "bookingsImpulseYOY": {
+              "path": "/v1/bookings/count/YOY",
+              "method": "GET",
+              "operation": "GET_booking_YOY"
+            },
             "bookingsImpulseFilters": {
               "path": "/v1/bookings/filters",
               "method": "GET",
@@ -585,6 +600,11 @@
               "path": "/v1/bookings/change/percentage",
               "method": "GET",
               "operation": "GET_booking_change_percentage"
+            },
+            "bookingsImpulseYOY": {
+              "path": "/v1/bookings/count/YOY",
+              "method": "GET",
+              "operation": "GET_booking_YOY"
             },
             "bookingsImpulseFilters": {
               "path": "/v1/bookings/filters",

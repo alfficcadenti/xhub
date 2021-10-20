@@ -19,7 +19,7 @@ import {
     getCategory,
     getQueryStringPrediction,
     simplifyBookingsData,
-    simplifyPredictionData, getQueryStringPercentageChange
+    simplifyPredictionData, getQueryStringPercentageChange, getQueryStringYOY
 } from './impulseHandler';
 import {checkResponse, checkIsDateInvalid, getChartDataForFutureEvents, mapGroupedData} from '../utils';
 import moment from 'moment';
@@ -281,6 +281,16 @@ export const useFetchBlipData = (
             .finally(() => setIsAverageCountLoading(false));
     };
 
+    const fetchCallYOY = (start, end, interval) =>
+        fetch(`/v1/bookings/count/YOY${getQueryStringYOY(start, end, interval)}`)
+            .then(checkResponse)
+            .then((respJson) => {
+                respJson.map((item) => ({
+                    time: moment.utc(item.time).valueOf(),
+                    count: item.count
+                }));
+            });
+
     const getPredictions = (start, end, interval, chartData) => {
         const dayRange = moment(endDateTime).diff(moment(startDateTime), 'days');
         if (dayRange < 7) {
@@ -447,6 +457,7 @@ export const useFetchBlipData = (
             fetchHealth();
             fetchAnomalies();
             getPredictions();
+            fetchCallYOY();
             intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
             intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
             intervalForHealth = setIntervalForRealTimeData(healthTimeInterval, 'health');
