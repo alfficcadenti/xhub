@@ -6,6 +6,7 @@ import FunnelView from './FunnelView';
 import Home from './Home';
 import Impulse from './Impulse';
 import LandingPage from './LandingPage';
+import StatusPage from './Status';
 import PRB from './PRB';
 import QualityMetrics from './QualityMetrics';
 import IncidentTrendsDashboard from './TicketTrends/IncidentTrendsDashboard';
@@ -60,6 +61,14 @@ export default [
         link: '/landing-page',
         text: 'Landing Page',
         component: LandingPage,
+        hidden: true
+    },
+    {
+        category: '',
+        id: 'status-page',
+        link: '/status-page',
+        text: 'Status Page',
+        component: StatusPage,
         hidden: true
     },
     // AAT Dashboards
