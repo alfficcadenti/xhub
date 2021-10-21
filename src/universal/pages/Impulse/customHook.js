@@ -26,6 +26,7 @@ import moment from 'moment';
 
 const THREE_WEEK_AVG_COUNT = '3 Week Avg Counts';
 const PREDICTION_COUNT = 'Prediction Counts';
+const YOY_COUNT = 'count';
 const BOOKING_COUNT = 'Booking Counts';
 const IMPULSE_MAPPING = [
     {globalFilter: EG_BRAND, impulseFilter: ALL_BRAND_GROUP},
@@ -44,6 +45,7 @@ let intervalForCharts = null;
 let intervalForAnnotations = null;
 let intervalForHealth = null;
 let intervalForAnomalies = null;
+let finalChartData1 = null;
 
 export const useFetchBlipData = (
     isApplyClicked,
@@ -197,13 +199,24 @@ export const useFetchBlipData = (
     const fetchData = (start, end, interval) => fetch(`/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval, '')}`)
         .then(checkResponse)
         .then((respJson) => {
-            const chartData = respJson.map((item) => {
+            let chartData = respJson.map((item) => {
                 return {
                     time: moment.utc(item.time).valueOf(),
                     [BOOKING_COUNT]: item.count,
                     [THREE_WEEK_AVG_COUNT]: item.prediction.weighted_count,
                 };
             });
+            console.log('finalChartData1.length' + finalChartData1.length);
+            console.log('chartData.length' + chartData.length);
+            if (finalChartData1.length === chartData.length) {
+                chartData = chartData.map((item, i) => {
+                    return {
+                        ...item,
+                        [YOY_COUNT]: finalChartData1[i].count
+                    };
+                });
+            }
+            console.log('chartData ' + JSON.stringify(chartData));
             return chartData;
         });
 
@@ -281,14 +294,19 @@ export const useFetchBlipData = (
             .finally(() => setIsAverageCountLoading(false));
     };
 
-    const fetchCallYOY = (start, end, interval) =>
+    const fetchCallYOY = (start = startDateTime, end = endDateTime, interval = timeInterval) =>
         fetch(`/v1/bookings/count/YOY${getQueryStringYOY(start, end, interval)}`)
             .then(checkResponse)
             .then((respJson) => {
-                respJson.map((item) => ({
+                finalChartData1 = respJson.map((item) => ({
                     time: moment.utc(item.time).valueOf(),
                     count: item.count
                 }));
+            })
+            .catch((err) => {
+                setError('No data found for this selection.');
+                // eslint-disable-next-line no-console
+                console.error(err);
             });
 
     const getPredictions = (start, end, interval, chartData) => {
@@ -449,6 +467,7 @@ export const useFetchBlipData = (
         if (SUPPRESSED_BRANDS.includes(globalBrandName)) {
             setError(`Booking data for ${globalBrandName} is not yet available. The following brands are supported at this time: "Expedia", "Hotels.com Retail", and "Expedia Partner Solutions".`);
         } else {
+            fetchCallYOY();
             getGroupedBookingsData();
             getData();
             getFilter();
@@ -457,7 +476,6 @@ export const useFetchBlipData = (
             fetchHealth();
             fetchAnomalies();
             getPredictions();
-            fetchCallYOY();
             intervalForCharts = setIntervalForRealTimeData(bookingTimeInterval, 'bookingData');
             intervalForAnnotations = setIntervalForRealTimeData(incidentTimeInterval, 'incidents');
             intervalForHealth = setIntervalForRealTimeData(healthTimeInterval, 'health');
@@ -496,6 +514,7 @@ export const useFetchBlipData = (
         const dateInvalid = checkIsDateInvalid(startDateTime, endDateTime);
 
         if (isApplyClicked || isResetClicked || isChartSliceClicked) {
+            fetchCallYOY();
             getGroupedBookingsData();
             getData();
             fetchIncidents();
@@ -542,6 +561,7 @@ export const useFetchBlipData = (
                 intervalForAnomalies = setIntervalForRealTimeData(anomalyTimeInterval, 'anomaly');
                 getData(startDateTime, endTime(), timeInterval);
                 getGroupedBookingsData(startDateTime, endDateTime, timeInterval);
+                fetchCallYOY(startDateTime, endDateTime, timeInterval);
                 fetchIncidents(startDateTime, endDateTime);
                 fetchHealth();
                 fetchAnomalies(startDateTime, endDateTime);
