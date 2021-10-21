@@ -69,9 +69,9 @@ const Annotations = ({
 
     const filterAnnotations = (deployments, incidents, abTests) => {
         const filteredDeployments = deployments
-            .filter(getAnnotationsFilter(selectedProducts, 'productName'))
-            .filter(getAnnotationsFilter(selectedApplications, 'serviceName', true))
-            .filter(getAnnotationsFilter(selectedServiceTiers, 'serviceTier'));
+            .filter(getAnnotationsFilter(selectedProducts, 'product_name'))
+            .filter(getAnnotationsFilter(selectedApplications, 'service_name', true))
+            .filter(getAnnotationsFilter(selectedServiceTiers, 'service_tier'));
 
         const filteredIncidents = incidents
             .filter(getAnnotationsFilter(selectedStatuses, 'status'))
@@ -124,9 +124,9 @@ const Annotations = ({
         let filteredRawSuggestions = {...suggestions};
 
         if (deploymentCategory) {
-            addSuggestionType(filteredRawSuggestions, 'productName', productNameSuggestions);
-            addSuggestionType(filteredRawSuggestions, 'serviceTier', serviceTierSuggestions);
-            addSuggestionType(filteredRawSuggestions, 'applicationName', applicationNameSuggestions);
+            addSuggestionType(filteredRawSuggestions, 'product_name', productNameSuggestions);
+            addSuggestionType(filteredRawSuggestions, 'service_tier', serviceTierSuggestions);
+            addSuggestionType(filteredRawSuggestions, 'application_name', applicationNameSuggestions);
         } else {
             delete filteredRawSuggestions.applicationName;
             delete filteredRawSuggestions.productName;
@@ -160,16 +160,16 @@ const Annotations = ({
             setIsDeploymentsAnnotationsLoading(true);
             setDeploymentAnnotations([]);
             const dateQuery = start && end
-                ? `&startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
+                ? `&from_datetime=${moment(start).utc().format()}&to_datetime=${moment(end).utc().format()}`
                 : '';
 
-            fetch(`/annotations?${dateQuery}`)
+            fetch(`/deployments?${dateQuery}`)
                 .then(checkResponse)
                 .then((fetchedAnnotations) => {
                     const adjustedAnnotations = fetchedAnnotations.map((annotation) => ({
                         ...annotation,
-                        tags: [annotation.productName, annotation.platform],
-                        time: moment.utc(annotation.openedAt).valueOf(),
+                        tags: [annotation.product_name, annotation.platform],
+                        time: moment.utc(annotation.opened_at).valueOf(),
                         category: 'deployment'
                     }));
 
@@ -223,7 +223,7 @@ const Annotations = ({
             setIsAbTestsAnnotationsLoading(true);
             setAbTestsAnnotations([]);
             const dateQuery = start && end
-                ? `?startDate=${moment(start).utc().format()}&endDate=${moment(end).utc().format()}`
+                ? `?from_datetime=${moment(start).utc().format()}&to_datetime=${moment(end).utc().format()}`
                 : '';
 
             fetch(`/abTests${dateQuery}`)
@@ -231,13 +231,13 @@ const Annotations = ({
                 .then((data) => {
                     const adjustedAbTests = data.map((abTest) => ({
                         ...abTest,
-                        status: abTest.abTestDetails.status,
-                        time: moment.utc(abTest.openedAt).local().isValid() ? moment.utc(abTest.openedAt).valueOf() : '-',
+                        status: abTest.ab_test_details?.status,
+                        time: moment.utc(abTest.opened_at).local().isValid() ? moment.utc(abTest.opened_at).valueOf() : '-',
                         category: AB_TESTS_ANNOTATION_CATEGORY
                     }));
 
                     setAbTestsAnnotations(adjustedAbTests);
-                    const abTestsStatus = getListOfUniqueProperties(adjustedAbTests.map((item) => item.abTestDetails), 'status');
+                    const abTestsStatus = getListOfUniqueProperties(adjustedAbTests.map((item) => item.ab_test_details), 'status');
                     setAbTestsStatusSuggestions(abTestsStatus);
                     setSuggestions((prevSuggestions) => ({
                         ...prevSuggestions,
@@ -275,11 +275,11 @@ const Annotations = ({
     const onFilterChange = (value) => {
         const adjustedInputValue = adjustInputValue(value);
 
-        setSelectedProducts(filterNewSelectedItems(adjustedInputValue, 'productName'));
-        setSelectedApplications(filterNewSelectedItems(adjustedInputValue, 'applicationName'));
-        setSelectedServiceTiers(filterNewSelectedItems(adjustedInputValue, 'serviceTier'));
-        setSelectedStatuses(filterNewSelectedItems(adjustedInputValue, 'incidentStatus'));
-        setSelectedPriorities(filterNewSelectedItems(adjustedInputValue, 'incidentPriority'));
+        setSelectedProducts(filterNewSelectedItems(adjustedInputValue, 'product_name'));
+        setSelectedApplications(filterNewSelectedItems(adjustedInputValue, 'application_name'));
+        setSelectedServiceTiers(filterNewSelectedItems(adjustedInputValue, 'service_tier'));
+        setSelectedStatuses(filterNewSelectedItems(adjustedInputValue, 'incident_status'));
+        setSelectedPriorities(filterNewSelectedItems(adjustedInputValue, 'incident_priority'));
         setSelectedAbTestsStatuses(filterNewSelectedItems(adjustedInputValue, 'abTestsStatus'));
     };
 
@@ -364,7 +364,7 @@ const Annotations = ({
                             suggestions={suggestions}
                             suggestionMapping={productMapping}
                             onFilterChange={onFilterChange}
-                            defaultSelection={[{key: 'serviceTier', value: 'Tier 1'}]}
+                            defaultSelection={[{key: 'service_tier', value: 'Tier 1'}]}
                             resetSelection={false}
                         />
                     }

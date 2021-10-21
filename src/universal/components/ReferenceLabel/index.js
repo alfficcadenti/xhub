@@ -20,8 +20,7 @@ const ReferenceLabel = ({viewBox: {x}, annotation, isImpulse = false, setTableDa
         revLoss,
         summary,
         url,
-        brand,
-        abTestDetails
+        brand
     } = annotation;
 
 
@@ -51,9 +50,9 @@ const ReferenceLabel = ({viewBox: {x}, annotation, isImpulse = false, setTableDa
                                     case AB_TESTS_ANNOTATION_CATEGORY:
                                         return (<>
                                             {buildTicketLink(number, brand)}
-                                            <a className="experiment-link" href={`https://egtnl.prod.expedia.com/experiment/${abTestDetails.experimentId}`} target="_blank">{abTestDetails.experimentName}</a>
-                                            <span className="experiment-status">{`status: ${abTestDetails.status}`}</span>
-                                            <span className="experiment-owner">{abTestDetails.owner}</span>
+                                            <a className="experiment-link" href={`https://egtnl.prod.expedia.com/experiment/${annotation?.ab_test_details?.experiment_id}`} target="_blank">{annotation?.ab_test_details?.experiment_name}</a>
+                                            <span className="experiment-status">{`status: ${annotation?.ab_test_details?.status}`}</span>
+                                            <span className="experiment-owner">{annotation?.ab_test_details?.owner}</span>
                                         </>);
                                     default:
                                         return (<>

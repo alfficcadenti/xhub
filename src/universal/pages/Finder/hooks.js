@@ -29,28 +29,28 @@ export const useFetchCRs = (
             setLastStartDate(startDate);
             setLastEndDate(endDate);
             const url = brand && brand.changeRequests ?
-                `/change-requests-api/v1/changeDetails?startDate=${startDate}&endDate=${endDate}&brand=${brand.changeRequests}` :
-                `/change-requests-api/v1/changeDetails?startDate=${startDate}&endDate=${endDate}`;
+                `/change-requests-api/v1/changeDetails?from_date=${startDate}&to_date=${endDate}&brand=${brand.changeRequests}` :
+                `/change-requests-api/v1/changeDetails?from_date=${startDate}&to_date=${endDate}`;
             fetch(url)
                 .then(checkResponse)
                 .then((data) => {
                     const filteredCR = brand && brand.changeRequests ? data.filter((x) => x.platform === brand.changeRequests) : data;
-                    const crs = sortArrayByMostRecentDate(filteredCR, 'openedAt');
+                    const crs = sortArrayByMostRecentDate(filteredCR, 'opened_at');
                     const uniqueCRs = getUniqueByProperty(crs, 'number');
                     const adjustedUniqueCRs = adjustCRsProperties(uniqueCRs);
-                    const dataProducts = getListOfUniqueProperties(adjustedUniqueCRs, 'productName');
-                    const dataApplications = getListOfUniqueProperties(adjustedUniqueCRs, 'applicationName');
+                    const dataProducts = getListOfUniqueProperties(adjustedUniqueCRs, 'product_name');
+                    const dataApplications = getListOfUniqueProperties(adjustedUniqueCRs, 'application_name');
                     const dataCRnumbers = getListOfUniqueProperties(adjustedUniqueCRs, 'number');
                     const dataPlatforms = getListOfUniqueProperties(adjustedUniqueCRs, 'platform');
                     const dataTeams = getListOfUniqueProperties(adjustedUniqueCRs, 'team');
-                    const dataBusinessReasons = getListOfUniqueProperties(adjustedUniqueCRs, 'businessReason');
+                    const dataBusinessReasons = getListOfUniqueProperties(adjustedUniqueCRs, 'business_reason');
                     const dataStatuses = getListOfUniqueProperties(adjustedUniqueCRs, 'status');
 
                     setChangeRequestSuggestions({
-                        productName: dataProducts,
-                        applicationName: dataApplications,
+                        product_name: dataProducts,
+                        application_name: dataApplications,
                         platform: dataPlatforms,
-                        businessReason: dataBusinessReasons,
+                        business_reason: dataBusinessReasons,
                         number: dataCRnumbers,
                         status: dataStatuses,
                         team: dataTeams,
@@ -114,7 +114,7 @@ export const useFetchABTests = (
             setLastEndDate(endDate);
 
             const dateQuery = startDate && endDate
-                ? `?startDate=${moment(startDate).utc().format()}&endDate=${moment(endDate).utc().format()}`
+                ? `?from_datetime=${moment(startDate).utc().format()}&to_datetime=${moment(endDate).utc().format()}`
                 : '';
 
             fetch(`/abTests${dateQuery}`)
@@ -122,7 +122,7 @@ export const useFetchABTests = (
                 .then((data) => {
                     const adjustedAbTests = data.map((abTest) => ({
                         ...abTest,
-                        status: abTest.abTestDetails.status
+                        status: abTest.ab_test_details.status
                     }));
 
                     const dataStatuses = getListOfUniqueProperties(adjustedAbTests, 'status');

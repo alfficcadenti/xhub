@@ -132,7 +132,7 @@ export const useFetchProductMapping = (startDate, endDate) => {
     useEffect(() => {
         const fetchProductMapping = () => {
             const dateQuery = startDate && endDate
-                ? `startDate=${moment(startDate).utc().format()}&endDate=${moment(endDate).utc().format()}`
+                ? `from_datetime=${moment(startDate).utc().format()}&to_datetime=${moment(endDate).utc().format()}`
                 : '';
             fetch(`/productMapping?${dateQuery}`)
                 .then(checkResponse)
