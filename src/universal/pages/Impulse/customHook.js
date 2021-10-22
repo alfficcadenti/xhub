@@ -26,7 +26,7 @@ import moment from 'moment';
 
 const THREE_WEEK_AVG_COUNT = '3 Week Avg Counts';
 const PREDICTION_COUNT = 'Prediction Counts';
-const YOY_COUNT = 'count';
+const YOY_COUNT = 'YOY Counts';
 const BOOKING_COUNT = 'Booking Counts';
 const IMPULSE_MAPPING = [
     {globalFilter: EG_BRAND, impulseFilter: ALL_BRAND_GROUP},
@@ -45,7 +45,7 @@ let intervalForCharts = null;
 let intervalForAnnotations = null;
 let intervalForHealth = null;
 let intervalForAnomalies = null;
-let finalChartData1 = null;
+let finalChartDataYOY = null;
 
 export const useFetchBlipData = (
     isApplyClicked,
@@ -206,17 +206,14 @@ export const useFetchBlipData = (
                     [THREE_WEEK_AVG_COUNT]: item.prediction.weighted_count,
                 };
             });
-            console.log('finalChartData1.length' + finalChartData1.length);
-            console.log('chartData.length' + chartData.length);
-            if (finalChartData1.length === chartData.length) {
+            if (finalChartDataYOY.length === chartData.length) {
                 chartData = chartData.map((item, i) => {
                     return {
                         ...item,
-                        [YOY_COUNT]: finalChartData1[i].count
+                        [YOY_COUNT]: finalChartDataYOY[i]?.count ? finalChartDataYOY[i]?.count : 0
                     };
                 });
             }
-            console.log('chartData ' + JSON.stringify(chartData));
             return chartData;
         });
 
@@ -241,12 +238,21 @@ export const useFetchBlipData = (
             let finalChartData = simplifiedBookingsData;
             let chartDataForFutureEvents = simplifiedPredictionData;
 
+            if (finalChartDataYOY.length === finalChartData.length) {
+                finalChartData = finalChartData.map((item, i) => {
+                    return {
+                        ...item,
+                        [YOY_COUNT]: finalChartDataYOY[i]?.count ? finalChartDataYOY[i]?.count : 0
+                    };
+                });
+            }
+
             if (simplifiedBookingsData.length === simplifiedPredictionData.length) {
                 finalChartData = finalChartData.map((item, i) => {
                     if (simplifiedBookingsData.length && simplifiedPredictionData.length && (simplifiedBookingsData[i].time === simplifiedPredictionData[i].time)) {
                         return {
                             ...item,
-                            [PREDICTION_COUNT]: Math.round(simplifiedPredictionData[i].count)
+                            [PREDICTION_COUNT]: simplifiedPredictionData[i]?.count ? Math.round(simplifiedPredictionData[i].count) : 0
                         };
                     }
                     return item;
@@ -298,7 +304,7 @@ export const useFetchBlipData = (
         fetch(`/v1/bookings/count/YOY${getQueryStringYOY(start, end, interval)}`)
             .then(checkResponse)
             .then((respJson) => {
-                finalChartData1 = respJson.map((item) => ({
+                finalChartDataYOY = respJson.map((item) => ({
                     time: moment.utc(item.time).valueOf(),
                     count: item.count
                 }));
