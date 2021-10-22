@@ -128,9 +128,9 @@ const Annotations = ({
             addSuggestionType(filteredRawSuggestions, 'service_tier', serviceTierSuggestions);
             addSuggestionType(filteredRawSuggestions, 'application_name', applicationNameSuggestions);
         } else {
-            delete filteredRawSuggestions.applicationName;
-            delete filteredRawSuggestions.productName;
-            delete filteredRawSuggestions.serviceTier;
+            delete filteredRawSuggestions.application_name;
+            delete filteredRawSuggestions.product_name;
+            delete filteredRawSuggestions.service_tier;
         }
 
         if (incidentCategory) {
@@ -284,7 +284,7 @@ const Annotations = ({
     };
 
     useEffect(() => {
-        const adjustedProducts = productMapping.map(({productName}) => productName);
+        const adjustedProducts = productMapping.map(({product_name: productName}) => productName);
 
         const adjustedApplications = productMapping.reduce((acc, current) => {
             return [...acc, ...current.applicationNames];
@@ -297,9 +297,9 @@ const Annotations = ({
 
         setSuggestions((prevSuggestions) => ({
             ...prevSuggestions,
-            productName: adjustedProducts,
-            applicationName: adjustedApplications,
-            serviceTier
+            product_name: adjustedProducts,
+            application_name: adjustedApplications,
+            service_tier: serviceTier
         }));
     }, [productMapping]);
 

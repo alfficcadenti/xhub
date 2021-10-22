@@ -400,13 +400,13 @@ describe('addSuggestionType()', () => {
     };
 
     it('returns updates suggestions if no property', () => {
-        const result = addSuggestionType(suggestions, 'serviceTier', serviceTiers);
-        expect(result.serviceTier).to.be.eql(serviceTiers);
+        const result = addSuggestionType(suggestions, 'service_tier', serviceTiers);
+        expect(result.service_tier).to.be.eql(serviceTiers);
     });
 
     it('returns unchanged suggestions if property already exists', () => {
-        const result = addSuggestionType(suggestions, 'productName', productNames);
-        expect(result.productName[0]).to.be.eql(productNames[0]);
+        const result = addSuggestionType(suggestions, 'product_name', productNames);
+        expect(result.product_name[0]).to.be.eql(productNames[0]);
     });
 });
 
@@ -463,64 +463,64 @@ describe('mapGroupedData()', () => {
 describe('getAnnotationsFilter()', () => {
     const tickets = [{
         brand: 'Brand Expedia',
-        businessJustification: 'Automated Deployment',
-        businessReason: 'Upgrade',
+        business_justification: 'Automated Deployment',
+        business_reason: 'Upgrade',
         category: 'deployment',
-        serviceTier: 'Tier 1',
+        service_tier: 'Tier 1',
         tags: ['LX Shopping', 'Expedia'],
-        teamContactDL: 'lxshop@expedia.com',
-        teamName: 'LX',
+        team_contact_dl: 'lxshop@expedia.com',
+        team_name: 'LX',
         time: '2020-09-21 14:18',
-        serviceName: 'test-service-name'
+        service_name: 'test-service-name'
     }, {
         brand: 'Brand Expedia',
-        businessJustification: 'Automated Deployment',
-        businessReason: 'Upgrade',
+        business_justification: 'Automated Deployment',
+        business_reason: 'Upgrade',
         category: 'deployment',
-        serviceName: 'test-service',
-        serviceTier: 'Tier 1',
-        teamContactDL: 'lxshop@expedia.com',
-        teamName: 'LX',
+        service_name: 'test-service',
+        service_tier: 'Tier 1',
+        team_contact_dl: 'lxshop@expedia.com',
+        team_name: 'LX',
         time: '2020-09-21 14:21'
     }, {
         brand: 'eCommerce Platform',
-        businessJustification: 'Automated Deployment',
-        businessReason: 'Upgrade',
+        business_justification: 'Automated Deployment',
+        business_reason: 'Upgrade',
         category: 'deployment',
-        serviceTier: 'Tier 2',
-        teamContactDL: 'FlightCrewNotifications@expedia.com',
-        teamName: 'Air P&C',
+        service_tier: 'Tier 2',
+        team_contact_dl: 'FlightCrewNotifications@expedia.com',
+        team_name: 'Air P&C',
         time: '2020-09-21 12:13',
-        serviceName: 'Activities-Web'
+        service_name: 'Activities-Web'
     }];
 
     it('returns properly filtered tickets', () => {
-        const result = tickets.filter(getAnnotationsFilter(['Tier 1'], 'serviceTier'));
+        const result = tickets.filter(getAnnotationsFilter(['Tier 1'], 'service_tier'));
         expect(result.length).to.be.eql(2);
     });
 
     it('returns empty array when filter does not match', () => {
-        const result = tickets.filter(getAnnotationsFilter(['Tier 3'], 'serviceTier'));
+        const result = tickets.filter(getAnnotationsFilter(['Tier 3'], 'service_tier'));
         expect(result.length).to.be.eql(0);
     });
 
     it('returns proper result with the toLowerCase param set to true', () => {
-        const result = tickets.filter(getAnnotationsFilter(['activities-web'], 'serviceName', true));
+        const result = tickets.filter(getAnnotationsFilter(['activities-web'], 'service_name', true));
         expect(result.length).to.be.eql(1);
     });
 });
 
 describe('filterNewSelectedItems()', () => {
     const adjustedInputValue = [{
-        key: 'serviceTier',
+        key: 'service_tier',
         values: ['Tier 3']
     }, {
-        key: 'productName',
+        key: 'product_name',
         values: ['Core Services']
     }];
 
     it('returns correct filter option', () => {
-        const result = filterNewSelectedItems(adjustedInputValue, 'productName');
+        const result = filterNewSelectedItems(adjustedInputValue, 'product_name');
         expect(result[0]).to.be.eql('Core Services');
     });
 });
