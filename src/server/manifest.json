@@ -650,23 +650,23 @@
           "hostname": "opxhub-change-request-service.us-west-2.test.expedia.com",
           "protocol": "https:",
           "routes": {
-            "annotations": {
-              "path": "/annotations/v1.0",
+            "deployments": {
+              "path": "/v1/deployments",
               "method": "GET",
-              "operation": "GET_annotations_api_v1"
+              "operation": "GET_deployments_api_v1"
             },
             "changeDetails": {
-              "path": "/changeDetails/v1.0",
+              "path": "/v1/change-details",
               "method": "GET",
               "operation": "GET_change_details_api_v1"
             },
             "productMapping": {
-              "path": "/mappings/products/v1.0",
+              "path": "/v1/mappings/products",
               "method": "GET",
               "operation": "GET_product_mapping_api_v1"
             },
             "abTests": {
-              "path": "/abTests/v1.0",
+              "path": "/v1/ab-tests",
               "method": "GET",
               "operation": "GET_ab_tests_api_v1"
             }
@@ -676,23 +676,23 @@
           "hostname": "opxhub-change-request-service.us-west-2.test.expedia.com",
           "protocol": "https:",
           "routes": {
-            "annotations": {
-              "path": "/annotations/v1.0",
+            "deployments": {
+              "path": "/v1/deployments",
               "method": "GET",
-              "operation": "GET_annotations_api_v1"
+              "operation": "GET_deployments_api_v1"
             },
             "changeDetails": {
-              "path": "/changeDetails/v1.0",
+              "path": "/v1/change-details",
               "method": "GET",
               "operation": "GET_change_details_api_v1"
             },
             "productMapping": {
-              "path": "/mappings/products/v1.0",
+              "path": "/v1/mappings/products",
               "method": "GET",
               "operation": "GET_product_mapping_api_v1"
             },
             "abTests": {
-              "path": "/abTests/v1.0",
+              "path": "/v1/ab-tests",
               "method": "GET",
               "operation": "GET_ab_tests_api_v1"
             }
@@ -702,23 +702,23 @@
           "hostname": "opxhub-change-request-service.us-east-1.prod.expedia.com",
           "protocol": "https:",
           "routes": {
-            "annotations": {
-              "path": "/annotations/v1.0",
+            "deployments": {
+              "path": "/v1/deployments",
               "method": "GET",
-              "operation": "GET_annotations_api_v1"
+              "operation": "GET_deployments_api_v1"
             },
             "changeDetails": {
-              "path": "/changeDetails/v1.0",
+              "path": "/v1/change-details",
               "method": "GET",
               "operation": "GET_change_details_api_v1"
             },
             "productMapping": {
-              "path": "/mappings/products/v1.0",
+              "path": "/v1/mappings/products",
               "method": "GET",
               "operation": "GET_product_mapping_api_v1"
             },
             "abTests": {
-              "path": "/abTests/v1.0",
+              "path": "/v1/ab-tests",
               "method": "GET",
               "operation": "GET_ab_tests_api_v1"
             }

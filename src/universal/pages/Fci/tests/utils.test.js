@@ -46,21 +46,24 @@ describe('Fci Utils', () => {
         const start = moment('2020-01-02');
         const end = moment('2020-01-04');
         const selectedSite = 'www.expedia.com';
+        const selectedLob = 'Cars';
         const chartProperty = 'categoryA';
         const selectedErrorCode = '201';
         expect(shouldFetchData({}, moment('2020-01-01'))).to.be.eql(true);
         expect(shouldFetchData({start}, moment('2020-01-01'))).to.be.eql(true);
         expect(shouldFetchData({start, end}, moment('2020-01-01'))).to.be.eql(true);
-        expect(shouldFetchData({start, end, selectedSite},
+        expect(shouldFetchData({start, end, selectedSite, selectedLob},
             moment('2020-01-01'))).to.be.eql(true);
-        expect(shouldFetchData({start, end, selectedSite},
+        expect(shouldFetchData({start, end, selectedSite, selectedLob},
             moment('2020-01-03'), moment('2020-01-05'))).to.be.eql(true);
-        expect(shouldFetchData({start, end, selectedSite, chartProperty},
-            moment('2020-01-03'), moment('2020-01-03'), 'www.expedia.com', 'categoryB')).to.be.eql(true);
-        expect(shouldFetchData({start, end, selectedSite, chartProperty, selectedErrorCode},
-            moment('2020-01-03'), moment('2020-01-03'), 'www.expedia.com', 'categoryA')).to.be.eql(true);
-        expect(shouldFetchData({start, end, selectedSite, chartProperty, selectedErrorCode},
-            moment('2020-01-03'), moment('2020-01-03'), 'www.expedia.com', 'categoryA', '201')).to.be.eql(false);
+        expect(shouldFetchData({start, end, selectedSite, selectedLob},
+            moment('2020-01-03'), moment('2020-01-03'), 'www.expedia.com', 'Flights')).to.be.eql(true);
+        expect(shouldFetchData({start, end, selectedSite, selectedLob, chartProperty},
+            moment('2020-01-03'), moment('2020-01-03'), 'www.expedia.com', 'Cars', 'categoryB')).to.be.eql(true);
+        expect(shouldFetchData({start, end, selectedSite, selectedLob, chartProperty, selectedErrorCode},
+            moment('2020-01-03'), moment('2020-01-03'), 'www.expedia.com', 'Cars', 'categoryA')).to.be.eql(true);
+        expect(shouldFetchData({start, end, selectedSite, selectedLob, chartProperty, selectedErrorCode},
+            moment('2020-01-03'), moment('2020-01-03'), 'www.expedia.com', 'Cars', 'categoryA', '201')).to.be.eql(false);
     });
 
     it('stringifyQueryParams', () => {

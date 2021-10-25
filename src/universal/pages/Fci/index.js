@@ -206,7 +206,7 @@ const Fci = ({selectedBrands}) => {
         setIsSupportedBrand(true);
         setError(null);
         updateHistory();
-        if (shouldFetchData(prev, start, end, selectedSite, chartProperty, selectedErrorCode, hideIntentionalCheck)) {
+        if (shouldFetchData(prev, start, end, selectedSite, selectedLob, chartProperty, selectedErrorCode, hideIntentionalCheck)) {
             const fciQuery = getFciQueryString(start, end, selectedErrorCode, selectedSite, selectedLob, hideIntentionalCheck, chartProperty);
             const url = chartProperty === CATEGORY_OPTION
                 ? `/v1/checkout-failures/category-counts?${fciQuery}`
@@ -214,7 +214,7 @@ const Fci = ({selectedBrands}) => {
             fetch(url)
                 .then(checkResponse)
                 .then((data) => {
-                    setPrev({start, end, data, selectedSite, chartProperty, selectedErrorCode, hideIntentionalCheck});
+                    setPrev({start, end, data, selectedSite, chartProperty, selectedErrorCode, selectedLob, hideIntentionalCheck});
                     processData(data, chartProperty);
                 })
                 .catch((err) => {
@@ -227,7 +227,7 @@ const Fci = ({selectedBrands}) => {
             processData(prev.data, chartProperty);
             setIsLoading(false);
         }
-    }, [start, end, selectedErrorCode, selectedSite, pathname, selectedBrands, hideIntentionalCheck, prev, processData, chartProperty, activeIndex]);
+    }, [start, end, selectedErrorCode, selectedSite, pathname, selectedBrands, hideIntentionalCheck, prev, processData, chartProperty, activeIndex, selectedLob]);
 
     useEffect(() => {
         if (selectedBucket) {

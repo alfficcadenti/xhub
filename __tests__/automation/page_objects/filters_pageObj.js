@@ -171,12 +171,6 @@ module.exports = {
         statusDropdownOption: {
             selector: '#status-dropdown--container li:nth-child(3)'
         },
-        tagDropdown: {
-            selector: '#tag-dropdown'
-        },
-        tagDropdownOption: {
-            selector: '#tag-dropdown--container li:nth-child(3)'
-        },
         partnerDropdown: {
             selector: '#partner-dropdown'
         },

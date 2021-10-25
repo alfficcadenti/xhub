@@ -32,7 +32,7 @@ import {
     funnelViewUserEvents,
     csrUserEvents
 } from './userEventsService';
-import {changeRequests, annotations, productMapping, abTests} from './changeRequestService';
+import {changeRequests, deployments, productMapping, abTests} from './changeRequestService';
 import {
     postFciComment
 } from './userEventsAnalysisService';
@@ -90,7 +90,7 @@ const apiRoutes = [
     csrUserEvents,
     // change request service
     changeRequests,
-    annotations,
+    deployments,
     productMapping,
     abTests,
     // user events analysis service

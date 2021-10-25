@@ -6,7 +6,8 @@ export const LOBS = [
     'Insurance',
     'Lodging',
     'Air',
-    'Package'
+    'Package',
+    'Rail'
 ];
 export const BRANDS = [
     'all',
@@ -294,6 +295,10 @@ export const LOBS_CHART = [
     {
         name: 'Cruise',
         color: '#1E90FF'
+    },
+    {
+        name: 'Rail',
+        color: '#90CDE6'
     }
 ];
 

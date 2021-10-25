@@ -76,7 +76,6 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
         'Root Cause': getOrDefault(inc, 'root_cause'),
         'Root Cause Owner': getOrDefault(inc, 'root_cause_owner'),
         Status: getOrDefault(inc, 'Status'),
-        Tag: getOrDefault(inc, 'tag'),
         'Executive Summary': getOrDefault(inc, 'executive_summary'),
         executiveSummary: getOrDefault(inc, 'executiveSummary'),
         'RC Owner': getOrDefault(inc, 'root_cause_owner'),
@@ -120,8 +119,7 @@ export const getQualityData = (filteredDefects = []) => filteredDefects
         Project: getOrDefault(t, 'project'),
         rawDuration: t.duration,
         'Impacted Brand': getOrDefault(t, 'impacted_brand'),
-        Status: getOrDefault(t, 'Status'),
-        Tag: getOrDefault(t, 'tag'),
+        Status: getOrDefault(t, 'Status')
     }))
     .sort((a, b) => moment(a.Opened).isBefore(b.Opened));
 

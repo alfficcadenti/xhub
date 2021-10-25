@@ -57,13 +57,13 @@ const UniversalSearch = ({onFilterChange, suggestionMapping, suggestions, defaul
     };
 
     const selectedProduct = () => {
-        const products = fieldSelection && fieldSelection.length && fieldSelection.filter((x) => x.key === 'productName');
+        const products = fieldSelection && fieldSelection.length && fieldSelection.filter((x) => x.key === 'product_name');
         return products;
     };
 
     const productApplications = (products) => {
         const adjustedApplications = products.reduce((acc, current) => {
-            const currentApplicationNames = suggestionMapping.find((item) => item.productName === current.value).applicationNames;
+            const currentApplicationNames = suggestionMapping.find((item) => item.product_name === current.value).applicationNames;
             return [...acc, ...currentApplicationNames];
         }, []);
         return adjustedApplications && adjustedApplications.length ? adjustedApplications : '';
@@ -77,7 +77,7 @@ const UniversalSearch = ({onFilterChange, suggestionMapping, suggestions, defaul
             } else {
                 const products = selectedProduct();
                 const currentFilter = fieldSelection && fieldSelection.length && fieldSelection[fieldSelection.length - 1];
-                if (products && products.length && currentFilter.key === 'applicationName') {
+                if (products && products.length && currentFilter.key === 'application_name') {
                     const newList = productApplications(products) ?
                         productApplications(products) :
                         suggestions[fieldSelection[fieldSelection.length - 1].key];

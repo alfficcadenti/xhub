@@ -12,7 +12,6 @@ import {
     DATE_FORMAT,
     ALL_STATUSES_OPTION,
     ALL_PRIORITIES_OPTION,
-    ALL_TAGS_OPTION,
     ALL_RC_OWNERS_OPTION,
     ALL_PARTNERS_OPTION,
     EG_BRAND,
@@ -34,7 +33,7 @@ import './styles.less';
 const IncidentTrendsDashboard = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const {search} = useLocation();
     const history = useHistory();
-    const {initialStart, initialEnd, initialStatus, initialPriority, initialTag} = getQueryValues(search);
+    const {initialStart, initialEnd, initialStatus, initialPriority} = getQueryValues(search);
 
     const selectedBrand = selectedBrands[0];
     const isPartnerBrand = selectedBrand === EXPEDIA_PARTNER_SERVICES_BRAND;
@@ -46,7 +45,6 @@ const IncidentTrendsDashboard = ({selectedBrands, onBrandChange, prevSelectedBra
     const [pendingEnd, setPendingEnd] = useState(initialEnd);
     const [end, setEnd] = useState(initialEnd);
     const [selectedPriority, setSelectedPriority] = useState(initialPriority);
-    const [selectedTag, setSelectedTag] = useState(initialTag);
     const [selectedRcOwner, setSelectedRcOwner] = useState(ALL_RC_OWNERS_OPTION);
     const [selectedPartner, setSelectedPartner] = useState(ALL_PARTNERS_OPTION);
     const [divisionCheckboxes, setDivisionCheckboxes] = useState(DIVISION_CHECKBOXES);
@@ -64,7 +62,6 @@ const IncidentTrendsDashboard = ({selectedBrands, onBrandChange, prevSelectedBra
         allIncidents,
         incidentsPriorities,
         incidentsStatuses,
-        incidentsTags,
         incidentPartners
     ] = useFetchTickets(
         isApplyClicked,
@@ -85,13 +82,12 @@ const IncidentTrendsDashboard = ({selectedBrands, onBrandChange, prevSelectedBra
         const matchesBrand = (t) => (selectedBrand === EG_BRAND
             || (t.impacted_brand || '').split(',').some((iBrand) => selectedBrand === impactedBrandToDivision(iBrand)));
         const matchesStatus = (t) => selectedStatus === ALL_STATUSES_OPTION || t.status === selectedStatus;
-        const matchesTag = (t) => selectedTag === ALL_TAGS_OPTION || t.tag === selectedTag || (Array.isArray(t.tag) && t.tag.includes(selectedTag));
         const matchesRcOwner = (t) => selectedRcOwner === ALL_RC_OWNERS_OPTION || t['RC Owner'] === selectedRcOwner;
         const matchesDivision = (t) => !isPartnerBrand || divisionCheckboxes.find((cbox) => cbox.checked && (t.partner_divisions || []).includes(cbox.text));
         const matchesPartner = (t) => !isPartnerBrand || selectedPartner === ALL_PARTNERS_OPTION ||
             (t.impactedPartnersLobs && t.impactedPartnersLobs.includes(selectedPartner));
         // eslint-disable-next-line complexity
-        const filterTickets = (t) => (matchesPriority(t) && matchesBrand(t) && matchesStatus(t) && matchesTag(t) && matchesRcOwner(t)
+        const filterTickets = (t) => (matchesPriority(t) && matchesBrand(t) && matchesStatus(t) && matchesRcOwner(t)
             && matchesPartner(t) && matchesDivision(t));
         const browserTimezone = moment.tz.guess();
         setTickets([...allUniqueIncidents].filter(filterTickets));
@@ -104,7 +100,6 @@ const IncidentTrendsDashboard = ({selectedBrands, onBrandChange, prevSelectedBra
             + `&to=${encodeURIComponent(pendingEnd)}`
             + `&priority=${selectedPriority}`
             + `&status=${selectedStatus}`
-            + `&tag=${selectedTag}`
         );
     }
 
@@ -129,11 +124,6 @@ const IncidentTrendsDashboard = ({selectedBrands, onBrandChange, prevSelectedBra
 
     const handleStatusChange = useCallback((status) => {
         setSelectedStatus(status);
-        setIsDirtyForm(true);
-    }, []);
-
-    const handleTagChange = useCallback((tag) => {
-        setSelectedTag(tag);
         setIsDirtyForm(true);
     }, []);
 
@@ -232,15 +222,7 @@ const IncidentTrendsDashboard = ({selectedBrands, onBrandChange, prevSelectedBra
                         selectedValue={selectedPartner}
                         onClickHandler={handlePartnerChange}
                     />
-                ) : (
-                    <FilterDropDown
-                        id="tag-dropdown"
-                        className="tag-dropdown"
-                        list={incidentsTags}
-                        selectedValue={selectedTag}
-                        onClickHandler={handleTagChange}
-                    />
-                )}
+                ) : ''}
                 <button
                     type="button"
                     className="apply-button btn btn-primary active"

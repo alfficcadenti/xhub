@@ -203,7 +203,7 @@ export const useFetchBlipData = (
                 return {
                     time: moment.utc(item.time).valueOf(),
                     [BOOKING_COUNT]: item.count,
-                    [THREE_WEEK_AVG_COUNT]: item.prediction.weighted_count,
+                    [THREE_WEEK_AVG_COUNT]: item?.prediction?.weighted_count ? item.prediction.weighted_count : 0,
                 };
             });
             if (finalChartDataYOY.length === chartData.length) {

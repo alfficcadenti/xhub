@@ -26,12 +26,13 @@ export const getUnsupportedBrandMsg = (selectedBrands) => `FCIs for ${selectedBr
     + `If you have any questions, please ping ${OPXHUB_SUPPORT_CHANNEL} or leave a comment via our Feedback form.`;
 
 // eslint-disable-next-line complexity
-export const shouldFetchData = (prev, start, end, selectedSite, chartProperty, selectedErrorCode, hideIntentionalCheck) => (
+export const shouldFetchData = (prev, start, end, selectedSite, selectedLob, chartProperty, selectedErrorCode, hideIntentionalCheck) => (
     !prev.start
     || !prev.end
     || start.isBefore(prev.start)
     || end.isAfter(prev.end)
     || prev.selectedSite !== selectedSite
+    || prev.selectedLob !== selectedLob
     || prev.chartProperty !== chartProperty
     || prev.selectedErrorCode !== selectedErrorCode
     || prev.hideIntentionalCheck !== hideIntentionalCheck

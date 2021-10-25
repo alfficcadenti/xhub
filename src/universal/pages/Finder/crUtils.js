@@ -44,12 +44,12 @@ export const teamEmail = (team = '', contact = '') => <Tooltip fullWidth content
 export const formatCRData = (filteredCRs = []) => filteredCRs
     .map((x) => ({
         'CR Number': buildServiceNowLink(x.id, x.number),
-        Application: getOrDefault(x, 'applicationName'),
-        Product: getOrDefault(x, 'productName'),
-        Description: getOrDefault(x, 'shortDescription'),
+        Application: getOrDefault(x, 'application_name'),
+        Product: getOrDefault(x, 'product_name'),
+        Description: getOrDefault(x, 'short_description'),
         Brand: platformToBrand(x.platform),
-        Started: moment.utc(x.openedAt).local().isValid() ? moment.utc(x.openedAt).local().format('YYYY-MM-DD HH:mm') : '-',
-        'Business Reason': getOrDefault(x, 'businessReason'),
+        Started: moment.utc(x.opened_at).local().isValid() ? moment.utc(x.opened_at).local().format('YYYY-MM-DD HH:mm') : '-',
+        'Business Reason': getOrDefault(x, 'business_reason'),
         Platform: getOrDefault(x, 'platform'),
         status: getOrDefault(x, 'status'),
         Team: (teamEmail(x.team, x.contact)),
@@ -59,11 +59,11 @@ export const formatCRData = (filteredCRs = []) => filteredCRs
                 <div className="expandable-row">
                     <span className="expandable-row-header">{'Business Justification:'}</span>
                     <div className="expandable-row-section">
-                        {getOrDefault(x, 'businessJustification')}
+                        {getOrDefault(x, 'business_justification')}
                     </div>
                     <span className="expandable-row-header">{'Environment:'}</span>
                     <div className="expandable-row-section">
-                        {getOrDefault(x, 'environmentName')}
+                        {getOrDefault(x, 'environment_name')}
                     </div>
                     <span className="expandable-row-header">{'Coordinator:'}</span>
                     <div className="expandable-row-section">
@@ -73,15 +73,15 @@ export const formatCRData = (filteredCRs = []) => filteredCRs
                 <div className="expandable-row">
                     <span className="expandable-row-header">{'Coordinator Group:'}</span>
                     <div className="expandable-row-section">
-                        {getOrDefault(x, 'coordinatorGroup')}
+                        {getOrDefault(x, 'coordinator_group')}
                     </div>
                     <span className="expandable-row-header">{'Change Class:'}</span>
                     <div className="expandable-row-section">
-                        {getOrDefault(x, 'changeClass')}
+                        {getOrDefault(x, 'change_class')}
                     </div>
                     <span className="expandable-row-header">{'Created By:'}</span>
                     <div className="expandable-row-section">
-                        {getOrDefault(x, 'sysCreatedBy')}
+                        {getOrDefault(x, 'sys_created_by')}
                     </div>
                 </div>
             </div>
@@ -90,52 +90,49 @@ export const formatCRData = (filteredCRs = []) => filteredCRs
     .sort((a, b) => moment(a.Started).isBefore(b.Started));
 
 export const formatABTestsData = (abTests = []) => abTests
-    .map((x) => {
-        const {abTestDetails} = (x || {});
-        return ({
-            'A/B Tests Number': buildServiceNowLink(x.id, x.number),
-            Application: getOrDefault(x, 'serviceName'),
-            Description: getOrDefault(abTestDetails, 'description'),
-            Brand: platformToBrand(x.platform),
-            Started: moment.utc(x.openedAt).local().isValid() ? moment.utc(x.openedAt).local().format('YYYY-MM-DD HH:mm') : '-',
-            'Business Reason': getOrDefault(x, 'businessReason'),
-            Platform: getOrDefault(x, 'platform'),
-            status: getOrDefault(abTestDetails, 'status'),
-            Details: (
-                <div className="expandable-row-wrapper">
-                    <div className="expandable-row">
-                        <span className="expandable-row-header">{'Business Justification:'}</span>
-                        <div className="expandable-row-section">
-                            {getOrDefault(x, 'businessJustification')}
-                        </div>
-                        <span className="expandable-row-header">{'Environment:'}</span>
-                        <div className="expandable-row-section">
-                            {getOrDefault(x, 'environmentName')}
-                        </div>
-                        <span className="expandable-row-header">{'Experiment Id:'}</span>
-                        <div className="expandable-row-section">
-                            <a className="experiment-link" href={`https://egtnl.prod.expedia.com/experiment/${x.abTestDetails.experimentId}`} target="_blank">{x.abTestDetails.experimentName}</a>
-                        </div>
+    .map((x) => ({
+        'A/B Tests Number': buildServiceNowLink(x.id, x.number),
+        Application: getOrDefault(x, 'service_name'),
+        Description: getOrDefault(x.ab_test_details, 'description'),
+        Brand: platformToBrand(x.platform),
+        Started: moment.utc(x.opened_at).local().isValid() ? moment.utc(x.opened_at).local().format('YYYY-MM-DD HH:mm') : '-',
+        'Business Reason': getOrDefault(x, 'business_reason'),
+        Platform: getOrDefault(x, 'platform'),
+        status: getOrDefault(x.ab_test_details, 'status'),
+        Details: (
+            <div className="expandable-row-wrapper">
+                <div className="expandable-row">
+                    <span className="expandable-row-header">{'Business Justification:'}</span>
+                    <div className="expandable-row-section">
+                        {getOrDefault(x, 'business_justification')}
                     </div>
-                    <div className="expandable-row">
-                        <span className="expandable-row-header">{'Owner:'}</span>
-                        <div className="expandable-row-section">
-                            {getOrDefault(abTestDetails, 'owner')}
-                        </div>
-                        <span className="expandable-row-header">{'Experiment Name:'}</span>
-                        <div className="expandable-row-section">
-                            {getOrDefault(abTestDetails, 'experimentName')}
-                        </div>
-                        <span className="expandable-row-header">{'Status:'}</span>
-                        <div className="expandable-row-section">
-                            {getOrDefault(abTestDetails, 'status')}
-                        </div>
+                    <span className="expandable-row-header">{'Environment:'}</span>
+                    <div className="expandable-row-section">
+                        {getOrDefault(x, 'environment_name')}
+                    </div>
+                    <span className="expandable-row-header">{'Experiment Id:'}</span>
+                    <div className="expandable-row-section">
+                        <a className="experiment-link" href={`https://egtnl.prod.expedia.com/experiment/${x.abTestDetails?.experiment_id}`} target="_blank">{x.abTestDetails?.experiment_name}</a>
                     </div>
                 </div>
-            )
-        });
+                <div className="expandable-row">
+                    <span className="expandable-row-header">{'Owner:'}</span>
+                    <div className="expandable-row-section">
+                        {getOrDefault(x.ab_test_details, 'owner')}
+                    </div>
+                    <span className="expandable-row-header">{'Experiment Name:'}</span>
+                    <div className="expandable-row-section">
+                        {getOrDefault(x.ab_test_details, 'experiment_name')}
+                    </div>
+                    <span className="expandable-row-header">{'Status:'}</span>
+                    <div className="expandable-row-section">
+                        {getOrDefault(x.ab_test_details, 'status')}
+                    </div>
+                </div>
+            </div>
+        )
     })
-    .sort((a, b) => moment(a.Started).isBefore(b.Started));
+    ).sort((a, b) => moment(a.Started).isBefore(b.Started));
 
 export const adjustCRsProperties = (CRs = []) => CRs.map((t) => ({
     ...t,
