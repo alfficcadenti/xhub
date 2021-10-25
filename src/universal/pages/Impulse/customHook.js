@@ -19,13 +19,14 @@ import {
     getCategory,
     getQueryStringPrediction,
     simplifyBookingsData,
-    simplifyPredictionData, getQueryStringPercentageChange
+    simplifyPredictionData, getQueryStringPercentageChange, getQueryStringYOY
 } from './impulseHandler';
 import {checkResponse, checkIsDateInvalid, getChartDataForFutureEvents, mapGroupedData} from '../utils';
 import moment from 'moment';
 
 const THREE_WEEK_AVG_COUNT = '3 Week Avg Counts';
 const PREDICTION_COUNT = 'Prediction Counts';
+const YOY_COUNT = 'YOY Counts';
 const BOOKING_COUNT = 'Booking Counts';
 const IMPULSE_MAPPING = [
     {globalFilter: EG_BRAND, impulseFilter: ALL_BRAND_GROUP},
@@ -44,6 +45,7 @@ let intervalForCharts = null;
 let intervalForAnnotations = null;
 let intervalForHealth = null;
 let intervalForAnomalies = null;
+let finalChartDataYOY = null;
 
 export const useFetchBlipData = (
     isApplyClicked,
@@ -197,13 +199,21 @@ export const useFetchBlipData = (
     const fetchData = (start, end, interval) => fetch(`/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval, '')}`)
         .then(checkResponse)
         .then((respJson) => {
-            const chartData = respJson.map((item) => {
+            let chartData = respJson.map((item) => {
                 return {
                     time: moment.utc(item.time).valueOf(),
                     [BOOKING_COUNT]: item.count,
                     [THREE_WEEK_AVG_COUNT]: item?.prediction?.weighted_count ? item.prediction.weighted_count : 0,
                 };
             });
+            if (finalChartDataYOY.length === chartData.length) {
+                chartData = chartData.map((item, i) => {
+                    return {
+                        ...item,
+                        [YOY_COUNT]: finalChartDataYOY[i]?.count ? finalChartDataYOY[i]?.count : 0
+                    };
+                });
+            }
             return chartData;
         });
 
@@ -228,12 +238,21 @@ export const useFetchBlipData = (
             let finalChartData = simplifiedBookingsData;
             let chartDataForFutureEvents = simplifiedPredictionData;
 
+            if (finalChartDataYOY.length === finalChartData.length) {
+                finalChartData = finalChartData.map((item, i) => {
+                    return {
+                        ...item,
+                        [YOY_COUNT]: finalChartDataYOY[i]?.count ? finalChartDataYOY[i]?.count : 0
+                    };
+                });
+            }
+
             if (simplifiedBookingsData.length === simplifiedPredictionData.length) {
                 finalChartData = finalChartData.map((item, i) => {
                     if (simplifiedBookingsData.length && simplifiedPredictionData.length && (simplifiedBookingsData[i].time === simplifiedPredictionData[i].time)) {
                         return {
                             ...item,
-                            [PREDICTION_COUNT]: Math.round(simplifiedPredictionData[i].count)
+                            [PREDICTION_COUNT]: simplifiedPredictionData[i]?.count ? Math.round(simplifiedPredictionData[i].count) : 0
                         };
                     }
                     return item;
@@ -280,6 +299,21 @@ export const useFetchBlipData = (
             })
             .finally(() => setIsAverageCountLoading(false));
     };
+
+    const fetchCallYOY = (start = startDateTime, end = endDateTime, interval = timeInterval) =>
+        fetch(`/v1/bookings/count/YOY${getQueryStringYOY(start, end, interval)}`)
+            .then(checkResponse)
+            .then((respJson) => {
+                finalChartDataYOY = respJson.map((item) => ({
+                    time: moment.utc(item.time).valueOf(),
+                    count: item.count
+                }));
+            })
+            .catch((err) => {
+                setError('No data found for this selection.');
+                // eslint-disable-next-line no-console
+                console.error(err);
+            });
 
     const getPredictions = (start, end, interval, chartData) => {
         const dayRange = moment(endDateTime).diff(moment(startDateTime), 'days');
@@ -439,6 +473,7 @@ export const useFetchBlipData = (
         if (SUPPRESSED_BRANDS.includes(globalBrandName)) {
             setError(`Booking data for ${globalBrandName} is not yet available. The following brands are supported at this time: "Expedia", "Hotels.com Retail", and "Expedia Partner Solutions".`);
         } else {
+            fetchCallYOY();
             getGroupedBookingsData();
             getData();
             getFilter();
@@ -485,6 +520,7 @@ export const useFetchBlipData = (
         const dateInvalid = checkIsDateInvalid(startDateTime, endDateTime);
 
         if (isApplyClicked || isResetClicked || isChartSliceClicked) {
+            fetchCallYOY();
             getGroupedBookingsData();
             getData();
             fetchIncidents();
@@ -531,6 +567,7 @@ export const useFetchBlipData = (
                 intervalForAnomalies = setIntervalForRealTimeData(anomalyTimeInterval, 'anomaly');
                 getData(startDateTime, endTime(), timeInterval);
                 getGroupedBookingsData(startDateTime, endDateTime, timeInterval);
+                fetchCallYOY(startDateTime, endDateTime, timeInterval);
                 fetchIncidents(startDateTime, endDateTime);
                 fetchHealth();
                 fetchAnomalies(startDateTime, endDateTime);
