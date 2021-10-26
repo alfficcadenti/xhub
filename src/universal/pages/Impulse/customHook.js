@@ -310,6 +310,7 @@ export const useFetchBlipData = (
                 }));
             })
             .catch((err) => {
+                finalChartDataYOY = [];
                 setError('No data found for this selection.');
                 // eslint-disable-next-line no-console
                 console.error(err);
