@@ -304,13 +304,16 @@ export const useFetchBlipData = (
         fetch(`/v1/bookings/count/YOY${getQueryStringYOY(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval)}`)
             .then(checkResponse)
             .then((respJson) => {
-                finalChartDataYOY = respJson.map((item) => ({
-                    time: moment.utc(item.time).valueOf(),
-                    count: item.count
-                }));
+                if (Array.isArray(respJson)) {
+                    finalChartDataYOY = respJson.map((item) => ({
+                        time: moment.utc(item.time).valueOf(),
+                        count: item.count
+                    }));
+                } else {
+                    finalChartDataYOY = [];
+                }
             })
             .catch((err) => {
-                finalChartDataYOY = [];
                 setError('No data found for this selection.');
                 // eslint-disable-next-line no-console
                 console.error(err);

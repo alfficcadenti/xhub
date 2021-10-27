@@ -11,7 +11,11 @@ import {
     getTimeIntervals,
     getDefaultTimeInterval,
     getCategory,
-    simplifyBookingsData, simplifyPredictionData, convertRelativeDateInString, convertRelativeDateRange
+    simplifyBookingsData,
+    simplifyPredictionData,
+    convertRelativeDateInString,
+    convertRelativeDateRange,
+    getQueryStringYOY
 } from '../impulseHandler';
 import moment from 'moment';
 
@@ -168,6 +172,11 @@ describe('impulseHandler', () => {
     describe('test final query string', () => {
         it('should return string with datetime into query string if no filter has been selected', () => {
             expect(getQueryString(moment().set({second: 0}), moment().set({second: 0}).subtract(1, 'days'), IMPULSE_MAPPING, EG_BRAND, [], [], [], [], [], [], [], '5m')).eql(`?start_time=${endDate}Z&end_time=${startDate}Z&time_interval=`);
+        });
+    });
+    describe('test final query string', () => {
+        it('should return string with datetime into query string if no filter has been selected', () => {
+            expect(getQueryStringYOY(moment().set({second: 0}), moment().set({second: 0}).subtract(1, 'days'), IMPULSE_MAPPING, EG_BRAND, [], [], [], [], [], [], '5m')).eql(`?start_time=${endDate}Z&end_time=${startDate}Z&time_interval=`);
         });
     });
     describe('test revenue loss calculation method', () => {
