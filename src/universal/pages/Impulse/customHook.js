@@ -301,13 +301,17 @@ export const useFetchBlipData = (
     };
 
     const fetchCallYOY = (start = startDateTime, end = endDateTime, interval = timeInterval) =>
-        fetch(`/v1/bookings/count/YOY${getQueryStringYOY(start, end, interval)}`)
+        fetch(`/v1/bookings/count/YOY${getQueryStringYOY(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval)}`)
             .then(checkResponse)
             .then((respJson) => {
-                finalChartDataYOY = respJson.map((item) => ({
-                    time: moment.utc(item.time).valueOf(),
-                    count: item.count
-                }));
+                if (Array.isArray(respJson)) {
+                    finalChartDataYOY = respJson.map((item) => ({
+                        time: moment.utc(item.time).valueOf(),
+                        count: item.count
+                    }));
+                } else {
+                    finalChartDataYOY = [];
+                }
             })
             .catch((err) => {
                 setError('No data found for this selection.');
