@@ -8,11 +8,11 @@ import {SVGIcon} from '@homeaway/react-svg';
 import {FILTER__16} from '@homeaway/svg-defs';
 import FilterDropDown from '../../../components/FilterDropDown';
 import LoadingContainer from '../../../components/LoadingContainer';
+import Select from 'react-select';
 import {
     DATE_FORMAT,
     ALL_STATUSES_OPTION,
     ALL_PRIORITIES_OPTION,
-    ALL_RC_OWNERS_OPTION,
     ALL_PARTNERS_OPTION,
     EG_BRAND,
     EXPEDIA_PARTNER_SERVICES_BRAND
@@ -45,7 +45,7 @@ const IncidentTrendsDashboard = ({selectedBrands, onBrandChange, prevSelectedBra
     const [pendingEnd, setPendingEnd] = useState(initialEnd);
     const [end, setEnd] = useState(initialEnd);
     const [selectedPriority, setSelectedPriority] = useState(initialPriority);
-    const [selectedRcOwner, setSelectedRcOwner] = useState(ALL_RC_OWNERS_OPTION);
+    const [selectedRcOwner, setSelectedRcOwner] = useState([]);
     const [selectedPartner, setSelectedPartner] = useState(ALL_PARTNERS_OPTION);
     const [divisionCheckboxes, setDivisionCheckboxes] = useState(DIVISION_CHECKBOXES);
 
@@ -82,7 +82,7 @@ const IncidentTrendsDashboard = ({selectedBrands, onBrandChange, prevSelectedBra
         const matchesBrand = (t) => (selectedBrand === EG_BRAND
             || (t.impacted_brand || '').split(',').some((iBrand) => selectedBrand === impactedBrandToDivision(iBrand)));
         const matchesStatus = (t) => selectedStatus === ALL_STATUSES_OPTION || t.status === selectedStatus;
-        const matchesRcOwner = (t) => selectedRcOwner === ALL_RC_OWNERS_OPTION || t['RC Owner'] === selectedRcOwner;
+        const matchesRcOwner = (t) => !selectedRcOwner?.length || selectedRcOwner.includes(t['RC Owner']);
         const matchesDivision = (t) => !isPartnerBrand || divisionCheckboxes.find((cbox) => cbox.checked && (t.partner_divisions || []).includes(cbox.text));
         const matchesPartner = (t) => !isPartnerBrand || selectedPartner === ALL_PARTNERS_OPTION ||
             (t.impactedPartnersLobs && t.impactedPartnersLobs.includes(selectedPartner));
@@ -128,7 +128,7 @@ const IncidentTrendsDashboard = ({selectedBrands, onBrandChange, prevSelectedBra
     }, []);
 
     const handleRcOwnerChange = useCallback((owner) => {
-        setSelectedRcOwner(owner);
+        setSelectedRcOwner(owner?.map(((x) => x.value)) || []);
         setIsDirtyForm(true);
     }, []);
 
@@ -175,19 +175,24 @@ const IncidentTrendsDashboard = ({selectedBrands, onBrandChange, prevSelectedBra
         />
     );
 
-    const renderMoreFilters = () => (
-        <Divider heading="More Filters" id="more-filters-divider" className="more-filters-divider" expanded={showMoreFilters}>
+    const renderMoreFilters = () => {
+        const options = rootCauseOwners.map((x) => ({value: x, label: x}));
+        return (<Divider heading="More Filters" id="more-filters-divider" className="more-filters-divider" expanded={showMoreFilters}>
             <form className="search-form search-form__more">
-                <FilterDropDown
+                <Select
                     id="rc-owner-dropdown"
                     className="filter-dropdown rc-owner-dropdown"
-                    list={rootCauseOwners}
-                    selectedValue={selectedRcOwner}
-                    onClickHandler={handleRcOwnerChange}
+                    isMulti
+                    name="rc-owner-dropdown"
+                    options={options}
+                    onChange={(e) => handleRcOwnerChange(e)}
+                    placeholder={'Select RC Owner...'}
                 />
             </form>
         </Divider>
-    );
+        );
+    };
+
 
     return (
         <div className="incident-trends-container">

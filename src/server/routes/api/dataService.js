@@ -1,4 +1,5 @@
 import {getConfig, getHandler} from './utils';
+import {mockIncidentData} from './testData/incidents';
 
 const getHandlerParams = (routeKey) => ({
     routeKey,
@@ -38,7 +39,7 @@ module.exports.incidents = {
     method: 'GET',
     path: '/v1/incidents/{impulse*}',
     config: getConfig('incidents-get'),
-    handler: getHandler(Object.assign(getHandlerParams('incidents'), {pathParam: 'impulse'}))
+    handler: process.env.ENV === 'dev' ? () => mockIncidentData : getHandler(Object.assign(getHandlerParams('incidents'), {pathParam: 'impulse'}))
 };
 
 module.exports.incidentsV2 = {
