@@ -152,7 +152,7 @@ export const mapComment = (row) => ({
 export const mapFci = (row = {}) => {
     const {fci = {}, category = []} = JSON.parse(JSON.stringify(row));
     return {
-        Created: fci.timestamp ? moment(fci.timestamp).format('YYYY-MM-DD HH:mm') : '-',
+        Created: fci.timestamp ? moment.utc(fci.timestamp).local().format('YYYY-MM-DD HH:mm') : '-',
         Session: getOrDefault(fci, 'session_id'),
         Trace: getOrDefault(fci, 'trace_id'),
         Failure: getOrDefault(fci, 'failure'),

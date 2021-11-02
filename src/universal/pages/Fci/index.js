@@ -105,10 +105,10 @@ const Fci = ({selectedBrands}) => {
     const processData = useCallback((data, property) => {
         const categorySet = property === CATEGORY_OPTION ? new Set(CATEGORIES) : new Set();
         const filteredData = JSON.parse(JSON.stringify(data))
-            .filter(({timestamp}) => timestamp && moment(timestamp).isBetween(start, end, '[]', 'minute'))
+            .filter(({timestamp}) => timestamp && moment(timestamp).isBetween(start, end, '[]', 'hour'))
             .map(({timestamp, counts}) => {
                 Object.keys(counts).forEach((key) => categorySet.add(key));
-                return {name: moment(timestamp).format('YYYY-MM-DD HH:mm'), timestamp, ...counts};
+                return {name: moment.utc(timestamp).local().format('YYYY-MM-DD HH:mm'), timestamp, ...counts};
             });
         setLineChartData(filteredData);
         setLineChartKeys(Array.from(categorySet).sort());
