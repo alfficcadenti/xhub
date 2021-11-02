@@ -11,7 +11,7 @@ const RealTimeSummaryPanel = ({realTimeTotals, isRttLoading, rttError, tooltipLa
         const renderLOBs = (lobData) => {
             return lobData.map((lob) => {
                 return (
-                    <div className="rtt-lob-item">{`${lob.label} : ${lob.rate}${showPercentageSign(lob.rate) ? '%' : ''}`}</div>
+                    <div key={lob.label} className="rtt-lob-item">{`${lob.label} : ${lob.rate}${showPercentageSign(lob.rate) ? '%' : ''}`}</div>
                 );
             });
         };
@@ -20,9 +20,8 @@ const RealTimeSummaryPanel = ({realTimeTotals, isRttLoading, rttError, tooltipLa
             <div key={`rtt-${rttLabel}`} className="card real-time-card">
                 <div className="rtt-label">{rttLabel}</div>
                 {
-
                     Array.isArray(value) ?
-                        <div className="rtt-lob-wrapper">{renderLOBs(value)}</div> :
+                        <div key={`lob-${rttLabel}`} className="rtt-lob-wrapper">{renderLOBs(value)}</div> :
                         (<div className="rtt-summed-value">{`${value}${showPercentageSign(value) ? '%' : ''}`}</div>)
                 }
 

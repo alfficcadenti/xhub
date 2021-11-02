@@ -32,8 +32,8 @@ const DogFood = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         initialProject
     } = getQueryValues(search);
 
-    useQueryParamChange(selectedBrands[0], onBrandChange);
-    useSelectedBrand(selectedBrands[0], onBrandChange, prevSelectedBrand);
+    useQueryParamChange(onBrandChange);
+    useSelectedBrand(selectedBrands[0], prevSelectedBrand);
 
     const [isDirtyForm, setIsDirtyForm] = useState(false);
     const [isApplyClicked, setIsApplyClicked] = useState(false);

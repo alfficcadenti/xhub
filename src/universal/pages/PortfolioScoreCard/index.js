@@ -19,8 +19,8 @@ const PortfolioScoreCard = ({selectedBrands, onBrandChange, prevSelectedBrand}) 
     const [pendingTo, setPendingTo] = useState(initialEnd);
     const [isDirtyForm, setIsDirtyForm] = useState(false);
 
-    useQueryParamChange(selectedBrands[0], onBrandChange);
-    useSelectedBrand(selectedBrands[0], onBrandChange, prevSelectedBrand);
+    useQueryParamChange(onBrandChange);
+    useSelectedBrand(selectedBrands[0], prevSelectedBrand);
 
     const applyFilters = () => {
         setFrom(pendingFrom);

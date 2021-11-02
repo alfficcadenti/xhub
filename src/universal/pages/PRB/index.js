@@ -92,8 +92,8 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
         setCurrentRcOwners,
         setCurrentRcCategories
     );
-    useQueryParamChange(selectedBrands[0], onBrandChange);
-    useSelectedBrand(selectedBrands[0], onBrandChange, prevSelectedBrand);
+    useQueryParamChange(onBrandChange);
+    useSelectedBrand(selectedBrands[0], prevSelectedBrand);
 
     // Filters
     const matchesPriority = (t) => selectedPriority === ALL_PRIORITIES_OPTION || t.Priority === selectedPriority;

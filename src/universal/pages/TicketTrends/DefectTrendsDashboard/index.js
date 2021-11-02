@@ -49,8 +49,8 @@ const IncidentTrendsDashboard = ({selectedBrands, onBrandChange, prevSelectedBra
         'defects',
         selectedBrands
     );
-    useQueryParamChange(selectedBrand, onBrandChange);
-    useSelectedBrand(selectedBrand, onBrandChange, prevSelectedBrand);
+    useQueryParamChange(onBrandChange);
+    useSelectedBrand(selectedBrand, prevSelectedBrand);
 
     function applyFilters() {
         const matchesPriority = (t) => selectedPriority === priorityDefaultValue || t.priority === selectedPriority;

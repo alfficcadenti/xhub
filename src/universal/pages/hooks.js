@@ -7,39 +7,42 @@ import {EG_BRAND, EGENCIA_BRAND} from '../constants';
 
 export const usePrevious = (value) => {
     const ref = useRef();
-
     useEffect(() => {
         ref.current = value;
     });
-
     return ref.current;
 };
 
-export const useSelectedBrand = (selectedBrand, setSelectedBrands, prevSelectedBrand) => {
+export const useSelectedBrand = (brand, prevBrand) => {
     const history = useHistory();
     const {pathname} = useLocation();
-
     useEffect(() => {
-        if (selectedBrand !== prevSelectedBrand && !JSON.parse(localStorage.getItem('isQueryChanged'))) {
-            history.push(`${pathname}?selectedBrand=${selectedBrand}`);
-
+        if (brand !== prevBrand && !JSON.parse(localStorage.getItem('isQueryChanged'))) {
+            history.push(`${pathname}?selectedBrand=${brand}`);
             localStorage.setItem('isBrandFilterChanged', JSON.stringify(true));
         }
-    }, [selectedBrand]);
+    }, [brand, history, pathname, prevBrand]);
 };
 
-export const useQueryParamChange = (selectedBrand, setSelectedBrands) => {
+export const useQueryParamChange = (onBrandChange) => {
     const {search} = useLocation();
     const query = qs.parse(search);
-
     useEffect(() => {
         if (query.selectedBrand && !JSON.parse(localStorage.getItem('isBrandFilterChanged'))) {
-            setSelectedBrands([query.selectedBrand]);
+            onBrandChange([query.selectedBrand]);
 
             localStorage.setItem('isQueryChanged', JSON.stringify(true));
             localStorage.setItem('isBrandFilterChanged', JSON.stringify(true));
         }
-    }, [query.selectedBrand]);
+    }, [query.selectedBrand, onBrandChange]);
+};
+
+export const getAdjustedRefAreas = (refAreaLeft, refAreaRight) => {
+    if (moment(refAreaLeft).isAfter(refAreaRight)) {
+        // if refArea was dragged right to left
+        return [refAreaRight, refAreaLeft];
+    }
+    return [refAreaLeft, refAreaRight];
 };
 
 export const useZoomAndSynced = (
@@ -71,12 +74,8 @@ export const useZoomAndSynced = (
         }
 
         // xAxis domain
-        let nextRefAreaLeft = refAreaLeft;
-        let nextRefAreaRight = refAreaRight;
-        if (moment(refAreaLeft).isAfter(refAreaRight)) {
-            // if refArea was dragged right to left
-            [nextRefAreaLeft, nextRefAreaRight] = [refAreaRight, refAreaLeft];
-        }
+        const [nextRefAreaLeft, nextRefAreaRight] = getAdjustedRefAreas(refAreaLeft, refAreaRight);
+
         const fromIdx = widgets[0].aggregatedData.findIndex(({time}) => time === nextRefAreaLeft);
         const toIdx = widgets[0].aggregatedData.findIndex(({time}) => time === nextRefAreaRight);
         // slice data based on new xAxis domain
@@ -155,9 +154,7 @@ export const useAddToUrl = (
     selectedBrands,
     start,
     end,
-    selectedLobs,
-    pendingStart,
-    pendingEnd
+    selectedLobs
 ) => {
     const history = useHistory();
     const {pathname} = useLocation();
@@ -165,10 +162,10 @@ export const useAddToUrl = (
     useEffect(() => {
         if (![EG_BRAND, EGENCIA_BRAND].includes(selectedBrands[0])) {
             history.push(`${pathname}?selectedBrand=${selectedBrands[0]}`
-                + `&from=${encodeURIComponent(pendingStart.format())}`
-                + `&to=${encodeURIComponent(pendingEnd.format())}`
+                + `&from=${encodeURIComponent(start.format())}`
+                + `&to=${encodeURIComponent(end.format())}`
                 + `&lobs=${selectedLobs.map((l) => l.value).join(',')}`
             );
         }
-    }, [selectedBrands, start, end, selectedLobs]);
+    }, [history, pathname, selectedBrands, start, end, selectedLobs]);
 };

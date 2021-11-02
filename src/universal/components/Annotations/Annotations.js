@@ -264,13 +264,8 @@ const Annotations = ({
     }, [deploymentAnnotations, incidentAnnotations]);
 
     useEffect(() => {
-        if (deploymentCategory || incidentCategory || abTestsCategory) {
-            setEnableAnnotations(true);
-        }
-        if (!deploymentCategory && !incidentCategory && !abTestsCategory) {
-            setEnableAnnotations(false);
-        }
-    }, [deploymentCategory, incidentCategory, abTestsCategory]);
+        setEnableAnnotations(deploymentCategory || incidentCategory || abTestsCategory);
+    }, [deploymentCategory, incidentCategory, abTestsCategory, setEnableAnnotations]);
 
     const onFilterChange = (value) => {
         const adjustedInputValue = adjustInputValue(value);

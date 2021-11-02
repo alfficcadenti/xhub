@@ -15,6 +15,7 @@ const Tickets = ({tickets = []}) => (
                 </div>
             )
         }}
+        paginated
     />
 );
 

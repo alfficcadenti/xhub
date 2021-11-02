@@ -89,14 +89,16 @@ const formatDateTimeLocal = (date) => moment(date).format('MM/DD HH:mm');
 const CustomTooltip = ({active, payload}) => {
     const TIMEZONE = moment().tz(moment.tz.guess()).format('z');
     if (active && payload && payload[0] && payload[0].payload) {
-        return (<div className="custom-tooltip">
-            <span className="label">{`${formatDateTimeLocal(payload[0].payload.time)} ${TIMEZONE}`}</span>
-            {payload.map((item) => (
-                <div>
-                    <span className="label">{`${item.dataKey} : ${item.value}`}</span>
-                </div>
-            ))}
-        </div>);
+        return (
+            <div className="custom-tooltip">
+                <span className="label">{`${formatDateTimeLocal(payload[0].payload.time)} ${TIMEZONE}`}</span>
+                {payload.map((item, i) => (
+                    <div key={`${item.dataKey}-${i}`}>
+                        <span className="label">{`${item.dataKey} : ${item.value}`}</span>
+                    </div>
+                ))}
+            </div>
+        );
     }
     return null;
 };

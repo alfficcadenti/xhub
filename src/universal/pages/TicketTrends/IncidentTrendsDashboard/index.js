@@ -74,8 +74,8 @@ const IncidentTrendsDashboard = ({selectedBrands, onBrandChange, prevSelectedBra
         selectedBrands
     );
     const rootCauseOwners = useRootCauseOwner(selectedBrand, allUniqueIncidents);
-    useQueryParamChange(selectedBrand, onBrandChange);
-    useSelectedBrand(selectedBrand, onBrandChange, prevSelectedBrand);
+    useQueryParamChange(onBrandChange);
+    useSelectedBrand(selectedBrand, prevSelectedBrand);
 
     function applyFilters() {
         const matchesPriority = (t) => selectedPriority === ALL_PRIORITIES_OPTION || t.priority === selectedPriority;

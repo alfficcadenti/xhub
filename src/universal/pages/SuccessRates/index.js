@@ -84,8 +84,8 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
     const [selectedEPSPartner, setSelectedEPSPartner] = useState('');
     const productMapping = useFetchProductMapping(start, end);
 
-    useQueryParamChange(selectedBrand, onBrandChange);
-    useSelectedBrand(selectedBrand, onBrandChange, prevSelectedBrand);
+    useQueryParamChange(onBrandChange);
+    useSelectedBrand(selectedBrand, prevSelectedBrand);
 
     const {
         handleMouseDown,
@@ -172,7 +172,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
 
     useEffect(() => {
         triggerEdapPageView(location.pathname);
-    }, []);
+    }, [location.pathname]);
 
     useEffect(() => {
         if ([EG_BRAND, EGENCIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND].includes(selectedBrand)) {
@@ -229,7 +229,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
         }
     }, [selectedLobs, widgets, lobWidgets]);
 
-    useAddToUrl(selectedBrands, start, end, selectedLobs, pendingStart, pendingEnd);
+    useAddToUrl(selectedBrands, start, end, selectedLobs);
 
     const handleDatetimeChange = ({start: startDateTimeStr, end: endDateTimeStr}, text) => {
         setPendingTimeRange(text || pendingTimeRange);

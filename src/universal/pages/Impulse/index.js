@@ -158,8 +158,8 @@ const Impulse = (props) => {
         }, timeout || 2000);
     };
 
-    useQueryParamChange(newBrand, props.onBrandChange);
-    useSelectedBrand(newBrand, props.onBrandChange, props.prevSelectedBrand);
+    useQueryParamChange(props.onBrandChange);
+    useSelectedBrand(newBrand, props.prevSelectedBrand);
     const handleNavigationClick = (e, activeLinkIndex) => {
         setActiveIndex(activeLinkIndex);
         getScreenshot(6000);
@@ -326,10 +326,10 @@ const Impulse = (props) => {
     const customStyles = {
         control: (base) => ({
             ...base,
-            'min-height': '55px',
-            'border-color': '#908f8f',
-            'color': '#717171',
-            'border-radius': '8px'
+            minHeight: '55px',
+            borderColor: '#908f8f',
+            color: '#717171',
+            borderRadius: '8px'
         }),
     };
     const handleDatetimeChange = ({start: startDateTimeStr, end: endDateTimeStr}) => {

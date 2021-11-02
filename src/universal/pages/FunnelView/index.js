@@ -69,8 +69,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}
 
     const productMapping = useFetchProductMapping(start, end);
 
-    useQueryParamChange(selectedBrand, onBrandChange);
-    useSelectedBrand(selectedBrand, onBrandChange, prevSelectedBrand);
+    useQueryParamChange(onBrandChange);
+    useSelectedBrand(selectedBrand, prevSelectedBrand);
 
     const {
         handleMouseDown,
@@ -97,7 +97,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}
 
     useEffect(() => {
         triggerEdapPageView(location.pathname);
-    }, []);
+    }, [location.pathname]);
 
     useEffect(() => {
         const fetchPageViewsData = (brand) => {
@@ -176,7 +176,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}
         };
     }, [selectedBrand, start, end, selectedEPSPartner]);
 
-    useAddToUrl(selectedBrands, start, end, selectedLobs, pendingStart, pendingEnd);
+    useAddToUrl(selectedBrands, start, end, selectedLobs);
 
     const handleDatetimeChange = ({start: startDateTimeStr, end: endDateTimeStr}, text) => {
         setPendingTimeRange(text || pendingTimeRange);

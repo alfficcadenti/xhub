@@ -69,8 +69,8 @@ const Finder = (props) => {
     );
 
     const productMapping = useFetchProductMapping(startDate, endDate);
-    useQueryParamChange(selectedBrand, props.onBrandChange);
-    useSelectedBrand(selectedBrand, props.onBrandChange, props.prevSelectedBrand);
+    useQueryParamChange(props.onBrandChange);
+    useSelectedBrand(selectedBrand, props.prevSelectedBrand);
 
     useEffect(() => {
         if (activeIndex === 0) {

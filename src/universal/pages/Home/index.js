@@ -8,8 +8,8 @@ import {NEW_WINDOW__16} from '@homeaway/svg-defs';
 
 const Home = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const SELECTED_BRAND = selectedBrands[0];
-    useQueryParamChange(SELECTED_BRAND, onBrandChange);
-    useSelectedBrand(SELECTED_BRAND, onBrandChange, prevSelectedBrand);
+    useQueryParamChange(onBrandChange);
+    useSelectedBrand(SELECTED_BRAND, prevSelectedBrand);
 
     const renderButton = (item) => {
         if (item.external) {
