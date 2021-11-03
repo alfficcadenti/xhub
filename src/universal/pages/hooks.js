@@ -154,7 +154,9 @@ export const useAddToUrl = (
     selectedBrands,
     start,
     end,
-    selectedLobs
+    selectedLobs,
+    pendingStart,
+    pendingEnd
 ) => {
     const history = useHistory();
     const {pathname} = useLocation();
@@ -162,10 +164,10 @@ export const useAddToUrl = (
     useEffect(() => {
         if (![EG_BRAND, EGENCIA_BRAND].includes(selectedBrands[0])) {
             history.push(`${pathname}?selectedBrand=${selectedBrands[0]}`
-                + `&from=${encodeURIComponent(start.format())}`
-                + `&to=${encodeURIComponent(end.format())}`
+                + `&from=${encodeURIComponent(pendingStart?.format())}`
+                + `&to=${encodeURIComponent(pendingEnd?.format())}`
                 + `&lobs=${selectedLobs.map((l) => l.value).join(',')}`
             );
         }
-    }, [history, pathname, selectedBrands, start, end, selectedLobs]);
+    }, [history, pathname, selectedBrands, start, end, selectedLobs, pendingStart, pendingEnd]);
 };

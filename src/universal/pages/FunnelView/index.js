@@ -176,7 +176,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}
         };
     }, [selectedBrand, start, end, selectedEPSPartner]);
 
-    useAddToUrl(selectedBrands, start, end, selectedLobs);
+    useAddToUrl(selectedBrands, start, end, selectedLobs, pendingStart, pendingEnd);
 
     const handleDatetimeChange = ({start: startDateTimeStr, end: endDateTimeStr}, text) => {
         setPendingTimeRange(text || pendingTimeRange);
