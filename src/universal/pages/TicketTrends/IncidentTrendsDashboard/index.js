@@ -178,7 +178,7 @@ const IncidentTrendsDashboard = ({selectedBrands, onBrandChange, prevSelectedBra
     const renderMoreFilters = () => {
         const options = rootCauseOwners.map((x) => ({value: x, label: x}));
         return (<Divider heading="More Filters" id="more-filters-divider" className="more-filters-divider" expanded={showMoreFilters}>
-            <form className="search-form search-form__more">
+            <div className="search-form search-form__more">
                 <Select
                     id="rc-owner-dropdown"
                     className="filter-dropdown rc-owner-dropdown"
@@ -188,7 +188,7 @@ const IncidentTrendsDashboard = ({selectedBrands, onBrandChange, prevSelectedBra
                     onChange={(e) => handleRcOwnerChange(e)}
                     placeholder={'Select RC Owner...'}
                 />
-            </form>
+            </div>
         </Divider>
         );
     };

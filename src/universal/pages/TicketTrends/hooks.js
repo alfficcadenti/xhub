@@ -8,7 +8,6 @@ import {
     EG_BRAND,
     EXPEDIA_PARTNER_SERVICES_BRAND,
     ALL_PARTNERS_OPTION,
-    ALL_RC_OWNERS_OPTION,
     FETCH_FAILED_MSG
 } from '../../constants';
 import {checkResponse, getListOfUniqueProperties, consolidateTicketsById, sortArrayByMostRecentDate, mapEpsData} from '../utils';
@@ -124,7 +123,7 @@ export const useRootCauseOwner = (selectedBrand, allUniqueIncidents) => {
                 ({impacted_brand: impactedBrand}) => (impactedBrand && impactedBrand.split(',').some((iBrand) => (selectedBrand === impactedBrandToDivision(iBrand))))
             );
         const rcOwners = getListOfUniqueProperties(filteredIncidents, 'RC Owner');
-        setRootCauseOwners([ALL_RC_OWNERS_OPTION, ...rcOwners]);
+        setRootCauseOwners([...rcOwners]);
     }, [selectedBrand, allUniqueIncidents]);
 
     return rootCauseOwners;
