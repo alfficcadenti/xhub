@@ -20,7 +20,7 @@ export const FCI_TABLE_COLUMNS = [
     'Comment',
     'Is FCI',
     'Traces',
-    'Edit'
+    //'Edit'
 ];
 export const FCI_DETAIL_COLUMNS = [
     'Created',
