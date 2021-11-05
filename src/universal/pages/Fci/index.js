@@ -57,7 +57,7 @@ const Fci = ({selectedBrands}) => {
     const [pendingEnd, setPendingEnd] = useState(initialEnd);
     const [pendingTimeRange, setPendingTimeRange] = useState(initialTimeRange);
     const [pendingErrorCode, setPendingErrorCode] = useState(initialErrorCode);
-    const [pendingSite, setPendingSite] = useState(initialLobs);
+    const [pendingSite, setPendingSite] = useState(initialSite);
     const [pendingLob, setPendingLob] = useState(initialLobs);
     const [pendingHideIntentionalCheck, setPendingHideIntentionalCheck] = useState(initialHideIntentionalCheck);
     const [selectedBucket, setSelectedBucket] = useState(initialBucket);
