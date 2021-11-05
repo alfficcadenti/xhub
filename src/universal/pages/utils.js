@@ -9,7 +9,8 @@ import {
     PAGE_VIEWS_DATE_FORMAT,
     SUCCESS_RATES_PAGES_LIST,
     TIMEZONE_ABBR,
-    VRBO_BRAND
+    VRBO_BRAND,
+    GRAFANA_PAGE_VIEWS_DASHBOARDS
 } from '../constants';
 import {METRIC_NAMES} from './SuccessRates/constants';
 import ALL_PAGES from './index';
@@ -562,3 +563,7 @@ export const getChartDataForFutureEvents = (dateInvalid, chartData, simplifiedPr
 };
 
 export const getResetGraphTitle = (daysRange) => daysRange === DEFAULT_DAY_RANGE ? DISABLED_RESET_GRAPH_BUTTON : ENABLED_RESET_GRAPH_BUTTON;
+
+export const getGrafanaDashboardByBrand = (brand) => GRAFANA_PAGE_VIEWS_DASHBOARDS.find((x) => x.brand === brand)?.grafanaUrl || '';
+
+export const brandsWithGrafanaDashboard = () => GRAFANA_PAGE_VIEWS_DASHBOARDS.map((x) => x.brand) || [];

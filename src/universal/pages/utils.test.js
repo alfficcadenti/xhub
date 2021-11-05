@@ -26,6 +26,8 @@ import {
     checkIsDateInvalid,
     getChartDataForFutureEvents,
     getResetGraphTitle,
+    getGrafanaDashboardByBrand,
+    brandsWithGrafanaDashboard,
     DEFAULT_DAY_RANGE, mapGroupedData, checkIsContentPercentage, threeWeekComparison
 } from './utils';
 import {
@@ -665,4 +667,21 @@ it('getUrlParam', () => {
     const valueB = 'b';
     expect(getUrlParam(label, valueA, valueB)).to.equal(`&${label}=${valueA}`);
     expect(getUrlParam(label, valueA, valueA)).to.equal('');
+});
+
+describe('brandsWithGrafanaDashboard()', () => {
+    it('returns array of 3 available brands', () => {
+        const availableBrands = ['Expedia', 'Vrbo', 'Hotels.com'];
+        expect(brandsWithGrafanaDashboard()).to.eql(availableBrands);
+    });
+});
+
+describe('getGrafanaDashboardByBrand()', () => {
+    it('returns endpoint for expedia grafana dashboard', () => {
+        expect(getGrafanaDashboardByBrand(EXPEDIA_BRAND)).to.equal('https://opexhub-grafana.expedia.biz/d/DdypXxKLZ/bex-pageviews?orgId=1&var-eventType=pageview&var-brandGroup=bexg&var-lineOfBusiness=All');
+    });
+
+    it('returns empty string for EXPEDIA_PARTNER_SERVICES_BRAND', () => {
+        expect(getGrafanaDashboardByBrand(EXPEDIA_PARTNER_SERVICES_BRAND)).to.equal('');
+    });
 });
