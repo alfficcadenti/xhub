@@ -129,7 +129,8 @@ const Fci = ({selectedBrands}) => {
     };
 
     const processTableData = (data) => {
-        const fcis = getTableData(data, handleOpenEdit);
+        const fcis = getTableData(data, handleOpenEdit)
+            .filter(({Created}) => moment(Created).isBetween(start, end, 'minute', '[]')); // filter first and last buckets (bucketed by hour) by start/end minute precision
         setTableData(fcis);
         setModalFcis(fcis);
         if (selectedId) {
