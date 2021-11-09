@@ -11,7 +11,7 @@ const GrafanaDashboard = ({selectedBrands = [], availableBrands = [], name, titl
 
     useEffect(() => {
         if (selectedBrand && !availableBrands.includes(selectedBrand)) {
-            setError(`Booking Requests for ${selectedBrand} is not yet available.
+            setError(`${title} for ${selectedBrand} is not yet available.
                 The following brands are supported at this time: "${availableBrands.map((brand) => brand)}".
                 If you have any questions, please ping ${OPXHUB_SUPPORT_CHANNEL} or leave a comment via our Feedback form.`);
         } else {
@@ -21,7 +21,7 @@ const GrafanaDashboard = ({selectedBrands = [], availableBrands = [], name, titl
 
     return (
         <div className={`${name}-container grafana-container`}>
-            <h1 className="page-title">{`${title} Dashboard`}</h1>
+            {title && <h1 className="page-title">{`${title} Dashboard`}</h1>}
             <LoadingContainer isLoading={false} error={error}>
                 <div className="grafana-navigation-blocker" />
                 <div className="grafana-navigation-blocker grafana-navigation-blocker__vertical" />

@@ -10,7 +10,7 @@ import {
     SUCCESS_RATES_PAGES_LIST,
     TIMEZONE_ABBR,
     VRBO_BRAND,
-    GRAFANA_PAGE_VIEWS_DASHBOARDS
+    GRAFANA_DASHBOARDS
 } from '../constants';
 import {METRIC_NAMES} from './SuccessRates/constants';
 import ALL_PAGES from './index';
@@ -564,6 +564,7 @@ export const getChartDataForFutureEvents = (dateInvalid, chartData, simplifiedPr
 
 export const getResetGraphTitle = (daysRange) => daysRange === DEFAULT_DAY_RANGE ? DISABLED_RESET_GRAPH_BUTTON : ENABLED_RESET_GRAPH_BUTTON;
 
-export const getGrafanaDashboardByBrand = (brand) => GRAFANA_PAGE_VIEWS_DASHBOARDS.find((x) => x.brand === brand)?.grafanaUrl || '';
+export const getPageViewsGrafanaDashboardByBrand = (brand) => GRAFANA_DASHBOARDS.find((x) => x.brand === brand)?.pageViewsUrl || '';
+export const getSuccessRateGrafanaDashboardByBrand = (brand) => GRAFANA_DASHBOARDS.find((x) => x.brand === brand)?.successRateUrl || '';
 
-export const brandsWithGrafanaDashboard = () => GRAFANA_PAGE_VIEWS_DASHBOARDS.map((x) => x.brand) || [];
+export const brandsWithGrafanaDashboard = () => GRAFANA_DASHBOARDS.map((x) => x.brand) || [];

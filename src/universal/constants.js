@@ -168,17 +168,20 @@ export const PAGE_VIEWS_PAGE_NAME = 'Page Views';
 export const FETCH_FAILED_MSG = 'Failed to retrieve data. Try refreshing the page. '
     + `If the problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`;
 
-export const GRAFANA_PAGE_VIEWS_DASHBOARDS = [
+export const GRAFANA_DASHBOARDS = [
     {
         brand: EXPEDIA_BRAND,
-        grafanaUrl: 'https://opexhub-grafana.expedia.biz/d/DdypXxKLZ/bex-pageviews?orgId=1&var-eventType=pageview&var-brandGroup=bexg&var-lineOfBusiness=All'
+        pageViewsUrl: 'https://opexhub-grafana.expedia.biz/d/DdypXxKLZ/bex-pageviews?orgId=1&var-eventType=pageview&var-brandGroup=bexg&var-lineOfBusiness=All&theme=light',
+        successRateUrl: 'https://opex-grafana.expedia.biz/d/3-CbFic7z/expedia-success-rate?orgId=2&theme=light'
     },
     {
         brand: VRBO_BRAND,
-        grafanaUrl: 'https://opexhub-grafana.expedia.biz/d/aZXj08Fnz/vrbo-pageviews?orgId=1'
+        pageViewsUrl: 'https://opexhub-grafana.expedia.biz/d/aZXj08Fnz/vrbo-pageviews?orgId=1&theme=light',
+        successRateUrl: 'https://opex-grafana.expedia.biz/d/m2a5Kmcnk/vrbo-success-rate?orgId=2&theme=light'
     },
     {
         brand: HOTELS_COM_BRAND,
-        grafanaUrl: 'https://opexhub-grafana.expedia.biz/d/0LmLA8F7z/hcom-pageview?orgId=1'
+        pageViewsUrl: 'https://opexhub-grafana.expedia.biz/d/0LmLA8F7z/hcom-pageview?orgId=1&theme=light',
+        successRateUrl: 'https://opex-grafana.expedia.biz/d/qgdtFi57z/hcom-success-rate?orgId=2&theme=light'
     },
 ];
