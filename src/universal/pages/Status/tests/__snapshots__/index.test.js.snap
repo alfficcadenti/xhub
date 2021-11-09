@@ -1,0 +1,336 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Status Page matches the snapshot when status returns 200 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="status-page-container"
+      >
+        <h1
+          class="page-title"
+          data-testid="title"
+        >
+          Status Page
+        </h1>
+        <div
+          class="Datatable Datatable--density-default"
+        >
+          <table
+            aria-rowcount="1"
+            class="Datatable__table Datatable__table--col-fixed"
+          >
+            <colgroup>
+              <col
+                style="width: 33.333333333333336%;"
+              />
+              <col
+                style="width: 50%;"
+              />
+              <col
+                style="width: 16.666666666666668%;"
+              />
+            </colgroup>
+            <thead
+              class="Datatable__header"
+            >
+              <tr
+                role="row"
+              >
+                <th
+                  aria-sort="none"
+                  class="header__cell Datatable__cell"
+                  role="columnheader"
+                  scope="col"
+                >
+                  <div
+                    class="header__name"
+                  >
+                    Service Name
+                  </div>
+                </th>
+                <th
+                  aria-sort="none"
+                  class="header__cell Datatable__cell"
+                  role="columnheader"
+                  scope="col"
+                >
+                  <div
+                    class="header__name"
+                  >
+                    Endpoint
+                  </div>
+                </th>
+                <th
+                  aria-sort="none"
+                  class="header__cell Datatable__cell"
+                  role="columnheader"
+                  scope="col"
+                >
+                  <div
+                    class="header__name"
+                  >
+                    Status
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              class="Datatable__body"
+            >
+              <tr
+                class="Datatable__row"
+              >
+                <td
+                  class="row__cell Datatable__cell"
+                >
+                  <a
+                    href="https://github.expedia.biz/eg-reo-opex/eg-fci-data-service"
+                    target="_blank"
+                  >
+                    eg-fci-data-service
+                  </a>
+                  <img
+                    alt="github"
+                    height="24"
+                    title="github"
+                    width="24"
+                  />
+                </td>
+                <td
+                  class="row__cell Datatable__cell"
+                >
+                  /v1/checkout-failures/sites
+                </td>
+                <td
+                  class="row__cell Datatable__cell"
+                >
+                  <div
+                    data-testid="successIcon"
+                  >
+                    <span
+                      class="SVGIcon success-icon"
+                    >
+                      <svg
+                        data-id="SVG_SUCCESS__24"
+                        focusable="false"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        width="24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g
+                          fill="none"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <path
+                            d="M2.8 12a9.3 9.3 0 0 1 12.7-8.5 9.3 9.3 0 0 1 5 12 9.3 9.3 0 0 1-12 5A9.3 9.3 0 0 1 2.8 12z"
+                          />
+                          <path
+                            d="M13.2 12.5l-2.9 2.8-2.8-2.8M16.5 9.1l-3.3 3.4"
+                          />
+                        </g>
+                      </svg>
+                    </span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="status-page-container"
+    >
+      <h1
+        class="page-title"
+        data-testid="title"
+      >
+        Status Page
+      </h1>
+      <div
+        class="Datatable Datatable--density-default"
+      >
+        <table
+          aria-rowcount="1"
+          class="Datatable__table Datatable__table--col-fixed"
+        >
+          <colgroup>
+            <col
+              style="width: 33.333333333333336%;"
+            />
+            <col
+              style="width: 50%;"
+            />
+            <col
+              style="width: 16.666666666666668%;"
+            />
+          </colgroup>
+          <thead
+            class="Datatable__header"
+          >
+            <tr
+              role="row"
+            >
+              <th
+                aria-sort="none"
+                class="header__cell Datatable__cell"
+                role="columnheader"
+                scope="col"
+              >
+                <div
+                  class="header__name"
+                >
+                  Service Name
+                </div>
+              </th>
+              <th
+                aria-sort="none"
+                class="header__cell Datatable__cell"
+                role="columnheader"
+                scope="col"
+              >
+                <div
+                  class="header__name"
+                >
+                  Endpoint
+                </div>
+              </th>
+              <th
+                aria-sort="none"
+                class="header__cell Datatable__cell"
+                role="columnheader"
+                scope="col"
+              >
+                <div
+                  class="header__name"
+                >
+                  Status
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody
+            class="Datatable__body"
+          >
+            <tr
+              class="Datatable__row"
+            >
+              <td
+                class="row__cell Datatable__cell"
+              >
+                <a
+                  href="https://github.expedia.biz/eg-reo-opex/eg-fci-data-service"
+                  target="_blank"
+                >
+                  eg-fci-data-service
+                </a>
+                <img
+                  alt="github"
+                  height="24"
+                  title="github"
+                  width="24"
+                />
+              </td>
+              <td
+                class="row__cell Datatable__cell"
+              >
+                /v1/checkout-failures/sites
+              </td>
+              <td
+                class="row__cell Datatable__cell"
+              >
+                <div
+                  data-testid="successIcon"
+                >
+                  <span
+                    class="SVGIcon success-icon"
+                  >
+                    <svg
+                      data-id="SVG_SUCCESS__24"
+                      focusable="false"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path
+                          d="M2.8 12a9.3 9.3 0 0 1 12.7-8.5 9.3 9.3 0 0 1 5 12 9.3 9.3 0 0 1-12 5A9.3 9.3 0 0 1 2.8 12z"
+                        />
+                        <path
+                          d="M13.2 12.5l-2.9 2.8-2.8-2.8M16.5 9.1l-3.3 3.4"
+                        />
+                      </g>
+                    </svg>
+                  </span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
