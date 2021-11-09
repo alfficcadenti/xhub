@@ -15,8 +15,10 @@ import {
 
 describe('brandLogoFile', () => {
     it('returns null when given incorrect filename or when error occurs loading the file', async () => {
-        expect(brandLogoFile('nonsense')).to.be.eql(null);
-        expect(brandLogoFile(VRBO_BRAND)).to.be.eql(null);
+        // eslint-disable-next-line no-unused-expressions
+        expect(brandLogoFile('nonsense')).to.be.null;
+        // eslint-disable-next-line no-unused-expressions
+        expect(brandLogoFile(VRBO_BRAND)).to.be.undefined;
     });
 });
 

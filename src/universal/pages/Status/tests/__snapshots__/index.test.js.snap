@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Status Page matches the snapshot 1`] = `
+exports[`Status Page matches the snapshot when status returns 200 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
