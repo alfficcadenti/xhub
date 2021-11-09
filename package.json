@@ -126,6 +126,7 @@
     "@vrbo/service-client": "^2.0.1",
     "@vrbo/service-client-statsd": "^1.0.0",
     "aws-sdk": "^2.665.0",
+    "babel-jest": "^25.4.0",
     "bootstrap": "^4.5.0",
     "browsermob-proxy-api": "^0.4.0",
     "browserstack-local": "^1.4.8",
