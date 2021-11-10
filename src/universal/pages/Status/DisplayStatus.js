@@ -4,8 +4,8 @@ import {SVGIcon} from '@homeaway/react-svg';
 
 const DisplayStatus = ({status}) => (
     status
-        ? <SVGIcon id="successIcon" className="success-icon" markup={SUCCESS__24} data-testid="successIcon"/>
-        : <SVGIcon className="fail-icon" markup={ALERT__24} data-testid="failIcon" alt="failIcon"/>
+        ? <div data-testid="successIcon"><SVGIcon id="successIcon" className="success-icon" markup={SUCCESS__24} /></div>
+        : <div data-testid="failIcon"><SVGIcon className="fail-icon" markup={ALERT__24} alt="failIcon"/></div>
 );
 
 export default DisplayStatus;

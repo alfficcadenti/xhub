@@ -27,14 +27,14 @@ import {
     getBrand,
     getQueryParams,
     getLobPlaceholder,
-    getGrafanaDashboardByBrand,
+    getPageViewsGrafanaDashboardByBrand,
     brandsWithGrafanaDashboard
 } from '../utils';
 import {makePageViewLoBObjects, makePageViewObjects, buildPageViewsApiQueryString} from './pageViewsUtils';
 import LagIndicator from '../../components/LagIndicator';
 import './styles.less';
 import {triggerEdapPageView} from '../../edap';
-import Iframe from 'react-iframe';
+import GrafanaDashboard from '../../components/GrafanaDashboard';
 
 
 // eslint-disable-next-line complexity
@@ -284,14 +284,11 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}
             </div>
             {
                 isGrafanaView ?
-                    <Iframe
-                        url={getGrafanaDashboardByBrand(selectedBrand)}
-                        key="iframe"
-                        width="98%"
-                        height="1000px"
-                        id={'dashboard-id'}
-                        className="iframe"
-                        position="relative"
+                    <GrafanaDashboard
+                        selectedBrands={[selectedBrand]}
+                        availableBrands={brandsWithGrafanaDashboard()}
+                        name="success-rates"
+                        url={getPageViewsGrafanaDashboardByBrand(selectedBrand)}
                     /> :
                     <div>
                         <div className="filters-wrapper">
