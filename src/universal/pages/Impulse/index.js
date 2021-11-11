@@ -506,6 +506,15 @@ const Impulse = (props) => {
                     />
                 );
             case 5:
+                allDataByRegion.forEach((data) => {
+                    if (data.hasOwnProperty('EU') || data.hasOwnProperty('EMEA')) {
+                        let emea = data.hasOwnProperty('EMEA') ? data.EMEA : 0;
+                        data.EMEA = data.EU + emea;
+                        data['EMEA+EU'] = data.EMEA;
+                        delete data.EMEA;
+                        delete data.EU;
+                    }
+                });
                 return (
                     <GroupedBookingTrends
                         data={allDataByRegion}
