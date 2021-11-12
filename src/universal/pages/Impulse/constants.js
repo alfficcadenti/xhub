@@ -348,10 +348,6 @@ export const REGION_CHART = [
     {
         name: 'Unknown',
         color: '#85929E'
-    },
-    {
-        name: 'EMEA+EU',
-        color: '#2E8B57'
     }
 
 ];
