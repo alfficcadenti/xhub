@@ -25,7 +25,13 @@ import {
     mapPosFilterLabels,
     mapPosChartData,
 } from './impulseHandler';
-import {checkResponse, checkIsDateInvalid, getChartDataForFutureEvents, mapGroupedData} from '../utils';
+import {
+    checkResponse,
+    checkIsDateInvalid,
+    getChartDataForFutureEvents,
+    mapGroupedData,
+    regionalGroupedData
+} from '../utils';
 import moment from 'moment';
 
 const THREE_WEEK_AVG_COUNT = '3 Week Avg Counts';
@@ -399,6 +405,8 @@ export const useFetchBlipData = (
                             const newLobsGroupedData = mapGroupedData(lobsGroupedDataFuture, lobsGroupedData);
                             const newDeviceTypeGroupedData = mapGroupedData(deviceTypeGroupedDataFuture, deviceTypeGroupedData);
                             const newRegionGroupedDataFuture = mapGroupedData(regionGroupedDataFuture, regionGroupedData);
+                            regionalGroupedData(newRegionGroupedDataFuture);
+
 
                             if (selectedSiteURLMulti.length && selectedSiteURLMulti.length <= 10) {
                                 const newPosGroupedData = mapPosChartData(mapGroupedData(posGroupedDataFuture, posGroupedData));
@@ -416,6 +424,7 @@ export const useFetchBlipData = (
                             console.error(err);
                         });
                 } else {
+                    regionalGroupedData(regionGroupedData);
                     setGroupedResByBrands(brandsGroupedData);
                     setGroupedResByLobs(lobsGroupedData);
                     if (selectedSiteURLMulti.length && selectedSiteURLMulti.length <= 10) {
