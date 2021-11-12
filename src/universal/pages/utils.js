@@ -81,9 +81,10 @@ export const mapGroupedData = (GroupedDataFuture, GroupedData) => (
 
 export const regionalGroupedData = (GroupedDataRegion) => (
     GroupedDataRegion.forEach((data) => {
-        data['EMEA+EU'] = (data.EMEA || 0) + (data.EU || 0);
-        delete data.EMEA;
-        delete data.EU;
+        if (data.hasOwnProperty('EU') || data.hasOwnProperty('EMEA')) {
+            data.EMEA = (data.EMEA || 0) + (data.EU || 0);
+            delete data.EU;
+        }
     })
 );
 

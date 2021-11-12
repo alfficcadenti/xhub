@@ -463,19 +463,6 @@ describe('mapGroupedData()', () => {
     });
 });
 
-/*describe('regionalGroupedData()', () => {
-    const data = {
-        EMEA: 30,
-        EU: 200,
-        NA: 10
-    };
-    describe('get new grouped data', () => {
-        it('return empty object', () => {
-            expect(regionalGroupedData(data)).to.not.include(data.EMEA);
-        });
-    });
-});*/
-
 describe('getAnnotationsFilter()', () => {
     const tickets = [{
         brand: 'Brand Expedia',
