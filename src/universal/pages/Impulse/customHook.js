@@ -21,7 +21,13 @@ import {
     simplifyBookingsData,
     simplifyPredictionData, getQueryStringPercentageChange, getQueryStringYOY
 } from './impulseHandler';
-import {checkResponse, checkIsDateInvalid, getChartDataForFutureEvents, mapGroupedData} from '../utils';
+import {
+    checkResponse,
+    checkIsDateInvalid,
+    getChartDataForFutureEvents,
+    mapGroupedData,
+    regionalGroupedData
+} from '../utils';
 import moment from 'moment';
 
 const THREE_WEEK_AVG_COUNT = '3 Week Avg Counts';
@@ -395,6 +401,9 @@ export const useFetchBlipData = (
                             const newLobsGroupedData = mapGroupedData(lobsGroupedDataFuture, lobsGroupedData);
                             const newDeviceTypeGroupedData = mapGroupedData(deviceTypeGroupedDataFuture, deviceTypeGroupedData);
                             const newRegionGroupedDataFuture = mapGroupedData(regionGroupedDataFuture, regionGroupedData);
+                            regionalGroupedData(newRegionGroupedDataFuture);
+                            console.log(`newRegionGroupedDataFuture${JSON.stringify(newRegionGroupedDataFuture)}`);
+
 
                             if (selectedSiteURLMulti.length && selectedSiteURLMulti.length <= 10) {
                                 const newPosGroupedData = mapGroupedData(posGroupedDataFuture, posGroupedData);
@@ -412,6 +421,7 @@ export const useFetchBlipData = (
                             console.error(err);
                         });
                 } else {
+                    regionalGroupedData(regionGroupedData);
                     setGroupedResByBrands(brandsGroupedData);
                     setGroupedResByLobs(lobsGroupedData);
                     if (selectedSiteURLMulti.length && selectedSiteURLMulti.length <= 10) {

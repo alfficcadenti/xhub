@@ -79,6 +79,14 @@ export const mapGroupedData = (GroupedDataFuture, GroupedData) => (
     })
 );
 
+export const regionalGroupedData = (GroupedDataRegion) => (
+    GroupedDataRegion.forEach((data) => {
+        data['EMEA+EU'] = (data.EMEA || 0) + (data.EU || 0);
+        delete data.EMEA;
+        delete data.EU;
+    })
+);
+
 export const threeWeekComparison = (threeWeekAvg, bookingCount) => {
     if (threeWeekAvg === '0') {
         return 'null';

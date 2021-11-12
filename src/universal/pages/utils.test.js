@@ -29,7 +29,7 @@ import {
     getPageViewsGrafanaDashboardByBrand,
     getSuccessRateGrafanaDashboardByBrand,
     brandsWithGrafanaDashboard,
-    DEFAULT_DAY_RANGE, mapGroupedData, checkIsContentPercentage, threeWeekComparison
+    DEFAULT_DAY_RANGE, mapGroupedData, checkIsContentPercentage, threeWeekComparison, regionalGroupedData
 } from './utils';
 import {
     EG_BRAND,
@@ -462,6 +462,19 @@ describe('mapGroupedData()', () => {
         });
     });
 });
+
+/*describe('regionalGroupedData()', () => {
+    const data = {
+        EMEA: 30,
+        EU: 200,
+        NA: 10
+    };
+    describe('get new grouped data', () => {
+        it('return empty object', () => {
+            expect(regionalGroupedData(data)).to.not.include(data.EMEA);
+        });
+    });
+});*/
 
 describe('getAnnotationsFilter()', () => {
     const tickets = [{
