@@ -13,7 +13,7 @@ import {SVGIcon} from '@homeaway/react-svg';
 import {FILTER__16} from '@homeaway/svg-defs';
 import './styles.less';
 import {ALL_LOB, ALL_POS, ALL_BRANDS, ALL_DEVICES, ALL_INCIDENTS, ALL_ANOMALIES} from '../../constants';
-import {getFilters, getFiltersForMultiKeys, getQueryValues, useAddToUrl, getTimeIntervals, isValidTimeInterval, getDefaultTimeInterval, getActiveIndex} from './impulseHandler';
+import {getFilters, getFiltersForMultiKeys, getQueryValues, useAddToUrl, getTimeIntervals, isValidTimeInterval, getDefaultTimeInterval, getActiveIndex, mapPosFilterLabels} from './impulseHandler';
 import {Checkbox, Switch} from '@homeaway/react-form-components';
 import {IncidentDetails} from './tabs/BookingTrends';
 import AnomalyDetails from './tabs/BookingTrends/sections/AnomalyTable/AnomalyDetails';
@@ -221,11 +221,11 @@ const Impulse = (props) => {
         if (typeof newValuesOnChange !== 'undefined' && brandsFilterData !== null && newValuesOnChange.length > 0) {
             setLobsMulti(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'lobs'));
             setDeviceTypesMulti(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'device_types'));
-            setEgSiteURLMulti(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'point_of_sales'));
+            setEgSiteURLMulti(mapPosFilterLabels(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'point_of_sales')));
         } else {
             setLobsMulti(getFilters(filterData, 'lobs'));
             setDeviceTypesMulti(getFilters(filterData, 'device_types'));
-            setEgSiteURLMulti(getFilters(filterData, 'point_of_sales'));
+            setEgSiteURLMulti(mapPosFilterLabels(getFilters(filterData, 'point_of_sales')));
         }
     };
     const filterAnnotations = (newValuesOnChange) => {

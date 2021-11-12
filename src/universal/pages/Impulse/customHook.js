@@ -19,7 +19,11 @@ import {
     getCategory,
     getQueryStringPrediction,
     simplifyBookingsData,
-    simplifyPredictionData, getQueryStringPercentageChange, getQueryStringYOY
+    simplifyPredictionData,
+    getQueryStringPercentageChange,
+    getQueryStringYOY,
+    mapPosFilterLabels,
+    mapPosChartData,
 } from './impulseHandler';
 import {checkResponse, checkIsDateInvalid, getChartDataForFutureEvents, mapGroupedData} from '../utils';
 import moment from 'moment';
@@ -33,8 +37,8 @@ const IMPULSE_MAPPING = [
     {globalFilter: EXPEDIA_BRAND, impulseFilter: 'Brand Expedia Group'},
     {globalFilter: EXPEDIA_PARTNER_SERVICES_BRAND, impulseFilter: 'Expedia Business Services'},
     {globalFilter: HOTELS_COM_BRAND, impulseFilter: HOTELS_COM_BRAND},
+    {globalFilter: VRBO_BRAND, impulseFilter: 'Vrbo'},
     {globalFilter: EGENCIA_BRAND, impulseFilter: EGENCIA_BRAND},
-    {globalFilter: VRBO_BRAND, impulseFilter: 'Vrbo'}
 ];
 const bookingTimeInterval = 300000;
 const incidentTimeInterval = 900000;
@@ -128,7 +132,7 @@ export const useFetchBlipData = (
             .then(checkResponse)
             .then((respJson) => {
                 setFilterData(respJson);
-                setEgSiteURLMulti(getFilters(respJson, 'point_of_sales'));
+                setEgSiteURLMulti(mapPosFilterLabels(getFilters(respJson, 'point_of_sales')));
                 setLobsMulti(getFilters(respJson, 'lobs'));
                 setBrandMulti(getFilters(respJson, 'brands'));
                 setDeviceTypesMulti(getFilters(respJson, 'device_types'));
@@ -397,7 +401,7 @@ export const useFetchBlipData = (
                             const newRegionGroupedDataFuture = mapGroupedData(regionGroupedDataFuture, regionGroupedData);
 
                             if (selectedSiteURLMulti.length && selectedSiteURLMulti.length <= 10) {
-                                const newPosGroupedData = mapGroupedData(posGroupedDataFuture, posGroupedData);
+                                const newPosGroupedData = mapPosChartData(mapGroupedData(posGroupedDataFuture, posGroupedData));
                                 setGroupedResByPos(newPosGroupedData);
                             } else {
                                 setGroupedResByPos([]);
@@ -415,7 +419,8 @@ export const useFetchBlipData = (
                     setGroupedResByBrands(brandsGroupedData);
                     setGroupedResByLobs(lobsGroupedData);
                     if (selectedSiteURLMulti.length && selectedSiteURLMulti.length <= 10) {
-                        setGroupedResByPos(posGroupedData);
+                        const newPosGroupedData = mapPosChartData(posGroupedData);
+                        setGroupedResByPos(newPosGroupedData);
                     } else {
                         setGroupedResByPos([]);
                     }

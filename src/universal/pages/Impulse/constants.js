@@ -353,3 +353,32 @@ export const REGION_CHART = [
 export const CHART_COLORS = ['#3CB371', '#1E90FF', '#DAA520', '#CD5C5C', '#FF69B4', '#0099c6', '#BC8F8F', '#40E0D0', '#000000', '#C0C0C0', '#994499', '#778899', '#dc3912', '#3366cc', '#6633cc', '#e67300', '#8b0707', '#651067', '#329262', '#5574a6', '#3b3eac', '#b77322', '#16d620', '#b91383', '#f4359e', '#9c5935', '#a9c413', '#2a778d', '#668d1c', '#bea413', '#0c5922', '#743411'];
 export const DISABLED_RESET_GRAPH_BUTTON = 'Click to reset graph to default 3 day date time range (Disabled as default range is selected)';
 export const ENABLED_RESET_GRAPH_BUTTON = 'Click to reset graph to default 3 day date time range';
+export const EGENCIA_POS_MAPPINGS = {
+    'corporateae.expediacustomer.com': 'Egencia AE',
+    'corporateaus.expediacustomer.com': 'Egencia AU',
+    'corporatebe.expediacustomer.com': 'Egencia BE',
+    'corporateca.expediacustomer.com': 'Egencia CA',
+    'corporatech.expediacustomer.com': 'Egencia CH',
+    'corporatecn.expediacustomer.com': 'Egencia CN',
+    'corporatecz.expediacustomer.com': 'Egencia CZ',
+    'corporatede.expediacustomer.com': 'Egencia DE',
+    'corporatedk.expediacustomer.com': 'Egencia DK',
+    'corporatees.expediacustomer.com': 'Egencia ES',
+    'corporatefi.expediacustomer.com': 'Egencia FI',
+    'corporatefr.expediacustomer.com': 'Egencia FR',
+    'corporatehk.expediacustomer.com': 'Egencia HK',
+    'corporateie.expediacustomer.com': 'Egencia IE',
+    'corporateind.expediacustomer.com': 'Egencia IN',
+    'corporateit.expediacustomer.com': 'Egencia IT',
+    'corporatenl.expediacustomer.com': 'Egencia NL',
+    'corporateno.expediacustomer.com': 'Egencia NO',
+    'corporatenz.expediacustomer.com': 'Egencia NZ',
+    'corporatepl.expediacustomer.com': 'Egencia PL',
+    'corporatese.expediacustomer.com': 'Egencia SE',
+    'corporatesg.expediacustomer.com': 'Egencia SG',
+    'corporatetr.expediacustomer.com': 'Egencia TR',
+    'corporateuk.expediacustomer.com': 'Egencia UK',
+    'corporateza.expediacustomer.com': 'Egencia ZA',
+    'www.egencia.com': 'Egencia US',
+};
+export const POS_MAPPINGS = {...EGENCIA_POS_MAPPINGS};
