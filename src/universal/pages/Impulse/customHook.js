@@ -406,7 +406,6 @@ export const useFetchBlipData = (
                             const newDeviceTypeGroupedData = mapGroupedData(deviceTypeGroupedDataFuture, deviceTypeGroupedData);
                             const newRegionGroupedDataFuture = mapGroupedData(regionGroupedDataFuture, regionGroupedData);
                             regionalGroupedData(newRegionGroupedDataFuture);
-                            console.log(`newRegionGroupedDataFuture${JSON.stringify(newRegionGroupedDataFuture)}`);
 
 
                             if (selectedSiteURLMulti.length && selectedSiteURLMulti.length <= 10) {

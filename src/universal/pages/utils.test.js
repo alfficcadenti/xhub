@@ -29,7 +29,7 @@ import {
     getPageViewsGrafanaDashboardByBrand,
     getSuccessRateGrafanaDashboardByBrand,
     brandsWithGrafanaDashboard,
-    DEFAULT_DAY_RANGE, mapGroupedData, checkIsContentPercentage, threeWeekComparison, regionalGroupedData
+    DEFAULT_DAY_RANGE, mapGroupedData, checkIsContentPercentage, threeWeekComparison
 } from './utils';
 import {
     EG_BRAND,
