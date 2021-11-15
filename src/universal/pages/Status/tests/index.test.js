@@ -1,13 +1,19 @@
 import React from 'react';
-import {render, act, screen, waitFor} from '@testing-library/react';
+import {render, act, screen} from '@testing-library/react';
 import {shallow} from 'enzyme';
 import '@testing-library/jest-dom/extend-expect';
 import chaiJestSnapshot from 'chai-jest-snapshot';
 import StatusPage from '../index';
-import {checkoutFailureSitesMockData} from './mockData/mockData';
+import {check} from '../utils';
+import {CHECKOUT_FAILURE_SITES_MOCK_DATA} from '../ListOfService';
 
 describe('Status Page', () => {
     let wrapper;
+    // const listOfService = ListOfService;
+
+    beforeAll(() => {
+        chaiJestSnapshot.resetSnapshotRegistry();
+    });
 
     beforeEach(() => {
         fetch.resetMocks();
@@ -23,80 +29,63 @@ describe('Status Page', () => {
         expect(wrapper).toHaveLength(1);
     });
 
-    it('matches the snapshot when status returns 200', async () => {
+    it('renders success icon when correct response data matches', async () => {
         fetch.mockImplementation(() => {
             return Promise.resolve({
-                status: 200,
+                json: () => Promise.resolve(CHECKOUT_FAILURE_SITES_MOCK_DATA)
             });
         });
 
+
         await act(async () => {
-            chaiJestSnapshot.setTestName('matches the snapshot');
             wrapper = await render(<StatusPage />);
         });
         expect(wrapper).toMatchSnapshot();
+        screen.debug();
+
     });
 
-    it('checks CheckoutFailureSites endpoint by default', async () => {
+    it('renders fail icon when incorrect response data doesn\'t match', async () => {
         fetch.mockImplementation(() => {
-            return Promise.resolve({
-                status: 200
+            return Promise.reject({
+                json: () => Promise.reject()
             });
+        });
+
+
+        await act(async () => {
+            wrapper = await render(<StatusPage />);
+        });
+        expect(wrapper).toMatchSnapshot();
+        screen.debug();
+        chaiJestSnapshot.resetSnapshotRegistry();
+    });
+
+    it('fetches and calls all services', async () => {
+        fetch.mockImplementation(() => {
+            return Promise.resolve({});
         });
 
         await act(async () => {
             render(<StatusPage />);
         });
 
-        expect(fetch.mock.calls.length).toEqual(1);
-        expect(fetch.mock.calls[0][0][0]).toEqual('/v1/checkout-failures/sites?from=2021-10-26T16:53:00Z&to=2021-10-26T16:53:06Z');
+        expect(fetch.mock.calls).toEqual([['/v1/checkout-failures/sites?from=2021-10-26T16:53:00Z&to=2021-10-26T16:53:06Z'], ['/v1/checkout-failures/sites?from=2021-10-20T10:10:00Z&to=2021-10-20T10:10:30Z']]);
     });
 
-    it('renders success icon when status code returns 200', async () => {
-        fetch.mockImplementation(() => {
-            return Promise.resolve({
-                status: 200
-            });
-        });
+    it('returns true - checks two arrays and matches - success', async () => {
+        const arrayOne = ['www.expedia.com', 'www.travelocity.com'];
+        const arrayTwo = ['www.travelocity.com', 'www.expedia.com'];
 
-        fetch('/v1/checkout-failures/sites?from=2021-10-20T10:10:00.000Z&to=2021-10-20T10:10:01.000Z');
-
-        await waitFor(async () => render(<StatusPage />));
-        await waitFor(() => expect(screen.getByTestId('successIcon')).toBeTruthy());
-        await waitFor(() => expect(screen.queryByTestId('failIcon')).not.toBeInTheDocument());
+        const verifyCheck = check(arrayOne, arrayTwo);
+        expect(verifyCheck).toEqual(true);
     });
 
-    it('renders fail icon when status code doesn\'t return 200', async () => {
-        fetch.mockImplementation(() => {
-            return Promise.resolve({
-                status: 404
-            });
-        });
+    it('returns false - checks two arrays and doesn\'t match - fail', async () => {
+        const arrayOne = ['www.expedia.com', 'www.travelocity.com'];
+        const arrayTwo = ['www.orbitz.com', 'www.ebookers.com'];
 
-
-        fetch('/v1/checkout-failures/sites?from=2021-10-20T10:10:00.000Z&to=2021-10-20T10:10:01.000Z');
-        await waitFor(async () => render(<StatusPage />));
-
-        await waitFor(() => expect(screen.getByTestId('failIcon')).toBeTruthy());
-        await waitFor(() => expect(screen.queryByTestId('successIcon')).not.toBeInTheDocument());
-    });
-
-    it('CheckoutFailureSites endpoint returns correct data', async () => {
-        fetch.mockImplementation(() => {
-            return Promise.resolve({
-                status: 200,
-                json: () => {
-                    return Promise.resolve(
-                        checkoutFailureSitesMockData
-                    );
-                }
-            });
-        });
-
-        const res = await fetch('/v1/checkout-failures/sites?from=2021-10-20T10:10:00.000Z&to=2021-10-20T10:10:01.000Z');
-        const json = await res.json();
-        await waitFor(async () => render(<StatusPage />));
-
-        expect(json).toEqual(checkoutFailureSitesMockData);
+        const verifyCheck = check(arrayOne, arrayTwo);
+        expect(verifyCheck).toEqual(false);
     });
 });

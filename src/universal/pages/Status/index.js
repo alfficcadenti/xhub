@@ -1,23 +1,41 @@
 import React, {useEffect, useState} from 'react';
 import DataTable from '@homeaway/react-data-table';
 import './styles.less';
-import ListOfService from './ListOfService';
+import {ListOfService} from './ListOfService';
 import rowComponent from './rowComponent';
+import {check} from './utils';
 
 const StatusPage = () => {
-    const listOfService = ListOfService;
-    const [isItWorking, setIsItWorking] = useState();
+    const [listOfServiceObj, setlistOfServiceObj] = useState(ListOfService);
 
     useEffect(() => {
-        fetch(listOfService.map(((service) => service.endpoint)))
-            .then((response) => setIsItWorking(response.status === 200))
+        Promise.all(listOfServiceObj.map((eachService) =>
+            fetch(eachService.endpoint)))
+            .then((res) => {
+                return Promise.all(res.map((response) => {
+                    return response.json();
+                }));
+            })
+            .then((allData) => {
+                const listOf = listOfServiceObj.map((eachService, idx) => {
+                    console.log('start elem', eachService);
+
+                    if (check(allData[idx], eachService.expectedResponse)) {
+                        eachService.status = true;
+                    }
+                    return eachService;
+                });
+                console.log('end', listOf);
+                setlistOfServiceObj(listOf);
+            })
+
             .catch((err) => {
                 // eslint-disable-next-line no-console
                 console.error(err);
             });
     }, []);
 
-    const rows = listOfService.map((service) => rowComponent({name: service.name, endpointName: service.endpointName, status: isItWorking}));
+    const rows = listOfServiceObj.map((service) => rowComponent({name: service.name, endpointName: service.endpointName, status: service.status}));
 
     return (
         <div className="status-page-container">
