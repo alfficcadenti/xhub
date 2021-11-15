@@ -26,7 +26,7 @@ export const mapOrgDetails = (row, handleSelectOrg, handleSelectTickets) => ({
     org: row.name || '',
     Organization: (
         <div
-            className={`${row.sub_org_details?.length ? 'link' : ''}`}
+            className={`${row.subOrgDetails?.length ? 'link' : ''}`}
             role="link"
             tabIndex="0"
             onClick={() => handleSelectOrg(row.name, row.businessOwnerType, row.subOrgDetails)}

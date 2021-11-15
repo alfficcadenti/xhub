@@ -15,7 +15,10 @@ import {
     simplifyPredictionData,
     convertRelativeDateInString,
     convertRelativeDateRange,
-    getQueryStringYOY
+    getQueryStringYOY,
+    mapPosFilterLabels,
+    mapPosChartData,
+
 } from '../impulseHandler';
 import moment from 'moment';
 
@@ -33,6 +36,7 @@ import {
     HOTELS_COM_BRAND, VRBO_BRAND,
 } from '../../../constants';
 
+
 const IMPULSE_MAPPING = [
     {globalFilter: EG_BRAND, impulseFilter: ALL_BRAND_GROUP},
     {globalFilter: EXPEDIA_BRAND, impulseFilter: 'Brand Expedia Group'},
@@ -48,6 +52,15 @@ describe('impulseHandler', () => {
         it('return object of filters for specific lob', () => {
             const result = getFilters(mockFilters, typeofFilter);
             expect(result[0]).to.be.eql(filterResult);
+        });
+    });
+
+    describe('map POS to custom values', () => {
+        it('should map POS filter labels when key is found', () => {
+            expect(mapPosFilterLabels([{value: 'www.egencia.com', label: 'www.egencia.com'}, {value: 'www.expedia.co.uk', label: 'www.expedia.co.uk'}])).eql([{value: 'www.egencia.com', label: 'Egencia US'}, {value: 'www.expedia.co.uk', label: 'www.expedia.co.uk'}]);
+        });
+        it('should map POS chart data when key is found', () => {
+            expect(mapPosChartData([{time: 0, 'corporateae.expediacustomer.com': 2, 'sg.hotels.com': 5}, {time: 1, 'corporateae.expediacustomer.com': 5, 'sg.hotels.com': 7}])).eql([{time: 0, 'Egencia AE': 2, 'sg.hotels.com': 5}, {time: 1, 'Egencia AE': 5, 'sg.hotels.com': 7}]);
         });
     });
 

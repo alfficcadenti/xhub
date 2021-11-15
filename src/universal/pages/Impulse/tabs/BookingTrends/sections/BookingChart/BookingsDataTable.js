@@ -30,7 +30,7 @@ const BookingsDataTable = ({data}) => {
         }));
         return finalBookingsData;
     };
-    let filename = `Impulse_Bookings_Data${'_' + moment(data.at(0)?.time)?.format('YYYY-MM-DD') + '_to_' + moment(data.at(-1)?.time)?.format('YYYY-MM-DD')}.csv`;
+    let filename = `Impulse_Bookings_Data${`_${moment(data.at(0)?.time)?.format('YYYY-MM-DD')}_to_${moment(data.at(-1)?.time)?.format('YYYY-MM-DD')}`}.csv`;
     const csvReport = {
         data: formatBookingsData(),
         headers,
