@@ -501,6 +501,7 @@ export const useFetchBlipData = (
             if (SUPPRESSED_BRANDS.includes(globalBrandName)) {
                 setError(`Booking data for ${globalBrandName} is not yet available. The following brands are supported at this time: "Expedia", "Hotels.com Retail", and "Expedia Partner Solutions".`);
             } else {
+                fetchCallYOY();
                 getGroupedBookingsData();
                 getData();
                 fetchIncidents();
