@@ -67,4 +67,14 @@ describe('formatPieData()', () => {
         const label = formatPieData();
         expect(label).to.be.eql([]);
     });
+
+    it('returns empty array when data is empty array', () => {
+        const label = formatPieData([]);
+        expect(label).to.be.eql([]);
+    });
+
+    it('returns empty array when data is not an array', () => {
+        const label = formatPieData({});
+        expect(label).to.be.eql([]);
+    });
 });
