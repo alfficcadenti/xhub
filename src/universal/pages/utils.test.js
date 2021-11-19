@@ -23,6 +23,7 @@ import {
     validDateRange,
     getLobPlaceholder,
     getUrlParam,
+    getQueryValues,
     checkIsDateInvalid,
     getChartDataForFutureEvents,
     getResetGraphTitle,
@@ -694,5 +695,25 @@ describe('getSuccessRateGrafanaDashboardByBrand()', () => {
 
     it('returns empty string for EXPEDIA_PARTNER_SERVICES_BRAND', () => {
         expect(getSuccessRateGrafanaDashboardByBrand(EXPEDIA_PARTNER_SERVICES_BRAND)).to.equal('');
+    });
+});
+
+describe('getQueryValues()', () => {
+    it('getQueryValues - default', () => {
+        const start = moment().subtract(1, 'years').startOf('minute').format('YYYY-MM-DD');
+        const end = moment().format('YYYY-MM-DD');
+        const l1 = 'businessA';
+        const result = getQueryValues(`?l1=${l1}`);
+        expect(result.initialStart).to.be.eql(start);
+        expect(result.initialEnd).to.be.eql(end);
+    });
+
+    it('getQueryValues - custom', () => {
+        const start = '2020-01-01';
+        const end = '2020-02-02';
+
+        const result = getQueryValues(`?start=${start}&end=${end}`);
+        expect(result.initialStart).to.be.eql(start);
+        expect(result.initialEnd).to.be.eql(end);
     });
 });

@@ -1,8 +1,6 @@
-import moment from 'moment';
 import {expect} from 'chai';
 import {
     formatPercentage,
-    getQueryValues,
     mapOrgDetails,
     mapTicketDetails
 } from '../utils';
@@ -13,24 +11,6 @@ describe('Portfolio ScoreCard utils', () => {
         expect(formatPercentage(null)).to.eql('-');
         expect(formatPercentage(0)).to.eql('0%');
         expect(formatPercentage(75)).to.eql('75%');
-    });
-
-    it('getQueryValues - default', () => {
-        const start = moment().subtract(1, 'years').startOf('minute').format('YYYY-MM-DD');
-        const end = moment().format('YYYY-MM-DD');
-        const l1 = 'businessA';
-        const result = getQueryValues(`?l1=${l1}`);
-        expect(result.initialStart).to.be.eql(start);
-        expect(result.initialEnd).to.be.eql(end);
-    });
-
-    it('getQueryValues - custom', () => {
-        const start = '2020-01-01';
-        const end = '2020-02-02';
-
-        const result = getQueryValues(`?start=${start}&end=${end}`);
-        expect(result.initialStart).to.be.eql(start);
-        expect(result.initialEnd).to.be.eql(end);
     });
 
     it('mapOrgDetails', () => {

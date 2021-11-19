@@ -30,6 +30,7 @@ import RealTimeSitePerformance from './RealTimeSitePerformance';
 import CheckoutBookingRequests from './CheckoutBookingRequests';
 import Robbie from './Robbie';
 import IframeDashboard from './IframeDashboard';
+import AgileScorecard from './AgileScorecard';
 
 import {
     EXPEDIA_BRAND,
@@ -249,6 +250,13 @@ export default [
         external: true
     },
     // PHAR Dashboards
+    {
+        category: PHAR,
+        id: 'agile-scorecard',
+        link: '/agile-scorecard',
+        text: 'Agile Scorecard',
+        component: AgileScorecard
+    },
     {
         category: PHAR,
         id: 'incident-trends',

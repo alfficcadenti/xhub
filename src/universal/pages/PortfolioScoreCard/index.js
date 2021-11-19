@@ -5,7 +5,7 @@ import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import {DATE_FORMAT} from '../../constants';
 import ScoreCard from './ScoreCard';
 import {useQueryParamChange, useSelectedBrand} from '../hooks';
-import {getQueryValues} from './utils';
+import {getQueryValues} from '../utils';
 import './styles.less';
 
 

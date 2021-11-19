@@ -1,26 +1,9 @@
 import React from 'react';
-import moment from 'moment';
-import qs from 'query-string';
-import {DATE_FORMAT} from '../../constants';
 import {getOrDefault} from '../../utils';
-import {validDateRange, getTableNumValue, buildTicketLink} from '../utils';
+import {getTableNumValue, buildTicketLink} from '../utils';
 
 
 export const formatPercentage = (percent) => percent === null ? '-' : `${percent}%`;
-
-export const getQueryValues = (search) => {
-    const {start, end} = qs.parse(search);
-    const isValidDateRange = validDateRange(start, end);
-
-    return {
-        initialStart: isValidDateRange
-            ? moment(start).format(DATE_FORMAT)
-            : moment().subtract(1, 'years').startOf('minute').format(DATE_FORMAT),
-        initialEnd: isValidDateRange
-            ? moment(end).format(DATE_FORMAT)
-            : moment().format(DATE_FORMAT)
-    };
-};
 
 export const mapOrgDetails = (row, handleSelectOrg, handleSelectTickets) => ({
     org: row.name || '',

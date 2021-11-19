@@ -111,6 +111,7 @@
     "@homeaway/react-input-tokenize": "^1.5.2",
     "@homeaway/react-loading-overlay": "^6.0.2",
     "@homeaway/react-modal": "^9.1.4",
+    "@homeaway/react-multiselect-dropdown": "^1.1.2",
     "@homeaway/react-nav-calendar-month": "^7.0.4",
     "@homeaway/react-navigation": "^6.1.6",
     "@homeaway/react-pager": "^6.0.1",
