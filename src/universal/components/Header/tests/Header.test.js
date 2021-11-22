@@ -12,19 +12,19 @@ const validBrands = BRANDS.map((brand) => brand.label);
 describe('<Header />', () => {
     it('renders Platform Health and Availability dropdown menus', () => {
         const wrapper = mount(<BrowserRouter><Header selectedBrands={[EXPEDIA_BRAND]} onBrandChange={sinon.spy} brands={validBrands} /></BrowserRouter>);
-        expect(wrapper.find('[id="Platform Health & Resiliency-dropdown--container"]').children()).to.have.length(7);
+        expect(wrapper.find('[id="Platform Health & Resiliency-dropdown--container"]').children()).to.have.length(8);
         expect(wrapper.find('[id="Availability & Trends-dropdown--container"]').children()).to.have.length(5);
     });
 
     it('renders only Platform Health dropdown menu if brand is EG GROUP', () => {
         const wrapper = mount(<BrowserRouter><Header selectedBrands={[EG_BRAND]} onBrandChange={sinon.spy} brands={validBrands} /></BrowserRouter>);
-        expect(wrapper.find('[id="Platform Health & Resiliency-dropdown--container"]').children()).to.have.length(7);
+        expect(wrapper.find('[id="Platform Health & Resiliency-dropdown--container"]').children()).to.have.length(8);
         expect(wrapper.find('[id="Availability & Trends-dropdown--container"]').children()).to.have.length(2);
     });
 
     it('renders Platform Health, Availability and CE Analysis dropdown menus if brand is VRBO', () => {
         const wrapper = mount(<BrowserRouter><Header selectedBrands={[VRBO_BRAND]} onBrandChange={sinon.spy} brands={validBrands} /></BrowserRouter>);
-        expect(wrapper.find('[id="Platform Health & Resiliency-dropdown--container"]').children()).to.have.length(8);
+        expect(wrapper.find('[id="Platform Health & Resiliency-dropdown--container"]').children()).to.have.length(9);
         expect(wrapper.find('[id="Availability & Trends-dropdown--container"]').children()).to.have.length(10);
         expect(wrapper.find('[id="Customer Experience Analysis-dropdown--container"]').children()).to.have.length(2);
     });

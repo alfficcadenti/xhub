@@ -1,6 +1,7 @@
 import React from 'react';
 import {
     BRANDS,
+    DATE_FORMAT,
     EGENCIA_BRAND,
     EXPEDIA_BRAND,
     EXPEDIA_PARTNER_SERVICES_BRAND,
@@ -76,6 +77,16 @@ export const mapGroupedData = (GroupedDataFuture, GroupedData) => (
             item = GroupedData[i];
         }
         return item;
+    })
+);
+
+export const regionalGroupedData = (GroupedDataRegion) => (
+    GroupedDataRegion.forEach((data) => {
+        if (data.hasOwnProperty('EU') || data.hasOwnProperty('EMEA')) {
+            data['EMEA+EU'] = (data.EMEA || 0) + (data.EU || 0);
+            delete data.EMEA;
+            delete data.EU;
+        }
     })
 );
 
@@ -568,3 +579,18 @@ export const getPageViewsGrafanaDashboardByBrand = (brand) => GRAFANA_DASHBOARDS
 export const getSuccessRateGrafanaDashboardByBrand = (brand) => GRAFANA_DASHBOARDS.find((x) => x.brand === brand)?.successRateUrl || '';
 
 export const brandsWithGrafanaDashboard = () => GRAFANA_DASHBOARDS.map((x) => x.brand) || [];
+
+export const getQueryValues = (search) => {
+    const {start, end, teams} = qs.parse(search);
+    const isValidDateRange = validDateRange(start, end);
+
+    return {
+        initialStart: isValidDateRange
+            ? moment(start).format(DATE_FORMAT)
+            : moment().subtract(1, 'years').startOf('minute').format(DATE_FORMAT),
+        initialEnd: isValidDateRange
+            ? moment(end).format(DATE_FORMAT)
+            : moment().format(DATE_FORMAT),
+        initialTeams: teams || ''
+    };
+};

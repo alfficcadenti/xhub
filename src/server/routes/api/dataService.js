@@ -1,5 +1,6 @@
 import {getConfig, getHandler} from './utils';
 import {mockIncidentData} from './testData/incidents';
+import {agileMockData} from './testData/agileScoreCard';
 
 const getHandlerParams = (routeKey) => ({
     routeKey,
@@ -89,5 +90,11 @@ module.exports.robbie = {
     path: '/v1/robbie/notification-logs/{param*}',
     config: getConfig('robbie-get'),
     handler: getHandler(Object.assign(getHandlerParams('robbie')))
+};
 
+module.exports.agileScoreCard = {
+    method: 'GET',
+    path: '/v1/score-card/{param*}',
+    config: getConfig('agile-score-card-get'),
+    handler: getHandler(Object.assign(getHandlerParams('agileScoreCard')), agileMockData)
 };
