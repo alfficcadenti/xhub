@@ -18,14 +18,11 @@ const StatusPage = () => {
             })
             .then((allData) => {
                 const listOf = listOfServiceObj.map((eachService, idx) => {
-                    console.log('start elem', eachService);
-
                     if (check(allData[idx], eachService.expectedResponse)) {
                         eachService.status = true;
                     }
                     return eachService;
                 });
-                console.log('end', listOf);
                 setlistOfServiceObj(listOf);
             })
 
