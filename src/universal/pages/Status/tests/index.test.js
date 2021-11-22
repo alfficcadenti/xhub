@@ -2,8 +2,8 @@ import React from 'react';
 import {render, act, screen} from '@testing-library/react';
 import {shallow} from 'enzyme';
 import StatusPage from '../index';
-import {check} from '../utils';
-import {CHECKOUT_FAILURE_SITES_MOCK_DATA} from '../ListOfService';
+import {compareArraysElements} from '../utils';
+import {CHECKOUT_FAILURE_SITES_MOCK_DATA} from './mockData/mockData';
 
 describe('Status Page', () => {
     let wrapper;
@@ -65,7 +65,7 @@ describe('Status Page', () => {
         const arrayOne = ['www.expedia.com', 'www.travelocity.com'];
         const arrayTwo = ['www.travelocity.com', 'www.expedia.com'];
 
-        const verifyCheck = check(arrayOne, arrayTwo);
+        const verifyCheck = compareArraysElements(arrayOne, arrayTwo);
         expect(verifyCheck).toEqual(true);
     });
 
@@ -73,7 +73,7 @@ describe('Status Page', () => {
         const arrayOne = ['www.expedia.com', 'www.travelocity.com'];
         const arrayTwo = ['www.orbitz.com', 'www.ebookers.com'];
 
-        const verifyCheck = check(arrayOne, arrayTwo);
+        const verifyCheck = compareArraysElements(arrayOne, arrayTwo);
         expect(verifyCheck).toEqual(false);
     });
 });

@@ -3,7 +3,7 @@ import DataTable from '@homeaway/react-data-table';
 import './styles.less';
 import {ListOfService} from './ListOfService';
 import rowComponent from './rowComponent';
-import {check} from './utils';
+import {compareArraysElements} from './utils';
 
 const StatusPage = () => {
     const [listOfServiceObj, setlistOfServiceObj] = useState(ListOfService);
@@ -17,13 +17,13 @@ const StatusPage = () => {
                 }));
             })
             .then((allData) => {
-                const listOf = listOfServiceObj.map((eachService, idx) => {
-                    if (check(allData[idx], eachService.expectedResponse)) {
+                const listOfService = listOfServiceObj.map((eachService, idx) => {
+                    if (compareArraysElements(allData[idx], eachService.expectedResponse)) {
                         eachService.status = true;
                     }
                     return eachService;
                 });
-                setlistOfServiceObj(listOf);
+                setlistOfServiceObj(listOfService);
             })
 
             .catch((err) => {
