@@ -1,24 +1,15 @@
 import React from 'react';
 import {render, act, screen} from '@testing-library/react';
 import {shallow} from 'enzyme';
-import '@testing-library/jest-dom/extend-expect';
-import chaiJestSnapshot from 'chai-jest-snapshot';
 import StatusPage from '../index';
 import {check} from '../utils';
 import {CHECKOUT_FAILURE_SITES_MOCK_DATA} from '../ListOfService';
 
 describe('Status Page', () => {
     let wrapper;
-    // const listOfService = ListOfService;
-
-    beforeAll(() => {
-        chaiJestSnapshot.resetSnapshotRegistry();
-    });
 
     beforeEach(() => {
         fetch.resetMocks();
-        chaiJestSnapshot.setFilename(`${__filename}.snap`);
-        wrapper = shallow(<StatusPage />);
     });
 
     afterEach(() => {
@@ -26,7 +17,23 @@ describe('Status Page', () => {
     });
 
     it('renders successfully', () => {
+        wrapper = shallow(<StatusPage />);
         expect(wrapper).toHaveLength(1);
+        screen.debug();
+    });
+
+    it('renders fail icon when incorrect response data doesn\'t match', async () => {
+        fetch.mockResponseOnce(() => {
+            return Promise.resolve({
+                json: () => Promise.resolve('www.orbitz.com')
+            });
+        });
+
+        await act(async () => {
+            wrapper = await render(<StatusPage />);
+        });
+        expect(wrapper).toMatchSnapshot();
+        screen.debug();
     });
 
     it('renders success icon when correct response data matches', async () => {
@@ -36,33 +43,14 @@ describe('Status Page', () => {
             });
         });
 
-
         await act(async () => {
             wrapper = await render(<StatusPage />);
         });
         expect(wrapper).toMatchSnapshot();
-        screen.debug();
-
-    });
-
-    it('renders fail icon when incorrect response data doesn\'t match', async () => {
-        fetch.mockImplementation(() => {
-            return Promise.reject({
-                json: () => Promise.reject()
-            });
-        });
-
-
-        await act(async () => {
-            wrapper = await render(<StatusPage />);
-        });
-        expect(wrapper).toMatchSnapshot();
-        screen.debug();
-        chaiJestSnapshot.resetSnapshotRegistry();
     });
 
     it('fetches and calls all services', async () => {
-        fetch.mockImplementation(() => {
+        fetch.mockResponseOnce(() => {
             return Promise.resolve({});
         });
 
@@ -70,7 +58,7 @@ describe('Status Page', () => {
             render(<StatusPage />);
         });
 
-        expect(fetch.mock.calls).toEqual([['/v1/checkout-failures/sites?from=2021-10-26T16:53:00Z&to=2021-10-26T16:53:06Z'], ['/v1/checkout-failures/sites?from=2021-10-20T10:10:00Z&to=2021-10-20T10:10:30Z']]);
+        expect(fetch.mock.calls).toEqual([['/v1/checkout-failures/sites?from=2021-10-26T16:53:00Z&to=2021-10-26T16:53:06Z']]);
     });
 
     it('returns true - checks two arrays and matches - success', async () => {
