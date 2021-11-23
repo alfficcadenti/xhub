@@ -1,38 +1,31 @@
 import React, {useEffect, useState} from 'react';
 import DataTable from '@homeaway/react-data-table';
 import './styles.less';
-import {ListOfService} from './ListOfService';
+import {LIST_OF_SERVICES} from './constants';
 import rowComponent from './rowComponent';
 import {compareArraysElements} from './utils';
+import {checkResponse} from '../utils';
 
 const StatusPage = () => {
-    const [listOfServiceObj, setlistOfServiceObj] = useState(ListOfService);
+    // eslint-disable-next-line no-unused-vars
+    const [services, setServices] = useState(LIST_OF_SERVICES);
 
     useEffect(() => {
-        Promise.all(listOfServiceObj.map((eachService) =>
-            fetch(eachService.endpoint)))
-            .then((res) => {
-                return Promise.all(res.map((response) => {
-                    return response.json();
-                }));
-            })
-            .then((allData) => {
-                const listOfService = listOfServiceObj.map((eachService, idx) => {
-                    if (compareArraysElements(allData[idx], eachService.expectedResponse)) {
-                        eachService.status = true;
-                    }
-                    return eachService;
-                });
-                setlistOfServiceObj(listOfService);
-            })
-
+        Promise.all(LIST_OF_SERVICES.map(({endpoint}) => fetch(endpoint)))
+            .then((res) => Promise.all(res.map(checkResponse)))
+            .then((allData) => setServices(LIST_OF_SERVICES.map((service, idx) => {
+                if (compareArraysElements(allData[idx], service.expectedResponse)) {
+                    service.status = true;
+                }
+                return service;
+            })))
             .catch((err) => {
                 // eslint-disable-next-line no-console
                 console.error(err);
             });
     }, []);
 
-    const rows = listOfServiceObj.map((service) => rowComponent({name: service.name, endpointName: service.endpointName, status: service.status}));
+    const rows = LIST_OF_SERVICES.map((service) => rowComponent({name: service.name, endpointName: service.endpointName, status: service.status}));
 
     return (
         <div className="status-page-container">

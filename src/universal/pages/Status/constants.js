@@ -1,6 +1,6 @@
 
 
-export const ListOfService =
+export const LIST_OF_SERVICES =
     [{name: 'eg-fci-data-service',
         endpointName: '/v1/checkout-failures/sites',
         expectedResponse: ['www.expedia.com', 'www.travelocity.com'],
