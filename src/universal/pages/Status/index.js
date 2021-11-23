@@ -1,23 +1,31 @@
 import React, {useEffect, useState} from 'react';
 import DataTable from '@homeaway/react-data-table';
 import './styles.less';
-import ListOfService from './ListOfService';
+import {LIST_OF_SERVICES} from './constants';
 import rowComponent from './rowComponent';
+import {compareArraysElements} from './utils';
+import {checkResponse} from '../utils';
 
 const StatusPage = () => {
-    const listOfService = ListOfService;
-    const [isItWorking, setIsItWorking] = useState();
+    // eslint-disable-next-line no-unused-vars
+    const [services, setServices] = useState(LIST_OF_SERVICES);
 
     useEffect(() => {
-        fetch(listOfService.map(((service) => service.endpoint)))
-            .then((response) => setIsItWorking(response.status === 200))
+        Promise.all(LIST_OF_SERVICES.map(({endpoint}) => fetch(endpoint)))
+            .then((res) => Promise.all(res.map(checkResponse)))
+            .then((allData) => setServices(LIST_OF_SERVICES.map((service, idx) => {
+                if (compareArraysElements(allData[idx], service.expectedResponse)) {
+                    service.status = true;
+                }
+                return service;
+            })))
             .catch((err) => {
                 // eslint-disable-next-line no-console
                 console.error(err);
             });
     }, []);
 
-    const rows = listOfService.map((service) => rowComponent({name: service.name, endpointName: service.endpointName, status: isItWorking}));
+    const rows = LIST_OF_SERVICES.map((service) => rowComponent({name: service.name, endpointName: service.endpointName, status: service.status}));
 
     return (
         <div className="status-page-container">
