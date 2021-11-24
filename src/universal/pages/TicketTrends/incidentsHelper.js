@@ -25,6 +25,10 @@ export const getTableColumns = (selectedBrand) => {
     return ['Incident', 'Priority', 'Division', 'Started', 'Summary', 'RC Owner', 'TTD', 'TTK', 'TTF', 'TTR', 'Status', 'Success Rates', 'Page Views'];
 };
 
+export const getTableColumnsForIncident = () => {
+    return ['Incident', 'Priority', 'Booking Impact', 'Started', 'TTD', 'TTK', 'TTF', 'TTR', 'Environment', 'RC Owner', 'L1']
+};
+
 export const adjustTicketProperties = (tickets = []) => (
     // eslint-disable-next-line complexity
     tickets.map((t) => {
@@ -76,7 +80,6 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
         'Root Cause': getOrDefault(inc, 'root_cause'),
         'Root Cause Owner': getOrDefault(inc, 'root_cause_owner'),
         Status: getOrDefault(inc, 'Status'),
-        Tag: getOrDefault(inc, 'tag'),
         'Executive Summary': getOrDefault(inc, 'executive_summary'),
         executiveSummary: getOrDefault(inc, 'executiveSummary'),
         'RC Owner': getOrDefault(inc, 'root_cause_owner'),
@@ -99,6 +102,49 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
                     <span className="expandable-row-header">{'Resolution Notes:'}</span>
                     <div className="expandable-row-section">
                         {getOrDefault(inc, 'root_cause')}
+                    </div>
+                </div>
+            </div>
+        )
+    }))
+    .sort((a, b) => b.Started.localeCompare(a.Started));
+
+    export const getIncidentsDataById = (filteredIncidents = []) => filteredIncidents
+    .map((inc) => ({
+        id: uuid(),
+        Incident: buildTicketLinks(inc.id, inc.Brand, inc.url) || '-',
+        Priority: getOrDefault(inc, 'priority'),
+        Started: moment.utc(inc.start_date).local().isValid() ? moment.utc(inc.start_date).local().format('YYYY-MM-DD HH:mm') : '-',
+        Description: getOrDefault(inc, 'description'),
+        TTD: getOrDefault(inc, 'timeToDetect', formatDurationForTable, 'minutes'),
+        TTK: getOrDefault(inc, 'timeToKnow', formatDurationForTable, 'minutes'),
+        TTF: getOrDefault(inc, 'timeToFix', formatDurationForTable, 'minutes'),
+        TTR: getOrDefault(inc, 'timeToRestore', formatDurationForTable, 'minutes'),
+        'Resolution Notes': getOrDefault(inc, 'rootCause'),
+        executiveSummary: getOrDefault(inc, 'executiveSummary'),
+        'RC Owner': getOrDefault(inc, 'rootCauseOwner'),
+        'Environment': getOrDefault(inc, 'environment'),
+        'Product': getOrDefault(inc, 'product'),
+        'L1': getOrDefault(inc, 'brand'),
+        'L2': getOrDefault(inc, 'l2_business_owner'),
+        'L3': getOrDefault(inc, 'l3_business_owner'),
+        'L4': getOrDefault(inc, 'l4_business_owner'),
+        'L5': getOrDefault(inc, 'l5_business_owner'),
+        'Assignment Group': getOrDefault(inc, 'assignmentGroup'),
+        'Booking Impact': getOrDefault(inc, 'bookingImpact'),
+        'Caused by': getOrDefault(inc, 'causedBy'),
+        Details: (
+            <div className="expandable-row-wrapper">
+                <div className="expandable-row">
+                    <span className="expandable-row-header">{'Incident Executive Summary:'}</span>
+                    <div className="expandable-row-section">
+                        {getOrDefault(inc, 'executiveSummary')}
+                    </div>
+                </div>
+                <div className="expandable-row">
+                    <span className="expandable-row-header">{'Resolution Notes:'}</span>
+                    <div className="expandable-row-section">
+                        {getOrDefault(inc, 'rootCause')}
                     </div>
                 </div>
             </div>
