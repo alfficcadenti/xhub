@@ -18,7 +18,7 @@ import {
     EG_BRAND,
     EXPEDIA_PARTNER_SERVICES_BRAND
 } from '../../../constants';
-import {Incidents, Overview, Top5} from './tabs/index';
+import {Incidents, Overview, Top5, Incident} from './tabs/index';
 import {useFetchTickets, useRootCauseOwner} from '../hooks';
 import {useSelectedBrand, useQueryParamChange} from '../../hooks';
 import {impactedBrandToDivision} from '../incidentsHelper';
@@ -168,6 +168,8 @@ const IncidentTrendsDashboard = ({selectedBrands, onBrandChange, prevSelectedBra
                 return <Incidents tickets={tickets} selectedBrand={selectedBrand} />;
             case 2:
                 return <Top5 tickets={tickets} />;
+            case 3:
+                return <Incident tickets={tickets} />;
             default:
                 return <Incidents tickets={tickets} />;
         }
