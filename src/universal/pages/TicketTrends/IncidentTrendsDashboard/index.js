@@ -159,17 +159,23 @@ const IncidentTrendsDashboard = ({selectedBrands, onBrandChange, prevSelectedBra
         setShowMoreFilters(!showMoreFilters);
     };
 
+    const loadingWrapper = (tab) => (
+    <LoadingContainer isLoading={isLoading} error={error} className="incident-main">
+        {tab}
+    </LoadingContainer>
+    );
+
     // eslint-disable-next-line complexity
     const renderTabs = () => {
         switch (activeIndex) {
             case 0:
-                return <Overview startDate={start} endDate={end} tickets={tickets} brand={selectedBrand} />;
+                return loadingWrapper(<Overview startDate={start} endDate={end} tickets={tickets} brand={selectedBrand} />);
             case 1:
-                return <Incidents tickets={tickets} selectedBrand={selectedBrand} />;
+                return loadingWrapper(<Incidents tickets={tickets} selectedBrand={selectedBrand} />);
             case 2:
-                return <Top5 tickets={tickets} />;
+                return loadingWrapper(<Top5 tickets={tickets} />);
             case 3:
-                return <Incident tickets={tickets} />;
+                return <Incident  />;
             default:
                 return <Incidents tickets={tickets} />;
         }
@@ -273,9 +279,7 @@ const IncidentTrendsDashboard = ({selectedBrands, onBrandChange, prevSelectedBra
                 links={NAV_LINKS}
                 onLinkClick={handleNavigationClick}
             />
-            <LoadingContainer isLoading={isLoading} error={error} className="incident-main">
-                {renderTabs()}
-            </LoadingContainer>
+            {renderTabs()}
         </div>
     );
 };
