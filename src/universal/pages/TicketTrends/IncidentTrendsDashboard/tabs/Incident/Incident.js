@@ -5,7 +5,7 @@ import FormInput from '@homeaway/react-form-components/lib/transpiled/FormInput'
 import {checkResponse, consolidateTicketsById} from '../../../../utils';
 import {FETCH_FAILED_MSG} from '../../../../../constants';
 import {getTableColumnsForIncident} from '../../../incidentsHelper';
-import { COLUMNS_INFO } from '../../constants';
+import {COLUMNS_INFO} from '../../constants';
 import LoadingContainer from '../../../../../components/LoadingContainer';
 
 
@@ -13,7 +13,7 @@ const Incident = () => {
     const [search, setSearch] = useState('');
     const [pendingSearch, setPendingSearch] = useState('');
     const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState('');
+    const [setError] = useState('');
     const [data, setData] = useState([]);
 
     useEffect(() => {
@@ -28,14 +28,14 @@ const Incident = () => {
     const renderTable = () => {
         return (
             <LoadingContainer isLoading={isLoading} >
-            <DataTable
-                title={'Incident details'}
-                data={data}
-                columns={getTableColumnsForIncident()}
-                columnsInfo={COLUMNS_INFO}
-                expandableColumns={['Details']}
-                paginated={false}
-            />
+                <DataTable
+                    title={'Incident details'}
+                    data={data}
+                    columns={getTableColumnsForIncident()}
+                    columnsInfo={COLUMNS_INFO}
+                    expandableColumns={['Details']}
+                    paginated={false}
+                />
             </LoadingContainer>
         );
     };
