@@ -3,7 +3,7 @@ import DataTable from '@homeaway/react-data-table';
 import './styles.less';
 import {LIST_OF_SERVICES} from './constants';
 import rowComponent from './rowComponent';
-import {compareArraysElements} from './utils';
+import {compareArraysElements, timeout} from './utils';
 import {checkResponse} from '../utils';
 
 const StatusPage = () => {
@@ -11,7 +11,8 @@ const StatusPage = () => {
     const [services, setServices] = useState(LIST_OF_SERVICES);
 
     useEffect(() => {
-        Promise.all(LIST_OF_SERVICES.map(({endpoint}) => fetch(endpoint)))
+        // eslint-disable-next-line new-cap
+        Promise.all(LIST_OF_SERVICES.map(({endpoint}) => fetch(endpoint, {signal: timeout(5).signal})))
             .then((res) => Promise.all(res.map(checkResponse)))
             .then((allData) => setServices(LIST_OF_SERVICES.map((service, idx) => {
                 if (compareArraysElements(allData[idx], service.expectedResponse)) {
@@ -20,8 +21,13 @@ const StatusPage = () => {
                 return service;
             })))
             .catch((err) => {
-                // eslint-disable-next-line no-console
-                console.error(err);
+                if (err.name === 'AbortError') {
+                    // eslint-disable-next-line no-console
+                    console.log('Response timed out');
+                } else {
+                    // eslint-disable-next-line no-console
+                    console.error(err);
+                }
             });
     }, []);
 

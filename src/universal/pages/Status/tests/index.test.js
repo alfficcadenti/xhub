@@ -1,5 +1,5 @@
 import React from 'react';
-import {render, act, screen} from '@testing-library/react';
+import {render, act} from '@testing-library/react';
 import {shallow} from 'enzyme';
 import StatusPage from '../index';
 import {compareArraysElements} from '../utils';
@@ -7,6 +7,7 @@ import {CHECKOUT_FAILURE_SITES_MOCK_DATA} from './mockData/mockData';
 
 describe('Status Page', () => {
     let wrapper;
+    const c = new AbortController();
 
     beforeEach(() => {
         fetch.resetMocks();
@@ -19,46 +20,73 @@ describe('Status Page', () => {
     it('renders successfully', () => {
         wrapper = shallow(<StatusPage />);
         expect(wrapper).toHaveLength(1);
-        screen.debug();
+    });
+
+    it('After 5 seconds waiting for a response, the request should timeout and show an alert icon', async () => {
+        jest.useFakeTimers();
+
+        fetch.mockResponseOnce(async () => {
+            jest.advanceTimersByTime(6000);
+        });
+        setTimeout(() => c.abort(), 5000);
+
+        await act(async () => {
+            wrapper = render(<StatusPage />);
+        });
+
+        await expect(() => fetch('/v1/checkout-failures/sites?from=2021-10-26T16:53:00Z&to=2021-10-26T16:53:06Z', {signal: c.signal})).toThrow('The operation was aborted.');
+
+        expect(wrapper).toMatchSnapshot();
+        jest.useRealTimers();
     });
 
     it('renders fail icon when incorrect response data doesn\'t match', async () => {
-        fetch.mockResponseOnce(() => {
+        fetch.mockImplementationOnce(() => {
             return Promise.resolve({
+                ok: true,
                 json: () => Promise.resolve('www.orbitz.com')
             });
         });
 
         await act(async () => {
-            wrapper = await render(<StatusPage />);
+            wrapper = render(<StatusPage />);
         });
+
         expect(wrapper).toMatchSnapshot();
-        screen.debug();
     });
 
     it('renders success icon when correct response data matches', async () => {
         fetch.mockImplementation(() => {
             return Promise.resolve({
+                ok: true,
                 json: () => Promise.resolve(CHECKOUT_FAILURE_SITES_MOCK_DATA)
             });
         });
 
         await act(async () => {
-            wrapper = await render(<StatusPage />);
+            wrapper = render(<StatusPage />);
         });
+
         expect(wrapper).toMatchSnapshot();
     });
 
     it('fetches and calls all services', async () => {
-        fetch.mockResponseOnce(() => {
-            return Promise.resolve({});
+        fetch.mockImplementation(() => {
+            return Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve()
+            });
         });
 
         await act(async () => {
-            render(<StatusPage />);
+            wrapper = render(<StatusPage />);
         });
 
-        expect(fetch.mock.calls).toEqual([['/v1/checkout-failures/sites?from=2021-10-26T16:53:00Z&to=2021-10-26T16:53:06Z']]);
+        expect(fetch.mock.calls).toEqual([['/v1/checkout-failures/sites?from=2021-10-26T16:53:00Z&to=2021-10-26T16:53:06Z',
+            {
+                'signal': c.signal
+            }
+        ]]);
     });
 
     it('returns true - checks two arrays and matches - success', async () => {
