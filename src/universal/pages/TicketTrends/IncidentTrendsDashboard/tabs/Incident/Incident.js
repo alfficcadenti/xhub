@@ -29,7 +29,6 @@ const Incident = () => {
         return (
             <LoadingContainer isLoading={isLoading} >
                 <DataTable
-                    title={'Incident details'}
                     data={data}
                     columns={getTableColumnsForIncident()}
                     columnsInfo={COLUMNS_INFO}
