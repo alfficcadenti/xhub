@@ -39,7 +39,7 @@ const LineChartWrapper = ({
                 return (
                     <div className="custom-tooltip-container">
                         <div className="dot-date">{label}</div>
-                        <div className="dot-title">{line.name}</div>
+                        <div className="dot-title">{line?.name}</div>
                         {tooltipData[label][line.name].map(renderTooltipContent)}
                     </div>
                 );

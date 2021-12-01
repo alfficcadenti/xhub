@@ -40,7 +40,7 @@ module.exports.incidents = {
     method: 'GET',
     path: '/v1/incidents/{impulse*}',
     config: getConfig('incidents-get'),
-    handler: process.env.ENV === 'dev' ? () => mockIncidentData : getHandler(Object.assign(getHandlerParams('incidents'), {pathParam: 'impulse'}))
+    handler: getHandler(Object.assign(getHandlerParams('incidents'), {pathParam: 'impulse'}), () => mockIncidentData)
 };
 
 module.exports.incidentsV2 = {
@@ -96,5 +96,5 @@ module.exports.agileScoreCard = {
     method: 'GET',
     path: '/v1/score-card/{param*}',
     config: getConfig('agile-score-card-get'),
-    handler: getHandler(Object.assign(getHandlerParams('agileScoreCard')), agileMockData)
+    handler: getHandler(Object.assign(getHandlerParams('agileScoreCard'), {pathParam: 'param'}), agileMockData)
 };

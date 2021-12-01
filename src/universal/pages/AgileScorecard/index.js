@@ -5,9 +5,13 @@ import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import {getQueryValues, checkResponse} from '../utils';
 import {DATE_FORMAT} from '../../constants';
 import MultiSelect from '@homeaway/react-multiselect-dropdown';
-import PieChart from '../../components/PieChart';
+import {Navigation} from '@homeaway/react-navigation';
 import LoadingContainer from '../../components/LoadingContainer';
-import {labelFormat, formatPieData} from './utils';
+import Distribution from './tabs/Distribution';
+import NumberOfBugs from './tabs/NumberOfBugs';
+import {labelFormat} from './utils';
+import {NAV_LINKS} from './constants';
+
 
 import './styles.less';
 
@@ -22,17 +26,15 @@ const AgileScorecard = () => {
     const [pendingTeams, setPendingTeams] = useState(initialTeams || []);
     const [isDirtyForm, setIsDirtyForm] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [displayError, setDisplayError] = useState('');
-    const [data, setData] = useState([]);
+    const [error, setError] = useState();
+    const [activeIndex, setActiveIndex] = useState(0);
 
-    const applyFilters = () => {
-        setIsLoading(true);
+    function applyFilters() {
         setFrom(pendingFrom);
         setTo(pendingTo);
         setTeams(pendingTeams);
         setIsDirtyForm(false);
-    };
-
+    }
 
     const handleDateRangeChange = ({start, end}) => {
         const nextPendingFrom = moment(start).format(DATE_FORMAT);
@@ -46,25 +48,19 @@ const AgileScorecard = () => {
         setIsDirtyForm(true);
     };
 
+    const handleNavigationClick = (_, index) => {
+        setActiveIndex(index);
+    };
+
     useEffect(() => {
         setIsLoading(true);
+        setError();
         fetch('/v1/score-card/teams')
             .then(checkResponse)
             .then((teamResponse) => setTeams(teamResponse?.map((x) => ({name: x, label: x}))))
-            .catch(() => setDisplayError('Error loading the teams. Try refreshing the page'))
+            .catch(() => setError('Error loading the teams. Try refreshing the page'))
             .finally(() => setIsLoading(false));
     }, []);
-
-    useEffect(() => {
-        const selectedTeam = teams.filter((x) => x?.checked && x?.name).map((x) => x?.name);
-        const url = `/v1/score-card/distribution-work-data?from_date=${moment(from).format('YYYY-MM-DDTHH:mm:ss.sss[Z]')}&to_date=${moment(to).format('YYYY-MM-DDTHH:mm:ss.sss[Z]')}&team_name=${selectedTeam}`;
-        fetch(url)
-            .then(checkResponse)
-            .then((res) => setData(res))
-            .catch(() => setDisplayError('Error loading the distribution of work. Try refreshing the page'))
-            .finally(() => setIsLoading(false));
-    }, [from, to, teams]);
-
 
     const renderFilters = () => {
         return (
@@ -95,18 +91,29 @@ const AgileScorecard = () => {
         );
     };
 
+    const renderTabs = () => {
+        switch (activeIndex) {
+            case 0:
+                return <Distribution from={from} to={to} teams={teams} />;
+            case 1:
+                return <NumberOfBugs from={from} to={to} teams={teams} />;
+            default:
+                return <Distribution from={from} to={to} teams={teams} />;
+        }
+    };
+
     return (
         <div className="agile-scorecard-container">
             <h1 className="page-title" data-testid="title">{'Agile ScoreCard'}</h1>
             {renderFilters()}
-            <LoadingContainer
-                isLoading={isLoading}
-                error={displayError}
-            >
-                <PieChart
-                    data={formatPieData(data)}
-                    title="Distribution of Work"
-                />
+            <Navigation
+                noMobileSelect
+                activeIndex={activeIndex}
+                links={NAV_LINKS}
+                onLinkClick={handleNavigationClick}
+            />
+            <LoadingContainer isLoading={isLoading} error={error}>
+                {renderTabs()}
             </LoadingContainer>
         </div>
     );

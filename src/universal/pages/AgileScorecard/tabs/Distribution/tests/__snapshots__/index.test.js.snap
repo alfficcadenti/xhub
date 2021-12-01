@@ -1,0 +1,152 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Distribution /> renders Error message when api return error 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="loading-container "
+      >
+        <div
+          aria-live="polite"
+          class="Alert border--default in loading-alert"
+          role="alert"
+        >
+          <div
+            class="Alert__flair bg--color-bg-active"
+          />
+          <span
+            class="SVGIcon SVGIcon--24px Alert__svg inline-svg text-muted"
+          >
+            <svg
+              data-id="SVG_ALERT_WARNING__24"
+              focusable="false"
+              height="24"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g
+                fill="none"
+                fill-rule="evenodd"
+              >
+                <path
+                  d="M13 17.1a1 1 0 1 1-2 0 1 1 0 0 1 2 0"
+                  fill="currentColor"
+                  stroke="none"
+                />
+                <path
+                  d="M10.6 4.5a1.6 1.6 0 0 1 2.8 0L21 17.7a1.6 1.6 0 0 1-1.4 2.5H4.4A1.6 1.6 0 0 1 3 17.7l7.6-13.2zM12 9V14"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </g>
+            </svg>
+          </span>
+          <p>
+            Error loading the distribution of work. Try refreshing the page
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="loading-container "
+    >
+      <div
+        aria-live="polite"
+        class="Alert border--default in loading-alert"
+        role="alert"
+      >
+        <div
+          class="Alert__flair bg--color-bg-active"
+        />
+        <span
+          class="SVGIcon SVGIcon--24px Alert__svg inline-svg text-muted"
+        >
+          <svg
+            data-id="SVG_ALERT_WARNING__24"
+            focusable="false"
+            height="24"
+            viewBox="0 0 24 24"
+            width="24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g
+              fill="none"
+              fill-rule="evenodd"
+            >
+              <path
+                d="M13 17.1a1 1 0 1 1-2 0 1 1 0 0 1 2 0"
+                fill="currentColor"
+                stroke="none"
+              />
+              <path
+                d="M10.6 4.5a1.6 1.6 0 0 1 2.8 0L21 17.7a1.6 1.6 0 0 1-1.4 2.5H4.4A1.6 1.6 0 0 1 3 17.7l7.6-13.2zM12 9V14"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </g>
+          </svg>
+        </span>
+        <p>
+          Error loading the distribution of work. Try refreshing the page
+        </p>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
