@@ -17,7 +17,7 @@ const NumberOfBugs = ({teams, from, to}) => {
     useEffect(() => {
         setIsLoading(true);
         const selectedTeam = teams.filter((x) => x?.checked && x?.name).map((x) => x?.name);
-        const url = `/v1/score-card/number-of-bugs?from_date=${moment(from).format('YYYY-MM-DDTHH:mm:ss.sss[Z]')}&to_date=${moment(to).format('YYYY-MM-DDTHH:mm:ss.sss[Z]')}&team_name=${selectedTeam}`;
+        const url = `/v1/score-card/number-of-bugs?from_date=${moment(from).format('YYYY-MM-DDTHH:mm:ss.sss[Z]')}&to_date=${moment(to).format('YYYY-MM-DDTHH:mm:ss.sss[Z]')}&team_names=${selectedTeam}`;
         fetch(url)
             .then(checkResponse)
             .then(setData)

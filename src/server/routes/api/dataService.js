@@ -96,7 +96,7 @@ module.exports.agileScoreCardTeam = {
     method: 'GET',
     path: '/v1/score-card/teams/{param*}',
     config: getConfig('agile-score-card-team-get'),
-    handler: getHandler(Object.assign(getHandlerParams('agileScoreCardTeam'), {pathParam: 'param'}), agileMockData)
+    handler: getHandler(Object.assign(getHandlerParams('agileScoreCardTeams'), {pathParam: 'param'}), agileMockData)
 };
 
 module.exports.agileScoreCardDistribution = {
