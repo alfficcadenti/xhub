@@ -75,10 +75,20 @@
               "method": "GET",
               "operation": "GET_ROBBIE_NOTIFICATIONS_V1"
             },
-            "agileScoreCard": {
-              "path": "/v1/score-card",
+            "agileScoreCardTeams": {
+              "path": "/v1/score-card/teams",
               "method": "GET",
-              "operation": "GET_AGILE_SCORECARD_V1"
+              "operation": "GET_AGILE_SCORECARD_TEAMS_V1"
+            },
+            "agileScoreCardDistribution": {
+              "path": "/v1/score-card/distribution-work-data",
+              "method": "GET",
+              "operation": "GET_AGILE_SCORECARD_DISTRIBUTION_V1"
+            },
+            "agileScoreCardBugs": {
+              "path": "/v1/score-card/number-of-bugs",
+              "method": "GET",
+              "operation": "GET_AGILE_SCORECARD_BUGS_V1"
             }
           }
         },
@@ -141,10 +151,20 @@
               "method": "GET",
               "operation": "GET_ROBBIE_NOTIFICATIONS_V1"
             },
-            "agileScoreCard": {
-              "path": "/v1/score-card",
+            "agileScoreCardTeams": {
+              "path": "/v1/score-card/teams",
               "method": "GET",
-              "operation": "GET_AGILE_SCORECARD_V1"
+              "operation": "GET_AGILE_SCORECARD_TEAMS_V1"
+            },
+            "agileScoreCardDistribution": {
+              "path": "/v1/score-card/distribution-work-data",
+              "method": "GET",
+              "operation": "GET_AGILE_SCORECARD_DISTRIBUTION_V1"
+            },
+            "agileScoreCardBugs": {
+              "path": "/v1/score-card/number-of-bugs",
+              "method": "GET",
+              "operation": "GET_AGILE_SCORECARD_BUGS_V1"
             }
           }
         },
@@ -207,10 +227,20 @@
               "method": "GET",
               "operation": "GET_ROBBIE_NOTIFICATIONS_V1"
             },
-            "agileScoreCard": {
-              "path": "/v1/score-card",
+            "agileScoreCardTeams": {
+              "path": "/v1/score-card/teams",
               "method": "GET",
-              "operation": "GET_AGILE_SCORECARD_V1"
+              "operation": "GET_AGILE_SCORECARD_TEAMS_V1"
+            },
+            "agileScoreCardDistribution": {
+              "path": "/v1/score-card/distribution-work-data",
+              "method": "GET",
+              "operation": "GET_AGILE_SCORECARD_DISTRIBUTION_V1"
+            },
+            "agileScoreCardBugs": {
+              "path": "/v1/score-card/number-of-bugs",
+              "method": "GET",
+              "operation": "GET_AGILE_SCORECARD_BUGS_V1"
             }
           }
         }

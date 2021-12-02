@@ -92,9 +92,23 @@ module.exports.robbie = {
     handler: getHandler(Object.assign(getHandlerParams('robbie')))
 };
 
-module.exports.agileScoreCard = {
+module.exports.agileScoreCardTeam = {
     method: 'GET',
-    path: '/v1/score-card/{param*}',
-    config: getConfig('agile-score-card-get'),
-    handler: getHandler(Object.assign(getHandlerParams('agileScoreCard'), {pathParam: 'param'}), agileMockData)
+    path: '/v1/score-card/teams/{param*}',
+    config: getConfig('agile-score-card-team-get'),
+    handler: getHandler(Object.assign(getHandlerParams('agileScoreCardTeam'), {pathParam: 'param'}), agileMockData)
+};
+
+module.exports.agileScoreCardDistribution = {
+    method: 'GET',
+    path: '/v1/score-card/distribution-work-data/{param*}',
+    config: getConfig('agile-score-card-distribution-get'),
+    handler: getHandler(Object.assign(getHandlerParams('agileScoreCardDistribution'), {pathParam: 'param'}), agileMockData)
+};
+
+module.exports.agileScoreCardBugs = {
+    method: 'GET',
+    path: '/v1/score-card/number-of-bugs/{param*}',
+    config: getConfig('agile-score-card-bugs-get'),
+    handler: getHandler(Object.assign(getHandlerParams('agileScoreCardBugs'), {pathParam: 'param'}), agileMockData)
 };
