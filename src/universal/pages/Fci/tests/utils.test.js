@@ -183,7 +183,7 @@ describe('Fci Utils', () => {
 
     it('traceHasError - false', () => {
         const trace = {
-            tags: [{key: 'error', value: 'false'}]
+            trace_tag: [{key: 'error', value: 'false'}]
         };
         expect(traceHasError(trace)).to.equal(false);
         expect(traceHasError({})).to.equal(false);
@@ -191,7 +191,7 @@ describe('Fci Utils', () => {
 
     it('traceHasError - true', () => {
         const trace = {
-            tags: [{key: 'error', value: 'true'}]
+            trace_tag: [{key: 'error', value: 'true'}]
         };
         expect(traceHasError(trace)).to.equal(true);
     });
@@ -229,13 +229,13 @@ describe('Fci Utils', () => {
         const data = {
             service_name: 'Service Name',
             operation_name: 'Operation Name',
-            tags: [
+            trace_tag: [
                 {key: 'error', value: 'true'},
                 {key: 'externalerrorcode_1_1', value: extErrorCode},
                 {key: 'externalerrordescription_1_1', value: extErrorDescription}
             ],
             traces: [
-                {service_name: 'Service Name', operationn_ame: 'Operation Name', tags: [], traces: []}
+                {service_name: 'Service Name', operationn_ame: 'Operation Name', trace_tag: [], traces: []}
             ]
         };
         const trace = mapTrace(data);

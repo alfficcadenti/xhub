@@ -101,7 +101,7 @@ const getTagValue = (tags, property) => {
 };
 
 export const traceHasError = (t) => {
-    const tags = t.tags || [];
+    const tags = t.trace_tag || [];
     const errorIdx = tags.findIndex(({key}) => key === 'error');
     const Error = errorIdx > -1 ? tags[errorIdx].value : '-';
     return Error === 'true';
@@ -117,7 +117,7 @@ export const getTraceCounts = (traces) => traces.reduce((acc, curr) => {
 
 // eslint-disable-next-line complexity
 export const mapTrace = (t) => {
-    const tags = t.tags || [];
+    const tags = t.trace_tag || [];
     const hasError = traceHasError(t);
     const result = {
         Service: getOrDefault(t, 'service_name'),
