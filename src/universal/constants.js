@@ -78,10 +78,12 @@ export const EPS_PARTNER_SITENAMES = [
 ];
 
 export const LOB_LIST = [
+    {value: 'A', label: 'Activities'},
     {value: 'C', label: 'Cars'},
     {value: 'CR', label: 'Cruise'},
     {value: 'F', label: 'Flights'},
     {value: 'H', label: 'Hotels'},
+    {value: 'I', label: 'Insurance'},
     {value: 'P', label: 'Package'},
     {value: '3PP', label: 'ThreePP'},
     {value: 'U', label: 'Unknown'},

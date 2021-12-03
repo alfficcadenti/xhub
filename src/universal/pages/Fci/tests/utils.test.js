@@ -141,7 +141,7 @@ describe('Fci Utils', () => {
         const end = moment();
         const hideIntentionalCheck = false;
         const activeIndex = 0;
-        expect(getHistoryQueryString(selectedBrands, start, end, null, null,
+        expect(getHistoryQueryString(selectedBrands, start, end, null, null, null,
             hideIntentionalCheck, null, null, activeIndex)).to.eql(
             `selectedBrand=${selectedBrands[0]}&from=${start.toISOString()}&to=${end.toISOString()}`
             + `&hide_intentional=${hideIntentionalCheck}&tab=${activeIndex}`
@@ -155,13 +155,14 @@ describe('Fci Utils', () => {
         const selectedErrorCode = '404';
         const selectedSite = 'www.expedia.com';
         const hideIntentionalCheck = false;
+        const lobs = [];
         const chartProperty = CATEGORY_OPTION;
         const searchId = 'traceidA';
         const selectedBucket = '2020-01-02';
         const id = 'traceidA';
         const activeIndex = 0;
         expect(getHistoryQueryString(selectedBrands, start, end, selectedErrorCode, selectedSite,
-            hideIntentionalCheck, chartProperty, searchId, activeIndex, selectedBucket, id)).to.eql(
+            lobs, hideIntentionalCheck, chartProperty, searchId, activeIndex, selectedBucket, id)).to.eql(
             `selectedBrand=${selectedBrands[0]}&from=${start.toISOString()}&to=${end.toISOString()}`
             + `&code=${selectedErrorCode}&sites=${selectedSite}`
             + `&hide_intentional=${hideIntentionalCheck}&search_id=${searchId}&tab=${activeIndex}`

@@ -76,19 +76,20 @@ export const getFciQueryString = (start, end, selectedErrorCode, selectedSite, s
 
 // eslint-disable-next-line complexity
 export const getHistoryQueryString = (selectedBrands, start, end, selectedErrorCode, selectedSite,
-    hideIntentionalCheck, chartProperty, searchId, activeIndex, selectedBucket, id) => {
+    selectedLob, hideIntentionalCheck, chartProperty, searchId, activeIndex, selectedBucket, id) => {
     const brandQuery = `selectedBrand=${selectedBrands[0]}`;
     const dateQuery = `&from=${start.toISOString()}&to=${end.toISOString()}`;
     const errorProperty = chartProperty === CATEGORY_OPTION ? 'code' : 'code';
     const errorQuery = selectedErrorCode && selectedErrorCode.length ? `&${errorProperty}=${stringifyQueryParams(selectedErrorCode)}` : '';
     const siteQuery = selectedSite ? `&sites=${stringifyQueryParams(selectedSite)}` : '';
+    const lobQuery = selectedLob?.length ? `&line_of_business=${stringifyQueryParams(selectedLob)}` : '';
     const hideIntentionalCheckQuery = `&hide_intentional=${hideIntentionalCheck}`;
     const searchQuery = searchId ? `&search_id=${searchId}` : '';
-    const indexQuery = `&tab=${activeIndex}`;
+    const indexQuery = `&tab=${activeIndex || 0}`;
     const bucketQuery = selectedBucket ? `&bucket=${selectedBucket}` : '';
     const idQuery = id ? `&id=${id}` : '';
     return `${brandQuery}${dateQuery}${errorQuery}${siteQuery}${hideIntentionalCheckQuery}`
-        + `${searchQuery}${indexQuery}${bucketQuery}${idQuery}`;
+        + `${lobQuery}${searchQuery}${indexQuery}${bucketQuery}${idQuery}`;
 };
 
 const getTagValue = (tags, property) => {
