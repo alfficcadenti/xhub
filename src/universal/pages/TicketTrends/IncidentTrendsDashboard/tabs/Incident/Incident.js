@@ -13,36 +13,27 @@ const Incident = () => {
     const [search, setSearch] = useState('');
     const [pendingSearch, setPendingSearch] = useState('');
     const [isLoading, setIsLoading] = useState(true);
-    const [setError] = useState('');
+    const [error, setError] = useState('');
     const [data, setData] = useState([]);
-
-    // useEffect(() => {
-    //     setIsLoading(true);
-    //     fetch(`/v1/incidents/${search}`)
-    //         .then(checkResponse)
-    //         .then((x) => setData(getIncidentsDataById(consolidateTicketsById(x)) || []))
-    //         .catch(() => setError(FETCH_FAILED_MSG))
-    //         .finally(() => setIsLoading(false));
-    // }, [search]);
 
     useEffect (() => {
         setIsLoading(true);
         async function fetchData() {
-        
-            let response = await fetch(`/v1/incidents/${search}`)
-                .then(checkResponse)
-                .then((x) => getIncidentsDataById(consolidateTicketsById(x)) || [])
-                .catch(() => setError(FETCH_FAILED_MSG));
-            setData(response);
-            
+            try {
+                const response = await fetch(`/v1/incidents/${search}`)
+                const data = await checkResponse(response);
+                setData(getIncidentsDataById(consolidateTicketsById(data)) || []);
+            } catch(e) {
+                setError(FETCH_FAILED_MSG);
+            }
         }
-        fetchData();
-        setIsLoading(false);
+        fetchData().finally(() => setIsLoading(false))
+        
     }, [search]);
 
     const renderTable = () => {
         return (
-            <LoadingContainer isLoading={isLoading} >
+            <LoadingContainer isLoading={isLoading} error={error} >
                 <DataTable
                     data={data}
                     columns={getTableColumnsForIncident()}
