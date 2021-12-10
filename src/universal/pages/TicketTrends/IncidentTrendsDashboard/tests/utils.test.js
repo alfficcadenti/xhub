@@ -1,6 +1,6 @@
 import moment from 'moment';
 import {expect} from 'chai';
-import {ALL_PRIORITIES_OPTION, ALL_STATUSES_OPTION, ALL_TAGS_OPTION} from '../../../../constants';
+import {ALL_PRIORITIES_OPTION, ALL_STATUSES_OPTION} from '../../../../constants';
 import {
     convertDateToISOString,
     getQueryValues
@@ -16,11 +16,10 @@ describe('Fci Utils', () => {
 
     it('getQueryValues - default', () => {
         const result = getQueryValues();
-        expect(result.initialStart).to.be.eql(convertDateToISOString(moment().subtract(14, 'days')));
-        expect(result.initialEnd).to.be.eql(convertDateToISOString(moment()));
+        expect(moment(result.initialStart).diff(moment().subtract(14, 'days'), 'minutes')).to.be.lessThan(2);
+        expect(moment(result.initialEnd).diff(moment(), 'minutes')).to.be.lessThan(2);
         expect(result.initialStatus).to.be.eql(ALL_STATUSES_OPTION);
         expect(result.initialPriority).to.be.eql(ALL_PRIORITIES_OPTION);
-        expect(result.initialTag).to.be.eql(ALL_TAGS_OPTION);
     });
 
     it('getQueryValues - custom', () => {
@@ -28,16 +27,13 @@ describe('Fci Utils', () => {
         const end = '2021-02-02T06:00:00.000Z';
         const status = 'Done';
         const priority = '1-Critical';
-        const tag = 'cost-optimization';
         const result = getQueryValues(`?from=${start}`
             + `&to=${end}`
             + `&status=${status}`
-            + `&priority=${priority}`
-            + `&tag=${tag}`);
+            + `&priority=${priority}`);
         expect(result.initialStart).to.be.eql(convertDateToISOString(start));
         expect(result.initialEnd).to.be.eql(convertDateToISOString(end));
         expect(result.initialStatus).to.be.eql(status);
         expect(result.initialPriority).to.be.eql(priority);
-        expect(result.initialTag).to.be.eql(tag);
     });
 });

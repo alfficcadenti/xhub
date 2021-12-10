@@ -46,21 +46,24 @@ describe('Fci Utils', () => {
         const start = moment('2020-01-02');
         const end = moment('2020-01-04');
         const selectedSite = 'www.expedia.com';
+        const selectedLob = 'Cars';
         const chartProperty = 'categoryA';
         const selectedErrorCode = '201';
         expect(shouldFetchData({}, moment('2020-01-01'))).to.be.eql(true);
         expect(shouldFetchData({start}, moment('2020-01-01'))).to.be.eql(true);
         expect(shouldFetchData({start, end}, moment('2020-01-01'))).to.be.eql(true);
-        expect(shouldFetchData({start, end, selectedSite},
+        expect(shouldFetchData({start, end, selectedSite, selectedLob},
             moment('2020-01-01'))).to.be.eql(true);
-        expect(shouldFetchData({start, end, selectedSite},
+        expect(shouldFetchData({start, end, selectedSite, selectedLob},
             moment('2020-01-03'), moment('2020-01-05'))).to.be.eql(true);
-        expect(shouldFetchData({start, end, selectedSite, chartProperty},
-            moment('2020-01-03'), moment('2020-01-03'), 'www.expedia.com', 'categoryB')).to.be.eql(true);
-        expect(shouldFetchData({start, end, selectedSite, chartProperty, selectedErrorCode},
-            moment('2020-01-03'), moment('2020-01-03'), 'www.expedia.com', 'categoryA')).to.be.eql(true);
-        expect(shouldFetchData({start, end, selectedSite, chartProperty, selectedErrorCode},
-            moment('2020-01-03'), moment('2020-01-03'), 'www.expedia.com', 'categoryA', '201')).to.be.eql(false);
+        expect(shouldFetchData({start, end, selectedSite, selectedLob},
+            moment('2020-01-03'), moment('2020-01-03'), 'www.expedia.com', 'Flights')).to.be.eql(true);
+        expect(shouldFetchData({start, end, selectedSite, selectedLob, chartProperty},
+            moment('2020-01-03'), moment('2020-01-03'), 'www.expedia.com', 'Cars', 'categoryB')).to.be.eql(true);
+        expect(shouldFetchData({start, end, selectedSite, selectedLob, chartProperty, selectedErrorCode},
+            moment('2020-01-03'), moment('2020-01-03'), 'www.expedia.com', 'Cars', 'categoryA')).to.be.eql(true);
+        expect(shouldFetchData({start, end, selectedSite, selectedLob, chartProperty, selectedErrorCode},
+            moment('2020-01-03'), moment('2020-01-03'), 'www.expedia.com', 'Cars', 'categoryA', '201')).to.be.eql(false);
     });
 
     it('stringifyQueryParams', () => {
@@ -113,7 +116,7 @@ describe('Fci Utils', () => {
         const start = moment().subtract(1, 'day');
         const end = moment();
         const hideIntentionalCheck = false;
-        expect(getFciQueryString(start, end, null, null, hideIntentionalCheck, null)).to.eql(
+        expect(getFciQueryString(start, end, null, null, null, hideIntentionalCheck, null)).to.eql(
             `from=${start.toISOString()}&to=${end.toISOString()}&hide_intentional=${hideIntentionalCheck}`
         );
     });
@@ -123,11 +126,12 @@ describe('Fci Utils', () => {
         const end = moment();
         const selectedErrorCode = '404';
         const selectedSite = 'www.expedia.com';
+        const selectedLob = 'Car';
         const hideIntentionalCheck = false;
         const chartProperty = CATEGORY_OPTION;
-        expect(getFciQueryString(start, end, selectedErrorCode, selectedSite, hideIntentionalCheck, chartProperty)).to.eql(
+        expect(getFciQueryString(start, end, selectedErrorCode, selectedSite, selectedLob, hideIntentionalCheck, chartProperty)).to.eql(
             `from=${start.toISOString()}&to=${end.toISOString()}&category=${selectedErrorCode}`
-            + `&sites=${selectedSite}&hide_intentional=${hideIntentionalCheck}`
+            + `&sites=${selectedSite}&line_of_business=${selectedLob}&hide_intentional=${hideIntentionalCheck}`
         );
     });
 
@@ -137,7 +141,7 @@ describe('Fci Utils', () => {
         const end = moment();
         const hideIntentionalCheck = false;
         const activeIndex = 0;
-        expect(getHistoryQueryString(selectedBrands, start, end, null, null,
+        expect(getHistoryQueryString(selectedBrands, start, end, null, null, null,
             hideIntentionalCheck, null, null, activeIndex)).to.eql(
             `selectedBrand=${selectedBrands[0]}&from=${start.toISOString()}&to=${end.toISOString()}`
             + `&hide_intentional=${hideIntentionalCheck}&tab=${activeIndex}`
@@ -151,13 +155,14 @@ describe('Fci Utils', () => {
         const selectedErrorCode = '404';
         const selectedSite = 'www.expedia.com';
         const hideIntentionalCheck = false;
+        const lobs = [];
         const chartProperty = CATEGORY_OPTION;
         const searchId = 'traceidA';
         const selectedBucket = '2020-01-02';
         const id = 'traceidA';
         const activeIndex = 0;
         expect(getHistoryQueryString(selectedBrands, start, end, selectedErrorCode, selectedSite,
-            hideIntentionalCheck, chartProperty, searchId, activeIndex, selectedBucket, id)).to.eql(
+            lobs, hideIntentionalCheck, chartProperty, searchId, activeIndex, selectedBucket, id)).to.eql(
             `selectedBrand=${selectedBrands[0]}&from=${start.toISOString()}&to=${end.toISOString()}`
             + `&code=${selectedErrorCode}&sites=${selectedSite}`
             + `&hide_intentional=${hideIntentionalCheck}&search_id=${searchId}&tab=${activeIndex}`
@@ -178,7 +183,7 @@ describe('Fci Utils', () => {
 
     it('traceHasError - false', () => {
         const trace = {
-            tags: [{key: 'error', value: 'false'}]
+            trace_tag: [{key: 'error', value: 'false'}]
         };
         expect(traceHasError(trace)).to.equal(false);
         expect(traceHasError({})).to.equal(false);
@@ -186,7 +191,7 @@ describe('Fci Utils', () => {
 
     it('traceHasError - true', () => {
         const trace = {
-            tags: [{key: 'error', value: 'true'}]
+            trace_tag: [{key: 'error', value: 'true'}]
         };
         expect(traceHasError(trace)).to.equal(true);
     });
@@ -224,13 +229,13 @@ describe('Fci Utils', () => {
         const data = {
             service_name: 'Service Name',
             operation_name: 'Operation Name',
-            tags: [
+            trace_tag: [
                 {key: 'error', value: 'true'},
                 {key: 'externalerrorcode_1_1', value: extErrorCode},
                 {key: 'externalerrordescription_1_1', value: extErrorDescription}
             ],
             traces: [
-                {service_name: 'Service Name', operationn_ame: 'Operation Name', tags: [], traces: []}
+                {service_name: 'Service Name', operationn_ame: 'Operation Name', trace_tag: [], traces: []}
             ]
         };
         const trace = mapTrace(data);
@@ -278,6 +283,7 @@ describe('Fci Utils', () => {
                 is_intentional: 'true',
                 error_code: 'errorCode',
                 site: 'site',
+                lob: 'lob',
                 tp_id: 'tpId',
                 eap_id: 'eapId',
                 site_id: 'siteId',
@@ -298,6 +304,7 @@ describe('Fci Utils', () => {
             Intentional: fci.is_intentional,
             'Error Code': fci.error_code,
             Site: fci.site,
+            LOB: fci.lob,
             TPID: fci.tp_id,
             EAPID: fci.eap_id,
             'SiteID': fci.site_id,
@@ -321,6 +328,7 @@ describe('Fci Utils', () => {
             Intentional: BLANK,
             'Error Code': BLANK,
             Site: BLANK,
+            LOB: BLANK,
             TPID: BLANK,
             EAPID: BLANK,
             'SiteID': BLANK,

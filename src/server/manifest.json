@@ -74,6 +74,21 @@
               "path": "/v1/robbie/notification-logs",
               "method": "GET",
               "operation": "GET_ROBBIE_NOTIFICATIONS_V1"
+            },
+            "agileScoreCardTeams": {
+              "path": "/v1/score-card/teams",
+              "method": "GET",
+              "operation": "GET_AGILE_SCORECARD_TEAMS_V1"
+            },
+            "agileScoreCardDistribution": {
+              "path": "/v1/score-card/distribution-work-data",
+              "method": "GET",
+              "operation": "GET_AGILE_SCORECARD_DISTRIBUTION_V1"
+            },
+            "agileScoreCardBugs": {
+              "path": "/v1/score-card/number-of-bugs",
+              "method": "GET",
+              "operation": "GET_AGILE_SCORECARD_BUGS_V1"
             }
           }
         },
@@ -135,6 +150,21 @@
               "path": "/v1/robbie/notification-logs",
               "method": "GET",
               "operation": "GET_ROBBIE_NOTIFICATIONS_V1"
+            },
+            "agileScoreCardTeams": {
+              "path": "/v1/score-card/teams",
+              "method": "GET",
+              "operation": "GET_AGILE_SCORECARD_TEAMS_V1"
+            },
+            "agileScoreCardDistribution": {
+              "path": "/v1/score-card/distribution-work-data",
+              "method": "GET",
+              "operation": "GET_AGILE_SCORECARD_DISTRIBUTION_V1"
+            },
+            "agileScoreCardBugs": {
+              "path": "/v1/score-card/number-of-bugs",
+              "method": "GET",
+              "operation": "GET_AGILE_SCORECARD_BUGS_V1"
             }
           }
         },
@@ -196,6 +226,21 @@
               "path": "/v1/robbie/notification-logs",
               "method": "GET",
               "operation": "GET_ROBBIE_NOTIFICATIONS_V1"
+            },
+            "agileScoreCardTeams": {
+              "path": "/v1/score-card/teams",
+              "method": "GET",
+              "operation": "GET_AGILE_SCORECARD_TEAMS_V1"
+            },
+            "agileScoreCardDistribution": {
+              "path": "/v1/score-card/distribution-work-data",
+              "method": "GET",
+              "operation": "GET_AGILE_SCORECARD_DISTRIBUTION_V1"
+            },
+            "agileScoreCardBugs": {
+              "path": "/v1/score-card/number-of-bugs",
+              "method": "GET",
+              "operation": "GET_AGILE_SCORECARD_BUGS_V1"
             }
           }
         }
@@ -303,6 +348,11 @@
               "method": "GET",
               "operation": "GET_booking_change_percentage"
             },
+            "bookingsImpulseYOY": {
+              "path": "/v1/bookings/count/YOY",
+              "method": "GET",
+              "operation": "GET_booking_YOY"
+            },
             "bookingsImpulseFilters": {
               "path": "/v1/bookings/filters",
               "method": "GET",
@@ -404,6 +454,11 @@
               "method": "GET",
               "operation": "GET_booking_change_percentage"
             },
+            "bookingsImpulseYOY": {
+              "path": "/v1/bookings/count/YOY",
+              "method": "GET",
+              "operation": "GET_booking_YOY"
+            },
             "bookingsImpulseFilters": {
               "path": "/v1/bookings/filters",
               "method": "GET",
@@ -500,6 +555,11 @@
               "method": "GET",
               "operation": "GET_booking_change_percentage"
             },
+            "bookingsImpulseYOY": {
+              "path": "/v1/bookings/count/YOY",
+              "method": "GET",
+              "operation": "GET_booking_YOY"
+            },
             "bookingsImpulseFilters": {
               "path": "/v1/bookings/filters",
               "method": "GET",
@@ -586,6 +646,11 @@
               "method": "GET",
               "operation": "GET_booking_change_percentage"
             },
+            "bookingsImpulseYOY": {
+              "path": "/v1/bookings/count/YOY",
+              "method": "GET",
+              "operation": "GET_booking_YOY"
+            },
             "bookingsImpulseFilters": {
               "path": "/v1/bookings/filters",
               "method": "GET",
@@ -630,23 +695,23 @@
           "hostname": "opxhub-change-request-service.us-west-2.test.expedia.com",
           "protocol": "https:",
           "routes": {
-            "annotations": {
-              "path": "/annotations/v1.0",
+            "deployments": {
+              "path": "/v1/deployments",
               "method": "GET",
-              "operation": "GET_annotations_api_v1"
+              "operation": "GET_deployments_api_v1"
             },
             "changeDetails": {
-              "path": "/changeDetails/v1.0",
+              "path": "/v1/change-details",
               "method": "GET",
               "operation": "GET_change_details_api_v1"
             },
             "productMapping": {
-              "path": "/mappings/products/v1.0",
+              "path": "/v1/mappings/products",
               "method": "GET",
               "operation": "GET_product_mapping_api_v1"
             },
             "abTests": {
-              "path": "/abTests/v1.0",
+              "path": "/v1/ab-tests",
               "method": "GET",
               "operation": "GET_ab_tests_api_v1"
             }
@@ -656,23 +721,23 @@
           "hostname": "opxhub-change-request-service.us-west-2.test.expedia.com",
           "protocol": "https:",
           "routes": {
-            "annotations": {
-              "path": "/annotations/v1.0",
+            "deployments": {
+              "path": "/v1/deployments",
               "method": "GET",
-              "operation": "GET_annotations_api_v1"
+              "operation": "GET_deployments_api_v1"
             },
             "changeDetails": {
-              "path": "/changeDetails/v1.0",
+              "path": "/v1/change-details",
               "method": "GET",
               "operation": "GET_change_details_api_v1"
             },
             "productMapping": {
-              "path": "/mappings/products/v1.0",
+              "path": "/v1/mappings/products",
               "method": "GET",
               "operation": "GET_product_mapping_api_v1"
             },
             "abTests": {
-              "path": "/abTests/v1.0",
+              "path": "/v1/ab-tests",
               "method": "GET",
               "operation": "GET_ab_tests_api_v1"
             }
@@ -682,23 +747,23 @@
           "hostname": "opxhub-change-request-service.us-east-1.prod.expedia.com",
           "protocol": "https:",
           "routes": {
-            "annotations": {
-              "path": "/annotations/v1.0",
+            "deployments": {
+              "path": "/v1/deployments",
               "method": "GET",
-              "operation": "GET_annotations_api_v1"
+              "operation": "GET_deployments_api_v1"
             },
             "changeDetails": {
-              "path": "/changeDetails/v1.0",
+              "path": "/v1/change-details",
               "method": "GET",
               "operation": "GET_change_details_api_v1"
             },
             "productMapping": {
-              "path": "/mappings/products/v1.0",
+              "path": "/v1/mappings/products",
               "method": "GET",
               "operation": "GET_product_mapping_api_v1"
             },
             "abTests": {
-              "path": "/abTests/v1.0",
+              "path": "/v1/ab-tests",
               "method": "GET",
               "operation": "GET_ab_tests_api_v1"
             }
@@ -796,6 +861,11 @@
               "method": "GET",
               "operation": "GET_checkout_failures_error_codes_api_v1"
             },
+            "checkoutFailuresLobs": {
+              "path": "/v1/checkout-failures/lob",
+              "method": "GET",
+              "operation": "GET_checkout_failures_lobs_api_v1"
+            },
             "checkoutFailuresSearch": {
               "path": "/v1/checkout-failures/search",
               "method": "GET",
@@ -857,6 +927,11 @@
               "method": "GET",
               "operation": "GET_checkout_failures_error_codes_api_v1"
             },
+            "checkoutFailuresLobs": {
+              "path": "/v1/checkout-failures/lob",
+              "method": "GET",
+              "operation": "GET_checkout_failures_lobs_api_v1"
+            },
             "checkoutFailuresSearch": {
               "path": "/v1/checkout-failures/search",
               "method": "GET",
@@ -896,6 +971,42 @@
               "path": "/v1/delta-user-by-session-id",
               "method": "GET",
               "operation": "GET_delta_user_by_session_id_api_v1"
+            }
+          }
+        }
+      },
+      "statusPageServiceConfig": {
+        "$filter": "env.EXPEDIA_ENVIRONMENT",
+        "$default": {
+          "hostname": "<HOSTNAME>",
+          "protocol": "https:",
+          "routes": {
+            "statusPage": {
+              "path": "/v1/status-page",
+              "method": "GET",
+              "operation": "GET_status_api_v1"
+            }
+          }
+        },
+        "test": {
+          "hostname": "<HOSTNAME>",
+          "protocol": "https:",
+          "routes": {
+            "statusPage": {
+              "path": "/v1/status-page",
+              "method": "GET",
+              "operation": "GET_status_api_v1"
+            }
+          }
+        },
+        "prod": {
+          "hostname": "<HOSTNAME>",
+          "protocol": "https:",
+          "routes": {
+            "statusPage": {
+              "path": "/v1/status-page",
+              "method": "GET",
+              "operation": "GET_status_api_v1"
             }
           }
         }
@@ -1128,6 +1239,11 @@
             "template": "templates/welcome.hbs"
           },
           {
+            "route": "require:./routes/pages/traveler-business-metrics",
+            "component": "require:../universal/components/App/ServerApp.js",
+            "template": "templates/welcome.hbs"
+          },
+          {
             "route": "require:./routes/pages/dog-food",
             "component": "require:../universal/components/App/ServerApp.js",
             "template": "templates/welcome.hbs"
@@ -1154,6 +1270,16 @@
           },
           {
             "route": "require:./routes/pages/incident-driven-availability",
+            "component": "require:../universal/components/App/ServerApp.js",
+            "template": "templates/welcome.hbs"
+          },
+          {
+            "route": "require:./routes/pages/agile-scorecard",
+            "component": "require:../universal/components/App/ServerApp.js",
+            "template": "templates/welcome.hbs"
+          },
+          {
+            "route": "require:./routes/pages/status-page",
             "component": "require:../universal/components/App/ServerApp.js",
             "template": "templates/welcome.hbs"
           }

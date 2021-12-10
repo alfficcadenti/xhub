@@ -16,13 +16,28 @@ const Incident = () => {
     const [setError] = useState('');
     const [data, setData] = useState([]);
 
-    useEffect(() => {
+    // useEffect(() => {
+    //     setIsLoading(true);
+    //     fetch(`/v1/incidents/${search}`)
+    //         .then(checkResponse)
+    //         .then((x) => setData(getIncidentsDataById(consolidateTicketsById(x)) || []))
+    //         .catch(() => setError(FETCH_FAILED_MSG))
+    //         .finally(() => setIsLoading(false));
+    // }, [search]);
+
+    useEffect (() => {
         setIsLoading(true);
-        fetch(`/v1/incidents/${search}`)
-            .then(checkResponse)
-            .then((x) => setData(getIncidentsDataById(consolidateTicketsById(x)) || []))
-            .catch(() => setError(FETCH_FAILED_MSG))
-            .finally(() => setIsLoading(false));
+        async function fetchData() {
+        
+            let response = await fetch(`/v1/incidents/${search}`)
+                .then(checkResponse)
+                .then((x) => getIncidentsDataById(consolidateTicketsById(x)) || [])
+                .catch(() => setError(FETCH_FAILED_MSG));
+            setData(response);
+            
+        }
+        fetchData();
+        setIsLoading(false);
     }, [search]);
 
     const renderTable = () => {

@@ -7,7 +7,6 @@ import './styles.less';
 
 const IframeDashboard = () => {
     const {pathname} = useLocation();
-    console.log(pathname);
     const {title, url} = PATH_TO_IFRAME_MAP[pathname] || {title: 'Dashboard Not Found', url: ''};
     return (
         <div className="iframe-dashboard-container">

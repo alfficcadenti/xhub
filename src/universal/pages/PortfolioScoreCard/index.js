@@ -5,7 +5,7 @@ import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import {DATE_FORMAT} from '../../constants';
 import ScoreCard from './ScoreCard';
 import {useQueryParamChange, useSelectedBrand} from '../hooks';
-import {getQueryValues} from './utils';
+import {getQueryValues} from '../utils';
 import './styles.less';
 
 
@@ -19,8 +19,8 @@ const PortfolioScoreCard = ({selectedBrands, onBrandChange, prevSelectedBrand}) 
     const [pendingTo, setPendingTo] = useState(initialEnd);
     const [isDirtyForm, setIsDirtyForm] = useState(false);
 
-    useQueryParamChange(selectedBrands[0], onBrandChange);
-    useSelectedBrand(selectedBrands[0], onBrandChange, prevSelectedBrand);
+    useQueryParamChange(onBrandChange);
+    useSelectedBrand(selectedBrands[0], prevSelectedBrand);
 
     const applyFilters = () => {
         setFrom(pendingFrom);

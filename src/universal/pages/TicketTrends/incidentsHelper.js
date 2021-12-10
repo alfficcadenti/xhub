@@ -166,8 +166,7 @@ export const getQualityData = (filteredDefects = []) => filteredDefects
         Project: getOrDefault(t, 'project'),
         rawDuration: t.duration,
         'Impacted Brand': getOrDefault(t, 'impacted_brand'),
-        Status: getOrDefault(t, 'Status'),
-        Tag: getOrDefault(t, 'tag'),
+        Status: getOrDefault(t, 'Status')
     }))
     .sort((a, b) => moment(a.Opened).isBefore(b.Opened));
 

@@ -35,24 +35,28 @@
             flex-wrap: wrap;
 
             .error-code-dropdown,
-            .site-dropdown {
+            .site-dropdown,
+            .lob-dropdown {
                 margin-right: @spacing-1x;
                 margin-bottom: @spacing-1x;
 
                 .error-code-dropdown__control,
-                .site-dropdown__control {
+                .site-dropdown__control,
+                .lob-dropdown__control {
                     min-height: @filter-size;
                     border-radius: @spacing-1x;
                     border-color: @border-color-dark;
                 }
 
                 .error-code-dropdown__menu,
-                .site-dropdown__menu {
+                .site-dropdown__menu,
+                .lob-dropdown__control {
                     z-index: 999;
                 }
             }
 
-            .error-code-dropdown {
+            .error-code-dropdown,
+            .lob-dropdown {
                 min-width: 205px;
             }
 

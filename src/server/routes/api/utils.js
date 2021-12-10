@@ -37,8 +37,8 @@ const makeRequest = async (option, testData, req, refreshClient) => {
         connectionTimeout,
         maxConnectRetry
     };
-    const {payload, statusCode} = await clients[clientKey].request(request);
     req.log('[API-REQUEST-DETAILS]', Object.assign(request, {hostname, protocol}));
+    const {payload, statusCode} = await clients[clientKey].request(request);
     if (statusCode === 204) {
         return {};
     }

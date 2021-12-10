@@ -9,8 +9,6 @@ export const DATE_FORMAT = 'YYYY-MM-DD';
 export const ALL_PRIORITIES_OPTION = 'All Priorities';
 export const ALL_PROJECTS_OPTION = 'All Projects';
 export const ALL_STATUSES_OPTION = 'All Statuses';
-export const ALL_TAGS_OPTION = 'All Tags';
-export const ALL_TAGS = ['cost-optimization', 'covid-19'];
 export const ALL_LOB = 'All LOBs';
 export const ALL_BRANDS = 'All Brands';
 export const ALL_POS = 'All POS';
@@ -35,7 +33,7 @@ export const DEPLOYMENT_ANNOTATION_CATEGORY = 'deployment';
 export const INCIDENT_ANNOTATION_CATEGORY = 'incident';
 export const AB_TESTS_ANNOTATION_CATEGORY = 'abTests';
 export const SUPPRESSED_BRANDS = ['Hotwire', 'HomeAway'];
-export const SUPPRESSED_LOBS = ['Rail'];
+export const SUPPRESSED_LOBS = [];
 export const ANOMALY_DETECTED_COLOR = '#CD5C5C';
 export const ANOMALY_RECOVERED_COLOR = '#3CB371';
 export const UPSTREAM_UNHEALTHY_COLOR = '#FFA500';
@@ -80,10 +78,12 @@ export const EPS_PARTNER_SITENAMES = [
 ];
 
 export const LOB_LIST = [
+    {value: 'A', label: 'Activities'},
     {value: 'C', label: 'Cars'},
     {value: 'CR', label: 'Cruise'},
     {value: 'F', label: 'Flights'},
     {value: 'H', label: 'Hotels'},
+    {value: 'I', label: 'Insurance'},
     {value: 'P', label: 'Package'},
     {value: '3PP', label: 'ThreePP'},
     {value: 'U', label: 'Unknown'},
@@ -169,3 +169,21 @@ export const PAGE_VIEWS_PAGE_NAME = 'Page Views';
 
 export const FETCH_FAILED_MSG = 'Failed to retrieve data. Try refreshing the page. '
     + `If the problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`;
+
+export const GRAFANA_DASHBOARDS = [
+    {
+        brand: EXPEDIA_BRAND,
+        pageViewsUrl: 'https://opexhub-grafana.expedia.biz/d/DdypXxKLZ/bex-pageviews?orgId=1&var-eventType=pageview&var-brandGroup=bexg&var-lineOfBusiness=All&theme=light',
+        successRateUrl: 'https://opex-grafana.expedia.biz/d/3-CbFic7z/expedia-success-rate?orgId=2&theme=light'
+    },
+    {
+        brand: VRBO_BRAND,
+        pageViewsUrl: 'https://opexhub-grafana.expedia.biz/d/aZXj08Fnz/vrbo-pageviews?orgId=1&theme=light',
+        successRateUrl: 'https://opex-grafana.expedia.biz/d/m2a5Kmcnk/vrbo-success-rate?orgId=2&theme=light'
+    },
+    {
+        brand: HOTELS_COM_BRAND,
+        pageViewsUrl: 'https://opexhub-grafana.expedia.biz/d/0LmLA8F7z/hcom-pageview?orgId=1&theme=light',
+        successRateUrl: 'https://opex-grafana.expedia.biz/d/qgdtFi57z/hcom-success-rate?orgId=2&theme=light'
+    },
+];

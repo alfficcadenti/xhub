@@ -13,11 +13,11 @@ module.exports.changeRequests = {
     handler: getHandler(getHandlerParams('changeDetails'))
 };
 
-module.exports.annotations = {
+module.exports.deployments = {
     method: 'GET',
-    path: '/annotations',
-    config: getConfig('annotations-api-v1-get'),
-    handler: getHandler(getHandlerParams('annotations'))
+    path: '/deployments',
+    config: getConfig('deployments-api-v1-get'),
+    handler: getHandler(getHandlerParams('deployments'))
 };
 
 module.exports.productMapping = {

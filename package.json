@@ -34,7 +34,7 @@
     "start:server": "DEBUG=catalyst*,serviceclient* BABEL_ENV=server NODE_ENV=development node-dev --inspect --no-deps --respawn ./index.js | pino-pretty -ct",
     "start:webpack": "BABEL_ENV=client-dev webpack-dev-server --config ./tools/webpack/development.js",
     "test": "npm run lint && npm run test:unit",
-    "test:unit": "BABEL_ENV=test TZ=UTC jest --colors --verbose -u --testNamePattern",
+    "test:unit": "BABEL_ENV=test TZ=UTC jest --colors --verbose --testNamePattern -u",
     "test:style": "stylelint --fix src/**/*.less",
     "tool:checkAssetSize": "node ./tools/sizes/checkAssetSize.js",
     "test:automation": "BABEL_ENV=browsertest cucumber-js -- __tests__/automation/features"
@@ -47,7 +47,8 @@
       "^.+\\.js?$": "babel-jest"
     },
     "moduleNameMapper": {
-      "\\.(css|less)$": "identity-obj-proxy"
+      "\\.(css|less)$": "identity-obj-proxy",
+      "\\.(jpg|jpeg|png|svg)$": "<rootDir>/__mocks__/fileMock.js"
     },
     "moduleFileExtensions": [
       "js",
@@ -110,8 +111,10 @@
     "@homeaway/react-input-tokenize": "^1.5.2",
     "@homeaway/react-loading-overlay": "^6.0.2",
     "@homeaway/react-modal": "^9.1.4",
+    "@homeaway/react-multiselect-dropdown": "^1.1.2",
     "@homeaway/react-nav-calendar-month": "^7.0.4",
     "@homeaway/react-navigation": "^6.1.6",
+    "@homeaway/react-pager": "^6.0.1",
     "@homeaway/react-progress": "^4.0.0",
     "@homeaway/react-searchable-list": "^3.3.0",
     "@homeaway/react-svg": "^2.0.2",
@@ -151,7 +154,7 @@
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.31",
     "mssql": "^6.2.0",
-    "nightwatch": "^1.5.1",
+    "nightwatch": "^1.7.11",
     "nightwatch-accessibility": "^1.8.0",
     "nightwatch-api": "^3.0.2",
     "os": "^0.1.1",
@@ -187,6 +190,8 @@
     "@babel/preset-env": "^7.9.5",
     "@babel/preset-react": "^7.9.4",
     "@babel/register": "^7.9.0",
+    "@testing-library/jest-dom": "^5.15.0",
+    "@testing-library/react": "^12.1.2",
     "autoprefixer": "^9.7.6",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^25.4.0",
@@ -212,6 +217,7 @@
     "geckodriver": "^1.22.1",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^25.4.0",
+    "jest-fetch-mock": "^3.0.3",
     "less": "^3.9.0",
     "less-loader": "^6.0.0",
     "node-dev": "^4.0.0",
@@ -219,7 +225,7 @@
     "npm-run-all": "^4.1.5",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "pino-pretty": "^4.0.0",
-    "postcss": "^7.0.27",
+    "postcss": "^7.0.39",
     "postcss-loader": "^3.0.0",
     "react-test-renderer": "^16.13.1",
     "selenium-server": "^3.141.59",

@@ -22,8 +22,8 @@ const LandingPage = (props) => {
     const [bookingsData, setBookingsData] = useState([]);
     const [CSRData, setCSRData] = useState([]);
 
-    useQueryParamChange(props.selectedBrands[0], props.onBrandChange);
-    useSelectedBrand(props.selectedBrands[0], props.onBrandChange, props.prevSelectedBrand);
+    useQueryParamChange(props.onBrandChange);
+    useSelectedBrand(props.selectedBrands[0], props.prevSelectedBrand);
 
     const fetchData = () => {
         const fetchBookingsData = () => {

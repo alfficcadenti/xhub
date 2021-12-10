@@ -11,6 +11,12 @@ import {getOrDefault} from '../../utils';
 import {validDateRange} from '../utils';
 
 
+export const getInitialSelectData = (initialOption) => ({
+    start: null,
+    end: null,
+    options: [{label: initialOption, value: initialOption}]
+});
+
 export const getBrandSites = (brand) => SITES[brand] || ['travel.chase.com'];
 
 export const getIsSupportedBrand = (selectedBrands) => [EXPEDIA_PARTNER_SERVICES_BRAND, EXPEDIA_BRAND].includes(selectedBrands[0]);
@@ -20,12 +26,13 @@ export const getUnsupportedBrandMsg = (selectedBrands) => `FCIs for ${selectedBr
     + `If you have any questions, please ping ${OPXHUB_SUPPORT_CHANNEL} or leave a comment via our Feedback form.`;
 
 // eslint-disable-next-line complexity
-export const shouldFetchData = (prev, start, end, selectedSite, chartProperty, selectedErrorCode, hideIntentionalCheck) => (
+export const shouldFetchData = (prev, start, end, selectedSite, selectedLob, chartProperty, selectedErrorCode, hideIntentionalCheck) => (
     !prev.start
     || !prev.end
     || start.isBefore(prev.start)
     || end.isAfter(prev.end)
     || prev.selectedSite !== selectedSite
+    || prev.selectedLob !== selectedLob
     || prev.chartProperty !== chartProperty
     || prev.selectedErrorCode !== selectedErrorCode
     || prev.hideIntentionalCheck !== hideIntentionalCheck
@@ -57,31 +64,32 @@ export const getQueryValues = (search, brand = 'Expedia') => {
 
 export const stringifyQueryParams = (selectedValue) => Array.isArray(selectedValue) ? selectedValue.map((v) => v.value || v).join(',') : selectedValue;
 
-// eslint-disable-next-line complexity
-export const getFciQueryString = (start, end, selectedErrorCode, selectedSite, hideIntentionalCheck, chartProperty) => {
+export const getFciQueryString = (start, end, selectedErrorCode, selectedSite, selectedLob, hideIntentionalCheck, chartProperty) => {
     const dateQuery = `from=${start.toISOString()}&to=${end.toISOString()}`;
     const errorProperty = chartProperty === CATEGORY_OPTION ? 'category' : 'code';
-    const errorQuery = selectedErrorCode && selectedErrorCode.length ? `&${errorProperty}=${stringifyQueryParams(selectedErrorCode)}` : '';
-    const siteQuery = selectedSite && selectedSite.length ? `&sites=${stringifyQueryParams(selectedSite)}` : '';
+    const errorQuery = selectedErrorCode?.length ? `&${errorProperty}=${stringifyQueryParams(selectedErrorCode)}` : '';
+    const siteQuery = selectedSite?.length ? `&sites=${stringifyQueryParams(selectedSite)}` : '';
+    const lobQuery = selectedLob?.length ? `&line_of_business=${stringifyQueryParams(selectedLob)}` : '';
     const hideIntentionalCheckQuery = `&hide_intentional=${hideIntentionalCheck}`;
-    return `${dateQuery}${errorQuery}${siteQuery}${hideIntentionalCheckQuery}`;
+    return `${dateQuery}${errorQuery}${siteQuery}${lobQuery}${hideIntentionalCheckQuery}`;
 };
 
 // eslint-disable-next-line complexity
 export const getHistoryQueryString = (selectedBrands, start, end, selectedErrorCode, selectedSite,
-    hideIntentionalCheck, chartProperty, searchId, activeIndex, selectedBucket, id) => {
+    selectedLob, hideIntentionalCheck, chartProperty, searchId, activeIndex, selectedBucket, id) => {
     const brandQuery = `selectedBrand=${selectedBrands[0]}`;
     const dateQuery = `&from=${start.toISOString()}&to=${end.toISOString()}`;
     const errorProperty = chartProperty === CATEGORY_OPTION ? 'code' : 'code';
     const errorQuery = selectedErrorCode && selectedErrorCode.length ? `&${errorProperty}=${stringifyQueryParams(selectedErrorCode)}` : '';
     const siteQuery = selectedSite ? `&sites=${stringifyQueryParams(selectedSite)}` : '';
+    const lobQuery = selectedLob?.length ? `&line_of_business=${stringifyQueryParams(selectedLob)}` : '';
     const hideIntentionalCheckQuery = `&hide_intentional=${hideIntentionalCheck}`;
     const searchQuery = searchId ? `&search_id=${searchId}` : '';
-    const indexQuery = `&tab=${activeIndex}`;
+    const indexQuery = `&tab=${activeIndex || 0}`;
     const bucketQuery = selectedBucket ? `&bucket=${selectedBucket}` : '';
     const idQuery = id ? `&id=${id}` : '';
     return `${brandQuery}${dateQuery}${errorQuery}${siteQuery}${hideIntentionalCheckQuery}`
-        + `${searchQuery}${indexQuery}${bucketQuery}${idQuery}`;
+        + `${lobQuery}${searchQuery}${indexQuery}${bucketQuery}${idQuery}`;
 };
 
 const getTagValue = (tags, property) => {
@@ -93,7 +101,7 @@ const getTagValue = (tags, property) => {
 };
 
 export const traceHasError = (t) => {
-    const tags = t.tags || [];
+    const tags = t.trace_tag || [];
     const errorIdx = tags.findIndex(({key}) => key === 'error');
     const Error = errorIdx > -1 ? tags[errorIdx].value : '-';
     return Error === 'true';
@@ -109,7 +117,7 @@ export const getTraceCounts = (traces) => traces.reduce((acc, curr) => {
 
 // eslint-disable-next-line complexity
 export const mapTrace = (t) => {
-    const tags = t.tags || [];
+    const tags = t.trace_tag || [];
     const hasError = traceHasError(t);
     const result = {
         Service: getOrDefault(t, 'service_name'),
@@ -145,13 +153,14 @@ export const mapComment = (row) => ({
 export const mapFci = (row = {}) => {
     const {fci = {}, category = []} = JSON.parse(JSON.stringify(row));
     return {
-        Created: fci.timestamp ? moment(fci.timestamp).format('YYYY-MM-DD HH:mm') : '-',
+        Created: fci.timestamp ? moment.utc(fci.timestamp).local().format('YYYY-MM-DD HH:mm') : '-',
         Session: getOrDefault(fci, 'session_id'),
         Trace: getOrDefault(fci, 'trace_id'),
         Failure: getOrDefault(fci, 'failure'),
         'Intentional': getOrDefault(fci, 'is_intentional'),
         'Error Code': getOrDefault(fci, 'error_code'),
         Site: getOrDefault(fci, 'site'),
+        LOB: getOrDefault(fci, 'lob'),
         TPID: getOrDefault(fci, 'tp_id'),
         EAPID: getOrDefault(fci, 'eap_id'),
         'SiteID': getOrDefault(fci, 'site_id'),

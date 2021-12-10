@@ -10,7 +10,10 @@ import {
     prbs,
     portfolio,
     orgMetrics,
-    robbie
+    robbie,
+    agileScoreCardTeam,
+    agileScoreCardDistribution,
+    agileScoreCardBugs
 } from './dataService';
 import {
     bookingsUserEvents,
@@ -22,6 +25,7 @@ import {
     impulseBookingDataGrouped,
     impulseBrandsService,
     impulseChangePercentage,
+    impulseYOY,
     impulseFiltersService,
     impulseRevloss,
     impulseRevlossV2,
@@ -31,7 +35,7 @@ import {
     funnelViewUserEvents,
     csrUserEvents
 } from './userEventsService';
-import {changeRequests, annotations, productMapping, abTests} from './changeRequestService';
+import {changeRequests, deployments, productMapping, abTests} from './changeRequestService';
 import {
     postFciComment
 } from './userEventsAnalysisService';
@@ -41,6 +45,7 @@ import {
     checkoutFailures,
     checkoutFailuresErrorCategories,
     checkoutFailuresErrorCodes,
+    checkoutFailuresLobs,
     checkoutFailuresSearch,
     checkoutFailuresSites,
     checkoutFailuresCategoryCounts,
@@ -50,8 +55,11 @@ import {
     deltaUserDetails,
     deltaUserBySessionId
 } from './fciDataService';
+import {statusPage} from './statusPageService';
 
 const apiRoutes = [
+    // status page
+    statusPage,
     // oauth
     login,
     logout,
@@ -67,6 +75,9 @@ const apiRoutes = [
     portfolio,
     orgMetrics,
     robbie,
+    agileScoreCardTeam,
+    agileScoreCardDistribution,
+    agileScoreCardBugs,
     // user events service
     bookingsUserEvents,
     epsPageViewsLoBUserEvents,
@@ -77,6 +88,7 @@ const apiRoutes = [
     impulseBookingDataGrouped,
     impulseBrandsService,
     impulseChangePercentage,
+    impulseYOY,
     impulseFiltersService,
     impulseRevloss,
     impulseRevlossV2,
@@ -87,7 +99,7 @@ const apiRoutes = [
     csrUserEvents,
     // change request service
     changeRequests,
-    annotations,
+    deployments,
     productMapping,
     abTests,
     // user events analysis service
@@ -102,6 +114,7 @@ const apiRoutes = [
     checkoutFailures,
     checkoutFailuresErrorCategories,
     checkoutFailuresErrorCodes,
+    checkoutFailuresLobs,
     checkoutFailuresSearch,
     checkoutFailuresSites,
     checkoutFailuresCategoryCounts,

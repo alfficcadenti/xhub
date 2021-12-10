@@ -12,7 +12,7 @@ import qs from 'query-string';
 import {validDateRange} from '../utils';
 import {useHistory, useLocation} from 'react-router-dom';
 import {useEffect} from 'react';
-import {ANOMALY_SELECTOR, BRANDS, DEVICES, EG_SITE_URLS, INCIDENT_SELECTOR, LOBS} from './constants';
+import {ANOMALY_SELECTOR, BRANDS, DEVICES, EG_SITE_URLS, INCIDENT_SELECTOR, LOBS, POS_MAPPINGS} from './constants';
 
 const THREE_WEEK_AVG_COUNT = '3 Week Avg Counts';
 const BOOKING_COUNT = 'Booking Counts';
@@ -32,6 +32,22 @@ export const getFiltersForMultiKeys = (keys = [], data = {}, typeOfFilter) => ke
         }))
         .sort((A, B) => A.value.localeCompare(B.value)))
     .filter((v, i, a) => a.findIndex((t) => (t.label === v.label && t.value === v.value)) === i);
+
+export const mapPosFilterLabels = (data = []) => data.map((item) => {
+    item.label = POS_MAPPINGS[item.value] || item.label;
+    return item;
+});
+
+export const mapPosChartData = (data = []) => data.map((item) => {
+    Object.keys(item || {}).forEach((key) => {
+        if (POS_MAPPINGS[key]) {
+            const value = item[key];
+            delete item[key];
+            item[POS_MAPPINGS[key]] = value;
+        }
+    });
+    return item;
+});
 
 export const getQueryParamMulti = (key, value) => value && value.length ? `&${key}=${value.join(',')}` : '';
 export const getBrandQueryParam = (IMPULSE_MAPPING, globalBrandName) => {
@@ -77,6 +93,16 @@ export const getQueryString = (start, end, IMPULSE_MAPPING, globalBrandName, sel
     + `${getBrandQueryParam(IMPULSE_MAPPING, globalBrandName)}`
     + `&time_interval=${interval}`
     + `${getGroupType(groupType)}`
+);
+
+export const getQueryStringYOY = (start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval) => (
+    `?start_time=${start.format('YYYY-MM-DDTHH:mm:ss')}Z&end_time=${end.format('YYYY-MM-DDTHH:mm:ss')}Z`
+    + `${getQueryParamMulti('point_of_sales', selectedSiteURLMulti)}`
+    + `${getQueryParamMulti('lobs', selectedLobMulti)}`
+    + `${getQueryParamMulti('brands', selectedBrandMulti)}`
+    + `${getQueryParamMulti('device_types', selectedDeviceTypeMulti)}`
+    + `${getBrandQueryParam(IMPULSE_MAPPING, globalBrandName)}`
+    + `&time_interval=${interval}`
 );
 
 export const getQueryStringPrediction = (start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval) => (

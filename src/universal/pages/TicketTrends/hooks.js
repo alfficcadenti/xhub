@@ -5,12 +5,9 @@ import {
     DATE_FORMAT,
     ALL_PRIORITIES_OPTION,
     ALL_STATUSES_OPTION,
-    ALL_TAGS_OPTION,
-    ALL_TAGS,
     EG_BRAND,
     EXPEDIA_PARTNER_SERVICES_BRAND,
     ALL_PARTNERS_OPTION,
-    ALL_RC_OWNERS_OPTION,
     FETCH_FAILED_MSG
 } from '../../constants';
 import {checkResponse, getListOfUniqueProperties, consolidateTicketsById, sortArrayByMostRecentDate, mapEpsData} from '../utils';
@@ -37,7 +34,6 @@ export const useFetchTickets = (
 
     const [priorities, setPriorities] = useState([]);
     const [statuses, setStatuses] = useState([]);
-    const [tags, setTags] = useState([]);
     const [partners, setPartners] = useState([]);
     const isIncidents = url === 'incidents';
     const browserTimezone = moment.tz.guess();
@@ -72,7 +68,6 @@ export const useFetchTickets = (
 
                 setPriorities([ALL_PRIORITIES_OPTION, ...ticketPriorities]);
                 setStatuses([ALL_STATUSES_OPTION, ...ticketStatuses]);
-                setTags([ALL_TAGS_OPTION, ...ALL_TAGS]);
                 setPartners([ALL_PARTNERS_OPTION, ...ticketPartners]);
 
                 setAllUniqueTickets(adjustedUniqueTickets);
@@ -115,7 +110,6 @@ export const useFetchTickets = (
         allTickets,
         priorities,
         statuses,
-        tags,
         partners
     ];
 };
@@ -129,7 +123,7 @@ export const useRootCauseOwner = (selectedBrand, allUniqueIncidents) => {
                 ({impacted_brand: impactedBrand}) => (impactedBrand && impactedBrand.split(',').some((iBrand) => (selectedBrand === impactedBrandToDivision(iBrand))))
             );
         const rcOwners = getListOfUniqueProperties(filteredIncidents, 'RC Owner');
-        setRootCauseOwners([ALL_RC_OWNERS_OPTION, ...rcOwners]);
+        setRootCauseOwners([...rcOwners]);
     }, [selectedBrand, allUniqueIncidents]);
 
     return rootCauseOwners;

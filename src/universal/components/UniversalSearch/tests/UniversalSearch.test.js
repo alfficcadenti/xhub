@@ -16,8 +16,8 @@ describe('UniversalSearch component testing', () => {
 
     it('checks UniversalSearch renders the default tokens selection in input', () => {
         const defaultSelection = [
-            {key: 'serviceTier', value: 'Tier 1'},
-            {key: 'serviceTier', value: 'Tier 2'}
+            {key: 'service_tier', value: 'Tier 1'},
+            {key: 'service_tier', value: 'Tier 2'}
         ];
         const wrapper = mount(<UniversalSearch suggestions={[]} onFilterChange={jest.fn()} defaultSelection={defaultSelection} resetSelection={false}/>);
         expect(wrapper.find('.Token')).to.have.length(2);
@@ -25,8 +25,8 @@ describe('UniversalSearch component testing', () => {
 
     it('reset UniversalSearch selection if reset is true', () => {
         const defaultSelection = [
-            {key: 'serviceTier', value: 'Tier 1'},
-            {key: 'serviceTier', value: 'Tier 2'}
+            {key: 'service_tier', value: 'Tier 1'},
+            {key: 'service_tier', value: 'Tier 2'}
         ];
         const wrapper = mount(<UniversalSearch suggestions={[]} onFilterChange={jest.fn()} defaultSelection={defaultSelection} resetSelection/>);
         expect(wrapper.find('.Token')).to.have.length(0);

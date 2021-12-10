@@ -13,7 +13,7 @@ import {SVGIcon} from '@homeaway/react-svg';
 import {FILTER__16} from '@homeaway/svg-defs';
 import './styles.less';
 import {ALL_LOB, ALL_POS, ALL_BRANDS, ALL_DEVICES, ALL_INCIDENTS, ALL_ANOMALIES} from '../../constants';
-import {getFilters, getFiltersForMultiKeys, getQueryValues, useAddToUrl, getTimeIntervals, isValidTimeInterval, getDefaultTimeInterval, getActiveIndex} from './impulseHandler';
+import {getFilters, getFiltersForMultiKeys, getQueryValues, useAddToUrl, getTimeIntervals, isValidTimeInterval, getDefaultTimeInterval, getActiveIndex, mapPosFilterLabels} from './impulseHandler';
 import {Checkbox, Switch} from '@homeaway/react-form-components';
 import {IncidentDetails} from './tabs/BookingTrends';
 import AnomalyDetails from './tabs/BookingTrends/sections/AnomalyTable/AnomalyDetails';
@@ -158,8 +158,8 @@ const Impulse = (props) => {
         }, timeout || 2000);
     };
 
-    useQueryParamChange(newBrand, props.onBrandChange);
-    useSelectedBrand(newBrand, props.onBrandChange, props.prevSelectedBrand);
+    useQueryParamChange(props.onBrandChange);
+    useSelectedBrand(newBrand, props.prevSelectedBrand);
     const handleNavigationClick = (e, activeLinkIndex) => {
         setActiveIndex(activeLinkIndex);
         getScreenshot(6000);
@@ -221,11 +221,11 @@ const Impulse = (props) => {
         if (typeof newValuesOnChange !== 'undefined' && brandsFilterData !== null && newValuesOnChange.length > 0) {
             setLobsMulti(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'lobs'));
             setDeviceTypesMulti(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'device_types'));
-            setEgSiteURLMulti(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'point_of_sales'));
+            setEgSiteURLMulti(mapPosFilterLabels(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'point_of_sales')));
         } else {
             setLobsMulti(getFilters(filterData, 'lobs'));
             setDeviceTypesMulti(getFilters(filterData, 'device_types'));
-            setEgSiteURLMulti(getFilters(filterData, 'point_of_sales'));
+            setEgSiteURLMulti(mapPosFilterLabels(getFilters(filterData, 'point_of_sales')));
         }
     };
     const filterAnnotations = (newValuesOnChange) => {
@@ -326,10 +326,10 @@ const Impulse = (props) => {
     const customStyles = {
         control: (base) => ({
             ...base,
-            'min-height': '55px',
-            'border-color': '#908f8f',
-            'color': '#717171',
-            'border-radius': '8px'
+            minHeight: '55px',
+            borderColor: '#908f8f',
+            color: '#717171',
+            borderRadius: '8px'
         }),
     };
     const handleDatetimeChange = ({start: startDateTimeStr, end: endDateTimeStr}) => {

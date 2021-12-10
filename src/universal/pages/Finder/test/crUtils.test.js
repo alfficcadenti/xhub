@@ -15,22 +15,22 @@ describe('crUtils', () => {
     describe('formatABTestsData()', () => {
         it('returns correct data', () => {
             const data = [{
-                abTestDetails: {
-                    experimentId: '39648',
-                    experimentName: 'LX_3P_Reviews',
+                ab_test_details: {
+                    experiment_id: '39648',
+                    experiment_name: 'LX_3P_Reviews',
                     description: 'Abacus Event: 39648 ABORTED by vbennoli@expediagroup.com',
                     owner: 'vbennoli@expediagroup.com',
                     service: 'Abacus',
                     status: 'ABORTED'
                 },
-                businessJustification: 'Automated Deployment',
-                businessReason: 'Upgrade',
-                environmentName: 'Production',
+                business_justification: 'Automated Deployment',
+                business_reason: 'Upgrade',
+                environment_name: 'Production',
                 id: '7d1cd45adb01ac504d6b6f8b13961914',
                 number: 'CHG3044926',
-                openedAt: '2020-12-14T22:12:39Z',
+                opened_at: '2020-12-14T22:12:39Z',
                 platform: 'Expedia',
-                serviceName: 'Abacus',
+                service_name: 'Abacus',
                 status: 'ABORTED'
             }];
 

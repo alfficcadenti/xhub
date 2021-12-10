@@ -37,6 +37,7 @@ const BOOKING_CHART_COLOR = '#336BFF';
 const THREE_WEEK_AVG_COUNT_COLOR = '#34495E';
 const THREE_WEEK_AVG_COUNT = '3 Week Avg Counts';
 const PREDICTION_COUNT = 'Prediction Counts';
+const YOY_COUNT = 'YOY Counts';
 const BOOKING_COUNT = 'Booking Counts';
 const INCIDENT = 'Incident';
 const ANOMALY_DETECTED = 'Detected';
@@ -88,14 +89,16 @@ const formatDateTimeLocal = (date) => moment(date).format('MM/DD HH:mm');
 const CustomTooltip = ({active, payload}) => {
     const TIMEZONE = moment().tz(moment.tz.guess()).format('z');
     if (active && payload && payload[0] && payload[0].payload) {
-        return (<div className="custom-tooltip">
-            <span className="label">{`${formatDateTimeLocal(payload[0].payload.time)} ${TIMEZONE}`}</span>
-            {payload.map((item) => (
-                <div>
-                    <span className="label">{`${item.dataKey} : ${item.value}`}</span>
-                </div>
-            ))}
-        </div>);
+        return (
+            <div className="custom-tooltip">
+                <span className="label">{`${formatDateTimeLocal(payload[0].payload.time)} ${TIMEZONE}`}</span>
+                {payload.map((item, i) => (
+                    <div key={`${item.dataKey}-${i}`}>
+                        <span className="label">{`${item.dataKey} : ${item.value}`}</span>
+                    </div>
+                ))}
+            </div>
+        );
     }
     return null;
 };
@@ -249,6 +252,7 @@ const BookingChart = ({
                     <CartesianGrid strokeDasharray="3 3"/>
                     <Tooltip content={<CustomTooltip/>}/>
                     {IMPULSE_CHART_TYPE.map(renderChart)}
+                    { data.length && data[0].hasOwnProperty(YOY_COUNT) ? <Line type="monotone" dataKey={YOY_COUNT} stroke="#00008b" yAxisId={1} strokeWidth={0.5} dot={false} animationDuration={300} hide = {hiddenKeys.includes(YOY_COUNT)}/> : ''}
                     { data.length && data[0].hasOwnProperty(PREDICTION_COUNT) ? <Line type="monotone" dataKey={PREDICTION_COUNT} stroke="#c9405b" yAxisId={1} strokeWidth={1.5} dot={false} animationDuration={300} hide = {hiddenKeys.includes(PREDICTION_COUNT)}/> : ''}
                     {
                         anomalies && anomalies.map((anomaly) => (

@@ -1,4 +1,6 @@
 import {getConfig, getHandler} from './utils';
+import {mockIncidentData} from './testData/incidents';
+import {agileMockData} from './testData/agileScoreCard';
 
 const getHandlerParams = (routeKey) => ({
     routeKey,
@@ -38,7 +40,7 @@ module.exports.incidents = {
     method: 'GET',
     path: '/v1/incidents/{impulse*}',
     config: getConfig('incidents-get'),
-    handler: getHandler(Object.assign(getHandlerParams('incidents'), {pathParam: 'impulse'}))
+    handler: getHandler(Object.assign(getHandlerParams('incidents'), {pathParam: 'impulse'}), () => mockIncidentData)
 };
 
 module.exports.incidentsV2 = {
@@ -88,5 +90,25 @@ module.exports.robbie = {
     path: '/v1/robbie/notification-logs/{param*}',
     config: getConfig('robbie-get'),
     handler: getHandler(Object.assign(getHandlerParams('robbie')))
+};
 
+module.exports.agileScoreCardTeam = {
+    method: 'GET',
+    path: '/v1/score-card/teams/{param*}',
+    config: getConfig('agile-score-card-team-get'),
+    handler: getHandler(Object.assign(getHandlerParams('agileScoreCardTeams'), {pathParam: 'param'}), agileMockData)
+};
+
+module.exports.agileScoreCardDistribution = {
+    method: 'GET',
+    path: '/v1/score-card/distribution-work-data/{param*}',
+    config: getConfig('agile-score-card-distribution-get'),
+    handler: getHandler(Object.assign(getHandlerParams('agileScoreCardDistribution'), {pathParam: 'param'}), agileMockData)
+};
+
+module.exports.agileScoreCardBugs = {
+    method: 'GET',
+    path: '/v1/score-card/number-of-bugs/{param*}',
+    config: getConfig('agile-score-card-bugs-get'),
+    handler: getHandler(Object.assign(getHandlerParams('agileScoreCardBugs'), {pathParam: 'param'}), agileMockData)
 };

@@ -1,0 +1,37 @@
+@import '../../mixins.less';
+
+.agile-scorecard-container {
+    text-align: left;
+
+    .loading-container {
+        padding: @spacing-1x
+    }
+
+    .datetime-range-picker {
+        margin: 0 @spacing-1x @spacing-1x 0;
+    }
+
+    .filters-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: left;
+        font-weight: 400;
+        vertical-align: middle;
+        width: 100%;
+        border-radius: @spacing-1x;
+
+        #teams-select {
+            border-radius: @spacing-1x;
+        }
+
+        .apply-button {
+            height: fit-content;
+            margin: 0 @spacing-1x;
+        }
+    }
+
+    .page-title {
+        margin-bottom: @spacing-3x;
+        text-align: left;
+    }
+}

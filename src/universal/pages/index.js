@@ -6,6 +6,7 @@ import FunnelView from './FunnelView';
 import Home from './Home';
 import Impulse from './Impulse';
 import LandingPage from './LandingPage';
+import StatusPage from './Status';
 import PRB from './PRB';
 import QualityMetrics from './QualityMetrics';
 import IncidentTrendsDashboard from './TicketTrends/IncidentTrendsDashboard';
@@ -21,6 +22,7 @@ import SalesForceCases from './SalesForceCases';
 import GoogleCrUx from './GoogleCrUx';
 import Bots from './Bots';
 import PartnerBusinessMetrics from './PartnerBusinessMetrics';
+import TravelerBusinessMetrics from './TravelerBusinessMetrics';
 import BookingRequests from './BookingRequests';
 import InitialBookings from './InitialBookings';
 import FencePostEvents from './FencePostEvents';
@@ -29,6 +31,7 @@ import RealTimeSitePerformance from './RealTimeSitePerformance';
 import CheckoutBookingRequests from './CheckoutBookingRequests';
 import Robbie from './Robbie';
 import IframeDashboard from './IframeDashboard';
+import AgileScorecard from './AgileScorecard';
 
 import {
     EXPEDIA_BRAND,
@@ -60,6 +63,14 @@ export default [
         link: '/landing-page',
         text: 'Landing Page',
         component: LandingPage,
+        hidden: true
+    },
+    {
+        category: '',
+        id: 'status-page',
+        link: '/status-page',
+        text: 'Status Page',
+        component: StatusPage,
         hidden: true
     },
     // AAT Dashboards
@@ -205,6 +216,14 @@ export default [
         text: 'Incident Driven Availability',
         component: IframeDashboard
     },
+    {
+        category: AAT,
+        id: 'traveler-business-metrics',
+        link: '/traveler-business-metrics',
+        text: 'Traveler Business Metrics',
+        component: TravelerBusinessMetrics,
+        brands: [VRBO_BRAND]
+    },
     // CEA Dashboards
     {
         category: CEA,
@@ -240,6 +259,13 @@ export default [
         external: true
     },
     // PHAR Dashboards
+    {
+        category: PHAR,
+        id: 'agile-scorecard',
+        link: '/agile-scorecard',
+        text: 'Agile Scorecard',
+        component: AgileScorecard
+    },
     {
         category: PHAR,
         id: 'incident-trends',
