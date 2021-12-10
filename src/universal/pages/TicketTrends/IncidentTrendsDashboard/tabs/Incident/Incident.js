@@ -21,8 +21,8 @@ const Incident = () => {
         async function fetchData() {
             try {
                 const response = await fetch(`/v1/incidents/${search}`)
-                const data = await checkResponse(response);
-                setData(getIncidentsDataById(consolidateTicketsById(data)) || []);
+                const resJson = await checkResponse(response);
+                setData(getIncidentsDataById(consolidateTicketsById(resJson)) || []);
             } catch(e) {
                 setError(FETCH_FAILED_MSG);
             }
