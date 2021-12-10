@@ -114,7 +114,7 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
         id: uuid(),
         Incident: buildTicketLinks(inc.id, inc.Brand, inc.url) || '-',
         Priority: getOrDefault(inc, 'priority'),
-        Started: moment.utc(inc.start_date).local().isValid() ? moment.utc(inc.start_date).local().format('YYYY-MM-DD HH:mm') : '-',
+        Started: moment.utc(inc.startDate || '').local().isValid() ? moment.utc(inc.startDate).local().format('YYYY-MM-DD HH:mm') : '-',
         Description: getOrDefault(inc, 'description'),
         TTD: getOrDefault(inc, 'timeToDetect', formatDurationForTable, 'minutes'),
         TTK: getOrDefault(inc, 'timeToKnow', formatDurationForTable, 'minutes'),
