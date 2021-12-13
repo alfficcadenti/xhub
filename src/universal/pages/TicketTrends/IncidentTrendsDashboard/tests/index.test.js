@@ -46,6 +46,7 @@ describe('<IncidentTrendsDashboard/>', () => {
         expect(props.links[0].id).equal('overview');
         expect(props.links[1].id).equal('incidents');
         expect(props.links[2].id).equal('top5');
+        expect(props.links).to.have.length(3);
     });
 
     it('Navigation receives active index 1 by default', async () => {

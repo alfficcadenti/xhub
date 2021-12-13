@@ -18,11 +18,17 @@ const NumberOfBugs = ({teams, from, to}) => {
         setIsLoading(true);
         const selectedTeam = teams.filter((x) => x?.checked && x?.name).map((x) => x?.name);
         const url = `/v1/score-card/number-of-bugs?from_date=${moment(from).format('YYYY-MM-DDTHH:mm:ss.sss[Z]')}&to_date=${moment(to).format('YYYY-MM-DDTHH:mm:ss.sss[Z]')}&team_names=${selectedTeam}`;
-        fetch(url)
-            .then(checkResponse)
-            .then(setData)
-            .catch(() => setError('Error loading the Number of Bugs. Try refreshing the page'))
-            .finally(() => setIsLoading(false));
+        const fetchAPI = async () => {
+            try {
+                const res = await fetch(url);
+                const resJson = await checkResponse(res);
+                setData(resJson);
+            } catch (e) {
+                setError('Error loading the Number of Bugs. Try refreshing the page');
+            }
+        }
+        fetchAPI()
+            .finally(setIsLoading(false));
     }, [teams, from, to]);
 
     const handleDotClick = (selected) => selected?.payload?.name && setSelectedDay(selected.payload.name);
