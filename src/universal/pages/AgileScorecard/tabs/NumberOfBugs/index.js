@@ -6,6 +6,7 @@ import {checkResponse} from '../../../utils';
 import LineChartWrapper from '../../../../components/LineChartWrapper';
 import BugsModal from './BugsModal';
 import {BUGS_TYPE_KEYS} from '../../constants';
+import NoResults from '../../../../components/NoResults';
 
 
 const NumberOfBugs = ({teams, from, to}) => {
@@ -40,17 +41,23 @@ const NumberOfBugs = ({teams, from, to}) => {
             isLoading={isLoading}
             error={error}
         >
-            <LineChartWrapper
-                title="Number of Bugs"
-                data={formatLineChartData(data)}
-                onDotClick={handleDotClick}
-                keys={BUGS_TYPE_KEYS}
-                helpText="Total number of Closed and Open bugs found in the period of interest"
-            />
-            <BugsModal
-                dataObj={formatTooltipData(data)?.[selectedDay]}
-                onClose={handleOnClose}
-            />
+            {
+                data?.length
+                    ? <>
+                        <LineChartWrapper
+                            title="Number of Bugs"
+                            data={formatLineChartData(data)}
+                            onDotClick={handleDotClick}
+                            keys={BUGS_TYPE_KEYS}
+                            helpText="Total number of Closed and Open bugs found in the period of interest"
+                        />
+                        <BugsModal
+                            dataObj={formatTooltipData(data)?.[selectedDay]}
+                            onClose={handleOnClose}
+                        />
+                    </>
+                    : <NoResults />
+            }
         </LoadingContainer>);
 };
 
