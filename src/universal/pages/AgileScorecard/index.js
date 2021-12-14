@@ -78,6 +78,8 @@ const AgileScorecard = () => {
                     labelFormat={labelFormat}
                     items={teams}
                     onChange={handleTeamChange}
+                    disabled={!!error}
+                    errorMsg={error}
                 />
                 <button
                     type="button"
@@ -112,7 +114,7 @@ const AgileScorecard = () => {
                 links={NAV_LINKS}
                 onLinkClick={handleNavigationClick}
             />
-            <LoadingContainer isLoading={isLoading} error={error}>
+            <LoadingContainer isLoading={isLoading}>
                 {renderTabs()}
             </LoadingContainer>
         </div>
