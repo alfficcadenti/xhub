@@ -134,7 +134,7 @@ export const consolidateTicketsById = (tickets) => {
     const results = [];
     const ticketIdSet = new Set();
     // eslint-disable-next-line complexity
-    tickets.forEach((ticket) => {
+    tickets && tickets.forEach((ticket) => {
         const {id} = ticket;
         if (!id) {
             return;
