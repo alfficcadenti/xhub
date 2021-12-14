@@ -16,20 +16,19 @@ const Incident = () => {
     const [error, setError] = useState('');
     const [data, setData] = useState([]);
 
-    useEffect (() => {
+    useEffect(() => {
         setIsLoading(true);
         async function fetchData() {
             try {
-                const response = await fetch(`/v1/incidents/${search}`)
+                const response = await fetch(`/v1/incidents/${search}`);
                 const resJson = await checkResponse(response);
                 setData(getIncidentsDataById(consolidateTicketsById(resJson)) || []);
-                setError('')
-            } catch(e) {
+                setError('');
+            } catch (e) {
                 setError(FETCH_FAILED_MSG);
             }
         }
-        fetchData().finally(() => setIsLoading(false))
-        
+        fetchData().finally(() => setIsLoading(false));
     }, [search]);
 
     const renderTable = () => {

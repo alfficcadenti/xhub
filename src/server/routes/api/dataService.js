@@ -1,5 +1,5 @@
 import {getConfig, getHandler} from './utils';
-import {mockIncidentData, incidents} from './testData/incidents';
+import {incidents} from './testData/incidents';
 import {agileMockData} from './testData/agileScoreCard';
 
 const getHandlerParams = (routeKey) => ({
