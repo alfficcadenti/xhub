@@ -140,11 +140,6 @@
               "path": "/v1/robbie/notification-logs",
               "method": "GET",
               "operation": "GET_ROBBIE_NOTIFICATIONS_V1"
-            },
-            "agileScoreCard": {
-              "path": "/v1/score-card",
-              "method": "GET",
-              "operation": "GET_AGILE_SCORECARD_V1"
             }
           }
         },
@@ -206,11 +201,6 @@
               "path": "/v1/robbie/notification-logs",
               "method": "GET",
               "operation": "GET_ROBBIE_NOTIFICATIONS_V1"
-            },
-            "agileScoreCard": {
-              "path": "/v1/score-card",
-              "method": "GET",
-              "operation": "GET_AGILE_SCORECARD_V1"
             }
           }
         }
@@ -945,42 +935,6 @@
           }
         }
       },
-      "statusPageServiceConfig": {
-        "$filter": "env.EXPEDIA_ENVIRONMENT",
-        "$default": {
-          "hostname": "<HOSTNAME>",
-          "protocol": "https:",
-          "routes": {
-            "statusPage": {
-              "path": "/v1/status-page",
-              "method": "GET",
-              "operation": "GET_status_api_v1"
-            }
-          }
-        },
-        "test": {
-          "hostname": "<HOSTNAME>",
-          "protocol": "https:",
-          "routes": {
-            "statusPage": {
-              "path": "/v1/status-page",
-              "method": "GET",
-              "operation": "GET_status_api_v1"
-            }
-          }
-        },
-        "prod": {
-          "hostname": "<HOSTNAME>",
-          "protocol": "https:",
-          "routes": {
-            "statusPage": {
-              "path": "/v1/status-page",
-              "method": "GET",
-              "operation": "GET_status_api_v1"
-            }
-          }
-        }
-      },
       "oauthApi": {
         "$filter": "env.NODE_ENV",
         "$default": {
@@ -1235,11 +1189,6 @@
           },
           {
             "route": "require:./routes/pages/incident-driven-availability",
-            "component": "require:../universal/components/App/ServerApp.js",
-            "template": "templates/welcome.hbs"
-          },
-          {
-            "route": "require:./routes/pages/agile-scorecard",
             "component": "require:../universal/components/App/ServerApp.js",
             "template": "templates/welcome.hbs"
           },
