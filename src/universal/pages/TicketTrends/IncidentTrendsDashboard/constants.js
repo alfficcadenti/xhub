@@ -19,5 +19,18 @@ export const NAV_LINKS = [
         id: 'top5',
         label: 'Top 5',
         href: '/incident-trends'
+    },
+    {
+        id: 'incident',
+        label: 'Incident',
+        href: '/incident-trends'
     }
 ];
+
+export const COLUMNS_INFO  = {
+    TTD: 'Time to Detect: target <=15m',
+    TTK: 'Time to Know: target <=30m',
+    TTF: 'Time to Fix: target <=15m',
+    TTR: 'Time to Restore: target <=60m',
+    Incident: 'SNOW license needed to get full incident details'
+    };

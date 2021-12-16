@@ -389,6 +389,7 @@ const Fci = ({selectedBrands}) => {
         } else {
             setSelectedBucket(null);
         }
+        updateHistory();
     };
 
     const handleMouseDown = (e) => {

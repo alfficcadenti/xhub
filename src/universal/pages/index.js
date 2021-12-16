@@ -22,6 +22,7 @@ import SalesForceCases from './SalesForceCases';
 import GoogleCrUx from './GoogleCrUx';
 import Bots from './Bots';
 import PartnerBusinessMetrics from './PartnerBusinessMetrics';
+import TravelerBusinessMetrics from './TravelerBusinessMetrics';
 import BookingRequests from './BookingRequests';
 import InitialBookings from './InitialBookings';
 import FencePostEvents from './FencePostEvents';
@@ -214,6 +215,14 @@ export default [
         link: '/incident-driven-availability',
         text: 'Incident Driven Availability',
         component: IframeDashboard
+    },
+    {
+        category: AAT,
+        id: 'traveler-business-metrics',
+        link: '/traveler-business-metrics',
+        text: 'Traveler Business Metrics',
+        component: TravelerBusinessMetrics,
+        brands: [VRBO_BRAND]
     },
     // CEA Dashboards
     {

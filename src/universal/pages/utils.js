@@ -134,39 +134,42 @@ export const consolidateTicketsById = (tickets) => {
     const results = [];
     const ticketIdSet = new Set();
     // eslint-disable-next-line complexity
-    tickets.forEach((ticket) => {
-        const {id} = ticket;
-        if (!id) {
-            return;
-        }
-        const ids = id.split(',');
-        if (ids.some((i) => ticketIdSet.has(i))) {
-            const found = results.find((t) => ids.some((i) => t.id && t.id.split(',').some((j) => i === j)));
-            if (found.impacted_brand && ticket.impacted_brand && !found.impacted_brand.split(',').some((b) => ticket.impacted_brand.split(',').includes(b))) {
-                found.impacted_brand += `,${ticket.impacted_brand}`;
+    if (Array.isArray(tickets)) {
+        tickets.forEach((ticket) => {
+            const {id} = ticket;
+            if (!id) {
+                return;
             }
-            const foundIds = found.id.split(',');
-            ids.forEach((i) => {
-                if (!foundIds.includes(i)) {
-                    found.id = `${found.id},${i}`;
+            const ids = id.split(',');
+            if (ids.some((i) => ticketIdSet.has(i))) {
+                const found = results.find((t) => ids.some((i) => t.id && t.id.split(',').some((j) => i === j)));
+                if (found.impacted_brand && ticket.impacted_brand && !found.impacted_brand.split(',').some((b) => ticket.impacted_brand.split(',').includes(b))) {
+                    found.impacted_brand += `,${ticket.impacted_brand}`;
                 }
-            });
-            if (ticket.divisions && !found.divisions) {
-                found.divisions = ticket.divisions;
-            } else if (ticket.divisions && ticket.divisions.length) {
-                ticket.divisions.forEach((d) => {
-                    if (!found.divisions.includes(d)) {
-                        found.divisions.push(d);
+                const foundIds = found.id.split(',');
+                ids.forEach((i) => {
+                    if (!foundIds.includes(i)) {
+                        found.id = `${found.id},${i}`;
                     }
                 });
+                if (ticket.divisions && !found.divisions) {
+                    found.divisions = ticket.divisions;
+                } else if (ticket.divisions && ticket.divisions.length) {
+                    ticket.divisions.forEach((d) => {
+                        if (!found.divisions.includes(d)) {
+                            found.divisions.push(d);
+                        }
+                    });
+                }
+                found.estimated_revenue_loss = `${parseFloat(found.estimated_revenue_loss) + parseFloat(ticket.estimated_revenue_loss || 0)}`;
+                found.estimated_gross_loss = `${parseFloat(found.estimated_gross_loss) + parseFloat(ticket.estimated_gross_loss || 0)}`;
+            } else {
+                results.push(ticket);
             }
-            found.estimated_revenue_loss = `${parseFloat(found.estimated_revenue_loss) + parseFloat(ticket.estimated_revenue_loss || 0)}`;
-            found.estimated_gross_loss = `${parseFloat(found.estimated_gross_loss) + parseFloat(ticket.estimated_gross_loss || 0)}`;
-        } else {
-            results.push(ticket);
-        }
-        ids.forEach((i) => ticketIdSet.add(i));
-    });
+            ids.forEach((i) => ticketIdSet.add(i));
+        });
+    }
+
     return results;
 };
 

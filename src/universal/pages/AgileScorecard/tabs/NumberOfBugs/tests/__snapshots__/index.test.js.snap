@@ -1,0 +1,1585 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<BugsModal /> renders successfully 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body
+    class="body--modal-open"
+    data-react-modals="{\\"bugs-modal-modal-open\\":1}"
+  >
+    <div>
+      <div>
+        <div
+          class="Modal__backdrop"
+          tabindex="-1"
+        />
+        <div
+          aria-labelledby="bugs-modal-label"
+          aria-modal="true"
+          class="bugs-modal Modal"
+          id="bugs-modal"
+          role="dialog"
+          style="display: block;"
+          tabindex="-1"
+        >
+          <div
+            class="Modal__dialog"
+          >
+            <div
+              class="Modal__content"
+              role="document"
+            >
+              <div
+                class="Modal__header Modal__header--no-title"
+              >
+                <div
+                  class="Modal__header-column Modal__header-column--close"
+                >
+                  <button
+                    aria-label="Close"
+                    class="Modal__header-btn Modal__header-btn--close"
+                    type="button"
+                  >
+                    <span
+                      aria-hidden="true"
+                      class="Modal__button-flex"
+                    >
+                      <span
+                        class="SVGIcon SVGIcon--16px"
+                      >
+                        <svg
+                          data-id="SVG_CLOSE__16"
+                          focusable="false"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          width="16"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M12.5 12.5l-9-9m9 0l-9 9"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </span>
+                    </span>
+                  </button>
+                </div>
+              </div>
+              <div
+                class="Modal__body"
+              >
+                <div
+                  class="bug-list-table"
+                >
+                  <div
+                    class="data-table__container undefined"
+                  >
+                    <h3
+                      class="data-table__title"
+                    >
+                      open bugs (2 Result(s))
+                    </h3>
+                    <div
+                      class="Divider settings-divider"
+                    >
+                      <div
+                        class="Divider__heading text-muted"
+                      >
+                        <button
+                          aria-controls="settings-divider"
+                          aria-expanded="false"
+                          class="Divider__title"
+                          id="settings-divider_button"
+                        >
+                          <div
+                            class="Divider__title-layout"
+                          >
+                            <div
+                              class="Divider__title-left"
+                            >
+                              <div
+                                class="Divider__title-row"
+                              />
+                            </div>
+                            <div
+                              class="Divider__title-text"
+                            >
+                              <span
+                                aria-level="4"
+                                role="heading"
+                              >
+                                Settings
+                              </span>
+                            </div>
+                            <div
+                              class="Divider__title-right"
+                            >
+                              <div
+                                class="Divider__title-row"
+                              />
+                              <span
+                                class="SVGIcon SVGIcon--16px Divider__SVGIcon Divider__SVGIcon--collapsed"
+                              >
+                                <svg
+                                  data-id="SVG_CHEVRON_DOWN__16"
+                                  focusable="false"
+                                  height="16"
+                                  viewBox="0 0 16 16"
+                                  width="16"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M3 6l5 4.6L13 6"
+                                    fill="none"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  />
+                                </svg>
+                              </span>
+                            </div>
+                          </div>
+                        </button>
+                      </div>
+                      <div
+                        aria-labelledby="settings-divider_button"
+                        class="CollapseBase"
+                        hidden=""
+                        id="settings-divider"
+                        role="region"
+                        style="max-height: 0px;"
+                      >
+                        <div
+                          class="CollapseBase__content Divider__body"
+                        >
+                          <form />
+                        </div>
+                      </div>
+                    </div>
+                    <table
+                      class="data-table"
+                    >
+                      <thead
+                        class="data-table-header"
+                      >
+                        <tr>
+                          <th
+                            class="pointer"
+                          >
+                            ID
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody
+                        class="data-table-body"
+                      >
+                        <tr>
+                          <td
+                            class=""
+                          >
+                            <div
+                              class="tooltip-bug-div"
+                            >
+                              <a
+                                href="https://jira.expedia.biz/browse/EGE-354987"
+                                target="_blank"
+                              >
+                                EGE-354987
+                              </a>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr
+                          class="expandable-row hidden"
+                        >
+                          <td
+                            class="expandable-column"
+                            colspan="2"
+                          />
+                        </tr>
+                        <tr>
+                          <td
+                            class=""
+                          >
+                            <div
+                              class="tooltip-bug-div"
+                            >
+                              <a
+                                href="https://jira.expedia.biz/browse/EGE-353467"
+                                target="_blank"
+                              >
+                                EGE-353467
+                              </a>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr
+                          class="expandable-row hidden"
+                        >
+                          <td
+                            class="expandable-column"
+                            colspan="2"
+                          />
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div
+                      class="pagination text-center"
+                    >
+                      <div
+                        class="btn-group"
+                      >
+                        <button
+                          class="btn btn-default"
+                          disabled=""
+                          type="button"
+                        >
+                          Previous
+                        </button>
+                        <button
+                          class="btn btn-default"
+                          disabled=""
+                          type="button"
+                        >
+                          1
+                        </button>
+                        <button
+                          class="btn btn-default"
+                          disabled=""
+                          type="button"
+                        >
+                          Next
+                        </button>
+                      </div>
+                      Page Size:
+                      <div
+                        class="Dropdown pagesize-dropdown"
+                        role="presentation"
+                        tabindex="-1"
+                      >
+                        <button
+                          aria-expanded="false"
+                          aria-haspopup="true"
+                          class="btn btn-default Dropdown__toggle border-border-color border--contrast"
+                          id="pagesize-dropdown"
+                          type="button"
+                        >
+                          <span
+                            class="btn__label"
+                          >
+                            10
+                          </span>
+                          <span
+                            class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
+                          >
+                            <svg
+                              data-id="SVG_CHEVRON_DOWN__12"
+                              focusable="false"
+                              height="12"
+                              viewBox="0 0 12 12"
+                              width="12"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M11 4L6 9 1 4"
+                                fill="none"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          </span>
+                        </button>
+                        <ul
+                          aria-labelledby="pagesize-dropdown"
+                          class="Dropdown__menu"
+                          id="pagesize-dropdown--container"
+                          role="dialog"
+                        >
+                          <li
+                            role="presentation"
+                          >
+                            <a
+                              data-bypass="false"
+                              href="#"
+                            >
+                               
+                              25
+                            </a>
+                          </li>
+                          <li
+                            role="presentation"
+                          >
+                            <a
+                              data-bypass="false"
+                              href="#"
+                            >
+                               
+                              50
+                            </a>
+                          </li>
+                          <li
+                            role="presentation"
+                          >
+                            <a
+                              data-bypass="false"
+                              href="#"
+                            >
+                               
+                              75
+                            </a>
+                          </li>
+                          <li
+                            role="presentation"
+                          >
+                            <a
+                              data-bypass="false"
+                              href="#"
+                            >
+                               
+                              100
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="bug-list-table"
+                >
+                  <div
+                    class="data-table__container undefined"
+                  >
+                    <h3
+                      class="data-table__title"
+                    >
+                      closed bugs (1 Result(s))
+                    </h3>
+                    <div
+                      class="Divider settings-divider"
+                    >
+                      <div
+                        class="Divider__heading text-muted"
+                      >
+                        <button
+                          aria-controls="settings-divider"
+                          aria-expanded="false"
+                          class="Divider__title"
+                          id="settings-divider_button"
+                        >
+                          <div
+                            class="Divider__title-layout"
+                          >
+                            <div
+                              class="Divider__title-left"
+                            >
+                              <div
+                                class="Divider__title-row"
+                              />
+                            </div>
+                            <div
+                              class="Divider__title-text"
+                            >
+                              <span
+                                aria-level="4"
+                                role="heading"
+                              >
+                                Settings
+                              </span>
+                            </div>
+                            <div
+                              class="Divider__title-right"
+                            >
+                              <div
+                                class="Divider__title-row"
+                              />
+                              <span
+                                class="SVGIcon SVGIcon--16px Divider__SVGIcon Divider__SVGIcon--collapsed"
+                              >
+                                <svg
+                                  data-id="SVG_CHEVRON_DOWN__16"
+                                  focusable="false"
+                                  height="16"
+                                  viewBox="0 0 16 16"
+                                  width="16"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M3 6l5 4.6L13 6"
+                                    fill="none"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  />
+                                </svg>
+                              </span>
+                            </div>
+                          </div>
+                        </button>
+                      </div>
+                      <div
+                        aria-labelledby="settings-divider_button"
+                        class="CollapseBase"
+                        hidden=""
+                        id="settings-divider"
+                        role="region"
+                        style="max-height: 0px;"
+                      >
+                        <div
+                          class="CollapseBase__content Divider__body"
+                        >
+                          <form />
+                        </div>
+                      </div>
+                    </div>
+                    <table
+                      class="data-table"
+                    >
+                      <thead
+                        class="data-table-header"
+                      >
+                        <tr>
+                          <th
+                            class="pointer"
+                          >
+                            ID
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody
+                        class="data-table-body"
+                      >
+                        <tr>
+                          <td
+                            class=""
+                          >
+                            <div
+                              class="tooltip-bug-div"
+                            >
+                              <a
+                                href="https://jira.expedia.biz/browse/EGE-354987"
+                                target="_blank"
+                              >
+                                EGE-354987
+                              </a>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr
+                          class="expandable-row hidden"
+                        >
+                          <td
+                            class="expandable-column"
+                            colspan="2"
+                          />
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div
+                      class="pagination text-center"
+                    >
+                      <div
+                        class="btn-group"
+                      >
+                        <button
+                          class="btn btn-default"
+                          disabled=""
+                          type="button"
+                        >
+                          Previous
+                        </button>
+                        <button
+                          class="btn btn-default"
+                          disabled=""
+                          type="button"
+                        >
+                          1
+                        </button>
+                        <button
+                          class="btn btn-default"
+                          disabled=""
+                          type="button"
+                        >
+                          Next
+                        </button>
+                      </div>
+                      Page Size:
+                      <div
+                        class="Dropdown pagesize-dropdown"
+                        role="presentation"
+                        tabindex="-1"
+                      >
+                        <button
+                          aria-expanded="false"
+                          aria-haspopup="true"
+                          class="btn btn-default Dropdown__toggle border-border-color border--contrast"
+                          id="pagesize-dropdown"
+                          type="button"
+                        >
+                          <span
+                            class="btn__label"
+                          >
+                            10
+                          </span>
+                          <span
+                            class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
+                          >
+                            <svg
+                              data-id="SVG_CHEVRON_DOWN__12"
+                              focusable="false"
+                              height="12"
+                              viewBox="0 0 12 12"
+                              width="12"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M11 4L6 9 1 4"
+                                fill="none"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          </span>
+                        </button>
+                        <ul
+                          aria-labelledby="pagesize-dropdown"
+                          class="Dropdown__menu"
+                          id="pagesize-dropdown--container"
+                          role="dialog"
+                        >
+                          <li
+                            role="presentation"
+                          >
+                            <a
+                              data-bypass="false"
+                              href="#"
+                            >
+                               
+                              25
+                            </a>
+                          </li>
+                          <li
+                            role="presentation"
+                          >
+                            <a
+                              data-bypass="false"
+                              href="#"
+                            >
+                               
+                              50
+                            </a>
+                          </li>
+                          <li
+                            role="presentation"
+                          >
+                            <a
+                              data-bypass="false"
+                              href="#"
+                            >
+                               
+                              75
+                            </a>
+                          </li>
+                          <li
+                            role="presentation"
+                          >
+                            <a
+                              data-bypass="false"
+                              href="#"
+                            >
+                               
+                              100
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div>
+      <div
+        class="Modal__backdrop"
+        tabindex="-1"
+      />
+      <div
+        aria-labelledby="bugs-modal-label"
+        aria-modal="true"
+        class="bugs-modal Modal"
+        id="bugs-modal"
+        role="dialog"
+        style="display: block;"
+        tabindex="-1"
+      >
+        <div
+          class="Modal__dialog"
+        >
+          <div
+            class="Modal__content"
+            role="document"
+          >
+            <div
+              class="Modal__header Modal__header--no-title"
+            >
+              <div
+                class="Modal__header-column Modal__header-column--close"
+              >
+                <button
+                  aria-label="Close"
+                  class="Modal__header-btn Modal__header-btn--close"
+                  type="button"
+                >
+                  <span
+                    aria-hidden="true"
+                    class="Modal__button-flex"
+                  >
+                    <span
+                      class="SVGIcon SVGIcon--16px"
+                    >
+                      <svg
+                        data-id="SVG_CLOSE__16"
+                        focusable="false"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        width="16"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M12.5 12.5l-9-9m9 0l-9 9"
+                          fill="none"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    </span>
+                  </span>
+                </button>
+              </div>
+            </div>
+            <div
+              class="Modal__body"
+            >
+              <div
+                class="bug-list-table"
+              >
+                <div
+                  class="data-table__container undefined"
+                >
+                  <h3
+                    class="data-table__title"
+                  >
+                    open bugs (2 Result(s))
+                  </h3>
+                  <div
+                    class="Divider settings-divider"
+                  >
+                    <div
+                      class="Divider__heading text-muted"
+                    >
+                      <button
+                        aria-controls="settings-divider"
+                        aria-expanded="false"
+                        class="Divider__title"
+                        id="settings-divider_button"
+                      >
+                        <div
+                          class="Divider__title-layout"
+                        >
+                          <div
+                            class="Divider__title-left"
+                          >
+                            <div
+                              class="Divider__title-row"
+                            />
+                          </div>
+                          <div
+                            class="Divider__title-text"
+                          >
+                            <span
+                              aria-level="4"
+                              role="heading"
+                            >
+                              Settings
+                            </span>
+                          </div>
+                          <div
+                            class="Divider__title-right"
+                          >
+                            <div
+                              class="Divider__title-row"
+                            />
+                            <span
+                              class="SVGIcon SVGIcon--16px Divider__SVGIcon Divider__SVGIcon--collapsed"
+                            >
+                              <svg
+                                data-id="SVG_CHEVRON_DOWN__16"
+                                focusable="false"
+                                height="16"
+                                viewBox="0 0 16 16"
+                                width="16"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M3 6l5 4.6L13 6"
+                                  fill="none"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                              </svg>
+                            </span>
+                          </div>
+                        </div>
+                      </button>
+                    </div>
+                    <div
+                      aria-labelledby="settings-divider_button"
+                      class="CollapseBase"
+                      hidden=""
+                      id="settings-divider"
+                      role="region"
+                      style="max-height: 0px;"
+                    >
+                      <div
+                        class="CollapseBase__content Divider__body"
+                      >
+                        <form />
+                      </div>
+                    </div>
+                  </div>
+                  <table
+                    class="data-table"
+                  >
+                    <thead
+                      class="data-table-header"
+                    >
+                      <tr>
+                        <th
+                          class="pointer"
+                        >
+                          ID
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody
+                      class="data-table-body"
+                    >
+                      <tr>
+                        <td
+                          class=""
+                        >
+                          <div
+                            class="tooltip-bug-div"
+                          >
+                            <a
+                              href="https://jira.expedia.biz/browse/EGE-354987"
+                              target="_blank"
+                            >
+                              EGE-354987
+                            </a>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr
+                        class="expandable-row hidden"
+                      >
+                        <td
+                          class="expandable-column"
+                          colspan="2"
+                        />
+                      </tr>
+                      <tr>
+                        <td
+                          class=""
+                        >
+                          <div
+                            class="tooltip-bug-div"
+                          >
+                            <a
+                              href="https://jira.expedia.biz/browse/EGE-353467"
+                              target="_blank"
+                            >
+                              EGE-353467
+                            </a>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr
+                        class="expandable-row hidden"
+                      >
+                        <td
+                          class="expandable-column"
+                          colspan="2"
+                        />
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div
+                    class="pagination text-center"
+                  >
+                    <div
+                      class="btn-group"
+                    >
+                      <button
+                        class="btn btn-default"
+                        disabled=""
+                        type="button"
+                      >
+                        Previous
+                      </button>
+                      <button
+                        class="btn btn-default"
+                        disabled=""
+                        type="button"
+                      >
+                        1
+                      </button>
+                      <button
+                        class="btn btn-default"
+                        disabled=""
+                        type="button"
+                      >
+                        Next
+                      </button>
+                    </div>
+                    Page Size:
+                    <div
+                      class="Dropdown pagesize-dropdown"
+                      role="presentation"
+                      tabindex="-1"
+                    >
+                      <button
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        class="btn btn-default Dropdown__toggle border-border-color border--contrast"
+                        id="pagesize-dropdown"
+                        type="button"
+                      >
+                        <span
+                          class="btn__label"
+                        >
+                          10
+                        </span>
+                        <span
+                          class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
+                        >
+                          <svg
+                            data-id="SVG_CHEVRON_DOWN__12"
+                            focusable="false"
+                            height="12"
+                            viewBox="0 0 12 12"
+                            width="12"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M11 4L6 9 1 4"
+                              fill="none"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                        </span>
+                      </button>
+                      <ul
+                        aria-labelledby="pagesize-dropdown"
+                        class="Dropdown__menu"
+                        id="pagesize-dropdown--container"
+                        role="dialog"
+                      >
+                        <li
+                          role="presentation"
+                        >
+                          <a
+                            data-bypass="false"
+                            href="#"
+                          >
+                             
+                            25
+                          </a>
+                        </li>
+                        <li
+                          role="presentation"
+                        >
+                          <a
+                            data-bypass="false"
+                            href="#"
+                          >
+                             
+                            50
+                          </a>
+                        </li>
+                        <li
+                          role="presentation"
+                        >
+                          <a
+                            data-bypass="false"
+                            href="#"
+                          >
+                             
+                            75
+                          </a>
+                        </li>
+                        <li
+                          role="presentation"
+                        >
+                          <a
+                            data-bypass="false"
+                            href="#"
+                          >
+                             
+                            100
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="bug-list-table"
+              >
+                <div
+                  class="data-table__container undefined"
+                >
+                  <h3
+                    class="data-table__title"
+                  >
+                    closed bugs (1 Result(s))
+                  </h3>
+                  <div
+                    class="Divider settings-divider"
+                  >
+                    <div
+                      class="Divider__heading text-muted"
+                    >
+                      <button
+                        aria-controls="settings-divider"
+                        aria-expanded="false"
+                        class="Divider__title"
+                        id="settings-divider_button"
+                      >
+                        <div
+                          class="Divider__title-layout"
+                        >
+                          <div
+                            class="Divider__title-left"
+                          >
+                            <div
+                              class="Divider__title-row"
+                            />
+                          </div>
+                          <div
+                            class="Divider__title-text"
+                          >
+                            <span
+                              aria-level="4"
+                              role="heading"
+                            >
+                              Settings
+                            </span>
+                          </div>
+                          <div
+                            class="Divider__title-right"
+                          >
+                            <div
+                              class="Divider__title-row"
+                            />
+                            <span
+                              class="SVGIcon SVGIcon--16px Divider__SVGIcon Divider__SVGIcon--collapsed"
+                            >
+                              <svg
+                                data-id="SVG_CHEVRON_DOWN__16"
+                                focusable="false"
+                                height="16"
+                                viewBox="0 0 16 16"
+                                width="16"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M3 6l5 4.6L13 6"
+                                  fill="none"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                              </svg>
+                            </span>
+                          </div>
+                        </div>
+                      </button>
+                    </div>
+                    <div
+                      aria-labelledby="settings-divider_button"
+                      class="CollapseBase"
+                      hidden=""
+                      id="settings-divider"
+                      role="region"
+                      style="max-height: 0px;"
+                    >
+                      <div
+                        class="CollapseBase__content Divider__body"
+                      >
+                        <form />
+                      </div>
+                    </div>
+                  </div>
+                  <table
+                    class="data-table"
+                  >
+                    <thead
+                      class="data-table-header"
+                    >
+                      <tr>
+                        <th
+                          class="pointer"
+                        >
+                          ID
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody
+                      class="data-table-body"
+                    >
+                      <tr>
+                        <td
+                          class=""
+                        >
+                          <div
+                            class="tooltip-bug-div"
+                          >
+                            <a
+                              href="https://jira.expedia.biz/browse/EGE-354987"
+                              target="_blank"
+                            >
+                              EGE-354987
+                            </a>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr
+                        class="expandable-row hidden"
+                      >
+                        <td
+                          class="expandable-column"
+                          colspan="2"
+                        />
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div
+                    class="pagination text-center"
+                  >
+                    <div
+                      class="btn-group"
+                    >
+                      <button
+                        class="btn btn-default"
+                        disabled=""
+                        type="button"
+                      >
+                        Previous
+                      </button>
+                      <button
+                        class="btn btn-default"
+                        disabled=""
+                        type="button"
+                      >
+                        1
+                      </button>
+                      <button
+                        class="btn btn-default"
+                        disabled=""
+                        type="button"
+                      >
+                        Next
+                      </button>
+                    </div>
+                    Page Size:
+                    <div
+                      class="Dropdown pagesize-dropdown"
+                      role="presentation"
+                      tabindex="-1"
+                    >
+                      <button
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        class="btn btn-default Dropdown__toggle border-border-color border--contrast"
+                        id="pagesize-dropdown"
+                        type="button"
+                      >
+                        <span
+                          class="btn__label"
+                        >
+                          10
+                        </span>
+                        <span
+                          class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
+                        >
+                          <svg
+                            data-id="SVG_CHEVRON_DOWN__12"
+                            focusable="false"
+                            height="12"
+                            viewBox="0 0 12 12"
+                            width="12"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M11 4L6 9 1 4"
+                              fill="none"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                        </span>
+                      </button>
+                      <ul
+                        aria-labelledby="pagesize-dropdown"
+                        class="Dropdown__menu"
+                        id="pagesize-dropdown--container"
+                        role="dialog"
+                      >
+                        <li
+                          role="presentation"
+                        >
+                          <a
+                            data-bypass="false"
+                            href="#"
+                          >
+                             
+                            25
+                          </a>
+                        </li>
+                        <li
+                          role="presentation"
+                        >
+                          <a
+                            data-bypass="false"
+                            href="#"
+                          >
+                             
+                            50
+                          </a>
+                        </li>
+                        <li
+                          role="presentation"
+                        >
+                          <a
+                            data-bypass="false"
+                            href="#"
+                          >
+                             
+                            75
+                          </a>
+                        </li>
+                        <li
+                          role="presentation"
+                        >
+                          <a
+                            data-bypass="false"
+                            href="#"
+                          >
+                             
+                            100
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`<NumberOfBugs /> renders Error message when api return error 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="loading-container "
+      >
+        <div
+          aria-live="polite"
+          class="Alert border--default in loading-alert"
+          role="alert"
+        >
+          <div
+            class="Alert__flair bg--color-bg-active"
+          />
+          <span
+            class="SVGIcon SVGIcon--24px Alert__svg inline-svg text-muted"
+          >
+            <svg
+              data-id="SVG_ALERT_WARNING__24"
+              focusable="false"
+              height="24"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g
+                fill="none"
+                fill-rule="evenodd"
+              >
+                <path
+                  d="M13 17.1a1 1 0 1 1-2 0 1 1 0 0 1 2 0"
+                  fill="currentColor"
+                  stroke="none"
+                />
+                <path
+                  d="M10.6 4.5a1.6 1.6 0 0 1 2.8 0L21 17.7a1.6 1.6 0 0 1-1.4 2.5H4.4A1.6 1.6 0 0 1 3 17.7l7.6-13.2zM12 9V14"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </g>
+            </svg>
+          </span>
+          <p>
+            Error loading the Number of Bugs. Try refreshing the page
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="loading-container "
+    >
+      <div
+        aria-live="polite"
+        class="Alert border--default in loading-alert"
+        role="alert"
+      >
+        <div
+          class="Alert__flair bg--color-bg-active"
+        />
+        <span
+          class="SVGIcon SVGIcon--24px Alert__svg inline-svg text-muted"
+        >
+          <svg
+            data-id="SVG_ALERT_WARNING__24"
+            focusable="false"
+            height="24"
+            viewBox="0 0 24 24"
+            width="24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g
+              fill="none"
+              fill-rule="evenodd"
+            >
+              <path
+                d="M13 17.1a1 1 0 1 1-2 0 1 1 0 0 1 2 0"
+                fill="currentColor"
+                stroke="none"
+              />
+              <path
+                d="M10.6 4.5a1.6 1.6 0 0 1 2.8 0L21 17.7a1.6 1.6 0 0 1-1.4 2.5H4.4A1.6 1.6 0 0 1 3 17.7l7.6-13.2zM12 9V14"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </g>
+          </svg>
+        </span>
+        <p>
+          Error loading the Number of Bugs. Try refreshing the page
+        </p>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`<NumberOfBugs /> renders chart when api return mocked data 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="loading-container "
+      >
+        <div
+          class="line-chart-wrapper"
+        >
+          <h3>
+            Number of Bugs
+            <span
+              class="helptext"
+            >
+              <div
+                class="help-text"
+                role="button"
+                style="display: inline-block; outline: 0; position: relative;"
+                tabindex="0"
+              >
+                <span
+                  class="SVGIcon SVGIcon--16px"
+                >
+                  <svg
+                    data-id="SVG_INFO__16"
+                    focusable="false"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    width="16"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g
+                      fill="none"
+                      fill-rule="evenodd"
+                    >
+                      <path
+                        d="M7.1 5A.9.9 0 1 1 9 5 .9.9 0 0 1 7 5"
+                        fill="currentColor"
+                        stroke="none"
+                      />
+                      <path
+                        d="M8 11.2V7.3M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8z"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </g>
+                  </svg>
+                </span>
+              </div>
+            </span>
+          </h3>
+          <div
+            class="recharts-responsive-container"
+            style="width: 100%; height: 300px;"
+          >
+            <div
+              style="position: absolute; width: 0px; height: 0px; visibility: hidden; display: none;"
+            />
+          </div>
+        </div>
+        <div />
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="loading-container "
+    >
+      <div
+        class="line-chart-wrapper"
+      >
+        <h3>
+          Number of Bugs
+          <span
+            class="helptext"
+          >
+            <div
+              class="help-text"
+              role="button"
+              style="display: inline-block; outline: 0; position: relative;"
+              tabindex="0"
+            >
+              <span
+                class="SVGIcon SVGIcon--16px"
+              >
+                <svg
+                  data-id="SVG_INFO__16"
+                  focusable="false"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  width="16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g
+                    fill="none"
+                    fill-rule="evenodd"
+                  >
+                    <path
+                      d="M7.1 5A.9.9 0 1 1 9 5 .9.9 0 0 1 7 5"
+                      fill="currentColor"
+                      stroke="none"
+                    />
+                    <path
+                      d="M8 11.2V7.3M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8z"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </g>
+                </svg>
+              </span>
+            </div>
+          </span>
+        </h3>
+        <div
+          class="recharts-responsive-container"
+          style="width: 100%; height: 300px;"
+        >
+          <div
+            style="position: absolute; width: 0px; height: 0px; visibility: hidden; display: none;"
+          />
+        </div>
+      </div>
+      <div />
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

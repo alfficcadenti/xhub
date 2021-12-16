@@ -1,6 +1,5 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom';
-import './styles.less';
 import GrafanaDashboard from '../../components/GrafanaDashboard';
 
 const PartnerBusinessMetrics = ({selectedBrands, availableBrands}) => {
