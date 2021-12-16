@@ -1193,6 +1193,11 @@
             "template": "templates/welcome.hbs"
           },
           {
+            "route": "require:./routes/pages/agile-scorecard",
+            "component": "require:../universal/components/App/ServerApp.js",
+            "template": "templates/welcome.hbs"
+          },
+          {
             "route": "require:./routes/pages/status-page",
             "component": "require:../universal/components/App/ServerApp.js",
             "template": "templates/welcome.hbs"
