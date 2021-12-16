@@ -1,5 +1,4 @@
 import {getConfig, getHandler} from './utils';
-import {mockIncidentData} from './testData/incidents';
 import {agileMockData} from './testData/agileScoreCard';
 import {INCIDENTS_EXPECTED_DATA} from '../../../universal/pages/Status/tests/mockData/mockData';
 
