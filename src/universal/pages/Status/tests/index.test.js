@@ -88,7 +88,7 @@ describe('Status Page', () => {
 
     it('compareObjArraysElements returns true when two arrays match', async () => {
         const arrayOne = ['www.expedia.com', 'www.travelocity.com'];
-        const arrayTwo = ['www.travelocity.com', 'www.expedia.com'];
+        const arrayTwo = ['www.expedia.com', 'www.travelocity.com'];
 
         const verifyCheck = compareObjArraysElements(arrayOne, arrayTwo);
         expect(verifyCheck).toEqual(true);
