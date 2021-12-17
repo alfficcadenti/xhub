@@ -2,7 +2,7 @@ export const mockIncidentData = [{'booking_impact': 'No Booking Impact', 'brand'
 
 const mockSingleIncidentData = [
     {'bookingImpact': 'No Booking Impact', 'brand': 'Expedia Services', 'degradationOutage': 'Degradation', 'duration': '238', 'endDate': '2021-10-18 15:40:00.0000000 +00:00', 'environment': 'Production', 'estimatedGrossLoss': null, 'estimatedOrderLoss': null, 'estimatedRevenueLoss': null, 'executiveSummary': null, 'id': 'INC5940260', 'impactedBrand': null, 'labels': [''], 'lob': null, 'openDate': '2021-10-18 15:17:44.0000000 +00:00', 'priority': '2-High', 'priorityNumber': '2', 'resolution': '', 'resolvedDate': '2021-10-18 16:45:25.0000000 +00:00', 'rootCause': 'voice team recovered a flapping link', 'rootCauseOwner': 'eIT - Voice Platform', 'startDate': '2021-10-18 11:42:00.0000000 +00:00', 'status': 'Done', 'summary': 'Egencia NA Telephony Degraded', 'timeToDetect': '198', 'timeToRestore': '238', 'timeToKnow': '40', 'timeToFix': '0', 'applicationName': 'Contact Centers: Telephony', 'url': 'https://expedia.service-now.com/go.do?id=INC5940260'}
-]
+];
 
 export const incidents = (req) => {
     if (req.params?.impulse) {

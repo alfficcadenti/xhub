@@ -79,7 +79,7 @@ Object {
                     <h3
                       class="data-table__title"
                     >
-                      open bugs (2 Result(s))
+                      open bugs (2 Results)
                     </h3>
                     <div
                       class="Divider settings-divider"
@@ -354,7 +354,7 @@ Object {
                     <h3
                       class="data-table__title"
                     >
-                      closed bugs (1 Result(s))
+                      closed bugs (1 Result)
                     </h3>
                     <div
                       class="Divider settings-divider"
@@ -675,7 +675,7 @@ Object {
                   <h3
                     class="data-table__title"
                   >
-                    open bugs (2 Result(s))
+                    open bugs (2 Results)
                   </h3>
                   <div
                     class="Divider settings-divider"
@@ -950,7 +950,7 @@ Object {
                   <h3
                     class="data-table__title"
                   >
-                    closed bugs (1 Result(s))
+                    closed bugs (1 Result)
                   </h3>
                   <div
                     class="Divider settings-divider"

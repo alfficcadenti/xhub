@@ -13,17 +13,20 @@ const singleId = (id) => ({
     )
 });
 
-const renderBugList = (bugsList, bugType) => (
-    <div className="bug-list-table" key={`bug-list-${bugType}`}>
-        <DataTable
-            title={`${bugType} (${listOfBugs(bugsList, bugType)?.length} Result(s))`}
-            data={listOfBugs(bugsList, bugType)?.map(singleId) || []}
-            columns={['ID']}
-            pageSize={10}
-            paginated
-        />
-    </div>
-);
+const renderBugList = (bugsList, bugType) => {
+    const rows = listOfBugs(bugsList, bugType);
+    return (
+        <div className="bug-list-table" key={`bug-list-${bugType}`}>
+            <DataTable
+                title={`${bugType} (${rows.length} Result${rows.length === 1 ? '' : 's'})`}
+                data={rows.map(singleId)}
+                columns={['ID']}
+                pageSize={10}
+                paginated
+            />
+        </div>
+    );
+};
 
 const BugsModal = ({dataObj = {}, onClose}) => (
     <Modal

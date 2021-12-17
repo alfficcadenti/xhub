@@ -27,7 +27,7 @@ const NumberOfBugs = ({teams, from, to}) => {
             } catch (e) {
                 setError('Error loading the Number of Bugs. Try refreshing the page');
             }
-        }
+        };
         fetchAPI()
             .finally(setIsLoading(false));
     }, [teams, from, to]);

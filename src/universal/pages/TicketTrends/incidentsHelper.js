@@ -26,7 +26,7 @@ export const getTableColumns = (selectedBrand) => {
 };
 
 export const getTableColumnsForIncident = () => {
-    return ['Incident', 'Priority', 'Booking Impact', 'Started', 'TTD', 'TTK', 'TTF', 'TTR', 'Environment', 'RC Owner', 'L1']
+    return ['Incident', 'Priority', 'Booking Impact', 'Started', 'TTD', 'TTK', 'TTF', 'TTR', 'Environment', 'RC Owner', 'L1'];
 };
 
 export const adjustTicketProperties = (tickets = []) => (
@@ -109,7 +109,7 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
     }))
     .sort((a, b) => b.Started.localeCompare(a.Started));
 
-    export const getIncidentsDataById = (filteredIncidents = []) => filteredIncidents
+export const getIncidentsDataById = (filteredIncidents = []) => filteredIncidents
     .map((inc) => ({
         id: uuid(),
         Incident: buildTicketLinks(inc.id, inc.Brand, inc.url) || '-',

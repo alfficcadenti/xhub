@@ -1,16 +1,30 @@
 @import '../../../../mixins.less';
 
-.bugs-modal,
-.Modal__body {
-    display: inline-block;
-    justify-content: center;
+.bugs-modal {
+    .Modal__dialog {
+        min-width: 600px;
+    }
 
-    .bugs-list {
-        margin: @spacing-3x;
-        padding: @spacing-3x;
+    .Modal__body {
+        display: inline-block;
+        justify-content: center;
+        width: 100%;
 
-        .tooltip-bug-div {
-            text-align: center;
+        .bug-list-table {
+            margin-bottom: @spacing-5x;
+
+            .data-table__title {
+                text-transform: capitalize;
+            }
+
+            .bugs-list {
+                margin: @spacing-3x;
+                padding: @spacing-3x;
+
+                .tooltip-bug-div {
+                    text-align: center;
+                }
+            }
         }
     }
 }

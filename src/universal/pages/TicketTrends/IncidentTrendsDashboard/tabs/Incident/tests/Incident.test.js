@@ -6,7 +6,6 @@ import {render, act, fireEvent} from '@testing-library/react';
 import '@testing-library/jest-dom';
 
 
-
 describe('Incident component testing', () => {
     let wrapper;
 
@@ -27,18 +26,17 @@ describe('Incident component testing', () => {
         fetch.mockImplementation(async () => {
             return Promise.resolve({
                 ok: true,
-                json: () => Promise.resolve(mockData) 
+                json: () => Promise.resolve(mockData)
             });
         });
         await act(async () => {
             wrapper = render(<Incident />);
             const input = wrapper.getByLabelText('Search incident by ID');
-            fireEvent.change(input, {target: {value: 'INC123'}})
-            
+            fireEvent.change(input, {target: {value: 'INC123'}});
         });
-        await act(async ()=> {
+        await act(async () => {
             await fireEvent.click(wrapper.getByText('Search'));
-        })
+        });
 
         expect(wrapper).toMatchSnapshot();
     });
@@ -47,20 +45,18 @@ describe('Incident component testing', () => {
         fetch.mockImplementation(async () => {
             return Promise.resolve({
                 ok: false,
-                json: () => Promise.resolve([]) 
+                json: () => Promise.resolve([])
             });
         });
         await act(async () => {
             wrapper = render(<Incident />);
             const input = wrapper.getByLabelText('Search incident by ID');
-            fireEvent.change(input, {target: {value: 'INC123'}})
-            
+            fireEvent.change(input, {target: {value: 'INC123'}});
         });
-        await act(async ()=> {
+        await act(async () => {
             await fireEvent.click(wrapper.getByText('Search'));
-        })
+        });
         expect(wrapper.getByText('Failed to retrieve data. Try refreshing the page. If the problem persists, please message #opxhub-support or fill out our Feedback form.')).toBeInTheDocument();
         expect(wrapper).toMatchSnapshot();
     });
-
 });

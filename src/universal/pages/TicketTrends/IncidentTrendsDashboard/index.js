@@ -150,9 +150,9 @@ const IncidentTrendsDashboard = ({selectedBrands, onBrandChange, prevSelectedBra
     };
 
     const loadingWrapper = (tab) => (
-    <LoadingContainer isLoading={isLoading} error={error} className="incident-main">
-        {tab}
-    </LoadingContainer>
+        <LoadingContainer isLoading={isLoading} error={error} className="incident-main">
+            {tab}
+        </LoadingContainer>
     );
 
     // eslint-disable-next-line complexity
@@ -165,7 +165,7 @@ const IncidentTrendsDashboard = ({selectedBrands, onBrandChange, prevSelectedBra
             case 2:
                 return loadingWrapper(<Top5 tickets={tickets} />);
             case 3:
-                return <Incident  />;
+                return <Incident />;
             default:
                 return <Incidents tickets={tickets} />;
         }
