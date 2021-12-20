@@ -3,7 +3,7 @@ import DataTable from '@homeaway/react-data-table';
 import './styles.less';
 import {LIST_OF_SERVICES} from './constants';
 import rowComponent from './rowComponent';
-import {compareArraysElements, timeout} from './utils';
+import {timeout, compareObjArraysElements} from './utils';
 import {checkResponse} from '../utils';
 
 const StatusPage = () => {
@@ -15,7 +15,7 @@ const StatusPage = () => {
         Promise.all(LIST_OF_SERVICES.map(({endpoint}) => fetch(endpoint, {signal: timeout(5).signal})))
             .then((res) => Promise.all(res.map(checkResponse)))
             .then((allData) => setServices(LIST_OF_SERVICES.map((service, idx) => {
-                if (compareArraysElements(allData[idx], service.expectedResponse)) {
+                if (compareObjArraysElements(allData[idx], service.expectedResponse)) {
                     service.status = true;
                 }
                 return service;

@@ -55,11 +55,8 @@ import {
     deltaUserDetails,
     deltaUserBySessionId
 } from './fciDataService';
-import {statusPage} from './statusPageService';
 
 const apiRoutes = [
-    // status page
-    statusPage,
     // oauth
     login,
     logout,

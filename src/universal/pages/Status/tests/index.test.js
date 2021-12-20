@@ -2,8 +2,8 @@ import React from 'react';
 import {render, act} from '@testing-library/react';
 import {shallow} from 'enzyme';
 import StatusPage from '../index';
-import {compareArraysElements} from '../utils';
-import {CHECKOUT_FAILURE_SITES_MOCK_DATA} from './mockData/mockData';
+import {compareObjArraysElements} from '../utils';
+import {INCIDENTS_EXPECTED_DATA} from './mockData/mockData';
 
 describe('Status Page', () => {
     let wrapper;
@@ -41,7 +41,7 @@ describe('Status Page', () => {
     });
 
     it('renders fail icon when incorrect response data doesn\'t match', async () => {
-        fetch.mockImplementationOnce(() => {
+        fetch.mockImplementation(() => {
             return Promise.resolve({
                 ok: true,
                 json: () => Promise.resolve('www.orbitz.com')
@@ -51,7 +51,6 @@ describe('Status Page', () => {
         await act(async () => {
             wrapper = render(<StatusPage />);
         });
-
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -59,14 +58,13 @@ describe('Status Page', () => {
         fetch.mockImplementation(() => {
             return Promise.resolve({
                 ok: true,
-                json: () => Promise.resolve(CHECKOUT_FAILURE_SITES_MOCK_DATA)
+                json: () => Promise.resolve(INCIDENTS_EXPECTED_DATA)
             });
         });
 
         await act(async () => {
             wrapper = render(<StatusPage />);
         });
-
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -82,26 +80,83 @@ describe('Status Page', () => {
             wrapper = render(<StatusPage />);
         });
 
-        expect(fetch.mock.calls).toEqual([['/v1/checkout-failures/sites?from=2021-10-26T16:53:00Z&to=2021-10-26T16:53:06Z',
-            {
-                'signal': c.signal
-            }
-        ]]);
+        expect(fetch.mock.calls).toEqual([
+            ['/v1/checkout-failures/sites?from=2021-10-26T16:53:00Z&to=2021-10-26T16:53:06Z', {'signal': c.signal}],
+            ['v1/incidents?from_datetime=2021-10-28T05:31:00Z&to_datetime=2021-10-28T16:31:00Z', {'signal': c.signal}]
+        ]);
     });
 
-    it('returns true - checks two arrays and matches - success', async () => {
+    it('compareObjArraysElements returns true when two arrays match', async () => {
         const arrayOne = ['www.expedia.com', 'www.travelocity.com'];
-        const arrayTwo = ['www.travelocity.com', 'www.expedia.com'];
+        const arrayTwo = ['www.expedia.com', 'www.travelocity.com'];
 
-        const verifyCheck = compareArraysElements(arrayOne, arrayTwo);
+        const verifyCheck = compareObjArraysElements(arrayOne, arrayTwo);
         expect(verifyCheck).toEqual(true);
     });
 
-    it('returns false - checks two arrays and doesn\'t match - fail', async () => {
+    it('compareObjArraysElements returns false when two arrays doesn\'t match', async () => {
         const arrayOne = ['www.expedia.com', 'www.travelocity.com'];
         const arrayTwo = ['www.orbitz.com', 'www.ebookers.com'];
 
-        const verifyCheck = compareArraysElements(arrayOne, arrayTwo);
+        const verifyCheck = compareObjArraysElements(arrayOne, arrayTwo);
         expect(verifyCheck).toEqual(false);
+    });
+
+    it('compareObjArraysElements returns false when 2 objects doesn\'t match', async () => {
+        const objectOne = {
+            'booking_impact': 'Moderate Booking Impact',
+            'brand': 'Expedia Services',
+            'degradation_outage': 'Degradation',
+            'duration': '106',
+            'end_date': '2021-10-18 19:11:00.0000000 +00:00',
+            'environment': 'Production',
+            'estimated_gross_loss': null,
+            'estimated_order_loss': null,
+            'estimated_revenue_loss': null
+        };
+        const objectTwo = {
+            'booking_impact': 'Moderate Booking Impact',
+            'brand': 'Total Retail',
+            'degradation_outage': 'Degradation',
+            'duration': '106',
+            'end_date': '2021-10-18 19:11:00.0000000 +00:00',
+            'environment': 'Production',
+            'estimated_gross_loss': null,
+            'estimated_order_loss': null,
+            'estimated_revenue_loss': null
+        };
+        const arr1 = [objectOne];
+        const arr2 = [objectTwo];
+        const verifyCheck = compareObjArraysElements(arr1, arr2);
+        expect(verifyCheck).toEqual(false);
+    });
+
+    it('compareObjArraysElements returns true when 2 objects match', async () => {
+        const objectOne = {
+            'booking_impact': 'Moderate Booking Impact',
+            'brand': 'Total Retail',
+            'degradation_outage': 'Degradation',
+            'duration': '106',
+            'end_date': '2021-10-18 19:11:00.0000000 +00:00',
+            'environment': 'Production',
+            'estimated_gross_loss': null,
+            'estimated_order_loss': null,
+            'estimated_revenue_loss': null
+        };
+        const objectTwo = {
+            'booking_impact': 'Moderate Booking Impact',
+            'brand': 'Total Retail',
+            'degradation_outage': 'Degradation',
+            'duration': '106',
+            'end_date': '2021-10-18 19:11:00.0000000 +00:00',
+            'environment': 'Production',
+            'estimated_gross_loss': null,
+            'estimated_order_loss': null,
+            'estimated_revenue_loss': null
+        };
+        const arr1 = [objectOne];
+        const arr2 = [objectTwo];
+        const verifyCheck = compareObjArraysElements(arr1, arr2);
+        expect(verifyCheck).toEqual(true);
     });
 });

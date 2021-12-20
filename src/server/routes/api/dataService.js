@@ -1,6 +1,6 @@
 import {getConfig, getHandler} from './utils';
-import {incidents} from './testData/incidents';
 import {agileMockData} from './testData/agileScoreCard';
+import {INCIDENTS_MOCK_DATA} from './testData/statusPage';
 
 const getHandlerParams = (routeKey) => ({
     routeKey,
@@ -40,7 +40,7 @@ module.exports.incidents = {
     method: 'GET',
     path: '/v1/incidents/{impulse*}',
     config: getConfig('incidents-get'),
-    handler: getHandler(Object.assign(getHandlerParams('incidents'), {pathParam: 'impulse'}), incidents)
+    handler: getHandler(Object.assign(getHandlerParams('incidents'), {pathParam: 'impulse'}), () => INCIDENTS_MOCK_DATA)
 };
 
 module.exports.incidentsV2 = {

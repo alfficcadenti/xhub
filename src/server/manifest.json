@@ -975,42 +975,6 @@
           }
         }
       },
-      "statusPageServiceConfig": {
-        "$filter": "env.EXPEDIA_ENVIRONMENT",
-        "$default": {
-          "hostname": "<HOSTNAME>",
-          "protocol": "https:",
-          "routes": {
-            "statusPage": {
-              "path": "/v1/status-page",
-              "method": "GET",
-              "operation": "GET_status_api_v1"
-            }
-          }
-        },
-        "test": {
-          "hostname": "<HOSTNAME>",
-          "protocol": "https:",
-          "routes": {
-            "statusPage": {
-              "path": "/v1/status-page",
-              "method": "GET",
-              "operation": "GET_status_api_v1"
-            }
-          }
-        },
-        "prod": {
-          "hostname": "<HOSTNAME>",
-          "protocol": "https:",
-          "routes": {
-            "statusPage": {
-              "path": "/v1/status-page",
-              "method": "GET",
-              "operation": "GET_status_api_v1"
-            }
-          }
-        }
-      },
       "oauthApi": {
         "$filter": "env.NODE_ENV",
         "$default": {

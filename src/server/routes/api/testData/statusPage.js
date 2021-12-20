@@ -1,6 +1,4 @@
-export const CHECKOUT_FAILURE_SITES_EXPECTED_DATA = ['www.expedia.com', 'www.travelocity.com'];
-
-export const INCIDENTS_EXPECTED_DATA = [{
+export const INCIDENTS_MOCK_DATA = [{
     'booking_impact': 'Moderate Booking Impact',
     'brand': 'Total Retail',
     'degradation_outage': 'Degradation',
@@ -30,5 +28,3 @@ export const INCIDENTS_EXPECTED_DATA = [{
     'time_to_fix': '24',
     'application_name': null,
     'url': 'https://expedia.service-now.com/go.do?id=INC5940759'}];
-
-

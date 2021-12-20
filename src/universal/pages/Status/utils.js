@@ -1,8 +1,4 @@
-export const compareArraysElements = (array1, array2) => (
-    Array.isArray(array1) &&
-    array1.length === array2.length &&
-    array1.every((result) => array2.includes(result)
-    ));
+export const compareObjArraysElements = (array1, array2) => JSON.stringify(array1) === JSON.stringify(array2);
 
 export const timeout = (time) => {
     let controller = new AbortController();
