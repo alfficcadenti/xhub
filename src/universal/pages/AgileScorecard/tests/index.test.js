@@ -63,9 +63,9 @@ describe('formatPieData()', () => {
 
 describe('formatLineChartData()', () => {
     const EXPECTED_RESULT = [
-        {'name': '1st-11-2021', 'open bugs': 110, 'closed bugs': 51},
-        {'name': '2nd-11-2021', 'open bugs': 6, 'closed bugs': 40},
-        {'name': '3rd-11-2021', 'open bugs': 90, 'closed bugs': 90}
+        {'name': '2021-11-01', 'open bugs': 110, 'closed bugs': 51},
+        {'name': '2021-11-02', 'open bugs': 6, 'closed bugs': 40},
+        {'name': '2021-11-03', 'open bugs': 90, 'closed bugs': 90}
     ];
 
     it('returns data formatted for chart', () => {
@@ -90,7 +90,11 @@ describe('formatLineChartData()', () => {
 });
 
 describe('formatTooltipData()', () => {
-    const EXPECTED_RESULT = {'1st-11-2021': {'closed bugs': ['EDECO-12071', 'LUX-10788'], 'open bugs': ['RTS-4057', 'LEO-15833', 'LEO-15834', 'LLAM-1356']}, '2nd-11-2021': {'closed bugs': ['EDECO-12071', 'LUX-10788'], 'open bugs': ['RTS-4057', 'LEO-15833', 'LEO-15834', 'LLAM-1356']}, '3rd-11-2021': {'closed bugs': ['EDECO-12071', 'LUX-10788'], 'open bugs': ['RTS-4057', 'LEO-15833', 'LEO-15834', 'LLAM-1356']}};
+    const EXPECTED_RESULT = {
+        '2021-11-01': {'closed bugs': ['EDECO-12071', 'LUX-10788'], 'open bugs': ['LEO-15833', 'LEO-15834', 'LLAM-1356', 'RTS-4057']},
+        '2021-11-02': {'closed bugs': ['EDECO-12071', 'LUX-10788'], 'open bugs': ['LEO-15833', 'LEO-15834', 'LLAM-1356', 'RTS-4057']},
+        '2021-11-03': {'closed bugs': ['EDECO-12071', 'LUX-10788'], 'open bugs': ['LEO-15833', 'LEO-15834', 'LLAM-1356', 'RTS-4057']}
+    };
     it('returns data formatted for modal', () => {
         const label = formatTooltipData(MOCK_NUMBER_OF_BUGS);
         expect(label).to.be.eql(EXPECTED_RESULT);

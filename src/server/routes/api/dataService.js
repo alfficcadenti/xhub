@@ -1,5 +1,4 @@
 import {getConfig, getHandler} from './utils';
-import {agileMockData} from './testData/agileScoreCard';
 import {INCIDENTS_MOCK_DATA} from './testData/statusPage';
 
 const getHandlerParams = (routeKey) => ({
@@ -103,12 +102,12 @@ module.exports.agileScoreCardDistribution = {
     method: 'GET',
     path: '/v1/score-card/distribution-work-data/{param*}',
     config: getConfig('agile-score-card-distribution-get'),
-    handler: getHandler(Object.assign(getHandlerParams('agileScoreCardDistribution'), {pathParam: 'param'}), agileMockData)
+    handler: getHandler(Object.assign(getHandlerParams('agileScoreCardDistribution'), {pathParam: 'param'}))
 };
 
 module.exports.agileScoreCardBugs = {
     method: 'GET',
     path: '/v1/score-card/number-of-bugs/{param*}',
     config: getConfig('agile-score-card-bugs-get'),
-    handler: getHandler(Object.assign(getHandlerParams('agileScoreCardBugs'), {pathParam: 'param'}), agileMockData)
+    handler: getHandler(Object.assign(getHandlerParams('agileScoreCardBugs'), {pathParam: 'param'}))
 };
