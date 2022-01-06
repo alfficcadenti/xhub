@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import DataTable from '@homeaway/react-data-table';
 import './styles.less';
 import {LIST_OF_SERVICES} from './constants';
-import rowComponent from './rowComponent';
+import {rowComponent, toolTip} from './rowComponent';
 import {timeout, compareObjArraysElements} from './utils';
 import {checkResponse} from '../utils';
 
@@ -31,13 +31,14 @@ const StatusPage = () => {
             });
     }, []);
 
-    const rows = LIST_OF_SERVICES.map((service) => rowComponent({name: service.name, endpointName: service.endpointName, status: service.status}));
+    const rows = LIST_OF_SERVICES.map((service) => rowComponent({name: service.name, endpointName: service.endpointName, status: service.status, endpoint: service.endpoint}));
+    const statusToolTip = toolTip();
 
     return (
         <div className="status-page-container">
             <h1 className="page-title" data-testid="title">{'Status Page'}</h1>
             <DataTable
-                headers={[{name: 'Service Name'}, {name: 'Endpoint'}, {name: 'Status'}]}
+                headers={[{name: 'Service Name'}, {name: 'Endpoint'}, {name: statusToolTip}]}
                 rows={rows}
                 colConfig={{flex: {0: 2, 1: 3, 2: 1}}}
             />

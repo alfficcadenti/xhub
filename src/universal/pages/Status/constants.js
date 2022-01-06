@@ -9,6 +9,6 @@ export const LIST_OF_SERVICES =
     {name: 'opxhub-data-service',
         endpointName: '/v1/incidents',
         expectedResponse: INCIDENTS_EXPECTED_DATA,
-        endpoint: 'v1/incidents?from_datetime=2021-10-28T05:31:00Z&to_datetime=2021-10-28T16:31:00Z',
+        endpoint: '/v1/incidents?from_datetime=2021-10-28T05:31:00Z&to_datetime=2021-10-28T16:31:00Z',
         status: false}
     ];
