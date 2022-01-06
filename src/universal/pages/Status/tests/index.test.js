@@ -77,12 +77,11 @@ describe('Status Page', () => {
         });
 
         await act(async () => {
-            wrapper = render(<StatusPage />);
+            wrapper = render(<StatusPage/>);
         });
-
         expect(fetch.mock.calls).toEqual([
             ['/v1/checkout-failures/sites?from=2021-10-26T16:53:00Z&to=2021-10-26T16:53:06Z', {'signal': c.signal}],
-            ['v1/incidents?from_datetime=2021-10-28T05:31:00Z&to_datetime=2021-10-28T16:31:00Z', {'signal': c.signal}]
+            ['/v1/incidents?from_datetime=2021-10-28T05:31:00Z&to_datetime=2021-10-28T16:31:00Z', {'signal': c.signal}]
         ]);
     });
 
