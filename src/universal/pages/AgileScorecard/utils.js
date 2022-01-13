@@ -1,8 +1,35 @@
+import React from 'react';
 import moment from 'moment';
+import {getOrDefault} from '../../utils';
+import {AGILE_TEAM_PREFIX} from './constants';
 
 export const labelFormat = ({count, total, label}) => count ? `${label}  (${count} of ${total} selected)` : `Select ${label}...`;
 
 export const formatPieData = (data) => Array.isArray(data) && data.map((x) => ({name: x.type_of_work, value: x.ticket_count})) || [];
+
+export const formatLeadTimeData = (data) => Array.isArray(data) && data
+    .map((x) => ({name: x.openDate, 'Mean Lead Time': x.leadTime}));
+
+export const mapAgileInsight = (a) => ({
+    ID: <a href={a.url} target="_blank" rel="noop">{getOrDefault(a, 'id')}</a>,
+    Project: getOrDefault(a, 'project'),
+    Severity: getOrDefault(a, 'severity'),
+    Brand: getOrDefault(a, 'brand'),
+    Summary: getOrDefault(a, 'summary'),
+    'Project Key': getOrDefault(a, 'projectKey'),
+    'Open Date': getOrDefault(a, 'openDate'),
+    Priority: getOrDefault(a, 'priority'),
+    Resolved: getOrDefault(a, 'resolvedDate'),
+    Tag: getOrDefault(a, 'tag'),
+    Resolution: getOrDefault(a, 'resolution'),
+    'Impacted Brand': getOrDefault(a, 'impactedBrand'),
+    Labels: getOrDefault(a, 'labels'),
+    Teams: a.labels?.split(',')?.filter((x) => x.includes(AGILE_TEAM_PREFIX))?.map((x) => x.replace(AGILE_TEAM_PREFIX, '')).join(',') || '-',
+    Updated: getOrDefault(a, 'updatedDateTime'),
+    'Issue Type': getOrDefault(a, 'issueType'),
+    'Last Closed': getOrDefault(a, 'lastClosed'),
+    'Lead Time': getOrDefault(a, 'leadTime'),
+});
 
 export const formatLineChartData = (data) => Array.isArray(data) && data
     .map((x) => ({name: moment(x.date).format('YYYY-MM-DD'), 'open bugs': x.open_bugs_count || 0, 'closed bugs': x.closed_bugs_count || 0}))

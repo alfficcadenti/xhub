@@ -9,8 +9,10 @@ import {Navigation} from '@homeaway/react-navigation';
 import LoadingContainer from '../../components/LoadingContainer';
 import Distribution from './tabs/Distribution';
 import NumberOfBugs from './tabs/NumberOfBugs';
+import LeadTimes from './tabs/LeadTimes';
 import {labelFormat} from './utils';
 import {NAV_LINKS} from './constants';
+import './styles.less';
 
 
 import './styles.less';
@@ -99,6 +101,8 @@ const AgileScorecard = () => {
                 return <Distribution from={from} to={to} teams={teams} />;
             case 1:
                 return <NumberOfBugs from={from} to={to} teams={teams} />;
+            case 2:
+                return <LeadTimes from={from} to={to} teams={teams} />;
             default:
                 return <Distribution from={from} to={to} teams={teams} />;
         }

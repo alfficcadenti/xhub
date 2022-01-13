@@ -11,9 +11,7 @@ import {
     portfolio,
     orgMetrics,
     robbie,
-    agileScoreCardTeam,
-    agileScoreCardDistribution,
-    agileScoreCardBugs
+    agileScoreCard
 } from './dataService';
 import {
     bookingsUserEvents,
@@ -72,9 +70,7 @@ const apiRoutes = [
     portfolio,
     orgMetrics,
     robbie,
-    agileScoreCardTeam,
-    agileScoreCardDistribution,
-    agileScoreCardBugs,
+    agileScoreCard,
     // user events service
     bookingsUserEvents,
     epsPageViewsLoBUserEvents,
