@@ -53,6 +53,8 @@ import {
     deltaUserDetails,
     deltaUserBySessionId
 } from './fciDataService';
+import {availability} from './egAvailabilityService';
+
 
 const apiRoutes = [
     // oauth
@@ -115,7 +117,9 @@ const apiRoutes = [
     checkoutFailuresErrorCounts,
     deltaUser,
     deltaUserDetails,
-    deltaUserBySessionId
+    deltaUserBySessionId,
+    // eg avail data service
+    availability
 ];
 
 export default apiRoutes;

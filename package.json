@@ -165,6 +165,7 @@
     "react-csv": "^2.0.3",
     "react-datetime": "^2.16.3",
     "react-dom": "^16.13.1",
+    "react-grid-heatmap": "^1.1.0",
     "react-hot-loader": "^4.12.20",
     "react-iframe": "^1.8.0",
     "react-radial-progress-indicator": "^1.4.1",

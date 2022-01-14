@@ -15,6 +15,7 @@ import Reservations from './Reservations';
 import OperationalTV from './OperationalTV';
 import OperationalDashboard from './OperationalDashboard';
 import CheckoutSuccessRate from './CheckoutSuccessRate';
+import CGPAvailability from './CGPAvailability';
 import OperationalIos from './OperationalIos';
 import DataCenterTraffic from './DataCenterTraffic';
 import PortfolioScoreCard from './PortfolioScoreCard';
@@ -97,6 +98,13 @@ export default [
         text: 'Checkout and Booking Requests',
         component: CheckoutBookingRequests,
         brands: [VRBO_BRAND]
+    },
+    {
+        category: AAT,
+        id: 'cgp-availability',
+        link: '/cgp-availability',
+        text: 'CGP Availability',
+        component: CGPAvailability
     },
     {
         category: AAT,

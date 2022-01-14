@@ -18,7 +18,7 @@ Object {
           class="Datatable Datatable--density-default"
         >
           <table
-            aria-rowcount="1"
+            aria-rowcount="2"
             class="Datatable__table Datatable__table--col-fixed"
           >
             <colgroup>
@@ -71,7 +71,48 @@ Object {
                   <div
                     class="header__name"
                   >
-                    Status
+                    <div>
+                      <strong>
+                        Status
+                         
+                      </strong>
+                      <div
+                        class=""
+                        role="button"
+                        style="display: inline-block; outline: 0; position: relative;"
+                        tabindex="0"
+                      >
+                         
+                        <span
+                          class="SVGIcon SVGIcon--16px"
+                        >
+                          <svg
+                            data-id="SVG_INFO__16"
+                            focusable="false"
+                            height="16"
+                            viewBox="0 0 16 16"
+                            width="16"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <g
+                              fill="none"
+                              fill-rule="evenodd"
+                            >
+                              <path
+                                d="M7.1 5A.9.9 0 1 1 9 5 .9.9 0 0 1 7 5"
+                                fill="currentColor"
+                                stroke="none"
+                              />
+                              <path
+                                d="M8 11.2V7.3M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8z"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </g>
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </th>
               </tr>
@@ -87,22 +128,108 @@ Object {
                 >
                   <a
                     class="serviceName"
-                    href="https://github.expedia.biz/eg-reo-opex/eg-fci-data-service"
+                    href="https://spawg-dp.expedia.biz/dashboards/eg-fci-data-service/state/"
                     target="_blank"
                   >
                     eg-fci-data-service
                   </a>
-                  <img
-                    alt="github"
-                    height="24"
-                    title="github"
-                    width="24"
-                  />
+                  <a
+                    class="serviceName"
+                    href="https://github.expedia.biz/eg-reo-opex/eg-fci-data-service"
+                    target="_blank"
+                  >
+                    <img
+                      alt="github"
+                      height="24"
+                      title="github"
+                      width="24"
+                    />
+                  </a>
                 </td>
                 <td
                   class="row__cell Datatable__cell"
                 >
-                  /v1/checkout-failures/sites
+                  <a
+                    class="serviceName"
+                    href="https://opxhub-ui.us-east-1.prod.expedia.com/v1/checkout-failures/sites?from=2021-10-26T16:53:00Z&to=2021-10-26T16:53:06Z"
+                    target="_blank"
+                  >
+                    /v1/checkout-failures/sites
+                  </a>
+                </td>
+                <td
+                  class="row__cell Datatable__cell"
+                >
+                  <div
+                    data-testid="failIcon"
+                  >
+                    <span
+                      class="SVGIcon SVGIcon--24px fail-icon"
+                    >
+                      <svg
+                        data-id="SVG_ALERT__24"
+                        focusable="false"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        width="24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g
+                          fill="none"
+                          fill-rule="evenodd"
+                        >
+                          <path
+                            d="M13 16a1 1 0 1 1-2 0 1 1 0 0 1 2 0"
+                            fill="currentColor"
+                            stroke="none"
+                          />
+                          <path
+                            d="M12 7.8v5.1m9.3-.9a9.3 9.3 0 1 1-18.6 0 9.3 9.3 0 0 1 18.6 0z"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </g>
+                      </svg>
+                    </span>
+                  </div>
+                </td>
+              </tr>
+              <tr
+                class="Datatable__row"
+              >
+                <td
+                  class="row__cell Datatable__cell"
+                >
+                  <a
+                    class="serviceName"
+                    href="https://spinnaker.expedia.biz/#/applications/opxhub-data-service/executions/"
+                    target="_blank"
+                  >
+                    opxhub-data-service
+                  </a>
+                  <a
+                    class="serviceName"
+                    href="https://github.expedia.biz/eg-reo-opex/opxhub-data-service"
+                    target="_blank"
+                  >
+                    <img
+                      alt="github"
+                      height="24"
+                      title="github"
+                      width="24"
+                    />
+                  </a>
+                </td>
+                <td
+                  class="row__cell Datatable__cell"
+                >
+                  <a
+                    class="serviceName"
+                    href="https://opxhub-ui.us-east-1.prod.expedia.com/v1/incidents?from_datetime=2021-10-28T05:31:00Z&to_datetime=2021-10-28T16:31:00Z"
+                    target="_blank"
+                  >
+                    /v1/incidents
+                  </a>
                 </td>
                 <td
                   class="row__cell Datatable__cell"
@@ -161,7 +288,7 @@ Object {
         class="Datatable Datatable--density-default"
       >
         <table
-          aria-rowcount="1"
+          aria-rowcount="2"
           class="Datatable__table Datatable__table--col-fixed"
         >
           <colgroup>
@@ -214,7 +341,48 @@ Object {
                 <div
                   class="header__name"
                 >
-                  Status
+                  <div>
+                    <strong>
+                      Status
+                       
+                    </strong>
+                    <div
+                      class=""
+                      role="button"
+                      style="display: inline-block; outline: 0; position: relative;"
+                      tabindex="0"
+                    >
+                       
+                      <span
+                        class="SVGIcon SVGIcon--16px"
+                      >
+                        <svg
+                          data-id="SVG_INFO__16"
+                          focusable="false"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          width="16"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <g
+                            fill="none"
+                            fill-rule="evenodd"
+                          >
+                            <path
+                              d="M7.1 5A.9.9 0 1 1 9 5 .9.9 0 0 1 7 5"
+                              fill="currentColor"
+                              stroke="none"
+                            />
+                            <path
+                              d="M8 11.2V7.3M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8z"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </g>
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </th>
             </tr>
@@ -230,22 +398,108 @@ Object {
               >
                 <a
                   class="serviceName"
-                  href="https://github.expedia.biz/eg-reo-opex/eg-fci-data-service"
+                  href="https://spawg-dp.expedia.biz/dashboards/eg-fci-data-service/state/"
                   target="_blank"
                 >
                   eg-fci-data-service
                 </a>
-                <img
-                  alt="github"
-                  height="24"
-                  title="github"
-                  width="24"
-                />
+                <a
+                  class="serviceName"
+                  href="https://github.expedia.biz/eg-reo-opex/eg-fci-data-service"
+                  target="_blank"
+                >
+                  <img
+                    alt="github"
+                    height="24"
+                    title="github"
+                    width="24"
+                  />
+                </a>
               </td>
               <td
                 class="row__cell Datatable__cell"
               >
-                /v1/checkout-failures/sites
+                <a
+                  class="serviceName"
+                  href="https://opxhub-ui.us-east-1.prod.expedia.com/v1/checkout-failures/sites?from=2021-10-26T16:53:00Z&to=2021-10-26T16:53:06Z"
+                  target="_blank"
+                >
+                  /v1/checkout-failures/sites
+                </a>
+              </td>
+              <td
+                class="row__cell Datatable__cell"
+              >
+                <div
+                  data-testid="failIcon"
+                >
+                  <span
+                    class="SVGIcon SVGIcon--24px fail-icon"
+                  >
+                    <svg
+                      data-id="SVG_ALERT__24"
+                      focusable="false"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g
+                        fill="none"
+                        fill-rule="evenodd"
+                      >
+                        <path
+                          d="M13 16a1 1 0 1 1-2 0 1 1 0 0 1 2 0"
+                          fill="currentColor"
+                          stroke="none"
+                        />
+                        <path
+                          d="M12 7.8v5.1m9.3-.9a9.3 9.3 0 1 1-18.6 0 9.3 9.3 0 0 1 18.6 0z"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </g>
+                    </svg>
+                  </span>
+                </div>
+              </td>
+            </tr>
+            <tr
+              class="Datatable__row"
+            >
+              <td
+                class="row__cell Datatable__cell"
+              >
+                <a
+                  class="serviceName"
+                  href="https://spinnaker.expedia.biz/#/applications/opxhub-data-service/executions/"
+                  target="_blank"
+                >
+                  opxhub-data-service
+                </a>
+                <a
+                  class="serviceName"
+                  href="https://github.expedia.biz/eg-reo-opex/opxhub-data-service"
+                  target="_blank"
+                >
+                  <img
+                    alt="github"
+                    height="24"
+                    title="github"
+                    width="24"
+                  />
+                </a>
+              </td>
+              <td
+                class="row__cell Datatable__cell"
+              >
+                <a
+                  class="serviceName"
+                  href="https://opxhub-ui.us-east-1.prod.expedia.com/v1/incidents?from_datetime=2021-10-28T05:31:00Z&to_datetime=2021-10-28T16:31:00Z"
+                  target="_blank"
+                >
+                  /v1/incidents
+                </a>
               </td>
               <td
                 class="row__cell Datatable__cell"
@@ -361,7 +615,7 @@ Object {
           class="Datatable Datatable--density-default"
         >
           <table
-            aria-rowcount="1"
+            aria-rowcount="2"
             class="Datatable__table Datatable__table--col-fixed"
           >
             <colgroup>
@@ -414,7 +668,48 @@ Object {
                   <div
                     class="header__name"
                   >
-                    Status
+                    <div>
+                      <strong>
+                        Status
+                         
+                      </strong>
+                      <div
+                        class=""
+                        role="button"
+                        style="display: inline-block; outline: 0; position: relative;"
+                        tabindex="0"
+                      >
+                         
+                        <span
+                          class="SVGIcon SVGIcon--16px"
+                        >
+                          <svg
+                            data-id="SVG_INFO__16"
+                            focusable="false"
+                            height="16"
+                            viewBox="0 0 16 16"
+                            width="16"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <g
+                              fill="none"
+                              fill-rule="evenodd"
+                            >
+                              <path
+                                d="M7.1 5A.9.9 0 1 1 9 5 .9.9 0 0 1 7 5"
+                                fill="currentColor"
+                                stroke="none"
+                              />
+                              <path
+                                d="M8 11.2V7.3M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8z"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </g>
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </th>
               </tr>
@@ -430,22 +725,108 @@ Object {
                 >
                   <a
                     class="serviceName"
-                    href="https://github.expedia.biz/eg-reo-opex/eg-fci-data-service"
+                    href="https://spawg-dp.expedia.biz/dashboards/eg-fci-data-service/state/"
                     target="_blank"
                   >
                     eg-fci-data-service
                   </a>
-                  <img
-                    alt="github"
-                    height="24"
-                    title="github"
-                    width="24"
-                  />
+                  <a
+                    class="serviceName"
+                    href="https://github.expedia.biz/eg-reo-opex/eg-fci-data-service"
+                    target="_blank"
+                  >
+                    <img
+                      alt="github"
+                      height="24"
+                      title="github"
+                      width="24"
+                    />
+                  </a>
                 </td>
                 <td
                   class="row__cell Datatable__cell"
                 >
-                  /v1/checkout-failures/sites
+                  <a
+                    class="serviceName"
+                    href="https://opxhub-ui.us-east-1.prod.expedia.com/v1/checkout-failures/sites?from=2021-10-26T16:53:00Z&to=2021-10-26T16:53:06Z"
+                    target="_blank"
+                  >
+                    /v1/checkout-failures/sites
+                  </a>
+                </td>
+                <td
+                  class="row__cell Datatable__cell"
+                >
+                  <div
+                    data-testid="failIcon"
+                  >
+                    <span
+                      class="SVGIcon SVGIcon--24px fail-icon"
+                    >
+                      <svg
+                        data-id="SVG_ALERT__24"
+                        focusable="false"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        width="24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g
+                          fill="none"
+                          fill-rule="evenodd"
+                        >
+                          <path
+                            d="M13 16a1 1 0 1 1-2 0 1 1 0 0 1 2 0"
+                            fill="currentColor"
+                            stroke="none"
+                          />
+                          <path
+                            d="M12 7.8v5.1m9.3-.9a9.3 9.3 0 1 1-18.6 0 9.3 9.3 0 0 1 18.6 0z"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </g>
+                      </svg>
+                    </span>
+                  </div>
+                </td>
+              </tr>
+              <tr
+                class="Datatable__row"
+              >
+                <td
+                  class="row__cell Datatable__cell"
+                >
+                  <a
+                    class="serviceName"
+                    href="https://spinnaker.expedia.biz/#/applications/opxhub-data-service/executions/"
+                    target="_blank"
+                  >
+                    opxhub-data-service
+                  </a>
+                  <a
+                    class="serviceName"
+                    href="https://github.expedia.biz/eg-reo-opex/opxhub-data-service"
+                    target="_blank"
+                  >
+                    <img
+                      alt="github"
+                      height="24"
+                      title="github"
+                      width="24"
+                    />
+                  </a>
+                </td>
+                <td
+                  class="row__cell Datatable__cell"
+                >
+                  <a
+                    class="serviceName"
+                    href="https://opxhub-ui.us-east-1.prod.expedia.com/v1/incidents?from_datetime=2021-10-28T05:31:00Z&to_datetime=2021-10-28T16:31:00Z"
+                    target="_blank"
+                  >
+                    /v1/incidents
+                  </a>
                 </td>
                 <td
                   class="row__cell Datatable__cell"
@@ -504,7 +885,7 @@ Object {
         class="Datatable Datatable--density-default"
       >
         <table
-          aria-rowcount="1"
+          aria-rowcount="2"
           class="Datatable__table Datatable__table--col-fixed"
         >
           <colgroup>
@@ -557,7 +938,48 @@ Object {
                 <div
                   class="header__name"
                 >
-                  Status
+                  <div>
+                    <strong>
+                      Status
+                       
+                    </strong>
+                    <div
+                      class=""
+                      role="button"
+                      style="display: inline-block; outline: 0; position: relative;"
+                      tabindex="0"
+                    >
+                       
+                      <span
+                        class="SVGIcon SVGIcon--16px"
+                      >
+                        <svg
+                          data-id="SVG_INFO__16"
+                          focusable="false"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          width="16"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <g
+                            fill="none"
+                            fill-rule="evenodd"
+                          >
+                            <path
+                              d="M7.1 5A.9.9 0 1 1 9 5 .9.9 0 0 1 7 5"
+                              fill="currentColor"
+                              stroke="none"
+                            />
+                            <path
+                              d="M8 11.2V7.3M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8z"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </g>
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </th>
             </tr>
@@ -573,22 +995,108 @@ Object {
               >
                 <a
                   class="serviceName"
-                  href="https://github.expedia.biz/eg-reo-opex/eg-fci-data-service"
+                  href="https://spawg-dp.expedia.biz/dashboards/eg-fci-data-service/state/"
                   target="_blank"
                 >
                   eg-fci-data-service
                 </a>
-                <img
-                  alt="github"
-                  height="24"
-                  title="github"
-                  width="24"
-                />
+                <a
+                  class="serviceName"
+                  href="https://github.expedia.biz/eg-reo-opex/eg-fci-data-service"
+                  target="_blank"
+                >
+                  <img
+                    alt="github"
+                    height="24"
+                    title="github"
+                    width="24"
+                  />
+                </a>
               </td>
               <td
                 class="row__cell Datatable__cell"
               >
-                /v1/checkout-failures/sites
+                <a
+                  class="serviceName"
+                  href="https://opxhub-ui.us-east-1.prod.expedia.com/v1/checkout-failures/sites?from=2021-10-26T16:53:00Z&to=2021-10-26T16:53:06Z"
+                  target="_blank"
+                >
+                  /v1/checkout-failures/sites
+                </a>
+              </td>
+              <td
+                class="row__cell Datatable__cell"
+              >
+                <div
+                  data-testid="failIcon"
+                >
+                  <span
+                    class="SVGIcon SVGIcon--24px fail-icon"
+                  >
+                    <svg
+                      data-id="SVG_ALERT__24"
+                      focusable="false"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g
+                        fill="none"
+                        fill-rule="evenodd"
+                      >
+                        <path
+                          d="M13 16a1 1 0 1 1-2 0 1 1 0 0 1 2 0"
+                          fill="currentColor"
+                          stroke="none"
+                        />
+                        <path
+                          d="M12 7.8v5.1m9.3-.9a9.3 9.3 0 1 1-18.6 0 9.3 9.3 0 0 1 18.6 0z"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </g>
+                    </svg>
+                  </span>
+                </div>
+              </td>
+            </tr>
+            <tr
+              class="Datatable__row"
+            >
+              <td
+                class="row__cell Datatable__cell"
+              >
+                <a
+                  class="serviceName"
+                  href="https://spinnaker.expedia.biz/#/applications/opxhub-data-service/executions/"
+                  target="_blank"
+                >
+                  opxhub-data-service
+                </a>
+                <a
+                  class="serviceName"
+                  href="https://github.expedia.biz/eg-reo-opex/opxhub-data-service"
+                  target="_blank"
+                >
+                  <img
+                    alt="github"
+                    height="24"
+                    title="github"
+                    width="24"
+                  />
+                </a>
+              </td>
+              <td
+                class="row__cell Datatable__cell"
+              >
+                <a
+                  class="serviceName"
+                  href="https://opxhub-ui.us-east-1.prod.expedia.com/v1/incidents?from_datetime=2021-10-28T05:31:00Z&to_datetime=2021-10-28T16:31:00Z"
+                  target="_blank"
+                >
+                  /v1/incidents
+                </a>
               </td>
               <td
                 class="row__cell Datatable__cell"
@@ -704,7 +1212,7 @@ Object {
           class="Datatable Datatable--density-default"
         >
           <table
-            aria-rowcount="1"
+            aria-rowcount="2"
             class="Datatable__table Datatable__table--col-fixed"
           >
             <colgroup>
@@ -757,7 +1265,48 @@ Object {
                   <div
                     class="header__name"
                   >
-                    Status
+                    <div>
+                      <strong>
+                        Status
+                         
+                      </strong>
+                      <div
+                        class=""
+                        role="button"
+                        style="display: inline-block; outline: 0; position: relative;"
+                        tabindex="0"
+                      >
+                         
+                        <span
+                          class="SVGIcon SVGIcon--16px"
+                        >
+                          <svg
+                            data-id="SVG_INFO__16"
+                            focusable="false"
+                            height="16"
+                            viewBox="0 0 16 16"
+                            width="16"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <g
+                              fill="none"
+                              fill-rule="evenodd"
+                            >
+                              <path
+                                d="M7.1 5A.9.9 0 1 1 9 5 .9.9 0 0 1 7 5"
+                                fill="currentColor"
+                                stroke="none"
+                              />
+                              <path
+                                d="M8 11.2V7.3M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8z"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </g>
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </th>
               </tr>
@@ -773,22 +1322,108 @@ Object {
                 >
                   <a
                     class="serviceName"
-                    href="https://github.expedia.biz/eg-reo-opex/eg-fci-data-service"
+                    href="https://spawg-dp.expedia.biz/dashboards/eg-fci-data-service/state/"
                     target="_blank"
                   >
                     eg-fci-data-service
                   </a>
-                  <img
-                    alt="github"
-                    height="24"
-                    title="github"
-                    width="24"
-                  />
+                  <a
+                    class="serviceName"
+                    href="https://github.expedia.biz/eg-reo-opex/eg-fci-data-service"
+                    target="_blank"
+                  >
+                    <img
+                      alt="github"
+                      height="24"
+                      title="github"
+                      width="24"
+                    />
+                  </a>
                 </td>
                 <td
                   class="row__cell Datatable__cell"
                 >
-                  /v1/checkout-failures/sites
+                  <a
+                    class="serviceName"
+                    href="https://opxhub-ui.us-east-1.prod.expedia.com/v1/checkout-failures/sites?from=2021-10-26T16:53:00Z&to=2021-10-26T16:53:06Z"
+                    target="_blank"
+                  >
+                    /v1/checkout-failures/sites
+                  </a>
+                </td>
+                <td
+                  class="row__cell Datatable__cell"
+                >
+                  <div
+                    data-testid="failIcon"
+                  >
+                    <span
+                      class="SVGIcon SVGIcon--24px fail-icon"
+                    >
+                      <svg
+                        data-id="SVG_ALERT__24"
+                        focusable="false"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        width="24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g
+                          fill="none"
+                          fill-rule="evenodd"
+                        >
+                          <path
+                            d="M13 16a1 1 0 1 1-2 0 1 1 0 0 1 2 0"
+                            fill="currentColor"
+                            stroke="none"
+                          />
+                          <path
+                            d="M12 7.8v5.1m9.3-.9a9.3 9.3 0 1 1-18.6 0 9.3 9.3 0 0 1 18.6 0z"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </g>
+                      </svg>
+                    </span>
+                  </div>
+                </td>
+              </tr>
+              <tr
+                class="Datatable__row"
+              >
+                <td
+                  class="row__cell Datatable__cell"
+                >
+                  <a
+                    class="serviceName"
+                    href="https://spinnaker.expedia.biz/#/applications/opxhub-data-service/executions/"
+                    target="_blank"
+                  >
+                    opxhub-data-service
+                  </a>
+                  <a
+                    class="serviceName"
+                    href="https://github.expedia.biz/eg-reo-opex/opxhub-data-service"
+                    target="_blank"
+                  >
+                    <img
+                      alt="github"
+                      height="24"
+                      title="github"
+                      width="24"
+                    />
+                  </a>
+                </td>
+                <td
+                  class="row__cell Datatable__cell"
+                >
+                  <a
+                    class="serviceName"
+                    href="https://opxhub-ui.us-east-1.prod.expedia.com/v1/incidents?from_datetime=2021-10-28T05:31:00Z&to_datetime=2021-10-28T16:31:00Z"
+                    target="_blank"
+                  >
+                    /v1/incidents
+                  </a>
                 </td>
                 <td
                   class="row__cell Datatable__cell"
@@ -844,7 +1479,7 @@ Object {
         class="Datatable Datatable--density-default"
       >
         <table
-          aria-rowcount="1"
+          aria-rowcount="2"
           class="Datatable__table Datatable__table--col-fixed"
         >
           <colgroup>
@@ -897,7 +1532,48 @@ Object {
                 <div
                   class="header__name"
                 >
-                  Status
+                  <div>
+                    <strong>
+                      Status
+                       
+                    </strong>
+                    <div
+                      class=""
+                      role="button"
+                      style="display: inline-block; outline: 0; position: relative;"
+                      tabindex="0"
+                    >
+                       
+                      <span
+                        class="SVGIcon SVGIcon--16px"
+                      >
+                        <svg
+                          data-id="SVG_INFO__16"
+                          focusable="false"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          width="16"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <g
+                            fill="none"
+                            fill-rule="evenodd"
+                          >
+                            <path
+                              d="M7.1 5A.9.9 0 1 1 9 5 .9.9 0 0 1 7 5"
+                              fill="currentColor"
+                              stroke="none"
+                            />
+                            <path
+                              d="M8 11.2V7.3M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8z"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </g>
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </th>
             </tr>
@@ -913,22 +1589,108 @@ Object {
               >
                 <a
                   class="serviceName"
-                  href="https://github.expedia.biz/eg-reo-opex/eg-fci-data-service"
+                  href="https://spawg-dp.expedia.biz/dashboards/eg-fci-data-service/state/"
                   target="_blank"
                 >
                   eg-fci-data-service
                 </a>
-                <img
-                  alt="github"
-                  height="24"
-                  title="github"
-                  width="24"
-                />
+                <a
+                  class="serviceName"
+                  href="https://github.expedia.biz/eg-reo-opex/eg-fci-data-service"
+                  target="_blank"
+                >
+                  <img
+                    alt="github"
+                    height="24"
+                    title="github"
+                    width="24"
+                  />
+                </a>
               </td>
               <td
                 class="row__cell Datatable__cell"
               >
-                /v1/checkout-failures/sites
+                <a
+                  class="serviceName"
+                  href="https://opxhub-ui.us-east-1.prod.expedia.com/v1/checkout-failures/sites?from=2021-10-26T16:53:00Z&to=2021-10-26T16:53:06Z"
+                  target="_blank"
+                >
+                  /v1/checkout-failures/sites
+                </a>
+              </td>
+              <td
+                class="row__cell Datatable__cell"
+              >
+                <div
+                  data-testid="failIcon"
+                >
+                  <span
+                    class="SVGIcon SVGIcon--24px fail-icon"
+                  >
+                    <svg
+                      data-id="SVG_ALERT__24"
+                      focusable="false"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g
+                        fill="none"
+                        fill-rule="evenodd"
+                      >
+                        <path
+                          d="M13 16a1 1 0 1 1-2 0 1 1 0 0 1 2 0"
+                          fill="currentColor"
+                          stroke="none"
+                        />
+                        <path
+                          d="M12 7.8v5.1m9.3-.9a9.3 9.3 0 1 1-18.6 0 9.3 9.3 0 0 1 18.6 0z"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </g>
+                    </svg>
+                  </span>
+                </div>
+              </td>
+            </tr>
+            <tr
+              class="Datatable__row"
+            >
+              <td
+                class="row__cell Datatable__cell"
+              >
+                <a
+                  class="serviceName"
+                  href="https://spinnaker.expedia.biz/#/applications/opxhub-data-service/executions/"
+                  target="_blank"
+                >
+                  opxhub-data-service
+                </a>
+                <a
+                  class="serviceName"
+                  href="https://github.expedia.biz/eg-reo-opex/opxhub-data-service"
+                  target="_blank"
+                >
+                  <img
+                    alt="github"
+                    height="24"
+                    title="github"
+                    width="24"
+                  />
+                </a>
+              </td>
+              <td
+                class="row__cell Datatable__cell"
+              >
+                <a
+                  class="serviceName"
+                  href="https://opxhub-ui.us-east-1.prod.expedia.com/v1/incidents?from_datetime=2021-10-28T05:31:00Z&to_datetime=2021-10-28T16:31:00Z"
+                  target="_blank"
+                >
+                  /v1/incidents
+                </a>
               </td>
               <td
                 class="row__cell Datatable__cell"
