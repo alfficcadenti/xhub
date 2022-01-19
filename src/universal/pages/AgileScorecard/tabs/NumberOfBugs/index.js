@@ -32,7 +32,7 @@ const NumberOfBugs = ({teams, from, to}) => {
             .finally(setIsLoading(false));
     }, [teams, from, to]);
 
-    const handleDotClick = (selected) => selected?.payload?.name && setSelectedDay(selected.payload.name);
+    const handleDotClick = (selected) => selected?.payload?.date && setSelectedDay(selected.payload.date);
 
     const handleOnClose = () => setSelectedDay();
 

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useLocation, withRouter} from 'react-router-dom';
 import moment from 'moment';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
-import {getQueryValues, checkResponse} from '../utils';
+import {checkResponse} from '../utils';
 import {DATE_FORMAT} from '../../constants';
 import MultiSelect from '@homeaway/react-multiselect-dropdown';
 import {Navigation} from '@homeaway/react-navigation';
@@ -10,7 +10,7 @@ import LoadingContainer from '../../components/LoadingContainer';
 import Distribution from './tabs/Distribution';
 import NumberOfBugs from './tabs/NumberOfBugs';
 import LeadTimes from './tabs/LeadTimes';
-import {labelFormat} from './utils';
+import {getQueryValues, labelFormat} from './utils';
 import {NAV_LINKS} from './constants';
 import './styles.less';
 

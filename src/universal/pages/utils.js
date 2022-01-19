@@ -584,7 +584,7 @@ export const getSuccessRateGrafanaDashboardByBrand = (brand) => GRAFANA_DASHBOAR
 export const brandsWithGrafanaDashboard = () => GRAFANA_DASHBOARDS.map((x) => x.brand) || [];
 
 export const getQueryValues = (search) => {
-    const {start, end, teams} = qs.parse(search);
+    const {start, end} = qs.parse(search);
     const isValidDateRange = validDateRange(start, end);
 
     return {
@@ -593,7 +593,6 @@ export const getQueryValues = (search) => {
             : moment().subtract(1, 'years').startOf('minute').format(DATE_FORMAT),
         initialEnd: isValidDateRange
             ? moment(end).format(DATE_FORMAT)
-            : moment().format(DATE_FORMAT),
-        initialTeams: teams || ''
+            : moment().format(DATE_FORMAT)
     };
 };

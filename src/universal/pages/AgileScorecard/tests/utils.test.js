@@ -1,5 +1,7 @@
 import {expect} from 'chai';
+import moment from 'moment';
 import {
+    getQueryValues,
     labelFormat,
     formatPieData,
     formatLeadTimeData,
@@ -10,6 +12,25 @@ import {
 } from '../utils';
 
 describe('AgileScorecard - Utils', () => {
+    it('getQueryValues - default', () => {
+        const start = moment().subtract(6, 'months').startOf('minute').format('YYYY-MM-DD');
+        const end = moment().format('YYYY-MM-DD');
+        const {initialStart, initialEnd, initialTeams} = getQueryValues('');
+        expect(initialStart).to.be.eql(start);
+        expect(initialEnd).to.be.eql(end);
+        expect(initialTeams).to.be.eql('');
+    });
+
+    it('getQueryValues - custom', () => {
+        const start = '2020-01-01';
+        const end = '2020-02-02';
+        const teams = 'teamA,teamB';
+        const {initialStart, initialEnd, initialTeams} = getQueryValues(`?start=${start}&end=${end}&teams=${teams}`);
+        expect(initialStart).to.be.eql(start);
+        expect(initialEnd).to.be.eql(end);
+        expect(initialTeams).to.be.eql(teams);
+    });
+
     it('labelFormat', () => {
         expect(labelFormat({count: 0, total: 0, label: 'LABEL_A'})).to.be.eql('Select LABEL_A...');
         expect(labelFormat({count: 2, total: 3, label: 'LABEL_B'})).to.be.eql('LABEL_B  (2 of 3 selected)');
@@ -26,7 +47,7 @@ describe('AgileScorecard - Utils', () => {
         const openDate = '2022-01-01';
         const leadTime = 10000;
         expect(formatLeadTimeData(null)).to.be.eql(false);
-        expect(formatLeadTimeData([{openDate, leadTime}])).to.be.eql([{name: openDate, 'Mean Lead Time': leadTime}]);
+        expect(formatLeadTimeData([{openDate, leadTime}])).to.be.eql([{name: 'Jan-01', openDate, 'Mean Lead Time': Math.round(leadTime / 60)}]);
     });
 
     it('mapAgileInsight', () => {
@@ -66,7 +87,7 @@ describe('AgileScorecard - Utils', () => {
         expect(result.Updated).to.be.eql(a.updatedDateTime);
         expect(result['Issue Type']).to.be.eql(a.issueType);
         expect(result['Last Closed']).to.be.eql(a.lastClosed);
-        expect(result['Lead Time']).to.be.eql(a.leadTime);
+        expect(String(result['Lead Time']).includes('694d 10h 39m')).to.be.eql(true);
     });
 
     it('formatLineChartData', () => {
@@ -74,7 +95,7 @@ describe('AgileScorecard - Utils', () => {
         const openCount = 22;
         expect(formatLineChartData(null)).to.be.eql([]);
         expect(formatLineChartData([{date, open_bugs_count: openCount, closed_bugs_count: null}]))
-            .to.be.eql([{name: date, 'open bugs': openCount, 'closed bugs': 0}]);
+            .to.be.eql([{name: 'Jan-01', date, 'open bugs': openCount, 'closed bugs': 0}]);
     });
 
     it('formatTooltipData', () => {

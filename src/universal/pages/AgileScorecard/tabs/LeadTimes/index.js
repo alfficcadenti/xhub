@@ -37,8 +37,8 @@ const LeadTimes = ({teams, from, to}) => {
         setIsModalLoading(true);
         setIsModalOpen(true);
         const url = '/v1/score-card/agile-insights'
-            + `?from_date=${moment(payload.name).format('YYYY-MM-DDTHH:mm:ss.sss[Z]')}`
-            + `&to_date=${moment(payload.name).add(1, 'day').format('YYYY-MM-DDTHH:mm:ss.sss[Z]')}`
+            + `?from_date=${moment(payload.openDate).format('YYYY-MM-DDTHH:mm:ss.sss[Z]')}`
+            + `&to_date=${moment(payload.openDate).add(1, 'day').format('YYYY-MM-DDTHH:mm:ss.sss[Z]')}`
             + `&team_names=${getSelectedTeams()}`;
         fetch(url)
             .then(checkResponse)
@@ -58,9 +58,10 @@ const LeadTimes = ({teams, from, to}) => {
             <LoadingContainer isLoading={isLoading} error={error}>
                 {
                     <LineChartWrapper
-                        title="Mean Lead Time (minutes)"
+                        title="Mean Lead Time (hours)"
                         data={formatLeadTimeData(data)}
                         onDotClick={handleDotClick}
+                        showDot={false}
                         keys={['Mean Lead Time']}
                         helpText="Daily average lead time (duration between open datetime and last closed datetime)"
                     />

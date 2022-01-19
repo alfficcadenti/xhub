@@ -62,15 +62,13 @@ describe('formatPieData()', () => {
 });
 
 describe('formatLineChartData()', () => {
-    const EXPECTED_RESULT = [
-        {'name': '2021-11-01', 'open bugs': 110, 'closed bugs': 51},
-        {'name': '2021-11-02', 'open bugs': 6, 'closed bugs': 40},
-        {'name': '2021-11-03', 'open bugs': 90, 'closed bugs': 90}
-    ];
-
     it('returns data formatted for chart', () => {
         const label = formatLineChartData(MOCK_NUMBER_OF_BUGS);
-        expect(label).to.be.eql(EXPECTED_RESULT);
+        expect(label).to.be.eql([
+            {name: 'Nov-01', date: '2021-11-01', 'open bugs': 110, 'closed bugs': 51},
+            {name: 'Nov-02', date: '2021-11-02', 'open bugs': 6, 'closed bugs': 40},
+            {name: 'Nov-03', date: '2021-11-03', 'open bugs': 90, 'closed bugs': 90}
+        ]);
     });
 
     it('returns empty array when data is undefined', () => {
