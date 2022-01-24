@@ -1,14 +1,81 @@
 @import '../../mixins.less';
 
 .cgp-availability-container {
-    text-align: left;
+    .page-title {
+        margin-bottom: @spacing-3x;
+        text-align: left;
+    }
+
+    .page-info .Tooltip {
+        font-weight: 400;
+    }
 
     .loading-container {
         padding: @spacing-1x
     }
 
-    .page-title {
-        margin-bottom: @spacing-3x;
-        text-align: left;
+    #legendContainer {
+        height: fit-content;
+        font-size: 0.8em;
+        float: left;
+        display: flex;
+    }
+
+    #legendContainer div,
+    .data-table div {
+        padding: @spacing-1x;
+        border-radius: @spacing-1x;
+        margin: 1px;
+        text-align: center;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    #topContainer {
+        display: inline-flex;
+        float: left;
+
+        div.form-group {
+            margin-left: @spacing-3x;
+        }
+    }
+
+    .data-table {
+        td {
+            padding: 0;
+        }
+
+        td:first-child {
+            text-align: left
+        }
+    }
+
+    .positive {
+        background-color: @color-positive;
+        color: @color-text-inverse;
+
+        &:hover {
+            color: @color-text-default;
+        }
+    }
+
+    .attention {
+        background-color: @color-attention;
+        color: @color-text-default;
+    }
+
+    .attention:hover {
+        color: @color-text-inverse;
+    }
+
+    .negative {
+        background-color: @color-negative;
+        color: @color-text-inverse;
+    }
+
+    .negative:hover {
+        color: @color-text-default;
     }
 }

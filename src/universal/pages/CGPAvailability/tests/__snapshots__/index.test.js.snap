@@ -1,0 +1,2558 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CGPAvailibility /> renders Error message when api return error 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="cgp-availability-container"
+      >
+        <h1
+          class="page-title"
+          data-testid="title"
+        >
+          CGP Availability
+          <span
+            class="helptext"
+          >
+            <div
+              class="page-info"
+              role="button"
+              style="display: inline-block; outline: 0; position: relative;"
+              tabindex="0"
+            >
+              <span
+                class="SVGIcon SVGIcon--16px"
+              >
+                <svg
+                  data-id="SVG_INFO__16"
+                  focusable="false"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  width="16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g
+                    fill="none"
+                    fill-rule="evenodd"
+                  >
+                    <path
+                      d="M7.1 5A.9.9 0 1 1 9 5 .9.9 0 0 1 7 5"
+                      fill="currentColor"
+                      stroke="none"
+                    />
+                    <path
+                      d="M8 11.2V7.3M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8z"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </g>
+                </svg>
+              </span>
+            </div>
+          </span>
+        </h1>
+        <div
+          class="loading-container "
+        >
+          <div
+            aria-live="polite"
+            class="Alert border--default in loading-alert"
+            role="alert"
+          >
+            <div
+              class="Alert__flair bg--color-bg-active"
+            />
+            <span
+              class="SVGIcon SVGIcon--24px Alert__svg inline-svg text-muted"
+            >
+              <svg
+                data-id="SVG_ALERT_WARNING__24"
+                focusable="false"
+                height="24"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g
+                  fill="none"
+                  fill-rule="evenodd"
+                >
+                  <path
+                    d="M13 17.1a1 1 0 1 1-2 0 1 1 0 0 1 2 0"
+                    fill="currentColor"
+                    stroke="none"
+                  />
+                  <path
+                    d="M10.6 4.5a1.6 1.6 0 0 1 2.8 0L21 17.7a1.6 1.6 0 0 1-1.4 2.5H4.4A1.6 1.6 0 0 1 3 17.7l7.6-13.2zM12 9V14"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </g>
+              </svg>
+            </span>
+            <p>
+              Error loading CGP Availability. Try refreshing the page
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="cgp-availability-container"
+    >
+      <h1
+        class="page-title"
+        data-testid="title"
+      >
+        CGP Availability
+        <span
+          class="helptext"
+        >
+          <div
+            class="page-info"
+            role="button"
+            style="display: inline-block; outline: 0; position: relative;"
+            tabindex="0"
+          >
+            <span
+              class="SVGIcon SVGIcon--16px"
+            >
+              <svg
+                data-id="SVG_INFO__16"
+                focusable="false"
+                height="16"
+                viewBox="0 0 16 16"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g
+                  fill="none"
+                  fill-rule="evenodd"
+                >
+                  <path
+                    d="M7.1 5A.9.9 0 1 1 9 5 .9.9 0 0 1 7 5"
+                    fill="currentColor"
+                    stroke="none"
+                  />
+                  <path
+                    d="M8 11.2V7.3M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8z"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </g>
+              </svg>
+            </span>
+          </div>
+        </span>
+      </h1>
+      <div
+        class="loading-container "
+      >
+        <div
+          aria-live="polite"
+          class="Alert border--default in loading-alert"
+          role="alert"
+        >
+          <div
+            class="Alert__flair bg--color-bg-active"
+          />
+          <span
+            class="SVGIcon SVGIcon--24px Alert__svg inline-svg text-muted"
+          >
+            <svg
+              data-id="SVG_ALERT_WARNING__24"
+              focusable="false"
+              height="24"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g
+                fill="none"
+                fill-rule="evenodd"
+              >
+                <path
+                  d="M13 17.1a1 1 0 1 1-2 0 1 1 0 0 1 2 0"
+                  fill="currentColor"
+                  stroke="none"
+                />
+                <path
+                  d="M10.6 4.5a1.6 1.6 0 0 1 2.8 0L21 17.7a1.6 1.6 0 0 1-1.4 2.5H4.4A1.6 1.6 0 0 1 3 17.7l7.6-13.2zM12 9V14"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </g>
+            </svg>
+          </span>
+          <p>
+            Error loading CGP Availability. Try refreshing the page
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`<CGPAvailibility /> renders NO RESULTS FOUND and match the snapshot when data are empty 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="cgp-availability-container"
+      >
+        <h1
+          class="page-title"
+          data-testid="title"
+        >
+          CGP Availability
+          <span
+            class="helptext"
+          >
+            <div
+              class="page-info"
+              role="button"
+              style="display: inline-block; outline: 0; position: relative;"
+              tabindex="0"
+            >
+              <span
+                class="SVGIcon SVGIcon--16px"
+              >
+                <svg
+                  data-id="SVG_INFO__16"
+                  focusable="false"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  width="16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g
+                    fill="none"
+                    fill-rule="evenodd"
+                  >
+                    <path
+                      d="M7.1 5A.9.9 0 1 1 9 5 .9.9 0 0 1 7 5"
+                      fill="currentColor"
+                      stroke="none"
+                    />
+                    <path
+                      d="M8 11.2V7.3M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8z"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </g>
+                </svg>
+              </span>
+            </div>
+          </span>
+        </h1>
+        <div
+          class="loading-container "
+        >
+          <div
+            id="topContainer"
+          >
+            <div
+              id="legendContainer"
+            >
+              <div
+                class="negative"
+              >
+                &lt; 99.5
+              </div>
+              <div
+                class="attention"
+              >
+                &gt;= 99.5
+              </div>
+              <div
+                class="positive"
+              >
+                &gt;= 99.99
+              </div>
+            </div>
+            <div
+              class="form-group floating-label not-empty"
+            >
+              <input
+                aria-invalid="false"
+                aria-label="Availability Filter"
+                class="form-control"
+                id="availabilityFilter"
+                name="availabilityFilter"
+                placeholder="Availability Filter"
+                type="number"
+                value="100"
+              />
+              <label
+                class=""
+                for="availabilityFilter"
+              >
+                Availability Filter
+              </label>
+            </div>
+          </div>
+          <div
+            class="data-table__container undefined"
+          >
+            <h3
+              class="data-table__title"
+            />
+            <div
+              class="Divider settings-divider"
+            >
+              <div
+                class="Divider__heading text-muted"
+              >
+                <button
+                  aria-controls="settings-divider"
+                  aria-expanded="false"
+                  class="Divider__title"
+                  id="settings-divider_button"
+                >
+                  <div
+                    class="Divider__title-layout"
+                  >
+                    <div
+                      class="Divider__title-left"
+                    >
+                      <div
+                        class="Divider__title-row"
+                      />
+                    </div>
+                    <div
+                      class="Divider__title-text"
+                    >
+                      <span
+                        aria-level="4"
+                        role="heading"
+                      >
+                        Settings
+                      </span>
+                    </div>
+                    <div
+                      class="Divider__title-right"
+                    >
+                      <div
+                        class="Divider__title-row"
+                      />
+                      <span
+                        class="SVGIcon SVGIcon--16px Divider__SVGIcon Divider__SVGIcon--collapsed"
+                      >
+                        <svg
+                          data-id="SVG_CHEVRON_DOWN__16"
+                          focusable="false"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          width="16"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M3 6l5 4.6L13 6"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+                </button>
+              </div>
+              <div
+                aria-labelledby="settings-divider_button"
+                class="CollapseBase"
+                hidden=""
+                id="settings-divider"
+                role="region"
+                style="max-height: 0px;"
+              >
+                <div
+                  class="CollapseBase__content Divider__body"
+                >
+                  <form />
+                </div>
+              </div>
+            </div>
+            <div
+              class="no-results-wrapper"
+            >
+              <span>
+                NO RESULTS FOUND
+              </span>
+            </div>
+          </div>
+          <div />
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="cgp-availability-container"
+    >
+      <h1
+        class="page-title"
+        data-testid="title"
+      >
+        CGP Availability
+        <span
+          class="helptext"
+        >
+          <div
+            class="page-info"
+            role="button"
+            style="display: inline-block; outline: 0; position: relative;"
+            tabindex="0"
+          >
+            <span
+              class="SVGIcon SVGIcon--16px"
+            >
+              <svg
+                data-id="SVG_INFO__16"
+                focusable="false"
+                height="16"
+                viewBox="0 0 16 16"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g
+                  fill="none"
+                  fill-rule="evenodd"
+                >
+                  <path
+                    d="M7.1 5A.9.9 0 1 1 9 5 .9.9 0 0 1 7 5"
+                    fill="currentColor"
+                    stroke="none"
+                  />
+                  <path
+                    d="M8 11.2V7.3M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8z"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </g>
+              </svg>
+            </span>
+          </div>
+        </span>
+      </h1>
+      <div
+        class="loading-container "
+      >
+        <div
+          id="topContainer"
+        >
+          <div
+            id="legendContainer"
+          >
+            <div
+              class="negative"
+            >
+              &lt; 99.5
+            </div>
+            <div
+              class="attention"
+            >
+              &gt;= 99.5
+            </div>
+            <div
+              class="positive"
+            >
+              &gt;= 99.99
+            </div>
+          </div>
+          <div
+            class="form-group floating-label not-empty"
+          >
+            <input
+              aria-invalid="false"
+              aria-label="Availability Filter"
+              class="form-control"
+              id="availabilityFilter"
+              name="availabilityFilter"
+              placeholder="Availability Filter"
+              type="number"
+              value="100"
+            />
+            <label
+              class=""
+              for="availabilityFilter"
+            >
+              Availability Filter
+            </label>
+          </div>
+        </div>
+        <div
+          class="data-table__container undefined"
+        >
+          <h3
+            class="data-table__title"
+          />
+          <div
+            class="Divider settings-divider"
+          >
+            <div
+              class="Divider__heading text-muted"
+            >
+              <button
+                aria-controls="settings-divider"
+                aria-expanded="false"
+                class="Divider__title"
+                id="settings-divider_button"
+              >
+                <div
+                  class="Divider__title-layout"
+                >
+                  <div
+                    class="Divider__title-left"
+                  >
+                    <div
+                      class="Divider__title-row"
+                    />
+                  </div>
+                  <div
+                    class="Divider__title-text"
+                  >
+                    <span
+                      aria-level="4"
+                      role="heading"
+                    >
+                      Settings
+                    </span>
+                  </div>
+                  <div
+                    class="Divider__title-right"
+                  >
+                    <div
+                      class="Divider__title-row"
+                    />
+                    <span
+                      class="SVGIcon SVGIcon--16px Divider__SVGIcon Divider__SVGIcon--collapsed"
+                    >
+                      <svg
+                        data-id="SVG_CHEVRON_DOWN__16"
+                        focusable="false"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        width="16"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M3 6l5 4.6L13 6"
+                          fill="none"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+              </button>
+            </div>
+            <div
+              aria-labelledby="settings-divider_button"
+              class="CollapseBase"
+              hidden=""
+              id="settings-divider"
+              role="region"
+              style="max-height: 0px;"
+            >
+              <div
+                class="CollapseBase__content Divider__body"
+              >
+                <form />
+              </div>
+            </div>
+          </div>
+          <div
+            class="no-results-wrapper"
+          >
+            <span>
+              NO RESULTS FOUND
+            </span>
+          </div>
+        </div>
+        <div />
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`<CGPAvailibility /> renders a table and match the snapshot when data are passed correctly 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="cgp-availability-container"
+      >
+        <h1
+          class="page-title"
+          data-testid="title"
+        >
+          CGP Availability
+          <span
+            class="helptext"
+          >
+            <div
+              class="page-info"
+              role="button"
+              style="display: inline-block; outline: 0; position: relative;"
+              tabindex="0"
+            >
+              <span
+                class="SVGIcon SVGIcon--16px"
+              >
+                <svg
+                  data-id="SVG_INFO__16"
+                  focusable="false"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  width="16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g
+                    fill="none"
+                    fill-rule="evenodd"
+                  >
+                    <path
+                      d="M7.1 5A.9.9 0 1 1 9 5 .9.9 0 0 1 7 5"
+                      fill="currentColor"
+                      stroke="none"
+                    />
+                    <path
+                      d="M8 11.2V7.3M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8z"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </g>
+                </svg>
+              </span>
+            </div>
+          </span>
+        </h1>
+        <div
+          class="loading-container "
+        >
+          <div
+            id="topContainer"
+          >
+            <div
+              id="legendContainer"
+            >
+              <div
+                class="negative"
+              >
+                &lt; 99.5
+              </div>
+              <div
+                class="attention"
+              >
+                &gt;= 99.5
+              </div>
+              <div
+                class="positive"
+              >
+                &gt;= 99.99
+              </div>
+            </div>
+            <div
+              class="form-group floating-label not-empty"
+            >
+              <input
+                aria-invalid="false"
+                aria-label="Availability Filter"
+                class="form-control"
+                id="availabilityFilter"
+                name="availabilityFilter"
+                placeholder="Availability Filter"
+                type="number"
+                value="100"
+              />
+              <label
+                class=""
+                for="availabilityFilter"
+              >
+                Availability Filter
+              </label>
+            </div>
+          </div>
+          <div
+            class="data-table__container undefined"
+          >
+            <h3
+              class="data-table__title"
+            />
+            <a
+              class="btn btn-default data-table__download"
+              download="opxhub-table.csv"
+              href="data:text/csv;charset=utf-8,﻿\\"Application\\",\\"Dec 7, 2021\\",\\"Dec 6, 2021\\",\\"Dec 5, 2021\\",\\"Dec 4, 2021\\",\\"Dec 3, 2021\\",\\"Dec 2, 2021\\",\\"Dec 1, 2021\\"
+\\"cars-shopping-service\\",\\"\\",\\"\\",\\"\\",\\"\\",\\"\\",\\"\\",\\"\\"
+\\"flights-shopping-service\\",\\"\\",\\"\\",\\"\\",\\"\\",\\"\\",\\"\\",\\"\\""
+              target="_self"
+            >
+              <button
+                class="btn btn-default settings-btn"
+                type="button"
+              >
+                <span
+                  class="SVGIcon SVGIcon--16px"
+                >
+                  <svg
+                    data-id="SVG_DOWNLOAD__16"
+                    focusable="false"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    width="16"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M14.6 10.5v3c0 .6-.5 1.1-1.1 1.1h-11c-.6 0-1.1-.5-1.1-1.1v-3"
+                      />
+                      <path
+                        d="M12.2 7.5L8 11.1 3.8 7.5M8 11V1.4"
+                      />
+                    </g>
+                  </svg>
+                </span>
+                 
+                <div
+                  class="btn-label"
+                >
+                  Download CSV
+                </div>
+              </button>
+            </a>
+            <div
+              class="table-search-input form-group floating-label empty has-icon"
+            >
+              <input
+                aria-invalid="false"
+                aria-label=""
+                class="form-control"
+                id="search-input"
+                name="searchInput"
+                placeholder=""
+                type="text"
+                value=""
+              />
+              <label
+                class="has-icon"
+                for="search-input"
+              />
+              <span
+                class="form-control-icon"
+              >
+                <span
+                  class="SVGIcon SVGIcon--16px SVGIcon--inline-flex"
+                >
+                  <svg
+                    data-id="SVG_SEARCH__16"
+                    focusable="false"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    width="16"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M11.8 8a5 5 0 0 0-.7-3.7A4.9 4.9 0 0 0 7 2a5 5 0 0 0-2.7 9 5 5 0 0 0 6.2-.6m0 0l3.4 3.4"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
+              </span>
+            </div>
+            <div
+              class="Divider settings-divider"
+            >
+              <div
+                class="Divider__heading text-muted"
+              >
+                <button
+                  aria-controls="settings-divider"
+                  aria-expanded="false"
+                  class="Divider__title"
+                  id="settings-divider_button"
+                >
+                  <div
+                    class="Divider__title-layout"
+                  >
+                    <div
+                      class="Divider__title-left"
+                    >
+                      <div
+                        class="Divider__title-row"
+                      />
+                    </div>
+                    <div
+                      class="Divider__title-text"
+                    >
+                      <span
+                        aria-level="4"
+                        role="heading"
+                      >
+                        Settings
+                      </span>
+                    </div>
+                    <div
+                      class="Divider__title-right"
+                    >
+                      <div
+                        class="Divider__title-row"
+                      />
+                      <span
+                        class="SVGIcon SVGIcon--16px Divider__SVGIcon Divider__SVGIcon--collapsed"
+                      >
+                        <svg
+                          data-id="SVG_CHEVRON_DOWN__16"
+                          focusable="false"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          width="16"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M3 6l5 4.6L13 6"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+                </button>
+              </div>
+              <div
+                aria-labelledby="settings-divider_button"
+                class="CollapseBase"
+                hidden=""
+                id="settings-divider"
+                role="region"
+                style="max-height: 0px;"
+              >
+                <div
+                  class="CollapseBase__content Divider__body"
+                >
+                  <form>
+                    <div
+                      class="checkbox-column form-group CRB CRB--checkbox CRB--sm"
+                    >
+                      <label
+                        class="CRB__label text-muted CRB__label--right"
+                      >
+                        <input
+                          checked=""
+                          class="CRB__input"
+                          name="Dec 7, 2021"
+                          type="checkbox"
+                        />
+                        <span
+                          class="CRB__toggle CRB__toggle--left"
+                        >
+                          <span
+                            class="SVGIcon SVGIcon--12px SVGIcon--inline-flex CRB__svg"
+                          >
+                            <svg
+                              data-id="SVG_CHECK__12"
+                              focusable="false"
+                              height="12"
+                              viewBox="0 0 12 12"
+                              width="12"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M2 7l3 3 6-8"
+                                fill="none"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                        <span
+                          class="label-text"
+                        >
+                          Dec 7, 2021
+                        </span>
+                      </label>
+                    </div>
+                    <div
+                      class="checkbox-column form-group CRB CRB--checkbox CRB--sm"
+                    >
+                      <label
+                        class="CRB__label text-muted CRB__label--right"
+                      >
+                        <input
+                          checked=""
+                          class="CRB__input"
+                          name="Dec 6, 2021"
+                          type="checkbox"
+                        />
+                        <span
+                          class="CRB__toggle CRB__toggle--left"
+                        >
+                          <span
+                            class="SVGIcon SVGIcon--12px SVGIcon--inline-flex CRB__svg"
+                          >
+                            <svg
+                              data-id="SVG_CHECK__12"
+                              focusable="false"
+                              height="12"
+                              viewBox="0 0 12 12"
+                              width="12"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M2 7l3 3 6-8"
+                                fill="none"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                        <span
+                          class="label-text"
+                        >
+                          Dec 6, 2021
+                        </span>
+                      </label>
+                    </div>
+                    <div
+                      class="checkbox-column form-group CRB CRB--checkbox CRB--sm"
+                    >
+                      <label
+                        class="CRB__label text-muted CRB__label--right"
+                      >
+                        <input
+                          checked=""
+                          class="CRB__input"
+                          name="Dec 5, 2021"
+                          type="checkbox"
+                        />
+                        <span
+                          class="CRB__toggle CRB__toggle--left"
+                        >
+                          <span
+                            class="SVGIcon SVGIcon--12px SVGIcon--inline-flex CRB__svg"
+                          >
+                            <svg
+                              data-id="SVG_CHECK__12"
+                              focusable="false"
+                              height="12"
+                              viewBox="0 0 12 12"
+                              width="12"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M2 7l3 3 6-8"
+                                fill="none"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                        <span
+                          class="label-text"
+                        >
+                          Dec 5, 2021
+                        </span>
+                      </label>
+                    </div>
+                    <div
+                      class="checkbox-column form-group CRB CRB--checkbox CRB--sm"
+                    >
+                      <label
+                        class="CRB__label text-muted CRB__label--right"
+                      >
+                        <input
+                          checked=""
+                          class="CRB__input"
+                          name="Dec 4, 2021"
+                          type="checkbox"
+                        />
+                        <span
+                          class="CRB__toggle CRB__toggle--left"
+                        >
+                          <span
+                            class="SVGIcon SVGIcon--12px SVGIcon--inline-flex CRB__svg"
+                          >
+                            <svg
+                              data-id="SVG_CHECK__12"
+                              focusable="false"
+                              height="12"
+                              viewBox="0 0 12 12"
+                              width="12"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M2 7l3 3 6-8"
+                                fill="none"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                        <span
+                          class="label-text"
+                        >
+                          Dec 4, 2021
+                        </span>
+                      </label>
+                    </div>
+                    <div
+                      class="checkbox-column form-group CRB CRB--checkbox CRB--sm"
+                    >
+                      <label
+                        class="CRB__label text-muted CRB__label--right"
+                      >
+                        <input
+                          checked=""
+                          class="CRB__input"
+                          name="Dec 3, 2021"
+                          type="checkbox"
+                        />
+                        <span
+                          class="CRB__toggle CRB__toggle--left"
+                        >
+                          <span
+                            class="SVGIcon SVGIcon--12px SVGIcon--inline-flex CRB__svg"
+                          >
+                            <svg
+                              data-id="SVG_CHECK__12"
+                              focusable="false"
+                              height="12"
+                              viewBox="0 0 12 12"
+                              width="12"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M2 7l3 3 6-8"
+                                fill="none"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                        <span
+                          class="label-text"
+                        >
+                          Dec 3, 2021
+                        </span>
+                      </label>
+                    </div>
+                    <div
+                      class="checkbox-column form-group CRB CRB--checkbox CRB--sm"
+                    >
+                      <label
+                        class="CRB__label text-muted CRB__label--right"
+                      >
+                        <input
+                          checked=""
+                          class="CRB__input"
+                          name="Dec 2, 2021"
+                          type="checkbox"
+                        />
+                        <span
+                          class="CRB__toggle CRB__toggle--left"
+                        >
+                          <span
+                            class="SVGIcon SVGIcon--12px SVGIcon--inline-flex CRB__svg"
+                          >
+                            <svg
+                              data-id="SVG_CHECK__12"
+                              focusable="false"
+                              height="12"
+                              viewBox="0 0 12 12"
+                              width="12"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M2 7l3 3 6-8"
+                                fill="none"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                        <span
+                          class="label-text"
+                        >
+                          Dec 2, 2021
+                        </span>
+                      </label>
+                    </div>
+                    <div
+                      class="checkbox-column form-group CRB CRB--checkbox CRB--sm"
+                    >
+                      <label
+                        class="CRB__label text-muted CRB__label--right"
+                      >
+                        <input
+                          checked=""
+                          class="CRB__input"
+                          name="Dec 1, 2021"
+                          type="checkbox"
+                        />
+                        <span
+                          class="CRB__toggle CRB__toggle--left"
+                        >
+                          <span
+                            class="SVGIcon SVGIcon--12px SVGIcon--inline-flex CRB__svg"
+                          >
+                            <svg
+                              data-id="SVG_CHECK__12"
+                              focusable="false"
+                              height="12"
+                              viewBox="0 0 12 12"
+                              width="12"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M2 7l3 3 6-8"
+                                fill="none"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          </span>
+                        </span>
+                        <span
+                          class="label-text"
+                        >
+                          Dec 1, 2021
+                        </span>
+                      </label>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <table
+              class="data-table"
+            >
+              <thead
+                class="data-table-header"
+              >
+                <tr>
+                  <th
+                    class="pointer"
+                  >
+                    Application
+                  </th>
+                  <th
+                    class="pointer"
+                  >
+                    Dec 7, 2021
+                  </th>
+                  <th
+                    class="pointer"
+                  >
+                    Dec 6, 2021
+                  </th>
+                  <th
+                    class="pointer"
+                  >
+                    Dec 5, 2021
+                  </th>
+                  <th
+                    class="pointer"
+                  >
+                    Dec 4, 2021
+                  </th>
+                  <th
+                    class="pointer"
+                  >
+                    Dec 3, 2021
+                  </th>
+                  <th
+                    class="pointer"
+                  >
+                    Dec 2, 2021
+                  </th>
+                  <th
+                    class="pointer"
+                  >
+                    Dec 1, 2021
+                  </th>
+                </tr>
+              </thead>
+              <tbody
+                class="data-table-body"
+              >
+                <tr>
+                  <td
+                    class=""
+                  >
+                    cars-shopping-service
+                  </td>
+                  <td
+                    class=""
+                  >
+                    <div
+                      aria-hidden="true"
+                      class="negative"
+                    >
+                      99
+                    </div>
+                  </td>
+                  <td
+                    class=""
+                  >
+                    <div
+                      aria-hidden="true"
+                      class="attention"
+                    >
+                      99.95
+                    </div>
+                  </td>
+                  <td
+                    class=""
+                  >
+                    <div
+                      aria-hidden="true"
+                      class="negative"
+                    >
+                      50.99
+                    </div>
+                  </td>
+                  <td
+                    class=""
+                  >
+                    <div
+                      aria-hidden="true"
+                      class="attention"
+                    >
+                      99.59
+                    </div>
+                  </td>
+                  <td
+                    class=""
+                  >
+                    <div
+                      aria-hidden="true"
+                      class="negative"
+                    >
+                      60
+                    </div>
+                  </td>
+                  <td
+                    class=""
+                  >
+                    <div
+                      aria-hidden="true"
+                      class="attention"
+                    >
+                      99.59
+                    </div>
+                  </td>
+                  <td
+                    class=""
+                  >
+                    <div
+                      aria-hidden="true"
+                      class="positive"
+                    >
+                      100
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  class="expandable-row hidden"
+                >
+                  <td
+                    class="expandable-column"
+                    colspan="9"
+                  />
+                </tr>
+                <tr>
+                  <td
+                    class=""
+                  >
+                    flights-shopping-service
+                  </td>
+                  <td
+                    class=""
+                  >
+                    <div
+                      aria-hidden="true"
+                      class="positive"
+                    >
+                      99.99
+                    </div>
+                  </td>
+                  <td
+                    class=""
+                  >
+                    <div
+                      aria-hidden="true"
+                      class="attention"
+                    >
+                      99.97
+                    </div>
+                  </td>
+                  <td
+                    class=""
+                  >
+                    <div
+                      aria-hidden="true"
+                      class="positive"
+                    >
+                      99.99
+                    </div>
+                  </td>
+                  <td
+                    class=""
+                  >
+                    <div
+                      aria-hidden="true"
+                      class=""
+                    >
+                      -
+                    </div>
+                  </td>
+                  <td
+                    class=""
+                  >
+                    <div
+                      aria-hidden="true"
+                      class="positive"
+                    >
+                      99.99
+                    </div>
+                  </td>
+                  <td
+                    class=""
+                  >
+                    <div
+                      aria-hidden="true"
+                      class="negative"
+                    >
+                      59
+                    </div>
+                  </td>
+                  <td
+                    class=""
+                  >
+                    <div
+                      aria-hidden="true"
+                      class="positive"
+                    >
+                      99.99
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  class="expandable-row hidden"
+                >
+                  <td
+                    class="expandable-column"
+                    colspan="9"
+                  />
+                </tr>
+              </tbody>
+            </table>
+            <div
+              class="pagination text-center"
+            >
+              <div
+                class="btn-group"
+              >
+                <button
+                  class="btn btn-default"
+                  disabled=""
+                  type="button"
+                >
+                  Previous
+                </button>
+                <button
+                  class="btn btn-default"
+                  disabled=""
+                  type="button"
+                >
+                  1
+                </button>
+                <button
+                  class="btn btn-default"
+                  disabled=""
+                  type="button"
+                >
+                  Next
+                </button>
+              </div>
+              Page Size:
+              <div
+                class="Dropdown pagesize-dropdown"
+                role="presentation"
+                tabindex="-1"
+              >
+                <button
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  class="btn btn-default Dropdown__toggle border-border-color border--contrast"
+                  id="pagesize-dropdown"
+                  type="button"
+                >
+                  <span
+                    class="btn__label"
+                  >
+                    25
+                  </span>
+                  <span
+                    class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
+                  >
+                    <svg
+                      data-id="SVG_CHEVRON_DOWN__12"
+                      focusable="false"
+                      height="12"
+                      viewBox="0 0 12 12"
+                      width="12"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M11 4L6 9 1 4"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </span>
+                </button>
+                <ul
+                  aria-labelledby="pagesize-dropdown"
+                  class="Dropdown__menu"
+                  id="pagesize-dropdown--container"
+                  role="dialog"
+                >
+                  <li
+                    role="presentation"
+                  >
+                    <a
+                      data-bypass="false"
+                      href="#"
+                    >
+                       
+                      25
+                    </a>
+                  </li>
+                  <li
+                    role="presentation"
+                  >
+                    <a
+                      data-bypass="false"
+                      href="#"
+                    >
+                       
+                      50
+                    </a>
+                  </li>
+                  <li
+                    role="presentation"
+                  >
+                    <a
+                      data-bypass="false"
+                      href="#"
+                    >
+                       
+                      75
+                    </a>
+                  </li>
+                  <li
+                    role="presentation"
+                  >
+                    <a
+                      data-bypass="false"
+                      href="#"
+                    >
+                       
+                      100
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div />
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="cgp-availability-container"
+    >
+      <h1
+        class="page-title"
+        data-testid="title"
+      >
+        CGP Availability
+        <span
+          class="helptext"
+        >
+          <div
+            class="page-info"
+            role="button"
+            style="display: inline-block; outline: 0; position: relative;"
+            tabindex="0"
+          >
+            <span
+              class="SVGIcon SVGIcon--16px"
+            >
+              <svg
+                data-id="SVG_INFO__16"
+                focusable="false"
+                height="16"
+                viewBox="0 0 16 16"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g
+                  fill="none"
+                  fill-rule="evenodd"
+                >
+                  <path
+                    d="M7.1 5A.9.9 0 1 1 9 5 .9.9 0 0 1 7 5"
+                    fill="currentColor"
+                    stroke="none"
+                  />
+                  <path
+                    d="M8 11.2V7.3M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8z"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </g>
+              </svg>
+            </span>
+          </div>
+        </span>
+      </h1>
+      <div
+        class="loading-container "
+      >
+        <div
+          id="topContainer"
+        >
+          <div
+            id="legendContainer"
+          >
+            <div
+              class="negative"
+            >
+              &lt; 99.5
+            </div>
+            <div
+              class="attention"
+            >
+              &gt;= 99.5
+            </div>
+            <div
+              class="positive"
+            >
+              &gt;= 99.99
+            </div>
+          </div>
+          <div
+            class="form-group floating-label not-empty"
+          >
+            <input
+              aria-invalid="false"
+              aria-label="Availability Filter"
+              class="form-control"
+              id="availabilityFilter"
+              name="availabilityFilter"
+              placeholder="Availability Filter"
+              type="number"
+              value="100"
+            />
+            <label
+              class=""
+              for="availabilityFilter"
+            >
+              Availability Filter
+            </label>
+          </div>
+        </div>
+        <div
+          class="data-table__container undefined"
+        >
+          <h3
+            class="data-table__title"
+          />
+          <a
+            class="btn btn-default data-table__download"
+            download="opxhub-table.csv"
+            href="data:text/csv;charset=utf-8,﻿\\"Application\\",\\"Dec 7, 2021\\",\\"Dec 6, 2021\\",\\"Dec 5, 2021\\",\\"Dec 4, 2021\\",\\"Dec 3, 2021\\",\\"Dec 2, 2021\\",\\"Dec 1, 2021\\"
+\\"cars-shopping-service\\",\\"\\",\\"\\",\\"\\",\\"\\",\\"\\",\\"\\",\\"\\"
+\\"flights-shopping-service\\",\\"\\",\\"\\",\\"\\",\\"\\",\\"\\",\\"\\",\\"\\""
+            target="_self"
+          >
+            <button
+              class="btn btn-default settings-btn"
+              type="button"
+            >
+              <span
+                class="SVGIcon SVGIcon--16px"
+              >
+                <svg
+                  data-id="SVG_DOWNLOAD__16"
+                  focusable="false"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  width="16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M14.6 10.5v3c0 .6-.5 1.1-1.1 1.1h-11c-.6 0-1.1-.5-1.1-1.1v-3"
+                    />
+                    <path
+                      d="M12.2 7.5L8 11.1 3.8 7.5M8 11V1.4"
+                    />
+                  </g>
+                </svg>
+              </span>
+               
+              <div
+                class="btn-label"
+              >
+                Download CSV
+              </div>
+            </button>
+          </a>
+          <div
+            class="table-search-input form-group floating-label empty has-icon"
+          >
+            <input
+              aria-invalid="false"
+              aria-label=""
+              class="form-control"
+              id="search-input"
+              name="searchInput"
+              placeholder=""
+              type="text"
+              value=""
+            />
+            <label
+              class="has-icon"
+              for="search-input"
+            />
+            <span
+              class="form-control-icon"
+            >
+              <span
+                class="SVGIcon SVGIcon--16px SVGIcon--inline-flex"
+              >
+                <svg
+                  data-id="SVG_SEARCH__16"
+                  focusable="false"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  width="16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M11.8 8a5 5 0 0 0-.7-3.7A4.9 4.9 0 0 0 7 2a5 5 0 0 0-2.7 9 5 5 0 0 0 6.2-.6m0 0l3.4 3.4"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </span>
+          </div>
+          <div
+            class="Divider settings-divider"
+          >
+            <div
+              class="Divider__heading text-muted"
+            >
+              <button
+                aria-controls="settings-divider"
+                aria-expanded="false"
+                class="Divider__title"
+                id="settings-divider_button"
+              >
+                <div
+                  class="Divider__title-layout"
+                >
+                  <div
+                    class="Divider__title-left"
+                  >
+                    <div
+                      class="Divider__title-row"
+                    />
+                  </div>
+                  <div
+                    class="Divider__title-text"
+                  >
+                    <span
+                      aria-level="4"
+                      role="heading"
+                    >
+                      Settings
+                    </span>
+                  </div>
+                  <div
+                    class="Divider__title-right"
+                  >
+                    <div
+                      class="Divider__title-row"
+                    />
+                    <span
+                      class="SVGIcon SVGIcon--16px Divider__SVGIcon Divider__SVGIcon--collapsed"
+                    >
+                      <svg
+                        data-id="SVG_CHEVRON_DOWN__16"
+                        focusable="false"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        width="16"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M3 6l5 4.6L13 6"
+                          fill="none"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+              </button>
+            </div>
+            <div
+              aria-labelledby="settings-divider_button"
+              class="CollapseBase"
+              hidden=""
+              id="settings-divider"
+              role="region"
+              style="max-height: 0px;"
+            >
+              <div
+                class="CollapseBase__content Divider__body"
+              >
+                <form>
+                  <div
+                    class="checkbox-column form-group CRB CRB--checkbox CRB--sm"
+                  >
+                    <label
+                      class="CRB__label text-muted CRB__label--right"
+                    >
+                      <input
+                        checked=""
+                        class="CRB__input"
+                        name="Dec 7, 2021"
+                        type="checkbox"
+                      />
+                      <span
+                        class="CRB__toggle CRB__toggle--left"
+                      >
+                        <span
+                          class="SVGIcon SVGIcon--12px SVGIcon--inline-flex CRB__svg"
+                        >
+                          <svg
+                            data-id="SVG_CHECK__12"
+                            focusable="false"
+                            height="12"
+                            viewBox="0 0 12 12"
+                            width="12"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M2 7l3 3 6-8"
+                              fill="none"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                        </span>
+                      </span>
+                      <span
+                        class="label-text"
+                      >
+                        Dec 7, 2021
+                      </span>
+                    </label>
+                  </div>
+                  <div
+                    class="checkbox-column form-group CRB CRB--checkbox CRB--sm"
+                  >
+                    <label
+                      class="CRB__label text-muted CRB__label--right"
+                    >
+                      <input
+                        checked=""
+                        class="CRB__input"
+                        name="Dec 6, 2021"
+                        type="checkbox"
+                      />
+                      <span
+                        class="CRB__toggle CRB__toggle--left"
+                      >
+                        <span
+                          class="SVGIcon SVGIcon--12px SVGIcon--inline-flex CRB__svg"
+                        >
+                          <svg
+                            data-id="SVG_CHECK__12"
+                            focusable="false"
+                            height="12"
+                            viewBox="0 0 12 12"
+                            width="12"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M2 7l3 3 6-8"
+                              fill="none"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                        </span>
+                      </span>
+                      <span
+                        class="label-text"
+                      >
+                        Dec 6, 2021
+                      </span>
+                    </label>
+                  </div>
+                  <div
+                    class="checkbox-column form-group CRB CRB--checkbox CRB--sm"
+                  >
+                    <label
+                      class="CRB__label text-muted CRB__label--right"
+                    >
+                      <input
+                        checked=""
+                        class="CRB__input"
+                        name="Dec 5, 2021"
+                        type="checkbox"
+                      />
+                      <span
+                        class="CRB__toggle CRB__toggle--left"
+                      >
+                        <span
+                          class="SVGIcon SVGIcon--12px SVGIcon--inline-flex CRB__svg"
+                        >
+                          <svg
+                            data-id="SVG_CHECK__12"
+                            focusable="false"
+                            height="12"
+                            viewBox="0 0 12 12"
+                            width="12"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M2 7l3 3 6-8"
+                              fill="none"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                        </span>
+                      </span>
+                      <span
+                        class="label-text"
+                      >
+                        Dec 5, 2021
+                      </span>
+                    </label>
+                  </div>
+                  <div
+                    class="checkbox-column form-group CRB CRB--checkbox CRB--sm"
+                  >
+                    <label
+                      class="CRB__label text-muted CRB__label--right"
+                    >
+                      <input
+                        checked=""
+                        class="CRB__input"
+                        name="Dec 4, 2021"
+                        type="checkbox"
+                      />
+                      <span
+                        class="CRB__toggle CRB__toggle--left"
+                      >
+                        <span
+                          class="SVGIcon SVGIcon--12px SVGIcon--inline-flex CRB__svg"
+                        >
+                          <svg
+                            data-id="SVG_CHECK__12"
+                            focusable="false"
+                            height="12"
+                            viewBox="0 0 12 12"
+                            width="12"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M2 7l3 3 6-8"
+                              fill="none"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                        </span>
+                      </span>
+                      <span
+                        class="label-text"
+                      >
+                        Dec 4, 2021
+                      </span>
+                    </label>
+                  </div>
+                  <div
+                    class="checkbox-column form-group CRB CRB--checkbox CRB--sm"
+                  >
+                    <label
+                      class="CRB__label text-muted CRB__label--right"
+                    >
+                      <input
+                        checked=""
+                        class="CRB__input"
+                        name="Dec 3, 2021"
+                        type="checkbox"
+                      />
+                      <span
+                        class="CRB__toggle CRB__toggle--left"
+                      >
+                        <span
+                          class="SVGIcon SVGIcon--12px SVGIcon--inline-flex CRB__svg"
+                        >
+                          <svg
+                            data-id="SVG_CHECK__12"
+                            focusable="false"
+                            height="12"
+                            viewBox="0 0 12 12"
+                            width="12"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M2 7l3 3 6-8"
+                              fill="none"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                        </span>
+                      </span>
+                      <span
+                        class="label-text"
+                      >
+                        Dec 3, 2021
+                      </span>
+                    </label>
+                  </div>
+                  <div
+                    class="checkbox-column form-group CRB CRB--checkbox CRB--sm"
+                  >
+                    <label
+                      class="CRB__label text-muted CRB__label--right"
+                    >
+                      <input
+                        checked=""
+                        class="CRB__input"
+                        name="Dec 2, 2021"
+                        type="checkbox"
+                      />
+                      <span
+                        class="CRB__toggle CRB__toggle--left"
+                      >
+                        <span
+                          class="SVGIcon SVGIcon--12px SVGIcon--inline-flex CRB__svg"
+                        >
+                          <svg
+                            data-id="SVG_CHECK__12"
+                            focusable="false"
+                            height="12"
+                            viewBox="0 0 12 12"
+                            width="12"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M2 7l3 3 6-8"
+                              fill="none"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                        </span>
+                      </span>
+                      <span
+                        class="label-text"
+                      >
+                        Dec 2, 2021
+                      </span>
+                    </label>
+                  </div>
+                  <div
+                    class="checkbox-column form-group CRB CRB--checkbox CRB--sm"
+                  >
+                    <label
+                      class="CRB__label text-muted CRB__label--right"
+                    >
+                      <input
+                        checked=""
+                        class="CRB__input"
+                        name="Dec 1, 2021"
+                        type="checkbox"
+                      />
+                      <span
+                        class="CRB__toggle CRB__toggle--left"
+                      >
+                        <span
+                          class="SVGIcon SVGIcon--12px SVGIcon--inline-flex CRB__svg"
+                        >
+                          <svg
+                            data-id="SVG_CHECK__12"
+                            focusable="false"
+                            height="12"
+                            viewBox="0 0 12 12"
+                            width="12"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M2 7l3 3 6-8"
+                              fill="none"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                        </span>
+                      </span>
+                      <span
+                        class="label-text"
+                      >
+                        Dec 1, 2021
+                      </span>
+                    </label>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <table
+            class="data-table"
+          >
+            <thead
+              class="data-table-header"
+            >
+              <tr>
+                <th
+                  class="pointer"
+                >
+                  Application
+                </th>
+                <th
+                  class="pointer"
+                >
+                  Dec 7, 2021
+                </th>
+                <th
+                  class="pointer"
+                >
+                  Dec 6, 2021
+                </th>
+                <th
+                  class="pointer"
+                >
+                  Dec 5, 2021
+                </th>
+                <th
+                  class="pointer"
+                >
+                  Dec 4, 2021
+                </th>
+                <th
+                  class="pointer"
+                >
+                  Dec 3, 2021
+                </th>
+                <th
+                  class="pointer"
+                >
+                  Dec 2, 2021
+                </th>
+                <th
+                  class="pointer"
+                >
+                  Dec 1, 2021
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              class="data-table-body"
+            >
+              <tr>
+                <td
+                  class=""
+                >
+                  cars-shopping-service
+                </td>
+                <td
+                  class=""
+                >
+                  <div
+                    aria-hidden="true"
+                    class="negative"
+                  >
+                    99
+                  </div>
+                </td>
+                <td
+                  class=""
+                >
+                  <div
+                    aria-hidden="true"
+                    class="attention"
+                  >
+                    99.95
+                  </div>
+                </td>
+                <td
+                  class=""
+                >
+                  <div
+                    aria-hidden="true"
+                    class="negative"
+                  >
+                    50.99
+                  </div>
+                </td>
+                <td
+                  class=""
+                >
+                  <div
+                    aria-hidden="true"
+                    class="attention"
+                  >
+                    99.59
+                  </div>
+                </td>
+                <td
+                  class=""
+                >
+                  <div
+                    aria-hidden="true"
+                    class="negative"
+                  >
+                    60
+                  </div>
+                </td>
+                <td
+                  class=""
+                >
+                  <div
+                    aria-hidden="true"
+                    class="attention"
+                  >
+                    99.59
+                  </div>
+                </td>
+                <td
+                  class=""
+                >
+                  <div
+                    aria-hidden="true"
+                    class="positive"
+                  >
+                    100
+                  </div>
+                </td>
+              </tr>
+              <tr
+                class="expandable-row hidden"
+              >
+                <td
+                  class="expandable-column"
+                  colspan="9"
+                />
+              </tr>
+              <tr>
+                <td
+                  class=""
+                >
+                  flights-shopping-service
+                </td>
+                <td
+                  class=""
+                >
+                  <div
+                    aria-hidden="true"
+                    class="positive"
+                  >
+                    99.99
+                  </div>
+                </td>
+                <td
+                  class=""
+                >
+                  <div
+                    aria-hidden="true"
+                    class="attention"
+                  >
+                    99.97
+                  </div>
+                </td>
+                <td
+                  class=""
+                >
+                  <div
+                    aria-hidden="true"
+                    class="positive"
+                  >
+                    99.99
+                  </div>
+                </td>
+                <td
+                  class=""
+                >
+                  <div
+                    aria-hidden="true"
+                    class=""
+                  >
+                    -
+                  </div>
+                </td>
+                <td
+                  class=""
+                >
+                  <div
+                    aria-hidden="true"
+                    class="positive"
+                  >
+                    99.99
+                  </div>
+                </td>
+                <td
+                  class=""
+                >
+                  <div
+                    aria-hidden="true"
+                    class="negative"
+                  >
+                    59
+                  </div>
+                </td>
+                <td
+                  class=""
+                >
+                  <div
+                    aria-hidden="true"
+                    class="positive"
+                  >
+                    99.99
+                  </div>
+                </td>
+              </tr>
+              <tr
+                class="expandable-row hidden"
+              >
+                <td
+                  class="expandable-column"
+                  colspan="9"
+                />
+              </tr>
+            </tbody>
+          </table>
+          <div
+            class="pagination text-center"
+          >
+            <div
+              class="btn-group"
+            >
+              <button
+                class="btn btn-default"
+                disabled=""
+                type="button"
+              >
+                Previous
+              </button>
+              <button
+                class="btn btn-default"
+                disabled=""
+                type="button"
+              >
+                1
+              </button>
+              <button
+                class="btn btn-default"
+                disabled=""
+                type="button"
+              >
+                Next
+              </button>
+            </div>
+            Page Size:
+            <div
+              class="Dropdown pagesize-dropdown"
+              role="presentation"
+              tabindex="-1"
+            >
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="btn btn-default Dropdown__toggle border-border-color border--contrast"
+                id="pagesize-dropdown"
+                type="button"
+              >
+                <span
+                  class="btn__label"
+                >
+                  25
+                </span>
+                <span
+                  class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
+                >
+                  <svg
+                    data-id="SVG_CHEVRON_DOWN__12"
+                    focusable="false"
+                    height="12"
+                    viewBox="0 0 12 12"
+                    width="12"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M11 4L6 9 1 4"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
+              </button>
+              <ul
+                aria-labelledby="pagesize-dropdown"
+                class="Dropdown__menu"
+                id="pagesize-dropdown--container"
+                role="dialog"
+              >
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    25
+                  </a>
+                </li>
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    50
+                  </a>
+                </li>
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    75
+                  </a>
+                </li>
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    100
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div />
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

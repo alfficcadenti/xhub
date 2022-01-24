@@ -218,42 +218,6 @@
       "egAvailDataServiceConfig": {
         "$filter": "env.EXPEDIA_ENVIRONMENT",
         "$default": {
-          "hostname": "eg-avail-data-service-egdp-prod-0.0.1.2-89d01be64e.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black",
-          "protocol": "https:",
-          "routes": {
-            "egApplicationAvailability": {
-              "path": "/v1/application-availability",
-              "method": "GET",
-              "operation": "GET_eg_avail_data_service_api_v2"
-            }
-          }
-        },
-        "test": {
-          "hostname": "eg-avail-data-service-egdp-prod-0.0.1.2-89d01be64e.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black",
-          "protocol": "https:",
-          "routes": {
-            "egApplicationAvailability": {
-              "path": "/v1/application-availability",
-              "method": "GET",
-              "operation": "GET_eg_avail_data_service_api_v2"
-            }
-          }
-        },
-        "prod": {
-          "hostname": "eg-avail-data-service.prod.expedia.com",
-          "protocol": "https:",
-          "routes": {
-            "egApplicationAvailability": {
-              "path": "/v1/application-availability",
-              "method": "GET",
-              "operation": "GET_eg_avail_data_service_api_v2"
-            }
-          }
-        }
-      },
-      "egAvailDataServiceConfig": {
-        "$filter": "env.EXPEDIA_ENVIRONMENT",
-        "$default": {
           "hostname": "eg-avail-data-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black",
           "protocol": "https:",
           "routes": {
