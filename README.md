@@ -55,7 +55,7 @@ See our official documentation [here](https://pages.github.expedia.biz/eg-reo-op
 3. Run the script build to generate the buildInfo.js
 
    ```bash
-   npm build
+   npm run build
    ```
 
 4. Run the application
