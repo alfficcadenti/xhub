@@ -24,7 +24,10 @@ const environments = {
                 }
             ]
         ],
-        plugins: ['@babel/plugin-syntax-dynamic-import']
+        plugins: ['@babel/plugin-syntax-dynamic-import',
+        ["@babel/plugin-proposal-class-properties", { "loose": true }],
+        ["@babel/plugin-proposal-private-methods", { "loose": true }],
+        ["@babel/plugin-proposal-private-property-in-object", { "loose": true }]]
     },
 
     'client-dev': {
@@ -41,7 +44,10 @@ const environments = {
                 }
             ]
         ],
-        plugins: ['react-hot-loader/babel', '@babel/plugin-syntax-dynamic-import']
+        plugins: ['react-hot-loader/babel', '@babel/plugin-syntax-dynamic-import',
+        ["@babel/plugin-proposal-class-properties", { "loose": true }],
+        ["@babel/plugin-proposal-private-methods", { "loose": true }],
+        ["@babel/plugin-proposal-private-property-in-object", { "loose": true }]]
     },
 
     test: {
@@ -78,7 +84,10 @@ const environments = {
                     name: isProd ? `${prefix}[name].[hash:12].[ext]` : '/[name].[ext]',
                     extensions: ['png', 'ico']
                 }
-            ]
+            ],
+            ["@babel/plugin-proposal-class-properties", { "loose": true }],
+            ["@babel/plugin-proposal-private-methods", { "loose": true }],
+            ["@babel/plugin-proposal-private-property-in-object", { "loose": true }]
         ]
     }
 };
