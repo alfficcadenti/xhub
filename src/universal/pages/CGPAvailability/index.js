@@ -17,7 +17,8 @@ const CGPAvailibility = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
     const [selectedApp, setSelectedApp] = useState(null);
-    const [availabilityFilter, setAvailabilityFilter] = useState(100);
+    const [availabilityFilter, setAvailabilityFilter] = useState(100.00);
+    const [errorMessage, setErrorMessage] = useState('');
 
 
     useEffect(() => {
@@ -41,6 +42,15 @@ const CGPAvailibility = () => {
         setFilteredAvailability(availability.filter((x) => filterAvailabilityByMinValue(x, availabilityFilter)));
     }, [availabilityFilter, availability]);
 
+    useEffect(() => {
+        if (availabilityFilter > 100) {
+            setErrorMessage('Max Value 100');
+        } else {
+            setErrorMessage('');
+        }
+    }, [availabilityFilter]);
+
+
     const handleOnClick = (selected) => setSelectedApp(selected || null);
 
     const handleOnClose = () => setSelectedApp(null);
@@ -63,6 +73,7 @@ const CGPAvailibility = () => {
                         label="Availability Filter"
                         onChange={handleChange}
                         value={availabilityFilter}
+                        errorMsg={errorMessage}
                     />
                 </div>
                 <DataTable
@@ -71,6 +82,7 @@ const CGPAvailibility = () => {
                     paginated
                     enableTextSearch
                     enableCSVDownload
+                    sortDisabled
                 />
                 <ErrorCountModal
                     isOpen={Boolean(selectedApp)}

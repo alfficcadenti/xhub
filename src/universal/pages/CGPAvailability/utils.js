@@ -31,6 +31,6 @@ export const getAppErrorsDataForChart = (applicationName = '', availability = []
 export const filterAvailabilityByMinValue = (applicationAvailability, minValue) => {
     const minAvailability = applicationAvailability?.availabilities?.reduce((min, curr) => min < curr?.availability ? min : curr?.availability);
     if (minAvailability) {
-        return minAvailability < parseFloat(minValue);
+        return minAvailability <= parseFloat(minValue);
     } return false;
 };
