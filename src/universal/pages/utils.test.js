@@ -30,7 +30,8 @@ import {
     getPageViewsGrafanaDashboardByBrand,
     getSuccessRateGrafanaDashboardByBrand,
     brandsWithGrafanaDashboard,
-    DEFAULT_DAY_RANGE, mapGroupedData, checkIsContentPercentage, threeWeekComparison
+    DEFAULT_DAY_RANGE, mapGroupedData, checkIsContentPercentage, threeWeekComparison,
+    getLobDeltaUserCount
 } from './utils';
 import {
     EG_BRAND,
@@ -715,5 +716,26 @@ describe('getQueryValues()', () => {
         const result = getQueryValues(`?start=${start}&end=${end}`);
         expect(result.initialStart).to.be.eql(start);
         expect(result.initialEnd).to.be.eql(end);
+    });
+});
+
+describe('getLobDeltaUserCount()', () => {
+    it('getLobDeltaUserCount', () => {
+        const lobDeltaUserCounts = {
+            time: '2022-01-27T09:10:00Z',
+            lobTotalDeltaUserCount: 67,
+            lobDeltaUserCounts:
+                [{lineOfBusiness: 'C', deltaCount: 6},
+                    {lineOfBusiness: 'CR', deltaCount: 3},
+                    {lineOfBusiness: 'F', deltaCount: 24},
+                    {lineOfBusiness: 'H', deltaCount: 34}]
+        };
+        const result = getLobDeltaUserCount(lobDeltaUserCounts);
+        expect(result).to.be.eql([
+            {lineOfBusiness: 'Cars', deltaCount: 6},
+            {lineOfBusiness: 'Cruise', deltaCount: 3},
+            {lineOfBusiness: 'Flights', deltaCount: 24},
+            {lineOfBusiness: 'Hotels', deltaCount: 34}]
+        );
     });
 });

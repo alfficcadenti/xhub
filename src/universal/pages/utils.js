@@ -375,7 +375,7 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
                         label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
                         time: moment.utc(time).valueOf(),
                         value: formatRate(brandWiseSuccessRateData.rate),
-                        deltaUserCount
+                        totalDeltaUserCount: deltaUserCount
                     });
                 }
             }
@@ -391,6 +391,15 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
 
         return {chartName, aggregatedData, pageBrand, metricName};
     }).map((item) => ({...item, minValue}));
+};
+
+export const getLobDeltaUserCount = (lobDeltaUserCount) => {
+    const findLob = (eachDeltaUserCount) => (LOB_LIST.find((y) => y.value === eachDeltaUserCount.lineOfBusiness));
+
+    return lobDeltaUserCount?.lobDeltaUserCounts?.map((x) => ({
+        lineOfBusiness: findLob(x)?.label,
+        deltaCount: x.deltaCount || 0
+    }));
 };
 
 export const makeSuccessRatesLOBObjects = (
@@ -426,23 +435,18 @@ export const makeSuccessRatesLOBObjects = (
             metricName = METRIC_NAMES[i];
             successRatePercentagesData
                 .filter(selectedBrand === 'eps' ? successRateEPSFilter : successRateFilter)
-            // eslint-disable-next-line complexity
+                // eslint-disable-next-line complexity
                 .forEach(({rate, lineOfBusiness}) => {
                     const momentTime = moment(time);
                     const deltaUserCount = deltaUserData.find((item) => item.metricName === METRIC_NAMES[i])?.metricDeltaUserCounts
                         .find((deltaUserItem) => {
                             return momentTime.isSame(deltaUserItem.time);
-                        })?.lobDeltaUserCounts
-                        .find((item) => {
-                            return item.lineOfBusiness === 'H';
-                        })
-                        .deltaCount;
+                        });
 
                     if (momentTime.isBetween(start, end, 'minutes', '[]')) {
                         const lob = lineOfBusiness ? lobs.find(({value}) => value === lineOfBusiness) : null;
                         const valueKey = lob ? lob.label : 'value';
                         const found = aggregatedData.findIndex((d) => d.time === moment.utc(time).valueOf());
-
                         if (found > -1) {
                             aggregatedData[found][valueKey] = rate === null ? null : formatRate(rate);
                         } else {
@@ -450,8 +454,8 @@ export const makeSuccessRatesLOBObjects = (
                                 label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
                                 time: moment.utc(time).valueOf(),
                                 [valueKey]: rate === null ? null : formatRate(rate),
-                                [`${valueKey}deltaUserCount`]: deltaUserCount
-                            });
+                                totalDeltaUserCount: deltaUserCount?.lobTotalDeltaUserCount,
+                                ['deltaUserCount']: getLobDeltaUserCount(deltaUserCount)});
                         }
                     }
 
