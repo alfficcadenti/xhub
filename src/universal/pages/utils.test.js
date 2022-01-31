@@ -720,7 +720,7 @@ describe('getQueryValues()', () => {
 });
 
 describe('getLobDeltaUserCount()', () => {
-    it('getLobDeltaUserCount', () => {
+    it('getLobDeltaUserCount with LOBs', () => {
         const lobDeltaUserCounts = {
             time: '2022-01-27T09:10:00Z',
             lobTotalDeltaUserCount: 67,
@@ -736,6 +736,38 @@ describe('getLobDeltaUserCount()', () => {
             {lineOfBusiness: 'Cruise', deltaCount: 3},
             {lineOfBusiness: 'Flights', deltaCount: 24},
             {lineOfBusiness: 'Hotels', deltaCount: 34}]
+        );
+    });
+
+    it('returns empty array if lobDeltaUserCounts is undefined', () => {
+        const lobDeltaUserCounts = {
+            time: '2022-01-27T09:10:00Z',
+            lobTotalDeltaUserCount: 0,
+            lobDeltaUserCounts: []
+        };
+        const result = getLobDeltaUserCount(lobDeltaUserCounts);
+        expect(result).to.be.eql([]);
+    });
+
+
+    it('returns undefined if LOB is not found', () => {
+        const lobDeltaUserCounts = {
+            time: '2022-01-27T09:10:00Z',
+            lobTotalDeltaUserCount: 67,
+            lobDeltaUserCounts:
+                [{lineOfBusiness: 'LOB', deltaCount: 6},
+                    {lineOfBusiness: 'CR', deltaCount: 3},
+                    {lineOfBusiness: 'F', deltaCount: 24},
+                    {lineOfBusiness: 'H', deltaCount: 34}]
+        };
+        const result = getLobDeltaUserCount(lobDeltaUserCounts);
+        expect(result).to.be.eql([
+            // eslint-disable-next-line no-undefined
+            {'deltaCount': 6, 'lineOfBusiness': undefined},
+            {'deltaCount': 3, 'lineOfBusiness': 'Cruise'},
+            {'deltaCount': 24, 'lineOfBusiness': 'Flights'},
+            {'deltaCount': 34, 'lineOfBusiness': 'Hotels'}]
+
         );
     });
 });
