@@ -395,7 +395,6 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
 
 export const getLobDeltaUserCount = (lobDeltaUserCount) => {
     const findLob = (eachDeltaUserCount) => (LOB_LIST.find((y) => y.value === eachDeltaUserCount.lineOfBusiness));
-
     return lobDeltaUserCount?.lobDeltaUserCounts?.map((x) => ({
         lineOfBusiness: findLob(x)?.label,
         deltaCount: x.deltaCount || 0
@@ -455,7 +454,7 @@ export const makeSuccessRatesLOBObjects = (
                                 time: moment.utc(time).valueOf(),
                                 [valueKey]: rate === null ? null : formatRate(rate),
                                 totalDeltaUserCount: deltaUserCount?.lobTotalDeltaUserCount,
-                                ['deltaUserCount']: getLobDeltaUserCount(deltaUserCount)});
+                                ['deltaUserCountByLob']: getLobDeltaUserCount(deltaUserCount)});
                         }
                     }
 
