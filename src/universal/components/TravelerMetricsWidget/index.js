@@ -122,7 +122,7 @@ const TravelerMetricsWidget = ({
     const updateTooltip = () => {
         const point = pointRef.current;
         const tooltip = tooltipRef.current;
-        const deltaUserCount = point.payload.deltaUserCountByLob;
+        const deltaUserCountByLob = point.payload.deltaUserCountByLob;
 
         const getDeltaUserCount = () => {
             const dataPointsHoursRange = moment(data[1]?.time).diff(moment(data[0]?.time), 'minutes');
@@ -132,7 +132,7 @@ const TravelerMetricsWidget = ({
                 return !selectedLoBs.length
                     ? `<span class="delta-link">delta users = ${point.payload.totalDeltaUserCount ?? 0}</span>`
                     : selectedLoBs
-                        .map(({label}) => `<div class="delta-link lob-label">${label} delta users = ${deltaUserCount?.find((i) => i.lineOfBusiness === label)?.deltaCount || 0}</div>`)
+                        .map(({label}) => `<div class="delta-link lob-label">${label} delta users = ${deltaUserCountByLob?.find((i) => i.lineOfBusiness === label)?.deltaCount || 0}</div>`)
                         .join('');
             }
 
