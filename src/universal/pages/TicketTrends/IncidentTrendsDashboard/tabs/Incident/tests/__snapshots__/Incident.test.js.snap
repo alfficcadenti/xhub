@@ -260,11 +260,14 @@ Object {
             class="loading-container "
           >
             <div
-              class="data-table__container undefined"
+              class="data-table__container "
             >
               <h3
                 class="data-table__title"
-              />
+              >
+                
+                
+              </h3>
               <div
                 class="Divider settings-divider"
               >
@@ -1244,11 +1247,14 @@ Object {
           class="loading-container "
         >
           <div
-            class="data-table__container undefined"
+            class="data-table__container "
           >
             <h3
               class="data-table__title"
-            />
+            >
+              
+              
+            </h3>
             <div
               class="Divider settings-divider"
             >

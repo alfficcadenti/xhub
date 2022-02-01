@@ -1,7 +1,7 @@
 import React from 'react';
-import {expect} from 'chai';
-import {shallow} from 'enzyme';
 import DataTable from '../index';
+import {render, act, screen, fireEvent} from '@testing-library/react';
+import '@testing-library/jest-dom';
 
 describe('<DataTable/>', () => {
     let wrapper;
@@ -23,55 +23,56 @@ describe('<DataTable/>', () => {
                 setClass: (val) => val !== null
             }
         ];
-        wrapper = shallow(<DataTable handleDateRangeChange={() => {}} handleClearDates={() => {}} data={data} columns={columns} rules={rules} />);
     });
 
-    it('Renders successfully', () => {
-        expect(wrapper).to.have.length(1);
+    afterEach(() => {
+        wrapper.unmount();
     });
 
-    it('Sorts correctly', () => {
-        wrapper.setProps({data, columns, rules});
-        wrapper.instance().onClickSort(columns[0]);
-        expect(wrapper.instance().state.data[0].name).to.equal('D');
-        wrapper.instance().onClickSort(columns[0]);
-        expect(wrapper.instance().state.data[0].name).to.equal('A');
-        wrapper.instance().onClickSort(columns[0]);
-        expect(wrapper.instance().state.data[0].name).to.equal('D');
+    it('Renders successfully', async () => {
+        await act(async () => {
+            wrapper = render(<DataTable handleDateRangeChange={() => {}} handleClearDates={() => {}} data={data} columns={columns} rules={rules}/>);
+        });
+        expect(wrapper).toMatchSnapshot();
     });
 
-    it('Sorts numbers correctly', () => {
-        wrapper.setProps({data: [{name: '99'}, {name: '2010'}, {name: '1009'}, {name: '99'}], columns, rules});
-        expect(wrapper.instance().state.data[0].name).to.equal('99');
-        wrapper.instance().onClickSort(columns[0]);
-        expect(wrapper.instance().state.data[0].name).to.equal('2010');
-        wrapper.instance().onClickSort(columns[0]);
-        expect(wrapper.instance().state.data[0].name).to.equal('99');
-        wrapper.instance().onClickSort(columns[0]);
-        expect(wrapper.instance().state.data[0].name).to.equal('2010');
+    it('Sorts correctly', async () => {
+        await act(async () => {
+            wrapper = render(<DataTable handleDateRangeChange={() => {}} handleClearDates={() => {}} data={data} columns={columns} rules={rules}/>);
+        });
+        fireEvent.click(screen.getByText(/name/i));
+        expect(wrapper).toMatchSnapshot();
     });
 
-    it('Sorts percentages correctly', () => {
-        wrapper.setProps({data: [{name: '1.9%'}, {name: '3.99%'}, {name: '20.0%'}], columns, rules});
-        expect(wrapper.instance().state.data[0].name).to.equal('1.9%');
-        wrapper.instance().onClickSort(columns[0]);
-        expect(wrapper.instance().state.data[0].name).to.equal('20.0%');
-        wrapper.instance().onClickSort(columns[0]);
-        expect(wrapper.instance().state.data[0].name).to.equal('1.9%');
-        wrapper.instance().onClickSort(columns[0]);
-        expect(wrapper.instance().state.data[0].name).to.equal('20.0%');
+    it('Sorts numbers correctly', async () => {
+        await act(async () => {
+            wrapper = render(<DataTable handleDateRangeChange={() => {}} handleClearDates={() => {}} data={[{name: '99'}, {name: '2010'}, {name: '1009'}, {name: '99'}]} columns={columns} rules={rules}/>);
+        });
+        fireEvent.click(screen.getByText(/name/i));
+        expect(wrapper).toMatchSnapshot();
     });
 
-    it('Handles empty rules successfully', () => {
-        wrapper.instance().setState({rules: []});
-        expect(wrapper.instance().applyRule(null, null)).to.equal('');
+    it('Sorts percentages correctly', async () => {
+        await act(async () => {
+            wrapper = render(<DataTable handleDateRangeChange={() => {}} handleClearDates={() => {}} data={[{name: '1.9%'}, {name: '3.99%'}, {name: '20.0%'}]} columns={columns} rules={rules}/>);
+        });
+        fireEvent.click(screen.getByText(/name/i));
+        expect(wrapper).toMatchSnapshot();
     });
 
-    it('Does not sort when sort is disabled', () => {
-        wrapper = shallow(<DataTable data={data} columns={columns} rules={rules} sortDisabled />);
-        wrapper.instance().onClickSort(columns[0]);
-        expect(wrapper.instance().state.data[0].name).to.equal('B');
-        wrapper.instance().onClickSort(columns[0]);
-        expect(wrapper.instance().state.data[0].name).to.equal('B');
+    it('Handles empty rules successfully', async () => {
+        await act(async () => {
+            wrapper = render(<DataTable handleDateRangeChange={() => {}} handleClearDates={() => {}} data={data} columns={columns} rules={[]}/>);
+        });
+        fireEvent.click(screen.getByText(/name/i));
+        expect(wrapper).toMatchSnapshot();
+    });
+
+    it('Does not sort when sort is disabled', async () => {
+        await act(async () => {
+            wrapper = render(<DataTable sortDisabled handleDateRangeChange={() => {}} handleClearDates={() => {}} data={data} columns={columns} rules={[]}/>);
+        });
+        fireEvent.click(screen.getByText(/name/i));
+        expect(wrapper).toMatchSnapshot();
     });
 });

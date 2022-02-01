@@ -1,6 +1,5 @@
-import React, {Component, Fragment, isValidElement} from 'react';
+import React, {Fragment, isValidElement, useState, useEffect} from 'react';
 import {FormInput} from '@homeaway/react-form-components';
-import PropTypes from 'prop-types';
 import {CSVLink} from 'react-csv';
 import {v1 as uuid} from 'uuid';
 import sanitizeHtml from 'sanitize-html';
@@ -20,90 +19,65 @@ const sanitizeOption = {
     allowedAttributes: Object.assign(sanitizeHtml.defaults.allowedAttributes, {div: ['value']})
 };
 
-class DataTable extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            data: [],
-            columns: [],
-            rules: [],
-            columnsInfo: {},
-            columnHeaders: {},
-            sortByColumn: null,
-            sortByDirection: 'desc',
-            sortDisabled: false,
-            csvColumns: [],
-            enableCSVDownload: false,
-            paginated: false,
-            pageSize: 25,
-            currPageIndex: 0,
-            showSettings: false,
-            enableColumnDisplaySettings: false,
-            displayColumns: [],
-            expandableColumns: [],
-            expandedRows: {},
-            expandAllRows: false,
-            isSorting: false
-        };
-    }
+const DataTable = ({
+    data = [],
+    renderFooter = () => {},
+    columns = [],
+    hiddenColumns = [],
+    rules = [],
+    columnsInfo = {},
+    columnHeaders = {},
+    sortByColumn = null,
+    sortByDirection = 'desc',
+    sortDisabled = false,
+    csvColumns = [],
+    enableCSVDownload = false,
+    enableTextSearch = false,
+    paginated = false,
+    enableColumnDisplaySettings = false,
+    expandableColumns = [],
+    expandedRows = {},
+    expandAllRows = false,
+    className = '',
+    title = '',
+    info = '',
+    csvFilename = 'opxhub-table.csv'
 
-    static getDerivedStateFromProps(props, currState) {
-        const dataIsNotEqual = (a, b) => {
-            if (a.length !== b.length) {
-                return true;
-            }
-            for (let idx = 0; idx < a.length; idx++) {
-                const itemA = a[idx];
-                const itemB = b[idx];
-                const keys = Object.keys(itemA);
-                for (let keyIdx = 0; keyIdx < keys.length; keyIdx++) {
-                    const propertyName = keys[keyIdx];
-                    if (itemA[propertyName] !== itemB[propertyName]) {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        };
-        if (JSON.stringify(currState.columns) !== JSON.stringify(props.columns)
-            || (!currState.isSorting && dataIsNotEqual(currState.data, props.data))) {
-            const {data} = props;
-            const mappedData = data.map((d) => {
-                const mapped = d;
-                mapped.rowId = uuid();
-                return mapped;
-            });
-            const obj = {
-                columnCheckboxes: props.columns.map((c) => ({
-                    text: c,
-                    checked: !props.hiddenColumns.includes(c)
-                })),
-                displayColumns: props.columns.filter((c) => !props.hiddenColumns.includes(c))
-            };
-            return {
-                ...props, ...obj, expandedRows: {}, data: mappedData, isSorting: false
-            };
-        } if (currState.data.length > 0) {
-            return {...currState};
-        }
-        return null;
-    }
+}) => {
+    const mapData = (arr) => arr.map((d) => {
+        const mapped = d;
+        mapped.rowId = uuid();
+        return mapped;
+    });
 
-    getCSVData = () => this.state.data.map((row) => {
-        const columns = this.state.csvColumns.length > 0
-            ? this.state.csvColumns
-            : this.state.displayColumns;
-        return columns.reduce((acc, column) => {
-            acc.push(getCellStringValue(row[column]));
-            return acc;
-        }, []);
-    })
+    const initiateColumns = (cols) => cols.map((c) => ({
+        text: c,
+        checked: !hiddenColumns.includes(c)
+    }));
 
-    onClickSort = (column) => {
-        if (this.state.sortDisabled) {
-            return;
-        }
-        const comparator = (a, b) => {
+    const [filteredData, setFilteredData] = useState([]);
+    const [currPageIndex, setCurrPageIndex] = useState(0);
+    const [displayColumns, setDisplayColumns] = useState(columns.filter((c) => !hiddenColumns.includes(c)));
+    const [columnCheckboxes, setColumnCheckboxes] = useState(initiateColumns(columns));
+    const [searchText, setSearchText] = useState('');
+    const [showSettings, setShowSettings] = useState(false);
+    const [pageSize, setPageSize] = useState(25);
+    const [sortedByColumn, setSortedByColumn] = useState(sortByColumn || '');
+    const [sortedByDirection, setSortedByDirection] = useState(sortByDirection === 'asc' ? 'asc' : 'desc');
+    const [controlledExpandAllRows, setControlledExpandAllRows] = useState(expandAllRows);
+    const [controlledExpandedRows, setControlledExpandedRows] = useState(expandedRows);
+    const [refreshColumns, setRefreshColumns] = useState('');
+    const [reSortData, setReSortData] = useState('');
+
+
+    useEffect(() => {
+        const newDisplayColumns = columnCheckboxes.filter((c) => c.checked).map((x) => x?.text);
+        setDisplayColumns(newDisplayColumns);
+    }, [columnCheckboxes, refreshColumns]);
+
+    useEffect(() => {
+        /* eslint-disable complexity */
+        const comparator = (a, b, column) => {
             const valA = a[column];
             const valB = b[column];
             const strA = String(valA).toLowerCase().replace('%', '');
@@ -114,254 +88,54 @@ class DataTable extends Component {
                 return numA - numB;
             }
             if (React.isValidElement(valA) && React.isValidElement(valB)) {
-                return String(valA.key).localeCompare(String(valB.key));
+                if (valA.key && valB.key) {
+                    if (!Number.isNaN(valA.key) && !Number.isNaN(valB.key)) {
+                        return Number(valA.key) - Number(valB.key);
+                    }
+                    return String(valA.key) - String(valB.key);
+                }
+                if (String(valA.props.value) && String(valB.props.value)) {
+                    if (!Number.isNaN(valA.props.value) && !Number.isNaN(valB.props.value)) {
+                        return Number(valA.props.value) - Number(valB.props.value);
+                    }
+                    return String(valA.key) - String(valB.key);
+                }
+                return String(valA.key || valA.props.value).localeCompare(String(valB.key || valB.props.value));
             }
             return strA.localeCompare(strB);
         };
-        const {data, sortByColumn, sortByDirection} = this.state;
-        if (column === sortByColumn && sortByDirection === 'asc') {
-            data.sort(comparator);
-            this.setState({
-                data, sortByColumn: column, sortByDirection: 'desc', isSorting: true
-            });
+        let newSortedData = filteredData;
+        if (sortedByDirection === 'asc') {
+            newSortedData.sort((a, b) => comparator(a, b, sortedByColumn));
         } else {
-            data.sort((a, b) => -comparator(a, b)); // reverse
-            this.setState({
-                data, sortByColumn: column, sortByDirection: 'asc', isSorting: true
-            });
+            newSortedData.sort((a, b) => -comparator(a, b, sortedByColumn));
         }
-    }
+        setFilteredData(newSortedData);
+        setReSortData(uuid());
+    }, [sortedByColumn, sortedByDirection]);
 
-    applyRule = (item, col) => {
-        const found = this.state.rules.find((rule) => rule.column === col);
-        return found ? found.setClass(item[col]) : '';
-    }
+    useEffect(() => {
+        setFilteredData(mapData(data));
+    }, [data]);
 
-    renderColumn = (item, col) => (
-        isValidElement(item[col])
-            ? <td key={uuid()} className={this.applyRule(item, col)}>{item[col]}</td>
-            : (
-                <td
-                    key={uuid()}
-                    className={this.applyRule(item, col)}
-                    dangerouslySetInnerHTML={{__html: sanitizeHtml(item[col], sanitizeOption)}} // eslint-disable-line
-                />
-            )
-    );
-
-    renderToggleCol = (rowId) => (
-        <td key={uuid()}>
-            <div role="button" tabIndex="0" onKeyDown={() => this.handleToggleExpand(rowId)} className="toggle-btn" onClick={() => this.handleToggleExpand(rowId)}>
-                {this.state.expandedRows[rowId]
-                    ? <SVGIcon inlineFlex markup={CHEVRON_UP__12} />
-                    : <SVGIcon inlineFlex markup={CHEVRON_DOWN__12} />}
-            </div>
-        </td>
-    )
-
-    renderRow = (item) => {
-        const isExpandableCol = this.state.expandableColumns.length > 0;
-        const hasExpandableContent = this.state.expandableColumns.reduce((acc, col) => !!item[col] && acc, true);
-        let toggleCol = null;
-        if (isExpandableCol) {
-            toggleCol = hasExpandableContent
-                ? this.renderToggleCol(item.rowId)
-                : <td />;
-        }
-        return (
-            <Fragment key={uuid()}>
-                <tr>
-                    {toggleCol}
-                    {this.state.displayColumns.map((col) => this.renderColumn(item, col))}
-                </tr>
-                <tr className={`expandable-row ${hasExpandableContent && this.state.expandedRows[item.rowId] ? '' : 'hidden'}`}>
-                    <td className="expandable-column" colSpan={this.state.displayColumns.length + 1}>
-                        {this.state.expandableColumns.map((col) => <Fragment key={uuid()}>{item[col]}</Fragment>)}
-                    </td>
-                </tr>
-            </Fragment>
-        );
-    };
-
-    renderTableBody = () => {
-        const {
-            data, paginated, currPageIndex, pageSize, enableTextSearch, searchText
-        } = this.state;
+    useEffect(() => {
+        setCurrPageIndex(0);
         const findSearchText = (t) => String(t).includes(searchText);
-        const filteredData = enableTextSearch && searchText
+        const dataToDisplay = enableTextSearch && searchText
             ? data.filter((d) => Object.values(d).findIndex(findSearchText) > -1)
             : data;
-        if (!paginated) {
-            return filteredData.map(this.renderRow);
-        }
-        const start = currPageIndex * pageSize;
-        return filteredData.slice(start, start + pageSize).map(this.renderRow);
-    }
+        setFilteredData(dataToDisplay);
+    }, [searchText]);
 
-    renderInfoTooltip = (content) => (
-        <div className="info-tooltip ">
-            <Tooltip tooltipType="tooltip--lg" content={content} placement="bottom">
-                <SVGIcon inlineFlex markup={INFO__16} />
-            </Tooltip>
-        </div>
-    )
+    const handleColumnCheckbox = (column) => {
+        const newColumnCheckboxes = columnCheckboxes;
+        const idx = columnCheckboxes.findIndex((c) => c.text === column.text);
+        newColumnCheckboxes[idx].checked = (!columnCheckboxes[idx].checked);
+        setColumnCheckboxes(newColumnCheckboxes);
+        setRefreshColumns(uuid());
+    };
 
-    renderTableHeaderColumn = (column) => {
-        let headerColumnContent;
-        if (this.state.columnHeaders[column]) {
-            headerColumnContent = this.state.columnHeaders[column];
-        } else if (this.state.columnsInfo[column]) {
-            headerColumnContent = (
-                <>{column} {this.renderInfoTooltip(this.state.columnsInfo[column])}</>
-            );
-        } else {
-            headerColumnContent = column;
-        }
-        return (
-            <th
-                onClick={() => this.onClickSort(column)}
-                key={column}
-                className={this.state.sortDisabled ? null : 'pointer'}
-            >
-                {headerColumnContent}
-            </th>
-        );
-    }
-
-    toggleExpandAll = () => {
-        this.setState((prevState) => {
-            const expandAllRows = !prevState.expandAllRows;
-            const expandedRows = {};
-            this.state.data.forEach((row) => {
-                expandedRows[row.rowId] = expandAllRows;
-            });
-            return {
-                expandedRows,
-                expandAllRows
-            };
-        });
-    }
-
-    renderToggleHeaderColumn = () => {
-        if (this.state.expandableColumns.length < 1) {
-            return null;
-        }
-        const toggleIcon = this.state.expandAllRows
-            ? <SVGIcon inlineFlex markup={CHEVRON_UP__12} />
-            : <SVGIcon inlineFlex markup={CHEVRON_DOWN__12} />;
-        return <th className="pointer" onClick={this.toggleExpandAll}>{toggleIcon}</th>;
-    }
-
-    renderTableHeader = () => (
-        <tr>
-            {this.renderToggleHeaderColumn()}
-            {this.state.displayColumns.map(this.renderTableHeaderColumn)}
-        </tr>
-    );
-
-    getPrevPage = () => {
-        this.setState((prevState) => ({
-            currPageIndex: prevState.currPageIndex - 1
-        }));
-    }
-
-    getNextPage = () => {
-        this.setState((prevState) => ({
-            currPageIndex: prevState.currPageIndex + 1
-        }));
-    }
-
-    renderPrevButton = (show) => (
-        <button type="button" className="btn btn-default" onClick={this.getPrevPage} disabled={!show}>{'Previous'}</button>
-    )
-
-    renderNextButton = (show) => (
-        <button type="button" className="btn btn-default" onClick={this.getNextPage} disabled={!show}>{'Next'}</button>
-    )
-
-    getPage = (i) => {
-        this.setState({currPageIndex: i});
-    }
-
-    renderPageButtons = () => {
-        const {
-            data, pageSize, paginated, currPageIndex
-        } = this.state;
-        if (!paginated) {
-            return <div />;
-        }
-        const MAX_PAGES = Math.ceil(data.length / pageSize);
-        const nextPages = Math.min(MAX_PAGES - currPageIndex, 3);
-        const prevPages = Math.min(currPageIndex, 2);
-        const result = [
-            <button key={uuid()} type="button" className="btn btn-default" disabled>{currPageIndex + 1}</button>
-        ];
-        for (let i = 0; i < prevPages; i++) {
-            result.unshift(
-                <button key={uuid()} type="button" className="btn btn-default" onClick={() => this.getPage(currPageIndex - (i + 1))}>{currPageIndex - i}</button>
-            );
-        }
-        for (let i = 1; i < nextPages; i++) {
-            result.push(
-                <button key={uuid()} type="button" className="btn btn-default" onClick={() => this.getPage(currPageIndex + i)}>{currPageIndex + i + 1}</button>
-            );
-        }
-        return <>{result}</>;
-    }
-
-    renderPagination = () => {
-        const {
-            data, pageSize, paginated, currPageIndex
-        } = this.state;
-        if (!paginated) {
-            return <div />;
-        }
-        const MAX_PAGES = Math.ceil(data.length / pageSize);
-        const showNext = currPageIndex < MAX_PAGES - 1;
-        const showPrev = currPageIndex > 0 && MAX_PAGES > 1;
-
-        const onPageSizeClick = (n) => {
-            const maxPages = Math.ceil(data.length / n);
-            const shouldSetCurrPageIndex = maxPages < currPageIndex;
-
-            this.setState({
-                pageSize: n,
-                currPageIndex: shouldSetCurrPageIndex ? (maxPages - 1) : currPageIndex
-            });
-        };
-
-        return (
-            <div className="pagination text-center">
-                <div className="btn-group">
-                    {this.renderPrevButton(showPrev)}
-                    {this.renderPageButtons(showNext || showPrev)}
-                    {this.renderNextButton(showNext)}
-                </div>
-                {'Page Size:'}
-                <Dropdown id="pagesize-dropdown" label={pageSize} className="pagesize-dropdown" closeAfterContentClick>
-                    {[25, 50, 75, 100].map((n) => <DropdownItem key={`page-${n}`} link="#" text={n} onClick={() => onPageSizeClick(n)} />)}
-                </Dropdown>
-            </div>
-        );
-    }
-
-    handleColumnCheckbox = (column) => {
-        this.setState((prevState) => {
-            const {columnCheckboxes} = prevState;
-            const idx = columnCheckboxes
-                .findIndex((c) => c.text === column.text);
-            columnCheckboxes[idx].checked = (
-                !columnCheckboxes[idx].checked);
-            return {
-                columnCheckboxes,
-                displayColumns: columnCheckboxes
-                    .filter((cbox) => cbox.checked)
-                    .map((cbox) => cbox.text)
-            };
-        });
-    }
-
-    renderColumnCheckbox = (c) => (
+    const renderColumnCheckbox = (c) => (
         <Checkbox
             key={`column-${c.text}`}
             size="sm"
@@ -369,25 +143,54 @@ class DataTable extends Component {
             name={c.text}
             label={c.text}
             checked={c.checked}
-            onChange={() => this.handleColumnCheckbox(c)}
+            onChange={() => handleColumnCheckbox(c)}
         />
-    )
+    );
 
-    handleShowSettings = () => {
-        this.setState((prevState) => ({showSettings: !prevState.showSettings}));
-    }
+    const handleShowSettings = () => setShowSettings(!showSettings);
 
-    handleToggleExpand(rowId) {
-        this.setState((prevState) => ({
-            expandedRows: {
-                ...prevState.expandedRows,
-                [rowId]: !prevState.expandedRows[rowId]
-            }
-        }));
-    }
+    const handleToggleExpand = (rowId) => {
+        const key = rowId;
+        let newExpandedRows = controlledExpandedRows;
+        newExpandedRows = {[key]: !controlledExpandedRows[key]};
+        setControlledExpandedRows(newExpandedRows);
+    };
 
-    getCSVHeader = () => {
-        const {csvColumns, displayColumns, columns} = this.state;
+    const onClickSort = (column) => {
+        if (!sortDisabled) {
+            setSortedByColumn(column);
+            setSortedByDirection(sortedByDirection === 'asc' ? 'desc' : 'asc');
+            // setReSortData(uuid());
+        }
+    };
+
+    const renderColumnDisplaySettings = () => (
+        <button type="button" className={`btn btn-default settings-btn ${showSettings ? 'active' : ''}`} onClick={handleShowSettings}>
+            <SVGIcon markup={GEAR__24} /> <div className="btn-label">{'Manage Columns'}</div>
+        </button>
+    );
+
+    const renderSearchInput = () => (
+        <FormInput
+            id="search-input"
+            name="searchInput"
+            label=""
+            className="table-search-input"
+            leftContent={<SVGIcon useFill inlineFlex markup={SEARCH__16}/>}
+            onChange={(event) => setSearchText(event.target.value)}
+            value={searchText}
+        />
+    );
+
+    const getCSVData = () => filteredData.map((row) => {
+        const cols = csvColumns.length ? csvColumns : displayColumns;
+        return cols.reduce((acc, column) => {
+            acc.push(getCellStringValue(row[column]));
+            return acc;
+        }, []);
+    });
+
+    const getCSVHeader = () => {
         if (csvColumns && csvColumns.length) {
             return csvColumns;
         }
@@ -395,86 +198,237 @@ class DataTable extends Component {
             return displayColumns;
         }
         return columns;
-    }
+    };
 
-    renderDownloadLink = () => (
+    const renderDownloadLink = () => (
         <CSVLink
             className="btn btn-default data-table__download"
-            headers={this.getCSVHeader()}
-            data={this.getCSVData()}
-            filename={`${this.state.csvFilename || 'opxhub-table.csv'}`}
+            headers={getCSVHeader()}
+            data={getCSVData()}
+            filename={csvFilename}
         >
             <button type="button" className="btn btn-default settings-btn">
                 <SVGIcon markup={DOWNLOAD__16} /> <div className="btn-label">{'Download CSV'}</div>
             </button>
         </CSVLink>
-    )
+    );
 
-    renderColumnDisplaySettings = () => (
-        <button type="button" className={`btn btn-default settings-btn ${this.state.showSettings ? 'active' : ''}`} onClick={this.handleShowSettings}>
-            <SVGIcon markup={GEAR__24} /> <div className="btn-label">{'Manage Columns'}</div>
-        </button>
-    )
+    const getPrevPage = () => setCurrPageIndex(currPageIndex - 1);
 
-    renderSearchInput = () => (
-        <FormInput
-            id="search-input"
-            name="searchInput"
-            label=""
-            className="table-search-input"
-            leftContent={<SVGIcon useFill inlineFlex markup={SEARCH__16}/>}
-            onChange={(event) => this.setState({searchText: event.target.value})}
-            value={this.state.searchText}
-        />
-    )
+    const getNextPage = () => setCurrPageIndex(currPageIndex + 1);
 
-    // eslint-disable-next-line complexity
-    renderToolbar = (title, info) => (
-        <>
-            <h3 className="data-table__title">{title}{info && this.renderInfoTooltip(info)}</h3>
-            {this.state.enableColumnDisplaySettings && this.renderColumnDisplaySettings()}
-            {this.state.enableCSVDownload && this.renderDownloadLink()}
-            {this.state.enableTextSearch && this.renderSearchInput()}
-            <Divider heading="Settings" id="settings-divider" className="settings-divider" expanded={this.state.showSettings}>
-                <form>
-                    {this.state.columnCheckboxes && this.state.columnCheckboxes.length > 1
-                        && this.state.columnCheckboxes.slice(1).map(this.renderColumnCheckbox)}
-                </form>
-            </Divider>
-        </>
-    )
+    const renderPrevButton = (show) => <button type="button" className="btn btn-default" onClick={getPrevPage} disabled={!show}>{'Previous'}</button>;
 
-    renderTable = () => (
-        <>
-            <table className="data-table">
-                <thead className="data-table-header">{this.renderTableHeader()}</thead>
-                <tbody className="data-table-body">{this.renderTableBody()}</tbody>
-            </table>
-            {this.renderPagination()}
-            {this.props.renderFooter(this.state.data)}
-        </>
-    )
+    const renderNextButton = (show) => <button type="button" className="btn btn-default" onClick={getNextPage} disabled={!show}>{'Next'}</button>;
 
-    render() {
+    const getPage = (i) => setCurrPageIndex(i);
+
+    const renderPageButtons = () => {
+        if (!paginated) {
+            return <div />;
+        }
+        const MAX_PAGES = Math.ceil(filteredData.length / pageSize);
+        const nextPages = Math.min(MAX_PAGES - currPageIndex, 3);
+        const prevPages = Math.min(currPageIndex, 2);
+        const result = [
+            <button key={uuid()} type="button" className="btn btn-default" disabled>{currPageIndex + 1}</button>
+        ];
+        for (let i = 0; i < prevPages; i++) {
+            result.unshift(
+                <button key={uuid()} type="button" className="btn btn-default" onClick={() => getPage(currPageIndex - (i + 1))}>{currPageIndex - i}</button>
+            );
+        }
+        for (let i = 1; i < nextPages; i++) {
+            result.push(
+                <button key={uuid()} type="button" className="btn btn-default" onClick={() => getPage(currPageIndex + i)}>{currPageIndex + i + 1}</button>
+            );
+        }
+        return <>{result}</>;
+    };
+
+    const renderPagination = () => {
+        if (!paginated) {
+            return <div />;
+        }
+        const MAX_PAGES = Math.ceil(filteredData.length / pageSize);
+        const showNext = currPageIndex < MAX_PAGES - 1;
+        const showPrev = currPageIndex > 0 && MAX_PAGES > 1;
+
+        const onPageSizeClick = (n) => {
+            const maxPages = Math.ceil(filteredData.length / n);
+            const shouldSetCurrPageIndex = maxPages < currPageIndex;
+            setPageSize(n);
+            setCurrPageIndex(shouldSetCurrPageIndex ? (maxPages - 1) : currPageIndex);
+        };
+
         return (
-            <div className={`data-table__container ${this.props.className}`}>
-                {this.renderToolbar(this.state.title, this.state.info)}
-                {this.state.data.length ? this.renderTable() : <NoResults />}
+            <div className="pagination text-center">
+                <div className="btn-group">
+                    {renderPrevButton(showPrev)}
+                    {renderPageButtons(showNext || showPrev)}
+                    {renderNextButton(showNext)}
+                </div>
+                {'Page Size:'}
+                <Dropdown id="pagesize-dropdown" label={pageSize} className="pagesize-dropdown" closeAfterContentClick>
+                    {[25, 50, 75, 100].map((n) => <DropdownItem key={`page-${n}`} link="#" text={n} onClick={() => onPageSizeClick(n)} />)}
+                </Dropdown>
             </div>
         );
-    }
-}
+    };
 
-DataTable.propTypes = {
-    data: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-    columns: PropTypes.arrayOf(PropTypes.string).isRequired,
-    hiddenColumns: PropTypes.arrayOf(PropTypes.string),
-    renderFooter: PropTypes.func
+    const renderInfoTooltip = (content) => (
+        <div className="info-tooltip ">
+            <Tooltip tooltipType="tooltip--lg" content={content} placement="bottom">
+                <SVGIcon inlineFlex markup={INFO__16} />
+            </Tooltip>
+        </div>
+    );
+
+    // eslint-disable-next-line complexity
+    const renderToolbar = (tableTitle, tableInfo, id) => (
+        <Fragment key={id}>
+            <h3 className="data-table__title">{tableTitle}{tableInfo && renderInfoTooltip(tableInfo)}</h3>
+            {enableColumnDisplaySettings && renderColumnDisplaySettings()}
+            {enableCSVDownload && renderDownloadLink()}
+            {enableTextSearch && renderSearchInput()}
+            <Divider heading="Settings" id="settings-divider" className="settings-divider" expanded={showSettings}>
+                <form>
+                    {columnCheckboxes && columnCheckboxes.length > 1
+                        && columnCheckboxes.slice(1).map(renderColumnCheckbox)}
+                </form>
+            </Divider>
+        </Fragment>
+    );
+
+    const renderTableHeaderColumn = (column) => {
+        let headerColumnContent;
+        if (columnHeaders[column]) {
+            headerColumnContent = columnHeaders[column];
+        } else if (columnsInfo[column]) {
+            headerColumnContent = (
+                <>{column} {renderInfoTooltip(columnsInfo[column])}</>
+            );
+        } else {
+            headerColumnContent = column;
+        }
+        const sortingIcon = sortedByDirection === 'asc'
+            ? <SVGIcon inlineFlex markup={CHEVRON_UP__12} />
+            : <SVGIcon inlineFlex markup={CHEVRON_DOWN__12} />;
+        return (
+            <th
+                onClick={() => onClickSort(column)}
+                key={column}
+                className={sortDisabled ? null : 'pointer'}
+            >
+                {headerColumnContent}
+                {column === sortedByColumn && sortingIcon}
+            </th>
+        );
+    };
+
+    const toggleExpandAll = () => {
+        const newExpandedRows = {};
+        setControlledExpandAllRows(!controlledExpandAllRows);
+        filteredData.forEach((row) => {
+            newExpandedRows[row.rowId] = controlledExpandAllRows;
+        });
+        setControlledExpandedRows(newExpandedRows);
+    };
+
+    const renderToggleHeaderColumn = () => {
+        if (expandableColumns.length < 1) {
+            return null;
+        }
+        const toggleIcon = expandAllRows
+            ? <SVGIcon inlineFlex markup={CHEVRON_UP__12} />
+            : <SVGIcon inlineFlex markup={CHEVRON_DOWN__12} />;
+        return <th className="pointer" onClick={toggleExpandAll}>{toggleIcon}</th>;
+    };
+
+    const renderTableHeader = (id) => (
+        <tr key={`header-${id}`}>
+            {renderToggleHeaderColumn()}
+            {displayColumns?.length ? displayColumns.map(renderTableHeaderColumn) : columns.map(renderTableHeaderColumn)}
+        </tr>
+    );
+
+    const applyRule = (item, col) => {
+        const found = rules.find((rule) => rule.column === col);
+        return found ? found.setClass(item[col]) : '';
+    };
+
+    const renderColumn = (item, col) => (
+        isValidElement(item[col])
+            ? <td key={uuid()} className={applyRule(item, col)}>{item[col]}</td>
+            : (
+                <td
+                    key={uuid()}
+                    className={applyRule(item, col)}
+                    dangerouslySetInnerHTML={{__html: sanitizeHtml(item[col], sanitizeOption)}} // eslint-disable-line
+                />
+            )
+    );
+
+    const renderToggleCol = (rowId) => (
+        <td key={uuid()}>
+            <div role="button" tabIndex="0" onKeyDown={() => handleToggleExpand(rowId)} className="toggle-btn" onClick={() => handleToggleExpand(rowId)}>
+                {controlledExpandedRows[rowId]
+                    ? <SVGIcon inlineFlex markup={CHEVRON_UP__12} />
+                    : <SVGIcon inlineFlex markup={CHEVRON_DOWN__12} />}
+            </div>
+        </td>
+    );
+
+    const renderRow = (item) => {
+        const isExpandableCol = expandableColumns.length > 0;
+        const hasExpandableContent = expandableColumns.reduce((acc, col) => !!item[col] && acc, true);
+        let toggleCol = null;
+        if (isExpandableCol) {
+            toggleCol = hasExpandableContent
+                ? renderToggleCol(item.rowId)
+                : <td />;
+        }
+        return (
+            <Fragment key={uuid()}>
+                <tr>
+                    {toggleCol}
+                    {displayColumns.map((col) => renderColumn(item, col))}
+                </tr>
+                <tr className={`expandable-row ${hasExpandableContent && controlledExpandedRows[item.rowId] ? '' : 'hidden'}`}>
+                    <td className="expandable-column" colSpan={displayColumns.length + 1}>
+                        {expandableColumns.map((col) => <Fragment key={uuid()}>{item[col]}</Fragment>)}
+                    </td>
+                </tr>
+            </Fragment>
+        );
+    };
+
+    const renderTableBody = () => {
+        if (!paginated) {
+            return filteredData.map(renderRow);
+        }
+        const start = currPageIndex * pageSize;
+        return filteredData?.slice(start, start + pageSize).map(renderRow);
+    };
+
+    const renderTable = () => (
+        <Fragment key={`table+${reSortData}`}>
+            <table className="data-table">
+                <thead className="data-table-header">{renderTableHeader(columnCheckboxes)}</thead>
+                <tbody className="data-table-body">{renderTableBody()}</tbody>
+            </table>
+            {renderPagination()}
+            {renderFooter(filteredData)}
+        </Fragment>
+    );
+
+    return (
+        <div className={`data-table__container ${className}`}>
+            {renderToolbar(title, info, refreshColumns)}
+            {data.length ? renderTable() : <NoResults />}
+        </div>
+    );
 };
 
-DataTable.defaultProps = {
-    hiddenColumns: [],
-    renderFooter: () => {}
-};
 
 export default DataTable;

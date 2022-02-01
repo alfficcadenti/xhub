@@ -74,12 +74,13 @@ Object {
                   class="bug-list-table"
                 >
                   <div
-                    class="data-table__container undefined"
+                    class="data-table__container "
                   >
                     <h3
                       class="data-table__title"
                     >
                       open bugs (2 Results)
+                      
                     </h3>
                     <div
                       class="Divider settings-divider"
@@ -268,7 +269,7 @@ Object {
                           <span
                             class="btn__label"
                           >
-                            10
+                            25
                           </span>
                           <span
                             class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
@@ -349,12 +350,13 @@ Object {
                   class="bug-list-table"
                 >
                   <div
-                    class="data-table__container undefined"
+                    class="data-table__container "
                   >
                     <h3
                       class="data-table__title"
                     >
                       closed bugs (1 Result)
+                      
                     </h3>
                     <div
                       class="Divider settings-divider"
@@ -519,7 +521,7 @@ Object {
                           <span
                             class="btn__label"
                           >
-                            10
+                            25
                           </span>
                           <span
                             class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
@@ -670,12 +672,13 @@ Object {
                 class="bug-list-table"
               >
                 <div
-                  class="data-table__container undefined"
+                  class="data-table__container "
                 >
                   <h3
                     class="data-table__title"
                   >
                     open bugs (2 Results)
+                    
                   </h3>
                   <div
                     class="Divider settings-divider"
@@ -864,7 +867,7 @@ Object {
                         <span
                           class="btn__label"
                         >
-                          10
+                          25
                         </span>
                         <span
                           class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
@@ -945,12 +948,13 @@ Object {
                 class="bug-list-table"
               >
                 <div
-                  class="data-table__container undefined"
+                  class="data-table__container "
                 >
                   <h3
                     class="data-table__title"
                   >
                     closed bugs (1 Result)
+                    
                   </h3>
                   <div
                     class="Divider settings-divider"
@@ -1115,7 +1119,7 @@ Object {
                         <span
                           class="btn__label"
                         >
-                          10
+                          25
                         </span>
                         <span
                           class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
