@@ -1,0 +1,80 @@
+@import '../../../../../mixins.less';
+
+.inc-details-container {
+    background: @color-bg-contrast;
+
+    #shortDetails, #longDetails{ 
+        padding: @spacing-3x;
+        border-radius: @spacing-1x;
+    }
+
+    #shortDetails {
+        width: 100%;
+        display: inline-block;
+        padding-bottom: 1px;
+
+        .inc-row {
+            float: left;
+            width: 50%;
+            margin-bottom: @spacing-1x;
+ 
+            .inc-label {
+                 float: left;
+                 width: 50%;
+                 font-weight: 800;
+            }
+ 
+            .inc-value {
+                 float: left;
+                 width: 50%;
+                 white-space: nowrap;
+                 font-size: @font-size-small;
+                 overflow-x: scroll;
+            }
+        } 
+
+    }
+
+    #longDetails {
+        padding-top: 2px;
+
+        .inc-long-row {
+            width: 100%;
+
+            .inc-long-label {
+                font-weight: 800;
+            }
+
+            .inc-long-value {
+                width: 100%;
+                font-size: @font-size-small;
+                overflow-x: scroll;
+            }
+        }
+        
+    }
+
+}
+
+.inc-form-container {
+    margin-bottom: @spacing-2x;
+    border-radius: @spacing-1x;
+
+    .inc-search-input  {
+        float: left;
+        width: 512px;
+        max-width: 512px;
+    }
+
+    #searchInput {
+        width: 512px;
+        min-width: 250px
+    }
+
+    .search-btn {
+        margin-left: @spacing-1x;
+        height: @spacing-7x;
+        margin-bottom: @spacing-1x;
+    }
+}
+
