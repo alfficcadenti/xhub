@@ -25,10 +25,6 @@ export const getTableColumns = (selectedBrand) => {
     return ['Incident', 'Priority', 'Division', 'Started', 'Summary', 'RC Owner', 'TTD', 'TTK', 'TTF', 'TTR', 'Status', 'Success Rates', 'Page Views'];
 };
 
-export const getTableColumnsForIncident = () => {
-    return ['Incident', 'Description', 'Priority', 'Booking Impact', 'Started', 'TTD', 'TTK', 'TTF', 'TTR', 'Environment', 'RC Owner', 'L1'];
-};
-
 export const adjustTicketProperties = (tickets = []) => (
     // eslint-disable-next-line complexity
     tickets.map((t) => {
