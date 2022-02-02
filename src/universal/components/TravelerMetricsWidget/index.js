@@ -16,7 +16,7 @@ import HelpText from '../HelpText/HelpText';
 import ReferenceLabel from '../ReferenceLabel';
 import {checkResponse, getBrand} from '../../pages/utils';
 import {getAnnotationStrokeColor} from '../utils.js';
-import {EXPEDIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, PAGE_VIEWS_PAGE_NAME} from '../../constants';
+import {EXPEDIA_PARTNER_SERVICES_BRAND, PAGE_VIEWS_PAGE_NAME} from '../../constants';
 import './styles.less';
 
 
@@ -122,16 +122,17 @@ const TravelerMetricsWidget = ({
     const updateTooltip = () => {
         const point = pointRef.current;
         const tooltip = tooltipRef.current;
+        const deltaUserCountByLob = point.payload.deltaUserCountByLob;
 
         const getDeltaUserCount = () => {
             const dataPointsHoursRange = moment(data[1]?.time).diff(moment(data[0]?.time), 'minutes');
-            const shouldShowDeltaTag = dataPointsHoursRange <= 5 && pageName !== PAGE_VIEWS_PAGE_NAME && ![EXPEDIA_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND].includes(brand);
+            const shouldShowDeltaTag = dataPointsHoursRange <= 5 && pageName !== PAGE_VIEWS_PAGE_NAME && ![EXPEDIA_PARTNER_SERVICES_BRAND].includes(brand);
 
             if (shouldShowDeltaTag) {
                 return !selectedLoBs.length
-                    ? `<span class="delta-link">delta users = ${point.payload.deltaUserCount ?? 0}</span>`
+                    ? `<span class="delta-link">delta users = ${point.payload.totalDeltaUserCount ?? 0}</span>`
                     : selectedLoBs
-                        .map(({label}) => `<div class="lob-label">${label} delta users = ${point.payload[`${label}deltaUserCount`]}</div>`)
+                        .map(({label}) => `<div class="delta-link lob-label">${label} delta users = ${deltaUserCountByLob?.find((i) => i.lineOfBusiness === label)?.deltaCount || 0}</div>`)
                         .join('');
             }
 
