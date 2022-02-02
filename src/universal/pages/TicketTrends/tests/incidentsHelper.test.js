@@ -12,7 +12,9 @@ import {
     getMeanValue,
     getMeanHours,
     weeklyMTTRMTTD,
-    weeklyMeanTimebyBrand
+    weeklyMeanTimebyBrand,
+    formatMomentInLocalDateTime,
+
 } from '../incidentsHelper';
 import {EG_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, VRBO_BRAND, EXPEDIA_BRAND} from '../../../constants';
 import filteredIncData from './filteredIncidents.test.json';
@@ -98,6 +100,12 @@ describe('incidentsHelper', () => {
                     'Notification Sent': ticketB.notification_sent,
                     duration: ''
                 })]);
+        });
+    });
+
+    describe('formatMomentInLocalDateTime', () => {
+        it('returns formated date time from moment', () => {
+            expect(formatMomentInLocalDateTime('2022-01-25 09:12:00.0000000')).to.eql('2022-01-25 09:12');
         });
     });
 
