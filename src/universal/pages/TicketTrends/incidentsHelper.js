@@ -108,7 +108,7 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
     .sort((a, b) => b.Started.localeCompare(a.Started));
 
 
-export const formatObjectFromIncidentArray = (inc = {}) => {
+export const formatObjectFromIncident = (inc = {}) => {
     const incObj = {
         'ID': getOrDefault(inc, 'id'),
         'Priority': getOrDefault(inc, 'priority'),
