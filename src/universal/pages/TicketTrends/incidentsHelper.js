@@ -25,10 +25,6 @@ export const getTableColumns = (selectedBrand) => {
     return ['Incident', 'Priority', 'Division', 'Started', 'Summary', 'RC Owner', 'TTD', 'TTK', 'TTF', 'TTR', 'Status', 'Success Rates', 'Page Views'];
 };
 
-export const getTableColumnsForIncident = () => {
-    return ['Incident', 'Priority', 'Booking Impact', 'Started', 'TTD', 'TTK', 'TTF', 'TTR', 'Environment', 'RC Owner', 'L1'];
-};
-
 export const adjustTicketProperties = (tickets = []) => (
     // eslint-disable-next-line complexity
     tickets.map((t) => {
@@ -61,6 +57,8 @@ export const getUrlParams = (brand, incStart) => {
         + `&to=${encodeURIComponent(start.add(3, 'hours').startOf('hour'))}`;
 };
 
+export const formatMomentInLocalDateTime = (momentDate) => moment.utc(momentDate || '').local().isValid() && moment.utc(momentDate).local().format('YYYY-MM-DD HH:mm');
+
 export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
     .map((inc) => ({
         id: uuid(),
@@ -68,7 +66,7 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
         Priority: getOrDefault(inc, 'priority'),
         Brand: getOrDefault(inc, 'Brand'),
         Division: getOrDefault(inc, 'Division'),
-        Started: moment.utc(inc.start_date).local().isValid() ? moment.utc(inc.start_date).local().format('YYYY-MM-DD HH:mm') : '-',
+        Started: getOrDefault(inc, 'start_date', formatMomentInLocalDateTime),
         Summary: getOrDefault(inc, 'summary').trim(),
         Duration: getOrDefault(inc, 'duration', formatDurationForTable),
         rawDuration: inc.duration,
@@ -109,48 +107,26 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
     }))
     .sort((a, b) => b.Started.localeCompare(a.Started));
 
-export const getIncidentsDataById = (filteredIncidents = []) => filteredIncidents
-    .map((inc) => ({
-        id: uuid(),
-        Incident: buildTicketLinks(inc.id, inc.Brand, inc.url) || '-',
-        Priority: getOrDefault(inc, 'priority'),
-        Started: moment.utc(inc.startDate || '').local().isValid() ? moment.utc(inc.startDate).local().format('YYYY-MM-DD HH:mm') : '-',
-        Description: getOrDefault(inc, 'description'),
-        TTD: getOrDefault(inc, 'timeToDetect', formatDurationForTable, 'minutes'),
-        TTK: getOrDefault(inc, 'timeToKnow', formatDurationForTable, 'minutes'),
-        TTF: getOrDefault(inc, 'timeToFix', formatDurationForTable, 'minutes'),
-        TTR: getOrDefault(inc, 'timeToRestore', formatDurationForTable, 'minutes'),
+
+export const formatObjectFromIncident = (inc = {}) => {
+    const incObj = {
+        'ID': getOrDefault(inc, 'id'),
+        'Priority': getOrDefault(inc, 'priority'),
+        'L1': getOrDefault(inc, 'brand'),
+        'Started': getOrDefault(inc, 'startDate', formatMomentInLocalDateTime),
+        'Description': getOrDefault(inc, 'description'),
+        'TTD': getOrDefault(inc, 'timeToDetect', formatDuration, 'minutes'),
+        'TTK': getOrDefault(inc, 'timeToKnow', formatDuration, 'minutes'),
+        'TTF': getOrDefault(inc, 'timeToFix', formatDuration, 'minutes'),
+        'TTR': getOrDefault(inc, 'timeToRestore', formatDuration, 'minutes'),
         'Resolution Notes': getOrDefault(inc, 'rootCause'),
-        executiveSummary: getOrDefault(inc, 'executiveSummary'),
         'RC Owner': getOrDefault(inc, 'rootCauseOwner'),
         'Environment': getOrDefault(inc, 'environment'),
-        'Product': getOrDefault(inc, 'product'),
-        'L1': getOrDefault(inc, 'brand'),
-        'L2': getOrDefault(inc, 'l2_business_owner'),
-        'L3': getOrDefault(inc, 'l3_business_owner'),
-        'L4': getOrDefault(inc, 'l4_business_owner'),
-        'L5': getOrDefault(inc, 'l5_business_owner'),
-        'Assignment Group': getOrDefault(inc, 'assignmentGroup'),
         'Booking Impact': getOrDefault(inc, 'bookingImpact'),
-        'Caused by': getOrDefault(inc, 'causedBy'),
-        Details: (
-            <div className="expandable-row-wrapper">
-                <div className="expandable-row">
-                    <span className="expandable-row-header">{'Incident Executive Summary:'}</span>
-                    <div className="expandable-row-section">
-                        {getOrDefault(inc, 'executiveSummary')}
-                    </div>
-                </div>
-                <div className="expandable-row">
-                    <span className="expandable-row-header">{'Resolution Notes:'}</span>
-                    <div className="expandable-row-section">
-                        {getOrDefault(inc, 'rootCause')}
-                    </div>
-                </div>
-            </div>
-        )
-    }))
-    .sort((a, b) => b.Started.localeCompare(a.Started));
+        'Executive Summary': getOrDefault(inc, 'executiveSummary')
+    };
+    return incObj;
+};
 
 export const getQualityData = (filteredDefects = []) => filteredDefects
     // eslint-disable-next-line complexity
@@ -159,7 +135,7 @@ export const getQualityData = (filteredDefects = []) => filteredDefects
         Priority: getOrDefault(t, 'priority'),
         Brand: getOrDefault(t, 'Brand'),
         Division: getOrDefault(t, 'Division'),
-        Opened: moment.utc(t.open_date).local().isValid() ? moment(t.open_date).local().format('YYYY-MM-DD HH:mm') : '-',
+        Opened: getOrDefault(t, 'open_date', formatMomentInLocalDateTime),
         Resolved: moment.utc(t.resolved_date).local().isValid() ? moment(t.resolved_date).local().format('YYYY-MM-DD HH:mm') : '-',
         Duration: t.duration && t.resolved_date ? formatDurationForTable(t.duration) : '-',
         Summary: getOrDefault(t, 'summary'),

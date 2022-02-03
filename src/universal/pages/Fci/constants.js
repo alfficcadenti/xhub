@@ -37,6 +37,28 @@ export const FCI_DETAIL_COLUMNS = [
     'Device User Agent ID',
     'Category'
 ];
+
+export const INCIDENT_COLUMNS = [
+    'ID',
+    'Priority',
+    'Started',
+    'Booking Impact',
+    'TTD',
+    'Environment',
+    'TTK',
+    'RC Owner',
+    'TTF',
+    'L1',
+    'TTR',
+
+];
+
+export const INCIDENT_COLUMNS_LONG = [
+    'Description',
+    'Executive Summary',
+    'Resolution Notes'
+];
+
 export const FCI_HIDDEN_TABLE_COLUMNS = [
     'Session',
     'TPID',
