@@ -37,6 +37,22 @@
     "ssl_negotiation_policy": "ELBSecurityPolicy-TLS-1-2-2017-01"
   },
   "ewetest": {
+    "vpce_consumer": {
+      "generic_providers": [
+        {
+          "service_name": "com.amazonaws.vpce.us-west-2.vpce-svc-068afbf4ac1e286b1",
+          "route53": "impulse-data-service-egdp-stage-us-west-2.eglocal.exp-test.net"
+        },
+        {
+          "service_name": "com.amazonaws.vpce.us-west-2.vpce-svc-068afbf4ac1e286b1",
+          "route53": "opxhub-booking-anomaly-detector-egdp-stage-us-west-2.eglocal.exp-test.net"
+        },
+        {
+          "service_name": "com.amazonaws.vpce.us-west-2.vpce-svc-068afbf4ac1e286b1",
+          "route53": "opxhub-user-events-data-service-egdp-stage-us-west-2.eglocal.exp-test.net"
+        }
+      ]
+    },
     "no-auto-delete": true,
     "instances": {
       "initial_count": 2
