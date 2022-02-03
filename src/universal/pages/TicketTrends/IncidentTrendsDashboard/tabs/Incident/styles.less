@@ -8,6 +8,15 @@
         border-radius: @spacing-1x;
     }
 
+    .inc-label-long, .inc-label {
+        font-weight: 800;
+    }
+     
+    .inc-value-long, .inc-value {
+       font-size: @font-size-small;
+       overflow-x: scroll;
+    }
+
     #shortDetails {
         width: 100%;
         display: inline-block;
@@ -21,15 +30,12 @@
             .inc-label {
                  float: left;
                  width: 50%;
-                 font-weight: 800;
             }
  
             .inc-value {
                  float: left;
                  width: 50%;
                  white-space: nowrap;
-                 font-size: @font-size-small;
-                 overflow-x: scroll;
             }
         } 
 
@@ -41,14 +47,8 @@
         .inc-row-long {
             width: 100%;
 
-            .inc-label-long {
-                font-weight: 800;
-            }
-
             .inc-value-long {
                 width: 100%;
-                font-size: @font-size-small;
-                overflow-x: scroll;
             }
         }
         
