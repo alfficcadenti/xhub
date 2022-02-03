@@ -23,7 +23,6 @@ const Incident = () => {
                 const response = await fetch(`/v1/incidents/${search}`);
                 const resJson = await checkResponse(response);
                 setData(resJson.length ? formatObjectFromIncident(consolidateTicketsById(resJson)?.[0]) : {});
-                // resJson.length ? setData(formatObjectFromIncident(consolidateTicketsById(resJson)?.[0])) : setData({});
                 setError('');
             } catch (e) {
                 setError(FETCH_FAILED_MSG);
