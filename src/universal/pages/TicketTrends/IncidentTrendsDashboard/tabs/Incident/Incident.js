@@ -22,7 +22,8 @@ const Incident = () => {
             try {
                 const response = await fetch(`/v1/incidents/${search}`);
                 const resJson = await checkResponse(response);
-                resJson.length ? setData(formatObjectFromIncident(consolidateTicketsById(resJson)?.[0])) : setData({});
+                setData(resJson.length ? formatObjectFromIncident(consolidateTicketsById(resJson)?.[0]) : {});
+                // resJson.length ? setData(formatObjectFromIncident(consolidateTicketsById(resJson)?.[0])) : setData({});
                 setError('');
             } catch (e) {
                 setError(FETCH_FAILED_MSG);
@@ -34,10 +35,10 @@ const Incident = () => {
 
     const renderRow = (label, value, type) => {
         return (
-            
+
             <div className={`inc-row${type === 'long' ? '-long' : ''}`} key={label}>
                 <div className={`inc-label${type === 'long' ? '-long' : ''}`}>{label}</div>
-                <div className={`inc-value${type === 'long' ? '-long': ''}`}>{value}</div>
+                <div className={`inc-value${type === 'long' ? '-long' : ''}`}>{value}</div>
             </div>
 
         );
@@ -45,29 +46,30 @@ const Incident = () => {
 
     const renderTable = () => {
         return (
-                <div className="inc-details-container">
-                    <div id="shortDetails">
-                        {INCIDENT_COLUMNS
-                            .map((column) => renderRow(column, data?.[column]))}
-                    </div>
-                    <div id="longDetails">
-                        {INCIDENT_COLUMNS_LONG
-                            .map((column) => renderRow(column, data?.[column], 'long'))}
-                    </div>
+            <div className="inc-details-container">
+                <div id="shortDetails">
+                    {INCIDENT_COLUMNS
+                        .map((column) => renderRow(column, data?.[column]))}
                 </div>
+                <div id="longDetails">
+                    {INCIDENT_COLUMNS_LONG
+                        .map((column) => renderRow(column, data?.[column], 'long'))}
+                </div>
+            </div>
         );
     };
 
     const renderResults = () => {
-            if (search) {
-                return (
-                    <LoadingContainer isLoading={isLoading} error={error} >
-                        {Object.keys(data).length !== 0 ? renderTable() : <NoResults />  }
-                    </LoadingContainer>
-                )}
-    }
+        if (search) {
+            return (
+                <LoadingContainer isLoading={isLoading} error={error} >
+                    {Object.keys(data).length !== 0 ? renderTable() : <NoResults /> }
+                </LoadingContainer>
+            );
+        }
+        return null;
+    };
 
-    console.log(data)
     return (
         <div >
             <div className="inc-form-container">
