@@ -19,7 +19,7 @@ import {
 } from '../incidentsHelper';
 import {EG_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, VRBO_BRAND, EXPEDIA_BRAND} from '../../../constants';
 import filteredIncData from './filteredIncidents.test.json';
-import singleIncData from './singleIncData.json'
+import singleIncData from './singleIncData.test.json';
 import incData from './incData.test.json';
 
 
@@ -110,7 +110,7 @@ describe('incidentsHelper', () => {
         it('returns formated date time from moment', () => {
             expect(formatMomentInLocalDateTime('2022-01-25 09:12:00.0000000')).to.eql('2022-01-25 09:12');
         });
-        
+
         it('returns false if input is invalid', () => {
             expect(formatMomentInLocalDateTime('')).to.eql(false);
         });
@@ -124,46 +124,46 @@ describe('incidentsHelper', () => {
         it('returns default (-) if input is empty', () => {
             const result = formatObjectFromIncident({});
             const defaultObject = {
-                "Booking Impact": "-",
-                "Description": "-",
-                "Environment": "-",
-                "Executive Summary": "-",
-                "ID": "-",
-                "L1": "-",
-                "Priority": "-",
-                "RC Owner": "-",
-                "Resolution Notes": "-",
-                "Started": "-",
-                "TTD": "-",
-                "TTF": "-",
-                "TTK": "-",
-                "TTR": "-",
-                }
+                'Booking Impact': '-',
+                'Description': '-',
+                'Environment': '-',
+                'Executive Summary': '-',
+                'ID': '-',
+                'L1': '-',
+                'Priority': '-',
+                'RC Owner': '-',
+                'Resolution Notes': '-',
+                'Started': '-',
+                'TTD': '-',
+                'TTF': '-',
+                'TTK': '-',
+                'TTR': '-',
+            };
             expect(result).to.be.eql(defaultObject);
         });
 
         it('returns formatted incident Object from JSON response', () => {
-            const result = formatObjectFromIncident(singleIncData[0])
+            const result = formatObjectFromIncident(singleIncData[0]);
             const incObject = {
-                "Booking Impact": "Severe Booking Impact",
-                "Description": "Egencia NA degraded - created by zhroberts from #noc-ege-commands-room",
-                "Environment": "Production",
-                "Executive Summary": "-",
-                "ID": "INC5997738",
-                "L1": "Egencia - Consolidated",
-                "Priority": "1-Critical",
-                "RC Owner": "Egencia - Payments",
-                "Resolution Notes": "Service was restored without any technical intervention by support team.  Egencia Payment Team will lead root cause investigation.",
-                "Started": "2021-11-10 07:36",
-                "TTD": "11m",
-                "TTF": "0m",
-                "TTK": "6m",
-                "TTR": "17m",
-                }
-            expect(result).to.be.eql(incObject)
-        })
+                'Booking Impact': 'Severe Booking Impact',
+                'Description': 'Egencia NA degraded - created by zhroberts from #noc-ege-commands-room',
+                'Environment': 'Production',
+                'Executive Summary': '-',
+                'ID': 'INC5997738',
+                'L1': 'Egencia - Consolidated',
+                'Priority': '1-Critical',
+                'RC Owner': 'Egencia - Payments',
+                'Resolution Notes': 'Service was restored without any technical intervention by support team.  Egencia Payment Team will lead root cause investigation.',
+                'Started': '2021-11-10 07:36',
+                'TTD': '11m',
+                'TTF': '0m',
+                'TTK': '6m',
+                'TTR': '17m',
+            };
+            expect(result).to.be.eql(incObject);
+        });
     });
-    
+
 
     describe('getIncidentsData', () => {
         it('returns empty array if filteredIncidents is not passed', () => {
