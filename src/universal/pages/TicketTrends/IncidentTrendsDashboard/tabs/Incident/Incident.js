@@ -2,10 +2,11 @@ import React, {useEffect, useState} from 'react';
 import FormInput from '@homeaway/react-form-components/lib/transpiled/FormInput';
 import {checkResponse, consolidateTicketsById} from '../../../../utils';
 import {FETCH_FAILED_MSG} from '../../../../../constants';
-import {formatObjectFromIncidentArray} from '../../../incidentsHelper';
+import {formatObjectFromIncident} from '../../../incidentsHelper';
 import LoadingContainer from '../../../../../components/LoadingContainer';
 import {INCIDENT_COLUMNS, INCIDENT_COLUMNS_LONG} from '../../../../Fci/constants';
 import './styles.less';
+import NoResults from '../../../../../components/NoResults';
 
 
 const Incident = () => {
@@ -13,7 +14,7 @@ const Incident = () => {
     const [pendingSearch, setPendingSearch] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
-    const [data, setData] = useState([]);
+    const [data, setData] = useState({});
 
     useEffect(() => {
         setIsLoading(true);
@@ -21,7 +22,7 @@ const Incident = () => {
             try {
                 const response = await fetch(`/v1/incidents/${search}`);
                 const resJson = await checkResponse(response);
-                setData(formatObjectFromIncidentArray(consolidateTicketsById(resJson)?.[0]));
+                resJson.length ? setData(formatObjectFromIncident(consolidateTicketsById(resJson)?.[0])) : setData({});
                 setError('');
             } catch (e) {
                 setError(FETCH_FAILED_MSG);
@@ -31,27 +32,19 @@ const Incident = () => {
     }, [search]);
 
 
-    const renderRow = (label, value) => {
+    const renderRow = (label, value, type) => {
         return (
-            <div className="inc-row" key={label}>
-                <div className="inc-label">{label}</div>
-                <div className="inc-value">{value ? value : '-'}</div>
+            
+            <div className={`inc-row${type === 'long' ? '-long' : ''}`} key={label}>
+                <div className={`inc-label${type === 'long' ? '-long' : ''}`}>{label}</div>
+                <div className={`inc-value${type === 'long' ? '-long': ''}`}>{value}</div>
             </div>
-        );
-    };
 
-    const renderLongRow = (label, value) => {
-        return (
-            <div className="inc-long-row" key={label}>
-                <div className="inc-long-label">{label}</div>
-                <div className="inc-long-value">{value ? value : '-'}</div>
-            </div>
         );
     };
 
     const renderTable = () => {
         return (
-            <LoadingContainer isLoading={isLoading} error={error} >
                 <div className="inc-details-container">
                     <div id="shortDetails">
                         {INCIDENT_COLUMNS
@@ -59,13 +52,22 @@ const Incident = () => {
                     </div>
                     <div id="longDetails">
                         {INCIDENT_COLUMNS_LONG
-                            .map((column) => renderLongRow(column, data?.[column]))}
+                            .map((column) => renderRow(column, data?.[column], 'long'))}
                     </div>
                 </div>
-            </LoadingContainer>
         );
     };
 
+    const renderResults = () => {
+            if (search) {
+                return (
+                    <LoadingContainer isLoading={isLoading} error={error} >
+                        {Object.keys(data).length !== 0 ? renderTable() : <NoResults />  }
+                    </LoadingContainer>
+                )}
+    }
+
+    console.log(data)
     return (
         <div >
             <div className="inc-form-container">
@@ -87,7 +89,7 @@ const Incident = () => {
             </div>
             <div>
                 {
-                    search && renderTable()
+                    renderResults()
                 }
             </div>
         </div>
