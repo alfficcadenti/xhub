@@ -161,8 +161,10 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}
 
         if ([EG_BRAND, EGENCIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND].includes(selectedBrand)) {
             setIsLoBAvailable(false);
+            setSelectedLobs([]);
         } else if (!isZoomedIn) { // we need this flag right after zoomed in so that we don't re-fetch because it filters on existing data
             setIsLoBAvailable(true);
+            setSelectedLobs(initialLobs);
             fetchPageViewsLoBData(selectedBrand);
         }
 
