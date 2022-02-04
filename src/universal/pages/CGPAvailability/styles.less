@@ -27,10 +27,7 @@
         border-radius: @spacing-1x;
         margin: 1px;
         text-align: center;
-
-        &:hover {
-            cursor: pointer;
-        }
+        cursor: default;
     }
 
     #topContainer {
@@ -43,13 +40,33 @@
     }
 
     .data-table {
+        th {
+            text-align: center;
+        }
+
         td {
             padding: 0;
         }
 
-        td:first-child {
-            text-align: left
+        td:first-child, th:first-child {
+            text-align: left;
+            white-space: nowrap;
+            min-width: @spacing-4x;
         }
+
+        .info-tooltip {
+            padding: 0;
+        }
+    }
+
+    .availability-cell {
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    .positive, .attention, .negative {
+        white-space: nowrap;
     }
 
     .positive {

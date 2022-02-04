@@ -1,7 +1,7 @@
 import React from 'react';
 import CGPAvailibility from '../index';
 import {AVAILABILITY} from '../../../../server/routes/api/testData/availability';
-import {render, act} from '@testing-library/react';
+import {render, act, fireEvent, waitFor} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import {BrowserRouter as Router} from 'react-router-dom';
 
@@ -69,6 +69,27 @@ describe('<CGPAvailibility />', () => {
             wrapper = render(<Router><CGPAvailibility /></Router>);
         });
         expect(wrapper.getByText(/NO RESULTS FOUND/)).toBeInTheDocument();
+        expect(wrapper).toMatchSnapshot();
+    });
+
+    it('renders error message only when availability filter input is higher than 100', async () => {
+        fetch.mockImplementation(() => {
+            return Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve(AVAILABILITY)
+            });
+        });
+        await act(async () => {
+            wrapper = render(<Router><CGPAvailibility /></Router>);
+        });
+        const inputField = wrapper.getByLabelText('Availability Filter');
+        fireEvent.change(inputField, {target: {value: '101'}});
+        expect(wrapper.getByText(/Max Value 100/)).toBeInTheDocument();
+        expect(wrapper).toMatchSnapshot();
+        fireEvent.change(inputField, {target: {value: '99'}});
+        await waitFor(() => {
+            expect(wrapper.queryByText('Max Value 100')).not.toBeInTheDocument();
+        });
         expect(wrapper).toMatchSnapshot();
     });
 });

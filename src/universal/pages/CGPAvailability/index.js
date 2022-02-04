@@ -5,7 +5,7 @@ import HelpText from '../../components/HelpText/HelpText';
 import {checkResponse} from '../utils';
 import DataTable from '../../components/DataTable';
 import moment from 'moment';
-import {extractColumns, filterAvailabilityByMinValue, getAppErrorsDataForChart, mapAvailabilityRow} from './utils';
+import {extractColumns, getAppErrorsDataForChart, mapAvailabilityRow} from './utils';
 import ErrorCountModal from './ErrorCountModal';
 import Legend from './Legend';
 import {FormInput} from '@homeaway/react-form-components';
@@ -38,8 +38,11 @@ const CGPAvailibility = () => {
             .finally(() => setIsLoading(false));
     }, []);
 
+    const handleOnClick = (selected) => setSelectedApp(selected || null);
+
     useEffect(() => {
-        setFilteredAvailability(availability.filter((x) => filterAvailabilityByMinValue(x, availabilityFilter)));
+        const mappedAvailability = availability?.map((x) => mapAvailabilityRow(x, handleOnClick));
+        setFilteredAvailability(mappedAvailability.filter((x) => x?.avgValue <= availabilityFilter));
     }, [availabilityFilter, availability]);
 
     useEffect(() => {
@@ -49,9 +52,6 @@ const CGPAvailibility = () => {
             setErrorMessage('');
         }
     }, [availabilityFilter]);
-
-
-    const handleOnClick = (selected) => setSelectedApp(selected || null);
 
     const handleOnClose = () => setSelectedApp(null);
 
@@ -65,7 +65,7 @@ const CGPAvailibility = () => {
             </h1>
             <LoadingContainer isLoading={isLoading} error={error}>
                 <div id="topContainer">
-                    <Legend />
+                    <Legend/>
                     <FormInput
                         id="availabilityFilter"
                         type="number"
@@ -77,12 +77,14 @@ const CGPAvailibility = () => {
                     />
                 </div>
                 <DataTable
-                    data={filteredAvailability?.length ? filteredAvailability?.map((x) => mapAvailabilityRow(x, handleOnClick)) : []}
-                    columns={filteredAvailability?.length ? extractColumns(filteredAvailability) : []}
+                    data={filteredAvailability?.length && filteredAvailability || []}
+                    columns={availability?.length ? extractColumns(availability) : []}
+                    sortByColumn = "Average"
+                    sortByDirection = "asc"
                     paginated
                     enableTextSearch
                     enableCSVDownload
-                    sortDisabled
+                    columnsInfo={{'Average': 'Average availability for the time frame calculated as: (Total Requests - 5XX request) * 100) / Total Requests'}}
                 />
                 <ErrorCountModal
                     isOpen={Boolean(selectedApp)}

@@ -105,16 +105,19 @@ const DataTable = ({
             return strA.localeCompare(strB);
         };
         let newSortedData = filteredData;
-        if (sortedByDirection === 'asc') {
-            newSortedData.sort((a, b) => comparator(a, b, sortedByColumn));
-        } else {
-            newSortedData.sort((a, b) => -comparator(a, b, sortedByColumn));
+        if (sortedByColumn) {
+            if (sortedByDirection === 'asc') {
+                newSortedData.sort((a, b) => comparator(a, b, sortedByColumn));
+            } else {
+                newSortedData.sort((a, b) => -comparator(a, b, sortedByColumn));
+            }
         }
         setFilteredData(newSortedData);
         setReSortData(uuid());
-    }, [sortedByColumn, sortedByDirection]);
+    }, [sortedByColumn, sortedByDirection, filteredData]);
 
     useEffect(() => {
+        setCurrPageIndex(0);
         setFilteredData(mapData(data));
     }, [data]);
 
@@ -125,7 +128,7 @@ const DataTable = ({
             ? data.filter((d) => Object.values(d).findIndex(findSearchText) > -1)
             : data;
         setFilteredData(dataToDisplay);
-    }, [searchText]);
+    }, [searchText, data, enableTextSearch]);
 
     const handleColumnCheckbox = (column) => {
         const newColumnCheckboxes = columnCheckboxes;
@@ -278,7 +281,7 @@ const DataTable = ({
 
     const renderInfoTooltip = (content) => (
         <div className="info-tooltip ">
-            <Tooltip tooltipType="tooltip--lg" content={content} placement="bottom">
+            <Tooltip tooltipType="tooltip--lg" content={content} placement="bottom" fullWidth>
                 <SVGIcon inlineFlex markup={INFO__16} />
             </Tooltip>
         </div>

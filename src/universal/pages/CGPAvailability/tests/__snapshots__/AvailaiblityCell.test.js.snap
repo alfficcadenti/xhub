@@ -7,7 +7,7 @@ Object {
     <div>
       <div
         aria-hidden="true"
-        class="positive"
+        class="availability-cell "
       >
         99.99
       </div>
@@ -16,7 +16,7 @@ Object {
   "container": <div>
     <div
       aria-hidden="true"
-      class="positive"
+      class="availability-cell "
     >
       99.99
     </div>
@@ -81,7 +81,7 @@ Object {
   "baseElement": <body>
     <div>
       <div
-        class="attention"
+        class="availability-cell attention"
       >
         99.7
       </div>
@@ -89,7 +89,7 @@ Object {
   </body>,
   "container": <div>
     <div
-      class="attention"
+      class="availability-cell attention"
     >
       99.7
     </div>
@@ -154,7 +154,7 @@ Object {
   "baseElement": <body>
     <div>
       <div
-        class="negative"
+        class="availability-cell negative"
       >
         99
       </div>
@@ -162,7 +162,7 @@ Object {
   </body>,
   "container": <div>
     <div
-      class="negative"
+      class="availability-cell negative"
     >
       99
     </div>
@@ -227,7 +227,7 @@ Object {
   "baseElement": <body>
     <div>
       <div
-        class="positive"
+        class="availability-cell positive"
       >
         99.99
       </div>
@@ -235,7 +235,7 @@ Object {
   </body>,
   "container": <div>
     <div
-      class="positive"
+      class="availability-cell positive"
     >
       99.99
     </div>
@@ -300,7 +300,7 @@ Object {
   "baseElement": <body>
     <div>
       <div
-        class=""
+        class="availability-cell negative"
       >
         -
       </div>
@@ -308,7 +308,7 @@ Object {
   </body>,
   "container": <div>
     <div
-      class=""
+      class="availability-cell negative"
     >
       -
     </div>
