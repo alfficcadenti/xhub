@@ -41,8 +41,8 @@ const CGPAvailibility = () => {
     const handleOnClick = (selected) => setSelectedApp(selected || null);
 
     useEffect(() => {
-        const mappedAvailability = availability?.map((x) => mapAvailabilityRow(x, handleOnClick));
-        setFilteredAvailability(mappedAvailability.filter((x) => x?.avgValue <= availabilityFilter));
+        const newFilteredAvailability = availability?.map((x) => mapAvailabilityRow(x, handleOnClick)).filter((x) => typeof x.avgValue === 'number' && x?.avgValue <= availabilityFilter);
+        setFilteredAvailability(newFilteredAvailability);
     }, [availabilityFilter, availability]);
 
     useEffect(() => {
