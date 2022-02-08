@@ -46,8 +46,8 @@ const CGPAvailibility = () => {
     }, [availabilityFilter, availability]);
 
     useEffect(() => {
-        if (availabilityFilter > 100) {
-            setErrorMessage('Max Value 100');
+        if (availabilityFilter < 0 || availabilityFilter > 100) {
+            setErrorMessage('Invalid value, 0 - 100 only');
         } else {
             setErrorMessage('');
         }
@@ -66,9 +66,12 @@ const CGPAvailibility = () => {
             <LoadingContainer isLoading={isLoading} error={error}>
                 <div id="topContainer">
                     <Legend/>
+
                     <FormInput
                         id="availabilityFilter"
                         type="number"
+                        min={0}
+                        max={100}
                         name="availabilityFilter"
                         label="Availability Filter"
                         onChange={handleChange}
