@@ -228,7 +228,7 @@ const Fci = ({selectedBrands}) => {
             processData(prev.data, chartProperty);
             setIsLoading(false);
         }
-    }, [start, end, selectedErrorCode, selectedSite, pathname, selectedBrands, hideIntentionalCheck, prev, processData, chartProperty, activeIndex, selectedLob]);
+    }, [start, end, selectedErrorCode, selectedSite, pathname, selectedBrands, hideIntentionalCheck, processData, chartProperty, activeIndex, selectedLob]);
 
     useEffect(() => {
         if (selectedBucket) {
@@ -420,11 +420,10 @@ const Fci = ({selectedBrands}) => {
         setRefAreaLeft('');
         setRefAreaRight('');
         setPendingStart(moment(nextRefAreaLeft));
-        setPendingEnd(moment(nextRefAreaRight));
+        setPendingEnd(moment(nextRefAreaRight).endOf('hour'));
         setPendingTimeRange(pendingTimeRange);
         setStart(moment(nextRefAreaLeft));
-        setEnd(moment(nextRefAreaRight));
-        setIsDirtyForm(false);
+        setEnd(moment(nextRefAreaRight).endOf('hour'));
     };
 
     const handleChoiceChange = (event) => {
@@ -525,7 +524,7 @@ const Fci = ({selectedBrands}) => {
                         </RadioGroup>
                         <LineChartWrapper
                             title="Errors over Time"
-                            helpText="Bucketed by 15 minute intervals. Note: if filtering by category, FCIs without external error codes will not be included."
+                            helpText="Bucketed by 1 hour intervals. Note: if filtering by category, FCIs without external error codes will not be included."
                             data={lineChartData}
                             keys={lineChartKeys}
                             onDotClick={handleDotClick}

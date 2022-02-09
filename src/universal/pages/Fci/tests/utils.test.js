@@ -63,7 +63,9 @@ describe('Fci Utils', () => {
         expect(shouldFetchData({start, end, selectedSite, selectedLob, chartProperty, selectedErrorCode},
             moment('2020-01-03'), moment('2020-01-03'), 'www.expedia.com', 'Cars', 'categoryA')).to.be.eql(true);
         expect(shouldFetchData({start, end, selectedSite, selectedLob, chartProperty, selectedErrorCode},
-            moment('2020-01-03'), moment('2020-01-03'), 'www.expedia.com', 'Cars', 'categoryA', '201')).to.be.eql(false);
+            moment('2020-01-03'), moment('2020-01-03'), 'www.expedia.com', 'Cars', 'categoryA', '201')).to.be.eql(true);
+        expect(shouldFetchData({start, end, selectedSite, selectedLob, chartProperty, selectedErrorCode},
+            moment('2020-01-03'), moment('2020-01-03').endOf('hour'), 'www.expedia.com', 'Cars', 'categoryA', '201')).to.be.eql(false);
     });
 
     it('stringifyQueryParams', () => {

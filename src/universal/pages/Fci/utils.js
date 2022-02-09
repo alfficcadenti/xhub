@@ -30,7 +30,9 @@ export const shouldFetchData = (prev, start, end, selectedSite, selectedLob, cha
     !prev.start
     || !prev.end
     || start.isBefore(prev.start)
+    || start.minutes() !== 0 // Zooming always results in a start beginning at the top of the hour
     || end.isAfter(prev.end)
+    || end.minutes() !== 59 // Zooming always results in a end finishing at the top of the hour
     || prev.selectedSite !== selectedSite
     || prev.selectedLob !== selectedLob
     || prev.chartProperty !== chartProperty
