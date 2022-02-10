@@ -112,7 +112,8 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
         setChartLeft,
         setChartRight,
         refAreaLeft,
-        refAreaRight
+        refAreaRight,
+        getIntervalInMinutes(start, end)
     );
 
     const rttRef = useRef();
