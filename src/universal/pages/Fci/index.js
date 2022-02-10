@@ -432,6 +432,7 @@ const Fci = ({selectedBrands}) => {
             setPendingErrorCode('');
             setSelectedErrorCode('');
             setChartProperty(event.target.value);
+            setErrorCodesIsLoading(true);
         }
     };
 
