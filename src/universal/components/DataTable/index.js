@@ -287,13 +287,17 @@ const DataTable = ({
         </div>
     );
 
+    const renderControllers = () => (<>
+        {enableColumnDisplaySettings && renderColumnDisplaySettings()}
+        {enableCSVDownload && renderDownloadLink()}
+        {enableTextSearch && renderSearchInput()}
+    </>);
+
     // eslint-disable-next-line complexity
     const renderToolbar = (tableTitle, tableInfo, id) => (
         <Fragment key={id}>
             <h3 className="data-table__title">{tableTitle}{tableInfo && renderInfoTooltip(tableInfo)}</h3>
-            {enableColumnDisplaySettings && renderColumnDisplaySettings()}
-            {enableCSVDownload && renderDownloadLink()}
-            {enableTextSearch && renderSearchInput()}
+            {!!data.length && renderControllers()}
             <Divider heading="Settings" id="settings-divider" className="settings-divider" expanded={showSettings}>
                 <form>
                     {columnCheckboxes && columnCheckboxes.length > 1
