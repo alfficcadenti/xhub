@@ -50,3 +50,5 @@ export const mapAvailabilityRow = (row = {}, handleClick) => {
 };
 
 export const getAppErrorsDataForChart = (applicationName = '', availability = []) => Array.isArray(availability) && availability?.find((x) => x.applicationName === applicationName)?.availabilities?.map((x) => ({name: moment(x?.timestamp).format('ll'), '5xx Errors': x?.errorCount})) || [];
+
+export const getSelectedRegions = (regionsObj) => (regionsObj?.length ? regionsObj.filter((x) => x.counted && x.checked).map((x) => x.name) : '');

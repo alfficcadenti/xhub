@@ -5,11 +5,25 @@ import HelpText from '../../components/HelpText/HelpText';
 import {checkResponse} from '../utils';
 import DataTable from '../../components/DataTable';
 import moment from 'moment';
-import {extractColumns, getAppErrorsDataForChart, mapAvailabilityRow} from './utils';
+import {extractColumns, getAppErrorsDataForChart, mapAvailabilityRow, getSelectedRegions} from './utils';
 import ErrorCountModal from './ErrorCountModal';
 import Legend from './Legend';
 import {FormInput} from '@homeaway/react-form-components';
+import MultiSelect from '@homeaway/react-multiselect-dropdown';
+import {REGIONS} from './constants';
 import './styles.less';
+
+const regions = [{
+    name: 'all',
+    label: 'All',
+    checked: true,
+    counted: false
+}].concat(REGIONS.map((r) => ({
+    name: r,
+    label: r,
+    checked: true,
+    nested: true
+})));
 
 const CGPAvailibility = () => {
     const [availability, setAvailability] = useState([]);
@@ -19,29 +33,36 @@ const CGPAvailibility = () => {
     const [selectedApp, setSelectedApp] = useState(null);
     const [availabilityFilter, setAvailabilityFilter] = useState(100.00);
     const [errorMessage, setErrorMessage] = useState('');
-
+    const [pendingRegionFilter, setPendingRegionFilter] = useState(regions);
+    const [selectedRegionFilter, setSelectedRegionFilter] = useState(pendingRegionFilter);
+    const [isDirtyForm, setIsDirtyForm] = useState(false);
+    const [regionErrorMsg, setRegionErrorMsg] = useState('');
 
     useEffect(() => {
-        setIsLoading(true);
-        setError('');
-        const url = `/v1/application-availability?from_date=${moment().subtract(7, 'days').format('YYYY-MM-DDTHH:mm:ss[Z]')}&to_date=${moment().format('YYYY-MM-DDTHH:mm:ss[Z]')}`;
-        const fetchAPI = async () => {
-            try {
-                const res = await fetch(url);
-                const resJson = await checkResponse(res);
-                await setAvailability(resJson);
-            } catch (e) {
-                setError('Error loading CGP Availability. Try refreshing the page');
-            }
+        const getNewData = () => {
+            setIsLoading(true);
+            setError('');
+            const url = `/v1/application-availability/filter-by-aws-region?from_date=${moment().subtract(7, 'days').format('YYYY-MM-DDTHH:mm:ss[Z]')}&to_date=${moment().format('YYYY-MM-DDTHH:mm:ss[Z]')}&aws_region=${getSelectedRegions(selectedRegionFilter)}`;
+            const fetchAPI = async () => {
+                try {
+                    const res = await fetch(url);
+                    const resJson = await checkResponse(res);
+                    await setAvailability(resJson);
+                } catch (e) {
+                    setError('Error loading CGP Availability. Try refreshing the page');
+                }
+            };
+            fetchAPI()
+                .finally(() => setIsLoading(false));
+            setIsDirtyForm(false);
         };
-        fetchAPI()
-            .finally(() => setIsLoading(false));
-    }, []);
+        getNewData();
+    }, [selectedRegionFilter]);
 
     const handleOnClick = (selected) => setSelectedApp(selected || null);
 
     useEffect(() => {
-        const newFilteredAvailability = availability?.map((x) => mapAvailabilityRow(x, handleOnClick)).filter((x) => typeof x.avgValue === 'number' && x?.avgValue <= availabilityFilter);
+        const newFilteredAvailability = availability.length && availability.map((x) => mapAvailabilityRow(x, handleOnClick)).filter((x) => typeof x.avgValue === 'number' && x?.avgValue <= availabilityFilter);
         setFilteredAvailability(newFilteredAvailability);
     }, [availabilityFilter, availability]);
 
@@ -57,6 +78,18 @@ const CGPAvailibility = () => {
 
     const handleChange = (e) => setAvailabilityFilter(e?.target?.value);
 
+    const handleRegionChange = (e) => {
+        if (e.items.filter((x) => x.checked === true).length === 0) {
+            setRegionErrorMsg('Field required. Choose at least one region');
+            setIsDirtyForm(false);
+            return;
+        }
+        setIsDirtyForm(true);
+        setRegionErrorMsg('');
+        setPendingRegionFilter(e.items);
+        return;
+    };
+
     return (
         <div className="cgp-availability-container">
             <h1 className="page-title" data-testid="title">
@@ -65,6 +98,26 @@ const CGPAvailibility = () => {
             </h1>
             <LoadingContainer isLoading={isLoading} error={error}>
                 <div id="topContainer">
+                    <div id="form">
+                        <MultiSelect
+                            className="region-select"
+                            id="regionSelect"
+                            label="AWS Regions"
+                            items={pendingRegionFilter}
+                            onChange={handleRegionChange}
+                            errorMsg={regionErrorMsg}
+                        />
+                        <button
+                            type="button"
+                            className="apply-button btn btn-primary active"
+                            onClick={() => {
+                                setSelectedRegionFilter(pendingRegionFilter);
+                            }}
+                            disabled={!isDirtyForm}
+                        >
+                            {'Apply'}
+                        </button>
+                    </div>
                     <Legend/>
 
                     <FormInput

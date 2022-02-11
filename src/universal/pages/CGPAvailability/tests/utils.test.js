@@ -1,4 +1,4 @@
-import {defineClassByValue, exactAvailability, extractColumns, formattedValue, getAppErrorsDataForChart, periodAvailabilityAvg, mapAvailabilityRow} from '../utils';
+import {defineClassByValue, exactAvailability, extractColumns, formattedValue, getAppErrorsDataForChart, periodAvailabilityAvg, mapAvailabilityRow, getSelectedRegions} from '../utils';
 import {AVAILABILITY} from '../../../../server/routes/api/testData/availability';
 import {expect} from 'chai';
 
@@ -153,5 +153,50 @@ describe('periodAvailabilityAvg()', () => {
         expect(periodAvailabilityAvg(AVAILABILITY[1].availabilities)).to.be.eqls(99.9);
         expect(periodAvailabilityAvg(AVAILABILITY[2].availabilities)).to.be.eqls(79.92);
         expect(periodAvailabilityAvg([])).to.be.eqls('-');
+    });
+});
+
+describe('selectedRegions()', () => {
+    it('returns a string with the selected regions from the region object', () => {
+        const regions = [{
+            name: 'all',
+            label: 'All',
+            checked: true,
+            counted: false
+        }, {
+            name: 'ap-northeast-1',
+            label: 'ap-northeast-1',
+            nested: true,
+            checked: true,
+            counted: true
+        }, {
+            name: 'ap-southeast-1',
+            label: 'ap-southeast-1',
+            nested: true,
+            checked: true,
+            counted: true
+        }
+        ];
+        expect(getSelectedRegions(regions)).to.be.eqls(['ap-northeast-1', 'ap-southeast-1']);
+        const regions2 = [{
+            name: 'all',
+            label: 'All',
+            checked: true,
+            counted: false
+        }, {
+            name: 'ap-northeast-1',
+            label: 'ap-northeast-1',
+            nested: true,
+            checked: true,
+            counted: true
+        }, {
+            name: 'ap-southeast-1',
+            label: 'ap-southeast-1',
+            nested: true,
+            checked: false,
+            counted: true
+        }
+        ];
+        expect(getSelectedRegions(regions2)).to.be.eqls(['ap-northeast-1']);
     });
 });

@@ -11,7 +11,8 @@
     }
 
     .loading-container {
-        padding: @spacing-1x
+        padding: @spacing-1x;
+        display: grid;
     }
 
     #legendContainer {
@@ -30,6 +31,10 @@
         cursor: default;
     }
 
+    #availabilityFilter {
+        min-width: 150px;
+    }
+
     #topContainer {
         display: inline-flex;
         float: left;
@@ -37,7 +42,32 @@
 
         div.form-group {
             margin-left: @spacing-3x;
-            min-width: 75%;
+        }
+
+        #form {
+            display: inline-flex;
+            margin-right: @spacing-3x;
+
+
+            .MultiSelect__item {
+                padding-left: @spacing-1x;
+            }
+
+            .MultiSelect__item.MultiSelect--nested {
+                padding-left: @spacing-3x;
+            }
+
+            div {
+                margin-left: 0;
+            }
+            #regionSelect {
+                width: 350px;
+
+            }
+            button {
+                height: fit-content;
+                margin: 0 @spacing-1x;
+            }
         }
     }
 
