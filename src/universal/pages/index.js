@@ -173,7 +173,7 @@ export default [
         category: AAT,
         id: 'operational-ios',
         link: '/operational-ios',
-        text: 'Operational iOS Dashboard',
+        text: 'Operational iOS',
         component: OperationalIos,
         brands: [HOTELS_COM_BRAND]
     },

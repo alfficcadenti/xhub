@@ -17,11 +17,11 @@ const GrafanaDashboard = ({selectedBrands = [], availableBrands = [], name, titl
         } else {
             setError(null);
         }
-    }, [selectedBrand, availableBrands]);
+    }, [selectedBrand, availableBrands, title]);
 
     return (
         <div className={`${name}-container grafana-container`}>
-            {title && <h1 className="page-title">{`${title} Dashboard`}</h1>}
+            {title && <h1 className="page-title">{title}</h1>}
             <LoadingContainer isLoading={false} error={error}>
                 <div className="grafana-navigation-blocker" />
                 <div className="grafana-navigation-blocker grafana-navigation-blocker__vertical" />

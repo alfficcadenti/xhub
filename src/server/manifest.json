@@ -1034,6 +1034,18 @@
   },
   // register hapi plugins
   "register": {
+    "hapi-expose-view-context": {
+      "plugin": "require:@catalyst/hapi-expose-view-context"
+    },
+    "hapi-favicon-handler": {
+        "plugin": "require:@catalyst/hapi-favicon-handler",
+        "options": {
+          "brandLogo": "expediagroup",
+          "locale": "es_EN",
+          "humanReadableName": "ExpediaGroup",
+          "description": "ExpediaGroup OpXHub"
+        }
+    },
     "crumb": {
       "enabled": false
     },

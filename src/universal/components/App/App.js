@@ -1,4 +1,4 @@
-import React, {Fragment, useCallback, useState} from 'react';
+import React, {Fragment, useCallback, useState, useEffect} from 'react';
 import {Route, Switch} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Header from '../Header';
@@ -9,9 +9,31 @@ import {EG_BRAND, BRANDS} from '../../constants';
 import {usePrevious} from '../../pages/hooks';
 
 
+const PageWrapper = (props) => {
+    useEffect(() => {
+        document.title = `OpXHub${` - ${props.title}` || ''}`;
+    }, [props.title]);
+    return props.children;
+};
+
 function renderRoute(p, selectedBrands, handleBrandChange, prevSelectedBrand) {
     const Page = p.component;
-    return <Route key={p.link} path={p.link} render={() => <Page selectedBrands={selectedBrands} onBrandChange={handleBrandChange} prevSelectedBrand={prevSelectedBrand} availableBrands={p.brands} />} />;
+    return (
+        <Route
+            key={p.link}
+            path={p.link}
+            render={() => (
+                <PageWrapper title={p.text}>
+                    <Page
+                        selectedBrands={selectedBrands}
+                        onBrandChange={handleBrandChange}
+                        prevSelectedBrand={prevSelectedBrand}
+                        availableBrands={p.brands}
+                    />
+                </PageWrapper>
+            )}
+        />
+    );
 }
 
 function App() {

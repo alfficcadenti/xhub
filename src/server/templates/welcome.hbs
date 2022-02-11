@@ -2,11 +2,15 @@
 <html lang='en-us'>
 
 <head>
-  <title>{{siteName}} - {{pageTitle}}</title>
+  <title>{{siteName}}</title>
   <meta charset="utf-8" />
   <meta name="description" content="{{description}}">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="shortcut icon" href="{{resolveAsset 'favicon.ico'}}" />
+  {{#if faviconWebAppTags}}
+    {{{faviconWebAppTags}}}
+  {{else}}
+      <link rel="shortcut icon" href="{{ favicon }}" type="image/x-icon">
+  {{/if}}
   <link rel="stylesheet" href="{{resolveAsset 'bundle.css'}}">
 </head>
 
