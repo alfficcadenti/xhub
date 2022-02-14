@@ -93,15 +93,15 @@ describe('buildSuccessRateApiQueryString()', () => {
 });
 
 describe('getAllAvailableLOBs()', () => {
-    const currentLOBs = ['H', 'C', 'F', 'CR'];
+    const currentLOBs = ['H', 'C', 'F', 'CR', 'P', 'A'];
 
     it('returns correctly filtered LOBs', () => {
-        expect(getAllAvailableLOBs(currentLOBs)).to.have.length(4);
+        expect(getAllAvailableLOBs(currentLOBs)).to.have.length(5);
     });
 });
 
 describe('getAllAvailableLOBs()', () => {
-    const currentLOBs = ['C', 'CR', 'F', 'H'];
+    const currentLOBs = ['C', 'CR', 'F', 'H', 'P', 'A'];
 
     it('returns currently supported LOBs', () => {
         expect(getAllAvailableLOBs(AVAILABLE_LOBS).map(({value}) => value)).to.eql(currentLOBs);
@@ -125,6 +125,6 @@ describe('getQueryParams()', () => {
         expect(initialStart.isSame(moment().subtract(6, 'hours'), 'hour')).to.equal(true);
         expect(initialEnd.isSame(moment(), 'hour')).to.equal(true);
         expect(initialTimeRange).to.equal('Last 6 Hours');
-        expect(initialLobs.map(({value}) => value)).to.eql(['C', 'CR', 'F', 'H']);
+        expect(initialLobs.map(({value}) => value)).to.eql(['C', 'CR', 'F', 'H', 'P', 'A']);
     });
 });
