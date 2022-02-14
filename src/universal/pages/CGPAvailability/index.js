@@ -135,12 +135,12 @@ const CGPAvailibility = () => {
                 <DataTable
                     data={filteredAvailability?.length && filteredAvailability || []}
                     columns={availability?.length ? extractColumns(availability) : []}
-                    sortByColumn = "Average"
+                    sortByColumn = "Availability"
                     sortByDirection = "asc"
                     paginated
                     enableTextSearch
                     enableCSVDownload
-                    columnsInfo={{'Average': 'Average availability for the time frame calculated as: (Total Requests - 5XX request) * 100) / Total Requests'}}
+                    columnsInfo={{'Availability': 'Availability for the time frame calculated as: (Total Requests - 5XX request) * 100) / Total Requests'}}
                 />
                 <ErrorCountModal
                     isOpen={Boolean(selectedApp)}

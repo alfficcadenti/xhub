@@ -1,4 +1,4 @@
-import {defineClassByValue, exactAvailability, extractColumns, formattedValue, getAppErrorsDataForChart, periodAvailabilityAvg, mapAvailabilityRow, getSelectedRegions} from '../utils';
+import {defineClassByValue, exactAvailability, extractColumns, formattedValue, getAppErrorsDataForChart, periodAvailability, mapAvailabilityRow, getSelectedRegions} from '../utils';
 import {AVAILABILITY} from '../../../../server/routes/api/testData/availability';
 import {expect} from 'chai';
 
@@ -99,17 +99,17 @@ describe('getAppErrorsDataForChart()', () => {
 describe('extractColumns()', () => {
     it('returns only the first column Application when no input', () => {
         const columns = extractColumns();
-        expect(columns).to.be.eqls(['Application', 'Average']);
+        expect(columns).to.be.eqls(['Application', 'Availability']);
     });
 
     it('returns only the first column Application when input is empty array', () => {
         const columns = extractColumns([]);
-        expect(columns).to.be.eqls(['Application', 'Average']);
+        expect(columns).to.be.eqls(['Application', 'Availability']);
     });
 
     it('returns array with Application and extracted dates', () => {
         const columns = extractColumns(AVAILABILITY);
-        expect(columns).to.be.eqls(['Application', 'Dec 7, 2021', 'Dec 6, 2021', 'Dec 5, 2021', 'Dec 4, 2021', 'Dec 3, 2021', 'Dec 2, 2021', 'Dec 1, 2021', 'Average']);
+        expect(columns).to.be.eqls(['Application', 'Dec 7, 2021', 'Dec 6, 2021', 'Dec 5, 2021', 'Dec 4, 2021', 'Dec 3, 2021', 'Dec 2, 2021', 'Dec 1, 2021', 'Availability']);
     });
 });
 
@@ -147,12 +147,12 @@ describe('exactAvailability()', () => {
     });
 });
 
-describe('periodAvailabilityAvg()', () => {
-    it('returns average excluding null values', () => {
-        expect(periodAvailabilityAvg(AVAILABILITY[0].availabilities)).to.be.eqls(92.64);
-        expect(periodAvailabilityAvg(AVAILABILITY[1].availabilities)).to.be.eqls(99.9);
-        expect(periodAvailabilityAvg(AVAILABILITY[2].availabilities)).to.be.eqls(79.92);
-        expect(periodAvailabilityAvg([])).to.be.eqls('-');
+describe('periodAvailability()', () => {
+    it('returns availability excluding null values', () => {
+        expect(periodAvailability(AVAILABILITY[0].availabilities)).to.be.eqls(92.64);
+        expect(periodAvailability(AVAILABILITY[1].availabilities)).to.be.eqls(99.9);
+        expect(periodAvailability(AVAILABILITY[2].availabilities)).to.be.eqls(79.92);
+        expect(periodAvailability([])).to.be.eqls('-');
     });
 });
 
