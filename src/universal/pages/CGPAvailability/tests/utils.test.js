@@ -99,17 +99,17 @@ describe('getAppErrorsDataForChart()', () => {
 describe('extractColumns()', () => {
     it('returns only the first column Application when no input', () => {
         const columns = extractColumns();
-        expect(columns).to.be.eqls(['Application', 'Average']);
+        expect(columns).to.be.eqls(['Application', 'Availability']);
     });
 
     it('returns only the first column Application when input is empty array', () => {
         const columns = extractColumns([]);
-        expect(columns).to.be.eqls(['Application', 'Average']);
+        expect(columns).to.be.eqls(['Application', 'Availability']);
     });
 
     it('returns array with Application and extracted dates', () => {
         const columns = extractColumns(AVAILABILITY);
-        expect(columns).to.be.eqls(['Application', 'Dec 7, 2021', 'Dec 6, 2021', 'Dec 5, 2021', 'Dec 4, 2021', 'Dec 3, 2021', 'Dec 2, 2021', 'Dec 1, 2021', 'Average']);
+        expect(columns).to.be.eqls(['Application', 'Dec 7, 2021', 'Dec 6, 2021', 'Dec 5, 2021', 'Dec 4, 2021', 'Dec 3, 2021', 'Dec 2, 2021', 'Dec 1, 2021', 'Availability']);
     });
 });
 
