@@ -13,7 +13,7 @@ import {Checkbox} from '@homeaway/react-form-components';
 import './DataTable.less';
 import {Dropdown, DropdownItem} from '@homeaway/react-dropdown';
 import NoResults from '../NoResults';
-import {getCellStringValue} from './utils';
+import {getCellStringValue, stringNumComparator} from './utils';
 
 const sanitizeOption = {
     allowedAttributes: Object.assign(sanitizeHtml.defaults.allowedAttributes, {div: ['value']})
@@ -76,34 +76,27 @@ const DataTable = ({
     }, [columnCheckboxes, refreshColumns]);
 
     useEffect(() => {
-        /* eslint-disable complexity */
+        const hasValue = (x) => !!x || x === 0;
+
+        const reactElementComparator = (a, b) => {
+            if (hasValue(a.key) || hasValue(b.key)) {
+                return stringNumComparator(a.key, b.key);
+            }
+            if (hasValue(a.props.value) || hasValue(b.props.value)) {
+                return stringNumComparator(a.props.value, b.props.value);
+            }
+            return stringNumComparator(a.props.children, b.props.children);
+        };
+
         const comparator = (a, b, column) => {
             const valA = a[column];
             const valB = b[column];
-            const strA = String(valA).toLowerCase().replace('%', '');
-            const strB = String(valB).toLowerCase().replace('%', '');
-            const numA = Number(strA);
-            const numB = Number(strB);
-            if (!Number.isNaN(numA) && !Number.isNaN(numB)) {
-                return numA - numB;
-            }
-            if (React.isValidElement(valA) && React.isValidElement(valB)) {
-                if (valA.key && valB.key) {
-                    if (!Number.isNaN(valA.key) && !Number.isNaN(valB.key)) {
-                        return Number(valA.key) - Number(valB.key);
-                    }
-                    return String(valA.key) - String(valB.key);
-                }
-                if (String(valA.props.value) && String(valB.props.value)) {
-                    if (!Number.isNaN(valA.props.value) && !Number.isNaN(valB.props.value)) {
-                        return Number(valA.props.value) - Number(valB.props.value);
-                    }
-                    return String(valA.key) - String(valB.key);
-                }
-                return String(valA.key || valA.props.value).localeCompare(String(valB.key || valB.props.value));
-            }
-            return strA.localeCompare(strB);
+            // Compare react elements
+            return (React.isValidElement(valA) && React.isValidElement(valB))
+                ? reactElementComparator(valA, valB)
+                : stringNumComparator(valA, valB);
         };
+
         let newSortedData = filteredData;
         if (sortedByColumn) {
             if (sortedByDirection === 'asc') {
