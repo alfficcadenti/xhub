@@ -1,4 +1,4 @@
-import {defineClassByValue, exactAvailability, extractColumns, formattedValue, getAppErrorsDataForChart, periodAvailabilityAvg, mapAvailabilityRow, getSelectedRegions} from '../utils';
+import {defineClassByValue, exactAvailability, extractColumns, formattedValue, getAppErrorsDataForChart, periodAvailability, mapAvailabilityRow, getSelectedRegions} from '../utils';
 import {AVAILABILITY} from '../../../../server/routes/api/testData/availability';
 import {expect} from 'chai';
 
@@ -147,12 +147,12 @@ describe('exactAvailability()', () => {
     });
 });
 
-describe('periodAvailabilityAvg()', () => {
-    it('returns average excluding null values', () => {
-        expect(periodAvailabilityAvg(AVAILABILITY[0].availabilities)).to.be.eqls(92.64);
-        expect(periodAvailabilityAvg(AVAILABILITY[1].availabilities)).to.be.eqls(99.9);
-        expect(periodAvailabilityAvg(AVAILABILITY[2].availabilities)).to.be.eqls(79.92);
-        expect(periodAvailabilityAvg([])).to.be.eqls('-');
+describe('periodAvailability()', () => {
+    it('returns availability excluding null values', () => {
+        expect(periodAvailability(AVAILABILITY[0].availabilities)).to.be.eqls(92.64);
+        expect(periodAvailability(AVAILABILITY[1].availabilities)).to.be.eqls(99.9);
+        expect(periodAvailability(AVAILABILITY[2].availabilities)).to.be.eqls(79.92);
+        expect(periodAvailability([])).to.be.eqls('-');
     });
 });
 

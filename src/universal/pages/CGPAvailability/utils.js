@@ -20,7 +20,7 @@ export const defineClassByValue = (value) => {
 
 export const formattedValue = (value) => Number.isFinite(value) ? Math.floor(value * 100) / 100 : '-';
 
-export const periodAvailabilityAvg = (availabilities) => {
+export const periodAvailability = (availabilities) => {
     const periodSummary = availabilities?.reduce((acc, curr) => {
         acc.totalRequests += (curr.requestCount || 0);
         acc.errorsCount += (curr.errorCount || 0);
@@ -43,8 +43,8 @@ export const mapAvailabilityRow = (row = {}, handleClick) => {
     const res = Array.isArray(row?.availabilities) &&
         Object.assign(
             {Application: app},
-            {Availability: <AvailabilityCell value={periodAvailabilityAvg(row?.availabilities)} applicationName={app} handleClick={handleClick}/>},
-            {avgValue: periodAvailabilityAvg(row?.availabilities)},
+            {Availability: <AvailabilityCell value={periodAvailability(row?.availabilities)} applicationName={app} handleClick={handleClick}/>},
+            {avgValue: periodAvailability(row?.availabilities)},
             ...row?.availabilities.map((x) => ({[moment(x.timestamp).format('ll')]: <AvailabilityCell value={exactAvailability(x.availability, x.requestCount)} applicationName={app} handleClick={handleClick}/>}))) || {};
     return res;
 };
