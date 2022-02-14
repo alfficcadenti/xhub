@@ -7,7 +7,7 @@ export const EPS_PARTNER_TPIDS = [
     {label: 'Chase', value: '70501'}
 ];
 
-export const AVAILABLE_LOBS = ['H', 'C', 'F', 'CR'];
+export const AVAILABLE_LOBS = ['H', 'C', 'F', 'CR', 'P', 'A'];
 
 export const getErrorMessage = (selectedBrand) => {
     return `Success rates for ${selectedBrand} is not yet available.
