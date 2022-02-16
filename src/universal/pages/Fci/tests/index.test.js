@@ -1,16 +1,16 @@
 import React from 'react';
-import {shallow} from 'enzyme/build';
 import Fci from '../index';
-import {EG_BRAND} from '../../../constants';
-import {expect} from 'chai';
-
+import {EXPEDIA_BRAND} from '../../../constants';
+import {render, act, screen, fireEvent, waitFor} from '@testing-library/react';
+import '@testing-library/jest-dom';
+import {BrowserRouter as Router} from 'react-router-dom';
+import {shallow} from 'enzyme';
 
 jest.mock('react-router-dom', () => {
     const originalModule = jest.requireActual('react-router-dom');
 
     return {
         ...originalModule,
-        useHistory: jest.fn(),
         useLocation: () => ({
             pathname: '/test',
             hash: '',
@@ -21,9 +21,39 @@ jest.mock('react-router-dom', () => {
 });
 
 describe('<Fci/>', () => {
-    const wrapper = shallow(<Fci selectedBrands={[EG_BRAND]} />);
-
-    it('renders successfully', () => {
-        expect(wrapper).to.have.length(1);
+    let wrapper = '';
+    beforeEach(() => {
+        fetch.resetMocks();
     });
+    afterEach(() => {
+        wrapper.unmount();
+    });
+
+    it('render successfully',  async () =>{
+        await act(async () => {
+            wrapper = render(<Router><Fci selectedBrands={[EXPEDIA_BRAND]} /></Router>);
+        });
+
+        expect(wrapper).toMatchSnapshot();
+    })
+
+    it('renders error code api when the error code button is clicked', async () => {
+        const fetchMock = jest
+            .spyOn(global, 'fetch')
+            .mockImplementation(() =>
+                Promise.resolve({ok: true, json: () => Promise.resolve([{'timestamp': '2022-02-16T10:00:00Z', 'counts': {'No Mapping Found': 32, 'CC Supply': 1}}])})
+            );
+        await act(async () => {
+            wrapper = render(<Router><Fci selectedBrands={[EXPEDIA_BRAND]} /></Router>);
+        });
+        expect(fetchMock).toHaveBeenCalledTimes(1);
+        expect(fetchMock).toHaveBeenLastCalledWith(expect.stringContaining('/v1/checkout-failures/category-counts'));
+        expect(wrapper.getByText(/Errors over Time/)).toBeInTheDocument();
+        expect(wrapper.getByText(/all errors/i)).toBeInTheDocument();
+        fireEvent.click(screen.getByText(/error code/i));
+        expect(fetchMock).toHaveBeenNthCalledWith(2, expect.stringContaining('/v1/checkout-failures/error-counts'));
+        expect(fetchMock).toHaveBeenNthCalledWith(3, expect.stringContaining('/v1/checkout-failures/error-codes'));
+        expect(wrapper).toMatchSnapshot();
+    });
+
 });
