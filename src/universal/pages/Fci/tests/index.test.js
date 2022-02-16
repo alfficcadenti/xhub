@@ -4,7 +4,6 @@ import {EXPEDIA_BRAND} from '../../../constants';
 import {render, act, screen, fireEvent, waitFor} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import {BrowserRouter as Router} from 'react-router-dom';
-import {shallow} from 'enzyme';
 
 jest.mock('react-router-dom', () => {
     const originalModule = jest.requireActual('react-router-dom');
@@ -12,7 +11,7 @@ jest.mock('react-router-dom', () => {
     return {
         ...originalModule,
         useLocation: () => ({
-            pathname: '/test',
+            pathname: '/Fci',
             hash: '',
             search: '',
             state: ''
@@ -33,7 +32,6 @@ describe('<Fci/>', () => {
         await act(async () => {
             wrapper = render(<Router><Fci selectedBrands={[EXPEDIA_BRAND]} /></Router>);
         });
-
         expect(wrapper).toMatchSnapshot();
     })
 
