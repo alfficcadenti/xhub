@@ -1,7 +1,7 @@
 import React from 'react';
 import Fci from '../index';
 import {EXPEDIA_BRAND} from '../../../constants';
-import {render, act, screen, fireEvent, waitFor} from '@testing-library/react';
+import {render, act, screen, fireEvent} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import {BrowserRouter as Router} from 'react-router-dom';
 
@@ -28,12 +28,12 @@ describe('<Fci/>', () => {
         wrapper.unmount();
     });
 
-    it('render successfully for the first time landing page',  async () =>{
+    it('render successfully for the first time landing page', async () => {
         await act(async () => {
             wrapper = render(<Router><Fci selectedBrands={[EXPEDIA_BRAND]} /></Router>);
         });
         expect(wrapper).toMatchSnapshot();
-    })
+    });
 
     it('it loads error codes after user click on error code radio button', async () => {
         const fetchMock = jest
@@ -53,5 +53,4 @@ describe('<Fci/>', () => {
         expect(fetchMock).toHaveBeenNthCalledWith(3, expect.stringContaining('/v1/checkout-failures/error-codes'));
         expect(wrapper).toMatchSnapshot();
     });
-
 });
