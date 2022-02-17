@@ -28,14 +28,14 @@ describe('<Fci/>', () => {
         wrapper.unmount();
     });
 
-    it('render successfully',  async () =>{
+    it('render successfully for the first time landing page',  async () =>{
         await act(async () => {
             wrapper = render(<Router><Fci selectedBrands={[EXPEDIA_BRAND]} /></Router>);
         });
         expect(wrapper).toMatchSnapshot();
     })
 
-    it('renders error code api when the error code button is clicked', async () => {
+    it('it loads error codes after user click on error code radio button', async () => {
         const fetchMock = jest
             .spyOn(global, 'fetch')
             .mockImplementation(() =>
