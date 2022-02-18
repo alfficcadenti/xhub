@@ -1,5 +1,6 @@
 import moment from 'moment';
 import {getOrDefault} from '../../utils';
+import {getValue} from '../utils';
 import {THRESHOLDS} from './constants.js';
 import AvailabilityCell from './AvailabilityCell';
 import React from 'react';
@@ -52,3 +53,11 @@ export const mapAvailabilityRow = (row = {}, handleClick) => {
 export const getAppErrorsDataForChart = (applicationName = '', availability = []) => Array.isArray(availability) && availability?.find((x) => x.applicationName === applicationName)?.availabilities?.map((x) => ({name: moment(x?.timestamp).format('ll'), '5xx Errors': x?.errorCount})) || [];
 
 export const getSelectedRegions = (regionsObj) => (regionsObj?.length ? regionsObj.filter((x) => x.counted && x.checked).map((x) => x.name) : '');
+
+export const getPresets = () => [
+    // {text: 'Last 15 Minutes', value: getValue(15, 'minute')},
+    // {text: 'Last 24 Hours', value: getValue(23.98, 'hours')},
+    {text: 'Last 3 days', value: getValue(3, 'days')},
+    {text: 'Last 7 days', value: getValue(7, 'days')},
+    {text: 'Last 15 days', value: getValue(15, 'days')},
+];

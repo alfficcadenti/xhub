@@ -5,13 +5,14 @@ import HelpText from '../../components/HelpText/HelpText';
 import {checkResponse} from '../utils';
 import DataTable from '../../components/DataTable';
 import moment from 'moment';
-import {extractColumns, getAppErrorsDataForChart, mapAvailabilityRow, getSelectedRegions} from './utils';
+import {extractColumns, getAppErrorsDataForChart, mapAvailabilityRow, getSelectedRegions, getPresets} from './utils';
 import ErrorCountModal from './ErrorCountModal';
 import Legend from './Legend';
 import {FormInput} from '@homeaway/react-form-components';
 import MultiSelect from '@homeaway/react-multiselect-dropdown';
 import {REGIONS} from './constants';
 import './styles.less';
+import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 
 const regions = [{
     name: 'all',
@@ -37,12 +38,16 @@ const CGPAvailibility = () => {
     const [selectedRegionFilter, setSelectedRegionFilter] = useState(pendingRegionFilter);
     const [isDirtyForm, setIsDirtyForm] = useState(false);
     const [regionErrorMsg, setRegionErrorMsg] = useState('');
+    const [start, setStart] = useState(moment().subtract(7, 'days'));
+    const [end, setEnd] = useState(moment());
+    const [pendingStart, setPendingStart] = useState(start);
+    const [pendingEnd, setPendingEnd] = useState(end);
 
     useEffect(() => {
         const getNewData = () => {
             setIsLoading(true);
             setError('');
-            const url = `/v1/application-availability/filter-by-aws-region?from_date=${moment().subtract(7, 'days').format('YYYY-MM-DDTHH:mm:ss[Z]')}&to_date=${moment().format('YYYY-MM-DDTHH:mm:ss[Z]')}&aws_region=${getSelectedRegions(selectedRegionFilter)}`;
+            const url = `/v1/application-availability/filter-by-aws-region?from_date=${start.format('YYYY-MM-DDTHH:mm:ss[Z]')}&to_date=${end.format('YYYY-MM-DDTHH:mm:ss[Z]')}&aws_region=${getSelectedRegions(selectedRegionFilter)}`;
             const fetchAPI = async () => {
                 try {
                     const res = await fetch(url);
@@ -57,7 +62,7 @@ const CGPAvailibility = () => {
             setIsDirtyForm(false);
         };
         getNewData();
-    }, [selectedRegionFilter]);
+    }, [selectedRegionFilter, start, end]);
 
     const handleOnClick = (selected) => setSelectedApp(selected || null);
 
@@ -90,48 +95,73 @@ const CGPAvailibility = () => {
         return;
     };
 
+    const handleDatetimeChange = ({start: startDateTimeStr, end: endDateTimeStr}) => {
+        setPendingStart(moment(startDateTimeStr));
+        if (moment(endDateTimeStr).diff(moment(startDateTimeStr), 'days') < 15) {
+            setPendingEnd(moment(endDateTimeStr));
+        } else {
+            setPendingEnd(moment(startDateTimeStr).add(15, 'days'));
+        }
+
+        setIsDirtyForm(true);
+    };
+
+    const handleApplyButtonClicked = () => {
+        setSelectedRegionFilter(pendingRegionFilter);
+        setStart(pendingStart);
+        setEnd(pendingEnd);
+    };
+
     return (
         <div className="cgp-availability-container">
             <h1 className="page-title" data-testid="title">
                 {'CGP Availability'}
                 <HelpText className="page-info" text="Display the last 7 days availability for each application calculated monitoring the CGP logs as: (Total Requests - 5XX request) * 100) / Total Requests" />
             </h1>
-            <LoadingContainer isLoading={isLoading} error={error}>
-                <div id="topContainer">
-                    <div id="form">
-                        <MultiSelect
-                            className="region-select"
-                            id="regionSelect"
-                            label="AWS Regions"
-                            items={pendingRegionFilter}
-                            onChange={handleRegionChange}
-                            errorMsg={regionErrorMsg}
-                        />
-                        <button
-                            type="button"
-                            className="apply-button btn btn-primary active"
-                            onClick={() => {
-                                setSelectedRegionFilter(pendingRegionFilter);
-                            }}
-                            disabled={!isDirtyForm}
-                        >
-                            {'Apply'}
-                        </button>
-                    </div>
-                    <Legend/>
-
-                    <FormInput
-                        id="availabilityFilter"
-                        type="number"
-                        min={0}
-                        max={100}
-                        name="availabilityFilter"
-                        label="Availability Filter"
-                        onChange={handleChange}
-                        value={availabilityFilter}
-                        errorMsg={errorMessage}
+            <div className="top-container">
+                <div className="filter-container">
+                    <DatetimeRangePicker
+                        onChange={handleDatetimeChange}
+                        startDate={pendingStart.toDate()}
+                        endDate={pendingEnd.toDate()}
+                        presets={getPresets()}
+                        disabled={isLoading}
+                        isValidEndDate={(currentDate) => currentDate.diff(pendingStart, 'days') < 15}
                     />
+                    <MultiSelect
+                        id="regionSelect"
+                        className="region-select"
+                        label="AWS Regions"
+                        items={pendingRegionFilter}
+                        onChange={handleRegionChange}
+                        errorMsg={regionErrorMsg}
+                        disabled={isLoading}
+                    />
+                    <button
+                        type="button"
+                        className="apply-button btn btn-primary active"
+                        onClick={handleApplyButtonClicked}
+                        disabled={!isDirtyForm}
+                    >
+                        {'Apply'}
+                    </button>
                 </div>
+                <Legend/>
+                <FormInput
+                    id="availabilityFilter"
+                    className="availability-filter"
+                    type="number"
+                    min={0}
+                    max={100}
+                    name="availabilityFilter"
+                    label="Availability Filter"
+                    onChange={handleChange}
+                    value={availabilityFilter}
+                    errorMsg={errorMessage}
+                    disabled={isLoading}
+                />
+            </div>
+            <LoadingContainer isLoading={isLoading} error={error}>
                 <DataTable
                     data={filteredAvailability?.length && filteredAvailability || []}
                     columns={availability?.length ? extractColumns(availability) : []}
