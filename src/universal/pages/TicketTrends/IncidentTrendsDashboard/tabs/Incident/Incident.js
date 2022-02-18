@@ -32,11 +32,11 @@ const Incident = () => {
     }, [search]);
 
 
-    const renderRow = (label, value, type) => 
-            <div className={`inc-row${type === 'long' ? '-long' : ''}`} key={label}>
-                <div className={`inc-label${type === 'long' ? '-long' : ''}`}>{label}</div>
-                <div className={`inc-value${type === 'long' ? '-long' : ''}`}>{value}</div>
-            </div>
+    const renderRow = (label, value, type) =>
+        (<div className={`inc-row${type === 'long' ? '-long' : ''}`} key={label}>
+            <div className={`inc-label${type === 'long' ? '-long' : ''}`}>{label}</div>
+            <div className={`inc-value${type === 'long' ? '-long' : ''}`}>{value}</div>
+        </div>);
 
     const renderTable = () => {
         return (
@@ -83,7 +83,7 @@ const Incident = () => {
                     {'Search'}
                 </button>
             </div>
-                {renderResults()}
+            {renderResults()}
         </div>
     );
 };

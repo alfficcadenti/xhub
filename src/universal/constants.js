@@ -84,7 +84,7 @@ export const LOB_LIST = [
     {value: 'F', label: 'Flights'},
     {value: 'H', label: 'Hotels'},
     {value: 'I', label: 'Insurance'},
-    {value: 'P', label: 'Package'},
+    {value: 'P', label: 'Packages'},
     {value: '3PP', label: 'ThreePP'},
     {value: 'U', label: 'Unknown'},
 ];

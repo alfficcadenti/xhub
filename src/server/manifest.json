@@ -889,45 +889,10 @@
               "method": "GET",
               "operation": "GET_checkout_failures_api_v1"
             },
-            "checkoutFailuresErrorCategories": {
-              "path": "/v1/checkout-failures/error-categories",
+            "loginFailures": {
+              "path": "/v1/login-failures",
               "method": "GET",
-              "operation": "GET_checkout_failures_error_categories_api_v1"
-            },
-            "checkoutFailuresErrorCodes": {
-              "path": "/v1/checkout-failures/error-codes",
-              "method": "GET",
-              "operation": "GET_checkout_failures_error_codes_api_v1"
-            },
-            "checkoutFailuresLobs": {
-              "path": "/v1/checkout-failures/lob",
-              "method": "GET",
-              "operation": "GET_checkout_failures_lobs_api_v1"
-            },
-            "checkoutFailuresSearch": {
-              "path": "/v1/checkout-failures/search",
-              "method": "GET",
-              "operation": "GET_checkout_failures_search_api_v1"
-            },
-            "checkoutFailuresSites": {
-              "path": "/v1/checkout-failures/sites",
-              "method": "GET",
-              "operation": "GET_checkout_failures_sites_api_v1"
-            },
-            "checkoutFailuresCategoryCounts": {
-              "path": "/v1/checkout-failures/category-counts",
-              "method": "GET",
-              "operation": "GET_checkout_failures_category_counts_api_v1"
-            },
-            "checkoutFailuresComments": {
-              "path": "/v1/checkout-failures/comments",
-              "method": "GET",
-              "operation": "GET_checkout_failures_comments_api_v1"
-            },
-            "checkoutFailuresErrorCounts": {
-              "path": "/v1/checkout-failures/error-counts",
-              "method": "GET",
-              "operation": "GET_checkout_failures_error_counts_api_v1"
+              "operation": "GET_login_failures_api_v1"
             },
             "deltaUser": {
               "path": "/v1/delta-users-counts-by-metrics",
@@ -955,45 +920,10 @@
               "method": "GET",
               "operation": "GET_checkout_failures_api_v1"
             },
-            "checkoutFailuresErrorCategories": {
-              "path": "/v1/checkout-failures/error-categories",
+            "loginFailures": {
+              "path": "/v1/login-failures",
               "method": "GET",
-              "operation": "GET_checkout_failure_error_categories_api_v1"
-            },
-            "checkoutFailuresErrorCodes": {
-              "path": "/v1/checkout-failures/error-codes",
-              "method": "GET",
-              "operation": "GET_checkout_failures_error_codes_api_v1"
-            },
-            "checkoutFailuresLobs": {
-              "path": "/v1/checkout-failures/lob",
-              "method": "GET",
-              "operation": "GET_checkout_failures_lobs_api_v1"
-            },
-            "checkoutFailuresSearch": {
-              "path": "/v1/checkout-failures/search",
-              "method": "GET",
-              "operation": "GET_checkout_failures_search_api_v1"
-            },
-            "checkoutFailuresSites": {
-              "path": "/v1/checkout-failures/sites",
-              "method": "GET",
-              "operation": "GET_checkout_failures_sites_api_v1"
-            },
-            "checkoutFailuresCategoryCounts": {
-              "path": "/v1/checkout-failures/category-counts",
-              "method": "GET",
-              "operation": "GET_checkout_failures_category_counts_api_v1"
-            },
-            "checkoutFailuresComments": {
-              "path": "/v1/checkout-failures/comments",
-              "method": "GET",
-              "operation": "GET_checkout_failures_comments_api_v1"
-            },
-            "checkoutFailuresErrorCounts": {
-              "path": "/v1/checkout-failures/error-counts",
-              "method": "GET",
-              "operation": "GET_checkout_failures_error_counts_api_v1"
+              "operation": "GET_login_failures_api_v1"
             },
             "deltaUser": {
               "path": "/v1/delta-users-counts-by-metrics",

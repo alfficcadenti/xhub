@@ -41,14 +41,7 @@ import {impulseHealth, impulseAnomalies, impulseAnomaliesGrouped} from './impuls
 import {impulsePrediction} from './anomalyDetector';
 import {
     checkoutFailures,
-    checkoutFailuresErrorCategories,
-    checkoutFailuresErrorCodes,
-    checkoutFailuresLobs,
-    checkoutFailuresSearch,
-    checkoutFailuresSites,
-    checkoutFailuresCategoryCounts,
-    checkoutFailuresComments,
-    checkoutFailuresErrorCounts,
+    loginFailures,
     deltaUser,
     deltaUserDetails,
     deltaUserBySessionId
@@ -107,14 +100,7 @@ const apiRoutes = [
     impulsePrediction,
     // fci data service
     checkoutFailures,
-    checkoutFailuresErrorCategories,
-    checkoutFailuresErrorCodes,
-    checkoutFailuresLobs,
-    checkoutFailuresSearch,
-    checkoutFailuresSites,
-    checkoutFailuresCategoryCounts,
-    checkoutFailuresComments,
-    checkoutFailuresErrorCounts,
+    loginFailures,
     deltaUser,
     deltaUserDetails,
     deltaUserBySessionId,
