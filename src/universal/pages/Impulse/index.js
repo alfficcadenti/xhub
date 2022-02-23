@@ -12,7 +12,17 @@ import {Divider} from '@homeaway/react-collapse';
 import {SVGIcon} from '@homeaway/react-svg';
 import {FILTER__16} from '@homeaway/svg-defs';
 import './styles.less';
-import {ALL_LOB, ALL_POS, ALL_BRANDS, ALL_DEVICES, ALL_INCIDENTS, ALL_ANOMALIES} from '../../constants';
+import {
+    ALL_LOB,
+    ALL_POS,
+    ALL_BRANDS,
+    ALL_DEVICES,
+    ALL_INCIDENTS,
+    ALL_ANOMALIES,
+    ALL_EPS_CHANNELS,
+    EPS_CHANNELS,
+    EPS_CHANNEL_SITE_URL, EXPEDIA_PARTNER_SERVICES_BRAND
+} from '../../constants';
 import {getFilters, getFiltersForMultiKeys, getQueryValues, useAddToUrl, getTimeIntervals, isValidTimeInterval, getDefaultTimeInterval, getActiveIndex, mapPosFilterLabels} from './impulseHandler';
 import {Checkbox, Switch} from '@homeaway/react-form-components';
 import {IncidentDetails} from './tabs/BookingTrends';
@@ -71,6 +81,8 @@ const getPresets = () => [
 
 ];
 
+
+
 const filterSelectionClass = 'filter-option-selection';
 const filterExpandClass = 'filter-option-expand';
 let filteredAnnotationsOnBrand = [];
@@ -95,6 +107,13 @@ const Impulse = (props) => {
     storageEnableIncidents = JSON.parse(storageEnableIncidents);
     let storageEnableAnomalies = localStorage.getItem('enableAnomalies') || true;
     storageEnableAnomalies = JSON.parse(storageEnableAnomalies);
+
+    const checkInitialBrands = () => {
+        if (initialBrands.length === 1 && initialBrands.includes(EXPEDIA_PARTNER_SERVICES_BRAND)) {
+            return true;
+        }
+        return false;
+    };
 
     const [startDateTime, setStartDateTime] = useState(initialStart);
     const [endDateTime, setEndDateTime] = useState(initialEnd);
@@ -132,7 +151,9 @@ const Impulse = (props) => {
     const [allDataByDeviceType, setAllDataByDeviceType] = useState([]);
     const [allDataByRegion, setAllDataByRegion] = useState([]);
     const refreshRange = ((moment(endDateTime).diff(moment(startDateTime), 'days') <= 5) && (moment().diff(moment(endDateTime), 'minutes') < 5));
-
+    // eslint-disable-next-line no-use-before-define
+    const [isEpsSelected, setIsEpsSelected] = useState(checkInitialBrands());
+    const [selectedEpsChannels, setSelectedEpsChannels] = useState([]);
     const getScreenshot = (timeout) => {
         setGraphImage(null);
         const config = {
@@ -188,7 +209,9 @@ const Impulse = (props) => {
         groupedResByDeviceType,
         groupedResByRegion,
         averageCount,
-        isAverageCountLoading] = useFetchBlipData(
+        isAverageCountLoading,
+        isEpsPresentInBrands,
+        allPos] = useFetchBlipData(
         isApplyClicked,
         setIsApplyClicked,
         startDateTime,
@@ -214,10 +237,12 @@ const Impulse = (props) => {
         getScreenshot,
         setGraphImage);
 
+    const allPosSet = new Set(allPos);
     const modifyFilters = (newValuesOnChange) => {
         setSelectedLobMulti([]);
         setSelectedDeviceTypeMulti([]);
         setSelectedSiteURLMulti([]);
+        setSelectedEpsChannels([]);
         if (typeof newValuesOnChange !== 'undefined' && brandsFilterData !== null && newValuesOnChange.length > 0) {
             setLobsMulti(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'lobs'));
             setDeviceTypesMulti(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'device_types'));
@@ -226,6 +251,14 @@ const Impulse = (props) => {
             setLobsMulti(getFilters(filterData, 'lobs'));
             setDeviceTypesMulti(getFilters(filterData, 'device_types'));
             setEgSiteURLMulti(mapPosFilterLabels(getFilters(filterData, 'point_of_sales')));
+        }
+        if (!isEpsPresentInBrands) {
+            setIsEpsSelected(false);
+            return;
+        } else if (newValuesOnChange.length === 1 && newValuesOnChange.includes(EXPEDIA_PARTNER_SERVICES_BRAND)) {
+            setIsEpsSelected(true);
+        } else {
+            setIsEpsSelected(false);
         }
     };
     const filterAnnotations = (newValuesOnChange) => {
@@ -297,6 +330,8 @@ const Impulse = (props) => {
         } else if (handler === 'anomaliesCategory') {
             filterAnomalies(newValuesOnChange);
             setSelectedAnomaliesMulti(newValuesOnChange);
+        } else if (handler === 'EPS_Channels') {
+            setSelectedEpsChannels(newValuesOnChange);
         }
     };
     const validSelectionRangeOnPointOfSales = () => {
@@ -305,6 +340,20 @@ const Impulse = (props) => {
         }
         return <div className="widget-card wrapper1" >{'Select 1 or more point of sales from filters above and click submit to display trendlines'}</div>;
     };
+
+    useEffect(() => {
+        let selectedChannelEgSiteList = [];
+        selectedEpsChannels.map((channel) => {
+            EPS_CHANNEL_SITE_URL[channel].map((pos) => {
+                if (allPosSet.has(pos)) {
+                    selectedChannelEgSiteList.push(pos);
+                }
+            });
+        });
+        console.log(selectedChannelEgSiteList);
+        setSelectedSiteURLMulti(selectedChannelEgSiteList);
+    }, [selectedEpsChannels]);
+
     useEffect(() => {
         setFilterAllData([...res]);
 
@@ -641,7 +690,8 @@ const Impulse = (props) => {
                     {renderTimeInterval(timeInterval, timeIntervalOpts, handleTimeIntervalChange)}
                     {renderMultiSelectFilters(selectedBrandMulti, brandsMulti, 'brand', ALL_BRANDS, filterSelectionClass)}
                     {renderMultiSelectFilters(selectedLobMulti, lobsMulti, 'lob', ALL_LOB, filterSelectionClass)}
-                    {renderMultiSelectFilters(selectedSiteURLMulti, egSiteURLMulti, 'egSiteUrl', ALL_POS, filterExpandClass)}
+                    {isEpsSelected ? renderMultiSelectFilters(selectedEpsChannels, EPS_CHANNELS, 'EPS_Channels', ALL_EPS_CHANNELS, filterSelectionClass) : null}
+                    {selectedEpsChannels.length === 0 ? renderMultiSelectFilters(selectedSiteURLMulti, egSiteURLMulti, 'egSiteUrl', ALL_POS, filterExpandClass) : null}
                     <button
                         type="button"
                         className="apply-button btn btn-primary active"

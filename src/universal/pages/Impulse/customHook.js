@@ -56,7 +56,7 @@ let intervalForAnnotations = null;
 let intervalForHealth = null;
 let intervalForAnomalies = null;
 let finalChartDataYOY = null;
-
+let allPos = [];
 export const useFetchBlipData = (
     isApplyClicked,
     setIsApplyClicked,
@@ -85,9 +85,9 @@ export const useFetchBlipData = (
     const [res, setRes] = useState([]);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(true);
-    const [egSiteURLMulti, setEgSiteURLMulti] = useState({});
+    const [egSiteURLMulti, setEgSiteURLMulti] = useState([]);
     const [lobsMulti, setLobsMulti] = useState({});
-    const [brandsMulti, setBrandMulti] = useState({});
+    const [brandsMulti, setBrandMulti] = useState([]);
     const [deviceTypeMulti, setDeviceTypesMulti] = useState({});
     const [incidentMulti, setIncidentMulti] = useState({});
     const [brandsFilterData, setBrandsFilterData] = useState({});
@@ -106,7 +106,7 @@ export const useFetchBlipData = (
 
     const [averageCount, setAverageCount] = useState({});
     const [isAverageCountLoading, setIsAverageCountLoading] = useState(false);
-
+    const [isEpsPresentInBrands, setIsEpsPresentInBrands] = useState(false);
     const incidentMultiOptions = [
         {
             value: '0-Code Red',
@@ -484,8 +484,27 @@ export const useFetchBlipData = (
     };
 
     useEffect(() => {
+        egSiteURLMulti.map((egSiteValueAndLabel) => {
+            allPos.push(egSiteValueAndLabel.label);
+        });
+    },[egSiteURLMulti]);
+
+    useEffect(() => {
         fetchAverage();
     }, [isApplyClicked]);
+
+    useEffect(() => {
+        // eslint-disable-next-line consistent-return
+        if (brandsMulti.find((brand) => {
+            if (brand.value === EXPEDIA_PARTNER_SERVICES_BRAND && brand.label === EXPEDIA_PARTNER_SERVICES_BRAND) {
+                return true;
+            }
+        })) {
+            setIsEpsPresentInBrands(true);
+        } else {
+            setIsEpsPresentInBrands(false);
+        }
+    }, [brandsMulti]);
 
     useEffect(() => {
         if (SUPPRESSED_BRANDS.includes(globalBrandName)) {
@@ -627,6 +646,8 @@ export const useFetchBlipData = (
         groupedResByDeviceType,
         groupedResByRegion,
         averageCount,
-        isAverageCountLoading
+        isAverageCountLoading,
+        isEpsPresentInBrands,
+        allPos
     ];
 };
