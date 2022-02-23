@@ -113,6 +113,19 @@ describe('<CGPAvailibility />', () => {
         });
         expect(wrapper).toMatchSnapshot();
     });
+
+    it('excludes unknown application from the availability table', async () => {
+        fetch.mockImplementation(() => {
+            return Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve(AVAILABILITY)
+            });
+        });
+        await act(async () => {
+            wrapper = render(<Router><CGPAvailibility /></Router>);
+        });
+        expect(wrapper.queryByText('unknown')).not.toBeInTheDocument();
+    });
 });
 
 

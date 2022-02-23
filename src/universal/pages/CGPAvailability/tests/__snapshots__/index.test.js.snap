@@ -72,7 +72,7 @@ Object {
                   <input
                     class="form-control"
                     type="text"
-                    value="02/10/2022"
+                    value="02/16/2022"
                   />
                   <div
                     class="rdtPicker"
@@ -214,19 +214,19 @@ Object {
                               9
                             </td>
                             <td
-                              class="rdtDay rdtActive rdtActive"
+                              class="rdtDay"
                               data-value="10"
                             >
                               10
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="11"
                             >
                               11
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="12"
                             >
                               12
@@ -234,43 +234,43 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="13"
                             >
                               13
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="14"
                             >
                               14
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="15"
                             >
                               15
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtActive rdtActive"
                               data-value="16"
                             >
                               16
                             </td>
                             <td
-                              class="rdtDay rdtToday rdtActive"
+                              class="rdtDay in-selecting-range"
                               data-value="17"
                             >
                               17
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="18"
                             >
                               18
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="19"
                             >
                               19
@@ -278,25 +278,25 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="20"
                             >
                               20
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="21"
                             >
                               21
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="22"
                             >
                               22
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay rdtToday rdtActive"
                               data-value="23"
                             >
                               23
@@ -419,7 +419,7 @@ Object {
                   <input
                     class="form-control"
                     type="text"
-                    value="02/17/2022"
+                    value="02/23/2022"
                   />
                   <div
                     class="rdtPicker"
@@ -561,19 +561,19 @@ Object {
                               9
                             </td>
                             <td
-                              class="rdtDay rdtActive"
+                              class="rdtDay rdtDisabled"
                               data-value="10"
                             >
                               10
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="11"
                             >
                               11
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="12"
                             >
                               12
@@ -581,43 +581,43 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="13"
                             >
                               13
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="14"
                             >
                               14
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="15"
                             >
                               15
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtActive"
                               data-value="16"
                             >
                               16
                             </td>
                             <td
-                              class="rdtDay rdtActive rdtToday rdtActive"
+                              class="rdtDay in-selecting-range"
                               data-value="17"
                             >
                               17
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="18"
                             >
                               18
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="19"
                             >
                               19
@@ -625,25 +625,25 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="20"
                             >
                               20
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="21"
                             >
                               21
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="22"
                             >
                               22
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay rdtActive rdtToday rdtActive"
                               data-value="23"
                             >
                               23
@@ -661,7 +661,7 @@ Object {
                               25
                             </td>
                             <td
-                              class="rdtDay rdtDisabled"
+                              class="rdtDay"
                               data-value="26"
                             >
                               26
@@ -669,31 +669,31 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay rdtDisabled"
+                              class="rdtDay"
                               data-value="27"
                             >
                               27
                             </td>
                             <td
-                              class="rdtDay rdtDisabled"
+                              class="rdtDay"
                               data-value="28"
                             >
                               28
                             </td>
                             <td
-                              class="rdtDay rdtNew rdtDisabled"
+                              class="rdtDay rdtNew"
                               data-value="1"
                             >
                               1
                             </td>
                             <td
-                              class="rdtDay rdtNew rdtDisabled"
+                              class="rdtDay rdtNew"
                               data-value="2"
                             >
                               2
                             </td>
                             <td
-                              class="rdtDay rdtNew rdtDisabled"
+                              class="rdtDay rdtNew"
                               data-value="3"
                             >
                               3
@@ -1353,7 +1353,7 @@ Object {
                 <input
                   class="form-control"
                   type="text"
-                  value="02/10/2022"
+                  value="02/16/2022"
                 />
                 <div
                   class="rdtPicker"
@@ -1495,19 +1495,19 @@ Object {
                             9
                           </td>
                           <td
-                            class="rdtDay rdtActive rdtActive"
+                            class="rdtDay"
                             data-value="10"
                           >
                             10
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="11"
                           >
                             11
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="12"
                           >
                             12
@@ -1515,43 +1515,43 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="13"
                           >
                             13
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="14"
                           >
                             14
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="15"
                           >
                             15
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtActive rdtActive"
                             data-value="16"
                           >
                             16
                           </td>
                           <td
-                            class="rdtDay rdtToday rdtActive"
+                            class="rdtDay in-selecting-range"
                             data-value="17"
                           >
                             17
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="18"
                           >
                             18
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="19"
                           >
                             19
@@ -1559,25 +1559,25 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="20"
                           >
                             20
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="21"
                           >
                             21
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="22"
                           >
                             22
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay rdtToday rdtActive"
                             data-value="23"
                           >
                             23
@@ -1700,7 +1700,7 @@ Object {
                 <input
                   class="form-control"
                   type="text"
-                  value="02/17/2022"
+                  value="02/23/2022"
                 />
                 <div
                   class="rdtPicker"
@@ -1842,19 +1842,19 @@ Object {
                             9
                           </td>
                           <td
-                            class="rdtDay rdtActive"
+                            class="rdtDay rdtDisabled"
                             data-value="10"
                           >
                             10
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="11"
                           >
                             11
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="12"
                           >
                             12
@@ -1862,43 +1862,43 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="13"
                           >
                             13
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="14"
                           >
                             14
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="15"
                           >
                             15
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtActive"
                             data-value="16"
                           >
                             16
                           </td>
                           <td
-                            class="rdtDay rdtActive rdtToday rdtActive"
+                            class="rdtDay in-selecting-range"
                             data-value="17"
                           >
                             17
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="18"
                           >
                             18
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="19"
                           >
                             19
@@ -1906,25 +1906,25 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="20"
                           >
                             20
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="21"
                           >
                             21
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="22"
                           >
                             22
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay rdtActive rdtToday rdtActive"
                             data-value="23"
                           >
                             23
@@ -1942,7 +1942,7 @@ Object {
                             25
                           </td>
                           <td
-                            class="rdtDay rdtDisabled"
+                            class="rdtDay"
                             data-value="26"
                           >
                             26
@@ -1950,31 +1950,31 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay rdtDisabled"
+                            class="rdtDay"
                             data-value="27"
                           >
                             27
                           </td>
                           <td
-                            class="rdtDay rdtDisabled"
+                            class="rdtDay"
                             data-value="28"
                           >
                             28
                           </td>
                           <td
-                            class="rdtDay rdtNew rdtDisabled"
+                            class="rdtDay rdtNew"
                             data-value="1"
                           >
                             1
                           </td>
                           <td
-                            class="rdtDay rdtNew rdtDisabled"
+                            class="rdtDay rdtNew"
                             data-value="2"
                           >
                             2
                           </td>
                           <td
-                            class="rdtDay rdtNew rdtDisabled"
+                            class="rdtDay rdtNew"
                             data-value="3"
                           >
                             3
@@ -2691,7 +2691,7 @@ Object {
                   <input
                     class="form-control"
                     type="text"
-                    value="02/10/2022"
+                    value="02/16/2022"
                   />
                   <div
                     class="rdtPicker"
@@ -2833,19 +2833,19 @@ Object {
                               9
                             </td>
                             <td
-                              class="rdtDay rdtActive rdtActive"
+                              class="rdtDay"
                               data-value="10"
                             >
                               10
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="11"
                             >
                               11
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="12"
                             >
                               12
@@ -2853,43 +2853,43 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="13"
                             >
                               13
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="14"
                             >
                               14
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="15"
                             >
                               15
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtActive rdtActive"
                               data-value="16"
                             >
                               16
                             </td>
                             <td
-                              class="rdtDay rdtToday rdtActive"
+                              class="rdtDay in-selecting-range"
                               data-value="17"
                             >
                               17
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="18"
                             >
                               18
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="19"
                             >
                               19
@@ -2897,25 +2897,25 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="20"
                             >
                               20
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="21"
                             >
                               21
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="22"
                             >
                               22
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay rdtToday rdtActive"
                               data-value="23"
                             >
                               23
@@ -3038,7 +3038,7 @@ Object {
                   <input
                     class="form-control"
                     type="text"
-                    value="02/17/2022"
+                    value="02/23/2022"
                   />
                   <div
                     class="rdtPicker"
@@ -3180,19 +3180,19 @@ Object {
                               9
                             </td>
                             <td
-                              class="rdtDay rdtActive"
+                              class="rdtDay rdtDisabled"
                               data-value="10"
                             >
                               10
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="11"
                             >
                               11
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="12"
                             >
                               12
@@ -3200,43 +3200,43 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="13"
                             >
                               13
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="14"
                             >
                               14
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="15"
                             >
                               15
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtActive"
                               data-value="16"
                             >
                               16
                             </td>
                             <td
-                              class="rdtDay rdtActive rdtToday rdtActive"
+                              class="rdtDay in-selecting-range"
                               data-value="17"
                             >
                               17
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="18"
                             >
                               18
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="19"
                             >
                               19
@@ -3244,25 +3244,25 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="20"
                             >
                               20
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="21"
                             >
                               21
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="22"
                             >
                               22
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay rdtActive rdtToday rdtActive"
                               data-value="23"
                             >
                               23
@@ -3280,7 +3280,7 @@ Object {
                               25
                             </td>
                             <td
-                              class="rdtDay rdtDisabled"
+                              class="rdtDay"
                               data-value="26"
                             >
                               26
@@ -3288,31 +3288,31 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay rdtDisabled"
+                              class="rdtDay"
                               data-value="27"
                             >
                               27
                             </td>
                             <td
-                              class="rdtDay rdtDisabled"
+                              class="rdtDay"
                               data-value="28"
                             >
                               28
                             </td>
                             <td
-                              class="rdtDay rdtNew rdtDisabled"
+                              class="rdtDay rdtNew"
                               data-value="1"
                             >
                               1
                             </td>
                             <td
-                              class="rdtDay rdtNew rdtDisabled"
+                              class="rdtDay rdtNew"
                               data-value="2"
                             >
                               2
                             </td>
                             <td
-                              class="rdtDay rdtNew rdtDisabled"
+                              class="rdtDay rdtNew"
                               data-value="3"
                             >
                               3
@@ -4026,7 +4026,7 @@ Object {
                 <input
                   class="form-control"
                   type="text"
-                  value="02/10/2022"
+                  value="02/16/2022"
                 />
                 <div
                   class="rdtPicker"
@@ -4168,19 +4168,19 @@ Object {
                             9
                           </td>
                           <td
-                            class="rdtDay rdtActive rdtActive"
+                            class="rdtDay"
                             data-value="10"
                           >
                             10
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="11"
                           >
                             11
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="12"
                           >
                             12
@@ -4188,43 +4188,43 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="13"
                           >
                             13
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="14"
                           >
                             14
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="15"
                           >
                             15
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtActive rdtActive"
                             data-value="16"
                           >
                             16
                           </td>
                           <td
-                            class="rdtDay rdtToday rdtActive"
+                            class="rdtDay in-selecting-range"
                             data-value="17"
                           >
                             17
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="18"
                           >
                             18
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="19"
                           >
                             19
@@ -4232,25 +4232,25 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="20"
                           >
                             20
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="21"
                           >
                             21
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="22"
                           >
                             22
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay rdtToday rdtActive"
                             data-value="23"
                           >
                             23
@@ -4373,7 +4373,7 @@ Object {
                 <input
                   class="form-control"
                   type="text"
-                  value="02/17/2022"
+                  value="02/23/2022"
                 />
                 <div
                   class="rdtPicker"
@@ -4515,19 +4515,19 @@ Object {
                             9
                           </td>
                           <td
-                            class="rdtDay rdtActive"
+                            class="rdtDay rdtDisabled"
                             data-value="10"
                           >
                             10
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="11"
                           >
                             11
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="12"
                           >
                             12
@@ -4535,43 +4535,43 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="13"
                           >
                             13
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="14"
                           >
                             14
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="15"
                           >
                             15
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtActive"
                             data-value="16"
                           >
                             16
                           </td>
                           <td
-                            class="rdtDay rdtActive rdtToday rdtActive"
+                            class="rdtDay in-selecting-range"
                             data-value="17"
                           >
                             17
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="18"
                           >
                             18
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="19"
                           >
                             19
@@ -4579,25 +4579,25 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="20"
                           >
                             20
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="21"
                           >
                             21
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="22"
                           >
                             22
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay rdtActive rdtToday rdtActive"
                             data-value="23"
                           >
                             23
@@ -4615,7 +4615,7 @@ Object {
                             25
                           </td>
                           <td
-                            class="rdtDay rdtDisabled"
+                            class="rdtDay"
                             data-value="26"
                           >
                             26
@@ -4623,31 +4623,31 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay rdtDisabled"
+                            class="rdtDay"
                             data-value="27"
                           >
                             27
                           </td>
                           <td
-                            class="rdtDay rdtDisabled"
+                            class="rdtDay"
                             data-value="28"
                           >
                             28
                           </td>
                           <td
-                            class="rdtDay rdtNew rdtDisabled"
+                            class="rdtDay rdtNew"
                             data-value="1"
                           >
                             1
                           </td>
                           <td
-                            class="rdtDay rdtNew rdtDisabled"
+                            class="rdtDay rdtNew"
                             data-value="2"
                           >
                             2
                           </td>
                           <td
-                            class="rdtDay rdtNew rdtDisabled"
+                            class="rdtDay rdtNew"
                             data-value="3"
                           >
                             3
@@ -5418,7 +5418,7 @@ Object {
                   <input
                     class="form-control"
                     type="text"
-                    value="02/10/2022"
+                    value="02/16/2022"
                   />
                   <div
                     class="rdtPicker"
@@ -5560,19 +5560,19 @@ Object {
                               9
                             </td>
                             <td
-                              class="rdtDay rdtActive rdtActive"
+                              class="rdtDay"
                               data-value="10"
                             >
                               10
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="11"
                             >
                               11
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="12"
                             >
                               12
@@ -5580,43 +5580,43 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="13"
                             >
                               13
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="14"
                             >
                               14
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="15"
                             >
                               15
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtActive rdtActive"
                               data-value="16"
                             >
                               16
                             </td>
                             <td
-                              class="rdtDay rdtToday rdtActive"
+                              class="rdtDay in-selecting-range"
                               data-value="17"
                             >
                               17
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="18"
                             >
                               18
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="19"
                             >
                               19
@@ -5624,25 +5624,25 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="20"
                             >
                               20
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="21"
                             >
                               21
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="22"
                             >
                               22
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay rdtToday rdtActive"
                               data-value="23"
                             >
                               23
@@ -5765,7 +5765,7 @@ Object {
                   <input
                     class="form-control"
                     type="text"
-                    value="02/17/2022"
+                    value="02/23/2022"
                   />
                   <div
                     class="rdtPicker"
@@ -5907,19 +5907,19 @@ Object {
                               9
                             </td>
                             <td
-                              class="rdtDay rdtActive"
+                              class="rdtDay rdtDisabled"
                               data-value="10"
                             >
                               10
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="11"
                             >
                               11
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="12"
                             >
                               12
@@ -5927,43 +5927,43 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="13"
                             >
                               13
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="14"
                             >
                               14
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="15"
                             >
                               15
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtActive"
                               data-value="16"
                             >
                               16
                             </td>
                             <td
-                              class="rdtDay rdtActive rdtToday rdtActive"
+                              class="rdtDay in-selecting-range"
                               data-value="17"
                             >
                               17
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="18"
                             >
                               18
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="19"
                             >
                               19
@@ -5971,25 +5971,25 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="20"
                             >
                               20
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="21"
                             >
                               21
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="22"
                             >
                               22
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay rdtActive rdtToday rdtActive"
                               data-value="23"
                             >
                               23
@@ -6007,7 +6007,7 @@ Object {
                               25
                             </td>
                             <td
-                              class="rdtDay rdtDisabled"
+                              class="rdtDay"
                               data-value="26"
                             >
                               26
@@ -6015,31 +6015,31 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay rdtDisabled"
+                              class="rdtDay"
                               data-value="27"
                             >
                               27
                             </td>
                             <td
-                              class="rdtDay rdtDisabled"
+                              class="rdtDay"
                               data-value="28"
                             >
                               28
                             </td>
                             <td
-                              class="rdtDay rdtNew rdtDisabled"
+                              class="rdtDay rdtNew"
                               data-value="1"
                             >
                               1
                             </td>
                             <td
-                              class="rdtDay rdtNew rdtDisabled"
+                              class="rdtDay rdtNew"
                               data-value="2"
                             >
                               2
                             </td>
                             <td
-                              class="rdtDay rdtNew rdtDisabled"
+                              class="rdtDay rdtNew"
                               data-value="3"
                             >
                               3
@@ -6599,7 +6599,7 @@ Object {
             <a
               class="btn btn-default data-table__download"
               download="opxhub-table.csv"
-              href="data:text/csv;charset=utf-8,﻿\\"Application\\",\\"Dec 7, 2021\\",\\"Dec 6, 2021\\",\\"Dec 5, 2021\\",\\"Dec 4, 2021\\",\\"Dec 3, 2021\\",\\"Dec 2, 2021\\",\\"Dec 1, 2021\\",\\"Average\\"
+              href="data:text/csv;charset=utf-8,﻿\\"Application\\",\\"Dec 7, 2021\\",\\"Dec 6, 2021\\",\\"Dec 5, 2021\\",\\"Dec 4, 2021\\",\\"Dec 3, 2021\\",\\"Dec 2, 2021\\",\\"Dec 1, 2021\\",\\"Availability\\"
 \\"flights-shopping\\",\\"\\",\\"0\\",\\"99.992\\",\\"\\",\\"99.993\\",\\"59\\",\\"\\",\\"79.92\\"
 \\"cars-shopping-service\\",\\"99.99\\",\\"99\\",\\"50\\",\\"99.59\\",\\"60\\",\\"99.59\\",\\"100\\",\\"92.64\\"
 \\"flights-shopping-service\\",\\"99.991\\",\\"99.97\\",\\"99.992\\",\\"\\",\\"99.993\\",\\"59\\",\\"99.999\\",\\"99.9\\""
@@ -7059,7 +7059,7 @@ Object {
                         <input
                           checked=""
                           class="CRB__input"
-                          name="Average"
+                          name="Availability"
                           type="checkbox"
                         />
                         <span
@@ -7088,7 +7088,7 @@ Object {
                         <span
                           class="label-text"
                         >
-                          Average
+                          Availability
                         </span>
                       </label>
                     </div>
@@ -7146,7 +7146,7 @@ Object {
                   <th
                     class="pointer"
                   >
-                    Average
+                    Availability
                      
                     <div
                       class="info-tooltip "
@@ -7692,7 +7692,7 @@ Object {
                 <input
                   class="form-control"
                   type="text"
-                  value="02/10/2022"
+                  value="02/16/2022"
                 />
                 <div
                   class="rdtPicker"
@@ -7834,19 +7834,19 @@ Object {
                             9
                           </td>
                           <td
-                            class="rdtDay rdtActive rdtActive"
+                            class="rdtDay"
                             data-value="10"
                           >
                             10
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="11"
                           >
                             11
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="12"
                           >
                             12
@@ -7854,43 +7854,43 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="13"
                           >
                             13
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="14"
                           >
                             14
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="15"
                           >
                             15
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtActive rdtActive"
                             data-value="16"
                           >
                             16
                           </td>
                           <td
-                            class="rdtDay rdtToday rdtActive"
+                            class="rdtDay in-selecting-range"
                             data-value="17"
                           >
                             17
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="18"
                           >
                             18
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="19"
                           >
                             19
@@ -7898,25 +7898,25 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="20"
                           >
                             20
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="21"
                           >
                             21
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="22"
                           >
                             22
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay rdtToday rdtActive"
                             data-value="23"
                           >
                             23
@@ -8039,7 +8039,7 @@ Object {
                 <input
                   class="form-control"
                   type="text"
-                  value="02/17/2022"
+                  value="02/23/2022"
                 />
                 <div
                   class="rdtPicker"
@@ -8181,19 +8181,19 @@ Object {
                             9
                           </td>
                           <td
-                            class="rdtDay rdtActive"
+                            class="rdtDay rdtDisabled"
                             data-value="10"
                           >
                             10
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="11"
                           >
                             11
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="12"
                           >
                             12
@@ -8201,43 +8201,43 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="13"
                           >
                             13
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="14"
                           >
                             14
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="15"
                           >
                             15
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtActive"
                             data-value="16"
                           >
                             16
                           </td>
                           <td
-                            class="rdtDay rdtActive rdtToday rdtActive"
+                            class="rdtDay in-selecting-range"
                             data-value="17"
                           >
                             17
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="18"
                           >
                             18
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="19"
                           >
                             19
@@ -8245,25 +8245,25 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="20"
                           >
                             20
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="21"
                           >
                             21
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="22"
                           >
                             22
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay rdtActive rdtToday rdtActive"
                             data-value="23"
                           >
                             23
@@ -8281,7 +8281,7 @@ Object {
                             25
                           </td>
                           <td
-                            class="rdtDay rdtDisabled"
+                            class="rdtDay"
                             data-value="26"
                           >
                             26
@@ -8289,31 +8289,31 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay rdtDisabled"
+                            class="rdtDay"
                             data-value="27"
                           >
                             27
                           </td>
                           <td
-                            class="rdtDay rdtDisabled"
+                            class="rdtDay"
                             data-value="28"
                           >
                             28
                           </td>
                           <td
-                            class="rdtDay rdtNew rdtDisabled"
+                            class="rdtDay rdtNew"
                             data-value="1"
                           >
                             1
                           </td>
                           <td
-                            class="rdtDay rdtNew rdtDisabled"
+                            class="rdtDay rdtNew"
                             data-value="2"
                           >
                             2
                           </td>
                           <td
-                            class="rdtDay rdtNew rdtDisabled"
+                            class="rdtDay rdtNew"
                             data-value="3"
                           >
                             3
@@ -8873,7 +8873,7 @@ Object {
           <a
             class="btn btn-default data-table__download"
             download="opxhub-table.csv"
-            href="data:text/csv;charset=utf-8,﻿\\"Application\\",\\"Dec 7, 2021\\",\\"Dec 6, 2021\\",\\"Dec 5, 2021\\",\\"Dec 4, 2021\\",\\"Dec 3, 2021\\",\\"Dec 2, 2021\\",\\"Dec 1, 2021\\",\\"Average\\"
+            href="data:text/csv;charset=utf-8,﻿\\"Application\\",\\"Dec 7, 2021\\",\\"Dec 6, 2021\\",\\"Dec 5, 2021\\",\\"Dec 4, 2021\\",\\"Dec 3, 2021\\",\\"Dec 2, 2021\\",\\"Dec 1, 2021\\",\\"Availability\\"
 \\"flights-shopping\\",\\"\\",\\"0\\",\\"99.992\\",\\"\\",\\"99.993\\",\\"59\\",\\"\\",\\"79.92\\"
 \\"cars-shopping-service\\",\\"99.99\\",\\"99\\",\\"50\\",\\"99.59\\",\\"60\\",\\"99.59\\",\\"100\\",\\"92.64\\"
 \\"flights-shopping-service\\",\\"99.991\\",\\"99.97\\",\\"99.992\\",\\"\\",\\"99.993\\",\\"59\\",\\"99.999\\",\\"99.9\\""
@@ -9333,7 +9333,7 @@ Object {
                       <input
                         checked=""
                         class="CRB__input"
-                        name="Average"
+                        name="Availability"
                         type="checkbox"
                       />
                       <span
@@ -9362,7 +9362,7 @@ Object {
                       <span
                         class="label-text"
                       >
-                        Average
+                        Availability
                       </span>
                     </label>
                   </div>
@@ -9420,7 +9420,7 @@ Object {
                 <th
                   class="pointer"
                 >
-                  Average
+                  Availability
                    
                   <div
                     class="info-tooltip "
@@ -10023,7 +10023,7 @@ Object {
                   <input
                     class="form-control"
                     type="text"
-                    value="02/10/2022"
+                    value="02/16/2022"
                   />
                   <div
                     class="rdtPicker"
@@ -10165,19 +10165,19 @@ Object {
                               9
                             </td>
                             <td
-                              class="rdtDay rdtActive rdtActive"
+                              class="rdtDay"
                               data-value="10"
                             >
                               10
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="11"
                             >
                               11
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="12"
                             >
                               12
@@ -10185,43 +10185,43 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="13"
                             >
                               13
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="14"
                             >
                               14
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="15"
                             >
                               15
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtActive rdtActive"
                               data-value="16"
                             >
                               16
                             </td>
                             <td
-                              class="rdtDay rdtToday rdtActive"
+                              class="rdtDay in-selecting-range"
                               data-value="17"
                             >
                               17
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="18"
                             >
                               18
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="19"
                             >
                               19
@@ -10229,25 +10229,25 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="20"
                             >
                               20
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="21"
                             >
                               21
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="22"
                             >
                               22
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay rdtToday rdtActive"
                               data-value="23"
                             >
                               23
@@ -10370,7 +10370,7 @@ Object {
                   <input
                     class="form-control"
                     type="text"
-                    value="02/17/2022"
+                    value="02/23/2022"
                   />
                   <div
                     class="rdtPicker"
@@ -10512,19 +10512,19 @@ Object {
                               9
                             </td>
                             <td
-                              class="rdtDay rdtActive"
+                              class="rdtDay rdtDisabled"
                               data-value="10"
                             >
                               10
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="11"
                             >
                               11
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="12"
                             >
                               12
@@ -10532,43 +10532,43 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="13"
                             >
                               13
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="14"
                             >
                               14
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="15"
                             >
                               15
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtActive"
                               data-value="16"
                             >
                               16
                             </td>
                             <td
-                              class="rdtDay rdtActive rdtToday rdtActive"
+                              class="rdtDay in-selecting-range"
                               data-value="17"
                             >
                               17
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="18"
                             >
                               18
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="19"
                             >
                               19
@@ -10576,25 +10576,25 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="20"
                             >
                               20
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="21"
                             >
                               21
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="22"
                             >
                               22
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay rdtActive rdtToday rdtActive"
                               data-value="23"
                             >
                               23
@@ -10612,7 +10612,7 @@ Object {
                               25
                             </td>
                             <td
-                              class="rdtDay rdtDisabled"
+                              class="rdtDay"
                               data-value="26"
                             >
                               26
@@ -10620,31 +10620,31 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay rdtDisabled"
+                              class="rdtDay"
                               data-value="27"
                             >
                               27
                             </td>
                             <td
-                              class="rdtDay rdtDisabled"
+                              class="rdtDay"
                               data-value="28"
                             >
                               28
                             </td>
                             <td
-                              class="rdtDay rdtNew rdtDisabled"
+                              class="rdtDay rdtNew"
                               data-value="1"
                             >
                               1
                             </td>
                             <td
-                              class="rdtDay rdtNew rdtDisabled"
+                              class="rdtDay rdtNew"
                               data-value="2"
                             >
                               2
                             </td>
                             <td
-                              class="rdtDay rdtNew rdtDisabled"
+                              class="rdtDay rdtNew"
                               data-value="3"
                             >
                               3
@@ -11213,7 +11213,7 @@ Object {
             <a
               class="btn btn-default data-table__download"
               download="opxhub-table.csv"
-              href="data:text/csv;charset=utf-8,﻿\\"Application\\",\\"Dec 7, 2021\\",\\"Dec 6, 2021\\",\\"Dec 5, 2021\\",\\"Dec 4, 2021\\",\\"Dec 3, 2021\\",\\"Dec 2, 2021\\",\\"Dec 1, 2021\\",\\"Average\\"
+              href="data:text/csv;charset=utf-8,﻿\\"Application\\",\\"Dec 7, 2021\\",\\"Dec 6, 2021\\",\\"Dec 5, 2021\\",\\"Dec 4, 2021\\",\\"Dec 3, 2021\\",\\"Dec 2, 2021\\",\\"Dec 1, 2021\\",\\"Availability\\"
 \\"flights-shopping\\",\\"\\",\\"0\\",\\"99.992\\",\\"\\",\\"99.993\\",\\"59\\",\\"\\",\\"79.92\\"
 \\"cars-shopping-service\\",\\"99.99\\",\\"99\\",\\"50\\",\\"99.59\\",\\"60\\",\\"99.59\\",\\"100\\",\\"92.64\\"
 \\"flights-shopping-service\\",\\"99.991\\",\\"99.97\\",\\"99.992\\",\\"\\",\\"99.993\\",\\"59\\",\\"99.999\\",\\"99.9\\""
@@ -11673,7 +11673,7 @@ Object {
                         <input
                           checked=""
                           class="CRB__input"
-                          name="Average"
+                          name="Availability"
                           type="checkbox"
                         />
                         <span
@@ -11702,7 +11702,7 @@ Object {
                         <span
                           class="label-text"
                         >
-                          Average
+                          Availability
                         </span>
                       </label>
                     </div>
@@ -11760,7 +11760,7 @@ Object {
                   <th
                     class="pointer"
                   >
-                    Average
+                    Availability
                      
                     <div
                       class="info-tooltip "
@@ -12306,7 +12306,7 @@ Object {
                 <input
                   class="form-control"
                   type="text"
-                  value="02/10/2022"
+                  value="02/16/2022"
                 />
                 <div
                   class="rdtPicker"
@@ -12448,19 +12448,19 @@ Object {
                             9
                           </td>
                           <td
-                            class="rdtDay rdtActive rdtActive"
+                            class="rdtDay"
                             data-value="10"
                           >
                             10
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="11"
                           >
                             11
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="12"
                           >
                             12
@@ -12468,43 +12468,43 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="13"
                           >
                             13
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="14"
                           >
                             14
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="15"
                           >
                             15
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtActive rdtActive"
                             data-value="16"
                           >
                             16
                           </td>
                           <td
-                            class="rdtDay rdtToday rdtActive"
+                            class="rdtDay in-selecting-range"
                             data-value="17"
                           >
                             17
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="18"
                           >
                             18
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="19"
                           >
                             19
@@ -12512,25 +12512,25 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="20"
                           >
                             20
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="21"
                           >
                             21
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="22"
                           >
                             22
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay rdtToday rdtActive"
                             data-value="23"
                           >
                             23
@@ -12653,7 +12653,7 @@ Object {
                 <input
                   class="form-control"
                   type="text"
-                  value="02/17/2022"
+                  value="02/23/2022"
                 />
                 <div
                   class="rdtPicker"
@@ -12795,19 +12795,19 @@ Object {
                             9
                           </td>
                           <td
-                            class="rdtDay rdtActive"
+                            class="rdtDay rdtDisabled"
                             data-value="10"
                           >
                             10
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="11"
                           >
                             11
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="12"
                           >
                             12
@@ -12815,43 +12815,43 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="13"
                           >
                             13
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="14"
                           >
                             14
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="15"
                           >
                             15
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtActive"
                             data-value="16"
                           >
                             16
                           </td>
                           <td
-                            class="rdtDay rdtActive rdtToday rdtActive"
+                            class="rdtDay in-selecting-range"
                             data-value="17"
                           >
                             17
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="18"
                           >
                             18
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="19"
                           >
                             19
@@ -12859,25 +12859,25 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="20"
                           >
                             20
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="21"
                           >
                             21
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="22"
                           >
                             22
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay rdtActive rdtToday rdtActive"
                             data-value="23"
                           >
                             23
@@ -12895,7 +12895,7 @@ Object {
                             25
                           </td>
                           <td
-                            class="rdtDay rdtDisabled"
+                            class="rdtDay"
                             data-value="26"
                           >
                             26
@@ -12903,31 +12903,31 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay rdtDisabled"
+                            class="rdtDay"
                             data-value="27"
                           >
                             27
                           </td>
                           <td
-                            class="rdtDay rdtDisabled"
+                            class="rdtDay"
                             data-value="28"
                           >
                             28
                           </td>
                           <td
-                            class="rdtDay rdtNew rdtDisabled"
+                            class="rdtDay rdtNew"
                             data-value="1"
                           >
                             1
                           </td>
                           <td
-                            class="rdtDay rdtNew rdtDisabled"
+                            class="rdtDay rdtNew"
                             data-value="2"
                           >
                             2
                           </td>
                           <td
-                            class="rdtDay rdtNew rdtDisabled"
+                            class="rdtDay rdtNew"
                             data-value="3"
                           >
                             3
@@ -13496,7 +13496,7 @@ Object {
           <a
             class="btn btn-default data-table__download"
             download="opxhub-table.csv"
-            href="data:text/csv;charset=utf-8,﻿\\"Application\\",\\"Dec 7, 2021\\",\\"Dec 6, 2021\\",\\"Dec 5, 2021\\",\\"Dec 4, 2021\\",\\"Dec 3, 2021\\",\\"Dec 2, 2021\\",\\"Dec 1, 2021\\",\\"Average\\"
+            href="data:text/csv;charset=utf-8,﻿\\"Application\\",\\"Dec 7, 2021\\",\\"Dec 6, 2021\\",\\"Dec 5, 2021\\",\\"Dec 4, 2021\\",\\"Dec 3, 2021\\",\\"Dec 2, 2021\\",\\"Dec 1, 2021\\",\\"Availability\\"
 \\"flights-shopping\\",\\"\\",\\"0\\",\\"99.992\\",\\"\\",\\"99.993\\",\\"59\\",\\"\\",\\"79.92\\"
 \\"cars-shopping-service\\",\\"99.99\\",\\"99\\",\\"50\\",\\"99.59\\",\\"60\\",\\"99.59\\",\\"100\\",\\"92.64\\"
 \\"flights-shopping-service\\",\\"99.991\\",\\"99.97\\",\\"99.992\\",\\"\\",\\"99.993\\",\\"59\\",\\"99.999\\",\\"99.9\\""
@@ -13956,7 +13956,7 @@ Object {
                       <input
                         checked=""
                         class="CRB__input"
-                        name="Average"
+                        name="Availability"
                         type="checkbox"
                       />
                       <span
@@ -13985,7 +13985,7 @@ Object {
                       <span
                         class="label-text"
                       >
-                        Average
+                        Availability
                       </span>
                     </label>
                   </div>
@@ -14043,7 +14043,7 @@ Object {
                 <th
                   class="pointer"
                 >
-                  Average
+                  Availability
                    
                   <div
                     class="info-tooltip "
@@ -14646,7 +14646,7 @@ Object {
                   <input
                     class="form-control"
                     type="text"
-                    value="02/10/2022"
+                    value="02/16/2022"
                   />
                   <div
                     class="rdtPicker"
@@ -14788,19 +14788,19 @@ Object {
                               9
                             </td>
                             <td
-                              class="rdtDay rdtActive rdtActive"
+                              class="rdtDay"
                               data-value="10"
                             >
                               10
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="11"
                             >
                               11
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="12"
                             >
                               12
@@ -14808,43 +14808,43 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="13"
                             >
                               13
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="14"
                             >
                               14
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="15"
                             >
                               15
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtActive rdtActive"
                               data-value="16"
                             >
                               16
                             </td>
                             <td
-                              class="rdtDay rdtToday rdtActive"
+                              class="rdtDay in-selecting-range"
                               data-value="17"
                             >
                               17
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="18"
                             >
                               18
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="19"
                             >
                               19
@@ -14852,25 +14852,25 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="20"
                             >
                               20
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="21"
                             >
                               21
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="22"
                             >
                               22
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay rdtToday rdtActive"
                               data-value="23"
                             >
                               23
@@ -14993,7 +14993,7 @@ Object {
                   <input
                     class="form-control"
                     type="text"
-                    value="02/17/2022"
+                    value="02/23/2022"
                   />
                   <div
                     class="rdtPicker"
@@ -15135,19 +15135,19 @@ Object {
                               9
                             </td>
                             <td
-                              class="rdtDay rdtActive"
+                              class="rdtDay rdtDisabled"
                               data-value="10"
                             >
                               10
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="11"
                             >
                               11
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="12"
                             >
                               12
@@ -15155,43 +15155,43 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="13"
                             >
                               13
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="14"
                             >
                               14
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="15"
                             >
                               15
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtActive"
                               data-value="16"
                             >
                               16
                             </td>
                             <td
-                              class="rdtDay rdtActive rdtToday rdtActive"
+                              class="rdtDay in-selecting-range"
                               data-value="17"
                             >
                               17
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="18"
                             >
                               18
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="19"
                             >
                               19
@@ -15199,25 +15199,25 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="20"
                             >
                               20
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="21"
                             >
                               21
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="22"
                             >
                               22
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay rdtActive rdtToday rdtActive"
                               data-value="23"
                             >
                               23
@@ -15235,7 +15235,7 @@ Object {
                               25
                             </td>
                             <td
-                              class="rdtDay rdtDisabled"
+                              class="rdtDay"
                               data-value="26"
                             >
                               26
@@ -15243,31 +15243,31 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay rdtDisabled"
+                              class="rdtDay"
                               data-value="27"
                             >
                               27
                             </td>
                             <td
-                              class="rdtDay rdtDisabled"
+                              class="rdtDay"
                               data-value="28"
                             >
                               28
                             </td>
                             <td
-                              class="rdtDay rdtNew rdtDisabled"
+                              class="rdtDay rdtNew"
                               data-value="1"
                             >
                               1
                             </td>
                             <td
-                              class="rdtDay rdtNew rdtDisabled"
+                              class="rdtDay rdtNew"
                               data-value="2"
                             >
                               2
                             </td>
                             <td
-                              class="rdtDay rdtNew rdtDisabled"
+                              class="rdtDay rdtNew"
                               data-value="3"
                             >
                               3
@@ -15827,7 +15827,7 @@ Object {
             <a
               class="btn btn-default data-table__download"
               download="opxhub-table.csv"
-              href="data:text/csv;charset=utf-8,﻿\\"Application\\",\\"Dec 7, 2021\\",\\"Dec 6, 2021\\",\\"Dec 5, 2021\\",\\"Dec 4, 2021\\",\\"Dec 3, 2021\\",\\"Dec 2, 2021\\",\\"Dec 1, 2021\\",\\"Average\\"
+              href="data:text/csv;charset=utf-8,﻿\\"Application\\",\\"Dec 7, 2021\\",\\"Dec 6, 2021\\",\\"Dec 5, 2021\\",\\"Dec 4, 2021\\",\\"Dec 3, 2021\\",\\"Dec 2, 2021\\",\\"Dec 1, 2021\\",\\"Availability\\"
 \\"flights-shopping\\",\\"\\",\\"0\\",\\"99.992\\",\\"\\",\\"99.993\\",\\"59\\",\\"\\",\\"79.92\\"
 \\"cars-shopping-service\\",\\"99.99\\",\\"99\\",\\"50\\",\\"99.59\\",\\"60\\",\\"99.59\\",\\"100\\",\\"92.64\\""
               target="_self"
@@ -16286,7 +16286,7 @@ Object {
                         <input
                           checked=""
                           class="CRB__input"
-                          name="Average"
+                          name="Availability"
                           type="checkbox"
                         />
                         <span
@@ -16315,7 +16315,7 @@ Object {
                         <span
                           class="label-text"
                         >
-                          Average
+                          Availability
                         </span>
                       </label>
                     </div>
@@ -16373,7 +16373,7 @@ Object {
                   <th
                     class="pointer"
                   >
-                    Average
+                    Availability
                      
                     <div
                       class="info-tooltip "
@@ -16824,7 +16824,7 @@ Object {
                 <input
                   class="form-control"
                   type="text"
-                  value="02/10/2022"
+                  value="02/16/2022"
                 />
                 <div
                   class="rdtPicker"
@@ -16966,19 +16966,19 @@ Object {
                             9
                           </td>
                           <td
-                            class="rdtDay rdtActive rdtActive"
+                            class="rdtDay"
                             data-value="10"
                           >
                             10
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="11"
                           >
                             11
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="12"
                           >
                             12
@@ -16986,43 +16986,43 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="13"
                           >
                             13
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="14"
                           >
                             14
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="15"
                           >
                             15
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtActive rdtActive"
                             data-value="16"
                           >
                             16
                           </td>
                           <td
-                            class="rdtDay rdtToday rdtActive"
+                            class="rdtDay in-selecting-range"
                             data-value="17"
                           >
                             17
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="18"
                           >
                             18
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="19"
                           >
                             19
@@ -17030,25 +17030,25 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="20"
                           >
                             20
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="21"
                           >
                             21
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="22"
                           >
                             22
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay rdtToday rdtActive"
                             data-value="23"
                           >
                             23
@@ -17171,7 +17171,7 @@ Object {
                 <input
                   class="form-control"
                   type="text"
-                  value="02/17/2022"
+                  value="02/23/2022"
                 />
                 <div
                   class="rdtPicker"
@@ -17313,19 +17313,19 @@ Object {
                             9
                           </td>
                           <td
-                            class="rdtDay rdtActive"
+                            class="rdtDay rdtDisabled"
                             data-value="10"
                           >
                             10
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="11"
                           >
                             11
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="12"
                           >
                             12
@@ -17333,43 +17333,43 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="13"
                           >
                             13
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="14"
                           >
                             14
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="15"
                           >
                             15
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtActive"
                             data-value="16"
                           >
                             16
                           </td>
                           <td
-                            class="rdtDay rdtActive rdtToday rdtActive"
+                            class="rdtDay in-selecting-range"
                             data-value="17"
                           >
                             17
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="18"
                           >
                             18
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="19"
                           >
                             19
@@ -17377,25 +17377,25 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="20"
                           >
                             20
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="21"
                           >
                             21
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="22"
                           >
                             22
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay rdtActive rdtToday rdtActive"
                             data-value="23"
                           >
                             23
@@ -17413,7 +17413,7 @@ Object {
                             25
                           </td>
                           <td
-                            class="rdtDay rdtDisabled"
+                            class="rdtDay"
                             data-value="26"
                           >
                             26
@@ -17421,31 +17421,31 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay rdtDisabled"
+                            class="rdtDay"
                             data-value="27"
                           >
                             27
                           </td>
                           <td
-                            class="rdtDay rdtDisabled"
+                            class="rdtDay"
                             data-value="28"
                           >
                             28
                           </td>
                           <td
-                            class="rdtDay rdtNew rdtDisabled"
+                            class="rdtDay rdtNew"
                             data-value="1"
                           >
                             1
                           </td>
                           <td
-                            class="rdtDay rdtNew rdtDisabled"
+                            class="rdtDay rdtNew"
                             data-value="2"
                           >
                             2
                           </td>
                           <td
-                            class="rdtDay rdtNew rdtDisabled"
+                            class="rdtDay rdtNew"
                             data-value="3"
                           >
                             3
@@ -18005,7 +18005,7 @@ Object {
           <a
             class="btn btn-default data-table__download"
             download="opxhub-table.csv"
-            href="data:text/csv;charset=utf-8,﻿\\"Application\\",\\"Dec 7, 2021\\",\\"Dec 6, 2021\\",\\"Dec 5, 2021\\",\\"Dec 4, 2021\\",\\"Dec 3, 2021\\",\\"Dec 2, 2021\\",\\"Dec 1, 2021\\",\\"Average\\"
+            href="data:text/csv;charset=utf-8,﻿\\"Application\\",\\"Dec 7, 2021\\",\\"Dec 6, 2021\\",\\"Dec 5, 2021\\",\\"Dec 4, 2021\\",\\"Dec 3, 2021\\",\\"Dec 2, 2021\\",\\"Dec 1, 2021\\",\\"Availability\\"
 \\"flights-shopping\\",\\"\\",\\"0\\",\\"99.992\\",\\"\\",\\"99.993\\",\\"59\\",\\"\\",\\"79.92\\"
 \\"cars-shopping-service\\",\\"99.99\\",\\"99\\",\\"50\\",\\"99.59\\",\\"60\\",\\"99.59\\",\\"100\\",\\"92.64\\""
             target="_self"
@@ -18464,7 +18464,7 @@ Object {
                       <input
                         checked=""
                         class="CRB__input"
-                        name="Average"
+                        name="Availability"
                         type="checkbox"
                       />
                       <span
@@ -18493,7 +18493,7 @@ Object {
                       <span
                         class="label-text"
                       >
-                        Average
+                        Availability
                       </span>
                     </label>
                   </div>
@@ -18551,7 +18551,7 @@ Object {
                 <th
                   class="pointer"
                 >
-                  Average
+                  Availability
                    
                   <div
                     class="info-tooltip "
@@ -19059,7 +19059,7 @@ Object {
                   <input
                     class="form-control"
                     type="text"
-                    value="02/10/2022"
+                    value="02/16/2022"
                   />
                   <div
                     class="rdtPicker"
@@ -19201,19 +19201,19 @@ Object {
                               9
                             </td>
                             <td
-                              class="rdtDay rdtActive rdtActive"
+                              class="rdtDay"
                               data-value="10"
                             >
                               10
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="11"
                             >
                               11
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="12"
                             >
                               12
@@ -19221,43 +19221,43 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="13"
                             >
                               13
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="14"
                             >
                               14
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="15"
                             >
                               15
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtActive rdtActive"
                               data-value="16"
                             >
                               16
                             </td>
                             <td
-                              class="rdtDay rdtToday rdtActive"
+                              class="rdtDay in-selecting-range"
                               data-value="17"
                             >
                               17
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="18"
                             >
                               18
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="19"
                             >
                               19
@@ -19265,25 +19265,25 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="20"
                             >
                               20
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="21"
                             >
                               21
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="22"
                             >
                               22
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay rdtToday rdtActive"
                               data-value="23"
                             >
                               23
@@ -19406,7 +19406,7 @@ Object {
                   <input
                     class="form-control"
                     type="text"
-                    value="02/17/2022"
+                    value="02/23/2022"
                   />
                   <div
                     class="rdtPicker"
@@ -19548,19 +19548,19 @@ Object {
                               9
                             </td>
                             <td
-                              class="rdtDay rdtActive"
+                              class="rdtDay rdtDisabled"
                               data-value="10"
                             >
                               10
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="11"
                             >
                               11
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="12"
                             >
                               12
@@ -19568,43 +19568,43 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="13"
                             >
                               13
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="14"
                             >
                               14
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="15"
                             >
                               15
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtActive"
                               data-value="16"
                             >
                               16
                             </td>
                             <td
-                              class="rdtDay rdtActive rdtToday rdtActive"
+                              class="rdtDay in-selecting-range"
                               data-value="17"
                             >
                               17
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="18"
                             >
                               18
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="19"
                             >
                               19
@@ -19612,25 +19612,25 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="20"
                             >
                               20
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="21"
                             >
                               21
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="22"
                             >
                               22
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay rdtActive rdtToday rdtActive"
                               data-value="23"
                             >
                               23
@@ -19648,7 +19648,7 @@ Object {
                               25
                             </td>
                             <td
-                              class="rdtDay rdtDisabled"
+                              class="rdtDay"
                               data-value="26"
                             >
                               26
@@ -19656,31 +19656,31 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay rdtDisabled"
+                              class="rdtDay"
                               data-value="27"
                             >
                               27
                             </td>
                             <td
-                              class="rdtDay rdtDisabled"
+                              class="rdtDay"
                               data-value="28"
                             >
                               28
                             </td>
                             <td
-                              class="rdtDay rdtNew rdtDisabled"
+                              class="rdtDay rdtNew"
                               data-value="1"
                             >
                               1
                             </td>
                             <td
-                              class="rdtDay rdtNew rdtDisabled"
+                              class="rdtDay rdtNew"
                               data-value="2"
                             >
                               2
                             </td>
                             <td
-                              class="rdtDay rdtNew rdtDisabled"
+                              class="rdtDay rdtNew"
                               data-value="3"
                             >
                               3
@@ -20622,7 +20622,7 @@ Object {
                         <input
                           checked=""
                           class="CRB__input"
-                          name="Average"
+                          name="Availability"
                           type="checkbox"
                         />
                         <span
@@ -20651,7 +20651,7 @@ Object {
                         <span
                           class="label-text"
                         >
-                          Average
+                          Availability
                         </span>
                       </label>
                     </div>
@@ -20740,7 +20740,7 @@ Object {
                 <input
                   class="form-control"
                   type="text"
-                  value="02/10/2022"
+                  value="02/16/2022"
                 />
                 <div
                   class="rdtPicker"
@@ -20882,19 +20882,19 @@ Object {
                             9
                           </td>
                           <td
-                            class="rdtDay rdtActive rdtActive"
+                            class="rdtDay"
                             data-value="10"
                           >
                             10
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="11"
                           >
                             11
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="12"
                           >
                             12
@@ -20902,43 +20902,43 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="13"
                           >
                             13
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="14"
                           >
                             14
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="15"
                           >
                             15
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtActive rdtActive"
                             data-value="16"
                           >
                             16
                           </td>
                           <td
-                            class="rdtDay rdtToday rdtActive"
+                            class="rdtDay in-selecting-range"
                             data-value="17"
                           >
                             17
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="18"
                           >
                             18
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="19"
                           >
                             19
@@ -20946,25 +20946,25 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="20"
                           >
                             20
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="21"
                           >
                             21
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="22"
                           >
                             22
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay rdtToday rdtActive"
                             data-value="23"
                           >
                             23
@@ -21087,7 +21087,7 @@ Object {
                 <input
                   class="form-control"
                   type="text"
-                  value="02/17/2022"
+                  value="02/23/2022"
                 />
                 <div
                   class="rdtPicker"
@@ -21229,19 +21229,19 @@ Object {
                             9
                           </td>
                           <td
-                            class="rdtDay rdtActive"
+                            class="rdtDay rdtDisabled"
                             data-value="10"
                           >
                             10
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="11"
                           >
                             11
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="12"
                           >
                             12
@@ -21249,43 +21249,43 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="13"
                           >
                             13
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="14"
                           >
                             14
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="15"
                           >
                             15
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtActive"
                             data-value="16"
                           >
                             16
                           </td>
                           <td
-                            class="rdtDay rdtActive rdtToday rdtActive"
+                            class="rdtDay in-selecting-range"
                             data-value="17"
                           >
                             17
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="18"
                           >
                             18
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="19"
                           >
                             19
@@ -21293,25 +21293,25 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="20"
                           >
                             20
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="21"
                           >
                             21
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="22"
                           >
                             22
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay rdtActive rdtToday rdtActive"
                             data-value="23"
                           >
                             23
@@ -21329,7 +21329,7 @@ Object {
                             25
                           </td>
                           <td
-                            class="rdtDay rdtDisabled"
+                            class="rdtDay"
                             data-value="26"
                           >
                             26
@@ -21337,31 +21337,31 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay rdtDisabled"
+                            class="rdtDay"
                             data-value="27"
                           >
                             27
                           </td>
                           <td
-                            class="rdtDay rdtDisabled"
+                            class="rdtDay"
                             data-value="28"
                           >
                             28
                           </td>
                           <td
-                            class="rdtDay rdtNew rdtDisabled"
+                            class="rdtDay rdtNew"
                             data-value="1"
                           >
                             1
                           </td>
                           <td
-                            class="rdtDay rdtNew rdtDisabled"
+                            class="rdtDay rdtNew"
                             data-value="2"
                           >
                             2
                           </td>
                           <td
-                            class="rdtDay rdtNew rdtDisabled"
+                            class="rdtDay rdtNew"
                             data-value="3"
                           >
                             3
@@ -22303,7 +22303,7 @@ Object {
                       <input
                         checked=""
                         class="CRB__input"
-                        name="Average"
+                        name="Availability"
                         type="checkbox"
                       />
                       <span
@@ -22332,7 +22332,7 @@ Object {
                       <span
                         class="label-text"
                       >
-                        Average
+                        Availability
                       </span>
                     </label>
                   </div>
@@ -22478,7 +22478,7 @@ Object {
                   <input
                     class="form-control"
                     type="text"
-                    value="02/10/2022"
+                    value="02/16/2022"
                   />
                   <div
                     class="rdtPicker"
@@ -22620,19 +22620,19 @@ Object {
                               9
                             </td>
                             <td
-                              class="rdtDay rdtActive rdtActive"
+                              class="rdtDay"
                               data-value="10"
                             >
                               10
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="11"
                             >
                               11
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="12"
                             >
                               12
@@ -22640,43 +22640,43 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="13"
                             >
                               13
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="14"
                             >
                               14
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay"
                               data-value="15"
                             >
                               15
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtActive rdtActive"
                               data-value="16"
                             >
                               16
                             </td>
                             <td
-                              class="rdtDay rdtToday rdtActive"
+                              class="rdtDay in-selecting-range"
                               data-value="17"
                             >
                               17
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="18"
                             >
                               18
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="19"
                             >
                               19
@@ -22684,25 +22684,25 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="20"
                             >
                               20
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="21"
                             >
                               21
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="22"
                             >
                               22
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay rdtToday rdtActive"
                               data-value="23"
                             >
                               23
@@ -22825,7 +22825,7 @@ Object {
                   <input
                     class="form-control"
                     type="text"
-                    value="02/17/2022"
+                    value="02/23/2022"
                   />
                   <div
                     class="rdtPicker"
@@ -22967,19 +22967,19 @@ Object {
                               9
                             </td>
                             <td
-                              class="rdtDay rdtActive"
+                              class="rdtDay rdtDisabled"
                               data-value="10"
                             >
                               10
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="11"
                             >
                               11
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="12"
                             >
                               12
@@ -22987,43 +22987,43 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="13"
                             >
                               13
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="14"
                             >
                               14
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtDisabled"
                               data-value="15"
                             >
                               15
                             </td>
                             <td
-                              class="rdtDay in-selecting-range"
+                              class="rdtDay rdtActive"
                               data-value="16"
                             >
                               16
                             </td>
                             <td
-                              class="rdtDay rdtActive rdtToday rdtActive"
+                              class="rdtDay in-selecting-range"
                               data-value="17"
                             >
                               17
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="18"
                             >
                               18
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="19"
                             >
                               19
@@ -23031,25 +23031,25 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="20"
                             >
                               20
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="21"
                             >
                               21
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay in-selecting-range"
                               data-value="22"
                             >
                               22
                             </td>
                             <td
-                              class="rdtDay"
+                              class="rdtDay rdtActive rdtToday rdtActive"
                               data-value="23"
                             >
                               23
@@ -23067,7 +23067,7 @@ Object {
                               25
                             </td>
                             <td
-                              class="rdtDay rdtDisabled"
+                              class="rdtDay"
                               data-value="26"
                             >
                               26
@@ -23075,31 +23075,31 @@ Object {
                           </tr>
                           <tr>
                             <td
-                              class="rdtDay rdtDisabled"
+                              class="rdtDay"
                               data-value="27"
                             >
                               27
                             </td>
                             <td
-                              class="rdtDay rdtDisabled"
+                              class="rdtDay"
                               data-value="28"
                             >
                               28
                             </td>
                             <td
-                              class="rdtDay rdtNew rdtDisabled"
+                              class="rdtDay rdtNew"
                               data-value="1"
                             >
                               1
                             </td>
                             <td
-                              class="rdtDay rdtNew rdtDisabled"
+                              class="rdtDay rdtNew"
                               data-value="2"
                             >
                               2
                             </td>
                             <td
-                              class="rdtDay rdtNew rdtDisabled"
+                              class="rdtDay rdtNew"
                               data-value="3"
                             >
                               3
@@ -24032,7 +24032,7 @@ Object {
                         <input
                           checked=""
                           class="CRB__input"
-                          name="Average"
+                          name="Availability"
                           type="checkbox"
                         />
                         <span
@@ -24061,7 +24061,7 @@ Object {
                         <span
                           class="label-text"
                         >
-                          Average
+                          Availability
                         </span>
                       </label>
                     </div>
@@ -24150,7 +24150,7 @@ Object {
                 <input
                   class="form-control"
                   type="text"
-                  value="02/10/2022"
+                  value="02/16/2022"
                 />
                 <div
                   class="rdtPicker"
@@ -24292,19 +24292,19 @@ Object {
                             9
                           </td>
                           <td
-                            class="rdtDay rdtActive rdtActive"
+                            class="rdtDay"
                             data-value="10"
                           >
                             10
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="11"
                           >
                             11
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="12"
                           >
                             12
@@ -24312,43 +24312,43 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="13"
                           >
                             13
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="14"
                           >
                             14
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay"
                             data-value="15"
                           >
                             15
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtActive rdtActive"
                             data-value="16"
                           >
                             16
                           </td>
                           <td
-                            class="rdtDay rdtToday rdtActive"
+                            class="rdtDay in-selecting-range"
                             data-value="17"
                           >
                             17
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="18"
                           >
                             18
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="19"
                           >
                             19
@@ -24356,25 +24356,25 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="20"
                           >
                             20
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="21"
                           >
                             21
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="22"
                           >
                             22
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay rdtToday rdtActive"
                             data-value="23"
                           >
                             23
@@ -24497,7 +24497,7 @@ Object {
                 <input
                   class="form-control"
                   type="text"
-                  value="02/17/2022"
+                  value="02/23/2022"
                 />
                 <div
                   class="rdtPicker"
@@ -24639,19 +24639,19 @@ Object {
                             9
                           </td>
                           <td
-                            class="rdtDay rdtActive"
+                            class="rdtDay rdtDisabled"
                             data-value="10"
                           >
                             10
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="11"
                           >
                             11
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="12"
                           >
                             12
@@ -24659,43 +24659,43 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="13"
                           >
                             13
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="14"
                           >
                             14
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtDisabled"
                             data-value="15"
                           >
                             15
                           </td>
                           <td
-                            class="rdtDay in-selecting-range"
+                            class="rdtDay rdtActive"
                             data-value="16"
                           >
                             16
                           </td>
                           <td
-                            class="rdtDay rdtActive rdtToday rdtActive"
+                            class="rdtDay in-selecting-range"
                             data-value="17"
                           >
                             17
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="18"
                           >
                             18
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="19"
                           >
                             19
@@ -24703,25 +24703,25 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="20"
                           >
                             20
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="21"
                           >
                             21
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay in-selecting-range"
                             data-value="22"
                           >
                             22
                           </td>
                           <td
-                            class="rdtDay"
+                            class="rdtDay rdtActive rdtToday rdtActive"
                             data-value="23"
                           >
                             23
@@ -24739,7 +24739,7 @@ Object {
                             25
                           </td>
                           <td
-                            class="rdtDay rdtDisabled"
+                            class="rdtDay"
                             data-value="26"
                           >
                             26
@@ -24747,31 +24747,31 @@ Object {
                         </tr>
                         <tr>
                           <td
-                            class="rdtDay rdtDisabled"
+                            class="rdtDay"
                             data-value="27"
                           >
                             27
                           </td>
                           <td
-                            class="rdtDay rdtDisabled"
+                            class="rdtDay"
                             data-value="28"
                           >
                             28
                           </td>
                           <td
-                            class="rdtDay rdtNew rdtDisabled"
+                            class="rdtDay rdtNew"
                             data-value="1"
                           >
                             1
                           </td>
                           <td
-                            class="rdtDay rdtNew rdtDisabled"
+                            class="rdtDay rdtNew"
                             data-value="2"
                           >
                             2
                           </td>
                           <td
-                            class="rdtDay rdtNew rdtDisabled"
+                            class="rdtDay rdtNew"
                             data-value="3"
                           >
                             3
@@ -25704,7 +25704,7 @@ Object {
                       <input
                         checked=""
                         class="CRB__input"
-                        name="Average"
+                        name="Availability"
                         type="checkbox"
                       />
                       <span
@@ -25733,7 +25733,7 @@ Object {
                       <span
                         class="label-text"
                       >
-                        Average
+                        Availability
                       </span>
                     </label>
                   </div>

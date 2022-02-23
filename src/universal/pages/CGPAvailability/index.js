@@ -67,7 +67,7 @@ const CGPAvailibility = () => {
     const handleOnClick = (selected) => setSelectedApp(selected || null);
 
     useEffect(() => {
-        const newFilteredAvailability = availability.length && availability.map((x) => mapAvailabilityRow(x, handleOnClick)).filter((x) => typeof x.avgValue === 'number' && x?.avgValue <= availabilityFilter);
+        const newFilteredAvailability = availability.length && availability.filter((x) => x?.applicationName !== 'unknown').map((x) => mapAvailabilityRow(x, handleOnClick)).filter((x) => typeof x.avgValue === 'number' && x?.avgValue <= availabilityFilter);
         setFilteredAvailability(newFilteredAvailability);
     }, [availabilityFilter, availability]);
 
@@ -96,11 +96,11 @@ const CGPAvailibility = () => {
     };
 
     const handleDatetimeChange = ({start: startDateTimeStr, end: endDateTimeStr}) => {
-        setPendingStart(moment(startDateTimeStr));
+        setPendingStart(moment(startDateTimeStr).hours('00').minutes('00').seconds('00'));
         if (moment(endDateTimeStr).diff(moment(startDateTimeStr), 'days') < 15) {
-            setPendingEnd(moment(endDateTimeStr));
+            setPendingEnd(moment(endDateTimeStr).hours('23').minutes('59').seconds('59'));
         } else {
-            setPendingEnd(moment(startDateTimeStr).add(15, 'days'));
+            setPendingEnd(moment(startDateTimeStr).hours('23').minutes('59').seconds('59').add(15, 'days'));
         }
 
         setIsDirtyForm(true);
