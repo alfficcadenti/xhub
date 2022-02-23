@@ -85,9 +85,9 @@ export const useFetchBlipData = (
     const [res, setRes] = useState([]);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(true);
-    const [egSiteURLMulti, setEgSiteURLMulti] = useState([]);
+    const [egSiteURLMulti, setEgSiteURLMulti] = useState({});
     const [lobsMulti, setLobsMulti] = useState({});
-    const [brandsMulti, setBrandMulti] = useState([]);
+    const [brandsMulti, setBrandMulti] = useState({});
     const [deviceTypeMulti, setDeviceTypesMulti] = useState({});
     const [incidentMulti, setIncidentMulti] = useState({});
     const [brandsFilterData, setBrandsFilterData] = useState({});
@@ -484,6 +484,9 @@ export const useFetchBlipData = (
     };
 
     useEffect(() => {
+        if (typeof egSiteURLMulti === 'object') {
+            return;
+        }
         egSiteURLMulti.map((egSiteValueAndLabel) => {
             allPos.push(egSiteValueAndLabel.label);
         });
@@ -494,6 +497,9 @@ export const useFetchBlipData = (
     }, [isApplyClicked]);
 
     useEffect(() => {
+        if (typeof brandsMulti === 'object') {
+            return;
+        }
         // eslint-disable-next-line consistent-return
         if (brandsMulti.find((brand) => {
             if (brand.value === EXPEDIA_PARTNER_SERVICES_BRAND && brand.label === EXPEDIA_PARTNER_SERVICES_BRAND) {
