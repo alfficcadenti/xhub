@@ -23,7 +23,8 @@ const LineChartWrapper = ({
     onMouseUp = () => {},
     showDot = true,
     height = 300,
-    width = '100%'
+    width = '100%',
+    connectNulls = false
 }) => {
     const [selectedLine, setSelectedLine] = useState();
     const [hiddenKeys, setHiddenKeys] = useState([]);
@@ -74,6 +75,7 @@ const LineChartWrapper = ({
             hide={hiddenKeys.includes(line)}
             yAxisId={yAxisId}
             dot={showDot}
+            connectNulls={connectNulls}
         />
     );
 

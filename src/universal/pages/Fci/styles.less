@@ -5,7 +5,8 @@
         margin-bottom: @spacing-3x;
     }
 
-    .fci-search-input, .delta-user-input {
+    .fci-search-input,
+    .delta-user-input {
         float: left;
         width: 512px;
         max-width: 512px;
@@ -29,53 +30,35 @@
             display: block;
         }
 
-        .error-type-dropdown {
-            float: left;
-            margin-right: @spacing-1x;
-
-            .Dropdown__toggle {
-                .dropdown-button(160px);
-                border-color: @border-color-dark;
-            }
-        }
-
         .selection-wrapper {
             display: flex;
             align-items: center;
             flex-wrap: wrap;
 
-            .error-code-dropdown,
-            .site-dropdown,
-            .lob-dropdown {
+            .fci-dropdown {
+                float: left;
                 margin-right: @spacing-1x;
                 margin-bottom: @spacing-1x;
 
-                .error-code-dropdown__control,
-                .site-dropdown__control,
-                .lob-dropdown__control {
+                .fci-dropdown__control {
                     min-height: @filter-size;
                     border-radius: @spacing-1x;
                     border-color: @border-color-dark;
                 }
 
-                .error-code-dropdown__menu,
-                .site-dropdown__menu,
-                .lob-dropdown__control {
+                .fci-dropdown__menu,
+                .fci-dropdown__control {
                     z-index: 999;
+                }
+
+                .Dropdown__toggle {
+                    .dropdown-button(160px);
+                    border-color: @border-color-dark;
                 }
             }
 
-            .error-code-dropdown,
-            .lob-dropdown {
-                min-width: 205px;
-            }
-
-            .site-dropdown {
+            .fci-select {
                 min-width: 250px;
-            }
-
-            .intent-cbox {
-                margin-bottom: @spacing-1x;
             }
 
             .Dropdown__menu {
@@ -112,10 +95,6 @@
     .back-btn {
         position: absolute;
         margin-top: -@spacing-5x;
-    }
-
-    .fci-checkbox .CRB--checkbox {
-        margin: 0;
     }
 
     .error-cell {

@@ -25,10 +25,21 @@ export const CHECKOUT_FCI_TABLE_COLUMNS = [
 export const LOGIN_FCI_TABLE_COLUMNS = [
     'Created',
     'Session',
+    'Source',
+    'Message',
     'Trace',
     'Error Code',
     'Site',
     'LOB',
+    'TPID',
+    'EAPID',
+    'SiteID',
+    'Device User Agent ID'
+];
+
+export const LOGIN_FCI_HIDDEN_COLUMNS = [
+    'Session',
+    'Source',
     'TPID',
     'EAPID',
     'SiteID',
@@ -94,8 +105,11 @@ export const TRACE_TABLE_COLUMNS = [
     'External Description'
 ];
 
-export const CATEGORY_OPTION = 'category';
-export const CODE_OPTION = 'errorCode';
+export const CATEGORY_OPTION = 'Chart by Category';
+
+export const CODE_OPTION = 'Chart by Error Code';
+
+export const ALL_SITES = 'All Sites';
 
 export const SITES = {
     'Expedia': [

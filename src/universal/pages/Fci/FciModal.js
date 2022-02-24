@@ -18,6 +18,7 @@ import {
     CHECKOUT_FCI_TABLE_COLUMNS,
     CHECKOUT_FCI_HIDDEN_COLUMNS,
     LOGIN_FCI_TABLE_COLUMNS,
+    LOGIN_FCI_HIDDEN_COLUMNS,
     FCI_TYPE_CHECKOUT
 } from './constants';
 
@@ -202,7 +203,7 @@ const FciModal = ({fci, fcis, fciType, editMode, isOpen, onClose, onSaveComment,
                 title={`${fciType} (${fcis.length} results)`}
                 data={fcis}
                 columns={fciType === FCI_TYPE_CHECKOUT ? CHECKOUT_FCI_TABLE_COLUMNS : LOGIN_FCI_TABLE_COLUMNS}
-                hiddenColumns={CHECKOUT_FCI_HIDDEN_COLUMNS}
+                hiddenColumns={fciType === FCI_TYPE_CHECKOUT ? CHECKOUT_FCI_HIDDEN_COLUMNS : LOGIN_FCI_HIDDEN_COLUMNS}
                 paginated
                 enableColumnDisplaySettings
                 enableTextSearch
