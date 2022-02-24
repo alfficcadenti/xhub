@@ -484,20 +484,20 @@ export const useFetchBlipData = (
     };
 
     useEffect(() => {
-        if (typeof egSiteURLMulti === 'object') {
+        if (Object.keys(egSiteURLMulti).length === 0) {
             return;
         }
         egSiteURLMulti.map((egSiteValueAndLabel) => {
             allPos.push(egSiteValueAndLabel.label);
         });
-    },[egSiteURLMulti]);
+    }, [egSiteURLMulti]);
 
     useEffect(() => {
         fetchAverage();
     }, [isApplyClicked]);
 
     useEffect(() => {
-        if (typeof brandsMulti === 'object') {
+        if (Object.keys(brandsMulti).length === 0) {
             return;
         }
         // eslint-disable-next-line consistent-return
