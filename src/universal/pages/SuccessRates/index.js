@@ -33,7 +33,7 @@ import {
     shouldShowTooltip,
     successRatesRealTimeObject,
     buildSuccessRateApiQueryString,
-    getTimeInterval,
+    getIntervalInMinutes,
     getAllAvailableLOBs,
     getQueryParams
 } from './utils';
@@ -112,7 +112,8 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
         setChartLeft,
         setChartRight,
         refAreaLeft,
-        refAreaRight
+        refAreaRight,
+        getIntervalInMinutes(start, end)
     );
 
     const rttRef = useRef();
@@ -145,7 +146,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
         const {label: pageBrand, funnelBrand} = getBrand(brand, 'label');
         setIsLoading(true);
         setError('');
-        const interval = getTimeInterval(start, end);
+        const interval = getIntervalInMinutes(start, end);
         const endpoint = buildSuccessRateApiQueryString({start, end, brand: funnelBrand, EPSPartner: selectedEPSPartner, interval});
         Promise.all([
             fetch(`/v1/delta-users-counts-by-metrics?brand=${funnelBrand}&from_date=${moment(start).utc().format()}&to_date=${moment(end).utc().format()}&${selectedLobs.map((l) => `line_of_business=${l.value}`).join('&')}`),

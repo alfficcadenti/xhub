@@ -5,7 +5,8 @@ Files in this folder are used to specify configuration options that Kumo will us
 
 These files include:
 - **metadata.json** : metadata for your app (changes are parsed and stored in Kumo's metadata store).
-- **notifications.json** : e-mail and Slack notification subscriptions for your app (changes are handled by *Unified Notifications*).
+- **notification.json** : e-mail and Slack notification subscriptions for your app (changes are handled by *Unified Notifications*).
+- **escalation.json**: e-mail and Slack escalation information for your app.
 - **deploy.json** : specifies properties of the stack that is deployed for your app, including load balancer and autoscaling options, SSL certificates, and base AMI, among others.
 - **iam.json** : specifies policies to be granted to the role under which your app will run when deployed.
 - **pipeline.json** : specifies CI/CD steps to be performed when a commit is made to your repo (changes are handled by *Banzai*)

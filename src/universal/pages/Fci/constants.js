@@ -3,7 +3,7 @@ export const DELTA_USERS_TABLE_COLUMNS = [
     'Funnel Step'
 ];
 
-export const FCI_TABLE_COLUMNS = [
+export const CHECKOUT_FCI_TABLE_COLUMNS = [
     'Created',
     'Session',
     'Trace',
@@ -19,10 +19,23 @@ export const FCI_TABLE_COLUMNS = [
     'Category',
     'Comment',
     'Is FCI',
-    'Traces',
-    // 'Edit'
+    'Traces'
 ];
-export const FCI_DETAIL_COLUMNS = [
+
+export const LOGIN_FCI_TABLE_COLUMNS = [
+    'Created',
+    'Session',
+    'Trace',
+    'Error Code',
+    'Site',
+    'LOB',
+    'TPID',
+    'EAPID',
+    'SiteID',
+    'Device User Agent ID'
+];
+
+export const CHECKOUT_DETAIL_COLUMNS = [
     'Created',
     'Session',
     'Trace',
@@ -37,13 +50,36 @@ export const FCI_DETAIL_COLUMNS = [
     'Device User Agent ID',
     'Category'
 ];
-export const FCI_HIDDEN_TABLE_COLUMNS = [
+
+export const INCIDENT_COLUMNS = [
+    'ID',
+    'Priority',
+    'Started',
+    'Booking Impact',
+    'TTD',
+    'Environment',
+    'TTK',
+    'RC Owner',
+    'TTF',
+    'L1',
+    'TTR',
+
+];
+
+export const INCIDENT_COLUMNS_LONG = [
+    'Description',
+    'Executive Summary',
+    'Resolution Notes'
+];
+
+export const CHECKOUT_FCI_HIDDEN_COLUMNS = [
     'Session',
     'TPID',
     'EAPID',
     'SiteID',
     'Device User Agent ID'
 ];
+
 export const COMMENT_TABLE_COLUMNS = [
     'Created',
     'Author',
@@ -178,3 +214,7 @@ export const NAV_LINKS = [
     {id: 'search', label: 'Search', href: '/fci'},
     {id: 'deltaUsers', label: 'Delta Users', href: '/fci'}
 ];
+
+export const FCI_TYPE_LOGIN = 'Login FCIs';
+
+export const FCI_TYPE_CHECKOUT = 'Checkout FCIs';

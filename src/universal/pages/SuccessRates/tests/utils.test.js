@@ -5,7 +5,7 @@ import {AVAILABLE_LOBS} from '../constants';
 import {
     shouldShowTooltip,
     successRatesRealTimeObject,
-    getTimeInterval,
+    getIntervalInMinutes,
     buildSuccessRateApiQueryString,
     getAllAvailableLOBs,
     getQueryParams
@@ -43,28 +43,26 @@ describe('successRatesRealTimeObject()', () => {
     });
 });
 
-describe('getTimeInterval', () => {
-    it('defaults to 1 minute given no params', () => {
-        expect(getTimeInterval()).to.eql(5);
+describe('getIntervalInMinutes', () => {
+    it('defaults to 5 minutes given no or missing params', () => {
+        expect(getIntervalInMinutes()).to.eql(5);
+        expect(getIntervalInMinutes('2021-01-01T12:05:00Z', null)).to.equal(5);
+        expect(getIntervalInMinutes(null, '2021-01-01T12:05:00Z')).to.equal(5);
     });
     it('sets interval to 1 day if start date is over 365 days ago', () => {
-        expect(getTimeInterval(moment().subtract(366, 'days').toISOString(), moment().toISOString()))
+        expect(getIntervalInMinutes(moment().subtract(366, 'days').toISOString(), moment().toISOString()))
             .to.eql(2880);
     });
-    it('sets interval to 2 hours if start date is over 90 days ago', () => {
-        expect(getTimeInterval(moment().subtract(91, 'days').toISOString(), moment().toISOString()))
-            .to.eql(120);
-    });
     it('sets interval to 2 hours if start date more than 7 days from end date', () => {
-        expect(getTimeInterval(moment().subtract(8, 'days'), moment().toISOString()))
+        expect(getIntervalInMinutes(moment().subtract(8, 'days'), moment().toISOString()))
             .to.eql(120);
     });
     it('sets interval to 1 hours if start date more than 24 hours from end date', () => {
-        expect(getTimeInterval(moment().subtract(25, 'hours').toISOString(), moment().toISOString()))
+        expect(getIntervalInMinutes(moment().subtract(25, 'hours').toISOString(), moment().toISOString()))
             .to.eql(60);
     });
-    it('sets interval to 1 min if start date within 24 hours ago', () => {
-        expect(getTimeInterval(moment().subtract(23, 'hours').toISOString(), moment().toISOString()))
+    it('sets interval to 5 mins if start date within 24 hours ago', () => {
+        expect(getIntervalInMinutes(moment().subtract(24, 'hours').toISOString(), moment().toISOString()))
             .to.eql(5);
     });
 });
@@ -95,15 +93,15 @@ describe('buildSuccessRateApiQueryString()', () => {
 });
 
 describe('getAllAvailableLOBs()', () => {
-    const currentLOBs = ['H', 'C', 'F', 'CR'];
+    const currentLOBs = ['H', 'C', 'F', 'CR', 'P', 'A'];
 
     it('returns correctly filtered LOBs', () => {
-        expect(getAllAvailableLOBs(currentLOBs)).to.have.length(4);
+        expect(getAllAvailableLOBs(currentLOBs)).to.have.length(6);
     });
 });
 
 describe('getAllAvailableLOBs()', () => {
-    const currentLOBs = ['C', 'CR', 'F', 'H'];
+    const currentLOBs = ['A', 'C', 'CR', 'F', 'H', 'P'];
 
     it('returns currently supported LOBs', () => {
         expect(getAllAvailableLOBs(AVAILABLE_LOBS).map(({value}) => value)).to.eql(currentLOBs);
@@ -127,6 +125,6 @@ describe('getQueryParams()', () => {
         expect(initialStart.isSame(moment().subtract(6, 'hours'), 'hour')).to.equal(true);
         expect(initialEnd.isSame(moment(), 'hour')).to.equal(true);
         expect(initialTimeRange).to.equal('Last 6 Hours');
-        expect(initialLobs.map(({value}) => value)).to.eql(['C', 'CR', 'F', 'H']);
+        expect(initialLobs.map(({value}) => value)).to.eql(['A', 'C', 'CR', 'F', 'H', 'P']);
     });
 });

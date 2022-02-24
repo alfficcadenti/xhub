@@ -5,10 +5,10 @@ import {SVGIcon} from '@homeaway/react-svg';
 import {EDIT__16} from '@homeaway/svg-defs';
 import DataTable from '../../components/DataTable';
 import {LOB_LIST} from '../../constants';
-import {TRACE_TABLE_COLUMNS, SITES, CATEGORY_OPTION} from './constants';
 import {EXPEDIA_PARTNER_SERVICES_BRAND, EXPEDIA_BRAND, OPXHUB_SUPPORT_CHANNEL} from '../../constants';
-import {getOrDefault} from '../../utils';
+import {formatToLocalDateTimeString, getOrDefault} from '../../utils';
 import {validDateRange} from '../utils';
+import {TRACE_TABLE_COLUMNS, SITES, CATEGORY_OPTION, FCI_TYPE_CHECKOUT, FCI_TYPE_LOGIN, CODE_OPTION} from './constants';
 
 
 export const getInitialSelectData = (initialOption) => ({
@@ -26,21 +26,26 @@ export const getUnsupportedBrandMsg = (selectedBrands) => `FCIs for ${selectedBr
     + `If you have any questions, please ping ${OPXHUB_SUPPORT_CHANNEL} or leave a comment via our Feedback form.`;
 
 // eslint-disable-next-line complexity
-export const shouldFetchData = (prev, start, end, selectedSite, selectedLob, chartProperty, selectedErrorCode, hideIntentionalCheck) => (
+export const shouldFetchData = (prev, start, end, selectedSite, selectedLob, chartProperty, selectedErrorCode, hideIntentionalCheck, selectedErrorType) => (
     !prev.start
     || !prev.end
     || start.isBefore(prev.start)
+    || start.minutes() !== 0 // Zooming always results in a start beginning at the top of the hour
     || end.isAfter(prev.end)
+    || end.minutes() !== 59 // Zooming always results in a end finishing at the top of the hour
     || prev.selectedSite !== selectedSite
     || prev.selectedLob !== selectedLob
     || prev.chartProperty !== chartProperty
     || prev.selectedErrorCode !== selectedErrorCode
     || prev.hideIntentionalCheck !== hideIntentionalCheck
+    || prev.selectedErrorType !== selectedErrorType
 );
 
 // eslint-disable-next-line complexity
 export const getQueryValues = (search, brand = 'Expedia') => {
-    const {tab, from, to, lobs, code, sites, hide_intentional: hideIntentional, search_id: searchId, bucket, id, deltaUsersId} = qs.parse(search);
+    const {
+        tab, from, to, lobs, code, sites, hide_intentional: hideIntentional, search_id: searchId, bucket, id, deltaUsersId, type
+    } = qs.parse(search);
     const isValidDateRange = validDateRange(from, to);
     return {
         initialStart: isValidDateRange ? moment(from) : moment().subtract(24, 'hours').startOf('minute'),
@@ -58,7 +63,8 @@ export const getQueryValues = (search, brand = 'Expedia') => {
         initialDeltaUsersId: deltaUsersId || '',
         initialSelectedId: id || '',
         initialIndex: ['0', '1'].includes(tab) ? Number(tab) : 0,
-        initialBucket: bucket && moment(bucket).isValid ? bucket : null
+        initialBucket: bucket && moment(bucket).isValid ? bucket : null,
+        initialFciType: [FCI_TYPE_CHECKOUT, FCI_TYPE_LOGIN].includes(type) ? type : FCI_TYPE_CHECKOUT
     };
 };
 
@@ -76,7 +82,7 @@ export const getFciQueryString = (start, end, selectedErrorCode, selectedSite, s
 
 // eslint-disable-next-line complexity
 export const getHistoryQueryString = (selectedBrands, start, end, selectedErrorCode, selectedSite,
-    selectedLob, hideIntentionalCheck, chartProperty, searchId, activeIndex, selectedBucket, id) => {
+    selectedLob, hideIntentionalCheck, chartProperty, searchId, activeIndex, selectedBucket, id, type) => {
     const brandQuery = `selectedBrand=${selectedBrands[0]}`;
     const dateQuery = `&from=${start.toISOString()}&to=${end.toISOString()}`;
     const errorProperty = chartProperty === CATEGORY_OPTION ? 'code' : 'code';
@@ -88,8 +94,9 @@ export const getHistoryQueryString = (selectedBrands, start, end, selectedErrorC
     const indexQuery = `&tab=${activeIndex || 0}`;
     const bucketQuery = selectedBucket ? `&bucket=${selectedBucket}` : '';
     const idQuery = id ? `&id=${id}` : '';
+    const errorTypeQuery = type ? `&type=${type}` : '';
     return `${brandQuery}${dateQuery}${errorQuery}${siteQuery}${hideIntentionalCheckQuery}`
-        + `${lobQuery}${searchQuery}${indexQuery}${bucketQuery}${idQuery}`;
+        + `${lobQuery}${searchQuery}${indexQuery}${bucketQuery}${idQuery}${errorTypeQuery}`;
 };
 
 const getTagValue = (tags, property) => {
@@ -150,27 +157,32 @@ export const mapComment = (row) => ({
     'Is FCI': String(row.isFci)
 });
 
-export const mapFci = (row = {}) => {
-    const {fci = {}, category = []} = JSON.parse(JSON.stringify(row));
+export const mapFci = (row = {}, fciType) => {
+    const rowCopy = JSON.parse(JSON.stringify(row));
+    const fci = fciType === FCI_TYPE_CHECKOUT
+        ? rowCopy?.fci
+        : rowCopy?.login_failure;
     return {
-        Created: fci.timestamp ? moment.utc(fci.timestamp).local().format('YYYY-MM-DD HH:mm') : '-',
+        Created: getOrDefault(fci, 'timestamp', '-', formatToLocalDateTimeString),
         Session: getOrDefault(fci, 'session_id'),
         Trace: getOrDefault(fci, 'trace_id'),
         Failure: getOrDefault(fci, 'failure'),
-        'Intentional': getOrDefault(fci, 'is_intentional'),
+        Intentional: getOrDefault(fci, 'is_intentional'),
         'Error Code': getOrDefault(fci, 'error_code'),
         Site: getOrDefault(fci, 'site'),
         LOB: getOrDefault(fci, 'lob'),
         TPID: getOrDefault(fci, 'tp_id'),
         EAPID: getOrDefault(fci, 'eap_id'),
-        'SiteID': getOrDefault(fci, 'site_id'),
-        Category: category.join(', ') || '-',
-        LoB: (LOB_LIST.find((l) => l.value === fci.line_of_business) || {label: '-'}).label,
+        SiteID: getOrDefault(fci, 'site_id'),
+        Source: getOrDefault(fci, 'source_name'),
+        Message: getOrDefault(fci, 'message'),
+        Category: getOrDefault(rowCopy, 'category', '-', (c) => c.join(',')),
+        LoB: (LOB_LIST.find((l) => l.value === fci?.line_of_business) || {label: '-'}).label,
         'Device User Agent ID': getOrDefault(fci, 'dua_id'),
         Comment: getOrDefault(fci, 'comment'),
-        'Is FCI': String(fci.is_fci),
+        'Is FCI': typeof fci?.is_fci === 'boolean' ? String(fci.is_fci) : 'true',
         recordedSessionUrl: getOrDefault(row, 'recorded_session_url'),
-        traces: (fci.traces || []).map(mapTrace)
+        traces: getOrDefault(fci, 'traces', [], (t) => t.map(mapTrace))
     };
 };
 
@@ -183,10 +195,10 @@ export const mapDeltaUser = (row = {}) => {
     };
 };
 
-export const getTableData = (data, onOpenEdit) => {
+export const getTableData = (data, onOpenEdit, fciType) => {
     const result = data
         .map((row) => {
-            const fci = mapFci(row);
+            const fci = mapFci(row, fciType);
             const editClickHandler = () => onOpenEdit(fci);
             const traceCounts = getTraceCounts(fci.traces);
             fci.Traces = (
@@ -229,4 +241,45 @@ export const getDeltaUserTableData = (data) => {
         return result;
     }
     return [];
+};
+
+export const getBaseUrl = (fciType) => (
+    (fciType === FCI_TYPE_LOGIN)
+        ? '/v1/login-failures'
+        : '/v1/checkout-failures'
+);
+
+export const getSearchUrl = (fciType, searchText) => `${getBaseUrl(fciType)}/search?id=${searchText}`;
+
+export const getDeltaUserUrl = (start, end, brand, sessionId) => (
+    `/v1/delta-user-by-session-id?from=${start}&to=${end}&brand=${brand}&session_id=${sessionId}`
+);
+
+export const getFciCountsUrl = (fciType, start, end, selectedErrorCode, selectedSite, selectedLob, hideIntentionalCheck, chartProperty) => {
+    const fciQuery = getFciQueryString(start, end, selectedErrorCode, selectedSite, selectedLob, hideIntentionalCheck, chartProperty);
+    const url = chartProperty === CATEGORY_OPTION
+        ? `${getBaseUrl(fciType)}/category-counts?${fciQuery}`
+        : `${getBaseUrl(fciType)}/error-counts?${fciQuery}`;
+    return url;
+};
+
+export const getFciDetailsUrl = (fciType, start, end, selectedErrorCode, selectedSite, selectedLob, hideIntentionalCheck, chartProperty) => {
+    const fciQuery = getFciQueryString(start, end, selectedErrorCode, selectedSite, selectedLob, hideIntentionalCheck, chartProperty);
+    return `${getBaseUrl(fciType)}?${fciQuery}`;
+};
+
+export const getFciSitesUrl = (fciType, start, end) => {
+    return `${getBaseUrl(fciType)}/sites?from=${start}&to=${end}`;
+};
+
+export const getFciLobsUrl = (fciType, start, end, site) => {
+    const siteQuery = site ? `&sites=${site.join(',')}` : '';
+    return `${getBaseUrl(fciType)}/lob?from=${start}&to=${end}${siteQuery}`;
+};
+
+export const getFciErrorCodesUrl = (fciType, start, end, chartProperty) => {
+    const path = chartProperty === CODE_OPTION
+        ? `${getBaseUrl(fciType)}/error-codes`
+        : `${getBaseUrl(fciType)}/error-categories`;
+    return `${path}?from=${start}&to=${end}`;
 };

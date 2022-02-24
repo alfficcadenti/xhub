@@ -1,42 +1,17 @@
 import moment from 'moment';
 
-const LAST_YEAR = moment().subtract(365, 'days');
-const LASTS_90_DAYS = moment().subtract(90, 'days');
-
-
-// eslint-disable-next-line complexity
-const getTimeInterval = (startDate, endDate) => {
-    const start = moment(startDate);
-    const end = moment(endDate);
-    let timeInterval = {value: 1, unit: 'minute'};
-    if (!startDate || !endDate) {
-        timeInterval = {value: 1, unit: 'minute'};
-    } else if (start.isBefore(LAST_YEAR)) {
-        timeInterval = {value: 1, unit: 'day'};
-    } else if (start.isBefore(LASTS_90_DAYS)) {
-        timeInterval = {value: 1, unit: 'hour'};
-    } else if (end.diff(start, 'days') > 7) {
-        timeInterval = {value: 1, unit: 'hour'};
-    } else if (end.diff(start, 'hours') >= 24) {
-        timeInterval = {value: 10, unit: 'minute'};
-    } else if (end.diff(start, 'hours') < 24) {
-        timeInterval = {value: 1, unit: 'minute'};
-    }
-    return timeInterval;
-};
-
 const getTestData = async (req, appender) => {
     if (!req.url || !req.url.query) {
         return [];
     }
     const {startDate, endDate} = req.url.query;
-    const timeInterval = getTimeInterval(startDate, endDate);
+    const {timeInterval} = req.url.query || 5;
     let result = [];
     const start = moment(startDate);
     const end = moment(endDate);
     while (start.isSameOrBefore(end)) {
         result = appender(start.utc().format('YYYY-MM-DD\THH:mm:ss\\Z'), result);
-        start.add(timeInterval.value, timeInterval.unit);
+        start.add(timeInterval, 'minutes');
     }
     return result;
 };
@@ -98,7 +73,6 @@ const getEPSFunnelTestData = async (req) => {
 };
 
 module.exports = {
-    getTimeInterval,
     getTestData,
     getPageViewsTestData,
     getFunnelTestData,

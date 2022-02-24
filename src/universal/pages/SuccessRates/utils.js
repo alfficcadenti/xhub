@@ -84,21 +84,19 @@ export const successRatesRealTimeObject = (fetchedSuccessRates = [], selectedLob
 };
 
 // eslint-disable-next-line complexity
-export const getTimeInterval = (startDate, endDate) => {
+export const getIntervalInMinutes = (startDate, endDate) => {
     const start = moment(startDate);
     const end = moment(endDate);
     let timeInterval = 5;
     if (!startDate || !endDate) {
         timeInterval = 5;
-    } else if (start.isBefore(moment().subtract(1, 'years'))) {
+    } else if (end.diff(start, 'years') >= 1) {
         timeInterval = 2880;
-    } else if (start.isBefore(moment().subtract(90, 'days'))) {
-        timeInterval = 120;
     } else if (end.diff(start, 'days') > 7) {
         timeInterval = 120;
-    } else if (end.diff(start, 'hours') >= 24) {
+    } else if (end.diff(start, 'hours') > 24) {
         timeInterval = 60;
-    } else if (end.diff(start, 'hours') < 24) {
+    } else if (end.diff(start, 'hours') <= 24) {
         timeInterval = 5;
     }
     return timeInterval;

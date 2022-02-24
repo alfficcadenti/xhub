@@ -83,6 +83,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.9.2",
+    "@catalyst/hapi-expose-view-context": "^5.0.0",
+    "@catalyst/hapi-favicon-handler": "^9.2.0",
     "@homeaway/a11y-tools": "^1.6.0",
     "@homeaway/baseline": "^5.11.1",
     "@homeaway/browserslist-config": "^1.0.0",
@@ -104,7 +106,7 @@
     "@homeaway/react-collapse": "^4.4.0",
     "@homeaway/react-data-table": "^5.0.12",
     "@homeaway/react-determine-if-mobile": "^4.0.2",
-    "@homeaway/react-dropdown": "^7.1.2",
+    "@homeaway/react-dropdown": "^8.0.0",
     "@homeaway/react-edap-testing": "^3.0.1",
     "@homeaway/react-event-tracking": "^2.1.3",
     "@homeaway/react-form-components": "^7.7.2",

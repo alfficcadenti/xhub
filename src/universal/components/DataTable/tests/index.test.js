@@ -36,6 +36,13 @@ describe('<DataTable/>', () => {
         expect(wrapper).toMatchSnapshot();
     });
 
+    it('Renders successfully without download link and filter when no data', async () => {
+        await act(async () => {
+            wrapper = render(<DataTable handleDateRangeChange={() => {}} handleClearDates={() => {}} data={[]} columns={columns} rules={rules}/>);
+        });
+        expect(wrapper).toMatchSnapshot();
+    });
+
     it('Sorts correctly', async () => {
         await act(async () => {
             wrapper = render(<DataTable handleDateRangeChange={() => {}} handleClearDates={() => {}} data={data} columns={columns} rules={rules}/>);

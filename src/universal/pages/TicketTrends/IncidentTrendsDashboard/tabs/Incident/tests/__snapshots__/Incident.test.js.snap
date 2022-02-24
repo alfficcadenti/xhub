@@ -1,22 +1,22 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Incident component testing returns error 1`] = `
+exports[`Incident component testing renders Error message when API returns error 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
     <div>
       <div>
         <div
-          class="form-container fci-container"
+          class="inc-form-container"
         >
           <div
-            class="fci-search-input form-group floating-label not-empty"
+            class="inc-search-input form-group floating-label not-empty"
           >
             <input
               aria-invalid="false"
               aria-label="Search incident by ID"
               class="form-control"
-              id="search-input"
+              id="searchInput"
               name="searchInput"
               placeholder="Search incident by ID"
               type="text"
@@ -24,100 +24,18 @@ Object {
             />
             <label
               class=""
-              for="search-input"
+              for="searchInput"
             >
               Search incident by ID
             </label>
           </div>
           <button
-            class="btn btn-primary apply-btn"
+            class="btn btn-primary search-btn"
             type="button"
           >
             Search
           </button>
         </div>
-        <div>
-          <div
-            class="loading-container "
-          >
-            <div
-              aria-live="polite"
-              class="Alert border--default in loading-alert"
-              role="alert"
-            >
-              <div
-                class="Alert__flair bg--color-bg-active"
-              />
-              <span
-                class="SVGIcon SVGIcon--24px Alert__svg inline-svg text-muted"
-              >
-                <svg
-                  data-id="SVG_ALERT_WARNING__24"
-                  focusable="false"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  width="24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g
-                    fill="none"
-                    fill-rule="evenodd"
-                  >
-                    <path
-                      d="M13 17.1a1 1 0 1 1-2 0 1 1 0 0 1 2 0"
-                      fill="currentColor"
-                      stroke="none"
-                    />
-                    <path
-                      d="M10.6 4.5a1.6 1.6 0 0 1 2.8 0L21 17.7a1.6 1.6 0 0 1-1.4 2.5H4.4A1.6 1.6 0 0 1 3 17.7l7.6-13.2zM12 9V14"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </g>
-                </svg>
-              </span>
-              <p>
-                Failed to retrieve data. Try refreshing the page. If the problem persists, please message #opxhub-support or fill out our Feedback form.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </body>,
-  "container": <div>
-    <div>
-      <div
-        class="form-container fci-container"
-      >
-        <div
-          class="fci-search-input form-group floating-label not-empty"
-        >
-          <input
-            aria-invalid="false"
-            aria-label="Search incident by ID"
-            class="form-control"
-            id="search-input"
-            name="searchInput"
-            placeholder="Search incident by ID"
-            type="text"
-            value="INC123"
-          />
-          <label
-            class=""
-            for="search-input"
-          >
-            Search incident by ID
-          </label>
-        </div>
-        <button
-          class="btn btn-primary apply-btn"
-          type="button"
-        >
-          Search
-        </button>
-      </div>
-      <div>
         <div
           class="loading-container "
         >
@@ -161,6 +79,84 @@ Object {
               Failed to retrieve data. Try refreshing the page. If the problem persists, please message #opxhub-support or fill out our Feedback form.
             </p>
           </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div>
+      <div
+        class="inc-form-container"
+      >
+        <div
+          class="inc-search-input form-group floating-label not-empty"
+        >
+          <input
+            aria-invalid="false"
+            aria-label="Search incident by ID"
+            class="form-control"
+            id="searchInput"
+            name="searchInput"
+            placeholder="Search incident by ID"
+            type="text"
+            value="INC123"
+          />
+          <label
+            class=""
+            for="searchInput"
+          >
+            Search incident by ID
+          </label>
+        </div>
+        <button
+          class="btn btn-primary search-btn"
+          type="button"
+        >
+          Search
+        </button>
+      </div>
+      <div
+        class="loading-container "
+      >
+        <div
+          aria-live="polite"
+          class="Alert border--default in loading-alert"
+          role="alert"
+        >
+          <div
+            class="Alert__flair bg--color-bg-active"
+          />
+          <span
+            class="SVGIcon SVGIcon--24px Alert__svg inline-svg text-muted"
+          >
+            <svg
+              data-id="SVG_ALERT_WARNING__24"
+              focusable="false"
+              height="24"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g
+                fill="none"
+                fill-rule="evenodd"
+              >
+                <path
+                  d="M13 17.1a1 1 0 1 1-2 0 1 1 0 0 1 2 0"
+                  fill="currentColor"
+                  stroke="none"
+                />
+                <path
+                  d="M10.6 4.5a1.6 1.6 0 0 1 2.8 0L21 17.7a1.6 1.6 0 0 1-1.4 2.5H4.4A1.6 1.6 0 0 1 3 17.7l7.6-13.2zM12 9V14"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </g>
+            </svg>
+          </span>
+          <p>
+            Failed to retrieve data. Try refreshing the page. If the problem persists, please message #opxhub-support or fill out our Feedback form.
+          </p>
         </div>
       </div>
     </div>
@@ -219,23 +215,23 @@ Object {
 }
 `;
 
-exports[`Incident component testing returns mocked data 1`] = `
+exports[`Incident component testing renders NO RESULTS FOUND and matches the snapshot when data is empty 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
     <div>
       <div>
         <div
-          class="form-container fci-container"
+          class="inc-form-container"
         >
           <div
-            class="fci-search-input form-group floating-label not-empty"
+            class="inc-search-input form-group floating-label not-empty"
           >
             <input
               aria-invalid="false"
               aria-label="Search incident by ID"
               class="form-control"
-              id="search-input"
+              id="searchInput"
               name="searchInput"
               placeholder="Search incident by ID"
               type="text"
@@ -243,967 +239,376 @@ Object {
             />
             <label
               class=""
-              for="search-input"
+              for="searchInput"
             >
               Search incident by ID
             </label>
           </div>
           <button
-            class="btn btn-primary apply-btn"
+            class="btn btn-primary search-btn"
             type="button"
           >
             Search
           </button>
         </div>
-        <div>
+        <div
+          class="loading-container "
+        >
           <div
-            class="loading-container "
+            class="no-results-wrapper"
+          >
+            <span>
+              NO RESULTS FOUND
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div>
+      <div
+        class="inc-form-container"
+      >
+        <div
+          class="inc-search-input form-group floating-label not-empty"
+        >
+          <input
+            aria-invalid="false"
+            aria-label="Search incident by ID"
+            class="form-control"
+            id="searchInput"
+            name="searchInput"
+            placeholder="Search incident by ID"
+            type="text"
+            value="INC123"
+          />
+          <label
+            class=""
+            for="searchInput"
+          >
+            Search incident by ID
+          </label>
+        </div>
+        <button
+          class="btn btn-primary search-btn"
+          type="button"
+        >
+          Search
+        </button>
+      </div>
+      <div
+        class="loading-container "
+      >
+        <div
+          class="no-results-wrapper"
+        >
+          <span>
+            NO RESULTS FOUND
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Incident component testing renders a table and matches snapshot when data is passed correctly 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div>
+        <div
+          class="inc-form-container"
+        >
+          <div
+            class="inc-search-input form-group floating-label not-empty"
+          >
+            <input
+              aria-invalid="false"
+              aria-label="Search incident by ID"
+              class="form-control"
+              id="searchInput"
+              name="searchInput"
+              placeholder="Search incident by ID"
+              type="text"
+              value="INC123"
+            />
+            <label
+              class=""
+              for="searchInput"
+            >
+              Search incident by ID
+            </label>
+          </div>
+          <button
+            class="btn btn-primary search-btn"
+            type="button"
+          >
+            Search
+          </button>
+        </div>
+        <div
+          class="loading-container "
+        >
+          <div
+            class="inc-details-container"
           >
             <div
-              class="data-table__container "
+              id="shortDetails"
             >
-              <h3
-                class="data-table__title"
-              >
-                
-                
-              </h3>
               <div
-                class="Divider settings-divider"
+                class="inc-row"
               >
                 <div
-                  class="Divider__heading text-muted"
+                  class="inc-label"
                 >
-                  <button
-                    aria-controls="settings-divider"
-                    aria-expanded="false"
-                    class="Divider__title"
-                    id="settings-divider_button"
-                  >
-                    <div
-                      class="Divider__title-layout"
-                    >
-                      <div
-                        class="Divider__title-left"
-                      >
-                        <div
-                          class="Divider__title-row"
-                        />
-                      </div>
-                      <div
-                        class="Divider__title-text"
-                      >
-                        <span
-                          aria-level="4"
-                          role="heading"
-                        >
-                          Settings
-                        </span>
-                      </div>
-                      <div
-                        class="Divider__title-right"
-                      >
-                        <div
-                          class="Divider__title-row"
-                        />
-                        <span
-                          class="SVGIcon SVGIcon--16px Divider__SVGIcon Divider__SVGIcon--collapsed"
-                        >
-                          <svg
-                            data-id="SVG_CHEVRON_DOWN__16"
-                            focusable="false"
-                            height="16"
-                            viewBox="0 0 16 16"
-                            width="16"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M3 6l5 4.6L13 6"
-                              fill="none"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                          </svg>
-                        </span>
-                      </div>
-                    </div>
-                  </button>
+                  ID
                 </div>
                 <div
-                  aria-labelledby="settings-divider_button"
-                  class="CollapseBase"
-                  hidden=""
-                  id="settings-divider"
-                  role="region"
-                  style="max-height: 0px;"
+                  class="inc-value"
                 >
-                  <div
-                    class="CollapseBase__content Divider__body"
-                  >
-                    <form>
-                      <div
-                        class="checkbox-column form-group CRB CRB--checkbox CRB--sm"
-                      >
-                        <label
-                          class="CRB__label text-muted CRB__label--right"
-                        >
-                          <input
-                            checked=""
-                            class="CRB__input"
-                            name="Priority"
-                            type="checkbox"
-                          />
-                          <span
-                            class="CRB__toggle CRB__toggle--left"
-                          >
-                            <span
-                              class="SVGIcon SVGIcon--12px SVGIcon--inline-flex CRB__svg"
-                            >
-                              <svg
-                                data-id="SVG_CHECK__12"
-                                focusable="false"
-                                height="12"
-                                viewBox="0 0 12 12"
-                                width="12"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M2 7l3 3 6-8"
-                                  fill="none"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                              </svg>
-                            </span>
-                          </span>
-                          <span
-                            class="label-text"
-                          >
-                            Priority
-                          </span>
-                        </label>
-                      </div>
-                      <div
-                        class="checkbox-column form-group CRB CRB--checkbox CRB--sm"
-                      >
-                        <label
-                          class="CRB__label text-muted CRB__label--right"
-                        >
-                          <input
-                            checked=""
-                            class="CRB__input"
-                            name="Booking Impact"
-                            type="checkbox"
-                          />
-                          <span
-                            class="CRB__toggle CRB__toggle--left"
-                          >
-                            <span
-                              class="SVGIcon SVGIcon--12px SVGIcon--inline-flex CRB__svg"
-                            >
-                              <svg
-                                data-id="SVG_CHECK__12"
-                                focusable="false"
-                                height="12"
-                                viewBox="0 0 12 12"
-                                width="12"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M2 7l3 3 6-8"
-                                  fill="none"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                              </svg>
-                            </span>
-                          </span>
-                          <span
-                            class="label-text"
-                          >
-                            Booking Impact
-                          </span>
-                        </label>
-                      </div>
-                      <div
-                        class="checkbox-column form-group CRB CRB--checkbox CRB--sm"
-                      >
-                        <label
-                          class="CRB__label text-muted CRB__label--right"
-                        >
-                          <input
-                            checked=""
-                            class="CRB__input"
-                            name="Started"
-                            type="checkbox"
-                          />
-                          <span
-                            class="CRB__toggle CRB__toggle--left"
-                          >
-                            <span
-                              class="SVGIcon SVGIcon--12px SVGIcon--inline-flex CRB__svg"
-                            >
-                              <svg
-                                data-id="SVG_CHECK__12"
-                                focusable="false"
-                                height="12"
-                                viewBox="0 0 12 12"
-                                width="12"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M2 7l3 3 6-8"
-                                  fill="none"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                              </svg>
-                            </span>
-                          </span>
-                          <span
-                            class="label-text"
-                          >
-                            Started
-                          </span>
-                        </label>
-                      </div>
-                      <div
-                        class="checkbox-column form-group CRB CRB--checkbox CRB--sm"
-                      >
-                        <label
-                          class="CRB__label text-muted CRB__label--right"
-                        >
-                          <input
-                            checked=""
-                            class="CRB__input"
-                            name="TTD"
-                            type="checkbox"
-                          />
-                          <span
-                            class="CRB__toggle CRB__toggle--left"
-                          >
-                            <span
-                              class="SVGIcon SVGIcon--12px SVGIcon--inline-flex CRB__svg"
-                            >
-                              <svg
-                                data-id="SVG_CHECK__12"
-                                focusable="false"
-                                height="12"
-                                viewBox="0 0 12 12"
-                                width="12"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M2 7l3 3 6-8"
-                                  fill="none"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                              </svg>
-                            </span>
-                          </span>
-                          <span
-                            class="label-text"
-                          >
-                            TTD
-                          </span>
-                        </label>
-                      </div>
-                      <div
-                        class="checkbox-column form-group CRB CRB--checkbox CRB--sm"
-                      >
-                        <label
-                          class="CRB__label text-muted CRB__label--right"
-                        >
-                          <input
-                            checked=""
-                            class="CRB__input"
-                            name="TTK"
-                            type="checkbox"
-                          />
-                          <span
-                            class="CRB__toggle CRB__toggle--left"
-                          >
-                            <span
-                              class="SVGIcon SVGIcon--12px SVGIcon--inline-flex CRB__svg"
-                            >
-                              <svg
-                                data-id="SVG_CHECK__12"
-                                focusable="false"
-                                height="12"
-                                viewBox="0 0 12 12"
-                                width="12"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M2 7l3 3 6-8"
-                                  fill="none"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                              </svg>
-                            </span>
-                          </span>
-                          <span
-                            class="label-text"
-                          >
-                            TTK
-                          </span>
-                        </label>
-                      </div>
-                      <div
-                        class="checkbox-column form-group CRB CRB--checkbox CRB--sm"
-                      >
-                        <label
-                          class="CRB__label text-muted CRB__label--right"
-                        >
-                          <input
-                            checked=""
-                            class="CRB__input"
-                            name="TTF"
-                            type="checkbox"
-                          />
-                          <span
-                            class="CRB__toggle CRB__toggle--left"
-                          >
-                            <span
-                              class="SVGIcon SVGIcon--12px SVGIcon--inline-flex CRB__svg"
-                            >
-                              <svg
-                                data-id="SVG_CHECK__12"
-                                focusable="false"
-                                height="12"
-                                viewBox="0 0 12 12"
-                                width="12"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M2 7l3 3 6-8"
-                                  fill="none"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                              </svg>
-                            </span>
-                          </span>
-                          <span
-                            class="label-text"
-                          >
-                            TTF
-                          </span>
-                        </label>
-                      </div>
-                      <div
-                        class="checkbox-column form-group CRB CRB--checkbox CRB--sm"
-                      >
-                        <label
-                          class="CRB__label text-muted CRB__label--right"
-                        >
-                          <input
-                            checked=""
-                            class="CRB__input"
-                            name="TTR"
-                            type="checkbox"
-                          />
-                          <span
-                            class="CRB__toggle CRB__toggle--left"
-                          >
-                            <span
-                              class="SVGIcon SVGIcon--12px SVGIcon--inline-flex CRB__svg"
-                            >
-                              <svg
-                                data-id="SVG_CHECK__12"
-                                focusable="false"
-                                height="12"
-                                viewBox="0 0 12 12"
-                                width="12"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M2 7l3 3 6-8"
-                                  fill="none"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                              </svg>
-                            </span>
-                          </span>
-                          <span
-                            class="label-text"
-                          >
-                            TTR
-                          </span>
-                        </label>
-                      </div>
-                      <div
-                        class="checkbox-column form-group CRB CRB--checkbox CRB--sm"
-                      >
-                        <label
-                          class="CRB__label text-muted CRB__label--right"
-                        >
-                          <input
-                            checked=""
-                            class="CRB__input"
-                            name="Environment"
-                            type="checkbox"
-                          />
-                          <span
-                            class="CRB__toggle CRB__toggle--left"
-                          >
-                            <span
-                              class="SVGIcon SVGIcon--12px SVGIcon--inline-flex CRB__svg"
-                            >
-                              <svg
-                                data-id="SVG_CHECK__12"
-                                focusable="false"
-                                height="12"
-                                viewBox="0 0 12 12"
-                                width="12"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M2 7l3 3 6-8"
-                                  fill="none"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                              </svg>
-                            </span>
-                          </span>
-                          <span
-                            class="label-text"
-                          >
-                            Environment
-                          </span>
-                        </label>
-                      </div>
-                      <div
-                        class="checkbox-column form-group CRB CRB--checkbox CRB--sm"
-                      >
-                        <label
-                          class="CRB__label text-muted CRB__label--right"
-                        >
-                          <input
-                            checked=""
-                            class="CRB__input"
-                            name="RC Owner"
-                            type="checkbox"
-                          />
-                          <span
-                            class="CRB__toggle CRB__toggle--left"
-                          >
-                            <span
-                              class="SVGIcon SVGIcon--12px SVGIcon--inline-flex CRB__svg"
-                            >
-                              <svg
-                                data-id="SVG_CHECK__12"
-                                focusable="false"
-                                height="12"
-                                viewBox="0 0 12 12"
-                                width="12"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M2 7l3 3 6-8"
-                                  fill="none"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                              </svg>
-                            </span>
-                          </span>
-                          <span
-                            class="label-text"
-                          >
-                            RC Owner
-                          </span>
-                        </label>
-                      </div>
-                      <div
-                        class="checkbox-column form-group CRB CRB--checkbox CRB--sm"
-                      >
-                        <label
-                          class="CRB__label text-muted CRB__label--right"
-                        >
-                          <input
-                            checked=""
-                            class="CRB__input"
-                            name="L1"
-                            type="checkbox"
-                          />
-                          <span
-                            class="CRB__toggle CRB__toggle--left"
-                          >
-                            <span
-                              class="SVGIcon SVGIcon--12px SVGIcon--inline-flex CRB__svg"
-                            >
-                              <svg
-                                data-id="SVG_CHECK__12"
-                                focusable="false"
-                                height="12"
-                                viewBox="0 0 12 12"
-                                width="12"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M2 7l3 3 6-8"
-                                  fill="none"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                              </svg>
-                            </span>
-                          </span>
-                          <span
-                            class="label-text"
-                          >
-                            L1
-                          </span>
-                        </label>
-                      </div>
-                    </form>
-                  </div>
+                  INC5997738
                 </div>
               </div>
-              <table
-                class="data-table"
+              <div
+                class="inc-row"
               >
-                <thead
-                  class="data-table-header"
+                <div
+                  class="inc-label"
                 >
-                  <tr>
-                    <th
-                      class="pointer"
-                    >
-                      <span
-                        class="SVGIcon SVGIcon--12px SVGIcon--inline-flex"
-                      >
-                        <svg
-                          data-id="SVG_CHEVRON_DOWN__12"
-                          focusable="false"
-                          height="12"
-                          viewBox="0 0 12 12"
-                          width="12"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M11 4L6 9 1 4"
-                            fill="none"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </svg>
-                      </span>
-                    </th>
-                    <th
-                      class="pointer"
-                    >
-                      Incident
-                       
-                      <div
-                        class="info-tooltip "
-                      >
-                        <div
-                          class=""
-                          role="button"
-                          style="display: inline-block; outline: 0; position: relative;"
-                          tabindex="0"
-                        >
-                          <span
-                            class="SVGIcon SVGIcon--16px SVGIcon--inline-flex"
-                          >
-                            <svg
-                              data-id="SVG_INFO__16"
-                              focusable="false"
-                              height="16"
-                              viewBox="0 0 16 16"
-                              width="16"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <g
-                                fill="none"
-                                fill-rule="evenodd"
-                              >
-                                <path
-                                  d="M7.1 5A.9.9 0 1 1 9 5 .9.9 0 0 1 7 5"
-                                  fill="currentColor"
-                                  stroke="none"
-                                />
-                                <path
-                                  d="M8 11.2V7.3M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8z"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                              </g>
-                            </svg>
-                          </span>
-                        </div>
-                      </div>
-                    </th>
-                    <th
-                      class="pointer"
-                    >
-                      Priority
-                    </th>
-                    <th
-                      class="pointer"
-                    >
-                      Booking Impact
-                    </th>
-                    <th
-                      class="pointer"
-                    >
-                      Started
-                    </th>
-                    <th
-                      class="pointer"
-                    >
-                      TTD
-                       
-                      <div
-                        class="info-tooltip "
-                      >
-                        <div
-                          class=""
-                          role="button"
-                          style="display: inline-block; outline: 0; position: relative;"
-                          tabindex="0"
-                        >
-                          <span
-                            class="SVGIcon SVGIcon--16px SVGIcon--inline-flex"
-                          >
-                            <svg
-                              data-id="SVG_INFO__16"
-                              focusable="false"
-                              height="16"
-                              viewBox="0 0 16 16"
-                              width="16"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <g
-                                fill="none"
-                                fill-rule="evenodd"
-                              >
-                                <path
-                                  d="M7.1 5A.9.9 0 1 1 9 5 .9.9 0 0 1 7 5"
-                                  fill="currentColor"
-                                  stroke="none"
-                                />
-                                <path
-                                  d="M8 11.2V7.3M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8z"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                              </g>
-                            </svg>
-                          </span>
-                        </div>
-                      </div>
-                    </th>
-                    <th
-                      class="pointer"
-                    >
-                      TTK
-                       
-                      <div
-                        class="info-tooltip "
-                      >
-                        <div
-                          class=""
-                          role="button"
-                          style="display: inline-block; outline: 0; position: relative;"
-                          tabindex="0"
-                        >
-                          <span
-                            class="SVGIcon SVGIcon--16px SVGIcon--inline-flex"
-                          >
-                            <svg
-                              data-id="SVG_INFO__16"
-                              focusable="false"
-                              height="16"
-                              viewBox="0 0 16 16"
-                              width="16"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <g
-                                fill="none"
-                                fill-rule="evenodd"
-                              >
-                                <path
-                                  d="M7.1 5A.9.9 0 1 1 9 5 .9.9 0 0 1 7 5"
-                                  fill="currentColor"
-                                  stroke="none"
-                                />
-                                <path
-                                  d="M8 11.2V7.3M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8z"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                              </g>
-                            </svg>
-                          </span>
-                        </div>
-                      </div>
-                    </th>
-                    <th
-                      class="pointer"
-                    >
-                      TTF
-                       
-                      <div
-                        class="info-tooltip "
-                      >
-                        <div
-                          class=""
-                          role="button"
-                          style="display: inline-block; outline: 0; position: relative;"
-                          tabindex="0"
-                        >
-                          <span
-                            class="SVGIcon SVGIcon--16px SVGIcon--inline-flex"
-                          >
-                            <svg
-                              data-id="SVG_INFO__16"
-                              focusable="false"
-                              height="16"
-                              viewBox="0 0 16 16"
-                              width="16"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <g
-                                fill="none"
-                                fill-rule="evenodd"
-                              >
-                                <path
-                                  d="M7.1 5A.9.9 0 1 1 9 5 .9.9 0 0 1 7 5"
-                                  fill="currentColor"
-                                  stroke="none"
-                                />
-                                <path
-                                  d="M8 11.2V7.3M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8z"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                              </g>
-                            </svg>
-                          </span>
-                        </div>
-                      </div>
-                    </th>
-                    <th
-                      class="pointer"
-                    >
-                      TTR
-                       
-                      <div
-                        class="info-tooltip "
-                      >
-                        <div
-                          class=""
-                          role="button"
-                          style="display: inline-block; outline: 0; position: relative;"
-                          tabindex="0"
-                        >
-                          <span
-                            class="SVGIcon SVGIcon--16px SVGIcon--inline-flex"
-                          >
-                            <svg
-                              data-id="SVG_INFO__16"
-                              focusable="false"
-                              height="16"
-                              viewBox="0 0 16 16"
-                              width="16"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <g
-                                fill="none"
-                                fill-rule="evenodd"
-                              >
-                                <path
-                                  d="M7.1 5A.9.9 0 1 1 9 5 .9.9 0 0 1 7 5"
-                                  fill="currentColor"
-                                  stroke="none"
-                                />
-                                <path
-                                  d="M8 11.2V7.3M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8z"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                              </g>
-                            </svg>
-                          </span>
-                        </div>
-                      </div>
-                    </th>
-                    <th
-                      class="pointer"
-                    >
-                      Environment
-                    </th>
-                    <th
-                      class="pointer"
-                    >
-                      RC Owner
-                    </th>
-                    <th
-                      class="pointer"
-                    >
-                      L1
-                    </th>
-                  </tr>
-                </thead>
-                <tbody
-                  class="data-table-body"
+                  Priority
+                </div>
+                <div
+                  class="inc-value"
                 >
-                  <tr>
-                    <td>
-                      <div
-                        class="toggle-btn"
-                        role="button"
-                        tabindex="0"
-                      >
-                        <span
-                          class="SVGIcon SVGIcon--12px SVGIcon--inline-flex"
-                        >
-                          <svg
-                            data-id="SVG_CHEVRON_DOWN__12"
-                            focusable="false"
-                            height="12"
-                            viewBox="0 0 12 12"
-                            width="12"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M11 4L6 9 1 4"
-                              fill="none"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                          </svg>
-                        </span>
-                      </div>
-                    </td>
-                    <td
-                      class=""
-                    >
-                      <a
-                        href="https://expedia.service-now.com/go.do?id=INC5997738"
-                        target="_blank"
-                      >
-                        INC5997738
-                      </a>
-                    </td>
-                    <td
-                      class=""
-                    >
-                      1-Critical
-                    </td>
-                    <td
-                      class=""
-                    >
-                      Severe Booking Impact
-                    </td>
-                    <td
-                      class=""
-                    >
-                      2021-11-10 07:36
-                    </td>
-                    <td
-                      class=""
-                    >
-                      <div
-                        value="11"
-                      >
-                        11m
-                      </div>
-                    </td>
-                    <td
-                      class=""
-                    >
-                      <div
-                        value="6"
-                      >
-                        6m
-                      </div>
-                    </td>
-                    <td
-                      class=""
-                    >
-                      <div
-                        value="0"
-                      >
-                        0m
-                      </div>
-                    </td>
-                    <td
-                      class=""
-                    >
-                      <div
-                        value="17"
-                      >
-                        17m
-                      </div>
-                    </td>
-                    <td
-                      class=""
-                    >
-                      Production
-                    </td>
-                    <td
-                      class=""
-                    >
-                      Egencia - Payments
-                    </td>
-                    <td
-                      class=""
-                    >
-                      Egencia - Consolidated
-                    </td>
-                  </tr>
-                  <tr
-                    class="expandable-row hidden"
-                  >
-                    <td
-                      class="expandable-column"
-                      colspan="12"
-                    >
-                      <div
-                        class="expandable-row-wrapper"
-                      >
-                        <div
-                          class="expandable-row"
-                        >
-                          <span
-                            class="expandable-row-header"
-                          >
-                            Incident Executive Summary:
-                          </span>
-                          <div
-                            class="expandable-row-section"
-                          >
-                            -
-                          </div>
-                        </div>
-                        <div
-                          class="expandable-row"
-                        >
-                          <span
-                            class="expandable-row-header"
-                          >
-                            Resolution Notes:
-                          </span>
-                          <div
-                            class="expandable-row-section"
-                          >
-                            Service was restored without any technical intervention by support team.  Egencia Payment Team will lead root cause investigation.
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <div />
+                  1-Critical
+                </div>
+              </div>
+              <div
+                class="inc-row"
+              >
+                <div
+                  class="inc-label"
+                >
+                  Started
+                </div>
+                <div
+                  class="inc-value"
+                >
+                  2021-11-10 07:36
+                </div>
+              </div>
+              <div
+                class="inc-row"
+              >
+                <div
+                  class="inc-label"
+                >
+                  Booking Impact
+                </div>
+                <div
+                  class="inc-value"
+                >
+                  Severe Booking Impact
+                </div>
+              </div>
+              <div
+                class="inc-row"
+              >
+                <div
+                  class="inc-label"
+                >
+                  TTD
+                </div>
+                <div
+                  class="inc-value"
+                >
+                  11m
+                </div>
+              </div>
+              <div
+                class="inc-row"
+              >
+                <div
+                  class="inc-label"
+                >
+                  Environment
+                </div>
+                <div
+                  class="inc-value"
+                >
+                  Production
+                </div>
+              </div>
+              <div
+                class="inc-row"
+              >
+                <div
+                  class="inc-label"
+                >
+                  TTK
+                </div>
+                <div
+                  class="inc-value"
+                >
+                  6m
+                </div>
+              </div>
+              <div
+                class="inc-row"
+              >
+                <div
+                  class="inc-label"
+                >
+                  RC Owner
+                </div>
+                <div
+                  class="inc-value"
+                >
+                  Egencia - Payments
+                </div>
+              </div>
+              <div
+                class="inc-row"
+              >
+                <div
+                  class="inc-label"
+                >
+                  TTF
+                </div>
+                <div
+                  class="inc-value"
+                >
+                  0m
+                </div>
+              </div>
+              <div
+                class="inc-row"
+              >
+                <div
+                  class="inc-label"
+                >
+                  L1
+                </div>
+                <div
+                  class="inc-value"
+                >
+                  Egencia - Consolidated
+                </div>
+              </div>
+              <div
+                class="inc-row"
+              >
+                <div
+                  class="inc-label"
+                >
+                  TTR
+                </div>
+                <div
+                  class="inc-value"
+                >
+                  17m
+                </div>
+              </div>
+            </div>
+            <div
+              id="longDetails"
+            >
+              <div
+                class="inc-row-long"
+              >
+                <div
+                  class="inc-label-long"
+                >
+                  Description
+                </div>
+                <div
+                  class="inc-value-long"
+                >
+                  Egencia NA degraded - created by zhroberts from #noc-ege-commands-room
+                </div>
+              </div>
+              <div
+                class="inc-row-long"
+              >
+                <div
+                  class="inc-label-long"
+                >
+                  Executive Summary
+                </div>
+                <div
+                  class="inc-value-long"
+                >
+                  -
+                </div>
+              </div>
+              <div
+                class="inc-row-long"
+              >
+                <div
+                  class="inc-label-long"
+                >
+                  Resolution Notes
+                </div>
+                <div
+                  class="inc-value-long"
+                >
+                  Service was restored without any technical intervention by support team.  Egencia Payment Team will lead root cause investigation.
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1213,16 +618,16 @@ Object {
   "container": <div>
     <div>
       <div
-        class="form-container fci-container"
+        class="inc-form-container"
       >
         <div
-          class="fci-search-input form-group floating-label not-empty"
+          class="inc-search-input form-group floating-label not-empty"
         >
           <input
             aria-invalid="false"
             aria-label="Search incident by ID"
             class="form-control"
-            id="search-input"
+            id="searchInput"
             name="searchInput"
             placeholder="Search incident by ID"
             type="text"
@@ -1230,967 +635,227 @@ Object {
           />
           <label
             class=""
-            for="search-input"
+            for="searchInput"
           >
             Search incident by ID
           </label>
         </div>
         <button
-          class="btn btn-primary apply-btn"
+          class="btn btn-primary search-btn"
           type="button"
         >
           Search
         </button>
       </div>
-      <div>
+      <div
+        class="loading-container "
+      >
         <div
-          class="loading-container "
+          class="inc-details-container"
         >
           <div
-            class="data-table__container "
+            id="shortDetails"
           >
-            <h3
-              class="data-table__title"
-            >
-              
-              
-            </h3>
             <div
-              class="Divider settings-divider"
+              class="inc-row"
             >
               <div
-                class="Divider__heading text-muted"
+                class="inc-label"
               >
-                <button
-                  aria-controls="settings-divider"
-                  aria-expanded="false"
-                  class="Divider__title"
-                  id="settings-divider_button"
-                >
-                  <div
-                    class="Divider__title-layout"
-                  >
-                    <div
-                      class="Divider__title-left"
-                    >
-                      <div
-                        class="Divider__title-row"
-                      />
-                    </div>
-                    <div
-                      class="Divider__title-text"
-                    >
-                      <span
-                        aria-level="4"
-                        role="heading"
-                      >
-                        Settings
-                      </span>
-                    </div>
-                    <div
-                      class="Divider__title-right"
-                    >
-                      <div
-                        class="Divider__title-row"
-                      />
-                      <span
-                        class="SVGIcon SVGIcon--16px Divider__SVGIcon Divider__SVGIcon--collapsed"
-                      >
-                        <svg
-                          data-id="SVG_CHEVRON_DOWN__16"
-                          focusable="false"
-                          height="16"
-                          viewBox="0 0 16 16"
-                          width="16"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M3 6l5 4.6L13 6"
-                            fill="none"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </svg>
-                      </span>
-                    </div>
-                  </div>
-                </button>
+                ID
               </div>
               <div
-                aria-labelledby="settings-divider_button"
-                class="CollapseBase"
-                hidden=""
-                id="settings-divider"
-                role="region"
-                style="max-height: 0px;"
+                class="inc-value"
               >
-                <div
-                  class="CollapseBase__content Divider__body"
-                >
-                  <form>
-                    <div
-                      class="checkbox-column form-group CRB CRB--checkbox CRB--sm"
-                    >
-                      <label
-                        class="CRB__label text-muted CRB__label--right"
-                      >
-                        <input
-                          checked=""
-                          class="CRB__input"
-                          name="Priority"
-                          type="checkbox"
-                        />
-                        <span
-                          class="CRB__toggle CRB__toggle--left"
-                        >
-                          <span
-                            class="SVGIcon SVGIcon--12px SVGIcon--inline-flex CRB__svg"
-                          >
-                            <svg
-                              data-id="SVG_CHECK__12"
-                              focusable="false"
-                              height="12"
-                              viewBox="0 0 12 12"
-                              width="12"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M2 7l3 3 6-8"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                            </svg>
-                          </span>
-                        </span>
-                        <span
-                          class="label-text"
-                        >
-                          Priority
-                        </span>
-                      </label>
-                    </div>
-                    <div
-                      class="checkbox-column form-group CRB CRB--checkbox CRB--sm"
-                    >
-                      <label
-                        class="CRB__label text-muted CRB__label--right"
-                      >
-                        <input
-                          checked=""
-                          class="CRB__input"
-                          name="Booking Impact"
-                          type="checkbox"
-                        />
-                        <span
-                          class="CRB__toggle CRB__toggle--left"
-                        >
-                          <span
-                            class="SVGIcon SVGIcon--12px SVGIcon--inline-flex CRB__svg"
-                          >
-                            <svg
-                              data-id="SVG_CHECK__12"
-                              focusable="false"
-                              height="12"
-                              viewBox="0 0 12 12"
-                              width="12"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M2 7l3 3 6-8"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                            </svg>
-                          </span>
-                        </span>
-                        <span
-                          class="label-text"
-                        >
-                          Booking Impact
-                        </span>
-                      </label>
-                    </div>
-                    <div
-                      class="checkbox-column form-group CRB CRB--checkbox CRB--sm"
-                    >
-                      <label
-                        class="CRB__label text-muted CRB__label--right"
-                      >
-                        <input
-                          checked=""
-                          class="CRB__input"
-                          name="Started"
-                          type="checkbox"
-                        />
-                        <span
-                          class="CRB__toggle CRB__toggle--left"
-                        >
-                          <span
-                            class="SVGIcon SVGIcon--12px SVGIcon--inline-flex CRB__svg"
-                          >
-                            <svg
-                              data-id="SVG_CHECK__12"
-                              focusable="false"
-                              height="12"
-                              viewBox="0 0 12 12"
-                              width="12"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M2 7l3 3 6-8"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                            </svg>
-                          </span>
-                        </span>
-                        <span
-                          class="label-text"
-                        >
-                          Started
-                        </span>
-                      </label>
-                    </div>
-                    <div
-                      class="checkbox-column form-group CRB CRB--checkbox CRB--sm"
-                    >
-                      <label
-                        class="CRB__label text-muted CRB__label--right"
-                      >
-                        <input
-                          checked=""
-                          class="CRB__input"
-                          name="TTD"
-                          type="checkbox"
-                        />
-                        <span
-                          class="CRB__toggle CRB__toggle--left"
-                        >
-                          <span
-                            class="SVGIcon SVGIcon--12px SVGIcon--inline-flex CRB__svg"
-                          >
-                            <svg
-                              data-id="SVG_CHECK__12"
-                              focusable="false"
-                              height="12"
-                              viewBox="0 0 12 12"
-                              width="12"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M2 7l3 3 6-8"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                            </svg>
-                          </span>
-                        </span>
-                        <span
-                          class="label-text"
-                        >
-                          TTD
-                        </span>
-                      </label>
-                    </div>
-                    <div
-                      class="checkbox-column form-group CRB CRB--checkbox CRB--sm"
-                    >
-                      <label
-                        class="CRB__label text-muted CRB__label--right"
-                      >
-                        <input
-                          checked=""
-                          class="CRB__input"
-                          name="TTK"
-                          type="checkbox"
-                        />
-                        <span
-                          class="CRB__toggle CRB__toggle--left"
-                        >
-                          <span
-                            class="SVGIcon SVGIcon--12px SVGIcon--inline-flex CRB__svg"
-                          >
-                            <svg
-                              data-id="SVG_CHECK__12"
-                              focusable="false"
-                              height="12"
-                              viewBox="0 0 12 12"
-                              width="12"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M2 7l3 3 6-8"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                            </svg>
-                          </span>
-                        </span>
-                        <span
-                          class="label-text"
-                        >
-                          TTK
-                        </span>
-                      </label>
-                    </div>
-                    <div
-                      class="checkbox-column form-group CRB CRB--checkbox CRB--sm"
-                    >
-                      <label
-                        class="CRB__label text-muted CRB__label--right"
-                      >
-                        <input
-                          checked=""
-                          class="CRB__input"
-                          name="TTF"
-                          type="checkbox"
-                        />
-                        <span
-                          class="CRB__toggle CRB__toggle--left"
-                        >
-                          <span
-                            class="SVGIcon SVGIcon--12px SVGIcon--inline-flex CRB__svg"
-                          >
-                            <svg
-                              data-id="SVG_CHECK__12"
-                              focusable="false"
-                              height="12"
-                              viewBox="0 0 12 12"
-                              width="12"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M2 7l3 3 6-8"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                            </svg>
-                          </span>
-                        </span>
-                        <span
-                          class="label-text"
-                        >
-                          TTF
-                        </span>
-                      </label>
-                    </div>
-                    <div
-                      class="checkbox-column form-group CRB CRB--checkbox CRB--sm"
-                    >
-                      <label
-                        class="CRB__label text-muted CRB__label--right"
-                      >
-                        <input
-                          checked=""
-                          class="CRB__input"
-                          name="TTR"
-                          type="checkbox"
-                        />
-                        <span
-                          class="CRB__toggle CRB__toggle--left"
-                        >
-                          <span
-                            class="SVGIcon SVGIcon--12px SVGIcon--inline-flex CRB__svg"
-                          >
-                            <svg
-                              data-id="SVG_CHECK__12"
-                              focusable="false"
-                              height="12"
-                              viewBox="0 0 12 12"
-                              width="12"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M2 7l3 3 6-8"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                            </svg>
-                          </span>
-                        </span>
-                        <span
-                          class="label-text"
-                        >
-                          TTR
-                        </span>
-                      </label>
-                    </div>
-                    <div
-                      class="checkbox-column form-group CRB CRB--checkbox CRB--sm"
-                    >
-                      <label
-                        class="CRB__label text-muted CRB__label--right"
-                      >
-                        <input
-                          checked=""
-                          class="CRB__input"
-                          name="Environment"
-                          type="checkbox"
-                        />
-                        <span
-                          class="CRB__toggle CRB__toggle--left"
-                        >
-                          <span
-                            class="SVGIcon SVGIcon--12px SVGIcon--inline-flex CRB__svg"
-                          >
-                            <svg
-                              data-id="SVG_CHECK__12"
-                              focusable="false"
-                              height="12"
-                              viewBox="0 0 12 12"
-                              width="12"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M2 7l3 3 6-8"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                            </svg>
-                          </span>
-                        </span>
-                        <span
-                          class="label-text"
-                        >
-                          Environment
-                        </span>
-                      </label>
-                    </div>
-                    <div
-                      class="checkbox-column form-group CRB CRB--checkbox CRB--sm"
-                    >
-                      <label
-                        class="CRB__label text-muted CRB__label--right"
-                      >
-                        <input
-                          checked=""
-                          class="CRB__input"
-                          name="RC Owner"
-                          type="checkbox"
-                        />
-                        <span
-                          class="CRB__toggle CRB__toggle--left"
-                        >
-                          <span
-                            class="SVGIcon SVGIcon--12px SVGIcon--inline-flex CRB__svg"
-                          >
-                            <svg
-                              data-id="SVG_CHECK__12"
-                              focusable="false"
-                              height="12"
-                              viewBox="0 0 12 12"
-                              width="12"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M2 7l3 3 6-8"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                            </svg>
-                          </span>
-                        </span>
-                        <span
-                          class="label-text"
-                        >
-                          RC Owner
-                        </span>
-                      </label>
-                    </div>
-                    <div
-                      class="checkbox-column form-group CRB CRB--checkbox CRB--sm"
-                    >
-                      <label
-                        class="CRB__label text-muted CRB__label--right"
-                      >
-                        <input
-                          checked=""
-                          class="CRB__input"
-                          name="L1"
-                          type="checkbox"
-                        />
-                        <span
-                          class="CRB__toggle CRB__toggle--left"
-                        >
-                          <span
-                            class="SVGIcon SVGIcon--12px SVGIcon--inline-flex CRB__svg"
-                          >
-                            <svg
-                              data-id="SVG_CHECK__12"
-                              focusable="false"
-                              height="12"
-                              viewBox="0 0 12 12"
-                              width="12"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M2 7l3 3 6-8"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                            </svg>
-                          </span>
-                        </span>
-                        <span
-                          class="label-text"
-                        >
-                          L1
-                        </span>
-                      </label>
-                    </div>
-                  </form>
-                </div>
+                INC5997738
               </div>
             </div>
-            <table
-              class="data-table"
+            <div
+              class="inc-row"
             >
-              <thead
-                class="data-table-header"
+              <div
+                class="inc-label"
               >
-                <tr>
-                  <th
-                    class="pointer"
-                  >
-                    <span
-                      class="SVGIcon SVGIcon--12px SVGIcon--inline-flex"
-                    >
-                      <svg
-                        data-id="SVG_CHEVRON_DOWN__12"
-                        focusable="false"
-                        height="12"
-                        viewBox="0 0 12 12"
-                        width="12"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M11 4L6 9 1 4"
-                          fill="none"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </svg>
-                    </span>
-                  </th>
-                  <th
-                    class="pointer"
-                  >
-                    Incident
-                     
-                    <div
-                      class="info-tooltip "
-                    >
-                      <div
-                        class=""
-                        role="button"
-                        style="display: inline-block; outline: 0; position: relative;"
-                        tabindex="0"
-                      >
-                        <span
-                          class="SVGIcon SVGIcon--16px SVGIcon--inline-flex"
-                        >
-                          <svg
-                            data-id="SVG_INFO__16"
-                            focusable="false"
-                            height="16"
-                            viewBox="0 0 16 16"
-                            width="16"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <g
-                              fill="none"
-                              fill-rule="evenodd"
-                            >
-                              <path
-                                d="M7.1 5A.9.9 0 1 1 9 5 .9.9 0 0 1 7 5"
-                                fill="currentColor"
-                                stroke="none"
-                              />
-                              <path
-                                d="M8 11.2V7.3M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8z"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                            </g>
-                          </svg>
-                        </span>
-                      </div>
-                    </div>
-                  </th>
-                  <th
-                    class="pointer"
-                  >
-                    Priority
-                  </th>
-                  <th
-                    class="pointer"
-                  >
-                    Booking Impact
-                  </th>
-                  <th
-                    class="pointer"
-                  >
-                    Started
-                  </th>
-                  <th
-                    class="pointer"
-                  >
-                    TTD
-                     
-                    <div
-                      class="info-tooltip "
-                    >
-                      <div
-                        class=""
-                        role="button"
-                        style="display: inline-block; outline: 0; position: relative;"
-                        tabindex="0"
-                      >
-                        <span
-                          class="SVGIcon SVGIcon--16px SVGIcon--inline-flex"
-                        >
-                          <svg
-                            data-id="SVG_INFO__16"
-                            focusable="false"
-                            height="16"
-                            viewBox="0 0 16 16"
-                            width="16"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <g
-                              fill="none"
-                              fill-rule="evenodd"
-                            >
-                              <path
-                                d="M7.1 5A.9.9 0 1 1 9 5 .9.9 0 0 1 7 5"
-                                fill="currentColor"
-                                stroke="none"
-                              />
-                              <path
-                                d="M8 11.2V7.3M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8z"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                            </g>
-                          </svg>
-                        </span>
-                      </div>
-                    </div>
-                  </th>
-                  <th
-                    class="pointer"
-                  >
-                    TTK
-                     
-                    <div
-                      class="info-tooltip "
-                    >
-                      <div
-                        class=""
-                        role="button"
-                        style="display: inline-block; outline: 0; position: relative;"
-                        tabindex="0"
-                      >
-                        <span
-                          class="SVGIcon SVGIcon--16px SVGIcon--inline-flex"
-                        >
-                          <svg
-                            data-id="SVG_INFO__16"
-                            focusable="false"
-                            height="16"
-                            viewBox="0 0 16 16"
-                            width="16"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <g
-                              fill="none"
-                              fill-rule="evenodd"
-                            >
-                              <path
-                                d="M7.1 5A.9.9 0 1 1 9 5 .9.9 0 0 1 7 5"
-                                fill="currentColor"
-                                stroke="none"
-                              />
-                              <path
-                                d="M8 11.2V7.3M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8z"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                            </g>
-                          </svg>
-                        </span>
-                      </div>
-                    </div>
-                  </th>
-                  <th
-                    class="pointer"
-                  >
-                    TTF
-                     
-                    <div
-                      class="info-tooltip "
-                    >
-                      <div
-                        class=""
-                        role="button"
-                        style="display: inline-block; outline: 0; position: relative;"
-                        tabindex="0"
-                      >
-                        <span
-                          class="SVGIcon SVGIcon--16px SVGIcon--inline-flex"
-                        >
-                          <svg
-                            data-id="SVG_INFO__16"
-                            focusable="false"
-                            height="16"
-                            viewBox="0 0 16 16"
-                            width="16"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <g
-                              fill="none"
-                              fill-rule="evenodd"
-                            >
-                              <path
-                                d="M7.1 5A.9.9 0 1 1 9 5 .9.9 0 0 1 7 5"
-                                fill="currentColor"
-                                stroke="none"
-                              />
-                              <path
-                                d="M8 11.2V7.3M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8z"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                            </g>
-                          </svg>
-                        </span>
-                      </div>
-                    </div>
-                  </th>
-                  <th
-                    class="pointer"
-                  >
-                    TTR
-                     
-                    <div
-                      class="info-tooltip "
-                    >
-                      <div
-                        class=""
-                        role="button"
-                        style="display: inline-block; outline: 0; position: relative;"
-                        tabindex="0"
-                      >
-                        <span
-                          class="SVGIcon SVGIcon--16px SVGIcon--inline-flex"
-                        >
-                          <svg
-                            data-id="SVG_INFO__16"
-                            focusable="false"
-                            height="16"
-                            viewBox="0 0 16 16"
-                            width="16"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <g
-                              fill="none"
-                              fill-rule="evenodd"
-                            >
-                              <path
-                                d="M7.1 5A.9.9 0 1 1 9 5 .9.9 0 0 1 7 5"
-                                fill="currentColor"
-                                stroke="none"
-                              />
-                              <path
-                                d="M8 11.2V7.3M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8z"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                            </g>
-                          </svg>
-                        </span>
-                      </div>
-                    </div>
-                  </th>
-                  <th
-                    class="pointer"
-                  >
-                    Environment
-                  </th>
-                  <th
-                    class="pointer"
-                  >
-                    RC Owner
-                  </th>
-                  <th
-                    class="pointer"
-                  >
-                    L1
-                  </th>
-                </tr>
-              </thead>
-              <tbody
-                class="data-table-body"
+                Priority
+              </div>
+              <div
+                class="inc-value"
               >
-                <tr>
-                  <td>
-                    <div
-                      class="toggle-btn"
-                      role="button"
-                      tabindex="0"
-                    >
-                      <span
-                        class="SVGIcon SVGIcon--12px SVGIcon--inline-flex"
-                      >
-                        <svg
-                          data-id="SVG_CHEVRON_DOWN__12"
-                          focusable="false"
-                          height="12"
-                          viewBox="0 0 12 12"
-                          width="12"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M11 4L6 9 1 4"
-                            fill="none"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </svg>
-                      </span>
-                    </div>
-                  </td>
-                  <td
-                    class=""
-                  >
-                    <a
-                      href="https://expedia.service-now.com/go.do?id=INC5997738"
-                      target="_blank"
-                    >
-                      INC5997738
-                    </a>
-                  </td>
-                  <td
-                    class=""
-                  >
-                    1-Critical
-                  </td>
-                  <td
-                    class=""
-                  >
-                    Severe Booking Impact
-                  </td>
-                  <td
-                    class=""
-                  >
-                    2021-11-10 07:36
-                  </td>
-                  <td
-                    class=""
-                  >
-                    <div
-                      value="11"
-                    >
-                      11m
-                    </div>
-                  </td>
-                  <td
-                    class=""
-                  >
-                    <div
-                      value="6"
-                    >
-                      6m
-                    </div>
-                  </td>
-                  <td
-                    class=""
-                  >
-                    <div
-                      value="0"
-                    >
-                      0m
-                    </div>
-                  </td>
-                  <td
-                    class=""
-                  >
-                    <div
-                      value="17"
-                    >
-                      17m
-                    </div>
-                  </td>
-                  <td
-                    class=""
-                  >
-                    Production
-                  </td>
-                  <td
-                    class=""
-                  >
-                    Egencia - Payments
-                  </td>
-                  <td
-                    class=""
-                  >
-                    Egencia - Consolidated
-                  </td>
-                </tr>
-                <tr
-                  class="expandable-row hidden"
-                >
-                  <td
-                    class="expandable-column"
-                    colspan="12"
-                  >
-                    <div
-                      class="expandable-row-wrapper"
-                    >
-                      <div
-                        class="expandable-row"
-                      >
-                        <span
-                          class="expandable-row-header"
-                        >
-                          Incident Executive Summary:
-                        </span>
-                        <div
-                          class="expandable-row-section"
-                        >
-                          -
-                        </div>
-                      </div>
-                      <div
-                        class="expandable-row"
-                      >
-                        <span
-                          class="expandable-row-header"
-                        >
-                          Resolution Notes:
-                        </span>
-                        <div
-                          class="expandable-row-section"
-                        >
-                          Service was restored without any technical intervention by support team.  Egencia Payment Team will lead root cause investigation.
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            <div />
+                1-Critical
+              </div>
+            </div>
+            <div
+              class="inc-row"
+            >
+              <div
+                class="inc-label"
+              >
+                Started
+              </div>
+              <div
+                class="inc-value"
+              >
+                2021-11-10 07:36
+              </div>
+            </div>
+            <div
+              class="inc-row"
+            >
+              <div
+                class="inc-label"
+              >
+                Booking Impact
+              </div>
+              <div
+                class="inc-value"
+              >
+                Severe Booking Impact
+              </div>
+            </div>
+            <div
+              class="inc-row"
+            >
+              <div
+                class="inc-label"
+              >
+                TTD
+              </div>
+              <div
+                class="inc-value"
+              >
+                11m
+              </div>
+            </div>
+            <div
+              class="inc-row"
+            >
+              <div
+                class="inc-label"
+              >
+                Environment
+              </div>
+              <div
+                class="inc-value"
+              >
+                Production
+              </div>
+            </div>
+            <div
+              class="inc-row"
+            >
+              <div
+                class="inc-label"
+              >
+                TTK
+              </div>
+              <div
+                class="inc-value"
+              >
+                6m
+              </div>
+            </div>
+            <div
+              class="inc-row"
+            >
+              <div
+                class="inc-label"
+              >
+                RC Owner
+              </div>
+              <div
+                class="inc-value"
+              >
+                Egencia - Payments
+              </div>
+            </div>
+            <div
+              class="inc-row"
+            >
+              <div
+                class="inc-label"
+              >
+                TTF
+              </div>
+              <div
+                class="inc-value"
+              >
+                0m
+              </div>
+            </div>
+            <div
+              class="inc-row"
+            >
+              <div
+                class="inc-label"
+              >
+                L1
+              </div>
+              <div
+                class="inc-value"
+              >
+                Egencia - Consolidated
+              </div>
+            </div>
+            <div
+              class="inc-row"
+            >
+              <div
+                class="inc-label"
+              >
+                TTR
+              </div>
+              <div
+                class="inc-value"
+              >
+                17m
+              </div>
+            </div>
+          </div>
+          <div
+            id="longDetails"
+          >
+            <div
+              class="inc-row-long"
+            >
+              <div
+                class="inc-label-long"
+              >
+                Description
+              </div>
+              <div
+                class="inc-value-long"
+              >
+                Egencia NA degraded - created by zhroberts from #noc-ege-commands-room
+              </div>
+            </div>
+            <div
+              class="inc-row-long"
+            >
+              <div
+                class="inc-label-long"
+              >
+                Executive Summary
+              </div>
+              <div
+                class="inc-value-long"
+              >
+                -
+              </div>
+            </div>
+            <div
+              class="inc-row-long"
+            >
+              <div
+                class="inc-label-long"
+              >
+                Resolution Notes
+              </div>
+              <div
+                class="inc-value-long"
+              >
+                Service was restored without any technical intervention by support team.  Egencia Payment Team will lead root cause investigation.
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -16,7 +16,7 @@ import {
     mapFci,
     getFilteredTraceData
 } from '../utils';
-import {SITES, CATEGORY_OPTION} from '../constants';
+import {SITES, CATEGORY_OPTION, FCI_TYPE_CHECKOUT, FCI_TYPE_LOGIN} from '../constants';
 import {EXPEDIA_BRAND, VRBO_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND, OPXHUB_SUPPORT_CHANNEL} from '../../../constants';
 
 describe('Fci Utils', () => {
@@ -63,7 +63,9 @@ describe('Fci Utils', () => {
         expect(shouldFetchData({start, end, selectedSite, selectedLob, chartProperty, selectedErrorCode},
             moment('2020-01-03'), moment('2020-01-03'), 'www.expedia.com', 'Cars', 'categoryA')).to.be.eql(true);
         expect(shouldFetchData({start, end, selectedSite, selectedLob, chartProperty, selectedErrorCode},
-            moment('2020-01-03'), moment('2020-01-03'), 'www.expedia.com', 'Cars', 'categoryA', '201')).to.be.eql(false);
+            moment('2020-01-03'), moment('2020-01-03'), 'www.expedia.com', 'Cars', 'categoryA', '201')).to.be.eql(true);
+        expect(shouldFetchData({start, end, selectedSite, selectedLob, chartProperty, selectedErrorCode},
+            moment('2020-01-03'), moment('2020-01-03').endOf('hour'), 'www.expedia.com', 'Cars', 'categoryA', '201')).to.be.eql(false);
     });
 
     it('stringifyQueryParams', () => {
@@ -273,7 +275,7 @@ describe('Fci Utils', () => {
         });
     });
 
-    it('mapFci', () => {
+    it('mapFci - checkout', () => {
         const row = {
             fci: {
                 timestamp: '2021-01-15T16:36:00.000Z',
@@ -283,20 +285,22 @@ describe('Fci Utils', () => {
                 is_intentional: 'true',
                 error_code: 'errorCode',
                 site: 'site',
-                lob: 'lob',
                 tp_id: 'tpId',
                 eap_id: 'eapId',
                 site_id: 'siteId',
+                lob: 'lob',
                 line_of_business: 'F',
                 dua_id: 'duaId',
                 comment: 'comment',
-                is_fci: true
+                is_fci: true,
+                message: 'message',
+                source_name: 'source'
             },
             category: ['category'],
             recorded_session_url: 'recordedSessionUrl'
         };
         const {fci, category, recorded_session_url: recordedSessionUrl} = row;
-        expect(mapFci(row)).to.eql({
+        expect(mapFci(row, FCI_TYPE_CHECKOUT)).to.eql({
             Created: moment(fci.timestamp).format('YYYY-MM-DD HH:mm'),
             Session: fci.session_id,
             Trace: fci.trace_id,
@@ -307,6 +311,58 @@ describe('Fci Utils', () => {
             LOB: fci.lob,
             TPID: fci.tp_id,
             EAPID: fci.eap_id,
+            Message: fci.message,
+            Source: fci.source_name,
+            'SiteID': fci.site_id,
+            Category: category.join(', '),
+            LoB: 'Flights',
+            'Device User Agent ID': fci.dua_id,
+            Comment: fci.comment,
+            'Is FCI': String(fci.is_fci),
+            recordedSessionUrl,
+            traces: []
+        });
+    });
+
+
+    it('mapFci - login', () => {
+        const row = {
+            login_failure: {
+                timestamp: '2021-01-15T16:36:00.000Z',
+                session_id: 'sessionId',
+                trace_id: 'traceId',
+                failure: 'failure',
+                is_intentional: 'true',
+                error_code: 'errorCode',
+                site: 'site',
+                tp_id: 'tpId',
+                eap_id: 'eapId',
+                site_id: 'siteId',
+                lob: 'lob',
+                line_of_business: 'F',
+                dua_id: 'duaId',
+                comment: 'comment',
+                is_fci: true,
+                message: 'message',
+                source_name: 'source'
+            },
+            category: ['category'],
+            recorded_session_url: 'recordedSessionUrl'
+        };
+        const {login_failure: fci, category, recorded_session_url: recordedSessionUrl} = row;
+        expect(mapFci(row, FCI_TYPE_LOGIN)).to.eql({
+            Created: moment(fci.timestamp).format('YYYY-MM-DD HH:mm'),
+            Session: fci.session_id,
+            Trace: fci.trace_id,
+            Failure: fci.failure,
+            Intentional: fci.is_intentional,
+            'Error Code': fci.error_code,
+            Site: fci.site,
+            LOB: fci.lob,
+            TPID: fci.tp_id,
+            EAPID: fci.eap_id,
+            Message: fci.message,
+            Source: fci.source_name,
             'SiteID': fci.site_id,
             Category: category.join(', '),
             LoB: 'Flights',
@@ -320,7 +376,7 @@ describe('Fci Utils', () => {
 
     it('mapFci - null values', () => {
         const BLANK = '-';
-        expect(mapFci()).to.eql({
+        expect(mapFci(null, FCI_TYPE_CHECKOUT)).to.eql({
             Created: BLANK,
             Session: BLANK,
             Trace: BLANK,
@@ -329,14 +385,16 @@ describe('Fci Utils', () => {
             'Error Code': BLANK,
             Site: BLANK,
             LOB: BLANK,
+            LoB: BLANK,
+            Message: BLANK,
+            Source: BLANK,
             TPID: BLANK,
             EAPID: BLANK,
             'SiteID': BLANK,
             Category: BLANK,
-            LoB: BLANK,
             'Device User Agent ID': BLANK,
             Comment: BLANK,
-            'Is FCI': 'undefined',
+            'Is FCI': 'true',
             recordedSessionUrl: BLANK,
             traces: [],
         });

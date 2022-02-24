@@ -61,7 +61,7 @@ async function start(options = {}) {
 
     // example of decorating the server context.
     // available via `server.siteInfo()` or `request.server.siteInfo()`
-    server.decorate('server', 'siteInfo', () => ({siteName: 'OpxHub'}));
+    server.decorate('server', 'siteInfo', () => ({siteName: 'OpXHub'}));
 
     // start the server
     await server.register(H2o2, {once: true});

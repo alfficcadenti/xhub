@@ -11,19 +11,19 @@ describe('<availabilityCell />', () => {
 
     it('renders cell with class negative when value below 99', async () => {
         const wrapper = render(<AvailabilityCell value={99}/>);
-        expect(wrapper.container.querySelector('div').className).toBe('negative');
+        expect(wrapper.container.querySelector('div').className).toBe('availability-cell negative');
         expect(wrapper).toMatchSnapshot();
     });
 
     it('renders cell with class attention when value beetween 99.5 and 99.99', async () => {
         const wrapper = render(<AvailabilityCell value={99.7}/>);
-        expect(wrapper.container.querySelector('div').className).toBe('attention');
+        expect(wrapper.container.querySelector('div').className).toBe('availability-cell attention');
         expect(wrapper).toMatchSnapshot();
     });
 
     it('renders cell with class positive when value is above or equal to 99.99', async () => {
         const wrapper = render(<AvailabilityCell value={99.99}/>);
-        expect(wrapper.container.querySelector('div').className).toBe('positive');
+        expect(wrapper.container.querySelector('div').className).toBe('availability-cell positive');
         expect(wrapper).toMatchSnapshot();
     });
 

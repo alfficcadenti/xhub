@@ -3,12 +3,12 @@
     {
       "type": "email",
       "location": "dpi-reo-opex-team@expedia.com",
-      "severity": ["info", "error", "warn"]
+      "filter_criteria": "level == 'ESCALATION'"
     },
     {
       "type": "slack",
-      "location": "#vrbo-opex-kumo-notifications",
-      "severity": ["info", "error", "warn"]
+      "location": "#opxhub-support",
+      "filter_criteria": "level == 'ESCALATION'"
     }
   ]
 }

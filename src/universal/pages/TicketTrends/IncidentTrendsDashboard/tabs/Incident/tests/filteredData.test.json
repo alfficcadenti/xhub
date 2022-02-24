@@ -1,6 +1,7 @@
 [
     {
         "id": "INC5997738",
+        "description": "Egencia NA degraded - created by zhroberts from #noc-ege-commands-room",
         "rootCause": "Service was restored without any technical intervention by support team.  Egencia Payment Team will lead root cause investigation.",
         "duration": "17",
         "timeToDetect": "11",

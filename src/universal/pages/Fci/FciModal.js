@@ -11,10 +11,18 @@ import LoadingContainer from '../../components/LoadingContainer';
 import {OPXHUB_SUPPORT_CHANNEL} from '../../constants';
 import {checkResponse} from '../utils';
 import {mapComment} from './utils';
-import {FCI_DETAIL_COLUMNS, COMMENT_TABLE_COLUMNS, TRACE_TABLE_COLUMNS, FCI_TABLE_COLUMNS, FCI_HIDDEN_TABLE_COLUMNS} from './constants';
+import {
+    FCI_DETAIL_COLUMNS,
+    COMMENT_TABLE_COLUMNS,
+    TRACE_TABLE_COLUMNS,
+    CHECKOUT_FCI_TABLE_COLUMNS,
+    CHECKOUT_FCI_HIDDEN_COLUMNS,
+    LOGIN_FCI_TABLE_COLUMNS,
+    FCI_TYPE_CHECKOUT
+} from './constants';
 
 
-const FciModal = ({fci, fcis, editMode, isOpen, onClose, onSaveComment, onEditBack, isLoading, error}) => {
+const FciModal = ({fci, fcis, fciType, editMode, isOpen, onClose, onSaveComment, onEditBack, isLoading, error}) => {
     const [isDirtyForm, setIsDirtyForm] = useState(false);
     const [comment, setComment] = useState('');
     const [isFci, setIsFci] = useState(true);
@@ -191,10 +199,10 @@ const FciModal = ({fci, fcis, editMode, isOpen, onClose, onSaveComment, onEditBa
     const renderFciTable = () => (
         <div className="log-container">
             <DataTable
-                title={`FCIs (${fcis.length} results)`}
+                title={`${fciType} (${fcis.length} results)`}
                 data={fcis}
-                columns={FCI_TABLE_COLUMNS}
-                hiddenColumns={FCI_HIDDEN_TABLE_COLUMNS}
+                columns={fciType === FCI_TYPE_CHECKOUT ? CHECKOUT_FCI_TABLE_COLUMNS : LOGIN_FCI_TABLE_COLUMNS}
+                hiddenColumns={CHECKOUT_FCI_HIDDEN_COLUMNS}
                 paginated
                 enableColumnDisplaySettings
                 enableTextSearch

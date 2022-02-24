@@ -3,9 +3,6 @@ const React = require('react');
 
 const authHandler = require('../authHandler');
 
-// this is context for this route on every request.
-const routeInfo = {'pageTitle': 'OpXHub'};
-
 module.exports = (id) => ({
     method: 'GET',
     path: `/${id}/{path*}`,
@@ -14,7 +11,7 @@ module.exports = (id) => ({
         async handler(request, h) {
             try {
                 const siteInfo = request.server.siteInfo();
-                const context = {...siteInfo, ...routeInfo};
+                const context = {...siteInfo};
 
                 // render react component and monitor timing
                 const ServerApp = request.pre.component.default;

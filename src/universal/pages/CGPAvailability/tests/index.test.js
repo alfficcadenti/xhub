@@ -1,7 +1,7 @@
 import React from 'react';
 import CGPAvailibility from '../index';
 import {AVAILABILITY} from '../../../../server/routes/api/testData/availability';
-import {render, act} from '@testing-library/react';
+import {render, act, fireEvent, waitFor} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import {BrowserRouter as Router} from 'react-router-dom';
 
@@ -70,6 +70,61 @@ describe('<CGPAvailibility />', () => {
         });
         expect(wrapper.getByText(/NO RESULTS FOUND/)).toBeInTheDocument();
         expect(wrapper).toMatchSnapshot();
+    });
+
+    it('renders error message only when availability filter input is higher than 100', async () => {
+        fetch.mockImplementation(() => {
+            return Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve(AVAILABILITY)
+            });
+        });
+        await act(async () => {
+            wrapper = render(<Router><CGPAvailibility /></Router>);
+        });
+        const inputField = wrapper.getByLabelText('Availability Filter');
+        fireEvent.change(inputField, {target: {value: '101'}});
+        expect(wrapper.getByText(/Invalid value, 0 - 100 only/)).toBeInTheDocument();
+        expect(wrapper).toMatchSnapshot();
+        fireEvent.change(inputField, {target: {value: '99'}});
+        await waitFor(() => {
+            expect(wrapper.queryByText('Invalid value, 0 - 100 only')).not.toBeInTheDocument();
+        });
+        expect(wrapper).toMatchSnapshot();
+    });
+
+    it('renders error message only when availability filter input is lower than 0', async () => {
+        fetch.mockImplementation(() => {
+            return Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve(AVAILABILITY)
+            });
+        });
+        await act(async () => {
+            wrapper = render(<Router><CGPAvailibility /></Router>);
+        });
+        const inputField = wrapper.getByLabelText('Availability Filter');
+        fireEvent.change(inputField, {target: {value: '-1'}});
+        expect(wrapper.getByText(/Invalid value, 0 - 100 only/)).toBeInTheDocument();
+        expect(wrapper).toMatchSnapshot();
+        fireEvent.change(inputField, {target: {value: '1'}});
+        await waitFor(() => {
+            expect(wrapper.queryByText('Invalid value, 0 - 100 only')).not.toBeInTheDocument();
+        });
+        expect(wrapper).toMatchSnapshot();
+    });
+
+    it('excludes unknown application from the availability table', async () => {
+        fetch.mockImplementation(() => {
+            return Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve(AVAILABILITY)
+            });
+        });
+        await act(async () => {
+            wrapper = render(<Router><CGPAvailibility /></Router>);
+        });
+        expect(wrapper.queryByText('unknown')).not.toBeInTheDocument();
     });
 });
 

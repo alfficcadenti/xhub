@@ -7,9 +7,11 @@ describe('getOrDefault()', () => {
         expect(getOrDefault(null, null)).to.eql('-');
         expect(getOrDefault({a: 'hello'}, 'b')).to.eql('-');
         expect(getOrDefault({a: 'hello'}, 'a')).to.eql('hello');
-        expect(getOrDefault({a: 'hello'}, 'a', (x) => `${x}!`)).to.eql('hello!');
-        expect(getOrDefault({a: 'hello'}, 'a', (x, y) => `${x}${y}`, '!!')).to.eql('hello!!');
-        expect(getOrDefault({a: 'hello'}, 'a', () => null, null)).to.eql('-');
+        expect(getOrDefault({a: 'hello'}, 'a', '-', (x) => `${x}!`)).to.eql('hello!');
+        expect(getOrDefault({a: 'hello'}, 'a', '-', (x, y) => `${x}${y}`, '!!')).to.eql('hello!!');
+        expect(getOrDefault({a: 'hello'}, 'a', '-', () => null, null)).to.eql('-');
+        expect(getOrDefault({a: 'hello'}, 'a', 'defaultVal', () => null, null)).to.eql('defaultVal');
         expect(getOrDefault({a: ''}, 'a')).to.eql('-');
+        expect(getOrDefault({a: ''}, 'a', 'defaultVal')).to.eql('defaultVal');
     });
 });

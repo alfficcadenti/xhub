@@ -13,7 +13,7 @@ import {Checkbox} from '@homeaway/react-form-components';
 import './DataTable.less';
 import {Dropdown, DropdownItem} from '@homeaway/react-dropdown';
 import NoResults from '../NoResults';
-import {getCellStringValue} from './utils';
+import {getCellStringValue, stringNumComparator} from './utils';
 
 const sanitizeOption = {
     allowedAttributes: Object.assign(sanitizeHtml.defaults.allowedAttributes, {div: ['value']})
@@ -76,45 +76,41 @@ const DataTable = ({
     }, [columnCheckboxes, refreshColumns]);
 
     useEffect(() => {
-        /* eslint-disable complexity */
+        const hasValue = (x) => !!x || x === 0;
+
+        const reactElementComparator = (a, b) => {
+            if (hasValue(a.key) || hasValue(b.key)) {
+                return stringNumComparator(a.key, b.key);
+            }
+            if (hasValue(a.props.value) || hasValue(b.props.value)) {
+                return stringNumComparator(a.props.value, b.props.value);
+            }
+            return stringNumComparator(a.props.children, b.props.children);
+        };
+
         const comparator = (a, b, column) => {
             const valA = a[column];
             const valB = b[column];
-            const strA = String(valA).toLowerCase().replace('%', '');
-            const strB = String(valB).toLowerCase().replace('%', '');
-            const numA = Number(strA);
-            const numB = Number(strB);
-            if (!Number.isNaN(numA) && !Number.isNaN(numB)) {
-                return numA - numB;
-            }
-            if (React.isValidElement(valA) && React.isValidElement(valB)) {
-                if (valA.key && valB.key) {
-                    if (!Number.isNaN(valA.key) && !Number.isNaN(valB.key)) {
-                        return Number(valA.key) - Number(valB.key);
-                    }
-                    return String(valA.key) - String(valB.key);
-                }
-                if (String(valA.props.value) && String(valB.props.value)) {
-                    if (!Number.isNaN(valA.props.value) && !Number.isNaN(valB.props.value)) {
-                        return Number(valA.props.value) - Number(valB.props.value);
-                    }
-                    return String(valA.key) - String(valB.key);
-                }
-                return String(valA.key || valA.props.value).localeCompare(String(valB.key || valB.props.value));
-            }
-            return strA.localeCompare(strB);
+            // Compare react elements
+            return (React.isValidElement(valA) && React.isValidElement(valB))
+                ? reactElementComparator(valA, valB)
+                : stringNumComparator(valA, valB);
         };
+
         let newSortedData = filteredData;
-        if (sortedByDirection === 'asc') {
-            newSortedData.sort((a, b) => comparator(a, b, sortedByColumn));
-        } else {
-            newSortedData.sort((a, b) => -comparator(a, b, sortedByColumn));
+        if (sortedByColumn) {
+            if (sortedByDirection === 'asc') {
+                newSortedData.sort((a, b) => comparator(a, b, sortedByColumn));
+            } else {
+                newSortedData.sort((a, b) => -comparator(a, b, sortedByColumn));
+            }
         }
         setFilteredData(newSortedData);
         setReSortData(uuid());
-    }, [sortedByColumn, sortedByDirection]);
+    }, [sortedByColumn, sortedByDirection, filteredData]);
 
     useEffect(() => {
+        setCurrPageIndex(0);
         setFilteredData(mapData(data));
     }, [data]);
 
@@ -125,7 +121,7 @@ const DataTable = ({
             ? data.filter((d) => Object.values(d).findIndex(findSearchText) > -1)
             : data;
         setFilteredData(dataToDisplay);
-    }, [searchText]);
+    }, [searchText, data, enableTextSearch]);
 
     const handleColumnCheckbox = (column) => {
         const newColumnCheckboxes = columnCheckboxes;
@@ -278,19 +274,23 @@ const DataTable = ({
 
     const renderInfoTooltip = (content) => (
         <div className="info-tooltip ">
-            <Tooltip tooltipType="tooltip--lg" content={content} placement="bottom">
+            <Tooltip tooltipType="tooltip--lg" content={content} placement="bottom" fullWidth>
                 <SVGIcon inlineFlex markup={INFO__16} />
             </Tooltip>
         </div>
     );
 
+    const renderControllers = () => (<>
+        {enableColumnDisplaySettings && renderColumnDisplaySettings()}
+        {enableCSVDownload && renderDownloadLink()}
+        {enableTextSearch && renderSearchInput()}
+    </>);
+
     // eslint-disable-next-line complexity
     const renderToolbar = (tableTitle, tableInfo, id) => (
         <Fragment key={id}>
             <h3 className="data-table__title">{tableTitle}{tableInfo && renderInfoTooltip(tableInfo)}</h3>
-            {enableColumnDisplaySettings && renderColumnDisplaySettings()}
-            {enableCSVDownload && renderDownloadLink()}
-            {enableTextSearch && renderSearchInput()}
+            {!!data.length && renderControllers()}
             <Divider heading="Settings" id="settings-divider" className="settings-divider" expanded={showSettings}>
                 <form>
                     {columnCheckboxes && columnCheckboxes.length > 1

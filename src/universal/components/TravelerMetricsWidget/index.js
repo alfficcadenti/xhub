@@ -122,7 +122,7 @@ const TravelerMetricsWidget = ({
     const updateTooltip = () => {
         const point = pointRef.current;
         const tooltip = tooltipRef.current;
-        const deltaUserCountByLob = point.payload.deltaUserCountByLob;
+        const deltaUserCountByLob = point?.payload?.deltaUserCountByLob;
 
         const getDeltaUserCount = () => {
             const dataPointsHoursRange = moment(data[1]?.time).diff(moment(data[0]?.time), 'minutes');

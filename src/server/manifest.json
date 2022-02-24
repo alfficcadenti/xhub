@@ -508,7 +508,7 @@
           }
         },
         "test": {
-          "hostname": "opxhub-user-events-data-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black",
+          "hostname": "opxhub-user-events-data-service-egdp-stage-us-west-2.eglocal.exp-test.net",
           "protocol": "http:",
           "routes": {
             "bookings": {
@@ -799,6 +799,27 @@
             }
           }
         },
+        "test": {
+          "hostname": "impulse-data-service-egdp-stage-us-west-2.eglocal.exp-test.net",
+          "protocol": "http:",
+          "routes": {
+            "impulseHealth": {
+              "path": "/v1/impulse/health",
+              "method": "GET",
+              "operation": "GET_impulse_health_api_v1"
+            },
+            "impulseAnomalies": {
+              "path": "/v1/impulse/anomalies",
+              "method": "GET",
+              "operation": "GET_impulse_anomalies_api_v1"
+            },
+            "impulseAnomaliesGrouped": {
+              "path": "/v1/impulse/anomalies/grouped",
+              "method": "GET",
+              "operation": "GET_impulse_anomalies_grouped_api_v1"
+            }
+          }
+        },
         "prod": {
           "hostname": "impulse-data-service-egdp-prod-us-east-1.eglocal.exp-prod.net",
           "protocol": "http:",
@@ -834,6 +855,17 @@
             }
           }
         },
+        "test": {
+          "hostname": "opxhub-booking-anomaly-detector-egdp-stage-us-west-2.eglocal.exp-test.net",
+          "protocol": "http:",
+          "routes": {
+            "impulsePrediction": {
+              "path": "/v1/impulse/prediction",
+              "method": "GET",
+              "operation": "GET_impulse_prediction_api_v1"
+            }
+          }
+        },
         "prod": {
           "hostname": "opxhub-booking-anomaly-detector-egdp-prod-us-east-1.eglocal.exp-prod.net",
           "protocol": "http:",
@@ -857,45 +889,10 @@
               "method": "GET",
               "operation": "GET_checkout_failures_api_v1"
             },
-            "checkoutFailuresErrorCategories": {
-              "path": "/v1/checkout-failures/error-categories",
+            "loginFailures": {
+              "path": "/v1/login-failures",
               "method": "GET",
-              "operation": "GET_checkout_failures_error_categories_api_v1"
-            },
-            "checkoutFailuresErrorCodes": {
-              "path": "/v1/checkout-failures/error-codes",
-              "method": "GET",
-              "operation": "GET_checkout_failures_error_codes_api_v1"
-            },
-            "checkoutFailuresLobs": {
-              "path": "/v1/checkout-failures/lob",
-              "method": "GET",
-              "operation": "GET_checkout_failures_lobs_api_v1"
-            },
-            "checkoutFailuresSearch": {
-              "path": "/v1/checkout-failures/search",
-              "method": "GET",
-              "operation": "GET_checkout_failures_search_api_v1"
-            },
-            "checkoutFailuresSites": {
-              "path": "/v1/checkout-failures/sites",
-              "method": "GET",
-              "operation": "GET_checkout_failures_sites_api_v1"
-            },
-            "checkoutFailuresCategoryCounts": {
-              "path": "/v1/checkout-failures/category-counts",
-              "method": "GET",
-              "operation": "GET_checkout_failures_category_counts_api_v1"
-            },
-            "checkoutFailuresComments": {
-              "path": "/v1/checkout-failures/comments",
-              "method": "GET",
-              "operation": "GET_checkout_failures_comments_api_v1"
-            },
-            "checkoutFailuresErrorCounts": {
-              "path": "/v1/checkout-failures/error-counts",
-              "method": "GET",
-              "operation": "GET_checkout_failures_error_counts_api_v1"
+              "operation": "GET_login_failures_api_v1"
             },
             "deltaUser": {
               "path": "/v1/delta-users-counts-by-metrics",
@@ -923,45 +920,10 @@
               "method": "GET",
               "operation": "GET_checkout_failures_api_v1"
             },
-            "checkoutFailuresErrorCategories": {
-              "path": "/v1/checkout-failures/error-categories",
+            "loginFailures": {
+              "path": "/v1/login-failures",
               "method": "GET",
-              "operation": "GET_checkout_failure_error_categories_api_v1"
-            },
-            "checkoutFailuresErrorCodes": {
-              "path": "/v1/checkout-failures/error-codes",
-              "method": "GET",
-              "operation": "GET_checkout_failures_error_codes_api_v1"
-            },
-            "checkoutFailuresLobs": {
-              "path": "/v1/checkout-failures/lob",
-              "method": "GET",
-              "operation": "GET_checkout_failures_lobs_api_v1"
-            },
-            "checkoutFailuresSearch": {
-              "path": "/v1/checkout-failures/search",
-              "method": "GET",
-              "operation": "GET_checkout_failures_search_api_v1"
-            },
-            "checkoutFailuresSites": {
-              "path": "/v1/checkout-failures/sites",
-              "method": "GET",
-              "operation": "GET_checkout_failures_sites_api_v1"
-            },
-            "checkoutFailuresCategoryCounts": {
-              "path": "/v1/checkout-failures/category-counts",
-              "method": "GET",
-              "operation": "GET_checkout_failures_category_counts_api_v1"
-            },
-            "checkoutFailuresComments": {
-              "path": "/v1/checkout-failures/comments",
-              "method": "GET",
-              "operation": "GET_checkout_failures_comments_api_v1"
-            },
-            "checkoutFailuresErrorCounts": {
-              "path": "/v1/checkout-failures/error-counts",
-              "method": "GET",
-              "operation": "GET_checkout_failures_error_counts_api_v1"
+              "operation": "GET_login_failures_api_v1"
             },
             "deltaUser": {
               "path": "/v1/delta-users-counts-by-metrics",
@@ -1002,6 +964,18 @@
   },
   // register hapi plugins
   "register": {
+    "hapi-expose-view-context": {
+      "plugin": "require:@catalyst/hapi-expose-view-context"
+    },
+    "hapi-favicon-handler": {
+        "plugin": "require:@catalyst/hapi-favicon-handler",
+        "options": {
+          "brandLogo": "expediagroup",
+          "locale": "es_EN",
+          "humanReadableName": "ExpediaGroup",
+          "description": "ExpediaGroup OpXHub"
+        }
+    },
     "crumb": {
       "enabled": false
     },

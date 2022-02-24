@@ -2,6 +2,7 @@ import {useEffect, useRef, useState} from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
 import qs from 'query-string';
 import moment from 'moment';
+import {getIntervalInMinutes} from '../pages/SuccessRates/utils';
 import {checkResponse} from './utils';
 import {EG_BRAND, EGENCIA_BRAND} from '../constants';
 
@@ -45,6 +46,12 @@ export const getAdjustedRefAreas = (refAreaLeft, refAreaRight) => {
     return [refAreaLeft, refAreaRight];
 };
 
+export const isInvalidRange = (refAreaRight, refAreaLeft) => {
+    const range = Math.abs(refAreaRight - refAreaLeft);
+    const minRange = 200000;
+    return refAreaLeft === refAreaRight || refAreaRight === '' || range < minRange;
+};
+
 export const useZoomAndSynced = (
     widgets,
     setCurrentWidgets,
@@ -61,13 +68,11 @@ export const useZoomAndSynced = (
     setChartLeft,
     setChartRight,
     refAreaLeft,
-    refAreaRight
+    refAreaRight,
+    timeInterval
 ) => {
     const handleMouseUp = () => {
-        const diff = refAreaRight - refAreaLeft;
-        const minRangeWidth = 200000;
-
-        if (refAreaLeft === refAreaRight || refAreaRight === '' || diff < minRangeWidth) {
+        if (isInvalidRange(refAreaLeft, refAreaRight)) {
             setRefAreaLeft('');
             setRefAreaRight('');
             return;
@@ -82,27 +87,29 @@ export const useZoomAndSynced = (
         const nextWidgets = widgets.map((w) => {
             const nextWidget = w;
             nextWidget.aggregatedData = w.aggregatedData.slice(fromIdx, toIdx);
-
             nextWidget.minValue = nextWidget.aggregatedData.reduce((prev, current) =>
                 Math.min(prev, current.value), nextWidget.aggregatedData[0].value);
-
             return nextWidget;
         });
+        const nextTimeInterval = getIntervalInMinutes(nextRefAreaLeft, nextRefAreaRight);
+        const nextEnd = timeInterval
+            ? moment(nextRefAreaRight).add(nextTimeInterval - 1, 'minutes') // do not clip data from rest of time bucket when zooming
+            : moment(nextRefAreaRight);
         setRefAreaLeft('');
         setRefAreaRight('');
         setCurrentWidgets(nextWidgets.slice());
         setChartLeft(nextRefAreaLeft);
         setChartRight(nextRefAreaRight);
         setPendingStart(moment(nextRefAreaLeft));
-        setPendingEnd(moment(nextRefAreaRight));
+        setPendingEnd(moment(nextEnd));
         setCurrentTimeRange(pendingTimeRange);
         setStart(moment(nextRefAreaLeft));
-        setEnd(moment(nextRefAreaRight));
+        setEnd(moment(nextEnd));
         setIsDirtyForm(false);
         setIsZoomedIn(true);
-
         if (typeof setIsZoomedIn === 'function') {
-            setIsZoomedIn(true);
+            // Trigger zoom if time interval is not passed in or is the same; otherwise trigger normal fetch
+            setIsZoomedIn(!timeInterval || timeInterval === nextTimeInterval);
         }
     };
 

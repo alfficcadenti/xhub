@@ -1,0 +1,5311 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Fci/> it loads error codes after user click on error code radio button 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="fci-container"
+      >
+        <h1
+          class="page-title"
+        >
+          Failed Customer Interactions (FCI)
+        </h1>
+        <nav
+          class="Navigation Navigation--left-align Navigation--mobile-tabs"
+        >
+          <ul
+            class="Navigation__ul"
+          >
+            <li
+              class="Navigation__li"
+            >
+              <a
+                class="Navigation__a Navigation__a--active"
+                data-index="0"
+                href="/fci"
+              >
+                Trends
+              </a>
+            </li>
+            <li
+              class="Navigation__li"
+            >
+              <a
+                class="Navigation__a"
+                data-index="1"
+                href="/fci"
+              >
+                Search
+              </a>
+            </li>
+            <li
+              class="Navigation__li"
+            >
+              <a
+                class="Navigation__a"
+                data-index="2"
+                href="/fci"
+              >
+                Delta Users
+              </a>
+            </li>
+            <li
+              aria-hidden="true"
+              class="Navigation__li--highlight"
+              style="transform: translateX(0px) scaleY(1); width: 0px;"
+            />
+          </ul>
+        </nav>
+        <div
+          class="form-container"
+        >
+          <div
+            class="datetime-range-picker"
+          >
+            <div
+              class="rdt-container "
+              role="button"
+            >
+              <div
+                class="rdt"
+              >
+                <input
+                  class="form-control"
+                  type="text"
+                  value="02/22/2022 11:27 AM"
+                />
+                <div
+                  class="rdtPicker"
+                >
+                  <div
+                    class="rdtDays"
+                  >
+                    <table>
+                      <thead>
+                        <tr>
+                          <th
+                            class="rdtPrev"
+                          >
+                            <span>
+                              ‹
+                            </span>
+                          </th>
+                          <th
+                            class="rdtSwitch"
+                            colspan="5"
+                            data-value="1"
+                          >
+                            February 2022
+                          </th>
+                          <th
+                            class="rdtNext"
+                          >
+                            <span>
+                              ›
+                            </span>
+                          </th>
+                        </tr>
+                        <tr>
+                          <th
+                            class="dow"
+                          >
+                            Su
+                          </th>
+                          <th
+                            class="dow"
+                          >
+                            Mo
+                          </th>
+                          <th
+                            class="dow"
+                          >
+                            Tu
+                          </th>
+                          <th
+                            class="dow"
+                          >
+                            We
+                          </th>
+                          <th
+                            class="dow"
+                          >
+                            Th
+                          </th>
+                          <th
+                            class="dow"
+                          >
+                            Fr
+                          </th>
+                          <th
+                            class="dow"
+                          >
+                            Sa
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td
+                            class="rdtDay rdtOld"
+                            data-value="30"
+                          >
+                            30
+                          </td>
+                          <td
+                            class="rdtDay rdtOld"
+                            data-value="31"
+                          >
+                            31
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="1"
+                          >
+                            1
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="2"
+                          >
+                            2
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="3"
+                          >
+                            3
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="4"
+                          >
+                            4
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="5"
+                          >
+                            5
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            class="rdtDay"
+                            data-value="6"
+                          >
+                            6
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="7"
+                          >
+                            7
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="8"
+                          >
+                            8
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="9"
+                          >
+                            9
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="10"
+                          >
+                            10
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="11"
+                          >
+                            11
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="12"
+                          >
+                            12
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            class="rdtDay"
+                            data-value="13"
+                          >
+                            13
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="14"
+                          >
+                            14
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="15"
+                          >
+                            15
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="16"
+                          >
+                            16
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="17"
+                          >
+                            17
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="18"
+                          >
+                            18
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="19"
+                          >
+                            19
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            class="rdtDay"
+                            data-value="20"
+                          >
+                            20
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="21"
+                          >
+                            21
+                          </td>
+                          <td
+                            class="rdtDay rdtActive rdtActive"
+                            data-value="22"
+                          >
+                            22
+                          </td>
+                          <td
+                            class="rdtDay rdtToday rdtActive"
+                            data-value="23"
+                          >
+                            23
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="24"
+                          >
+                            24
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="25"
+                          >
+                            25
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="26"
+                          >
+                            26
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            class="rdtDay"
+                            data-value="27"
+                          >
+                            27
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="28"
+                          >
+                            28
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="1"
+                          >
+                            1
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="2"
+                          >
+                            2
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="3"
+                          >
+                            3
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="4"
+                          >
+                            4
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="5"
+                          >
+                            5
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="6"
+                          >
+                            6
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="7"
+                          >
+                            7
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="8"
+                          >
+                            8
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="9"
+                          >
+                            9
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="10"
+                          >
+                            10
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="11"
+                          >
+                            11
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="12"
+                          >
+                            12
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <td
+                            class="rdtTimeToggle"
+                            colspan="7"
+                          >
+                            11:27 AM
+                          </td>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="rdt"
+              >
+                <input
+                  class="form-control"
+                  type="text"
+                  value="02/23/2022 11:27 AM"
+                />
+                <div
+                  class="rdtPicker"
+                >
+                  <div
+                    class="rdtDays"
+                  >
+                    <table>
+                      <thead>
+                        <tr>
+                          <th
+                            class="rdtPrev"
+                          >
+                            <span>
+                              ‹
+                            </span>
+                          </th>
+                          <th
+                            class="rdtSwitch"
+                            colspan="5"
+                            data-value="1"
+                          >
+                            February 2022
+                          </th>
+                          <th
+                            class="rdtNext"
+                          >
+                            <span>
+                              ›
+                            </span>
+                          </th>
+                        </tr>
+                        <tr>
+                          <th
+                            class="dow"
+                          >
+                            Su
+                          </th>
+                          <th
+                            class="dow"
+                          >
+                            Mo
+                          </th>
+                          <th
+                            class="dow"
+                          >
+                            Tu
+                          </th>
+                          <th
+                            class="dow"
+                          >
+                            We
+                          </th>
+                          <th
+                            class="dow"
+                          >
+                            Th
+                          </th>
+                          <th
+                            class="dow"
+                          >
+                            Fr
+                          </th>
+                          <th
+                            class="dow"
+                          >
+                            Sa
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td
+                            class="rdtDay rdtOld rdtDisabled"
+                            data-value="30"
+                          >
+                            30
+                          </td>
+                          <td
+                            class="rdtDay rdtOld rdtDisabled"
+                            data-value="31"
+                          >
+                            31
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="1"
+                          >
+                            1
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="2"
+                          >
+                            2
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="3"
+                          >
+                            3
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="4"
+                          >
+                            4
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="5"
+                          >
+                            5
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="6"
+                          >
+                            6
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="7"
+                          >
+                            7
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="8"
+                          >
+                            8
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="9"
+                          >
+                            9
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="10"
+                          >
+                            10
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="11"
+                          >
+                            11
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="12"
+                          >
+                            12
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="13"
+                          >
+                            13
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="14"
+                          >
+                            14
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="15"
+                          >
+                            15
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="16"
+                          >
+                            16
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="17"
+                          >
+                            17
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="18"
+                          >
+                            18
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="19"
+                          >
+                            19
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="20"
+                          >
+                            20
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="21"
+                          >
+                            21
+                          </td>
+                          <td
+                            class="rdtDay rdtActive"
+                            data-value="22"
+                          >
+                            22
+                          </td>
+                          <td
+                            class="rdtDay rdtActive rdtToday rdtActive"
+                            data-value="23"
+                          >
+                            23
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="24"
+                          >
+                            24
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="25"
+                          >
+                            25
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="26"
+                          >
+                            26
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            class="rdtDay"
+                            data-value="27"
+                          >
+                            27
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="28"
+                          >
+                            28
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="1"
+                          >
+                            1
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="2"
+                          >
+                            2
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="3"
+                          >
+                            3
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="4"
+                          >
+                            4
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="5"
+                          >
+                            5
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="6"
+                          >
+                            6
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="7"
+                          >
+                            7
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="8"
+                          >
+                            8
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="9"
+                          >
+                            9
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="10"
+                          >
+                            10
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="11"
+                          >
+                            11
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="12"
+                          >
+                            12
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <td
+                            class="rdtTimeToggle"
+                            colspan="7"
+                          >
+                            11:27 AM
+                          </td>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="rdt-start-label"
+            >
+              Start
+            </div>
+            <div
+              class="rdt-end-label"
+            >
+              End
+            </div>
+            <div
+              class="Dropdown rdt-preset-dropdown"
+              role="presentation"
+              tabindex="-1"
+            >
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="btn btn-default Dropdown__toggle border-border-color border--contrast"
+                id="rdt-preset-dropdown"
+                type="button"
+              >
+                <span
+                  class="btn__label"
+                >
+                  Last 24 hours
+                </span>
+                <span
+                  class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
+                >
+                  <svg
+                    data-id="SVG_CHEVRON_DOWN__12"
+                    focusable="false"
+                    height="12"
+                    viewBox="0 0 12 12"
+                    width="12"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M11 4L6 9 1 4"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
+              </button>
+              <ul
+                aria-labelledby="rdt-preset-dropdown"
+                class="Dropdown__menu"
+                id="rdt-preset-dropdown--container"
+                role="dialog"
+              >
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Last 15 minutes
+                  </a>
+                </li>
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Last 30 minutes
+                  </a>
+                </li>
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Last 1 hour
+                  </a>
+                </li>
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Last 3 hours
+                  </a>
+                </li>
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Last 6 hours
+                  </a>
+                </li>
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Last 12 hours
+                  </a>
+                </li>
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Last 24 hours
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div
+            class="Dropdown error-type-dropdown"
+            role="presentation"
+            tabindex="-1"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="btn btn-default Dropdown__toggle border-border-color border--contrast"
+              id="error-type-dropdown"
+              type="button"
+            >
+              <span
+                class="btn__label"
+              >
+                Checkout FCIs
+              </span>
+              <span
+                class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
+              >
+                <svg
+                  data-id="SVG_CHEVRON_DOWN__12"
+                  focusable="false"
+                  height="12"
+                  viewBox="0 0 12 12"
+                  width="12"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M11 4L6 9 1 4"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </button>
+            <ul
+              aria-labelledby="error-type-dropdown"
+              class="Dropdown__menu"
+              id="error-type-dropdown--container"
+              role="dialog"
+            >
+              <li
+                role="presentation"
+              >
+                <a
+                  data-bypass="false"
+                  href="#"
+                >
+                   
+                  Checkout FCIs
+                </a>
+              </li>
+              <li
+                role="presentation"
+              >
+                <a
+                  data-bypass="false"
+                  href="#"
+                >
+                   
+                  Login FCIs
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="selection-wrapper"
+          >
+            <div
+              class="error-code-dropdown css-2b097c-container"
+            >
+              <div
+                class="error-code-dropdown__control css-yk16xz-control"
+              >
+                <div
+                  class="error-code-dropdown__value-container error-code-dropdown__value-container--is-multi css-g1d714-ValueContainer"
+                >
+                  <div
+                    class="error-code-dropdown__placeholder css-1wa3eu0-placeholder"
+                  >
+                    All Errors
+                  </div>
+                  <div
+                    class="css-b8ldur-Input"
+                  >
+                    <div
+                      class="error-code-dropdown__input"
+                      style="display: inline-block;"
+                    >
+                      <input
+                        aria-autocomplete="list"
+                        autocapitalize="none"
+                        autocomplete="off"
+                        autocorrect="off"
+                        id="react-select-5-input"
+                        spellcheck="false"
+                        style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
+                        tabindex="0"
+                        type="text"
+                        value=""
+                      />
+                      <div
+                        style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="error-code-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
+                >
+                  <div
+                    aria-hidden="true"
+                    class="error-code-dropdown__indicator error-code-dropdown__loading-indicator css-at12u2-loadingIndicator"
+                  >
+                    <span
+                      class="css-1yvy2vo-LoadingDot"
+                    />
+                    <span
+                      class="css-zoievk-LoadingDot"
+                    />
+                    <span
+                      class="css-x748d8-LoadingDot"
+                    />
+                  </div>
+                  <span
+                    class="error-code-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
+                  />
+                  <div
+                    aria-hidden="true"
+                    class="error-code-dropdown__indicator error-code-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="css-6q0nyr-Svg"
+                      focusable="false"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      width="20"
+                    >
+                      <path
+                        d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="site-dropdown css-2b097c-container"
+            >
+              <div
+                class="site-dropdown__control css-yk16xz-control"
+              >
+                <div
+                  class="site-dropdown__value-container site-dropdown__value-container--is-multi site-dropdown__value-container--has-value css-g1d714-ValueContainer"
+                >
+                  <div
+                    class="css-1rhbuit-multiValue site-dropdown__multi-value"
+                  >
+                    <div
+                      class="css-12jo7m5 site-dropdown__multi-value__label"
+                    >
+                      www.expedia.com
+                    </div>
+                    <div
+                      class="css-xb97g8 site-dropdown__multi-value__remove"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="css-6q0nyr-Svg"
+                        focusable="false"
+                        height="14"
+                        viewBox="0 0 20 20"
+                        width="14"
+                      >
+                        <path
+                          d="M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                  <div
+                    class="css-b8ldur-Input"
+                  >
+                    <div
+                      class="site-dropdown__input"
+                      style="display: inline-block;"
+                    >
+                      <input
+                        aria-autocomplete="list"
+                        autocapitalize="none"
+                        autocomplete="off"
+                        autocorrect="off"
+                        id="react-select-6-input"
+                        spellcheck="false"
+                        style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
+                        tabindex="0"
+                        type="text"
+                        value=""
+                      />
+                      <div
+                        style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="site-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
+                >
+                  <div
+                    aria-hidden="true"
+                    class="site-dropdown__indicator site-dropdown__clear-indicator css-tlfecz-indicatorContainer"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="css-6q0nyr-Svg"
+                      focusable="false"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      width="20"
+                    >
+                      <path
+                        d="M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z"
+                      />
+                    </svg>
+                  </div>
+                  <span
+                    class="site-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
+                  />
+                  <div
+                    aria-hidden="true"
+                    class="site-dropdown__indicator site-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="css-6q0nyr-Svg"
+                      focusable="false"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      width="20"
+                    >
+                      <path
+                        d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class=""
+              role="button"
+              style="display: inline-block; outline: 0; position: relative;"
+              tabindex="0"
+            >
+              <div
+                class="lob-dropdown css-2b097c-container"
+              >
+                <div
+                  class="lob-dropdown__control css-yk16xz-control"
+                >
+                  <div
+                    class="lob-dropdown__value-container lob-dropdown__value-container--is-multi css-g1d714-ValueContainer"
+                  >
+                    <div
+                      class="lob-dropdown__placeholder css-1wa3eu0-placeholder"
+                    >
+                      All LoBs
+                    </div>
+                    <div
+                      class="css-b8ldur-Input"
+                    >
+                      <div
+                        class="lob-dropdown__input"
+                        style="display: inline-block;"
+                      >
+                        <input
+                          aria-autocomplete="list"
+                          autocapitalize="none"
+                          autocomplete="off"
+                          autocorrect="off"
+                          id="react-select-7-input"
+                          spellcheck="false"
+                          style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
+                          tabindex="0"
+                          type="text"
+                          value=""
+                        />
+                        <div
+                          style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="lob-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
+                  >
+                    <span
+                      class="lob-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
+                    />
+                    <div
+                      aria-hidden="true"
+                      class="lob-dropdown__indicator lob-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="css-6q0nyr-Svg"
+                        focusable="false"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        width="20"
+                      >
+                        <path
+                          d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="intent-cbox form-group CRB CRB--checkbox CRB--sm"
+            >
+              <label
+                class="CRB__label text-muted CRB__label--right"
+              >
+                <input
+                  class="CRB__input"
+                  name="intent-cbox"
+                  type="checkbox"
+                />
+                <span
+                  class="CRB__toggle CRB__toggle--left"
+                />
+                <span
+                  class="label-text"
+                >
+                  Hide Intentional Errors
+                </span>
+              </label>
+            </div>
+            <button
+              class="btn btn-primary apply-btn"
+              disabled=""
+              type="button"
+            >
+              Apply
+            </button>
+          </div>
+        </div>
+        <div
+          class="loading-container fci-loading-container"
+        >
+          <div
+            class="LoadingOverlay fade in"
+            role="status"
+          >
+            <ul
+              aria-hidden="true"
+              class="LoadingOverlay__ul"
+            >
+              <li
+                class="LoadingOverlay__li LoadingOverlay__li--1 bg-brand"
+              />
+              <li
+                class="LoadingOverlay__li LoadingOverlay__li--2 bg-brand"
+              />
+              <li
+                class="LoadingOverlay__li LoadingOverlay__li--3 bg-brand"
+              />
+              <li
+                class="LoadingOverlay__li LoadingOverlay__li--4 bg-brand"
+              />
+            </ul>
+          </div>
+        </div>
+        <div />
+        <div />
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="fci-container"
+    >
+      <h1
+        class="page-title"
+      >
+        Failed Customer Interactions (FCI)
+      </h1>
+      <nav
+        class="Navigation Navigation--left-align Navigation--mobile-tabs"
+      >
+        <ul
+          class="Navigation__ul"
+        >
+          <li
+            class="Navigation__li"
+          >
+            <a
+              class="Navigation__a Navigation__a--active"
+              data-index="0"
+              href="/fci"
+            >
+              Trends
+            </a>
+          </li>
+          <li
+            class="Navigation__li"
+          >
+            <a
+              class="Navigation__a"
+              data-index="1"
+              href="/fci"
+            >
+              Search
+            </a>
+          </li>
+          <li
+            class="Navigation__li"
+          >
+            <a
+              class="Navigation__a"
+              data-index="2"
+              href="/fci"
+            >
+              Delta Users
+            </a>
+          </li>
+          <li
+            aria-hidden="true"
+            class="Navigation__li--highlight"
+            style="transform: translateX(0px) scaleY(1); width: 0px;"
+          />
+        </ul>
+      </nav>
+      <div
+        class="form-container"
+      >
+        <div
+          class="datetime-range-picker"
+        >
+          <div
+            class="rdt-container "
+            role="button"
+          >
+            <div
+              class="rdt"
+            >
+              <input
+                class="form-control"
+                type="text"
+                value="02/22/2022 11:27 AM"
+              />
+              <div
+                class="rdtPicker"
+              >
+                <div
+                  class="rdtDays"
+                >
+                  <table>
+                    <thead>
+                      <tr>
+                        <th
+                          class="rdtPrev"
+                        >
+                          <span>
+                            ‹
+                          </span>
+                        </th>
+                        <th
+                          class="rdtSwitch"
+                          colspan="5"
+                          data-value="1"
+                        >
+                          February 2022
+                        </th>
+                        <th
+                          class="rdtNext"
+                        >
+                          <span>
+                            ›
+                          </span>
+                        </th>
+                      </tr>
+                      <tr>
+                        <th
+                          class="dow"
+                        >
+                          Su
+                        </th>
+                        <th
+                          class="dow"
+                        >
+                          Mo
+                        </th>
+                        <th
+                          class="dow"
+                        >
+                          Tu
+                        </th>
+                        <th
+                          class="dow"
+                        >
+                          We
+                        </th>
+                        <th
+                          class="dow"
+                        >
+                          Th
+                        </th>
+                        <th
+                          class="dow"
+                        >
+                          Fr
+                        </th>
+                        <th
+                          class="dow"
+                        >
+                          Sa
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td
+                          class="rdtDay rdtOld"
+                          data-value="30"
+                        >
+                          30
+                        </td>
+                        <td
+                          class="rdtDay rdtOld"
+                          data-value="31"
+                        >
+                          31
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="1"
+                        >
+                          1
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="2"
+                        >
+                          2
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="3"
+                        >
+                          3
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="4"
+                        >
+                          4
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="5"
+                        >
+                          5
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          class="rdtDay"
+                          data-value="6"
+                        >
+                          6
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="7"
+                        >
+                          7
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="8"
+                        >
+                          8
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="9"
+                        >
+                          9
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="10"
+                        >
+                          10
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="11"
+                        >
+                          11
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="12"
+                        >
+                          12
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          class="rdtDay"
+                          data-value="13"
+                        >
+                          13
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="14"
+                        >
+                          14
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="15"
+                        >
+                          15
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="16"
+                        >
+                          16
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="17"
+                        >
+                          17
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="18"
+                        >
+                          18
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="19"
+                        >
+                          19
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          class="rdtDay"
+                          data-value="20"
+                        >
+                          20
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="21"
+                        >
+                          21
+                        </td>
+                        <td
+                          class="rdtDay rdtActive rdtActive"
+                          data-value="22"
+                        >
+                          22
+                        </td>
+                        <td
+                          class="rdtDay rdtToday rdtActive"
+                          data-value="23"
+                        >
+                          23
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="24"
+                        >
+                          24
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="25"
+                        >
+                          25
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="26"
+                        >
+                          26
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          class="rdtDay"
+                          data-value="27"
+                        >
+                          27
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="28"
+                        >
+                          28
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="1"
+                        >
+                          1
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="2"
+                        >
+                          2
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="3"
+                        >
+                          3
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="4"
+                        >
+                          4
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="5"
+                        >
+                          5
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="6"
+                        >
+                          6
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="7"
+                        >
+                          7
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="8"
+                        >
+                          8
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="9"
+                        >
+                          9
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="10"
+                        >
+                          10
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="11"
+                        >
+                          11
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="12"
+                        >
+                          12
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <td
+                          class="rdtTimeToggle"
+                          colspan="7"
+                        >
+                          11:27 AM
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div
+              class="rdt"
+            >
+              <input
+                class="form-control"
+                type="text"
+                value="02/23/2022 11:27 AM"
+              />
+              <div
+                class="rdtPicker"
+              >
+                <div
+                  class="rdtDays"
+                >
+                  <table>
+                    <thead>
+                      <tr>
+                        <th
+                          class="rdtPrev"
+                        >
+                          <span>
+                            ‹
+                          </span>
+                        </th>
+                        <th
+                          class="rdtSwitch"
+                          colspan="5"
+                          data-value="1"
+                        >
+                          February 2022
+                        </th>
+                        <th
+                          class="rdtNext"
+                        >
+                          <span>
+                            ›
+                          </span>
+                        </th>
+                      </tr>
+                      <tr>
+                        <th
+                          class="dow"
+                        >
+                          Su
+                        </th>
+                        <th
+                          class="dow"
+                        >
+                          Mo
+                        </th>
+                        <th
+                          class="dow"
+                        >
+                          Tu
+                        </th>
+                        <th
+                          class="dow"
+                        >
+                          We
+                        </th>
+                        <th
+                          class="dow"
+                        >
+                          Th
+                        </th>
+                        <th
+                          class="dow"
+                        >
+                          Fr
+                        </th>
+                        <th
+                          class="dow"
+                        >
+                          Sa
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td
+                          class="rdtDay rdtOld rdtDisabled"
+                          data-value="30"
+                        >
+                          30
+                        </td>
+                        <td
+                          class="rdtDay rdtOld rdtDisabled"
+                          data-value="31"
+                        >
+                          31
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="1"
+                        >
+                          1
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="2"
+                        >
+                          2
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="3"
+                        >
+                          3
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="4"
+                        >
+                          4
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="5"
+                        >
+                          5
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="6"
+                        >
+                          6
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="7"
+                        >
+                          7
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="8"
+                        >
+                          8
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="9"
+                        >
+                          9
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="10"
+                        >
+                          10
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="11"
+                        >
+                          11
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="12"
+                        >
+                          12
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="13"
+                        >
+                          13
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="14"
+                        >
+                          14
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="15"
+                        >
+                          15
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="16"
+                        >
+                          16
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="17"
+                        >
+                          17
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="18"
+                        >
+                          18
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="19"
+                        >
+                          19
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="20"
+                        >
+                          20
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="21"
+                        >
+                          21
+                        </td>
+                        <td
+                          class="rdtDay rdtActive"
+                          data-value="22"
+                        >
+                          22
+                        </td>
+                        <td
+                          class="rdtDay rdtActive rdtToday rdtActive"
+                          data-value="23"
+                        >
+                          23
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="24"
+                        >
+                          24
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="25"
+                        >
+                          25
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="26"
+                        >
+                          26
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          class="rdtDay"
+                          data-value="27"
+                        >
+                          27
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="28"
+                        >
+                          28
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="1"
+                        >
+                          1
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="2"
+                        >
+                          2
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="3"
+                        >
+                          3
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="4"
+                        >
+                          4
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="5"
+                        >
+                          5
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="6"
+                        >
+                          6
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="7"
+                        >
+                          7
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="8"
+                        >
+                          8
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="9"
+                        >
+                          9
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="10"
+                        >
+                          10
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="11"
+                        >
+                          11
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="12"
+                        >
+                          12
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <td
+                          class="rdtTimeToggle"
+                          colspan="7"
+                        >
+                          11:27 AM
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="rdt-start-label"
+          >
+            Start
+          </div>
+          <div
+            class="rdt-end-label"
+          >
+            End
+          </div>
+          <div
+            class="Dropdown rdt-preset-dropdown"
+            role="presentation"
+            tabindex="-1"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="btn btn-default Dropdown__toggle border-border-color border--contrast"
+              id="rdt-preset-dropdown"
+              type="button"
+            >
+              <span
+                class="btn__label"
+              >
+                Last 24 hours
+              </span>
+              <span
+                class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
+              >
+                <svg
+                  data-id="SVG_CHEVRON_DOWN__12"
+                  focusable="false"
+                  height="12"
+                  viewBox="0 0 12 12"
+                  width="12"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M11 4L6 9 1 4"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </button>
+            <ul
+              aria-labelledby="rdt-preset-dropdown"
+              class="Dropdown__menu"
+              id="rdt-preset-dropdown--container"
+              role="dialog"
+            >
+              <li
+                role="presentation"
+              >
+                <a
+                  data-bypass="false"
+                  href="#"
+                >
+                   
+                  Last 15 minutes
+                </a>
+              </li>
+              <li
+                role="presentation"
+              >
+                <a
+                  data-bypass="false"
+                  href="#"
+                >
+                   
+                  Last 30 minutes
+                </a>
+              </li>
+              <li
+                role="presentation"
+              >
+                <a
+                  data-bypass="false"
+                  href="#"
+                >
+                   
+                  Last 1 hour
+                </a>
+              </li>
+              <li
+                role="presentation"
+              >
+                <a
+                  data-bypass="false"
+                  href="#"
+                >
+                   
+                  Last 3 hours
+                </a>
+              </li>
+              <li
+                role="presentation"
+              >
+                <a
+                  data-bypass="false"
+                  href="#"
+                >
+                   
+                  Last 6 hours
+                </a>
+              </li>
+              <li
+                role="presentation"
+              >
+                <a
+                  data-bypass="false"
+                  href="#"
+                >
+                   
+                  Last 12 hours
+                </a>
+              </li>
+              <li
+                role="presentation"
+              >
+                <a
+                  data-bypass="false"
+                  href="#"
+                >
+                   
+                  Last 24 hours
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
+          class="Dropdown error-type-dropdown"
+          role="presentation"
+          tabindex="-1"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="btn btn-default Dropdown__toggle border-border-color border--contrast"
+            id="error-type-dropdown"
+            type="button"
+          >
+            <span
+              class="btn__label"
+            >
+              Checkout FCIs
+            </span>
+            <span
+              class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
+            >
+              <svg
+                data-id="SVG_CHEVRON_DOWN__12"
+                focusable="false"
+                height="12"
+                viewBox="0 0 12 12"
+                width="12"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M11 4L6 9 1 4"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+          </button>
+          <ul
+            aria-labelledby="error-type-dropdown"
+            class="Dropdown__menu"
+            id="error-type-dropdown--container"
+            role="dialog"
+          >
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Checkout FCIs
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Login FCIs
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div
+          class="selection-wrapper"
+        >
+          <div
+            class="error-code-dropdown css-2b097c-container"
+          >
+            <div
+              class="error-code-dropdown__control css-yk16xz-control"
+            >
+              <div
+                class="error-code-dropdown__value-container error-code-dropdown__value-container--is-multi css-g1d714-ValueContainer"
+              >
+                <div
+                  class="error-code-dropdown__placeholder css-1wa3eu0-placeholder"
+                >
+                  All Errors
+                </div>
+                <div
+                  class="css-b8ldur-Input"
+                >
+                  <div
+                    class="error-code-dropdown__input"
+                    style="display: inline-block;"
+                  >
+                    <input
+                      aria-autocomplete="list"
+                      autocapitalize="none"
+                      autocomplete="off"
+                      autocorrect="off"
+                      id="react-select-5-input"
+                      spellcheck="false"
+                      style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
+                      tabindex="0"
+                      type="text"
+                      value=""
+                    />
+                    <div
+                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                class="error-code-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
+              >
+                <div
+                  aria-hidden="true"
+                  class="error-code-dropdown__indicator error-code-dropdown__loading-indicator css-at12u2-loadingIndicator"
+                >
+                  <span
+                    class="css-1yvy2vo-LoadingDot"
+                  />
+                  <span
+                    class="css-zoievk-LoadingDot"
+                  />
+                  <span
+                    class="css-x748d8-LoadingDot"
+                  />
+                </div>
+                <span
+                  class="error-code-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
+                />
+                <div
+                  aria-hidden="true"
+                  class="error-code-dropdown__indicator error-code-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="css-6q0nyr-Svg"
+                    focusable="false"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    width="20"
+                  >
+                    <path
+                      d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="site-dropdown css-2b097c-container"
+          >
+            <div
+              class="site-dropdown__control css-yk16xz-control"
+            >
+              <div
+                class="site-dropdown__value-container site-dropdown__value-container--is-multi site-dropdown__value-container--has-value css-g1d714-ValueContainer"
+              >
+                <div
+                  class="css-1rhbuit-multiValue site-dropdown__multi-value"
+                >
+                  <div
+                    class="css-12jo7m5 site-dropdown__multi-value__label"
+                  >
+                    www.expedia.com
+                  </div>
+                  <div
+                    class="css-xb97g8 site-dropdown__multi-value__remove"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="css-6q0nyr-Svg"
+                      focusable="false"
+                      height="14"
+                      viewBox="0 0 20 20"
+                      width="14"
+                    >
+                      <path
+                        d="M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+                <div
+                  class="css-b8ldur-Input"
+                >
+                  <div
+                    class="site-dropdown__input"
+                    style="display: inline-block;"
+                  >
+                    <input
+                      aria-autocomplete="list"
+                      autocapitalize="none"
+                      autocomplete="off"
+                      autocorrect="off"
+                      id="react-select-6-input"
+                      spellcheck="false"
+                      style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
+                      tabindex="0"
+                      type="text"
+                      value=""
+                    />
+                    <div
+                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                class="site-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
+              >
+                <div
+                  aria-hidden="true"
+                  class="site-dropdown__indicator site-dropdown__clear-indicator css-tlfecz-indicatorContainer"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="css-6q0nyr-Svg"
+                    focusable="false"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    width="20"
+                  >
+                    <path
+                      d="M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z"
+                    />
+                  </svg>
+                </div>
+                <span
+                  class="site-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
+                />
+                <div
+                  aria-hidden="true"
+                  class="site-dropdown__indicator site-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="css-6q0nyr-Svg"
+                    focusable="false"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    width="20"
+                  >
+                    <path
+                      d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class=""
+            role="button"
+            style="display: inline-block; outline: 0; position: relative;"
+            tabindex="0"
+          >
+            <div
+              class="lob-dropdown css-2b097c-container"
+            >
+              <div
+                class="lob-dropdown__control css-yk16xz-control"
+              >
+                <div
+                  class="lob-dropdown__value-container lob-dropdown__value-container--is-multi css-g1d714-ValueContainer"
+                >
+                  <div
+                    class="lob-dropdown__placeholder css-1wa3eu0-placeholder"
+                  >
+                    All LoBs
+                  </div>
+                  <div
+                    class="css-b8ldur-Input"
+                  >
+                    <div
+                      class="lob-dropdown__input"
+                      style="display: inline-block;"
+                    >
+                      <input
+                        aria-autocomplete="list"
+                        autocapitalize="none"
+                        autocomplete="off"
+                        autocorrect="off"
+                        id="react-select-7-input"
+                        spellcheck="false"
+                        style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
+                        tabindex="0"
+                        type="text"
+                        value=""
+                      />
+                      <div
+                        style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="lob-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
+                >
+                  <span
+                    class="lob-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
+                  />
+                  <div
+                    aria-hidden="true"
+                    class="lob-dropdown__indicator lob-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="css-6q0nyr-Svg"
+                      focusable="false"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      width="20"
+                    >
+                      <path
+                        d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="intent-cbox form-group CRB CRB--checkbox CRB--sm"
+          >
+            <label
+              class="CRB__label text-muted CRB__label--right"
+            >
+              <input
+                class="CRB__input"
+                name="intent-cbox"
+                type="checkbox"
+              />
+              <span
+                class="CRB__toggle CRB__toggle--left"
+              />
+              <span
+                class="label-text"
+              >
+                Hide Intentional Errors
+              </span>
+            </label>
+          </div>
+          <button
+            class="btn btn-primary apply-btn"
+            disabled=""
+            type="button"
+          >
+            Apply
+          </button>
+        </div>
+      </div>
+      <div
+        class="loading-container fci-loading-container"
+      >
+        <div
+          class="LoadingOverlay fade in"
+          role="status"
+        >
+          <ul
+            aria-hidden="true"
+            class="LoadingOverlay__ul"
+          >
+            <li
+              class="LoadingOverlay__li LoadingOverlay__li--1 bg-brand"
+            />
+            <li
+              class="LoadingOverlay__li LoadingOverlay__li--2 bg-brand"
+            />
+            <li
+              class="LoadingOverlay__li LoadingOverlay__li--3 bg-brand"
+            />
+            <li
+              class="LoadingOverlay__li LoadingOverlay__li--4 bg-brand"
+            />
+          </ul>
+        </div>
+      </div>
+      <div />
+      <div />
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`<Fci/> render successfully for the first time landing page 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="fci-container"
+      >
+        <h1
+          class="page-title"
+        >
+          Failed Customer Interactions (FCI)
+        </h1>
+        <nav
+          class="Navigation Navigation--left-align Navigation--mobile-tabs"
+        >
+          <ul
+            class="Navigation__ul"
+          >
+            <li
+              class="Navigation__li"
+            >
+              <a
+                class="Navigation__a Navigation__a--active"
+                data-index="0"
+                href="/fci"
+              >
+                Trends
+              </a>
+            </li>
+            <li
+              class="Navigation__li"
+            >
+              <a
+                class="Navigation__a"
+                data-index="1"
+                href="/fci"
+              >
+                Search
+              </a>
+            </li>
+            <li
+              class="Navigation__li"
+            >
+              <a
+                class="Navigation__a"
+                data-index="2"
+                href="/fci"
+              >
+                Delta Users
+              </a>
+            </li>
+            <li
+              aria-hidden="true"
+              class="Navigation__li--highlight"
+              style="transform: translateX(0px) scaleY(2); width: 0px;"
+            />
+          </ul>
+        </nav>
+        <div
+          class="form-container"
+        >
+          <div
+            class="datetime-range-picker"
+          >
+            <div
+              class="rdt-container "
+              role="button"
+            >
+              <div
+                class="rdt"
+              >
+                <input
+                  class="form-control"
+                  type="text"
+                  value="02/22/2022 11:27 AM"
+                />
+                <div
+                  class="rdtPicker"
+                >
+                  <div
+                    class="rdtDays"
+                  >
+                    <table>
+                      <thead>
+                        <tr>
+                          <th
+                            class="rdtPrev"
+                          >
+                            <span>
+                              ‹
+                            </span>
+                          </th>
+                          <th
+                            class="rdtSwitch"
+                            colspan="5"
+                            data-value="1"
+                          >
+                            February 2022
+                          </th>
+                          <th
+                            class="rdtNext"
+                          >
+                            <span>
+                              ›
+                            </span>
+                          </th>
+                        </tr>
+                        <tr>
+                          <th
+                            class="dow"
+                          >
+                            Su
+                          </th>
+                          <th
+                            class="dow"
+                          >
+                            Mo
+                          </th>
+                          <th
+                            class="dow"
+                          >
+                            Tu
+                          </th>
+                          <th
+                            class="dow"
+                          >
+                            We
+                          </th>
+                          <th
+                            class="dow"
+                          >
+                            Th
+                          </th>
+                          <th
+                            class="dow"
+                          >
+                            Fr
+                          </th>
+                          <th
+                            class="dow"
+                          >
+                            Sa
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td
+                            class="rdtDay rdtOld"
+                            data-value="30"
+                          >
+                            30
+                          </td>
+                          <td
+                            class="rdtDay rdtOld"
+                            data-value="31"
+                          >
+                            31
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="1"
+                          >
+                            1
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="2"
+                          >
+                            2
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="3"
+                          >
+                            3
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="4"
+                          >
+                            4
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="5"
+                          >
+                            5
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            class="rdtDay"
+                            data-value="6"
+                          >
+                            6
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="7"
+                          >
+                            7
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="8"
+                          >
+                            8
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="9"
+                          >
+                            9
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="10"
+                          >
+                            10
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="11"
+                          >
+                            11
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="12"
+                          >
+                            12
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            class="rdtDay"
+                            data-value="13"
+                          >
+                            13
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="14"
+                          >
+                            14
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="15"
+                          >
+                            15
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="16"
+                          >
+                            16
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="17"
+                          >
+                            17
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="18"
+                          >
+                            18
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="19"
+                          >
+                            19
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            class="rdtDay"
+                            data-value="20"
+                          >
+                            20
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="21"
+                          >
+                            21
+                          </td>
+                          <td
+                            class="rdtDay rdtActive rdtActive"
+                            data-value="22"
+                          >
+                            22
+                          </td>
+                          <td
+                            class="rdtDay rdtToday rdtActive"
+                            data-value="23"
+                          >
+                            23
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="24"
+                          >
+                            24
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="25"
+                          >
+                            25
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="26"
+                          >
+                            26
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            class="rdtDay"
+                            data-value="27"
+                          >
+                            27
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="28"
+                          >
+                            28
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="1"
+                          >
+                            1
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="2"
+                          >
+                            2
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="3"
+                          >
+                            3
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="4"
+                          >
+                            4
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="5"
+                          >
+                            5
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="6"
+                          >
+                            6
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="7"
+                          >
+                            7
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="8"
+                          >
+                            8
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="9"
+                          >
+                            9
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="10"
+                          >
+                            10
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="11"
+                          >
+                            11
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="12"
+                          >
+                            12
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <td
+                            class="rdtTimeToggle"
+                            colspan="7"
+                          >
+                            11:27 AM
+                          </td>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="rdt"
+              >
+                <input
+                  class="form-control"
+                  type="text"
+                  value="02/23/2022 11:27 AM"
+                />
+                <div
+                  class="rdtPicker"
+                >
+                  <div
+                    class="rdtDays"
+                  >
+                    <table>
+                      <thead>
+                        <tr>
+                          <th
+                            class="rdtPrev"
+                          >
+                            <span>
+                              ‹
+                            </span>
+                          </th>
+                          <th
+                            class="rdtSwitch"
+                            colspan="5"
+                            data-value="1"
+                          >
+                            February 2022
+                          </th>
+                          <th
+                            class="rdtNext"
+                          >
+                            <span>
+                              ›
+                            </span>
+                          </th>
+                        </tr>
+                        <tr>
+                          <th
+                            class="dow"
+                          >
+                            Su
+                          </th>
+                          <th
+                            class="dow"
+                          >
+                            Mo
+                          </th>
+                          <th
+                            class="dow"
+                          >
+                            Tu
+                          </th>
+                          <th
+                            class="dow"
+                          >
+                            We
+                          </th>
+                          <th
+                            class="dow"
+                          >
+                            Th
+                          </th>
+                          <th
+                            class="dow"
+                          >
+                            Fr
+                          </th>
+                          <th
+                            class="dow"
+                          >
+                            Sa
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td
+                            class="rdtDay rdtOld rdtDisabled"
+                            data-value="30"
+                          >
+                            30
+                          </td>
+                          <td
+                            class="rdtDay rdtOld rdtDisabled"
+                            data-value="31"
+                          >
+                            31
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="1"
+                          >
+                            1
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="2"
+                          >
+                            2
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="3"
+                          >
+                            3
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="4"
+                          >
+                            4
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="5"
+                          >
+                            5
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="6"
+                          >
+                            6
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="7"
+                          >
+                            7
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="8"
+                          >
+                            8
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="9"
+                          >
+                            9
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="10"
+                          >
+                            10
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="11"
+                          >
+                            11
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="12"
+                          >
+                            12
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="13"
+                          >
+                            13
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="14"
+                          >
+                            14
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="15"
+                          >
+                            15
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="16"
+                          >
+                            16
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="17"
+                          >
+                            17
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="18"
+                          >
+                            18
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="19"
+                          >
+                            19
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="20"
+                          >
+                            20
+                          </td>
+                          <td
+                            class="rdtDay rdtDisabled"
+                            data-value="21"
+                          >
+                            21
+                          </td>
+                          <td
+                            class="rdtDay rdtActive"
+                            data-value="22"
+                          >
+                            22
+                          </td>
+                          <td
+                            class="rdtDay rdtActive rdtToday rdtActive"
+                            data-value="23"
+                          >
+                            23
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="24"
+                          >
+                            24
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="25"
+                          >
+                            25
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="26"
+                          >
+                            26
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            class="rdtDay"
+                            data-value="27"
+                          >
+                            27
+                          </td>
+                          <td
+                            class="rdtDay"
+                            data-value="28"
+                          >
+                            28
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="1"
+                          >
+                            1
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="2"
+                          >
+                            2
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="3"
+                          >
+                            3
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="4"
+                          >
+                            4
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="5"
+                          >
+                            5
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="6"
+                          >
+                            6
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="7"
+                          >
+                            7
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="8"
+                          >
+                            8
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="9"
+                          >
+                            9
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="10"
+                          >
+                            10
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="11"
+                          >
+                            11
+                          </td>
+                          <td
+                            class="rdtDay rdtNew"
+                            data-value="12"
+                          >
+                            12
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <td
+                            class="rdtTimeToggle"
+                            colspan="7"
+                          >
+                            11:27 AM
+                          </td>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="rdt-start-label"
+            >
+              Start
+            </div>
+            <div
+              class="rdt-end-label"
+            >
+              End
+            </div>
+            <div
+              class="Dropdown rdt-preset-dropdown"
+              role="presentation"
+              tabindex="-1"
+            >
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="btn btn-default Dropdown__toggle border-border-color border--contrast"
+                id="rdt-preset-dropdown"
+                type="button"
+              >
+                <span
+                  class="btn__label"
+                >
+                  Last 24 hours
+                </span>
+                <span
+                  class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
+                >
+                  <svg
+                    data-id="SVG_CHEVRON_DOWN__12"
+                    focusable="false"
+                    height="12"
+                    viewBox="0 0 12 12"
+                    width="12"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M11 4L6 9 1 4"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
+              </button>
+              <ul
+                aria-labelledby="rdt-preset-dropdown"
+                class="Dropdown__menu"
+                id="rdt-preset-dropdown--container"
+                role="dialog"
+              >
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Last 15 minutes
+                  </a>
+                </li>
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Last 30 minutes
+                  </a>
+                </li>
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Last 1 hour
+                  </a>
+                </li>
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Last 3 hours
+                  </a>
+                </li>
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Last 6 hours
+                  </a>
+                </li>
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Last 12 hours
+                  </a>
+                </li>
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Last 24 hours
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div
+            class="Dropdown error-type-dropdown"
+            role="presentation"
+            tabindex="-1"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="btn btn-default Dropdown__toggle border-border-color border--contrast"
+              id="error-type-dropdown"
+              type="button"
+            >
+              <span
+                class="btn__label"
+              >
+                Checkout FCIs
+              </span>
+              <span
+                class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
+              >
+                <svg
+                  data-id="SVG_CHEVRON_DOWN__12"
+                  focusable="false"
+                  height="12"
+                  viewBox="0 0 12 12"
+                  width="12"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M11 4L6 9 1 4"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </button>
+            <ul
+              aria-labelledby="error-type-dropdown"
+              class="Dropdown__menu"
+              id="error-type-dropdown--container"
+              role="dialog"
+            >
+              <li
+                role="presentation"
+              >
+                <a
+                  data-bypass="false"
+                  href="#"
+                >
+                   
+                  Checkout FCIs
+                </a>
+              </li>
+              <li
+                role="presentation"
+              >
+                <a
+                  data-bypass="false"
+                  href="#"
+                >
+                   
+                  Login FCIs
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="selection-wrapper"
+          >
+            <div
+              class="error-code-dropdown css-2b097c-container"
+            >
+              <div
+                class="error-code-dropdown__control css-yk16xz-control"
+              >
+                <div
+                  class="error-code-dropdown__value-container error-code-dropdown__value-container--is-multi css-g1d714-ValueContainer"
+                >
+                  <div
+                    class="error-code-dropdown__placeholder css-1wa3eu0-placeholder"
+                  >
+                    All Errors
+                  </div>
+                  <div
+                    class="css-b8ldur-Input"
+                  >
+                    <div
+                      class="error-code-dropdown__input"
+                      style="display: inline-block;"
+                    >
+                      <input
+                        aria-autocomplete="list"
+                        autocapitalize="none"
+                        autocomplete="off"
+                        autocorrect="off"
+                        id="react-select-2-input"
+                        spellcheck="false"
+                        style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
+                        tabindex="0"
+                        type="text"
+                        value=""
+                      />
+                      <div
+                        style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="error-code-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
+                >
+                  <span
+                    class="error-code-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
+                  />
+                  <div
+                    aria-hidden="true"
+                    class="error-code-dropdown__indicator error-code-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="css-6q0nyr-Svg"
+                      focusable="false"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      width="20"
+                    >
+                      <path
+                        d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="site-dropdown css-2b097c-container"
+            >
+              <div
+                class="site-dropdown__control css-yk16xz-control"
+              >
+                <div
+                  class="site-dropdown__value-container site-dropdown__value-container--is-multi site-dropdown__value-container--has-value css-g1d714-ValueContainer"
+                >
+                  <div
+                    class="css-1rhbuit-multiValue site-dropdown__multi-value"
+                  >
+                    <div
+                      class="css-12jo7m5 site-dropdown__multi-value__label"
+                    >
+                      www.expedia.com
+                    </div>
+                    <div
+                      class="css-xb97g8 site-dropdown__multi-value__remove"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="css-6q0nyr-Svg"
+                        focusable="false"
+                        height="14"
+                        viewBox="0 0 20 20"
+                        width="14"
+                      >
+                        <path
+                          d="M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                  <div
+                    class="css-b8ldur-Input"
+                  >
+                    <div
+                      class="site-dropdown__input"
+                      style="display: inline-block;"
+                    >
+                      <input
+                        aria-autocomplete="list"
+                        autocapitalize="none"
+                        autocomplete="off"
+                        autocorrect="off"
+                        id="react-select-3-input"
+                        spellcheck="false"
+                        style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
+                        tabindex="0"
+                        type="text"
+                        value=""
+                      />
+                      <div
+                        style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="site-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
+                >
+                  <div
+                    aria-hidden="true"
+                    class="site-dropdown__indicator site-dropdown__clear-indicator css-tlfecz-indicatorContainer"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="css-6q0nyr-Svg"
+                      focusable="false"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      width="20"
+                    >
+                      <path
+                        d="M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z"
+                      />
+                    </svg>
+                  </div>
+                  <span
+                    class="site-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
+                  />
+                  <div
+                    aria-hidden="true"
+                    class="site-dropdown__indicator site-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="css-6q0nyr-Svg"
+                      focusable="false"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      width="20"
+                    >
+                      <path
+                        d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class=""
+              role="button"
+              style="display: inline-block; outline: 0; position: relative;"
+              tabindex="0"
+            >
+              <div
+                class="lob-dropdown css-2b097c-container"
+              >
+                <div
+                  class="lob-dropdown__control css-yk16xz-control"
+                >
+                  <div
+                    class="lob-dropdown__value-container lob-dropdown__value-container--is-multi css-g1d714-ValueContainer"
+                  >
+                    <div
+                      class="lob-dropdown__placeholder css-1wa3eu0-placeholder"
+                    >
+                      All LoBs
+                    </div>
+                    <div
+                      class="css-b8ldur-Input"
+                    >
+                      <div
+                        class="lob-dropdown__input"
+                        style="display: inline-block;"
+                      >
+                        <input
+                          aria-autocomplete="list"
+                          autocapitalize="none"
+                          autocomplete="off"
+                          autocorrect="off"
+                          id="react-select-4-input"
+                          spellcheck="false"
+                          style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
+                          tabindex="0"
+                          type="text"
+                          value=""
+                        />
+                        <div
+                          style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="lob-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
+                  >
+                    <span
+                      class="lob-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
+                    />
+                    <div
+                      aria-hidden="true"
+                      class="lob-dropdown__indicator lob-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="css-6q0nyr-Svg"
+                        focusable="false"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        width="20"
+                      >
+                        <path
+                          d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="intent-cbox form-group CRB CRB--checkbox CRB--sm"
+            >
+              <label
+                class="CRB__label text-muted CRB__label--right"
+              >
+                <input
+                  class="CRB__input"
+                  name="intent-cbox"
+                  type="checkbox"
+                />
+                <span
+                  class="CRB__toggle CRB__toggle--left"
+                />
+                <span
+                  class="label-text"
+                >
+                  Hide Intentional Errors
+                </span>
+              </label>
+            </div>
+            <button
+              class="btn btn-primary apply-btn"
+              disabled=""
+              type="button"
+            >
+              Apply
+            </button>
+          </div>
+        </div>
+        <div
+          class="loading-container fci-loading-container"
+        >
+          <div
+            aria-live="polite"
+            class="Alert border--default in loading-alert"
+            role="alert"
+          >
+            <div
+              class="Alert__flair bg--color-bg-active"
+            />
+            <span
+              class="SVGIcon SVGIcon--24px Alert__svg inline-svg text-muted"
+            >
+              <svg
+                data-id="SVG_ALERT_WARNING__24"
+                focusable="false"
+                height="24"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g
+                  fill="none"
+                  fill-rule="evenodd"
+                >
+                  <path
+                    d="M13 17.1a1 1 0 1 1-2 0 1 1 0 0 1 2 0"
+                    fill="currentColor"
+                    stroke="none"
+                  />
+                  <path
+                    d="M10.6 4.5a1.6 1.6 0 0 1 2.8 0L21 17.7a1.6 1.6 0 0 1-1.4 2.5H4.4A1.6 1.6 0 0 1 3 17.7l7.6-13.2zM12 9V14"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </g>
+              </svg>
+            </span>
+            <p>
+              Failed to retrieve data. Try refreshing the page. If the problem persists, please message #opxhub-support or fill out our Feedback form.
+            </p>
+          </div>
+        </div>
+        <div />
+        <div />
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="fci-container"
+    >
+      <h1
+        class="page-title"
+      >
+        Failed Customer Interactions (FCI)
+      </h1>
+      <nav
+        class="Navigation Navigation--left-align Navigation--mobile-tabs"
+      >
+        <ul
+          class="Navigation__ul"
+        >
+          <li
+            class="Navigation__li"
+          >
+            <a
+              class="Navigation__a Navigation__a--active"
+              data-index="0"
+              href="/fci"
+            >
+              Trends
+            </a>
+          </li>
+          <li
+            class="Navigation__li"
+          >
+            <a
+              class="Navigation__a"
+              data-index="1"
+              href="/fci"
+            >
+              Search
+            </a>
+          </li>
+          <li
+            class="Navigation__li"
+          >
+            <a
+              class="Navigation__a"
+              data-index="2"
+              href="/fci"
+            >
+              Delta Users
+            </a>
+          </li>
+          <li
+            aria-hidden="true"
+            class="Navigation__li--highlight"
+            style="transform: translateX(0px) scaleY(2); width: 0px;"
+          />
+        </ul>
+      </nav>
+      <div
+        class="form-container"
+      >
+        <div
+          class="datetime-range-picker"
+        >
+          <div
+            class="rdt-container "
+            role="button"
+          >
+            <div
+              class="rdt"
+            >
+              <input
+                class="form-control"
+                type="text"
+                value="02/22/2022 11:27 AM"
+              />
+              <div
+                class="rdtPicker"
+              >
+                <div
+                  class="rdtDays"
+                >
+                  <table>
+                    <thead>
+                      <tr>
+                        <th
+                          class="rdtPrev"
+                        >
+                          <span>
+                            ‹
+                          </span>
+                        </th>
+                        <th
+                          class="rdtSwitch"
+                          colspan="5"
+                          data-value="1"
+                        >
+                          February 2022
+                        </th>
+                        <th
+                          class="rdtNext"
+                        >
+                          <span>
+                            ›
+                          </span>
+                        </th>
+                      </tr>
+                      <tr>
+                        <th
+                          class="dow"
+                        >
+                          Su
+                        </th>
+                        <th
+                          class="dow"
+                        >
+                          Mo
+                        </th>
+                        <th
+                          class="dow"
+                        >
+                          Tu
+                        </th>
+                        <th
+                          class="dow"
+                        >
+                          We
+                        </th>
+                        <th
+                          class="dow"
+                        >
+                          Th
+                        </th>
+                        <th
+                          class="dow"
+                        >
+                          Fr
+                        </th>
+                        <th
+                          class="dow"
+                        >
+                          Sa
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td
+                          class="rdtDay rdtOld"
+                          data-value="30"
+                        >
+                          30
+                        </td>
+                        <td
+                          class="rdtDay rdtOld"
+                          data-value="31"
+                        >
+                          31
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="1"
+                        >
+                          1
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="2"
+                        >
+                          2
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="3"
+                        >
+                          3
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="4"
+                        >
+                          4
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="5"
+                        >
+                          5
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          class="rdtDay"
+                          data-value="6"
+                        >
+                          6
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="7"
+                        >
+                          7
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="8"
+                        >
+                          8
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="9"
+                        >
+                          9
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="10"
+                        >
+                          10
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="11"
+                        >
+                          11
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="12"
+                        >
+                          12
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          class="rdtDay"
+                          data-value="13"
+                        >
+                          13
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="14"
+                        >
+                          14
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="15"
+                        >
+                          15
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="16"
+                        >
+                          16
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="17"
+                        >
+                          17
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="18"
+                        >
+                          18
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="19"
+                        >
+                          19
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          class="rdtDay"
+                          data-value="20"
+                        >
+                          20
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="21"
+                        >
+                          21
+                        </td>
+                        <td
+                          class="rdtDay rdtActive rdtActive"
+                          data-value="22"
+                        >
+                          22
+                        </td>
+                        <td
+                          class="rdtDay rdtToday rdtActive"
+                          data-value="23"
+                        >
+                          23
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="24"
+                        >
+                          24
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="25"
+                        >
+                          25
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="26"
+                        >
+                          26
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          class="rdtDay"
+                          data-value="27"
+                        >
+                          27
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="28"
+                        >
+                          28
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="1"
+                        >
+                          1
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="2"
+                        >
+                          2
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="3"
+                        >
+                          3
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="4"
+                        >
+                          4
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="5"
+                        >
+                          5
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="6"
+                        >
+                          6
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="7"
+                        >
+                          7
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="8"
+                        >
+                          8
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="9"
+                        >
+                          9
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="10"
+                        >
+                          10
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="11"
+                        >
+                          11
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="12"
+                        >
+                          12
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <td
+                          class="rdtTimeToggle"
+                          colspan="7"
+                        >
+                          11:27 AM
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div
+              class="rdt"
+            >
+              <input
+                class="form-control"
+                type="text"
+                value="02/23/2022 11:27 AM"
+              />
+              <div
+                class="rdtPicker"
+              >
+                <div
+                  class="rdtDays"
+                >
+                  <table>
+                    <thead>
+                      <tr>
+                        <th
+                          class="rdtPrev"
+                        >
+                          <span>
+                            ‹
+                          </span>
+                        </th>
+                        <th
+                          class="rdtSwitch"
+                          colspan="5"
+                          data-value="1"
+                        >
+                          February 2022
+                        </th>
+                        <th
+                          class="rdtNext"
+                        >
+                          <span>
+                            ›
+                          </span>
+                        </th>
+                      </tr>
+                      <tr>
+                        <th
+                          class="dow"
+                        >
+                          Su
+                        </th>
+                        <th
+                          class="dow"
+                        >
+                          Mo
+                        </th>
+                        <th
+                          class="dow"
+                        >
+                          Tu
+                        </th>
+                        <th
+                          class="dow"
+                        >
+                          We
+                        </th>
+                        <th
+                          class="dow"
+                        >
+                          Th
+                        </th>
+                        <th
+                          class="dow"
+                        >
+                          Fr
+                        </th>
+                        <th
+                          class="dow"
+                        >
+                          Sa
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td
+                          class="rdtDay rdtOld rdtDisabled"
+                          data-value="30"
+                        >
+                          30
+                        </td>
+                        <td
+                          class="rdtDay rdtOld rdtDisabled"
+                          data-value="31"
+                        >
+                          31
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="1"
+                        >
+                          1
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="2"
+                        >
+                          2
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="3"
+                        >
+                          3
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="4"
+                        >
+                          4
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="5"
+                        >
+                          5
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="6"
+                        >
+                          6
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="7"
+                        >
+                          7
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="8"
+                        >
+                          8
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="9"
+                        >
+                          9
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="10"
+                        >
+                          10
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="11"
+                        >
+                          11
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="12"
+                        >
+                          12
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="13"
+                        >
+                          13
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="14"
+                        >
+                          14
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="15"
+                        >
+                          15
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="16"
+                        >
+                          16
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="17"
+                        >
+                          17
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="18"
+                        >
+                          18
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="19"
+                        >
+                          19
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="20"
+                        >
+                          20
+                        </td>
+                        <td
+                          class="rdtDay rdtDisabled"
+                          data-value="21"
+                        >
+                          21
+                        </td>
+                        <td
+                          class="rdtDay rdtActive"
+                          data-value="22"
+                        >
+                          22
+                        </td>
+                        <td
+                          class="rdtDay rdtActive rdtToday rdtActive"
+                          data-value="23"
+                        >
+                          23
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="24"
+                        >
+                          24
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="25"
+                        >
+                          25
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="26"
+                        >
+                          26
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          class="rdtDay"
+                          data-value="27"
+                        >
+                          27
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-value="28"
+                        >
+                          28
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="1"
+                        >
+                          1
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="2"
+                        >
+                          2
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="3"
+                        >
+                          3
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="4"
+                        >
+                          4
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="5"
+                        >
+                          5
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="6"
+                        >
+                          6
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="7"
+                        >
+                          7
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="8"
+                        >
+                          8
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="9"
+                        >
+                          9
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="10"
+                        >
+                          10
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="11"
+                        >
+                          11
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-value="12"
+                        >
+                          12
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <td
+                          class="rdtTimeToggle"
+                          colspan="7"
+                        >
+                          11:27 AM
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="rdt-start-label"
+          >
+            Start
+          </div>
+          <div
+            class="rdt-end-label"
+          >
+            End
+          </div>
+          <div
+            class="Dropdown rdt-preset-dropdown"
+            role="presentation"
+            tabindex="-1"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="btn btn-default Dropdown__toggle border-border-color border--contrast"
+              id="rdt-preset-dropdown"
+              type="button"
+            >
+              <span
+                class="btn__label"
+              >
+                Last 24 hours
+              </span>
+              <span
+                class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
+              >
+                <svg
+                  data-id="SVG_CHEVRON_DOWN__12"
+                  focusable="false"
+                  height="12"
+                  viewBox="0 0 12 12"
+                  width="12"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M11 4L6 9 1 4"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </button>
+            <ul
+              aria-labelledby="rdt-preset-dropdown"
+              class="Dropdown__menu"
+              id="rdt-preset-dropdown--container"
+              role="dialog"
+            >
+              <li
+                role="presentation"
+              >
+                <a
+                  data-bypass="false"
+                  href="#"
+                >
+                   
+                  Last 15 minutes
+                </a>
+              </li>
+              <li
+                role="presentation"
+              >
+                <a
+                  data-bypass="false"
+                  href="#"
+                >
+                   
+                  Last 30 minutes
+                </a>
+              </li>
+              <li
+                role="presentation"
+              >
+                <a
+                  data-bypass="false"
+                  href="#"
+                >
+                   
+                  Last 1 hour
+                </a>
+              </li>
+              <li
+                role="presentation"
+              >
+                <a
+                  data-bypass="false"
+                  href="#"
+                >
+                   
+                  Last 3 hours
+                </a>
+              </li>
+              <li
+                role="presentation"
+              >
+                <a
+                  data-bypass="false"
+                  href="#"
+                >
+                   
+                  Last 6 hours
+                </a>
+              </li>
+              <li
+                role="presentation"
+              >
+                <a
+                  data-bypass="false"
+                  href="#"
+                >
+                   
+                  Last 12 hours
+                </a>
+              </li>
+              <li
+                role="presentation"
+              >
+                <a
+                  data-bypass="false"
+                  href="#"
+                >
+                   
+                  Last 24 hours
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
+          class="Dropdown error-type-dropdown"
+          role="presentation"
+          tabindex="-1"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="btn btn-default Dropdown__toggle border-border-color border--contrast"
+            id="error-type-dropdown"
+            type="button"
+          >
+            <span
+              class="btn__label"
+            >
+              Checkout FCIs
+            </span>
+            <span
+              class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
+            >
+              <svg
+                data-id="SVG_CHEVRON_DOWN__12"
+                focusable="false"
+                height="12"
+                viewBox="0 0 12 12"
+                width="12"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M11 4L6 9 1 4"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+          </button>
+          <ul
+            aria-labelledby="error-type-dropdown"
+            class="Dropdown__menu"
+            id="error-type-dropdown--container"
+            role="dialog"
+          >
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Checkout FCIs
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Login FCIs
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div
+          class="selection-wrapper"
+        >
+          <div
+            class="error-code-dropdown css-2b097c-container"
+          >
+            <div
+              class="error-code-dropdown__control css-yk16xz-control"
+            >
+              <div
+                class="error-code-dropdown__value-container error-code-dropdown__value-container--is-multi css-g1d714-ValueContainer"
+              >
+                <div
+                  class="error-code-dropdown__placeholder css-1wa3eu0-placeholder"
+                >
+                  All Errors
+                </div>
+                <div
+                  class="css-b8ldur-Input"
+                >
+                  <div
+                    class="error-code-dropdown__input"
+                    style="display: inline-block;"
+                  >
+                    <input
+                      aria-autocomplete="list"
+                      autocapitalize="none"
+                      autocomplete="off"
+                      autocorrect="off"
+                      id="react-select-2-input"
+                      spellcheck="false"
+                      style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
+                      tabindex="0"
+                      type="text"
+                      value=""
+                    />
+                    <div
+                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                class="error-code-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
+              >
+                <span
+                  class="error-code-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
+                />
+                <div
+                  aria-hidden="true"
+                  class="error-code-dropdown__indicator error-code-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="css-6q0nyr-Svg"
+                    focusable="false"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    width="20"
+                  >
+                    <path
+                      d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="site-dropdown css-2b097c-container"
+          >
+            <div
+              class="site-dropdown__control css-yk16xz-control"
+            >
+              <div
+                class="site-dropdown__value-container site-dropdown__value-container--is-multi site-dropdown__value-container--has-value css-g1d714-ValueContainer"
+              >
+                <div
+                  class="css-1rhbuit-multiValue site-dropdown__multi-value"
+                >
+                  <div
+                    class="css-12jo7m5 site-dropdown__multi-value__label"
+                  >
+                    www.expedia.com
+                  </div>
+                  <div
+                    class="css-xb97g8 site-dropdown__multi-value__remove"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="css-6q0nyr-Svg"
+                      focusable="false"
+                      height="14"
+                      viewBox="0 0 20 20"
+                      width="14"
+                    >
+                      <path
+                        d="M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+                <div
+                  class="css-b8ldur-Input"
+                >
+                  <div
+                    class="site-dropdown__input"
+                    style="display: inline-block;"
+                  >
+                    <input
+                      aria-autocomplete="list"
+                      autocapitalize="none"
+                      autocomplete="off"
+                      autocorrect="off"
+                      id="react-select-3-input"
+                      spellcheck="false"
+                      style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
+                      tabindex="0"
+                      type="text"
+                      value=""
+                    />
+                    <div
+                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                class="site-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
+              >
+                <div
+                  aria-hidden="true"
+                  class="site-dropdown__indicator site-dropdown__clear-indicator css-tlfecz-indicatorContainer"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="css-6q0nyr-Svg"
+                    focusable="false"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    width="20"
+                  >
+                    <path
+                      d="M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z"
+                    />
+                  </svg>
+                </div>
+                <span
+                  class="site-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
+                />
+                <div
+                  aria-hidden="true"
+                  class="site-dropdown__indicator site-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="css-6q0nyr-Svg"
+                    focusable="false"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    width="20"
+                  >
+                    <path
+                      d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class=""
+            role="button"
+            style="display: inline-block; outline: 0; position: relative;"
+            tabindex="0"
+          >
+            <div
+              class="lob-dropdown css-2b097c-container"
+            >
+              <div
+                class="lob-dropdown__control css-yk16xz-control"
+              >
+                <div
+                  class="lob-dropdown__value-container lob-dropdown__value-container--is-multi css-g1d714-ValueContainer"
+                >
+                  <div
+                    class="lob-dropdown__placeholder css-1wa3eu0-placeholder"
+                  >
+                    All LoBs
+                  </div>
+                  <div
+                    class="css-b8ldur-Input"
+                  >
+                    <div
+                      class="lob-dropdown__input"
+                      style="display: inline-block;"
+                    >
+                      <input
+                        aria-autocomplete="list"
+                        autocapitalize="none"
+                        autocomplete="off"
+                        autocorrect="off"
+                        id="react-select-4-input"
+                        spellcheck="false"
+                        style="box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;"
+                        tabindex="0"
+                        type="text"
+                        value=""
+                      />
+                      <div
+                        style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="lob-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
+                >
+                  <span
+                    class="lob-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
+                  />
+                  <div
+                    aria-hidden="true"
+                    class="lob-dropdown__indicator lob-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="css-6q0nyr-Svg"
+                      focusable="false"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      width="20"
+                    >
+                      <path
+                        d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="intent-cbox form-group CRB CRB--checkbox CRB--sm"
+          >
+            <label
+              class="CRB__label text-muted CRB__label--right"
+            >
+              <input
+                class="CRB__input"
+                name="intent-cbox"
+                type="checkbox"
+              />
+              <span
+                class="CRB__toggle CRB__toggle--left"
+              />
+              <span
+                class="label-text"
+              >
+                Hide Intentional Errors
+              </span>
+            </label>
+          </div>
+          <button
+            class="btn btn-primary apply-btn"
+            disabled=""
+            type="button"
+          >
+            Apply
+          </button>
+        </div>
+      </div>
+      <div
+        class="loading-container fci-loading-container"
+      >
+        <div
+          aria-live="polite"
+          class="Alert border--default in loading-alert"
+          role="alert"
+        >
+          <div
+            class="Alert__flair bg--color-bg-active"
+          />
+          <span
+            class="SVGIcon SVGIcon--24px Alert__svg inline-svg text-muted"
+          >
+            <svg
+              data-id="SVG_ALERT_WARNING__24"
+              focusable="false"
+              height="24"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g
+                fill="none"
+                fill-rule="evenodd"
+              >
+                <path
+                  d="M13 17.1a1 1 0 1 1-2 0 1 1 0 0 1 2 0"
+                  fill="currentColor"
+                  stroke="none"
+                />
+                <path
+                  d="M10.6 4.5a1.6 1.6 0 0 1 2.8 0L21 17.7a1.6 1.6 0 0 1-1.4 2.5H4.4A1.6 1.6 0 0 1 3 17.7l7.6-13.2zM12 9V14"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </g>
+            </svg>
+          </span>
+          <p>
+            Failed to retrieve data. Try refreshing the page. If the problem persists, please message #opxhub-support or fill out our Feedback form.
+          </p>
+        </div>
+      </div>
+      <div />
+      <div />
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

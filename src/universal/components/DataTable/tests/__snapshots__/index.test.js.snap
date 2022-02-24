@@ -1203,6 +1203,255 @@ Object {
 }
 `;
 
+exports[`<DataTable/> Renders successfully without download link and filter when no data 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="data-table__container "
+      >
+        <h3
+          class="data-table__title"
+        >
+          
+          
+        </h3>
+        <div
+          class="Divider settings-divider"
+        >
+          <div
+            class="Divider__heading text-muted"
+          >
+            <button
+              aria-controls="settings-divider"
+              aria-expanded="false"
+              class="Divider__title"
+              id="settings-divider_button"
+            >
+              <div
+                class="Divider__title-layout"
+              >
+                <div
+                  class="Divider__title-left"
+                >
+                  <div
+                    class="Divider__title-row"
+                  />
+                </div>
+                <div
+                  class="Divider__title-text"
+                >
+                  <span
+                    aria-level="4"
+                    role="heading"
+                  >
+                    Settings
+                  </span>
+                </div>
+                <div
+                  class="Divider__title-right"
+                >
+                  <div
+                    class="Divider__title-row"
+                  />
+                  <span
+                    class="SVGIcon SVGIcon--16px Divider__SVGIcon Divider__SVGIcon--collapsed"
+                  >
+                    <svg
+                      data-id="SVG_CHEVRON_DOWN__16"
+                      focusable="false"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      width="16"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M3 6l5 4.6L13 6"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            </button>
+          </div>
+          <div
+            aria-labelledby="settings-divider_button"
+            class="CollapseBase"
+            hidden=""
+            id="settings-divider"
+            role="region"
+            style="max-height: 0px;"
+          >
+            <div
+              class="CollapseBase__content Divider__body"
+            >
+              <form />
+            </div>
+          </div>
+        </div>
+        <div
+          class="no-results-wrapper"
+        >
+          <span>
+            NO RESULTS FOUND
+          </span>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="data-table__container "
+    >
+      <h3
+        class="data-table__title"
+      >
+        
+        
+      </h3>
+      <div
+        class="Divider settings-divider"
+      >
+        <div
+          class="Divider__heading text-muted"
+        >
+          <button
+            aria-controls="settings-divider"
+            aria-expanded="false"
+            class="Divider__title"
+            id="settings-divider_button"
+          >
+            <div
+              class="Divider__title-layout"
+            >
+              <div
+                class="Divider__title-left"
+              >
+                <div
+                  class="Divider__title-row"
+                />
+              </div>
+              <div
+                class="Divider__title-text"
+              >
+                <span
+                  aria-level="4"
+                  role="heading"
+                >
+                  Settings
+                </span>
+              </div>
+              <div
+                class="Divider__title-right"
+              >
+                <div
+                  class="Divider__title-row"
+                />
+                <span
+                  class="SVGIcon SVGIcon--16px Divider__SVGIcon Divider__SVGIcon--collapsed"
+                >
+                  <svg
+                    data-id="SVG_CHEVRON_DOWN__16"
+                    focusable="false"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    width="16"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M3 6l5 4.6L13 6"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
+              </div>
+            </div>
+          </button>
+        </div>
+        <div
+          aria-labelledby="settings-divider_button"
+          class="CollapseBase"
+          hidden=""
+          id="settings-divider"
+          role="region"
+          style="max-height: 0px;"
+        >
+          <div
+            class="CollapseBase__content Divider__body"
+          >
+            <form />
+          </div>
+        </div>
+      </div>
+      <div
+        class="no-results-wrapper"
+      >
+        <span>
+          NO RESULTS FOUND
+        </span>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
 exports[`<DataTable/> Sorts correctly 1`] = `
 Object {
   "asFragment": [Function],
