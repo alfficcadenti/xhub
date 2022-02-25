@@ -22,6 +22,39 @@ export const shouldShowTooltip = (chartName, pageBrand, selectedLobs = []) => {
     return null;
 };
 
+const getSuccessRates = (currentSuccessRates, counter, selectedLobs, selectedBrand, label) => {
+    const {successRatePercentagesData, brandWiseSuccessRateData} = currentSuccessRates[currentSuccessRates.length - counter];
+    const isLOBSelected = !!selectedLobs.length;
+    const isHomeToSearch = label === SUCCESS_RATES_PAGES_LIST[0];
+    if (isHomeToSearch) {
+        return brandWiseSuccessRateData;
+    }
+    if (isLOBSelected) {
+        return successRatePercentagesData.filter((item) => {
+            const matchBrand = mapBrandNames(item.brand) === selectedBrand;
+            return matchBrand && selectedLobs.map((selectedLob) => selectedLob.value).includes(item.lineOfBusiness);
+        });
+    }
+    return brandWiseSuccessRateData;
+};
+
+const getNextRealTimeTotals = (successRates) => {
+    if (Array.isArray(successRates)) {
+        return successRates.map((item) => ({
+            label: LOB_LIST.find((lob) => lob.value === item.lineOfBusiness).label,
+            rate: item.rate.toFixed(2)
+        }));
+    }
+    return successRates.rate.toFixed(2);
+};
+
+const isSuccessRatesNonEmpty = (successRates) => {
+    return Array.isArray(successRates) ?
+        successRates.some((item) => item.rate !== null) :
+        successRates && successRates.rate !== null;
+};
+
+
 export const successRatesRealTimeObject = (fetchedSuccessRates = [], selectedLobs = [], selectedBrand) => {
     const nextRealTimeTotals = SUCCESS_RATES_PAGES_LIST.reduce((acc, label) => {
         acc[label] = 0;
@@ -31,45 +64,16 @@ export const successRatesRealTimeObject = (fetchedSuccessRates = [], selectedLob
     SUCCESS_RATES_PAGES_LIST.forEach((label, i) => {
         const currentSuccessRates = fetchedSuccessRates[i];
 
-        if (!currentSuccessRates || !currentSuccessRates.length) {
+        if (!currentSuccessRates?.length) {
             nextRealTimeTotals[label] = 'N/A';
             return;
         }
 
         for (let counter = 1; counter <= currentSuccessRates.length; counter++) {
-            const {successRatePercentagesData, brandWiseSuccessRateData} = currentSuccessRates[currentSuccessRates.length - counter];
-            const isLOBSelected = !!selectedLobs.length;
-            const isHomeToSearch = label === SUCCESS_RATES_PAGES_LIST[0];
-            let successRates;
+            const successRates = getSuccessRates(currentSuccessRates, counter, selectedLobs, selectedBrand, label);
 
-            if (isHomeToSearch) {
-                successRates = brandWiseSuccessRateData;
-            } else if (isLOBSelected) {
-                successRates = successRatePercentagesData.filter((item) => {
-                    const matchBrand = mapBrandNames(item.brand) === selectedBrand;
-
-                    return matchBrand && selectedLobs.map((selectedLob) => selectedLob.value).includes(item.lineOfBusiness);
-                });
-            } else {
-                successRates = brandWiseSuccessRateData;
-            }
-
-            const notEmpty = (value) => {
-                return Array.isArray(value) ?
-                    value.some((item) => item.rate !== null) :
-                    value.rate !== null;
-            };
-
-            if (successRates && notEmpty(successRates)) {
-                if (Array.isArray(successRates)) {
-                    nextRealTimeTotals[label] = successRates.map((item) => ({
-                        label: LOB_LIST.find((lob) => lob.value === item.lineOfBusiness).label,
-                        rate: item.rate.toFixed(2)
-                    }));
-                } else {
-                    nextRealTimeTotals[label] = successRates.rate.toFixed(2);
-                }
-
+            if (isSuccessRatesNonEmpty(successRates)) {
+                nextRealTimeTotals[label] = getNextRealTimeTotals(successRates);
                 break;
             }
 
