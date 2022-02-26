@@ -193,7 +193,6 @@ export const GRAFANA_DASHBOARDS = [
 
 export const EPS_CHANNELS = [{value: 'E4P API', label: 'E4P API'},
     {value: 'E4P Template', label: 'E4P Template'},
-    {value: 'RAPID', label: 'RAPID'},
     {value: 'TAAP', label: 'TAAP'}];
 
 export const EPS_CHANNEL_SITE_URL = {
