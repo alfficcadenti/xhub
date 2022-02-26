@@ -24,7 +24,7 @@ const AnomalyLabel = ({viewBox: {x}, anomaly, setAnomalyTableData, category}) =>
                     <p className="timestamp">{`${moment(anomaly.time).format('YYYY-MM-DD HH:mm')} ${moment().tz(moment.tz.guess()).format('z')}`}</p>
                     <div className="tooltip-wrapper">
                         {anomaly.category}
-                        <a href="#" onClick={() => setAnomalyTableData([anomaly])}>{'More Details'}</a>
+                        <button className="details-btn" onClick={() => setAnomalyTableData([anomaly])}>{'More Details'}</button>
                     </div>
                 </div>
             </div>

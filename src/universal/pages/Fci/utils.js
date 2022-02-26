@@ -8,7 +8,7 @@ import {LOB_LIST} from '../../constants';
 import {EXPEDIA_PARTNER_SERVICES_BRAND, EXPEDIA_BRAND, OPXHUB_SUPPORT_CHANNEL} from '../../constants';
 import {formatToLocalDateTimeString, getOrDefault} from '../../utils';
 import {validDateRange} from '../utils';
-import {TRACE_TABLE_COLUMNS, SITES, CATEGORY_OPTION, FCI_TYPE_CHECKOUT, FCI_TYPE_LOGIN, CODE_OPTION} from './constants';
+import {TRACE_TABLE_COLUMNS, SITES, CATEGORY_OPTION, FCI_TYPE_CHECKOUT, FCI_TYPE_LOGIN, CODE_OPTION, ALL_SITES} from './constants';
 
 
 export const getInitialSelectData = (initialOption) => ({
@@ -44,9 +44,11 @@ export const shouldFetchData = (prev, start, end, selectedSite, selectedLob, cha
 // eslint-disable-next-line complexity
 export const getQueryValues = (search, brand = 'Expedia') => {
     const {
-        tab, from, to, lobs, code, sites, hide_intentional: hideIntentional, search_id: searchId, bucket, id, deltaUsersId, type
+        tab, from, to, lobs, code, sites, hide_intentional: hideIntentional, search_id: searchId,
+        bucket, id, deltaUsersId, type, chart_property: chartProperty
     } = qs.parse(search);
     const isValidDateRange = validDateRange(from, to);
+    const fciType = [FCI_TYPE_CHECKOUT, FCI_TYPE_LOGIN].includes(type) ? type : FCI_TYPE_CHECKOUT;
     return {
         initialStart: isValidDateRange ? moment(from) : moment().subtract(24, 'hours').startOf('minute'),
         initialEnd: isValidDateRange ? moment(to) : moment(),
@@ -55,7 +57,7 @@ export const getQueryValues = (search, brand = 'Expedia') => {
             ? lobs.split(',').map((l) => LOB_LIST.find(({value}) => value === l)).filter((l) => l)
             : [],
         initialSite: sites
-            ? sites.split(',')
+            ? sites.split(',').filter((s) => s !== ALL_SITES)
             : [getBrandSites(brand)[0]],
         initialErrorCode: code ? code.split(',') : [],
         initialHideIntentionalCheck: hideIntentional === 'true',
@@ -64,7 +66,8 @@ export const getQueryValues = (search, brand = 'Expedia') => {
         initialSelectedId: id || '',
         initialIndex: ['0', '1'].includes(tab) ? Number(tab) : 0,
         initialBucket: bucket && moment(bucket).isValid ? bucket : null,
-        initialFciType: [FCI_TYPE_CHECKOUT, FCI_TYPE_LOGIN].includes(type) ? type : FCI_TYPE_CHECKOUT
+        initialFciType: fciType,
+        initialChartProperty: [CATEGORY_OPTION, CODE_OPTION].includes(chartProperty) ? chartProperty : CODE_OPTION
     };
 };
 
@@ -87,7 +90,7 @@ export const getHistoryQueryString = (selectedBrands, start, end, selectedErrorC
     const dateQuery = `&from=${start.toISOString()}&to=${end.toISOString()}`;
     const errorProperty = chartProperty === CATEGORY_OPTION ? 'code' : 'code';
     const errorQuery = selectedErrorCode && selectedErrorCode.length ? `&${errorProperty}=${stringifyQueryParams(selectedErrorCode)}` : '';
-    const siteQuery = selectedSite ? `&sites=${stringifyQueryParams(selectedSite)}` : '';
+    const siteQuery = selectedSite?.length ? `&sites=${stringifyQueryParams(selectedSite)}` : `&sites=${ALL_SITES}`;
     const lobQuery = selectedLob?.length ? `&line_of_business=${stringifyQueryParams(selectedLob)}` : '';
     const hideIntentionalCheckQuery = `&hide_intentional=${hideIntentionalCheck}`;
     const searchQuery = searchId ? `&search_id=${searchId}` : '';
@@ -95,8 +98,10 @@ export const getHistoryQueryString = (selectedBrands, start, end, selectedErrorC
     const bucketQuery = selectedBucket ? `&bucket=${selectedBucket}` : '';
     const idQuery = id ? `&id=${id}` : '';
     const errorTypeQuery = type ? `&type=${type}` : '';
+    const chartPropertyQuery = chartProperty ? `&chart_property=${chartProperty}` : '';
     return `${brandQuery}${dateQuery}${errorQuery}${siteQuery}${hideIntentionalCheckQuery}`
-        + `${lobQuery}${searchQuery}${indexQuery}${bucketQuery}${idQuery}${errorTypeQuery}`;
+        + `${lobQuery}${searchQuery}${indexQuery}${bucketQuery}${idQuery}${errorTypeQuery}`
+        + `${chartPropertyQuery}`;
 };
 
 const getTagValue = (tags, property) => {

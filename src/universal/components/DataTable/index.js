@@ -300,17 +300,17 @@ const DataTable = ({
         </Fragment>
     );
 
-    const renderTableHeaderColumn = (column) => {
-        let headerColumnContent;
+    const getHeaderColumnContent = (column) => {
         if (columnHeaders[column]) {
-            headerColumnContent = columnHeaders[column];
-        } else if (columnsInfo[column]) {
-            headerColumnContent = (
-                <>{column} {renderInfoTooltip(columnsInfo[column])}</>
-            );
-        } else {
-            headerColumnContent = column;
+            return columnHeaders[column];
         }
+        if (columnsInfo[column]) {
+            return <>{column} {renderInfoTooltip(columnsInfo[column])}</>;
+        }
+        return column;
+    };
+
+    const renderTableHeaderColumn = (column) => {
         const sortingIcon = sortedByDirection === 'asc'
             ? <SVGIcon inlineFlex markup={CHEVRON_UP__12} />
             : <SVGIcon inlineFlex markup={CHEVRON_DOWN__12} />;
@@ -320,7 +320,7 @@ const DataTable = ({
                 key={column}
                 className={sortDisabled ? null : 'pointer'}
             >
-                {headerColumnContent}
+                {getHeaderColumnContent(column)}
                 {column === sortedByColumn && sortingIcon}
             </th>
         );

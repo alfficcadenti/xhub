@@ -35,7 +35,7 @@ describe('<Fci/>', () => {
         expect(wrapper).toMatchSnapshot();
     });
 
-    it('it loads error codes after user click on error code radio button', async () => {
+    it('it loads error codes after user click on error code dropdown', async () => {
         const fetchMock = jest
             .spyOn(global, 'fetch')
             .mockImplementation(() =>
@@ -44,13 +44,11 @@ describe('<Fci/>', () => {
         await act(async () => {
             wrapper = render(<Router><Fci selectedBrands={[EXPEDIA_BRAND]} /></Router>);
         });
-        expect(fetchMock).toHaveBeenCalledTimes(1);
-        expect(fetchMock).toHaveBeenLastCalledWith(expect.stringContaining('/v1/checkout-failures/category-counts'));
+        expect(fetchMock).toHaveBeenNthCalledWith(1, expect.stringContaining('/v1/checkout-failures/error-counts'));
         expect(wrapper.getByText(/Errors over Time/)).toBeInTheDocument();
-        expect(wrapper.getByText(/all errors/i)).toBeInTheDocument();
-        fireEvent.click(screen.getByText(/error code/i));
-        expect(fetchMock).toHaveBeenNthCalledWith(2, expect.stringContaining('/v1/checkout-failures/error-counts'));
-        expect(fetchMock).toHaveBeenNthCalledWith(3, expect.stringContaining('/v1/checkout-failures/error-codes'));
+        fireEvent.click(screen.queryAllByText(/Chart by Error Code/i)[0]);
+        fireEvent.click(screen.queryAllByText(/Chart by Category/i)[0]);
+        expect(fetchMock).toHaveBeenNthCalledWith(2, expect.stringContaining('/v1/checkout-failures/error-categories'));
         expect(wrapper).toMatchSnapshot();
     });
 });

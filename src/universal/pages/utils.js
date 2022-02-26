@@ -13,6 +13,7 @@ import {
     VRBO_BRAND,
     GRAFANA_DASHBOARDS
 } from '../constants';
+import {getOrDefault} from '../utils';
 import {METRIC_NAMES} from './SuccessRates/constants';
 import ALL_PAGES from './index';
 import qs from 'query-string';
@@ -130,10 +131,29 @@ export const divisionToBrand = (division = '') => {
     }
 };
 
+const findTicket = (results, ids) => (
+    results.find((t) => ids.some((i) => t.id && t.id.split(',').some((j) => i === j)))
+);
+
+const sharesImpactedBrand = (found, ticket) => (
+    found.impacted_brand && ticket.impacted_brand && !found.impacted_brand.split(',').some((b) => ticket.impacted_brand.split(',').includes(b))
+);
+
+const copyOverDivisions = (ticket, found) => {
+    if (ticket.divisions && !found.divisions) {
+        found.divisions = ticket.divisions;
+    } else if (ticket.divisions && ticket.divisions.length) {
+        ticket.divisions.forEach((d) => {
+            if (!found.divisions.includes(d)) {
+                found.divisions.push(d);
+            }
+        });
+    }
+};
+
 export const consolidateTicketsById = (tickets) => {
     const results = [];
     const ticketIdSet = new Set();
-    // eslint-disable-next-line complexity
     if (Array.isArray(tickets)) {
         tickets.forEach((ticket) => {
             const {id} = ticket;
@@ -142,8 +162,8 @@ export const consolidateTicketsById = (tickets) => {
             }
             const ids = id.split(',');
             if (ids.some((i) => ticketIdSet.has(i))) {
-                const found = results.find((t) => ids.some((i) => t.id && t.id.split(',').some((j) => i === j)));
-                if (found.impacted_brand && ticket.impacted_brand && !found.impacted_brand.split(',').some((b) => ticket.impacted_brand.split(',').includes(b))) {
+                const found = findTicket(results, ids);
+                if (sharesImpactedBrand(found, ticket)) {
                     found.impacted_brand += `,${ticket.impacted_brand}`;
                 }
                 const foundIds = found.id.split(',');
@@ -152,17 +172,9 @@ export const consolidateTicketsById = (tickets) => {
                         found.id = `${found.id},${i}`;
                     }
                 });
-                if (ticket.divisions && !found.divisions) {
-                    found.divisions = ticket.divisions;
-                } else if (ticket.divisions && ticket.divisions.length) {
-                    ticket.divisions.forEach((d) => {
-                        if (!found.divisions.includes(d)) {
-                            found.divisions.push(d);
-                        }
-                    });
-                }
-                found.estimated_revenue_loss = `${parseFloat(found.estimated_revenue_loss) + parseFloat(ticket.estimated_revenue_loss || 0)}`;
-                found.estimated_gross_loss = `${parseFloat(found.estimated_gross_loss) + parseFloat(ticket.estimated_gross_loss || 0)}`;
+                copyOverDivisions(ticket, found);
+                found.estimated_revenue_loss = `${parseFloat(found.estimated_revenue_loss) + parseFloat(getOrDefault(ticket, 'estimated_revenue_loss', 0))}`;
+                found.estimated_gross_loss = `${parseFloat(found.estimated_gross_loss) + parseFloat(getOrDefault(ticket, 'estimated_gross_loss', 0))}`;
             } else {
                 results.push(ticket);
             }

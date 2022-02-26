@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Fci/> it loads error codes after user click on error code radio button 1`] = `
+exports[`<Fci/> it loads error codes after user click on error code dropdown 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
@@ -75,7 +75,7 @@ Object {
                 <input
                   class="form-control"
                   type="text"
-                  value="02/22/2022 11:27 AM"
+                  value="02/22/2022 10:25 PM"
                 />
                 <div
                   class="rdtPicker"
@@ -418,7 +418,7 @@ Object {
                             class="rdtTimeToggle"
                             colspan="7"
                           >
-                            11:27 AM
+                            10:25 PM
                           </td>
                         </tr>
                       </tfoot>
@@ -432,7 +432,7 @@ Object {
                 <input
                   class="form-control"
                   type="text"
-                  value="02/23/2022 11:27 AM"
+                  value="02/23/2022 10:25 PM"
                 />
                 <div
                   class="rdtPicker"
@@ -775,7 +775,7 @@ Object {
                             class="rdtTimeToggle"
                             colspan="7"
                           >
-                            11:27 AM
+                            10:25 PM
                           </td>
                         </tr>
                       </tfoot>
@@ -918,94 +918,161 @@ Object {
             </div>
           </div>
           <div
-            class="Dropdown error-type-dropdown"
-            role="presentation"
-            tabindex="-1"
-          >
-            <button
-              aria-expanded="false"
-              aria-haspopup="true"
-              class="btn btn-default Dropdown__toggle border-border-color border--contrast"
-              id="error-type-dropdown"
-              type="button"
-            >
-              <span
-                class="btn__label"
-              >
-                Checkout FCIs
-              </span>
-              <span
-                class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
-              >
-                <svg
-                  data-id="SVG_CHEVRON_DOWN__12"
-                  focusable="false"
-                  height="12"
-                  viewBox="0 0 12 12"
-                  width="12"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M11 4L6 9 1 4"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </span>
-            </button>
-            <ul
-              aria-labelledby="error-type-dropdown"
-              class="Dropdown__menu"
-              id="error-type-dropdown--container"
-              role="dialog"
-            >
-              <li
-                role="presentation"
-              >
-                <a
-                  data-bypass="false"
-                  href="#"
-                >
-                   
-                  Checkout FCIs
-                </a>
-              </li>
-              <li
-                role="presentation"
-              >
-                <a
-                  data-bypass="false"
-                  href="#"
-                >
-                   
-                  Login FCIs
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div
             class="selection-wrapper"
           >
             <div
-              class="error-code-dropdown css-2b097c-container"
+              class="Dropdown fci-dropdown"
+              role="presentation"
+              tabindex="-1"
+            >
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="btn btn-default Dropdown__toggle border-border-color border--contrast"
+                id="error-type-dropdown"
+                type="button"
+              >
+                <span
+                  class="btn__label"
+                >
+                  Checkout FCIs
+                </span>
+                <span
+                  class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
+                >
+                  <svg
+                    data-id="SVG_CHEVRON_DOWN__12"
+                    focusable="false"
+                    height="12"
+                    viewBox="0 0 12 12"
+                    width="12"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M11 4L6 9 1 4"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
+              </button>
+              <ul
+                aria-labelledby="error-type-dropdown"
+                class="Dropdown__menu"
+                id="error-type-dropdown--container"
+                role="dialog"
+              >
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Checkout FCIs
+                  </a>
+                </li>
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Login FCIs
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div
+              class="Dropdown fci-dropdown"
+              role="presentation"
+              tabindex="-1"
+            >
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="btn btn-default Dropdown__toggle border-border-color border--contrast"
+                id="chart-property-dropdown"
+                type="button"
+              >
+                <span
+                  class="btn__label"
+                >
+                  Chart by Category
+                </span>
+                <span
+                  class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
+                >
+                  <svg
+                    data-id="SVG_CHEVRON_DOWN__12"
+                    focusable="false"
+                    height="12"
+                    viewBox="0 0 12 12"
+                    width="12"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M11 4L6 9 1 4"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
+              </button>
+              <ul
+                aria-labelledby="chart-property-dropdown"
+                class="Dropdown__menu"
+                id="chart-property-dropdown--container"
+                role="dialog"
+              >
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Chart by Error Code
+                  </a>
+                </li>
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Chart by Category
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div
+              class="fci-dropdown fci-select css-2b097c-container"
             >
               <div
-                class="error-code-dropdown__control css-yk16xz-control"
+                class="fci-dropdown__control css-yk16xz-control"
               >
                 <div
-                  class="error-code-dropdown__value-container error-code-dropdown__value-container--is-multi css-g1d714-ValueContainer"
+                  class="fci-dropdown__value-container fci-dropdown__value-container--is-multi css-g1d714-ValueContainer"
                 >
                   <div
-                    class="error-code-dropdown__placeholder css-1wa3eu0-placeholder"
+                    class="fci-dropdown__placeholder css-1wa3eu0-placeholder"
                   >
-                    All Errors
+                    All Error Categories
                   </div>
                   <div
                     class="css-b8ldur-Input"
                   >
                     <div
-                      class="error-code-dropdown__input"
+                      class="fci-dropdown__input"
                       style="display: inline-block;"
                     >
                       <input
@@ -1027,11 +1094,11 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="error-code-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
+                  class="fci-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
                 >
                   <div
                     aria-hidden="true"
-                    class="error-code-dropdown__indicator error-code-dropdown__loading-indicator css-at12u2-loadingIndicator"
+                    class="fci-dropdown__indicator fci-dropdown__loading-indicator css-at12u2-loadingIndicator"
                   >
                     <span
                       class="css-1yvy2vo-LoadingDot"
@@ -1044,11 +1111,11 @@ Object {
                     />
                   </div>
                   <span
-                    class="error-code-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
+                    class="fci-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
                   />
                   <div
                     aria-hidden="true"
-                    class="error-code-dropdown__indicator error-code-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
+                    class="fci-dropdown__indicator fci-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
                   >
                     <svg
                       aria-hidden="true"
@@ -1067,24 +1134,24 @@ Object {
               </div>
             </div>
             <div
-              class="site-dropdown css-2b097c-container"
+              class="fci-dropdown fci-select css-2b097c-container"
             >
               <div
-                class="site-dropdown__control css-yk16xz-control"
+                class="fci-dropdown__control css-yk16xz-control"
               >
                 <div
-                  class="site-dropdown__value-container site-dropdown__value-container--is-multi site-dropdown__value-container--has-value css-g1d714-ValueContainer"
+                  class="fci-dropdown__value-container fci-dropdown__value-container--is-multi fci-dropdown__value-container--has-value css-g1d714-ValueContainer"
                 >
                   <div
-                    class="css-1rhbuit-multiValue site-dropdown__multi-value"
+                    class="css-1rhbuit-multiValue fci-dropdown__multi-value"
                   >
                     <div
-                      class="css-12jo7m5 site-dropdown__multi-value__label"
+                      class="css-12jo7m5 fci-dropdown__multi-value__label"
                     >
                       www.expedia.com
                     </div>
                     <div
-                      class="css-xb97g8 site-dropdown__multi-value__remove"
+                      class="css-xb97g8 fci-dropdown__multi-value__remove"
                     >
                       <svg
                         aria-hidden="true"
@@ -1104,7 +1171,7 @@ Object {
                     class="css-b8ldur-Input"
                   >
                     <div
-                      class="site-dropdown__input"
+                      class="fci-dropdown__input"
                       style="display: inline-block;"
                     >
                       <input
@@ -1126,11 +1193,11 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="site-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
+                  class="fci-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
                 >
                   <div
                     aria-hidden="true"
-                    class="site-dropdown__indicator site-dropdown__clear-indicator css-tlfecz-indicatorContainer"
+                    class="fci-dropdown__indicator fci-dropdown__clear-indicator css-tlfecz-indicatorContainer"
                   >
                     <svg
                       aria-hidden="true"
@@ -1146,11 +1213,11 @@ Object {
                     </svg>
                   </div>
                   <span
-                    class="site-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
+                    class="fci-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
                   />
                   <div
                     aria-hidden="true"
-                    class="site-dropdown__indicator site-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
+                    class="fci-dropdown__indicator fci-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
                   >
                     <svg
                       aria-hidden="true"
@@ -1175,16 +1242,16 @@ Object {
               tabindex="0"
             >
               <div
-                class="lob-dropdown css-2b097c-container"
+                class="fci-dropdown fci-select css-2b097c-container"
               >
                 <div
-                  class="lob-dropdown__control css-yk16xz-control"
+                  class="fci-dropdown__control css-yk16xz-control"
                 >
                   <div
-                    class="lob-dropdown__value-container lob-dropdown__value-container--is-multi css-g1d714-ValueContainer"
+                    class="fci-dropdown__value-container fci-dropdown__value-container--is-multi css-g1d714-ValueContainer"
                   >
                     <div
-                      class="lob-dropdown__placeholder css-1wa3eu0-placeholder"
+                      class="fci-dropdown__placeholder css-1wa3eu0-placeholder"
                     >
                       All LoBs
                     </div>
@@ -1192,7 +1259,7 @@ Object {
                       class="css-b8ldur-Input"
                     >
                       <div
-                        class="lob-dropdown__input"
+                        class="fci-dropdown__input"
                         style="display: inline-block;"
                       >
                         <input
@@ -1214,14 +1281,14 @@ Object {
                     </div>
                   </div>
                   <div
-                    class="lob-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
+                    class="fci-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
                   >
                     <span
-                      class="lob-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
+                      class="fci-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
                     />
                     <div
                       aria-hidden="true"
-                      class="lob-dropdown__indicator lob-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
+                      class="fci-dropdown__indicator fci-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
                     >
                       <svg
                         aria-hidden="true"
@@ -1263,7 +1330,6 @@ Object {
             </div>
             <button
               class="btn btn-primary apply-btn"
-              disabled=""
               type="button"
             >
               Apply
@@ -1274,29 +1340,60 @@ Object {
           class="loading-container fci-loading-container"
         >
           <div
-            class="LoadingOverlay fade in"
-            role="status"
+            class="line-chart-wrapper"
           >
-            <ul
-              aria-hidden="true"
-              class="LoadingOverlay__ul"
+            <h3>
+              Errors over Time
+              <span
+                class="helptext"
+              >
+                <div
+                  class="help-text"
+                  role="button"
+                  style="display: inline-block; outline: 0; position: relative;"
+                  tabindex="0"
+                >
+                  <span
+                    class="SVGIcon SVGIcon--16px"
+                  >
+                    <svg
+                      data-id="SVG_INFO__16"
+                      focusable="false"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      width="16"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g
+                        fill="none"
+                        fill-rule="evenodd"
+                      >
+                        <path
+                          d="M7.1 5A.9.9 0 1 1 9 5 .9.9 0 0 1 7 5"
+                          fill="currentColor"
+                          stroke="none"
+                        />
+                        <path
+                          d="M8 11.2V7.3M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8z"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </g>
+                    </svg>
+                  </span>
+                </div>
+              </span>
+            </h3>
+            <div
+              class="recharts-responsive-container"
+              style="width: 100%; height: 360px;"
             >
-              <li
-                class="LoadingOverlay__li LoadingOverlay__li--1 bg-brand"
+              <div
+                style="position: absolute; width: 0px; height: 0px; visibility: hidden; display: none;"
               />
-              <li
-                class="LoadingOverlay__li LoadingOverlay__li--2 bg-brand"
-              />
-              <li
-                class="LoadingOverlay__li LoadingOverlay__li--3 bg-brand"
-              />
-              <li
-                class="LoadingOverlay__li LoadingOverlay__li--4 bg-brand"
-              />
-            </ul>
+            </div>
           </div>
         </div>
-        <div />
         <div />
       </div>
     </div>
@@ -1372,7 +1469,7 @@ Object {
               <input
                 class="form-control"
                 type="text"
-                value="02/22/2022 11:27 AM"
+                value="02/22/2022 10:25 PM"
               />
               <div
                 class="rdtPicker"
@@ -1715,7 +1812,7 @@ Object {
                           class="rdtTimeToggle"
                           colspan="7"
                         >
-                          11:27 AM
+                          10:25 PM
                         </td>
                       </tr>
                     </tfoot>
@@ -1729,7 +1826,7 @@ Object {
               <input
                 class="form-control"
                 type="text"
-                value="02/23/2022 11:27 AM"
+                value="02/23/2022 10:25 PM"
               />
               <div
                 class="rdtPicker"
@@ -2072,7 +2169,7 @@ Object {
                           class="rdtTimeToggle"
                           colspan="7"
                         >
-                          11:27 AM
+                          10:25 PM
                         </td>
                       </tr>
                     </tfoot>
@@ -2215,94 +2312,161 @@ Object {
           </div>
         </div>
         <div
-          class="Dropdown error-type-dropdown"
-          role="presentation"
-          tabindex="-1"
-        >
-          <button
-            aria-expanded="false"
-            aria-haspopup="true"
-            class="btn btn-default Dropdown__toggle border-border-color border--contrast"
-            id="error-type-dropdown"
-            type="button"
-          >
-            <span
-              class="btn__label"
-            >
-              Checkout FCIs
-            </span>
-            <span
-              class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
-            >
-              <svg
-                data-id="SVG_CHEVRON_DOWN__12"
-                focusable="false"
-                height="12"
-                viewBox="0 0 12 12"
-                width="12"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M11 4L6 9 1 4"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </span>
-          </button>
-          <ul
-            aria-labelledby="error-type-dropdown"
-            class="Dropdown__menu"
-            id="error-type-dropdown--container"
-            role="dialog"
-          >
-            <li
-              role="presentation"
-            >
-              <a
-                data-bypass="false"
-                href="#"
-              >
-                 
-                Checkout FCIs
-              </a>
-            </li>
-            <li
-              role="presentation"
-            >
-              <a
-                data-bypass="false"
-                href="#"
-              >
-                 
-                Login FCIs
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div
           class="selection-wrapper"
         >
           <div
-            class="error-code-dropdown css-2b097c-container"
+            class="Dropdown fci-dropdown"
+            role="presentation"
+            tabindex="-1"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="btn btn-default Dropdown__toggle border-border-color border--contrast"
+              id="error-type-dropdown"
+              type="button"
+            >
+              <span
+                class="btn__label"
+              >
+                Checkout FCIs
+              </span>
+              <span
+                class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
+              >
+                <svg
+                  data-id="SVG_CHEVRON_DOWN__12"
+                  focusable="false"
+                  height="12"
+                  viewBox="0 0 12 12"
+                  width="12"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M11 4L6 9 1 4"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </button>
+            <ul
+              aria-labelledby="error-type-dropdown"
+              class="Dropdown__menu"
+              id="error-type-dropdown--container"
+              role="dialog"
+            >
+              <li
+                role="presentation"
+              >
+                <a
+                  data-bypass="false"
+                  href="#"
+                >
+                   
+                  Checkout FCIs
+                </a>
+              </li>
+              <li
+                role="presentation"
+              >
+                <a
+                  data-bypass="false"
+                  href="#"
+                >
+                   
+                  Login FCIs
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="Dropdown fci-dropdown"
+            role="presentation"
+            tabindex="-1"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="btn btn-default Dropdown__toggle border-border-color border--contrast"
+              id="chart-property-dropdown"
+              type="button"
+            >
+              <span
+                class="btn__label"
+              >
+                Chart by Category
+              </span>
+              <span
+                class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
+              >
+                <svg
+                  data-id="SVG_CHEVRON_DOWN__12"
+                  focusable="false"
+                  height="12"
+                  viewBox="0 0 12 12"
+                  width="12"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M11 4L6 9 1 4"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </button>
+            <ul
+              aria-labelledby="chart-property-dropdown"
+              class="Dropdown__menu"
+              id="chart-property-dropdown--container"
+              role="dialog"
+            >
+              <li
+                role="presentation"
+              >
+                <a
+                  data-bypass="false"
+                  href="#"
+                >
+                   
+                  Chart by Error Code
+                </a>
+              </li>
+              <li
+                role="presentation"
+              >
+                <a
+                  data-bypass="false"
+                  href="#"
+                >
+                   
+                  Chart by Category
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="fci-dropdown fci-select css-2b097c-container"
           >
             <div
-              class="error-code-dropdown__control css-yk16xz-control"
+              class="fci-dropdown__control css-yk16xz-control"
             >
               <div
-                class="error-code-dropdown__value-container error-code-dropdown__value-container--is-multi css-g1d714-ValueContainer"
+                class="fci-dropdown__value-container fci-dropdown__value-container--is-multi css-g1d714-ValueContainer"
               >
                 <div
-                  class="error-code-dropdown__placeholder css-1wa3eu0-placeholder"
+                  class="fci-dropdown__placeholder css-1wa3eu0-placeholder"
                 >
-                  All Errors
+                  All Error Categories
                 </div>
                 <div
                   class="css-b8ldur-Input"
                 >
                   <div
-                    class="error-code-dropdown__input"
+                    class="fci-dropdown__input"
                     style="display: inline-block;"
                   >
                     <input
@@ -2324,11 +2488,11 @@ Object {
                 </div>
               </div>
               <div
-                class="error-code-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
+                class="fci-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
               >
                 <div
                   aria-hidden="true"
-                  class="error-code-dropdown__indicator error-code-dropdown__loading-indicator css-at12u2-loadingIndicator"
+                  class="fci-dropdown__indicator fci-dropdown__loading-indicator css-at12u2-loadingIndicator"
                 >
                   <span
                     class="css-1yvy2vo-LoadingDot"
@@ -2341,11 +2505,11 @@ Object {
                   />
                 </div>
                 <span
-                  class="error-code-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
+                  class="fci-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
                 />
                 <div
                   aria-hidden="true"
-                  class="error-code-dropdown__indicator error-code-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
+                  class="fci-dropdown__indicator fci-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
                 >
                   <svg
                     aria-hidden="true"
@@ -2364,24 +2528,24 @@ Object {
             </div>
           </div>
           <div
-            class="site-dropdown css-2b097c-container"
+            class="fci-dropdown fci-select css-2b097c-container"
           >
             <div
-              class="site-dropdown__control css-yk16xz-control"
+              class="fci-dropdown__control css-yk16xz-control"
             >
               <div
-                class="site-dropdown__value-container site-dropdown__value-container--is-multi site-dropdown__value-container--has-value css-g1d714-ValueContainer"
+                class="fci-dropdown__value-container fci-dropdown__value-container--is-multi fci-dropdown__value-container--has-value css-g1d714-ValueContainer"
               >
                 <div
-                  class="css-1rhbuit-multiValue site-dropdown__multi-value"
+                  class="css-1rhbuit-multiValue fci-dropdown__multi-value"
                 >
                   <div
-                    class="css-12jo7m5 site-dropdown__multi-value__label"
+                    class="css-12jo7m5 fci-dropdown__multi-value__label"
                   >
                     www.expedia.com
                   </div>
                   <div
-                    class="css-xb97g8 site-dropdown__multi-value__remove"
+                    class="css-xb97g8 fci-dropdown__multi-value__remove"
                   >
                     <svg
                       aria-hidden="true"
@@ -2401,7 +2565,7 @@ Object {
                   class="css-b8ldur-Input"
                 >
                   <div
-                    class="site-dropdown__input"
+                    class="fci-dropdown__input"
                     style="display: inline-block;"
                   >
                     <input
@@ -2423,11 +2587,11 @@ Object {
                 </div>
               </div>
               <div
-                class="site-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
+                class="fci-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
               >
                 <div
                   aria-hidden="true"
-                  class="site-dropdown__indicator site-dropdown__clear-indicator css-tlfecz-indicatorContainer"
+                  class="fci-dropdown__indicator fci-dropdown__clear-indicator css-tlfecz-indicatorContainer"
                 >
                   <svg
                     aria-hidden="true"
@@ -2443,11 +2607,11 @@ Object {
                   </svg>
                 </div>
                 <span
-                  class="site-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
+                  class="fci-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
                 />
                 <div
                   aria-hidden="true"
-                  class="site-dropdown__indicator site-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
+                  class="fci-dropdown__indicator fci-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
                 >
                   <svg
                     aria-hidden="true"
@@ -2472,16 +2636,16 @@ Object {
             tabindex="0"
           >
             <div
-              class="lob-dropdown css-2b097c-container"
+              class="fci-dropdown fci-select css-2b097c-container"
             >
               <div
-                class="lob-dropdown__control css-yk16xz-control"
+                class="fci-dropdown__control css-yk16xz-control"
               >
                 <div
-                  class="lob-dropdown__value-container lob-dropdown__value-container--is-multi css-g1d714-ValueContainer"
+                  class="fci-dropdown__value-container fci-dropdown__value-container--is-multi css-g1d714-ValueContainer"
                 >
                   <div
-                    class="lob-dropdown__placeholder css-1wa3eu0-placeholder"
+                    class="fci-dropdown__placeholder css-1wa3eu0-placeholder"
                   >
                     All LoBs
                   </div>
@@ -2489,7 +2653,7 @@ Object {
                     class="css-b8ldur-Input"
                   >
                     <div
-                      class="lob-dropdown__input"
+                      class="fci-dropdown__input"
                       style="display: inline-block;"
                     >
                       <input
@@ -2511,14 +2675,14 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="lob-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
+                  class="fci-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
                 >
                   <span
-                    class="lob-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
+                    class="fci-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
                   />
                   <div
                     aria-hidden="true"
-                    class="lob-dropdown__indicator lob-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
+                    class="fci-dropdown__indicator fci-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
                   >
                     <svg
                       aria-hidden="true"
@@ -2560,7 +2724,6 @@ Object {
           </div>
           <button
             class="btn btn-primary apply-btn"
-            disabled=""
             type="button"
           >
             Apply
@@ -2571,29 +2734,60 @@ Object {
         class="loading-container fci-loading-container"
       >
         <div
-          class="LoadingOverlay fade in"
-          role="status"
+          class="line-chart-wrapper"
         >
-          <ul
-            aria-hidden="true"
-            class="LoadingOverlay__ul"
+          <h3>
+            Errors over Time
+            <span
+              class="helptext"
+            >
+              <div
+                class="help-text"
+                role="button"
+                style="display: inline-block; outline: 0; position: relative;"
+                tabindex="0"
+              >
+                <span
+                  class="SVGIcon SVGIcon--16px"
+                >
+                  <svg
+                    data-id="SVG_INFO__16"
+                    focusable="false"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    width="16"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g
+                      fill="none"
+                      fill-rule="evenodd"
+                    >
+                      <path
+                        d="M7.1 5A.9.9 0 1 1 9 5 .9.9 0 0 1 7 5"
+                        fill="currentColor"
+                        stroke="none"
+                      />
+                      <path
+                        d="M8 11.2V7.3M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8z"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </g>
+                  </svg>
+                </span>
+              </div>
+            </span>
+          </h3>
+          <div
+            class="recharts-responsive-container"
+            style="width: 100%; height: 360px;"
           >
-            <li
-              class="LoadingOverlay__li LoadingOverlay__li--1 bg-brand"
+            <div
+              style="position: absolute; width: 0px; height: 0px; visibility: hidden; display: none;"
             />
-            <li
-              class="LoadingOverlay__li LoadingOverlay__li--2 bg-brand"
-            />
-            <li
-              class="LoadingOverlay__li LoadingOverlay__li--3 bg-brand"
-            />
-            <li
-              class="LoadingOverlay__li LoadingOverlay__li--4 bg-brand"
-            />
-          </ul>
+          </div>
         </div>
       </div>
-      <div />
       <div />
     </div>
   </div>,
@@ -2726,7 +2920,7 @@ Object {
                 <input
                   class="form-control"
                   type="text"
-                  value="02/22/2022 11:27 AM"
+                  value="02/22/2022 10:25 PM"
                 />
                 <div
                   class="rdtPicker"
@@ -3069,7 +3263,7 @@ Object {
                             class="rdtTimeToggle"
                             colspan="7"
                           >
-                            11:27 AM
+                            10:25 PM
                           </td>
                         </tr>
                       </tfoot>
@@ -3083,7 +3277,7 @@ Object {
                 <input
                   class="form-control"
                   type="text"
-                  value="02/23/2022 11:27 AM"
+                  value="02/23/2022 10:25 PM"
                 />
                 <div
                   class="rdtPicker"
@@ -3426,7 +3620,7 @@ Object {
                             class="rdtTimeToggle"
                             colspan="7"
                           >
-                            11:27 AM
+                            10:25 PM
                           </td>
                         </tr>
                       </tfoot>
@@ -3569,94 +3763,161 @@ Object {
             </div>
           </div>
           <div
-            class="Dropdown error-type-dropdown"
-            role="presentation"
-            tabindex="-1"
-          >
-            <button
-              aria-expanded="false"
-              aria-haspopup="true"
-              class="btn btn-default Dropdown__toggle border-border-color border--contrast"
-              id="error-type-dropdown"
-              type="button"
-            >
-              <span
-                class="btn__label"
-              >
-                Checkout FCIs
-              </span>
-              <span
-                class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
-              >
-                <svg
-                  data-id="SVG_CHEVRON_DOWN__12"
-                  focusable="false"
-                  height="12"
-                  viewBox="0 0 12 12"
-                  width="12"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M11 4L6 9 1 4"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </span>
-            </button>
-            <ul
-              aria-labelledby="error-type-dropdown"
-              class="Dropdown__menu"
-              id="error-type-dropdown--container"
-              role="dialog"
-            >
-              <li
-                role="presentation"
-              >
-                <a
-                  data-bypass="false"
-                  href="#"
-                >
-                   
-                  Checkout FCIs
-                </a>
-              </li>
-              <li
-                role="presentation"
-              >
-                <a
-                  data-bypass="false"
-                  href="#"
-                >
-                   
-                  Login FCIs
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div
             class="selection-wrapper"
           >
             <div
-              class="error-code-dropdown css-2b097c-container"
+              class="Dropdown fci-dropdown"
+              role="presentation"
+              tabindex="-1"
+            >
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="btn btn-default Dropdown__toggle border-border-color border--contrast"
+                id="error-type-dropdown"
+                type="button"
+              >
+                <span
+                  class="btn__label"
+                >
+                  Checkout FCIs
+                </span>
+                <span
+                  class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
+                >
+                  <svg
+                    data-id="SVG_CHEVRON_DOWN__12"
+                    focusable="false"
+                    height="12"
+                    viewBox="0 0 12 12"
+                    width="12"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M11 4L6 9 1 4"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
+              </button>
+              <ul
+                aria-labelledby="error-type-dropdown"
+                class="Dropdown__menu"
+                id="error-type-dropdown--container"
+                role="dialog"
+              >
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Checkout FCIs
+                  </a>
+                </li>
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Login FCIs
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div
+              class="Dropdown fci-dropdown"
+              role="presentation"
+              tabindex="-1"
+            >
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="btn btn-default Dropdown__toggle border-border-color border--contrast"
+                id="chart-property-dropdown"
+                type="button"
+              >
+                <span
+                  class="btn__label"
+                >
+                  Chart by Error Code
+                </span>
+                <span
+                  class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
+                >
+                  <svg
+                    data-id="SVG_CHEVRON_DOWN__12"
+                    focusable="false"
+                    height="12"
+                    viewBox="0 0 12 12"
+                    width="12"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M11 4L6 9 1 4"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
+              </button>
+              <ul
+                aria-labelledby="chart-property-dropdown"
+                class="Dropdown__menu"
+                id="chart-property-dropdown--container"
+                role="dialog"
+              >
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Chart by Error Code
+                  </a>
+                </li>
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Chart by Category
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div
+              class="fci-dropdown fci-select css-2b097c-container"
             >
               <div
-                class="error-code-dropdown__control css-yk16xz-control"
+                class="fci-dropdown__control css-yk16xz-control"
               >
                 <div
-                  class="error-code-dropdown__value-container error-code-dropdown__value-container--is-multi css-g1d714-ValueContainer"
+                  class="fci-dropdown__value-container fci-dropdown__value-container--is-multi css-g1d714-ValueContainer"
                 >
                   <div
-                    class="error-code-dropdown__placeholder css-1wa3eu0-placeholder"
+                    class="fci-dropdown__placeholder css-1wa3eu0-placeholder"
                   >
-                    All Errors
+                    All Error Codes
                   </div>
                   <div
                     class="css-b8ldur-Input"
                   >
                     <div
-                      class="error-code-dropdown__input"
+                      class="fci-dropdown__input"
                       style="display: inline-block;"
                     >
                       <input
@@ -3678,14 +3939,14 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="error-code-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
+                  class="fci-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
                 >
                   <span
-                    class="error-code-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
+                    class="fci-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
                   />
                   <div
                     aria-hidden="true"
-                    class="error-code-dropdown__indicator error-code-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
+                    class="fci-dropdown__indicator fci-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
                   >
                     <svg
                       aria-hidden="true"
@@ -3704,24 +3965,24 @@ Object {
               </div>
             </div>
             <div
-              class="site-dropdown css-2b097c-container"
+              class="fci-dropdown fci-select css-2b097c-container"
             >
               <div
-                class="site-dropdown__control css-yk16xz-control"
+                class="fci-dropdown__control css-yk16xz-control"
               >
                 <div
-                  class="site-dropdown__value-container site-dropdown__value-container--is-multi site-dropdown__value-container--has-value css-g1d714-ValueContainer"
+                  class="fci-dropdown__value-container fci-dropdown__value-container--is-multi fci-dropdown__value-container--has-value css-g1d714-ValueContainer"
                 >
                   <div
-                    class="css-1rhbuit-multiValue site-dropdown__multi-value"
+                    class="css-1rhbuit-multiValue fci-dropdown__multi-value"
                   >
                     <div
-                      class="css-12jo7m5 site-dropdown__multi-value__label"
+                      class="css-12jo7m5 fci-dropdown__multi-value__label"
                     >
                       www.expedia.com
                     </div>
                     <div
-                      class="css-xb97g8 site-dropdown__multi-value__remove"
+                      class="css-xb97g8 fci-dropdown__multi-value__remove"
                     >
                       <svg
                         aria-hidden="true"
@@ -3741,7 +4002,7 @@ Object {
                     class="css-b8ldur-Input"
                   >
                     <div
-                      class="site-dropdown__input"
+                      class="fci-dropdown__input"
                       style="display: inline-block;"
                     >
                       <input
@@ -3763,11 +4024,11 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="site-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
+                  class="fci-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
                 >
                   <div
                     aria-hidden="true"
-                    class="site-dropdown__indicator site-dropdown__clear-indicator css-tlfecz-indicatorContainer"
+                    class="fci-dropdown__indicator fci-dropdown__clear-indicator css-tlfecz-indicatorContainer"
                   >
                     <svg
                       aria-hidden="true"
@@ -3783,11 +4044,11 @@ Object {
                     </svg>
                   </div>
                   <span
-                    class="site-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
+                    class="fci-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
                   />
                   <div
                     aria-hidden="true"
-                    class="site-dropdown__indicator site-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
+                    class="fci-dropdown__indicator fci-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
                   >
                     <svg
                       aria-hidden="true"
@@ -3812,16 +4073,16 @@ Object {
               tabindex="0"
             >
               <div
-                class="lob-dropdown css-2b097c-container"
+                class="fci-dropdown fci-select css-2b097c-container"
               >
                 <div
-                  class="lob-dropdown__control css-yk16xz-control"
+                  class="fci-dropdown__control css-yk16xz-control"
                 >
                   <div
-                    class="lob-dropdown__value-container lob-dropdown__value-container--is-multi css-g1d714-ValueContainer"
+                    class="fci-dropdown__value-container fci-dropdown__value-container--is-multi css-g1d714-ValueContainer"
                   >
                     <div
-                      class="lob-dropdown__placeholder css-1wa3eu0-placeholder"
+                      class="fci-dropdown__placeholder css-1wa3eu0-placeholder"
                     >
                       All LoBs
                     </div>
@@ -3829,7 +4090,7 @@ Object {
                       class="css-b8ldur-Input"
                     >
                       <div
-                        class="lob-dropdown__input"
+                        class="fci-dropdown__input"
                         style="display: inline-block;"
                       >
                         <input
@@ -3851,14 +4112,14 @@ Object {
                     </div>
                   </div>
                   <div
-                    class="lob-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
+                    class="fci-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
                   >
                     <span
-                      class="lob-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
+                      class="fci-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
                     />
                     <div
                       aria-hidden="true"
-                      class="lob-dropdown__indicator lob-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
+                      class="fci-dropdown__indicator fci-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
                     >
                       <svg
                         aria-hidden="true"
@@ -3952,7 +4213,6 @@ Object {
           </div>
         </div>
         <div />
-        <div />
       </div>
     </div>
   </body>,
@@ -4027,7 +4287,7 @@ Object {
               <input
                 class="form-control"
                 type="text"
-                value="02/22/2022 11:27 AM"
+                value="02/22/2022 10:25 PM"
               />
               <div
                 class="rdtPicker"
@@ -4370,7 +4630,7 @@ Object {
                           class="rdtTimeToggle"
                           colspan="7"
                         >
-                          11:27 AM
+                          10:25 PM
                         </td>
                       </tr>
                     </tfoot>
@@ -4384,7 +4644,7 @@ Object {
               <input
                 class="form-control"
                 type="text"
-                value="02/23/2022 11:27 AM"
+                value="02/23/2022 10:25 PM"
               />
               <div
                 class="rdtPicker"
@@ -4727,7 +4987,7 @@ Object {
                           class="rdtTimeToggle"
                           colspan="7"
                         >
-                          11:27 AM
+                          10:25 PM
                         </td>
                       </tr>
                     </tfoot>
@@ -4870,94 +5130,161 @@ Object {
           </div>
         </div>
         <div
-          class="Dropdown error-type-dropdown"
-          role="presentation"
-          tabindex="-1"
-        >
-          <button
-            aria-expanded="false"
-            aria-haspopup="true"
-            class="btn btn-default Dropdown__toggle border-border-color border--contrast"
-            id="error-type-dropdown"
-            type="button"
-          >
-            <span
-              class="btn__label"
-            >
-              Checkout FCIs
-            </span>
-            <span
-              class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
-            >
-              <svg
-                data-id="SVG_CHEVRON_DOWN__12"
-                focusable="false"
-                height="12"
-                viewBox="0 0 12 12"
-                width="12"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M11 4L6 9 1 4"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </span>
-          </button>
-          <ul
-            aria-labelledby="error-type-dropdown"
-            class="Dropdown__menu"
-            id="error-type-dropdown--container"
-            role="dialog"
-          >
-            <li
-              role="presentation"
-            >
-              <a
-                data-bypass="false"
-                href="#"
-              >
-                 
-                Checkout FCIs
-              </a>
-            </li>
-            <li
-              role="presentation"
-            >
-              <a
-                data-bypass="false"
-                href="#"
-              >
-                 
-                Login FCIs
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div
           class="selection-wrapper"
         >
           <div
-            class="error-code-dropdown css-2b097c-container"
+            class="Dropdown fci-dropdown"
+            role="presentation"
+            tabindex="-1"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="btn btn-default Dropdown__toggle border-border-color border--contrast"
+              id="error-type-dropdown"
+              type="button"
+            >
+              <span
+                class="btn__label"
+              >
+                Checkout FCIs
+              </span>
+              <span
+                class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
+              >
+                <svg
+                  data-id="SVG_CHEVRON_DOWN__12"
+                  focusable="false"
+                  height="12"
+                  viewBox="0 0 12 12"
+                  width="12"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M11 4L6 9 1 4"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </button>
+            <ul
+              aria-labelledby="error-type-dropdown"
+              class="Dropdown__menu"
+              id="error-type-dropdown--container"
+              role="dialog"
+            >
+              <li
+                role="presentation"
+              >
+                <a
+                  data-bypass="false"
+                  href="#"
+                >
+                   
+                  Checkout FCIs
+                </a>
+              </li>
+              <li
+                role="presentation"
+              >
+                <a
+                  data-bypass="false"
+                  href="#"
+                >
+                   
+                  Login FCIs
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="Dropdown fci-dropdown"
+            role="presentation"
+            tabindex="-1"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="btn btn-default Dropdown__toggle border-border-color border--contrast"
+              id="chart-property-dropdown"
+              type="button"
+            >
+              <span
+                class="btn__label"
+              >
+                Chart by Error Code
+              </span>
+              <span
+                class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
+              >
+                <svg
+                  data-id="SVG_CHEVRON_DOWN__12"
+                  focusable="false"
+                  height="12"
+                  viewBox="0 0 12 12"
+                  width="12"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M11 4L6 9 1 4"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </button>
+            <ul
+              aria-labelledby="chart-property-dropdown"
+              class="Dropdown__menu"
+              id="chart-property-dropdown--container"
+              role="dialog"
+            >
+              <li
+                role="presentation"
+              >
+                <a
+                  data-bypass="false"
+                  href="#"
+                >
+                   
+                  Chart by Error Code
+                </a>
+              </li>
+              <li
+                role="presentation"
+              >
+                <a
+                  data-bypass="false"
+                  href="#"
+                >
+                   
+                  Chart by Category
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="fci-dropdown fci-select css-2b097c-container"
           >
             <div
-              class="error-code-dropdown__control css-yk16xz-control"
+              class="fci-dropdown__control css-yk16xz-control"
             >
               <div
-                class="error-code-dropdown__value-container error-code-dropdown__value-container--is-multi css-g1d714-ValueContainer"
+                class="fci-dropdown__value-container fci-dropdown__value-container--is-multi css-g1d714-ValueContainer"
               >
                 <div
-                  class="error-code-dropdown__placeholder css-1wa3eu0-placeholder"
+                  class="fci-dropdown__placeholder css-1wa3eu0-placeholder"
                 >
-                  All Errors
+                  All Error Codes
                 </div>
                 <div
                   class="css-b8ldur-Input"
                 >
                   <div
-                    class="error-code-dropdown__input"
+                    class="fci-dropdown__input"
                     style="display: inline-block;"
                   >
                     <input
@@ -4979,14 +5306,14 @@ Object {
                 </div>
               </div>
               <div
-                class="error-code-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
+                class="fci-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
               >
                 <span
-                  class="error-code-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
+                  class="fci-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
                 />
                 <div
                   aria-hidden="true"
-                  class="error-code-dropdown__indicator error-code-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
+                  class="fci-dropdown__indicator fci-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
                 >
                   <svg
                     aria-hidden="true"
@@ -5005,24 +5332,24 @@ Object {
             </div>
           </div>
           <div
-            class="site-dropdown css-2b097c-container"
+            class="fci-dropdown fci-select css-2b097c-container"
           >
             <div
-              class="site-dropdown__control css-yk16xz-control"
+              class="fci-dropdown__control css-yk16xz-control"
             >
               <div
-                class="site-dropdown__value-container site-dropdown__value-container--is-multi site-dropdown__value-container--has-value css-g1d714-ValueContainer"
+                class="fci-dropdown__value-container fci-dropdown__value-container--is-multi fci-dropdown__value-container--has-value css-g1d714-ValueContainer"
               >
                 <div
-                  class="css-1rhbuit-multiValue site-dropdown__multi-value"
+                  class="css-1rhbuit-multiValue fci-dropdown__multi-value"
                 >
                   <div
-                    class="css-12jo7m5 site-dropdown__multi-value__label"
+                    class="css-12jo7m5 fci-dropdown__multi-value__label"
                   >
                     www.expedia.com
                   </div>
                   <div
-                    class="css-xb97g8 site-dropdown__multi-value__remove"
+                    class="css-xb97g8 fci-dropdown__multi-value__remove"
                   >
                     <svg
                       aria-hidden="true"
@@ -5042,7 +5369,7 @@ Object {
                   class="css-b8ldur-Input"
                 >
                   <div
-                    class="site-dropdown__input"
+                    class="fci-dropdown__input"
                     style="display: inline-block;"
                   >
                     <input
@@ -5064,11 +5391,11 @@ Object {
                 </div>
               </div>
               <div
-                class="site-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
+                class="fci-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
               >
                 <div
                   aria-hidden="true"
-                  class="site-dropdown__indicator site-dropdown__clear-indicator css-tlfecz-indicatorContainer"
+                  class="fci-dropdown__indicator fci-dropdown__clear-indicator css-tlfecz-indicatorContainer"
                 >
                   <svg
                     aria-hidden="true"
@@ -5084,11 +5411,11 @@ Object {
                   </svg>
                 </div>
                 <span
-                  class="site-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
+                  class="fci-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
                 />
                 <div
                   aria-hidden="true"
-                  class="site-dropdown__indicator site-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
+                  class="fci-dropdown__indicator fci-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
                 >
                   <svg
                     aria-hidden="true"
@@ -5113,16 +5440,16 @@ Object {
             tabindex="0"
           >
             <div
-              class="lob-dropdown css-2b097c-container"
+              class="fci-dropdown fci-select css-2b097c-container"
             >
               <div
-                class="lob-dropdown__control css-yk16xz-control"
+                class="fci-dropdown__control css-yk16xz-control"
               >
                 <div
-                  class="lob-dropdown__value-container lob-dropdown__value-container--is-multi css-g1d714-ValueContainer"
+                  class="fci-dropdown__value-container fci-dropdown__value-container--is-multi css-g1d714-ValueContainer"
                 >
                   <div
-                    class="lob-dropdown__placeholder css-1wa3eu0-placeholder"
+                    class="fci-dropdown__placeholder css-1wa3eu0-placeholder"
                   >
                     All LoBs
                   </div>
@@ -5130,7 +5457,7 @@ Object {
                     class="css-b8ldur-Input"
                   >
                     <div
-                      class="lob-dropdown__input"
+                      class="fci-dropdown__input"
                       style="display: inline-block;"
                     >
                       <input
@@ -5152,14 +5479,14 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="lob-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
+                  class="fci-dropdown__indicators css-1hb7zxy-IndicatorsContainer"
                 >
                   <span
-                    class="lob-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
+                    class="fci-dropdown__indicator-separator css-1okebmr-indicatorSeparator"
                   />
                   <div
                     aria-hidden="true"
-                    class="lob-dropdown__indicator lob-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
+                    class="fci-dropdown__indicator fci-dropdown__dropdown-indicator css-tlfecz-indicatorContainer"
                   >
                     <svg
                       aria-hidden="true"
@@ -5252,7 +5579,6 @@ Object {
           </p>
         </div>
       </div>
-      <div />
       <div />
     </div>
   </div>,

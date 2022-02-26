@@ -146,7 +146,7 @@ describe('Fci Utils', () => {
         expect(getHistoryQueryString(selectedBrands, start, end, null, null, null,
             hideIntentionalCheck, null, null, activeIndex)).to.eql(
             `selectedBrand=${selectedBrands[0]}&from=${start.toISOString()}&to=${end.toISOString()}`
-            + `&hide_intentional=${hideIntentionalCheck}&tab=${activeIndex}`
+            + `&sites=All Sites&hide_intentional=${hideIntentionalCheck}&tab=${activeIndex}`
         );
     });
 
@@ -164,11 +164,11 @@ describe('Fci Utils', () => {
         const id = 'traceidA';
         const activeIndex = 0;
         expect(getHistoryQueryString(selectedBrands, start, end, selectedErrorCode, selectedSite,
-            lobs, hideIntentionalCheck, chartProperty, searchId, activeIndex, selectedBucket, id)).to.eql(
+            lobs, hideIntentionalCheck, chartProperty, searchId, activeIndex, selectedBucket, id, FCI_TYPE_LOGIN)).to.eql(
             `selectedBrand=${selectedBrands[0]}&from=${start.toISOString()}&to=${end.toISOString()}`
             + `&code=${selectedErrorCode}&sites=${selectedSite}`
             + `&hide_intentional=${hideIntentionalCheck}&search_id=${searchId}&tab=${activeIndex}`
-            + `&bucket=${selectedBucket}&id=${id}`
+            + `&bucket=${selectedBucket}&id=${id}&type=${FCI_TYPE_LOGIN}&chart_property=${chartProperty}`
         );
     });
 

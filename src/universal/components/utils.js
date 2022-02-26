@@ -12,12 +12,8 @@ import moment from 'moment';
 // eslint-disable-next-line consistent-return
 export function brandLogoFile(brand) {
     const brandsArray = [VRBO_BRAND, EGENCIA_BRAND, HOTELS_COM_BRAND, EXPEDIA_BRAND];
-    try {
-        if (brandsArray.includes(brand)) {
-            return require(`../img/logo-${brand.toLowerCase()}.png`).default;
-        }
-    } catch {
-        return null;
+    if (brandsArray.includes(brand)) {
+        return require(`../img/logo-${brand.toLowerCase()}.png`).default;
     }
     return null;
 }
