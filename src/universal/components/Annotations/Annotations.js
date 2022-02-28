@@ -282,7 +282,7 @@ const Annotations = ({
         const adjustedProducts = productMapping.map(({product_name: productName}) => productName);
 
         const adjustedApplications = productMapping.reduce((acc, current) => {
-            return [...acc, ...current.applicationNames];
+            return [...acc, ...current.application_names];
         }, []);
         const serviceTier = ['Tier 1', 'Tier 2', 'Tier 3'];
 
