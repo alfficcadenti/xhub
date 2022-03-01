@@ -168,11 +168,12 @@ const Fci = ({selectedBrands}) => {
         if (!searchText) {
             return;
         }
+        setSelectedFciType(pendingFciType);
         setIsModalLoading(true);
         setModalError();
         setIsModalOpen(true);
         updateHistory();
-        fetch(getSearchUrl(selectedFciType, searchText))
+        fetch(getSearchUrl(pendingFciType, searchText))
             .then(checkResponse)
             .then((data) => {
                 processTableData(data);
@@ -215,7 +216,6 @@ const Fci = ({selectedBrands}) => {
             return;
         }
         if (activeIndex === 1) {
-            searchFci();
             return;
         }
         setIsLoading(true);
@@ -379,7 +379,9 @@ const Fci = ({selectedBrands}) => {
 
     const clearErrorCodeDropdown = () => {
         setPendingErrorCode('');
-        errorCodeDropdownRef.current.select.clearValue();
+        if (errorCodeDropdownRef?.current?.select) {
+            errorCodeDropdownRef.current.select.clearValue();
+        }
     };
 
     const handleSiteChange = (e) => {
@@ -593,10 +595,20 @@ const Fci = ({selectedBrands}) => {
                     onChange={(event) => setSearchText(event.target.value)}
                     value={searchText}
                 />
+                <Tooltip className="error-type-tooltip" tooltipType="tooltip--lg" content={'Login FCIs only available starting Jan 1, 2022'} placement="top">
+                    <FilterDropDown
+                        id="error-type-dropdown"
+                        list={[FCI_TYPE_CHECKOUT, FCI_TYPE_LOGIN]}
+                        selectedValue={pendingFciType}
+                        onClickHandler={handleFciTypeChange}
+                        className="fci-dropdown"
+                    />
+                </Tooltip>
                 <button
-                    className="btn btn-primary apply-btn"
+                    className="btn btn-primary search-btn"
                     type="button"
                     onClick={searchFci}
+                    disabled={!searchText}
                 >
                     {'Search'}
                 </button>
