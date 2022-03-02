@@ -10,12 +10,18 @@
         float: left;
         width: 512px;
         max-width: 512px;
+        margin-right: @spacing-1x;
     }
 
-    .apply-btn {
+    .apply-btn,
+    .search-btn {
         margin-left: @spacing-1x;
         height: @spacing-7x;
         margin-bottom: @spacing-1x;
+    }
+
+    .search-btn {
+        margin-top: -@spacing-7x;
     }
 
     .form-container {
@@ -34,37 +40,37 @@
             display: flex;
             align-items: center;
             flex-wrap: wrap;
+        }
 
-            .fci-dropdown {
-                float: left;
-                margin-right: @spacing-1x;
-                margin-bottom: @spacing-1x;
+        .fci-dropdown {
+            float: left;
+            margin-right: @spacing-1x;
+            margin-bottom: @spacing-1x;
 
-                .fci-dropdown__control {
-                    min-height: @filter-size;
-                    border-radius: @spacing-1x;
-                    border-color: @border-color-dark;
-                }
-
-                .fci-dropdown__menu,
-                .fci-dropdown__control {
-                    z-index: 999;
-                }
-
-                .Dropdown__toggle {
-                    .dropdown-button(160px);
-                    border-color: @border-color-dark;
-                }
+            .fci-dropdown__control {
+                min-height: @filter-size;
+                border-radius: @spacing-1x;
+                border-color: @border-color-dark;
             }
 
-            .fci-select {
-                min-width: 250px;
+            .fci-dropdown__menu,
+            .fci-dropdown__control {
+                z-index: 999;
             }
 
-            .Dropdown__menu {
-                max-height: 300px;
-                overflow-y: scroll;
+            .Dropdown__toggle {
+                .dropdown-button(160px);
+                border-color: @border-color-dark;
             }
+        }
+
+        .fci-select {
+            min-width: 250px;
+        }
+
+        .Dropdown__menu {
+            max-height: 300px;
+            overflow-y: scroll;
         }
     }
 
