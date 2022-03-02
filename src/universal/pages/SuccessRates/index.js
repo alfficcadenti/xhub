@@ -119,63 +119,6 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
     const rttRef = useRef();
     const didMount = useRef(false);
 
-    const fetchRealTimeData = () => {
-        setIsRttLoading(true);
-        setRttError('');
-        const rttStart = moment().utc().subtract(11, 'minute').startOf('minute').format();
-        const rttEnd = moment().utc().subtract(1, 'minute').startOf('minute').format();
-        const {funnelBrand} = getBrand(selectedBrand, 'label');
-        const endpoint = buildSuccessRateApiQueryString({rttStart, rttEnd, brand: funnelBrand, EPSPartner: selectedEPSPartner, interval: 1});
-
-        Promise.all(METRIC_NAMES.map((metricName) => fetch(`${endpoint}&metricName=${metricName}`)))
-            .then((responses) => Promise.all(responses.map(checkResponse)))
-            .then((fetchedSuccessRates) => successRatesRealTimeObject(fetchedSuccessRates, selectedLobs, selectedBrand))
-            .then((realTimeData) => setRealTimeTotals(realTimeData))
-            .catch((err) => {
-                let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
-                    ? `Query has timed out. Try refreshing the page. If the problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`
-                    : `An unexpected error has occurred. Try refreshing the page. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`;
-                setRttError(errorMessage);
-                // eslint-disable-next-line no-console
-                console.error(err);
-            })
-            .finally(() => setIsRttLoading(false));
-    };
-
-    const fetchSuccessRatesData = (brand) => {
-        const {label: pageBrand, funnelBrand} = getBrand(brand, 'label');
-        setIsLoading(true);
-        setError('');
-        const interval = getIntervalInMinutes(start, end);
-        const endpoint = buildSuccessRateApiQueryString({start, end, brand: funnelBrand, EPSPartner: selectedEPSPartner, interval});
-        Promise.all([
-            fetch(`/v1/delta-users-counts-by-metrics?brand=${funnelBrand}&from_date=${moment(start).utc().format()}&to_date=${moment(end).utc().format()}&${selectedLobs.map((l) => `line_of_business=${l.value}`).join('&')}`),
-            ...METRIC_NAMES.map((metricName) => fetch(`${endpoint}&metricName=${metricName}`))
-        ])
-            .then((responses) => Promise.all(responses.map(checkResponse)))
-            .then(([deltaUserData, ...fetchedSuccessRates]) => {
-                if (!fetchedSuccessRates || !fetchedSuccessRates.length) {
-                    setError('No data found. Try refreshing the page or select another brand.');
-                    return;
-                }
-
-                const successRatesLOBs = getAllAvailableLOBs(AVAILABLE_LOBS);
-                const widgetObjects = makeSuccessRatesObjects(fetchedSuccessRates, start, end, pageBrand, deltaUserData);
-                const widgetLOBObjects = makeSuccessRatesLOBObjects(fetchedSuccessRates, start, end, pageBrand, brand, successRatesLOBs, deltaUserData);
-                setWidgets(widgetObjects);
-                setLoBWidgets(widgetLOBObjects);
-            })
-            .catch((err) => {
-                let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
-                    ? `Query has timed out. Try refreshing the page. If the problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`
-                    : `An unexpected error has occurred. Try refreshing the page. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`;
-                setError(errorMessage);
-                // eslint-disable-next-line no-console
-                console.error(err);
-            })
-            .finally(() => setIsLoading(false));
-    };
-
     useEffect(() => {
         triggerEdapPageView(location.pathname);
     }, [location.pathname]);
@@ -196,6 +139,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
         }
     }, [selectedBrand]);
 
+    // Fetch Delta User Info
     useEffect(() => {
         if ([EG_BRAND, EGENCIA_BRAND].includes(selectedBrand)) {
             setIsSupportedBrand(false);
@@ -205,18 +149,69 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
             setIsSupportedBrand(true);
             setError(null);
             setIsFormDisabled(false);
-
             if (!isZoomedIn) { // we need this flag right after zoomed in so that we don't re-fetch because it filters on existing data
-                fetchSuccessRatesData(selectedBrand);
+                const {label: pageBrand, funnelBrand} = getBrand(selectedBrand, 'label');
+                setIsLoading(true);
+                setError('');
+                const interval = getIntervalInMinutes(start, end);
+                const endpoint = buildSuccessRateApiQueryString({start, end, brand: funnelBrand, EPSPartner: selectedEPSPartner, interval});
+                Promise.all([
+                    fetch(`/v1/delta-users-counts-by-metrics?brand=${funnelBrand}&from_date=${moment(start).utc().format()}&to_date=${moment(end).utc().format()}&${selectedLobs.map((l) => `line_of_business=${l.value}`).join('&')}`),
+                    ...METRIC_NAMES.map((metricName) => fetch(`${endpoint}&metricName=${metricName}`))
+                ])
+                    .then((responses) => Promise.all(responses.map(checkResponse)))
+                    .then(([deltaUserData, ...fetchedSuccessRates]) => {
+                        if (!fetchedSuccessRates || !fetchedSuccessRates.length) {
+                            setError('No data found. Try refreshing the page or select another brand.');
+                            return;
+                        }
+
+                        const successRatesLOBs = getAllAvailableLOBs(AVAILABLE_LOBS);
+                        const widgetObjects = makeSuccessRatesObjects(fetchedSuccessRates, start, end, pageBrand, deltaUserData);
+                        const widgetLOBObjects = makeSuccessRatesLOBObjects(fetchedSuccessRates, start, end, pageBrand, selectedBrand, successRatesLOBs, deltaUserData);
+                        setWidgets(widgetObjects);
+                        setLoBWidgets(widgetLOBObjects);
+                    })
+                    .catch((err) => {
+                        let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
+                            ? `Query has timed out. Try refreshing the page. If the problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`
+                            : `An unexpected error has occurred. Try refreshing the page. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`;
+                        setError(errorMessage);
+                        // eslint-disable-next-line no-console
+                        console.error(err);
+                    })
+                    .finally(() => setIsLoading(false));
             }
         }
 
         return function cleanup() {
             setIsZoomedIn(false); // set to false so that it fetch data when changing brands
         };
-    }, [selectedBrand, start, end, selectedEPSPartner]);
+    }, [selectedBrand, start, end, selectedEPSPartner, selectedLobs]);
 
     useEffect(() => {
+        const fetchRealTimeData = () => {
+            setIsRttLoading(true);
+            setRttError('');
+            const rttStart = moment().utc().subtract(11, 'minute').startOf('minute').format();
+            const rttEnd = moment().utc().subtract(1, 'minute').startOf('minute').format();
+            const {funnelBrand} = getBrand(selectedBrand, 'label');
+            const endpoint = buildSuccessRateApiQueryString({rttStart, rttEnd, brand: funnelBrand, EPSPartner: selectedEPSPartner, interval: 1});
+
+            Promise.all(METRIC_NAMES.map((metricName) => fetch(`${endpoint}&metricName=${metricName}`)))
+                .then((responses) => Promise.all(responses.map(checkResponse)))
+                .then((fetchedSuccessRates) => successRatesRealTimeObject(fetchedSuccessRates, selectedLobs, selectedBrand))
+                .then((realTimeData) => setRealTimeTotals(realTimeData))
+                .catch((err) => {
+                    let errorMessage = (err?.message?.includes('query-timeout limit exceeded'))
+                        ? `Query has timed out. Try refreshing the page. If the problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`
+                        : `An unexpected error has occurred. Try refreshing the page. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`;
+                    setRttError(errorMessage);
+                    // eslint-disable-next-line no-console
+                    console.error(err);
+                })
+                .finally(() => setIsRttLoading(false));
+        };
         if (![EG_BRAND, EGENCIA_BRAND].includes(selectedBrand)) {
             fetchRealTimeData();
             rttRef.current = setInterval(fetchRealTimeData, 60000); // refresh every minute
@@ -225,7 +220,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
         return function cleanup() {
             clearInterval(rttRef.current);
         };
-    }, [selectedLobs]);
+    }, [selectedLobs, selectedEPSPartner, selectedBrand]);
 
     useEffect(() => {
         if (!selectedLobs.length) {

@@ -8,10 +8,11 @@ const getTestData = async (req, appender) => {
     const {timeInterval} = req.url.query || 5;
     let result = [];
     const start = moment(startDate);
+    const roundedStart = start.subtract(start.minute() % 5, 'minute').startOf('minute');
     const end = moment(endDate);
-    while (start.isSameOrBefore(end)) {
-        result = appender(start.utc().format('YYYY-MM-DD\THH:mm:ss\\Z'), result);
-        start.add(timeInterval, 'minutes');
+    while (roundedStart.isSameOrBefore(end)) {
+        result = appender(roundedStart.utc().format('YYYY-MM-DD\THH:mm:ss\\Z'), result);
+        roundedStart.add(timeInterval, 'minutes');
     }
     return result;
 };

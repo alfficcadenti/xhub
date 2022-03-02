@@ -11,11 +11,13 @@ describe('getTestData', () => {
     });
 
     it('handles non-empty query params correctly', async () => {
-        const startDate = moment().utc().startOf('minute').subtract(5, 'minute').format();
-        const endDate = moment().utc().startOf('minute').format();
-        const expectedArray = Array.from({length: 6}, (v, i) => moment().utc().startOf('minute').subtract(i, 'minutes').format()).reverse();
+        const now = moment().utc();
+        const roundedNow = now.subtract(now.minutes() % 5, 'minute').startOf('minute');
+        const startDate = moment(roundedNow).subtract(15, 'minutes');
+        const endDate = moment(roundedNow);
+        const expectedArray = Array.from({length: 4}, (_, i) => moment(endDate).subtract(i * 5, 'minute').format()).reverse();
         expect(await getTestData(
-            {url: {query: {startDate, endDate, timeInterval: 1}}},
+            {url: {query: {startDate: startDate.format(), endDate: endDate.format(), timeInterval: 5}}},
             (time, result) => {
                 result.push(time);
                 return result;
