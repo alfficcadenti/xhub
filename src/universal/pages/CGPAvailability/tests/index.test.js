@@ -1,7 +1,7 @@
 import React from 'react';
 import CGPAvailibility from '../index';
 import {AVAILABILITY} from '../../../../server/routes/api/testData/availability';
-import {render, act, fireEvent, waitFor} from '@testing-library/react';
+import {render, act, fireEvent, waitFor, within, screen} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import {BrowserRouter as Router} from 'react-router-dom';
 
@@ -125,6 +125,25 @@ describe('<CGPAvailibility />', () => {
             wrapper = render(<Router><CGPAvailibility /></Router>);
         });
         expect(wrapper.queryByText('unknown')).not.toBeInTheDocument();
+    });
+
+    it('display only application with name including the substring in the application filter', async () => {
+        fetch.mockImplementation(() => {
+            return Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve(AVAILABILITY)
+            });
+        });
+        await act(async () => {
+            wrapper = render(<Router><CGPAvailibility /></Router>);
+        });
+        const inputField = wrapper.getByLabelText('Application Name');
+        fireEvent.change(inputField, {target: {value: 'cars'}});
+        const table = screen.getByLabelText('DataTable');
+        const rows = within(table);
+        expect(rows.getAllByRole('row')).toHaveLength(3);
+
+        expect(wrapper).toMatchSnapshot();
     });
 });
 
