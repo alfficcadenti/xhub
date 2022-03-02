@@ -100,8 +100,6 @@ const DatetimeRangePicker = (props) => (
             timeFormat={props.showTimePicker}
             isValidEndDate={props.isValidEndDate}
         />
-        <div className="rdt-start-label">{'Start'}</div>
-        <div className="rdt-end-label">{'End'}</div>
         {!props.hidePresets && !props.disabled && (
             <Dropdown
                 id="rdt-preset-dropdown"

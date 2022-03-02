@@ -1,42 +1,14 @@
 @import '../../mixins.less';
 
 .datetime-range-picker {
+    display: inline-flex;
+
     .rdt {
         float: left;
-
-        &:nth-child(1) input {
-            padding-top: @spacing-4x;
-            /* stylelint-disable */
-            border-radius: @spacing-1x 0 0 @spacing-1x !important;
-            border: 1px solid #908f8f !important;
-            /* stylelint-enable */
-        }
-
-        &:nth-child(2) input {
-            padding-top: @spacing-4x;
-            /* stylelint-disable */
-            border-radius: 0 @spacing-1x @spacing-1x 0 !important;
-            border: 1px solid #908f8f !important;
-            border-left: none !important;
-            margin-left: -1px !important;
-            /* stylelint-enable */
-        }
     }
 
-    .rdt-start-label {
-        float: left;
-        position: absolute;
-        margin-top: 5px;
-        font-size: .75rem;
-        margin-left: @spacing-2x;
-    }
-
-    .rdt-end-label {
-        float: left;
-        position: absolute;
-        margin-top: 5px;
-        font-size: .75rem;
-        margin-left: 252px;
+    .short {
+        max-width: 150px;
     }
 
     .Dropdown__menu {

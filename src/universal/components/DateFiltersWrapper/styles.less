@@ -44,7 +44,11 @@
         border: @border-color-dark 1px solid;
         border-radius: @spacing-1x;
         padding: @spacing-1x;
-        display: flex;
+        display: block;
+
+        .datetime-range-picker {
+            display: inline-grid;
+        }
 
         .apply-btn {
             height: fit-content;

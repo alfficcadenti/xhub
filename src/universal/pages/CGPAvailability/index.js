@@ -114,10 +114,13 @@ const CGPAvailibility = () => {
 
     return (
         <div className="cgp-availability-container">
-            <h1 className="page-title" data-testid="title">
-                {'CGP Availability'}
-                <HelpText className="page-info" text="Display the last 7 days availability for each application calculated monitoring the CGP logs as: (Total Requests - 5XX request) * 100) / Total Requests" />
-            </h1>
+            <div className="header-container">
+                <h1 className="page-title" data-testid="title">
+                    {'CGP Availability'}
+                    <HelpText className="page-info" text="Display the last 7 days availability for each application calculated monitoring the CGP logs as: (Total Requests - 5XX request) * 100) / Total Requests" />
+                </h1>
+                <Legend/>
+            </div>
             <div className="top-container">
                 <div className="filter-container">
                     <DatetimeRangePicker
@@ -146,7 +149,7 @@ const CGPAvailibility = () => {
                         {'Apply'}
                     </button>
                 </div>
-                <Legend/>
+
                 <FormInput
                     id="availabilityFilter"
                     className="availability-filter"
