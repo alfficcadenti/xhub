@@ -144,7 +144,6 @@ const Impulse = (props) => {
     const [allDataByDeviceType, setAllDataByDeviceType] = useState([]);
     const [allDataByRegion, setAllDataByRegion] = useState([]);
     const refreshRange = ((moment(endDateTime).diff(moment(startDateTime), 'days') <= 5) && (moment().diff(moment(endDateTime), 'minutes') < 5));
-    // eslint-disable-next-line no-use-before-define
     const [isEpsSelected, setIsEpsSelected] = useState(`${initialBrands}` === `${EXPEDIA_PARTNER_SERVICES_BRAND}`);
     const [selectedEpsChannels, setSelectedEpsChannels] = useState([]);
     const getScreenshot = (timeout) => {
@@ -337,7 +336,7 @@ const Impulse = (props) => {
             });
         });
         setSelectedSiteURLMulti(selectedChannelEgSiteList);
-    }, [selectedEpsChannels,allPos]);
+    }, [selectedEpsChannels, allPos]);
 
     useEffect(() => {
         setFilterAllData([...res]);
