@@ -159,6 +159,7 @@ Object {
                       </div>
                     </div>
                     <table
+                      aria-label="DataTable"
                       class="data-table"
                     >
                       <thead
@@ -435,6 +436,7 @@ Object {
                       </div>
                     </div>
                     <table
+                      aria-label="DataTable"
                       class="data-table"
                     >
                       <thead
@@ -757,6 +759,7 @@ Object {
                     </div>
                   </div>
                   <table
+                    aria-label="DataTable"
                     class="data-table"
                   >
                     <thead
@@ -1033,6 +1036,7 @@ Object {
                     </div>
                   </div>
                   <table
+                    aria-label="DataTable"
                     class="data-table"
                   >
                     <thead

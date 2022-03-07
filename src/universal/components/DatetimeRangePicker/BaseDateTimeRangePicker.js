@@ -167,21 +167,32 @@ class BaseDateTimeRangePicker extends Component {
                 onBlur={this.onBlur}
                 role="button"
             >
-                <Datetime
+                <div className={'rdt-start-container'}>
+                    <Datetime
                     {...startProps} // eslint-disable-line
-                    isValidDate={this.props.isValidStartDate}
-                    onChange={this.onStartDateChange}
-                    renderDay={this.renderDay}
-                    inputProps={{disabled: this.props.disabled}}
-                />
+                        id="datepicker-start-date"
+                        isValidDate={this.props.isValidStartDate}
+                        onChange={this.onStartDateChange}
+                        renderDay={this.renderDay}
+                        inputProps={{disabled: this.props.disabled}}
+                        className={!this.props.timeFormat && 'short'}
+                    />
+                    <label className="rdt-start-label" htmlFor="datepicker-start-date">{'Start'}</label>
+                </div>
 
-                <Datetime
+                <div className={'rdt-end-container'}>
+                    <Datetime
                     {...endProps} // eslint-disable-line
-                    isValidDate={this.isValidEndDate}
-                    onChange={this.onEndDateChange}
-                    renderDay={this.renderDay}
-                    inputProps={{disabled: this.props.disabled}}
-                />
+                        id="datepicker-end-date"
+                        isValidDate={this.isValidEndDate}
+                        onChange={this.onEndDateChange}
+                        renderDay={this.renderDay}
+                        inputProps={{disabled: this.props.disabled}}
+                        className={!this.props.timeFormat && 'short'}
+                    />
+                    <label className="rdt-end-label" htmlFor="datepicker-end-date">{'End'}</label>
+                </div>
+
             </div>
         );
     }

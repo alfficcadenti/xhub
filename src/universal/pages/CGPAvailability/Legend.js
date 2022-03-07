@@ -2,11 +2,13 @@ import React from 'react';
 import {THRESHOLDS} from './constants.js';
 
 const Legend = () =>
-    (<div className="legend-container">
-        <div className="negative">{`< ${THRESHOLDS.medium}`}</div>
-        <div className="attention">{`>= ${THRESHOLDS.medium}`}</div>
-        <div className="positive">{`>= ${THRESHOLDS.high}`}</div>
-    </div>);
+    (<label className="legend-label" htmlFor="legend">{'Legend'}
+        <div className="legend-container" id="legend">
+            <div className="negative">{`< ${THRESHOLDS.medium}`}</div>
+            <div className="attention">{`>= ${THRESHOLDS.medium}`}</div>
+            <div className="positive">{`>= ${THRESHOLDS.high}`}</div>
+        </div>
+    </label>);
 
 export default Legend;
 

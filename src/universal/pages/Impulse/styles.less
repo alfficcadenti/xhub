@@ -58,15 +58,16 @@
   }
 
   .impulse-filters-wrapper {
+    .datetime-range-picker, .filter-option {
+      float:left;
+      margin-bottom: @spacing-1x;
+    }
+
     .datetime-range-picker {
       .rdt-container {
         .rdt {
           width: 210px;
         }
-      }
-
-      .rdt-end-label {
-        margin-left: 226px;
       }
     }
     .first-filter-spacing {
@@ -104,6 +105,7 @@
 
       .incidents-сheckbox {
         margin-top: @spacing-3x;
+        margin-left: @spacing-1x;
       }
     }
 
@@ -121,7 +123,6 @@
 
 .filter-option {
   display: flex;
-  margin: 5px;
   z-index: 15;
 
   .time-interval {

@@ -1,7 +1,42 @@
+@import '../../mixins.less';
+@import '~@homeaway/baseline/release/stylesheets/baseline-gt.css';
+
 /* stylelint-disable selector-class-pattern */
 .rdt-container {
+    justify-content: space-around;
+    display: inline-flex;
+    position: relative;
+
+    .rdt-start-container, .rdt-end-container {
+        position: relative;
+    }
+
+    .rdt-start-container > .rdt > input.form-control {
+        border-radius: @spacing-1x 0 0 @spacing-1x;
+        border: 1px solid --color-input-border;
+        border-right: 0;
+    }
+
+    .rdt-end-container > .rdt > input.form-control {
+        border-radius: 0 @spacing-1x @spacing-1x 0;
+        border: 1px solid --color-input-border;
+        border-left: 0;
+    }
+
+    .rdt-start-label, .rdt-end-label {
+        position: absolute;
+        font-size: .75rem;
+        z-index: 10;
+        top: 5px;
+        left: 16px;
+    }
+
     .rdt {
         position: relative;
+
+        input {
+            padding-top: @spacing-4x;
+        }
     }
 
     .rdtOpen .rdtPicker {

@@ -413,7 +413,7 @@ const DataTable = ({
 
     const renderTable = () => (
         <Fragment key={`table+${reSortData}`}>
-            <table className="data-table">
+            <table className="data-table" aria-label="DataTable">
                 <thead className="data-table-header">{renderTableHeader(columnCheckboxes)}</thead>
                 <tbody className="data-table-body">{renderTableBody()}</tbody>
             </table>

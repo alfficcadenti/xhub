@@ -10,6 +10,7 @@ import ErrorCountModal from './ErrorCountModal';
 import Legend from './Legend';
 import {FormInput} from '@homeaway/react-form-components';
 import MultiSelect from '@homeaway/react-multiselect-dropdown';
+import Tooltip from '@homeaway/react-tooltip';
 import {REGIONS} from './constants';
 import './styles.less';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
@@ -33,6 +34,7 @@ const CGPAvailibility = () => {
     const [error, setError] = useState('');
     const [selectedApp, setSelectedApp] = useState(null);
     const [availabilityFilter, setAvailabilityFilter] = useState(100.00);
+    const [applicationFilter, setApplicationFilter] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [pendingRegionFilter, setPendingRegionFilter] = useState(regions);
     const [selectedRegionFilter, setSelectedRegionFilter] = useState(pendingRegionFilter);
@@ -67,9 +69,9 @@ const CGPAvailibility = () => {
     const handleOnClick = (selected) => setSelectedApp(selected || null);
 
     useEffect(() => {
-        const newFilteredAvailability = availability.length && availability.filter((x) => x?.applicationName !== 'unknown').map((x) => mapAvailabilityRow(x, handleOnClick)).filter((x) => typeof x.avgValue === 'number' && x?.avgValue <= availabilityFilter);
+        const newFilteredAvailability = availability.length && availability.filter((x) => x?.applicationName !== 'unknown').map((x) => mapAvailabilityRow(x, handleOnClick)).filter((x) => typeof x.avgValue === 'number' && x?.avgValue <= availabilityFilter && x?.Application.includes(applicationFilter));
         setFilteredAvailability(newFilteredAvailability);
-    }, [availabilityFilter, availability]);
+    }, [availabilityFilter, applicationFilter, availability]);
 
     useEffect(() => {
         if (availabilityFilter < 0 || availabilityFilter > 100) {
@@ -81,7 +83,9 @@ const CGPAvailibility = () => {
 
     const handleOnClose = () => setSelectedApp(null);
 
-    const handleChange = (e) => setAvailabilityFilter(e?.target?.value);
+    const handleAvailabilityFilterChange = (e) => setAvailabilityFilter(e?.target?.value);
+
+    const handleApplicationFilterChange = (e) => setApplicationFilter(e?.target?.value);
 
     const handleRegionChange = (e) => {
         if (e.items.filter((x) => x.checked === true).length === 0) {
@@ -114,10 +118,13 @@ const CGPAvailibility = () => {
 
     return (
         <div className="cgp-availability-container">
-            <h1 className="page-title" data-testid="title">
-                {'CGP Availability'}
-                <HelpText className="page-info" text="Display the last 7 days availability for each application calculated monitoring the CGP logs as: (Total Requests - 5XX request) * 100) / Total Requests" />
-            </h1>
+            <div className="header-container">
+                <h1 className="page-title" data-testid="title">
+                    {'CGP Availability'}
+                    <HelpText className="page-info" text="Display the last 7 days availability for each application calculated monitoring the CGP logs as: (Total Requests - 5XX request) * 100) / Total Requests" />
+                </h1>
+                <Legend/>
+            </div>
             <div className="top-container">
                 <div className="filter-container">
                     <DatetimeRangePicker
@@ -146,18 +153,28 @@ const CGPAvailibility = () => {
                         {'Apply'}
                     </button>
                 </div>
-                <Legend/>
+                <Tooltip tooltipType="tooltip--lg" content={'Display only applications with availability lower than the specified value'} placement="top" fullWidth>
+                    <FormInput
+                        id="availabilityFilter"
+                        className="availability-filter"
+                        type="number"
+                        min={0}
+                        max={100}
+                        name="availabilityFilter"
+                        label="Availability Filter"
+                        onChange={handleAvailabilityFilterChange}
+                        value={availabilityFilter}
+                        errorMsg={errorMessage}
+                        disabled={isLoading}
+                    />
+                </Tooltip>
                 <FormInput
-                    id="availabilityFilter"
-                    className="availability-filter"
-                    type="number"
-                    min={0}
-                    max={100}
-                    name="availabilityFilter"
-                    label="Availability Filter"
-                    onChange={handleChange}
-                    value={availabilityFilter}
-                    errorMsg={errorMessage}
+                    id="applicationFilter"
+                    className="application-filter"
+                    name="applicationFilter"
+                    label="Application Name"
+                    onChange={handleApplicationFilterChange}
+                    value={applicationFilter}
                     disabled={isLoading}
                 />
             </div>
@@ -168,7 +185,6 @@ const CGPAvailibility = () => {
                     sortByColumn = "Availability"
                     sortByDirection = "asc"
                     paginated
-                    enableTextSearch
                     enableCSVDownload
                     columnsInfo={{'Availability': 'Availability for the time frame calculated as: (Total Requests - 5XX request) * 100) / Total Requests'}}
                 />

@@ -1,4 +1,5 @@
 @import '../../mixins.less';
+@import '~@homeaway/baseline/release/stylesheets/baseline-gt.css';
 
 .cgp-availability-container {
     display: grid;
@@ -12,8 +13,13 @@
         font-weight: 400;
     }
 
+    .legend-label {
+        display: grid;
+        font-size: 12px;
+        color: --color-dark;
+    }
+
     .loading-container {
-        padding: @spacing-1x;
         display: grid;
     }
 
@@ -26,6 +32,18 @@
         cursor: default;
     }
 
+    .header-container {
+        display: flex;
+        justify-content: space-between;
+
+        .legend-container {
+            height: fit-content;
+            display: flex;
+            margin-right: @spacing-3x;
+            float: right;
+        }
+    }
+
     .top-container {
         width: 100%;
         display: inline-flex;
@@ -34,13 +52,7 @@
             min-width: 150px;
         }
 
-        .legend-container {
-            height: fit-content;
-            font-size: 0.8em;
-            display: flex;
-        }
-
-        .filter-container, .legend-container, .availability-filter {
+        .filter-container, .availability-filter {
             margin-right: @spacing-3x;
         }
 
