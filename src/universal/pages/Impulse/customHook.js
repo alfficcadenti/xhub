@@ -50,13 +50,14 @@ const bookingTimeInterval = 300000;
 const incidentTimeInterval = 900000;
 const healthTimeInterval = 300000;
 const anomalyTimeInterval = 900000;
+const allPos = [];
 let initialMount = false;
 let intervalForCharts = null;
 let intervalForAnnotations = null;
 let intervalForHealth = null;
 let intervalForAnomalies = null;
 let finalChartDataYOY = null;
-let allPos = [];
+
 export const useFetchBlipData = (
     isApplyClicked,
     setIsApplyClicked,
@@ -487,7 +488,7 @@ export const useFetchBlipData = (
         if (Object.keys(egSiteURLMulti).length === 0) {
             return;
         }
-        egSiteURLMulti.map((egSiteValueAndLabel) => {
+        egSiteURLMulti.forEach((egSiteValueAndLabel) => {
             allPos.push(egSiteValueAndLabel.label);
         });
     }, [egSiteURLMulti]);
@@ -500,16 +501,8 @@ export const useFetchBlipData = (
         if (Object.keys(brandsMulti).length === 0) {
             return;
         }
-        // eslint-disable-next-line consistent-return
-        if (brandsMulti.find((brand) => {
-            if (brand.value === EXPEDIA_PARTNER_SERVICES_BRAND && brand.label === EXPEDIA_PARTNER_SERVICES_BRAND) {
-                return true;
-            }
-        })) {
-            setIsEpsPresentInBrands(true);
-        } else {
-            setIsEpsPresentInBrands(false);
-        }
+        const foundEps = brandsMulti.find((brand) => brand.value === EXPEDIA_PARTNER_SERVICES_BRAND && brand.label === EXPEDIA_PARTNER_SERVICES_BRAND);
+        setIsEpsPresentInBrands(foundEps);
     }, [brandsMulti]);
 
     useEffect(() => {

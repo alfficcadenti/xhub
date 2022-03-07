@@ -108,13 +108,6 @@ const Impulse = (props) => {
     let storageEnableAnomalies = localStorage.getItem('enableAnomalies') || true;
     storageEnableAnomalies = JSON.parse(storageEnableAnomalies);
 
-    const checkInitialBrands = () => {
-        if (initialBrands.length === 1 && initialBrands.includes(EXPEDIA_PARTNER_SERVICES_BRAND)) {
-            return true;
-        }
-        return false;
-    };
-
     const [startDateTime, setStartDateTime] = useState(initialStart);
     const [endDateTime, setEndDateTime] = useState(initialEnd);
     const [isApplyClicked, setIsApplyClicked] = useState(false);
@@ -152,7 +145,7 @@ const Impulse = (props) => {
     const [allDataByRegion, setAllDataByRegion] = useState([]);
     const refreshRange = ((moment(endDateTime).diff(moment(startDateTime), 'days') <= 5) && (moment().diff(moment(endDateTime), 'minutes') < 5));
     // eslint-disable-next-line no-use-before-define
-    const [isEpsSelected, setIsEpsSelected] = useState(checkInitialBrands());
+    const [isEpsSelected, setIsEpsSelected] = useState(`${initialBrands}` === `${EXPEDIA_PARTNER_SERVICES_BRAND}`);
     const [selectedEpsChannels, setSelectedEpsChannels] = useState([]);
     const getScreenshot = (timeout) => {
         setGraphImage(null);
@@ -237,7 +230,6 @@ const Impulse = (props) => {
         getScreenshot,
         setGraphImage);
 
-    const allPosSet = new Set(allPos);
     const modifyFilters = (newValuesOnChange) => {
         setSelectedLobMulti([]);
         setSelectedDeviceTypeMulti([]);
@@ -252,14 +244,7 @@ const Impulse = (props) => {
             setDeviceTypesMulti(getFilters(filterData, 'device_types'));
             setEgSiteURLMulti(mapPosFilterLabels(getFilters(filterData, 'point_of_sales')));
         }
-        if (!isEpsPresentInBrands) {
-            setIsEpsSelected(false);
-            return;
-        } else if (newValuesOnChange.length === 1 && newValuesOnChange.includes(EXPEDIA_PARTNER_SERVICES_BRAND)) {
-            setIsEpsSelected(true);
-        } else {
-            setIsEpsSelected(false);
-        }
+        setIsEpsSelected(isEpsPresentInBrands && `${newValuesOnChange}` === `${EXPEDIA_PARTNER_SERVICES_BRAND}`);
     };
     const filterAnnotations = (newValuesOnChange) => {
         if (typeof newValuesOnChange !== 'undefined' && newValuesOnChange !== null && newValuesOnChange.length > 0) {
@@ -342,17 +327,17 @@ const Impulse = (props) => {
     };
 
     useEffect(() => {
-        let selectedChannelEgSiteList = [];
+        const selectedChannelEgSiteList = [];
+        const allPosSet = new Set(allPos);
         selectedEpsChannels.map((channel) => {
-            EPS_CHANNEL_SITE_URL[channel].map((pos) => {
+            EPS_CHANNEL_SITE_URL[channel].forEach((pos) => {
                 if (allPosSet.has(pos)) {
                     selectedChannelEgSiteList.push(pos);
                 }
             });
         });
-        console.log(selectedChannelEgSiteList);
         setSelectedSiteURLMulti(selectedChannelEgSiteList);
-    }, [selectedEpsChannels]);
+    }, [selectedEpsChannels,allPos]);
 
     useEffect(() => {
         setFilterAllData([...res]);
@@ -690,8 +675,8 @@ const Impulse = (props) => {
                     {renderTimeInterval(timeInterval, timeIntervalOpts, handleTimeIntervalChange)}
                     {renderMultiSelectFilters(selectedBrandMulti, brandsMulti, 'brand', ALL_BRANDS, filterSelectionClass)}
                     {renderMultiSelectFilters(selectedLobMulti, lobsMulti, 'lob', ALL_LOB, filterSelectionClass)}
-                    {isEpsSelected ? renderMultiSelectFilters(selectedEpsChannels, EPS_CHANNELS, 'EPS_Channels', ALL_EPS_CHANNELS, filterSelectionClass) : null}
-                    {selectedEpsChannels.length === 0 ? renderMultiSelectFilters(selectedSiteURLMulti, egSiteURLMulti, 'egSiteUrl', ALL_POS, filterExpandClass) : null}
+                    {isEpsSelected && renderMultiSelectFilters(selectedEpsChannels, EPS_CHANNELS, 'EPS_Channels', ALL_EPS_CHANNELS, filterSelectionClass)}
+                    {selectedEpsChannels.length === 0 && renderMultiSelectFilters(selectedSiteURLMulti, egSiteURLMulti, 'egSiteUrl', ALL_POS, filterExpandClass)}
                     <button
                         type="button"
                         className="apply-button btn btn-primary active"
