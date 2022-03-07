@@ -263,7 +263,7 @@ const Fci = ({selectedBrands}) => {
 
     useEffect(() => {
         if (sitesIsLoading) {
-            fetch(getFciSitesUrl(FCI_TYPE_CHECKOUT, pendingStart.toISOString(), pendingEnd.toISOString()))
+            fetch(getFciSitesUrl(pendingFciType, pendingStart.toISOString(), pendingEnd.toISOString()))
                 .then(checkResponse)
                 .then((data) => setSitesData({
                     start: pendingStart,
@@ -272,7 +272,7 @@ const Fci = ({selectedBrands}) => {
                 }))
                 .finally(() => setSitesIsLoading(false));
         }
-    }, [pendingStart, pendingEnd, sitesIsLoading]);
+    }, [pendingStart, pendingEnd, pendingFciType, sitesIsLoading]);
 
     useEffect(() => {
         if (errorCodesIsLoading) {
@@ -290,7 +290,7 @@ const Fci = ({selectedBrands}) => {
 
     useEffect(() => {
         if (lobsIsLoading) {
-            fetch(getFciLobsUrl(FCI_TYPE_CHECKOUT, pendingStart.toISOString(), pendingEnd.toISOString(), selectedSite))
+            fetch(getFciLobsUrl(pendingFciType, pendingStart.toISOString(), pendingEnd.toISOString(), selectedSite))
                 .then(checkResponse)
                 .then((data) => setLobsData({
                     start: pendingStart,
@@ -299,7 +299,7 @@ const Fci = ({selectedBrands}) => {
                 }))
                 .finally(() => setLobsIsLoading(false));
         }
-    }, [pendingStart, pendingEnd, lobsIsLoading, selectedSite]);
+    }, [pendingStart, pendingEnd, pendingFciType, lobsIsLoading, selectedSite]);
 
     const fetchSites = () => {
         if (!sitesData.start || !sitesData.start.isSame(pendingStart, 'minute')) {
