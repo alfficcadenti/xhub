@@ -50,6 +50,7 @@ const bookingTimeInterval = 300000;
 const incidentTimeInterval = 900000;
 const healthTimeInterval = 300000;
 const anomalyTimeInterval = 900000;
+const allPos = [];
 let initialMount = false;
 let intervalForCharts = null;
 let intervalForAnnotations = null;
@@ -106,7 +107,7 @@ export const useFetchBlipData = (
 
     const [averageCount, setAverageCount] = useState({});
     const [isAverageCountLoading, setIsAverageCountLoading] = useState(false);
-
+    const [isEpsPresentInBrands, setIsEpsPresentInBrands] = useState(false);
     const incidentMultiOptions = [
         {
             value: '0-Code Red',
@@ -484,8 +485,25 @@ export const useFetchBlipData = (
     };
 
     useEffect(() => {
+        if (Object.keys(egSiteURLMulti).length === 0) {
+            return;
+        }
+        egSiteURLMulti.forEach((egSiteValueAndLabel) => {
+            allPos.push(egSiteValueAndLabel.label);
+        });
+    }, [egSiteURLMulti]);
+
+    useEffect(() => {
         fetchAverage();
     }, [isApplyClicked]);
+
+    useEffect(() => {
+        if (Object.keys(brandsMulti).length === 0) {
+            return;
+        }
+        const foundEps = brandsMulti.find((brand) => brand.value === EXPEDIA_PARTNER_SERVICES_BRAND && brand.label === EXPEDIA_PARTNER_SERVICES_BRAND);
+        setIsEpsPresentInBrands(foundEps);
+    }, [brandsMulti]);
 
     useEffect(() => {
         if (SUPPRESSED_BRANDS.includes(globalBrandName)) {
@@ -627,6 +645,8 @@ export const useFetchBlipData = (
         groupedResByDeviceType,
         groupedResByRegion,
         averageCount,
-        isAverageCountLoading
+        isAverageCountLoading,
+        isEpsPresentInBrands,
+        allPos
     ];
 };
