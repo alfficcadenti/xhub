@@ -42,8 +42,8 @@ const CGPAvailibility = () => {
     const [regionErrorMsg, setRegionErrorMsg] = useState('');
     const [start, setStart] = useState(moment().subtract(7, 'days'));
     const [end, setEnd] = useState(moment());
-    const [pendingStart, setPendingStart] = useState(start);
-    const [pendingEnd, setPendingEnd] = useState(end);
+    const [pendingStart, setPendingStart] = useState(moment().subtract(7, 'days'));
+    const [pendingEnd, setPendingEnd] = useState(moment());
 
     useEffect(() => {
         const getNewData = () => {
@@ -106,7 +106,6 @@ const CGPAvailibility = () => {
         } else {
             setPendingEnd(moment(startDateTimeStr).hours('23').minutes('59').seconds('59').add(15, 'days'));
         }
-
         setIsDirtyForm(true);
     };
 

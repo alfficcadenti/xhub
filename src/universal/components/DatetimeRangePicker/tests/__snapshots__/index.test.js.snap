@@ -1,0 +1,1562 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DatetimeRangePicker component testing renders successfully 2 inputs (start and end) 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="datetime-range-picker"
+      >
+        <div
+          class="rdt-container "
+          role="button"
+        >
+          <div
+            class="rdt-input-container"
+          >
+            <div
+              class="rdt-start-container"
+            >
+              <label
+                class="rdt-start-label"
+                for="datepicker-start-date"
+              >
+                Start
+              </label>
+              <div
+                class="rdt"
+              >
+                <input
+                  class="form-control short "
+                  id="datepicker-start-date"
+                  readonly=""
+                  type="text"
+                  value="01/01/2022"
+                />
+              </div>
+            </div>
+            <div
+              class="rdt-end-container"
+            >
+              <label
+                class="rdt-end-label"
+                for="datepicker-end-date"
+              >
+                End
+              </label>
+              <div
+                class="rdt"
+              >
+                <input
+                  class="form-control short "
+                  id="datepicker-end-date"
+                  readonly=""
+                  type="text"
+                  value="02/01/2022"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="Dropdown rdt-preset-dropdown"
+          role="presentation"
+          tabindex="-1"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="btn btn-default Dropdown__toggle border-border-color border--contrast"
+            id="rdt-preset-dropdown"
+            type="button"
+          >
+            <span
+              class="btn__label"
+            >
+              Custom
+            </span>
+            <span
+              class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
+            >
+              <svg
+                data-id="SVG_CHEVRON_DOWN__12"
+                focusable="false"
+                height="12"
+                viewBox="0 0 12 12"
+                width="12"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M11 4L6 9 1 4"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+          </button>
+          <ul
+            aria-labelledby="rdt-preset-dropdown"
+            class="Dropdown__menu"
+            id="rdt-preset-dropdown--container"
+            role="dialog"
+          >
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Last 7 Days
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Last 14 Days
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Last 30 Days
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Last 60 Days
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Last 90 Days
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Last Year
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                All Months
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Mar 2022
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Feb 2022
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Jan 2022
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Dec 2021
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Nov 2021
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Oct 2021
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Sep 2021
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Aug 2021
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Jul 2021
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Jun 2021
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                May 2021
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Apr 2021
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Mar 2021
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Feb 2021
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Jan 2021
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Dec 2020
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Nov 2020
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Oct 2020
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Sep 2020
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Aug 2020
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Jul 2020
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Jun 2020
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                May 2020
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Apr 2020
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Mar 2020
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Feb 2020
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Jan 2020
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Dec 2019
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Nov 2019
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Oct 2019
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Sep 2019
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Aug 2019
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Jul 2019
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Jun 2019
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                May 2019
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Apr 2019
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Mar 2019
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Feb 2019
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Jan 2019
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Dec 2018
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Nov 2018
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Oct 2018
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Sep 2018
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Aug 2018
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Jul 2018
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Jun 2018
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                May 2018
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Apr 2018
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Mar 2018
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Feb 2018
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Jan 2018
+              </a>
+            </li>
+            <li
+              role="presentation"
+            >
+              <a
+                data-bypass="false"
+                href="#"
+              >
+                 
+                Dec 2017
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="datetime-range-picker"
+    >
+      <div
+        class="rdt-container "
+        role="button"
+      >
+        <div
+          class="rdt-input-container"
+        >
+          <div
+            class="rdt-start-container"
+          >
+            <label
+              class="rdt-start-label"
+              for="datepicker-start-date"
+            >
+              Start
+            </label>
+            <div
+              class="rdt"
+            >
+              <input
+                class="form-control short "
+                id="datepicker-start-date"
+                readonly=""
+                type="text"
+                value="01/01/2022"
+              />
+            </div>
+          </div>
+          <div
+            class="rdt-end-container"
+          >
+            <label
+              class="rdt-end-label"
+              for="datepicker-end-date"
+            >
+              End
+            </label>
+            <div
+              class="rdt"
+            >
+              <input
+                class="form-control short "
+                id="datepicker-end-date"
+                readonly=""
+                type="text"
+                value="02/01/2022"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="Dropdown rdt-preset-dropdown"
+        role="presentation"
+        tabindex="-1"
+      >
+        <button
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="btn btn-default Dropdown__toggle border-border-color border--contrast"
+          id="rdt-preset-dropdown"
+          type="button"
+        >
+          <span
+            class="btn__label"
+          >
+            Custom
+          </span>
+          <span
+            class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
+          >
+            <svg
+              data-id="SVG_CHEVRON_DOWN__12"
+              focusable="false"
+              height="12"
+              viewBox="0 0 12 12"
+              width="12"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M11 4L6 9 1 4"
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </span>
+        </button>
+        <ul
+          aria-labelledby="rdt-preset-dropdown"
+          class="Dropdown__menu"
+          id="rdt-preset-dropdown--container"
+          role="dialog"
+        >
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Last 7 Days
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Last 14 Days
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Last 30 Days
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Last 60 Days
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Last 90 Days
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Last Year
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              All Months
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Mar 2022
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Feb 2022
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Jan 2022
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Dec 2021
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Nov 2021
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Oct 2021
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Sep 2021
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Aug 2021
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Jul 2021
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Jun 2021
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              May 2021
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Apr 2021
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Mar 2021
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Feb 2021
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Jan 2021
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Dec 2020
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Nov 2020
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Oct 2020
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Sep 2020
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Aug 2020
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Jul 2020
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Jun 2020
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              May 2020
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Apr 2020
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Mar 2020
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Feb 2020
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Jan 2020
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Dec 2019
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Nov 2019
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Oct 2019
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Sep 2019
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Aug 2019
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Jul 2019
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Jun 2019
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              May 2019
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Apr 2019
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Mar 2019
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Feb 2019
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Jan 2019
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Dec 2018
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Nov 2018
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Oct 2018
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Sep 2018
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Aug 2018
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Jul 2018
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Jun 2018
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              May 2018
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Apr 2018
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Mar 2018
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Feb 2018
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Jan 2018
+            </a>
+          </li>
+          <li
+            role="presentation"
+          >
+            <a
+              data-bypass="false"
+              href="#"
+            >
+               
+              Dec 2017
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

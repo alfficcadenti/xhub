@@ -1,141 +1,101 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import React, {useState, useEffect, useRef} from 'react';
 import moment from 'moment';
 import Datetime from 'react-datetime';
 import './BaseDateTimeRangePicker.less';
 
-// See https://github.com/snamoah/react-datetime-range-picker/
 
-class BaseDateTimeRangePicker extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            start: null,
-            end: null,
-            startDate: null,
-            endDate: null
-        };
-    }
+const BaseDateTimeRangePicker = ({
+    startDate = moment().toDate(),
+    endDate = moment().toDate(),
+    className = '',
+    timeFormat = false,
+    disabled = false,
+    isValidEndDate = () => true,
+    onChange = () => {}
+}) => {
+    const containerRef = useRef(null);
 
-    static getDerivedStateFromProps(nextProps, prevState) {
-        return nextProps.startDate === prevState.startDate
-            && nextProps.endDate === prevState.endDate
-            ? {}
-            : {
-                start: moment(nextProps.startDate) || moment(),
-                end: moment(nextProps.endDate) || moment(),
-                startDate: nextProps.startDate,
-                endDate: nextProps.endDate
-            };
-    }
+    const format = timeFormat ? 'MM/DD/YYYY HH:mm' : 'MM/DD/YYYY';
 
-    onStartDateChange = (date) => {
-        if (typeof date === 'string') {
-            return;
-        }
+    const [start, setStart] = useState(moment(startDate));
+    const [end, setEnd] = useState(moment(endDate));
+    const [calendarOpen, setCalendarOpen] = useState(false);
+    const [focusOnDate, setFocusOnDate] = useState(null);
 
-        const options = {
-            start: date
-        };
 
-        if (this.state.end.isBefore(date)) {
-            options.end = moment(date).add(1, 'd');
-        }
+    const onBlur = () => {
+        setCalendarOpen(false);
+        setFocusOnDate(null);
+    };
 
-        this.setState(options, () => {
-            this.props.onChange(this.propsToPass());
-            this.props.onStartDateChange(this.propsToPass().start);
-        });
-    }
-
-    onEndDateChange = (date) => {
-        if (typeof date === 'string') {
-            return;
-        }
-
-        this.setState({end: date}, () => {
-            this.props.onChange(this.propsToPass());
-            this.props.onEndDateChange(this.propsToPass().end);
-        });
-    }
-
-    onFocus = () => {
-        this.props.onFocus();
-    }
-
-    onBlur = () => {
-        this.props.onBlur(this.propsToPass());
-    }
-
-    getInputProps = () => {
-        const inputReadOnlyStyle = {
-            cursor: 'pointer',
-            backgroundColor: 'white',
-            border: '1px solid #e2e2e2'
-        };
-        return this.props.input
-            ? this.props.inputProps
-            : {
-                input: true,
-                inputProps: {
-                    ...this.props.inputProps, // merge inputProps with default
-                    readOnly: true,
-                    style: inputReadOnlyStyle
+    function useOutsideAlerter(ref) {
+        useEffect(() => {
+            const handleClickOutside = (event) => {
+                if (ref.current && !ref.current.contains(event.target)) {
+                    onBlur();
                 }
             };
+
+            // Bind the event listener
+            document.addEventListener('mousedown', handleClickOutside);
+            return () => {
+                // Unbind the event listener on clean up
+                document.removeEventListener('mousedown', handleClickOutside);
+            };
+        }, [ref]);
     }
 
-    propsToPass = () => ({
-        end: this.state.end.toDate(),
-        start: this.state.start.toDate()
-    })
+    useOutsideAlerter(containerRef);
 
-    calcBaseProps = () => ({
-        utc: this.props.utc,
-        locale: this.props.locale,
-        input: !this.props.inline,
-        viewMode: this.props.viewMode,
-        dateFormat: this.props.dateFormat,
-        timeFormat: this.props.timeFormat,
-        closeOnTab: this.props.closeOnTab,
-        className: this.props.pickerClassName,
-        closeOnSelect: this.props.closeOnSelect
-    })
+    const handleOnClick = (e) => {
+        setFocusOnDate(e);
+        setCalendarOpen(true);
+    };
 
+    const handleEndDateChange = (e) => {
+        if (!moment(e).isSame(end, 'day')) {
+            setFocusOnDate(null);
+            setEnd(moment(e));
+            setCalendarOpen(false);
+        } else {
+            setEnd(moment(e));
+        }
+        if (moment(e).isBefore(moment(start))) {
+            setStart(moment(e).subtract(1, 'd'));
+        }
+    };
 
-    calcStartTimeProps = () => {
-        const baseProps = this.calcBaseProps();
-        const inputProps = this.getInputProps();
-        return {
-            ...baseProps,
-            ...inputProps,
-            value: this.state.start,
-            onBlur: this.props.onStartDateBlur,
-            onFocus: this.props.onStartDateFocus,
-            timeConstraints: this.props.startTimeConstraints
-        };
-    }
+    const handleStartDateChange = (e) => {
+        if (moment(e).isValid()) {
+            if (!moment(e).isSame(start, 'day')) {
+                setFocusOnDate('end');
+                setStart(moment(e));
+                if (moment(end).isBefore(moment(start))) {
+                    setEnd(moment(e).add(1, 'd'));
+                }
+            } else {
+                setStart(moment(e));
+            }
+        }
+    };
 
-    calcEndTimeProps = () => {
-        const baseProps = this.calcBaseProps();
-        const inputProps = this.getInputProps();
-        return {
-            ...baseProps,
-            ...inputProps,
-            onBlur: this.props.onEndDateBlur,
-            value: this.state.end,
-            onFocus: this.props.onEndDateFocus,
-            timeConstraints: this.props.endTimeConstraints
-        };
-    }
+    const handleDateChange = (e) => {
+        if (focusOnDate === 'end') {
+            handleEndDateChange(e);
+        } else if (focusOnDate === 'start') {
+            handleStartDateChange(e);
+        }
+    };
 
-    validateMinDate = (date) => this.state.start.isSameOrBefore(date, 'day');
+    useEffect(() => {
+        onChange({
+            end: end.toDate(),
+            start: start.toDate()
+        });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [start, end]);
 
-    isValidEndDate = (currentDate, selectedDate) => (this.validateMinDate(currentDate)
-        && this.props.isValidEndDate(currentDate, selectedDate));
-
-    renderDay = (props, currentDate) => {
-        const {start, end} = this.state;
+    const renderDay = (props, currentDate) => {
         const {...rest} = props;
         const date = moment(props.key, 'M_D');
 
@@ -154,119 +114,49 @@ class BaseDateTimeRangePicker extends Component {
                 {currentDate.date()}
             </td>
         );
-    }
+    };
 
-    render() {
-        const startProps = this.calcStartTimeProps();
-        const endProps = this.calcEndTimeProps();
+    const inputClass = (type) => `form-control ${!timeFormat ? 'short' : ''} ${type === focusOnDate ? 'active' : ''}`;
 
-        return (
-            <div
-                className={`rdt-container ${this.props.className}`}
-                onFocus={this.onFocus}
-                onBlur={this.onBlur}
-                role="button"
-            >
-                <div className={'rdt-start-container'}>
-                    <Datetime
-                    {...startProps} // eslint-disable-line
-                        id="datepicker-start-date"
-                        isValidDate={this.props.isValidStartDate}
-                        onChange={this.onStartDateChange}
-                        renderDay={this.renderDay}
-                        inputProps={{disabled: this.props.disabled}}
-                        className={!this.props.timeFormat && 'short'}
-                    />
-                    <label className="rdt-start-label" htmlFor="datepicker-start-date">{'Start'}</label>
-                </div>
+    const getInputValue = (type) => type === 'start' ? moment(start).format(format) : moment(end).format(format);
+    const getInitialValue = (type) => type === 'start' ? moment(startDate).format(format) : moment(endDate).format(format);
 
-                <div className={'rdt-end-container'}>
-                    <Datetime
-                    {...endProps} // eslint-disable-line
-                        id="datepicker-end-date"
-                        isValidDate={this.isValidEndDate}
-                        onChange={this.onEndDateChange}
-                        renderDay={this.renderDay}
-                        inputProps={{disabled: this.props.disabled}}
-                        className={!this.props.timeFormat && 'short'}
-                    />
-                    <label className="rdt-end-label" htmlFor="datepicker-end-date">{'End'}</label>
-                </div>
-
+    const renderInput = (type) => (
+        <div className={`rdt-${type}-container`} key={`rdt-${type}-container-${getInitialValue(type)}`}>
+            <label className={`rdt-${type}-label`} htmlFor={`datepicker-${type}-date`}>{type.charAt(0).toUpperCase() + type.slice(1)}</label>
+            <div className="rdt">
+                <input
+                    className={inputClass(type)}
+                    type={'text'}
+                    id={`datepicker-${type}-date`}
+                    value={getInputValue(type)}
+                    onClick={() => handleOnClick(type)}
+                    readOnly
+                    disabled={disabled}
+                />
             </div>
-        );
-    }
-}
-
-BaseDateTimeRangePicker.defaultProps = {
-    utc: false,
-    locale: null,
-    input: false, // This defines whether or not to to edit date manually via input
-    inline: false, // This defines whether or not to show input field
-    className: '',
-    viewMode: 'days',
-    dateFormat: true,
-    timeFormat: false,
-    closeOnTab: true,
-    onBlur: () => {},
-    onFocus: () => {},
-    onChange: () => {},
-    pickerClassName: '',
-    defaultEndDate: new Date(),
-    endDate: new Date(),
-    closeOnSelect: false,
-    inputProps: null,
-    startDate: new Date(),
-    defaultStartDate: new Date(),
-    onEndDateBlur: () => {},
-    endTimeConstraints: {},
-    onEndDateFocus: () => {},
-    isValidStartDate: () => true,
-    isValidEndDate: () => true,
-    onStartDateBlur: () => {},
-    onEndDateChange: () => {}, // This is called after onChange
-    onStartDateFocus: () => {},
-    startTimeConstraints: {},
-    onStartDateChange: () => {}, // This is called after onChange
-    disabled: false
-};
+        </div>
+    );
 
 
-BaseDateTimeRangePicker.propTypes = {
-    utc: PropTypes.bool,
-    input: PropTypes.bool,
-    inline: PropTypes.bool,
-    onBlur: PropTypes.func,
-    onFocus: PropTypes.func,
-    locale: PropTypes.string,
-    onChange: PropTypes.func,
-    viewMode: PropTypes.oneOf(['years', 'months', 'days', 'time']),
-    closeOnTab: PropTypes.bool,
-    className: PropTypes.string,
-    inputProps: PropTypes.object,   // eslint-disable-line
-    closeOnSelect: PropTypes.bool,
-    isValidEndDate: PropTypes.func,
-    onEndDateBlur: PropTypes.func,
-    onEndDateFocus: PropTypes.func,
-    onEndDateChange: PropTypes.func,
-    onStartDateBlur: PropTypes.func,
-    isValidStartDate: PropTypes.func,
-    onStartDateFocus: PropTypes.func,
-    onStartDateChange: PropTypes.func,
-    pickerClassName: PropTypes.string,
-    defaultEndDate: PropTypes.oneOfType([
-        PropTypes.instanceOf(moment), PropTypes.instanceOf(Date), PropTypes.string]),
-    endDate: PropTypes.oneOfType([
-        PropTypes.instanceOf(moment), PropTypes.instanceOf(Date), PropTypes.string]),
-    endTimeConstraints: PropTypes.object,   // eslint-disable-line
-    startDate: PropTypes.oneOfType([
-        PropTypes.instanceOf(moment), PropTypes.instanceOf(Date), PropTypes.string]),
-    defaultStartDate: PropTypes.oneOfType([
-        PropTypes.instanceOf(moment), PropTypes.instanceOf(Date), PropTypes.string]),
-    startTimeConstraints: PropTypes.object,   // eslint-disable-line
-    dateFormat: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-    timeFormat: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-    disabled: PropTypes.bool
+    return (
+        <div className={`rdt-container ${className}`} role="button" ref={containerRef}>
+            <div className="rdt-input-container">
+                {['start', 'end'].map(renderInput)}
+            </div>
+            {calendarOpen &&
+            <Datetime
+                value={focusOnDate === 'end' ? end : start}
+                input={false}
+                isValidDate={isValidEndDate}
+                onChange={handleDateChange}
+                renderDay={renderDay}
+                onClose={onBlur}
+                timeFormat={timeFormat}
+                disabled={disabled}
+            />}
+        </div>
+    );
 };
 
 export default BaseDateTimeRangePicker;

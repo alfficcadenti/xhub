@@ -4,17 +4,28 @@
 /* stylelint-disable selector-class-pattern */
 .rdt-container {
     justify-content: space-around;
-    display: inline-flex;
+    display: grid;
     position: relative;
+
+    .rdt-input-container {
+        display: inline-flex;
+    }
 
     .rdt-start-container, .rdt-end-container {
         position: relative;
+        .rdt > input.form-control.active {
+            box-shadow: inset 0 0 0 2px @hover-background-color;
+        }
     }
 
     .rdt-start-container > .rdt > input.form-control {
         border-radius: @spacing-1x 0 0 @spacing-1x;
         border: 1px solid --color-input-border;
         border-right: 0;
+
+        &&.active {
+            background-color: blue;
+        }
     }
 
     .rdt-end-container > .rdt > input.form-control {
@@ -45,7 +56,6 @@
 
     .rdtStatic .rdtPicker {
         box-shadow: none;
-        position: static;
     }
 
     .rdtPicker {

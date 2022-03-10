@@ -78,12 +78,14 @@ const renderPresets = (presets, onChange) => (
     ))
 );
 
-const getPresetLabel = (startDate, endDate, presets) => {
+const getPresetLabel = (startDate, endDate, presets, showTimePicker) => {
     const start = moment(startDate);
     const end = moment(endDate);
     let label = 'Custom';
+    const unit = showTimePicker ? 'minutes' : 'days';
+
     (presets || []).forEach((p) => {
-        if (start.isSame(p.value.start, 'minutes') && end.isSame(p.value.end, 'minutes')) {
+        if (start.isSame(p.value.start, unit) && end.isSame(p.value.end, unit)) {
             label = p.text;
         }
     });
@@ -103,7 +105,7 @@ const DatetimeRangePicker = (props) => (
         {!props.hidePresets && !props.disabled && (
             <Dropdown
                 id="rdt-preset-dropdown"
-                label={getPresetLabel(props.startDate, props.endDate, props.presets)}
+                label={getPresetLabel(props.startDate, props.endDate, props.presets, props.showTimePicker)}
                 className="rdt-preset-dropdown"
                 closeAfterContentClick
             >
