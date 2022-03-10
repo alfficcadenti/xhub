@@ -1,6 +1,7 @@
-import {defineClassByValue, exactAvailability, extractColumns, formattedValue, getAppErrorsDataForChart, periodAvailability, mapAvailabilityRow, getSelectedRegions} from '../utils';
+import {convertfromPSTtoUTCformatMidnight, defineClassByValue, exactAvailability, extractColumns, formattedValue, getAppErrorsDataForChart, periodAvailability, mapAvailabilityRow, getSelectedRegions} from '../utils';
 import {AVAILABILITY} from '../../../../server/routes/api/testData/availability';
 import {expect} from 'chai';
+import moment from 'moment';
 
 describe('defineClassByValue()', () => {
     it('returns color for values above high Threshold (99.99)', () => {
@@ -92,7 +93,7 @@ describe('getAppErrorsDataForChart()', () => {
         const applicationName = 'cars-shopping-service';
         const availability = AVAILABILITY;
         const appErrors = getAppErrorsDataForChart(applicationName, availability);
-        expect(appErrors).to.be.eqls([{'5xx Errors': 1, 'name': 'Dec 7, 2021'}, {'5xx Errors': 10, 'name': 'Dec 6, 2021'}, {'5xx Errors': 500, 'name': 'Dec 5, 2021'}, {'5xx Errors': 1, 'name': 'Dec 4, 2021'}, {'5xx Errors': 1, 'name': 'Dec 3, 2021'}, {'5xx Errors': 1, 'name': 'Dec 2, 2021'}, {'5xx Errors': 1, 'name': 'Dec 1, 2021'}]);
+        expect(appErrors).to.be.eqls([{'5xx Errors': 1, 'name': 'Mar 1, 2022'}, {'5xx Errors': 10, 'name': 'Mar 2, 2022'}, {'5xx Errors': 500, 'name': 'Mar 3, 2022'}, {'5xx Errors': 1, 'name': 'Mar 4, 2022'}, {'5xx Errors': 1, 'name': 'Mar 5, 2022'}, {'5xx Errors': 1, 'name': 'Mar 6, 2022'}, {'5xx Errors': 1, 'name': 'Mar 7, 2022'}]);
     });
 });
 
@@ -109,7 +110,7 @@ describe('extractColumns()', () => {
 
     it('returns array with Application and extracted dates', () => {
         const columns = extractColumns(AVAILABILITY);
-        expect(columns).to.be.eqls(['Application', 'Dec 7, 2021', 'Dec 6, 2021', 'Dec 5, 2021', 'Dec 4, 2021', 'Dec 3, 2021', 'Dec 2, 2021', 'Dec 1, 2021', 'Availability']);
+        expect(columns).to.be.eqls(['Application', 'Mar 1, 2022', 'Mar 2, 2022', 'Mar 3, 2022', 'Mar 4, 2022', 'Mar 5, 2022', 'Mar 6, 2022', 'Mar 7, 2022', 'Availability']);
     });
 });
 
@@ -123,9 +124,9 @@ describe('mapAvailabilityRow()', () => {
         let handleClick; // undefined
         const row = mapAvailabilityRow(AVAILABILITY[0]);
         expect(row.Application).to.be.eql('cars-shopping-service');
-        expect(row['Dec 1, 2021'].props).to.be.eql({applicationName: 'cars-shopping-service', value: 100, handleClick});
-        expect(row['Dec 2, 2021'].props).to.be.eql({applicationName: 'cars-shopping-service', value: 99.59, handleClick});
-        expect(row['Dec 3, 2021'].props).to.be.eql({applicationName: 'cars-shopping-service', value: 60, handleClick});
+        expect(row['Mar 1, 2022'].props).to.be.eql({applicationName: 'cars-shopping-service', value: 99.99, handleClick});
+        expect(row['Mar 2, 2022'].props).to.be.eql({applicationName: 'cars-shopping-service', value: 99, handleClick});
+        expect(row['Mar 3, 2022'].props).to.be.eql({applicationName: 'cars-shopping-service', value: '50', handleClick});
     });
 });
 
@@ -198,5 +199,14 @@ describe('selectedRegions()', () => {
         }
         ];
         expect(getSelectedRegions(regions2)).to.be.eqls(['ap-northeast-1']);
+    });
+});
+
+describe('convertfromPSTtoUTCformatMidnight()', () => {
+    it('convert browser timezone to date in PST time zone midnight and returns in UTC format', () => {
+        let date = convertfromPSTtoUTCformatMidnight(moment('2022-03-08T14:07:24-05:00'));
+        expect(date).to.be.equal('2022-03-08T08:00:00Z');
+        date = convertfromPSTtoUTCformatMidnight(moment('2022-03-07T23:07:24-05:00').tz('America/New_York'));
+        expect(date).to.be.equal('2022-03-08T08:00:00Z');
     });
 });

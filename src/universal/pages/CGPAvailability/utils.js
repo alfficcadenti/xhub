@@ -46,7 +46,7 @@ export const mapAvailabilityRow = (row = {}, handleClick) => {
             {Application: app},
             {Availability: <AvailabilityCell value={periodAvailability(row?.availabilities)} applicationName={app} handleClick={handleClick}/>},
             {avgValue: periodAvailability(row?.availabilities)},
-            ...row?.availabilities.map((x) => ({[moment(x.timestamp).format('ll')]: <AvailabilityCell value={exactAvailability(x.availability, x.requestCount)} applicationName={app} handleClick={handleClick}/>}))) || {};
+            ...row?.availabilities.map((x) => ({[moment(x.timestamp).tz('America/Los_Angeles').format('ll')]: <AvailabilityCell value={exactAvailability(x.availability, x.requestCount)} applicationName={app} handleClick={handleClick}/>}))) || {};
     return res;
 };
 
@@ -61,3 +61,5 @@ export const getPresets = () => [
     {text: 'Last 7 days', value: getValue(7, 'days')},
     {text: 'Last 15 days', value: getValue(15, 'days')},
 ];
+
+export const convertfromPSTtoUTCformatMidnight = (date) => moment(date).isValid() && date.utc().hours(8).minutes(0).seconds(0).format('YYYY-MM-DDTHH:mm:ss[Z]');

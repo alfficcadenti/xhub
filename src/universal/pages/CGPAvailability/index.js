@@ -5,7 +5,7 @@ import HelpText from '../../components/HelpText/HelpText';
 import {checkResponse} from '../utils';
 import DataTable from '../../components/DataTable';
 import moment from 'moment';
-import {extractColumns, getAppErrorsDataForChart, mapAvailabilityRow, getSelectedRegions, getPresets} from './utils';
+import {convertfromPSTtoUTCformatMidnight, extractColumns, getAppErrorsDataForChart, mapAvailabilityRow, getSelectedRegions, getPresets} from './utils';
 import ErrorCountModal from './ErrorCountModal';
 import Legend from './Legend';
 import {FormInput} from '@homeaway/react-form-components';
@@ -49,7 +49,7 @@ const CGPAvailibility = () => {
         const getNewData = () => {
             setIsLoading(true);
             setError('');
-            const url = `/v1/application-availability/filter-by-aws-region?from_date=${start.format('YYYY-MM-DDTHH:mm:ss[Z]')}&to_date=${end.format('YYYY-MM-DDTHH:mm:ss[Z]')}&aws_region=${getSelectedRegions(selectedRegionFilter)}`;
+            const url = `/v1/application-availability/filter-by-aws-region?from_date=${convertfromPSTtoUTCformatMidnight(start)}&to_date=${convertfromPSTtoUTCformatMidnight(end)}&aws_region=${getSelectedRegions(selectedRegionFilter)}`;
             const fetchAPI = async () => {
                 try {
                     const res = await fetch(url);
@@ -121,7 +121,7 @@ const CGPAvailibility = () => {
             <div className="header-container">
                 <h1 className="page-title" data-testid="title">
                     {'CGP Availability'}
-                    <HelpText className="page-info" text="Display the last 7 days availability for each application calculated monitoring the CGP logs as: (Total Requests - 5XX request) * 100) / Total Requests" />
+                    <HelpText className="page-info" text="Data are displayed in PST time. Display the last 7 days availability for each application calculated monitoring the CGP logs as: (Total Requests - 5XX request) * 100) / Total Requests" />
                 </h1>
                 <Legend/>
             </div>

@@ -82,7 +82,6 @@ const getPresets = () => [
 ];
 
 
-
 const filterSelectionClass = 'filter-option-selection';
 const filterExpandClass = 'filter-option-expand';
 let filteredAnnotationsOnBrand = [];
