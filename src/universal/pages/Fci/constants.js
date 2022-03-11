@@ -28,6 +28,7 @@ export const LOGIN_FCI_TABLE_COLUMNS = [
     'Source',
     'Message',
     'Trace',
+    'Error Name',
     'Error Code',
     'Site',
     'LOB',

@@ -184,6 +184,7 @@ export const mapFci = (row = {}, fciType) => {
         Category: getOrDefault(rowCopy, 'category', '-', (c) => c.join(',')),
         LoB: (LOB_LIST.find((l) => l.value === fci?.line_of_business) || {label: '-'}).label,
         'Device User Agent ID': getOrDefault(fci, 'dua_id'),
+        'Error Name': getOrDefault(fci, 'error_name'),
         Comment: getOrDefault(fci, 'comment'),
         'Is FCI': typeof fci?.is_fci === 'boolean' ? String(fci.is_fci) : 'true',
         recordedSessionUrl: getOrDefault(row, 'recorded_session_url'),

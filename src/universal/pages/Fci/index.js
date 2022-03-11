@@ -397,6 +397,9 @@ const Fci = ({selectedBrands}) => {
     const handleFciTypeChange = (e) => {
         clearErrorCodeDropdown();
         setPendingChartProperty(CODE_OPTION);
+        setLobsData({start: null, end: null, options: []});
+        setErrorCodesData({start: null, end: null, options: []});
+        setSitesData({start: null, end: null, options: []});
         setPendingFciType(e);
         setIsDirtyForm(true);
     };

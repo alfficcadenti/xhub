@@ -317,6 +317,7 @@ describe('Fci Utils', () => {
             Category: category.join(', '),
             LoB: 'Flights',
             'Device User Agent ID': fci.dua_id,
+            'Error Name': '-',
             Comment: fci.comment,
             'Is FCI': String(fci.is_fci),
             recordedSessionUrl,
@@ -344,7 +345,8 @@ describe('Fci Utils', () => {
                 comment: 'comment',
                 is_fci: true,
                 message: 'message',
-                source_name: 'source'
+                source_name: 'source',
+                error_name: 'error name'
             },
             category: ['category'],
             recorded_session_url: 'recordedSessionUrl'
@@ -367,6 +369,7 @@ describe('Fci Utils', () => {
             Category: category.join(', '),
             LoB: 'Flights',
             'Device User Agent ID': fci.dua_id,
+            'Error Name': fci.error_name,
             Comment: fci.comment,
             'Is FCI': String(fci.is_fci),
             recordedSessionUrl,
@@ -393,6 +396,7 @@ describe('Fci Utils', () => {
             'SiteID': BLANK,
             Category: BLANK,
             'Device User Agent ID': BLANK,
+            'Error Name': BLANK,
             Comment: BLANK,
             'Is FCI': 'true',
             recordedSessionUrl: BLANK,
