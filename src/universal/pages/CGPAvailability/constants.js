@@ -10,3 +10,9 @@ export const REGIONS = [
     'us-east-1',
     'us-west-2'
 ];
+
+export const DATE_FORMAT = 'Do MMM YY';
+
+export const DATETIME_FORMAT = 'HH:mm';
+
+export const API_UTC_FORMAT = 'YYYY-MM-DDTHH:mm:ss[Z]';

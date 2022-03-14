@@ -47,7 +47,7 @@ describe('<DataTable/>', () => {
         await act(async () => {
             wrapper = render(<DataTable handleDateRangeChange={() => {}} handleClearDates={() => {}} data={data} columns={columns} rules={rules}/>);
         });
-        fireEvent.click(screen.getByText(/name/i));
+        fireEvent.click(screen.getByRole('button'));
         expect(wrapper).toMatchSnapshot();
     });
 

@@ -1,7 +1,7 @@
 import moment from 'moment';
 import {getOrDefault} from '../../utils';
 import {getValue} from '../utils';
-import {THRESHOLDS} from './constants.js';
+import {THRESHOLDS, DATE_FORMAT} from './constants.js';
 import AvailabilityCell from './AvailabilityCell';
 import React from 'react';
 
@@ -30,7 +30,7 @@ export const periodAvailability = (availabilities) => {
     return formattedValue((periodSummary.totalRequests - periodSummary.errorsCount) / periodSummary.totalRequests * 100);
 };
 
-export const extractColumns = (data = []) => ['Application', ...data[0]?.availabilities?.map((item) => item && moment(item.timestamp).format('ll')) || [], 'Availability'];
+export const extractColumns = (data = [], dateTimeFormat) => ['Application', ...data[0]?.availabilities?.map((item) => item && moment(item.timestamp).format(dateTimeFormat)) || [], 'Availability'];
 
 export const exactAvailability = (availability, requestCount) => {
     if (requestCount) {
@@ -39,27 +39,25 @@ export const exactAvailability = (availability, requestCount) => {
     return null;
 };
 
-export const mapAvailabilityRow = (row = {}, handleClick) => {
+export const mapAvailabilityRow = (row = {}, handleClick, dateTimeFormat = DATE_FORMAT) => {
     const app = getOrDefault(row, 'applicationName');
     const res = Array.isArray(row?.availabilities) &&
         Object.assign(
             {Application: app},
             {Availability: <AvailabilityCell value={periodAvailability(row?.availabilities)} applicationName={app} handleClick={handleClick}/>},
             {avgValue: periodAvailability(row?.availabilities)},
-            ...row?.availabilities.map((x) => ({[moment(x.timestamp).tz('America/Los_Angeles').format('ll')]: <AvailabilityCell value={exactAvailability(x.availability, x.requestCount)} applicationName={app} handleClick={handleClick}/>}))) || {};
+            ...row?.availabilities.map((x) => ({[moment(x.timestamp).format(dateTimeFormat)]: <AvailabilityCell value={exactAvailability(x.availability, x.requestCount)} applicationName={app} handleClick={handleClick}/>}))) || {};
     return res;
 };
 
-export const getAppErrorsDataForChart = (applicationName = '', availability = []) => Array.isArray(availability) && availability?.find((x) => x.applicationName === applicationName)?.availabilities?.map((x) => ({name: moment(x?.timestamp).format('ll'), '5xx Errors': x?.errorCount})) || [];
+export const getAppErrorsDataForChart = (applicationName = '', availability = []) => Array.isArray(availability) && availability?.find((x) => x.applicationName === applicationName)?.availabilities?.map((x) => ({name: moment(x?.timestamp).format(DATE_FORMAT), '5xx Errors': x?.errorCount})) || [];
 
 export const getSelectedRegions = (regionsObj) => (regionsObj?.length ? regionsObj.filter((x) => x.counted && x.checked).map((x) => x.name) : '');
 
 export const getPresets = () => [
     // {text: 'Last 15 Minutes', value: getValue(15, 'minute')},
-    // {text: 'Last 24 Hours', value: getValue(23.98, 'hours')},
+    {text: 'Last 24 Hours', value: getValue(23.98, 'hours')},
     {text: 'Last 3 days', value: getValue(3, 'days')},
     {text: 'Last 7 days', value: getValue(7, 'days')},
     {text: 'Last 15 days', value: getValue(15, 'days')},
 ];
-
-export const convertfromPSTtoUTCformatMidnight = (date) => moment(date).isValid() && date.utc().hours(8).minutes(0).seconds(0).format('YYYY-MM-DDTHH:mm:ss[Z]');

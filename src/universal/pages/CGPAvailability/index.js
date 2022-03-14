@@ -5,7 +5,7 @@ import HelpText from '../../components/HelpText/HelpText';
 import {checkResponse} from '../utils';
 import DataTable from '../../components/DataTable';
 import moment from 'moment';
-import {convertfromPSTtoUTCformatMidnight, extractColumns, getAppErrorsDataForChart, mapAvailabilityRow, getSelectedRegions, getPresets} from './utils';
+import {extractColumns, getAppErrorsDataForChart, mapAvailabilityRow, getSelectedRegions, getPresets} from './utils';
 import ErrorCountModal from './ErrorCountModal';
 import Legend from './Legend';
 import {FormInput} from '@homeaway/react-form-components';
@@ -14,6 +14,8 @@ import Tooltip from '@homeaway/react-tooltip';
 import {REGIONS} from './constants';
 import './styles.less';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
+import AvailabilityHeader from './AvailabilityHeader';
+import {DATE_FORMAT, DATETIME_FORMAT, API_UTC_FORMAT} from './constants';
 
 const regions = [{
     name: 'all',
@@ -40,16 +42,17 @@ const CGPAvailibility = () => {
     const [selectedRegionFilter, setSelectedRegionFilter] = useState(pendingRegionFilter);
     const [isDirtyForm, setIsDirtyForm] = useState(false);
     const [regionErrorMsg, setRegionErrorMsg] = useState('');
-    const [start, setStart] = useState(moment().subtract(7, 'days'));
-    const [end, setEnd] = useState(moment());
-    const [pendingStart, setPendingStart] = useState(moment().subtract(7, 'days'));
-    const [pendingEnd, setPendingEnd] = useState(moment());
+    const [start, setStart] = useState(moment().local().tz('America/Los_Angeles').subtract(7, 'days'));
+    const [end, setEnd] = useState(moment().local().tz('America/Los_Angeles'));
+    const [pendingStart, setPendingStart] = useState(start);
+    const [pendingEnd, setPendingEnd] = useState(end);
+    const [dateTimeFormat, setDateTimeFormat] = useState(DATE_FORMAT);
 
     useEffect(() => {
         const getNewData = () => {
             setIsLoading(true);
             setError('');
-            const url = `/v1/application-availability/filter-by-aws-region?from_date=${convertfromPSTtoUTCformatMidnight(start)}&to_date=${convertfromPSTtoUTCformatMidnight(end)}&aws_region=${getSelectedRegions(selectedRegionFilter)}`;
+            const url = `/v1/application-availability/filter-by-aws-region?from_date=${start.format(API_UTC_FORMAT)}&to_date=${end.format(API_UTC_FORMAT)}&aws_region=${getSelectedRegions(selectedRegionFilter)}`;
             const fetchAPI = async () => {
                 try {
                     const res = await fetch(url);
@@ -64,14 +67,19 @@ const CGPAvailibility = () => {
             setIsDirtyForm(false);
         };
         getNewData();
+        if (end.diff(start, 'days') >= 1) {
+            setDateTimeFormat(DATE_FORMAT);
+        } else {
+            setDateTimeFormat(DATETIME_FORMAT);
+        }
     }, [selectedRegionFilter, start, end]);
 
     const handleOnClick = (selected) => setSelectedApp(selected || null);
 
     useEffect(() => {
-        const newFilteredAvailability = availability.length && availability.filter((x) => x?.applicationName !== 'unknown').map((x) => mapAvailabilityRow(x, handleOnClick)).filter((x) => typeof x.avgValue === 'number' && x?.avgValue <= availabilityFilter && x?.Application.includes(applicationFilter));
+        const newFilteredAvailability = availability.length && availability.filter((x) => x?.applicationName !== 'unknown').map((x) => mapAvailabilityRow(x, handleOnClick, dateTimeFormat)).filter((x) => typeof x.avgValue === 'number' && x?.avgValue <= availabilityFilter && x?.Application.includes(applicationFilter));
         setFilteredAvailability(newFilteredAvailability);
-    }, [availabilityFilter, applicationFilter, availability]);
+    }, [availabilityFilter, applicationFilter, availability, dateTimeFormat]);
 
     useEffect(() => {
         if (availabilityFilter < 0 || availabilityFilter > 100) {
@@ -100,9 +108,9 @@ const CGPAvailibility = () => {
     };
 
     const handleDatetimeChange = ({start: startDateTimeStr, end: endDateTimeStr}) => {
-        setPendingStart(moment(startDateTimeStr).hours('00').minutes('00').seconds('00'));
+        setPendingStart(moment(startDateTimeStr));
         if (moment(endDateTimeStr).diff(moment(startDateTimeStr), 'days') < 15) {
-            setPendingEnd(moment(endDateTimeStr).hours('23').minutes('59').seconds('59'));
+            setPendingEnd(moment(endDateTimeStr));
         } else {
             setPendingEnd(moment(startDateTimeStr).hours('23').minutes('59').seconds('59').add(15, 'days'));
         }
@@ -113,6 +121,22 @@ const CGPAvailibility = () => {
         setSelectedRegionFilter(pendingRegionFilter);
         setStart(pendingStart);
         setEnd(pendingEnd);
+    };
+
+    const handleHeaderClick = (header) => {
+        if (moment(header, DATE_FORMAT).isValid()) {
+            const newStart = moment(header, DATE_FORMAT).tz('America/Los_Angeles').hours(0).minutes(0).seconds(0);
+            const newEnd = moment(header, DATE_FORMAT).tz('America/Los_Angeles').hours(23).minutes(59).seconds(0);
+            setPendingEnd(newStart);
+            setPendingEnd(newEnd);
+            setStart(newStart);
+            setEnd(newEnd);
+        }
+    };
+
+    const headers = () => {
+        const columns = availability?.length ? extractColumns(availability, end.diff(start, 'days') >= 1 ? 'Do MMM YY' : 'HH:mm') : [];
+        return columns.length ? columns.reduce((a, content) => ({...a, [content]: <AvailabilityHeader content={content} dateTimeFormat={dateTimeFormat} handleHeaderClick={handleHeaderClick} />}), {}) : {};
     };
 
     return (
@@ -133,6 +157,7 @@ const CGPAvailibility = () => {
                         presets={getPresets()}
                         disabled={isLoading}
                         isValidEndDate={(currentDate) => currentDate.diff(pendingStart, 'days') < 15}
+                        showTimePicker
                     />
                     <MultiSelect
                         id="regionSelect"
@@ -180,7 +205,8 @@ const CGPAvailibility = () => {
             <LoadingContainer isLoading={isLoading} error={error}>
                 <DataTable
                     data={filteredAvailability?.length && filteredAvailability || []}
-                    columns={availability?.length ? extractColumns(availability) : []}
+                    columns={availability?.length ? extractColumns(availability, dateTimeFormat) : []}
+                    columnHeaders={headers()}
                     sortByColumn = "Availability"
                     sortByDirection = "asc"
                     paginated

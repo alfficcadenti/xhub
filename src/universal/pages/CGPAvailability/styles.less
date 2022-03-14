@@ -109,6 +109,19 @@
 
             th {
                 text-align: center;
+                padding: 0;
+
+                .availability-header-cell {
+                    display: inline-flex;
+                    align-items: center;
+                    padding-top: 0;
+                    padding-bottom: 0;
+                }
+
+                .search-icon {
+                    margin: 0;
+                    padding: 0 @spacing-1x 0 @spacing-1x;
+                }
             }
     
             td {
@@ -119,6 +132,7 @@
                 text-align: left;
                 white-space: nowrap;
                 min-width: @spacing-4x;
+                padding-left: @spacing-1x;
             }
     
             .info-tooltip {

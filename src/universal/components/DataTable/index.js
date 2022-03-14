@@ -42,7 +42,6 @@ const DataTable = ({
     title = '',
     info = '',
     csvFilename = 'opxhub-table.csv'
-
 }) => {
     const mapData = (arr) => arr.map((d) => {
         const mapped = d;
@@ -54,7 +53,6 @@ const DataTable = ({
         text: c,
         checked: !hiddenColumns.includes(c)
     }));
-
     const [filteredData, setFilteredData] = useState([]);
     const [currPageIndex, setCurrPageIndex] = useState(0);
     const [displayColumns, setDisplayColumns] = useState(columns.filter((c) => !hiddenColumns.includes(c)));
@@ -152,11 +150,10 @@ const DataTable = ({
         setControlledExpandedRows(newExpandedRows);
     };
 
-    const onClickSort = (column) => {
+    const onClickSort = (column, direction) => {
         if (!sortDisabled) {
             setSortedByColumn(column);
-            setSortedByDirection(sortedByDirection === 'asc' ? 'desc' : 'asc');
-            // setReSortData(uuid());
+            setSortedByDirection(direction);
         }
     };
 
@@ -300,28 +297,47 @@ const DataTable = ({
         </Fragment>
     );
 
-    const getHeaderColumnContent = (column) => {
+    const isActiveSortingColumnClass = (column, direction) => `pointer sorting-icon ${column === sortedByColumn && sortedByDirection === direction ? 'active' : ''}`;
+
+    const sortingIcon = (column, direction) => (
+        <div
+            className={isActiveSortingColumnClass(column, direction)}
+            onClick={() => onClickSort(column, direction)}
+            role="button"
+            tabIndex={0}
+            aria-hidden="true"
+        >
+            <SVGIcon inlineFlex markup={direction === 'asc' ? CHEVRON_UP__12 : CHEVRON_DOWN__12} />
+        </div>
+
+    );
+
+    const sortingIconsContainer = (column) => (
+        <span className="sorting-icons-group">
+            {sortingIcon(column, 'asc')}
+            {sortingIcon(column, 'desc')}
+        </span>
+    );
+
+    const columnContent = (column) => {
+        let headerColumnContent = column;
         if (columnHeaders[column]) {
             return columnHeaders[column];
         }
         if (columnsInfo[column]) {
             return <>{column} {renderInfoTooltip(columnsInfo[column])}</>;
         }
-        return column;
+        return headerColumnContent;
     };
 
     const renderTableHeaderColumn = (column) => {
-        const sortingIcon = sortedByDirection === 'asc'
-            ? <SVGIcon inlineFlex markup={CHEVRON_UP__12} />
-            : <SVGIcon inlineFlex markup={CHEVRON_DOWN__12} />;
+        const headerColumnContent = columnContent(column);
         return (
-            <th
-                onClick={() => onClickSort(column)}
-                key={column}
-                className={sortDisabled ? null : 'pointer'}
-            >
-                {getHeaderColumnContent(column)}
-                {column === sortedByColumn && sortingIcon}
+            <th key={column}>
+                <div className="header-cell">
+                    <span>{headerColumnContent}</span>
+                    {!sortDisabled && sortingIconsContainer(column)}
+                </div>
             </th>
         );
     };

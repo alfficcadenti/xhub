@@ -166,10 +166,70 @@ Object {
                         class="data-table-header"
                       >
                         <tr>
-                          <th
-                            class="pointer"
-                          >
-                            ID
+                          <th>
+                            <div
+                              class="header-cell"
+                            >
+                              <span>
+                                ID
+                              </span>
+                              <span
+                                class="sorting-icons-group"
+                              >
+                                <div
+                                  aria-hidden="true"
+                                  class="pointer sorting-icon "
+                                  role="button"
+                                  tabindex="0"
+                                >
+                                  <span
+                                    class="SVGIcon SVGIcon--12px SVGIcon--inline-flex"
+                                  >
+                                    <svg
+                                      data-id="SVG_CHEVRON_UP__12"
+                                      focusable="false"
+                                      height="12"
+                                      viewBox="0 0 12 12"
+                                      width="12"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        d="M11 8L6 3 1 8"
+                                        fill="none"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                      />
+                                    </svg>
+                                  </span>
+                                </div>
+                                <div
+                                  aria-hidden="true"
+                                  class="pointer sorting-icon "
+                                  role="button"
+                                  tabindex="0"
+                                >
+                                  <span
+                                    class="SVGIcon SVGIcon--12px SVGIcon--inline-flex"
+                                  >
+                                    <svg
+                                      data-id="SVG_CHEVRON_DOWN__12"
+                                      focusable="false"
+                                      height="12"
+                                      viewBox="0 0 12 12"
+                                      width="12"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        d="M11 4L6 9 1 4"
+                                        fill="none"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                      />
+                                    </svg>
+                                  </span>
+                                </div>
+                              </span>
+                            </div>
                           </th>
                         </tr>
                       </thead>
@@ -443,10 +503,70 @@ Object {
                         class="data-table-header"
                       >
                         <tr>
-                          <th
-                            class="pointer"
-                          >
-                            ID
+                          <th>
+                            <div
+                              class="header-cell"
+                            >
+                              <span>
+                                ID
+                              </span>
+                              <span
+                                class="sorting-icons-group"
+                              >
+                                <div
+                                  aria-hidden="true"
+                                  class="pointer sorting-icon "
+                                  role="button"
+                                  tabindex="0"
+                                >
+                                  <span
+                                    class="SVGIcon SVGIcon--12px SVGIcon--inline-flex"
+                                  >
+                                    <svg
+                                      data-id="SVG_CHEVRON_UP__12"
+                                      focusable="false"
+                                      height="12"
+                                      viewBox="0 0 12 12"
+                                      width="12"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        d="M11 8L6 3 1 8"
+                                        fill="none"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                      />
+                                    </svg>
+                                  </span>
+                                </div>
+                                <div
+                                  aria-hidden="true"
+                                  class="pointer sorting-icon "
+                                  role="button"
+                                  tabindex="0"
+                                >
+                                  <span
+                                    class="SVGIcon SVGIcon--12px SVGIcon--inline-flex"
+                                  >
+                                    <svg
+                                      data-id="SVG_CHEVRON_DOWN__12"
+                                      focusable="false"
+                                      height="12"
+                                      viewBox="0 0 12 12"
+                                      width="12"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        d="M11 4L6 9 1 4"
+                                        fill="none"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                      />
+                                    </svg>
+                                  </span>
+                                </div>
+                              </span>
+                            </div>
                           </th>
                         </tr>
                       </thead>
@@ -766,10 +886,70 @@ Object {
                       class="data-table-header"
                     >
                       <tr>
-                        <th
-                          class="pointer"
-                        >
-                          ID
+                        <th>
+                          <div
+                            class="header-cell"
+                          >
+                            <span>
+                              ID
+                            </span>
+                            <span
+                              class="sorting-icons-group"
+                            >
+                              <div
+                                aria-hidden="true"
+                                class="pointer sorting-icon "
+                                role="button"
+                                tabindex="0"
+                              >
+                                <span
+                                  class="SVGIcon SVGIcon--12px SVGIcon--inline-flex"
+                                >
+                                  <svg
+                                    data-id="SVG_CHEVRON_UP__12"
+                                    focusable="false"
+                                    height="12"
+                                    viewBox="0 0 12 12"
+                                    width="12"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M11 8L6 3 1 8"
+                                      fill="none"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                    />
+                                  </svg>
+                                </span>
+                              </div>
+                              <div
+                                aria-hidden="true"
+                                class="pointer sorting-icon "
+                                role="button"
+                                tabindex="0"
+                              >
+                                <span
+                                  class="SVGIcon SVGIcon--12px SVGIcon--inline-flex"
+                                >
+                                  <svg
+                                    data-id="SVG_CHEVRON_DOWN__12"
+                                    focusable="false"
+                                    height="12"
+                                    viewBox="0 0 12 12"
+                                    width="12"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M11 4L6 9 1 4"
+                                      fill="none"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                    />
+                                  </svg>
+                                </span>
+                              </div>
+                            </span>
+                          </div>
                         </th>
                       </tr>
                     </thead>
@@ -1043,10 +1223,70 @@ Object {
                       class="data-table-header"
                     >
                       <tr>
-                        <th
-                          class="pointer"
-                        >
-                          ID
+                        <th>
+                          <div
+                            class="header-cell"
+                          >
+                            <span>
+                              ID
+                            </span>
+                            <span
+                              class="sorting-icons-group"
+                            >
+                              <div
+                                aria-hidden="true"
+                                class="pointer sorting-icon "
+                                role="button"
+                                tabindex="0"
+                              >
+                                <span
+                                  class="SVGIcon SVGIcon--12px SVGIcon--inline-flex"
+                                >
+                                  <svg
+                                    data-id="SVG_CHEVRON_UP__12"
+                                    focusable="false"
+                                    height="12"
+                                    viewBox="0 0 12 12"
+                                    width="12"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M11 8L6 3 1 8"
+                                      fill="none"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                    />
+                                  </svg>
+                                </span>
+                              </div>
+                              <div
+                                aria-hidden="true"
+                                class="pointer sorting-icon "
+                                role="button"
+                                tabindex="0"
+                              >
+                                <span
+                                  class="SVGIcon SVGIcon--12px SVGIcon--inline-flex"
+                                >
+                                  <svg
+                                    data-id="SVG_CHEVRON_DOWN__12"
+                                    focusable="false"
+                                    height="12"
+                                    viewBox="0 0 12 12"
+                                    width="12"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M11 4L6 9 1 4"
+                                      fill="none"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                    />
+                                  </svg>
+                                </span>
+                              </div>
+                            </span>
+                          </div>
                         </th>
                       </tr>
                     </thead>

@@ -1,4 +1,5 @@
 @import '../../mixins.less';
+@import '~@homeaway/baseline/release/stylesheets/baseline-gt.css';
 
 .data-table__container {
     .settings-btn {
@@ -157,12 +158,43 @@
         th {
             color: @color-text-default;
             white-space: nowrap;
+            align-items: center;
+            
+            .header-cell {
+                padding-right: 0;
+                padding-left: 0;
+                display: inline-flex;
+                align-items: center;
+
+                .sorting-icons-group {
+                    margin: 0;
+                    padding: 0;
+                    display: block;
+                    padding: 0;
+                    color: @color-neutral-light;
+
+                    .sorting-icon {
+                        padding: 0;
+                    }
+
+                    .active {
+                        color: @color-neutral-darker;
+                    }
+                }
+
+            }
         }
 
         th,
         td {
             border-top: 1px @color-border-contrast solid;
             padding: @spacing-1x;
+        }
+
+        td:first-child {  
+           max-width: 20vw;
+           overflow-x: hidden;
+           text-overflow: ellipsis;
         }
 
         .data-table-header {
