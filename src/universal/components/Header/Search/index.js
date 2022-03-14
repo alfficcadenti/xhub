@@ -10,7 +10,7 @@ const Search = ({isSearchOpen, onSearch, onBlur, onToggleSearch, selectedPages, 
             <div role="button" className="btn btn-default search-toggle-btn" onClick={onToggleSearch} tabIndex={0} onKeyDown={onToggleSearch}>
                 <SVGIcon markup={SEARCH__24} />
             </div>
-            <div className="site-search-form">
+            <div role="searchbox" className="site-search-form">
                 <Select
                     ref={ref}
                     className="site-search-input"

@@ -1,9 +1,9 @@
 import React from 'react';
 import Header from '../index';
 import sinon from 'sinon';
-import {BRANDS, EXPEDIA_BRAND, EG_BRAND,VRBO_BRAND} from '../../../constants';
+import {BRANDS, EXPEDIA_BRAND, EG_BRAND, VRBO_BRAND} from '../../../constants';
 import {BrowserRouter} from 'react-router-dom';
-import { render, screen, fireEvent } from '@testing-library/react';
+import {render, screen, fireEvent} from '@testing-library/react';
 import '@testing-library/jest-dom';
 
 const validBrands = BRANDS.map((brand) => brand.label);
@@ -28,14 +28,14 @@ describe('<Header />', () => {
         expect((wrapper.getAllByRole('dialog')[3]).children).toHaveLength(9); // Platform Health & Resiliency
     });
 
-    it('search box has no content before click event', () => {
+    it('search box has no text content before click event', () => {
         const onChange = jest.fn();
         const wrapper = render(<BrowserRouter><Header selectedBrands={[EXPEDIA_BRAND]} onBrandChange={sinon.spy} brands={validBrands} onChange={onChange} /></BrowserRouter>);
         expect(wrapper).toMatchSnapshot();
-        let input = screen.queryByRole(/textbox/);
-        expect(input).not.toHaveTextContent;
+        let input = screen.queryByRole(/searchbox/);
+        expect(input).not.toHaveTextContent('Home');
         fireEvent.click(input);
-        expect(input).toHaveTextContent;
+        expect(input).toHaveTextContent('');
     });
 
     it('text input value changes after making selection', () => {
@@ -44,8 +44,7 @@ describe('<Header />', () => {
         expect(wrapper).toMatchSnapshot();
         let input = screen.queryAllByRole(/textbox/);
         expect(input).toHaveLength(1);
-        expect(input).not.toHaveTextContent;
         fireEvent.change(screen.queryAllByRole(/textbox/)[0], {target: {value: 'Home'}});
         expect(input[0]).toHaveValue('Home');
-    })
+    });
 });

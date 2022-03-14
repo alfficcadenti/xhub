@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Header /> search box has no content before click event 1`] = `
+exports[`<Header /> search box has no text content before click event 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
@@ -358,6 +358,7 @@ Object {
             </div>
             <div
               class="site-search-form"
+              role="searchform"
             >
               <div
                 class="site-search-input css-2b097c-container"
@@ -1008,6 +1009,7 @@ Object {
           </div>
           <div
             class="site-search-form"
+            role="searchform"
           >
             <div
               class="site-search-input css-2b097c-container"
@@ -1715,6 +1717,7 @@ Object {
             </div>
             <div
               class="site-search-form"
+              role="searchform"
             >
               <div
                 class="site-search-input css-2b097c-container"
@@ -2365,6 +2368,7 @@ Object {
           </div>
           <div
             class="site-search-form"
+            role="searchform"
           >
             <div
               class="site-search-input css-2b097c-container"
