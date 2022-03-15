@@ -30,7 +30,6 @@ Object {
                 <input
                   class="form-control short "
                   id="datepicker-start-date"
-                  readonly=""
                   type="text"
                   value="01/01/2022"
                 />
@@ -51,7 +50,6 @@ Object {
                 <input
                   class="form-control short "
                   id="datepicker-end-date"
-                  readonly=""
                   type="text"
                   value="02/01/2022"
                 />
@@ -782,7 +780,6 @@ Object {
               <input
                 class="form-control short "
                 id="datepicker-start-date"
-                readonly=""
                 type="text"
                 value="01/01/2022"
               />
@@ -803,7 +800,6 @@ Object {
               <input
                 class="form-control short "
                 id="datepicker-end-date"
-                readonly=""
                 type="text"
                 value="02/01/2022"
               />

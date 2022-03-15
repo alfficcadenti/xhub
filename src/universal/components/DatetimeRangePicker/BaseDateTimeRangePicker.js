@@ -16,16 +16,21 @@ const BaseDateTimeRangePicker = ({
     const containerRef = useRef(null);
 
     const format = timeFormat ? 'MM/DD/YYYY HH:mm' : 'MM/DD/YYYY';
+    const interval = timeFormat ? 'h' : 'd';
 
-    const [start, setStart] = useState(moment(startDate));
-    const [end, setEnd] = useState(moment(endDate));
+    const [start, setStart] = useState(moment(startDate).format(format));
+    const [end, setEnd] = useState(moment(endDate).format(format));
     const [calendarOpen, setCalendarOpen] = useState(false);
     const [focusOnDate, setFocusOnDate] = useState(null);
+    const startInputRef = useRef(null);
+    const endInputRef = useRef(null);
 
 
     const onBlur = () => {
         setCalendarOpen(false);
         setFocusOnDate(null);
+        startInputRef.current.blur();
+        endInputRef.current.blur();
     };
 
     function useOutsideAlerter(ref) {
@@ -55,13 +60,13 @@ const BaseDateTimeRangePicker = ({
     const handleEndDateChange = (e) => {
         if (!moment(e).isSame(end, 'day')) {
             setFocusOnDate(null);
-            setEnd(moment(e));
+            setEnd(moment(e).format(format));
             setCalendarOpen(false);
         } else {
-            setEnd(moment(e));
+            setEnd(moment(e).format(format));
         }
         if (moment(e).isBefore(moment(start))) {
-            setStart(moment(e).subtract(1, 'd'));
+            setStart(moment(e).subtract(1, interval).format(format));
         }
     };
 
@@ -69,12 +74,15 @@ const BaseDateTimeRangePicker = ({
         if (moment(e).isValid()) {
             if (!moment(e).isSame(start, 'day')) {
                 setFocusOnDate('end');
-                setStart(moment(e));
-                if (moment(end).isBefore(moment(start))) {
-                    setEnd(moment(e).add(1, 'd'));
+                setStart(moment(e).format(format));
+                if (moment(end).isBefore(moment(e))) {
+                    setEnd(moment(e).add(1, interval).format(format));
                 }
             } else {
-                setStart(moment(e));
+                setStart(moment(e).format(format));
+                if (moment(end).isBefore(moment(e))) {
+                    setEnd(moment(e).add(1, interval).format(format));
+                }
             }
         }
     };
@@ -89,8 +97,8 @@ const BaseDateTimeRangePicker = ({
 
     useEffect(() => {
         onChange({
-            end: end.toDate(),
-            start: start.toDate()
+            end: moment(end, format).toDate(),
+            start: moment(start, format).toDate()
         });
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [start, end]);
@@ -118,21 +126,35 @@ const BaseDateTimeRangePicker = ({
 
     const inputClass = (type) => `form-control ${!timeFormat ? 'short' : ''} ${type === focusOnDate ? 'active' : ''}`;
 
-    const getInputValue = (type) => type === 'start' ? moment(start).format(format) : moment(end).format(format);
-    const getInitialValue = (type) => type === 'start' ? moment(startDate).format(format) : moment(endDate).format(format);
+    const getInputValue = (type) => start && end && type === 'start' ? start : end;
+
+    const handleValueChange = (event, type) => {
+        event.preventDefault();
+        if (moment(event.target.value).isValid()) {
+            if (type === 'start') {
+                handleStartDateChange(event.target.value);
+                startInputRef.current.focus();
+            } else if (type === 'end') {
+                handleEndDateChange(event.target.value);
+                endInputRef.current.focus();
+            }
+        }
+    };
 
     const renderInput = (type) => (
-        <div className={`rdt-${type}-container`} key={`rdt-${type}-container-${getInitialValue(type)}`}>
+        <div className={`rdt-${type}-container`} key={`rdt-${type}-container`}>
             <label className={`rdt-${type}-label`} htmlFor={`datepicker-${type}-date`}>{type.charAt(0).toUpperCase() + type.slice(1)}</label>
             <div className="rdt">
                 <input
+                    ref={type === 'start' ? startInputRef : endInputRef}
                     className={inputClass(type)}
                     type={'text'}
                     id={`datepicker-${type}-date`}
                     value={getInputValue(type)}
+                    onChange={(e) => handleValueChange(e, type)}
                     onClick={() => handleOnClick(type)}
-                    readOnly
                     disabled={disabled}
+                    onKeyUp={(e) => e.key === 'Enter' && onBlur()}
                 />
             </div>
         </div>
@@ -146,7 +168,7 @@ const BaseDateTimeRangePicker = ({
             </div>
             {calendarOpen &&
             <Datetime
-                value={focusOnDate === 'end' ? end : start}
+                value={focusOnDate === 'end' ? moment(end) : moment(start)}
                 input={false}
                 isValidDate={isValidEndDate}
                 onChange={handleDateChange}

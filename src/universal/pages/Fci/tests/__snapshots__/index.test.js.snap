@@ -87,9 +87,8 @@ Object {
                     <input
                       class="form-control  "
                       id="datepicker-start-date"
-                      readonly=""
                       type="text"
-                      value="03/14/2022 14:29"
+                      value="03/14/2022 16:13"
                     />
                   </div>
                 </div>
@@ -108,9 +107,8 @@ Object {
                     <input
                       class="form-control  "
                       id="datepicker-end-date"
-                      readonly=""
                       type="text"
-                      value="03/15/2022 14:29"
+                      value="03/15/2022 16:13"
                     />
                   </div>
                 </div>
@@ -810,9 +808,8 @@ Object {
                   <input
                     class="form-control  "
                     id="datepicker-start-date"
-                    readonly=""
                     type="text"
-                    value="03/14/2022 14:29"
+                    value="03/14/2022 16:13"
                   />
                 </div>
               </div>
@@ -831,9 +828,8 @@ Object {
                   <input
                     class="form-control  "
                     id="datepicker-end-date"
-                    readonly=""
                     type="text"
-                    value="03/15/2022 14:29"
+                    value="03/15/2022 16:13"
                   />
                 </div>
               </div>
@@ -1590,9 +1586,8 @@ Object {
                     <input
                       class="form-control  "
                       id="datepicker-start-date"
-                      readonly=""
                       type="text"
-                      value="03/14/2022 14:29"
+                      value="03/14/2022 16:13"
                     />
                   </div>
                 </div>
@@ -1611,9 +1606,8 @@ Object {
                     <input
                       class="form-control  "
                       id="datepicker-end-date"
-                      readonly=""
                       type="text"
-                      value="03/15/2022 14:29"
+                      value="03/15/2022 16:13"
                     />
                   </div>
                 </div>
@@ -2285,9 +2279,8 @@ Object {
                   <input
                     class="form-control  "
                     id="datepicker-start-date"
-                    readonly=""
                     type="text"
-                    value="03/14/2022 14:29"
+                    value="03/14/2022 16:13"
                   />
                 </div>
               </div>
@@ -2306,9 +2299,8 @@ Object {
                   <input
                     class="form-control  "
                     id="datepicker-end-date"
-                    readonly=""
                     type="text"
-                    value="03/15/2022 14:29"
+                    value="03/15/2022 16:13"
                   />
                 </div>
               </div>

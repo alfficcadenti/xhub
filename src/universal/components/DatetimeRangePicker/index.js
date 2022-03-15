@@ -121,6 +121,7 @@ DatetimeRangePicker.defaultProps = {
     presets: getPresets(),
     disabled: false,
     isValidEndDate: () => true,
+    showTimePicker: false
 };
 
 DatetimeRangePicker.propTypes = {
@@ -131,6 +132,7 @@ DatetimeRangePicker.propTypes = {
     hidePresets: PropTypes.bool,
     disabled: PropTypes.bool,
     isValidEndDate: PropTypes.func,
+    showTimePicker: PropTypes.bool
 };
 
 export {
