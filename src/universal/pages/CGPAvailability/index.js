@@ -109,10 +109,10 @@ const CGPAvailibility = () => {
 
     const handleDatetimeChange = ({start: startDateTimeStr, end: endDateTimeStr}) => {
         setPendingStart(moment(startDateTimeStr));
-        if (moment(endDateTimeStr).diff(moment(startDateTimeStr), 'days') < 15) {
+        if (moment(endDateTimeStr).diff(moment(startDateTimeStr), 'days') <= 30) {
             setPendingEnd(moment(endDateTimeStr));
         } else {
-            setPendingEnd(moment(startDateTimeStr).hours('23').minutes('59').seconds('59').add(15, 'days'));
+            setPendingEnd(moment(startDateTimeStr).hours('23').minutes('59').seconds('59').add(30, 'days'));
         }
         setIsDirtyForm(true);
     };
@@ -156,7 +156,7 @@ const CGPAvailibility = () => {
                         endDate={pendingEnd.toDate()}
                         presets={getPresets()}
                         disabled={isLoading}
-                        isValidEndDate={(currentDate) => currentDate.diff(pendingStart, 'days') < 30}
+                        isValidEndDate={(currentDate) => currentDate.diff(pendingStart, 'days') <= 30}
                         showTimePicker
                     />
                     <MultiSelect
