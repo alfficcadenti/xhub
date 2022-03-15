@@ -52,7 +52,7 @@ const CGPAvailibility = () => {
         const getNewData = () => {
             setIsLoading(true);
             setError('');
-            const url = `/v1/application-availability/filter-by-aws-region?from_date=${start.format(API_UTC_FORMAT)}&to_date=${end.format(API_UTC_FORMAT)}&aws_region=${getSelectedRegions(selectedRegionFilter)}`;
+            const url = `/v1/application-availability/filters?from_date=${start.format(API_UTC_FORMAT)}&to_date=${end.format(API_UTC_FORMAT)}&aws_region=${getSelectedRegions(selectedRegionFilter)}`;
             const fetchAPI = async () => {
                 try {
                     const res = await fetch(url);
@@ -156,7 +156,7 @@ const CGPAvailibility = () => {
                         endDate={pendingEnd.toDate()}
                         presets={getPresets()}
                         disabled={isLoading}
-                        isValidEndDate={(currentDate) => currentDate.diff(pendingStart, 'days') < 15}
+                        isValidEndDate={(currentDate) => currentDate.diff(pendingStart, 'days') < 30}
                         showTimePicker
                     />
                     <MultiSelect
