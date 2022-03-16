@@ -6,11 +6,8 @@ import './styles.less';
 
 const Search = ({isSearchOpen, onSearch, onBlur, onToggleSearch, selectedPages, options}, ref) => {
     return (
-        <div className={`site-search-container ${isSearchOpen ? 'active' : ''}`}>
-            <div role="button" className="btn btn-default search-toggle-btn" onClick={onToggleSearch} tabIndex={0} onKeyDown={onToggleSearch}>
-                <SVGIcon markup={SEARCH__24} />
-            </div>
-            <div role="searchbox" className="site-search-form">
+        <div role="searchbox" className={`site-search-container ${isSearchOpen ? 'active' : ''}`} >
+            <div data-testid="searchtext" className={`site-search-form ${isSearchOpen ? 'active' : ''}`} style={{display: isSearchOpen ? 'inline' : 'none'}} >
                 <Select
                     ref={ref}
                     className="site-search-input"
@@ -21,6 +18,9 @@ const Search = ({isSearchOpen, onSearch, onBlur, onToggleSearch, selectedPages, 
                     noOptionsMessage={() => 'No Results Found'}
                 />
                 <div className={`site-search-blur ${isSearchOpen ? 'active' : ''}`} onClick={onBlur} />  {/* eslint-disable-line */}
+            </div>
+            <div role="button" className="btn btn-default search-toggle-btn" onClick={onToggleSearch} tabIndex={0} onKeyDown={onToggleSearch}>
+                <SVGIcon markup={SEARCH__24} />
             </div>
         </div>
     );

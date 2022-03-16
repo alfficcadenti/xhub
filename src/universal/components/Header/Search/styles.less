@@ -2,9 +2,9 @@
 
 .site-search-container {
     height: @spacing-6x;
+    display: flex;
 
     .search-toggle-btn {
-        float: right;
         padding: 0 @spacing-2x;
         background: none;
         color: @color-text-default;
@@ -47,6 +47,13 @@
         max-width: 0;
         overflow: hidden;
         transition: max-width .3s ease-in-out;
+        display: hidden;
+
+        &.active {
+            height: 100vh;
+            width: 100vw;
+            display: inline;
+        }
 
         .site-search-input {
             opacity: 0;

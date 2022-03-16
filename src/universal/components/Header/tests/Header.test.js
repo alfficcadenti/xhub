@@ -3,7 +3,7 @@ import Header from '../index';
 import sinon from 'sinon';
 import {BRANDS, EXPEDIA_BRAND, EG_BRAND, VRBO_BRAND} from '../../../constants';
 import {BrowserRouter} from 'react-router-dom';
-import {render, screen, fireEvent} from '@testing-library/react';
+import {render, screen, fireEvent, within} from '@testing-library/react';
 import '@testing-library/jest-dom';
 
 const validBrands = BRANDS.map((brand) => brand.label);
@@ -28,23 +28,18 @@ describe('<Header />', () => {
         expect((wrapper.getAllByRole('dialog')[3]).children).toHaveLength(9); // Platform Health & Resiliency
     });
 
-    it('search box has no text content before click event', () => {
+    it('search box is not visible before click event', () => {
         const onChange = jest.fn();
         const wrapper = render(<BrowserRouter><Header selectedBrands={[EXPEDIA_BRAND]} onBrandChange={sinon.spy} brands={validBrands} onChange={onChange} /></BrowserRouter>);
         expect(wrapper).toMatchSnapshot();
-        let input = screen.queryByRole(/searchbox/);
-        expect(input).not.toHaveTextContent('Home');
-        fireEvent.click(input);
-        expect(input).toHaveTextContent('');
-    });
-
-    it('text input value changes after making selection', () => {
-        const onChange = jest.fn();
-        const wrapper = render(<BrowserRouter><Header selectedBrands={[EXPEDIA_BRAND]} onBrandChange={sinon.spy} brands={validBrands} onChange={onChange} /></BrowserRouter>);
-        expect(wrapper).toMatchSnapshot();
-        let input = screen.queryAllByRole(/textbox/);
-        expect(input).toHaveLength(1);
-        fireEvent.change(screen.queryAllByRole(/textbox/)[0], {target: {value: 'Home'}});
-        expect(input[0]).toHaveValue('Home');
+        let input = screen.getByRole('searchbox');
+        expect(input).toHaveClass('site-search-container');
+        expect(input).not.toHaveClass('active');
+        let button = within(input).getByRole('button');
+        let searchText = within(input).getByTestId('searchtext');
+        expect(searchText).not.toBeVisible();
+        fireEvent.click(button);
+        expect(input).toHaveClass('active');
+        expect(searchText).toBeVisible();
     });
 });

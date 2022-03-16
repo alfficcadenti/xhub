@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Header /> search box has no text content before click event 1`] = `
+exports[`<Header /> search box is not visible before click event 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
@@ -330,35 +330,12 @@ Object {
         >
           <div
             class="site-search-container "
+            role="searchbox"
           >
             <div
-              class="btn btn-default search-toggle-btn"
-              role="button"
-              tabindex="0"
-            >
-              <span
-                class="SVGIcon SVGIcon--24px"
-              >
-                <svg
-                  data-id="SVG_SEARCH__24"
-                  focusable="false"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  width="24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M16.7 13.2a6.5 6.5 0 1 0-1.4 2m0 0l4.6 4.6"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </span>
-            </div>
-            <div
-              class="site-search-form"
-              role="searchform"
+              class="site-search-form "
+              data-testid="searchtext"
+              style="display: none;"
             >
               <div
                 class="site-search-input css-2b097c-container"
@@ -427,6 +404,31 @@ Object {
                 class="site-search-blur "
               />
                 
+            </div>
+            <div
+              class="btn btn-default search-toggle-btn"
+              role="button"
+              tabindex="0"
+            >
+              <span
+                class="SVGIcon SVGIcon--24px"
+              >
+                <svg
+                  data-id="SVG_SEARCH__24"
+                  focusable="false"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M16.7 13.2a6.5 6.5 0 1 0-1.4 2m0 0l4.6 4.6"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
             </div>
           </div>
           <div
@@ -981,35 +983,12 @@ Object {
       >
         <div
           class="site-search-container "
+          role="searchbox"
         >
           <div
-            class="btn btn-default search-toggle-btn"
-            role="button"
-            tabindex="0"
-          >
-            <span
-              class="SVGIcon SVGIcon--24px"
-            >
-              <svg
-                data-id="SVG_SEARCH__24"
-                focusable="false"
-                height="24"
-                viewBox="0 0 24 24"
-                width="24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M16.7 13.2a6.5 6.5 0 1 0-1.4 2m0 0l4.6 4.6"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </span>
-          </div>
-          <div
-            class="site-search-form"
-            role="searchform"
+            class="site-search-form "
+            data-testid="searchtext"
+            style="display: none;"
           >
             <div
               class="site-search-input css-2b097c-container"
@@ -1078,6 +1057,31 @@ Object {
               class="site-search-blur "
             />
               
+          </div>
+          <div
+            class="btn btn-default search-toggle-btn"
+            role="button"
+            tabindex="0"
+          >
+            <span
+              class="SVGIcon SVGIcon--24px"
+            >
+              <svg
+                data-id="SVG_SEARCH__24"
+                focusable="false"
+                height="24"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M16.7 13.2a6.5 6.5 0 1 0-1.4 2m0 0l4.6 4.6"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
           </div>
         </div>
         <div
@@ -1689,35 +1693,12 @@ Object {
         >
           <div
             class="site-search-container "
+            role="searchbox"
           >
             <div
-              class="btn btn-default search-toggle-btn"
-              role="button"
-              tabindex="0"
-            >
-              <span
-                class="SVGIcon SVGIcon--24px"
-              >
-                <svg
-                  data-id="SVG_SEARCH__24"
-                  focusable="false"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  width="24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M16.7 13.2a6.5 6.5 0 1 0-1.4 2m0 0l4.6 4.6"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </span>
-            </div>
-            <div
-              class="site-search-form"
-              role="searchform"
+              class="site-search-form "
+              data-testid="searchtext"
+              style="display: none;"
             >
               <div
                 class="site-search-input css-2b097c-container"
@@ -1786,6 +1767,31 @@ Object {
                 class="site-search-blur "
               />
                 
+            </div>
+            <div
+              class="btn btn-default search-toggle-btn"
+              role="button"
+              tabindex="0"
+            >
+              <span
+                class="SVGIcon SVGIcon--24px"
+              >
+                <svg
+                  data-id="SVG_SEARCH__24"
+                  focusable="false"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M16.7 13.2a6.5 6.5 0 1 0-1.4 2m0 0l4.6 4.6"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
             </div>
           </div>
           <div
@@ -2340,35 +2346,12 @@ Object {
       >
         <div
           class="site-search-container "
+          role="searchbox"
         >
           <div
-            class="btn btn-default search-toggle-btn"
-            role="button"
-            tabindex="0"
-          >
-            <span
-              class="SVGIcon SVGIcon--24px"
-            >
-              <svg
-                data-id="SVG_SEARCH__24"
-                focusable="false"
-                height="24"
-                viewBox="0 0 24 24"
-                width="24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M16.7 13.2a6.5 6.5 0 1 0-1.4 2m0 0l4.6 4.6"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </span>
-          </div>
-          <div
-            class="site-search-form"
-            role="searchform"
+            class="site-search-form "
+            data-testid="searchtext"
+            style="display: none;"
           >
             <div
               class="site-search-input css-2b097c-container"
@@ -2437,6 +2420,31 @@ Object {
               class="site-search-blur "
             />
               
+          </div>
+          <div
+            class="btn btn-default search-toggle-btn"
+            role="button"
+            tabindex="0"
+          >
+            <span
+              class="SVGIcon SVGIcon--24px"
+            >
+              <svg
+                data-id="SVG_SEARCH__24"
+                focusable="false"
+                height="24"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M16.7 13.2a6.5 6.5 0 1 0-1.4 2m0 0l4.6 4.6"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
           </div>
         </div>
         <div
