@@ -55,9 +55,9 @@ export const getAppErrorsDataForChart = (applicationName = '', availability = []
 export const getSelectedRegions = (regionsObj) => (regionsObj?.length ? regionsObj.filter((x) => x.counted && x.checked).map((x) => x.name) : '');
 
 export const getPresets = () => [
-    // {text: 'Last 15 Minutes', value: getValue(15, 'minute')},
     {text: 'Last 24 Hours', value: getValue(23.98, 'hours')},
     {text: 'Last 3 days', value: getValue(3, 'days')},
     {text: 'Last 7 days', value: getValue(7, 'days')},
     {text: 'Last 15 days', value: getValue(15, 'days')},
+    {text: 'Last 30 days', value: getValue(30, 'days')},
 ];
