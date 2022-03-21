@@ -18,6 +18,8 @@ const BaseDateTimeRangePicker = ({
     const format = timeFormat ? 'MM/DD/YYYY HH:mm' : 'MM/DD/YYYY';
     const interval = timeFormat ? 'h' : 'd';
 
+    const [prevStart, setPrevStart] = useState();
+    const [prevEnd, setPrevEnd] = useState();
     const [start, setStart] = useState(moment(startDate).format(format));
     const [end, setEnd] = useState(moment(endDate).format(format));
     const [calendarOpen, setCalendarOpen] = useState(false);
@@ -25,6 +27,24 @@ const BaseDateTimeRangePicker = ({
     const startInputRef = useRef(null);
     const endInputRef = useRef(null);
 
+    useEffect(() => {
+        if (moment(prevStart).format(format) !== moment(startDate).format(format)) {
+            setPrevStart(moment(startDate).format(format));
+            setStart(moment(startDate).format(format));
+        }
+        if (moment(prevEnd).format(format) !== moment(endDate).format(format)) {
+            setPrevEnd(moment(endDate).format(format));
+            setEnd(moment(endDate).format(format));
+        }
+    }, [prevStart, prevEnd, startDate, endDate, format, onChange]);
+
+    useEffect(() => {
+        onChange({
+            end: moment(end, format).toDate(),
+            start: moment(start, format).toDate()
+        });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [start, end]);
 
     const onBlur = () => {
         setCalendarOpen(false);
@@ -59,9 +79,8 @@ const BaseDateTimeRangePicker = ({
 
     const handleEndDateChange = (e) => {
         if (!moment(e).isSame(end, 'day')) {
-            setFocusOnDate(null);
             setEnd(moment(e).format(format));
-            setCalendarOpen(false);
+            onBlur();
         } else {
             setEnd(moment(e).format(format));
         }
@@ -94,14 +113,6 @@ const BaseDateTimeRangePicker = ({
             handleStartDateChange(e);
         }
     };
-
-    useEffect(() => {
-        onChange({
-            end: moment(end, format).toDate(),
-            start: moment(start, format).toDate()
-        });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [start, end]);
 
     const renderDay = (props, currentDate) => {
         const {...rest} = props;
