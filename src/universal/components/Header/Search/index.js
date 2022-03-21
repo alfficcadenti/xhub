@@ -7,7 +7,7 @@ import './styles.less';
 const Search = ({isSearchOpen, onSearch, onBlur, onToggleSearch, selectedPages, options}, ref) => {
     return (
         <div role="searchbox" className={`site-search-container ${isSearchOpen ? 'active' : ''}`} >
-            <div data-testid="searchtext" className={`site-search-form ${isSearchOpen ? 'active' : ''}`} style={{display: isSearchOpen ? 'inline' : 'none'}} >
+            <div data-testid="searchtext" className={`site-search-form ${isSearchOpen ? 'active' : ''}`} >
                 <Select
                     ref={ref}
                     className="site-search-input"
