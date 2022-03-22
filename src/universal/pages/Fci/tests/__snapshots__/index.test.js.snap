@@ -88,7 +88,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="03/14/2022 16:13"
+                      value="03/21/2022 11:40"
                     />
                   </div>
                 </div>
@@ -108,7 +108,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="03/15/2022 16:13"
+                      value="03/22/2022 11:40"
                     />
                   </div>
                 </div>
@@ -668,6 +668,7 @@ Object {
         >
           <div
             class="line-chart-wrapper"
+            title="Errors over Time"
           >
             <h3>
               Errors over Time
@@ -809,7 +810,7 @@ Object {
                     class="form-control  "
                     id="datepicker-start-date"
                     type="text"
-                    value="03/14/2022 16:13"
+                    value="03/21/2022 11:40"
                   />
                 </div>
               </div>
@@ -829,7 +830,7 @@ Object {
                     class="form-control  "
                     id="datepicker-end-date"
                     type="text"
-                    value="03/15/2022 16:13"
+                    value="03/22/2022 11:40"
                   />
                 </div>
               </div>
@@ -1389,6 +1390,7 @@ Object {
       >
         <div
           class="line-chart-wrapper"
+          title="Errors over Time"
         >
           <h3>
             Errors over Time
@@ -1554,7 +1556,7 @@ Object {
             <li
               aria-hidden="true"
               class="Navigation__li--highlight"
-              style="transform: translateX(0px) scaleY(2); width: 0px;"
+              style="transform: translateX(0px) scaleY(1); width: 0px;"
             />
           </ul>
         </nav>
@@ -1587,7 +1589,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="03/14/2022 16:13"
+                      value="03/21/2022 11:40"
                     />
                   </div>
                 </div>
@@ -1607,7 +1609,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="03/15/2022 16:13"
+                      value="03/22/2022 11:40"
                     />
                   </div>
                 </div>
@@ -2247,7 +2249,7 @@ Object {
           <li
             aria-hidden="true"
             class="Navigation__li--highlight"
-            style="transform: translateX(0px) scaleY(2); width: 0px;"
+            style="transform: translateX(0px) scaleY(1); width: 0px;"
           />
         </ul>
       </nav>
@@ -2280,7 +2282,7 @@ Object {
                     class="form-control  "
                     id="datepicker-start-date"
                     type="text"
-                    value="03/14/2022 16:13"
+                    value="03/21/2022 11:40"
                   />
                 </div>
               </div>
@@ -2300,7 +2302,7 @@ Object {
                     class="form-control  "
                     id="datepicker-end-date"
                     type="text"
-                    value="03/15/2022 16:13"
+                    value="03/22/2022 11:40"
                   />
                 </div>
               </div>

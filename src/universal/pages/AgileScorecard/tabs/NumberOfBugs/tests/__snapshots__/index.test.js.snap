@@ -1661,6 +1661,7 @@ Object {
       >
         <div
           class="line-chart-wrapper"
+          title="Number of Bugs"
         >
           <h3>
             Number of Bugs
@@ -1723,6 +1724,7 @@ Object {
     >
       <div
         class="line-chart-wrapper"
+        title="Number of Bugs"
       >
         <h3>
           Number of Bugs

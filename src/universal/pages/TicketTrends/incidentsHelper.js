@@ -1,9 +1,7 @@
 import React from 'react';
-import {renderToString} from 'react-dom/server';
 import moment from 'moment/moment';
 import uuid from 'uuid/v1';
 import {
-    BRANDS,
     DATE_FORMAT,
     EG_BRAND,
     EGENCIA_BRAND,
@@ -239,75 +237,6 @@ export const sortInAscOrderAndGetTop5 = (incidents, fieldToSort) => incidents
 export const sortInDescOrderAndGetTop5 = (incidents, fieldToSort) => incidents
     .sort((a, b) => Number(b[fieldToSort]) - Number(a[fieldToSort]))
     .slice(0, 5);
-
-const filterIncidentsPerInterval = (data = [], filter, propertyToSum) => {
-    const propertyToSort = 'lostRevenue';
-    const filteredByImpactedBrand = data.filter(filter);
-    const uniqueIds = getListOfUniqueProperties(filteredByImpactedBrand, 'id');
-
-    const tooltipEntryData = uniqueIds.reduce((prev, incId) => {
-        const link = buildTicketLinks(incId);
-        const incidentsFilteredByUniqueNumber = filteredByImpactedBrand
-            .filter(({id}) => id === incId);
-        const lostRevenue = sumPropertyInArrayOfObjects(incidentsFilteredByUniqueNumber, propertyToSum);
-
-        const tooltipEntry = {
-            link: renderToString(link),
-            lostRevenue
-        };
-
-        return [
-            ...prev,
-            tooltipEntry
-        ];
-    }, []);
-
-    return sortInDescOrderAndGetTop5(tooltipEntryData, propertyToSort);
-};
-
-const buildRawSeriesForFinancialImpact = (keys, filterKey, weekIntervals, incidentsPerIntervalMap, propertyToSum) => {
-    return weekIntervals.map((w) => {
-        const interval = {name: w};
-        keys.forEach((key) => {
-            const incidents = incidentsPerIntervalMap[w].filter((incident) => incident[filterKey].includes(key));
-            interval[key] = sumPropertyInArrayOfObjects(incidents, propertyToSum);
-        });
-        return interval;
-    });
-};
-
-const buildFinancialImpactTooltipData = (keys, filterKey, weekIntervals, incidentsPerIntervalMap, propertyToSum) => weekIntervals
-    .reduce((prev, weekInterval) => {
-        const newMetricPoint = keys.reduce((map, key) => ({
-            ...map,
-            [key]: filterIncidentsPerInterval(incidentsPerIntervalMap[weekInterval], (incident) => incident[filterKey].includes(key), propertyToSum)
-        }), {});
-
-        return {
-            ...prev,
-            [weekInterval]: newMetricPoint
-        };
-    }, {});
-
-export const buildFinancialImpactData = (incidents, startDate, endDate, selectedBrand, propertyToSum) => {
-    const weekIntervals = getWeeks(startDate, endDate);
-    const filterKey = selectedBrand === EG_BRAND
-        ? 'Brand'
-        : 'Division';
-    const keys = selectedBrand === EG_BRAND
-        ? BRANDS.map((b) => b.label)
-        : getListOfUniqueProperties(incidents, 'Division');
-    const incidentsPerIntervalHash = weekIntervals
-        .reduce((acc, weekInterval) => ({
-            ...acc,
-            [weekInterval]: incidentsOfTheWeek(incidents, moment(weekInterval).week())
-        }), {});
-    return {
-        data: buildRawSeriesForFinancialImpact(keys, filterKey, weekIntervals, incidentsPerIntervalHash, propertyToSum),
-        keys,
-        tooltipData: buildFinancialImpactTooltipData(keys, filterKey, weekIntervals, incidentsPerIntervalHash, propertyToSum)
-    };
-};
 
 export const getWeeklyCounts = (startDate, endDate, tickets, key) => {
     const weeks = getWeeks(startDate, endDate);

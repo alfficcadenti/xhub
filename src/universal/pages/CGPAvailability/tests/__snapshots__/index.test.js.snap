@@ -115,7 +115,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="03/08/2022 17:13"
+                        value="03/15/2022 11:41"
                       />
                     </div>
                   </div>
@@ -135,7 +135,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="03/15/2022 16:13"
+                        value="03/22/2022 11:41"
                       />
                     </div>
                   </div>
@@ -156,7 +156,7 @@ Object {
                   <span
                     class="btn__label"
                   >
-                    Custom
+                    Last 7 days
                   </span>
                   <span
                     class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
@@ -226,6 +226,17 @@ Object {
                     >
                        
                       Last 15 days
+                    </a>
+                  </li>
+                  <li
+                    role="presentation"
+                  >
+                    <a
+                      data-bypass="false"
+                      href="#"
+                    >
+                       
+                      Last 30 days
                     </a>
                   </li>
                 </ul>
@@ -2238,7 +2249,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="03/08/2022 17:13"
+                      value="03/15/2022 11:41"
                     />
                   </div>
                 </div>
@@ -2258,7 +2269,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="03/15/2022 16:13"
+                      value="03/22/2022 11:41"
                     />
                   </div>
                 </div>
@@ -2279,7 +2290,7 @@ Object {
                 <span
                   class="btn__label"
                 >
-                  Custom
+                  Last 7 days
                 </span>
                 <span
                   class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
@@ -2349,6 +2360,17 @@ Object {
                   >
                      
                     Last 15 days
+                  </a>
+                </li>
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Last 30 days
                   </a>
                 </li>
               </ul>
@@ -4418,7 +4440,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="03/08/2022 17:13"
+                        value="03/15/2022 11:40"
                       />
                     </div>
                   </div>
@@ -4438,7 +4460,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="03/15/2022 16:13"
+                        value="03/22/2022 11:40"
                       />
                     </div>
                   </div>
@@ -4459,7 +4481,7 @@ Object {
                   <span
                     class="btn__label"
                   >
-                    Custom
+                    Last 7 days
                   </span>
                   <span
                     class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
@@ -4529,6 +4551,17 @@ Object {
                     >
                        
                       Last 15 days
+                    </a>
+                  </li>
+                  <li
+                    role="presentation"
+                  >
+                    <a
+                      data-bypass="false"
+                      href="#"
+                    >
+                       
+                      Last 30 days
                     </a>
                   </li>
                 </ul>
@@ -5088,7 +5121,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="03/08/2022 17:13"
+                      value="03/15/2022 11:40"
                     />
                   </div>
                 </div>
@@ -5108,7 +5141,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="03/15/2022 16:13"
+                      value="03/22/2022 11:40"
                     />
                   </div>
                 </div>
@@ -5129,7 +5162,7 @@ Object {
                 <span
                   class="btn__label"
                 >
-                  Custom
+                  Last 7 days
                 </span>
                 <span
                   class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
@@ -5199,6 +5232,17 @@ Object {
                   >
                      
                     Last 15 days
+                  </a>
+                </li>
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Last 30 days
                   </a>
                 </li>
               </ul>
@@ -5815,7 +5859,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="03/08/2022 17:13"
+                        value="03/15/2022 11:40"
                       />
                     </div>
                   </div>
@@ -5835,7 +5879,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="03/15/2022 16:13"
+                        value="03/22/2022 11:40"
                       />
                     </div>
                   </div>
@@ -5856,7 +5900,7 @@ Object {
                   <span
                     class="btn__label"
                   >
-                    Custom
+                    Last 7 days
                   </span>
                   <span
                     class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
@@ -5926,6 +5970,17 @@ Object {
                     >
                        
                       Last 15 days
+                    </a>
+                  </li>
+                  <li
+                    role="presentation"
+                  >
+                    <a
+                      data-bypass="false"
+                      href="#"
+                    >
+                       
+                      Last 30 days
                     </a>
                   </li>
                 </ul>
@@ -6539,7 +6594,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="03/08/2022 17:13"
+                      value="03/15/2022 11:40"
                     />
                   </div>
                 </div>
@@ -6559,7 +6614,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="03/15/2022 16:13"
+                      value="03/22/2022 11:40"
                     />
                   </div>
                 </div>
@@ -6580,7 +6635,7 @@ Object {
                 <span
                   class="btn__label"
                 >
-                  Custom
+                  Last 7 days
                 </span>
                 <span
                   class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
@@ -6650,6 +6705,17 @@ Object {
                   >
                      
                     Last 15 days
+                  </a>
+                </li>
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Last 30 days
                   </a>
                 </li>
               </ul>
@@ -7320,7 +7386,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="03/08/2022 17:13"
+                        value="03/15/2022 11:40"
                       />
                     </div>
                   </div>
@@ -7340,7 +7406,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="03/15/2022 16:13"
+                        value="03/22/2022 11:40"
                       />
                     </div>
                   </div>
@@ -7361,7 +7427,7 @@ Object {
                   <span
                     class="btn__label"
                   >
-                    Custom
+                    Last 7 days
                   </span>
                   <span
                     class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
@@ -7431,6 +7497,17 @@ Object {
                     >
                        
                       Last 15 days
+                    </a>
+                  </li>
+                  <li
+                    role="presentation"
+                  >
+                    <a
+                      data-bypass="false"
+                      href="#"
+                    >
+                       
+                      Last 30 days
                     </a>
                   </li>
                 </ul>
@@ -9635,7 +9712,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="03/08/2022 17:13"
+                      value="03/15/2022 11:40"
                     />
                   </div>
                 </div>
@@ -9655,7 +9732,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="03/15/2022 16:13"
+                      value="03/22/2022 11:40"
                     />
                   </div>
                 </div>
@@ -9676,7 +9753,7 @@ Object {
                 <span
                   class="btn__label"
                 >
-                  Custom
+                  Last 7 days
                 </span>
                 <span
                   class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
@@ -9746,6 +9823,17 @@ Object {
                   >
                      
                     Last 15 days
+                  </a>
+                </li>
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Last 30 days
                   </a>
                 </li>
               </ul>
@@ -12007,7 +12095,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="03/08/2022 17:13"
+                        value="03/15/2022 11:40"
                       />
                     </div>
                   </div>
@@ -12027,7 +12115,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="03/15/2022 16:13"
+                        value="03/22/2022 11:40"
                       />
                     </div>
                   </div>
@@ -12048,7 +12136,7 @@ Object {
                   <span
                     class="btn__label"
                   >
-                    Custom
+                    Last 7 days
                   </span>
                   <span
                     class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
@@ -12118,6 +12206,17 @@ Object {
                     >
                        
                       Last 15 days
+                    </a>
+                  </li>
+                  <li
+                    role="presentation"
+                  >
+                    <a
+                      data-bypass="false"
+                      href="#"
+                    >
+                       
+                      Last 30 days
                     </a>
                   </li>
                 </ul>
@@ -14331,7 +14430,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="03/08/2022 17:13"
+                      value="03/15/2022 11:40"
                     />
                   </div>
                 </div>
@@ -14351,7 +14450,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="03/15/2022 16:13"
+                      value="03/22/2022 11:40"
                     />
                   </div>
                 </div>
@@ -14372,7 +14471,7 @@ Object {
                 <span
                   class="btn__label"
                 >
-                  Custom
+                  Last 7 days
                 </span>
                 <span
                   class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
@@ -14442,6 +14541,17 @@ Object {
                   >
                      
                     Last 15 days
+                  </a>
+                </li>
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Last 30 days
                   </a>
                 </li>
               </ul>
@@ -16712,7 +16822,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="03/08/2022 17:13"
+                        value="03/15/2022 11:40"
                       />
                     </div>
                   </div>
@@ -16732,7 +16842,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="03/15/2022 16:13"
+                        value="03/22/2022 11:40"
                       />
                     </div>
                   </div>
@@ -16823,6 +16933,17 @@ Object {
                     >
                        
                       Last 15 days
+                    </a>
+                  </li>
+                  <li
+                    role="presentation"
+                  >
+                    <a
+                      data-bypass="false"
+                      href="#"
+                    >
+                       
+                      Last 30 days
                     </a>
                   </li>
                 </ul>
@@ -18931,7 +19052,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="03/08/2022 17:13"
+                      value="03/15/2022 11:40"
                     />
                   </div>
                 </div>
@@ -18951,7 +19072,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="03/15/2022 16:13"
+                      value="03/22/2022 11:40"
                     />
                   </div>
                 </div>
@@ -19042,6 +19163,17 @@ Object {
                   >
                      
                     Last 15 days
+                  </a>
+                </li>
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Last 30 days
                   </a>
                 </li>
               </ul>
@@ -21207,7 +21339,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="03/08/2022 17:13"
+                        value="03/15/2022 11:41"
                       />
                     </div>
                   </div>
@@ -21227,7 +21359,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="03/15/2022 16:13"
+                        value="03/22/2022 11:41"
                       />
                     </div>
                   </div>
@@ -21248,7 +21380,7 @@ Object {
                   <span
                     class="btn__label"
                   >
-                    Custom
+                    Last 7 days
                   </span>
                   <span
                     class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
@@ -21318,6 +21450,17 @@ Object {
                     >
                        
                       Last 15 days
+                    </a>
+                  </li>
+                  <li
+                    role="presentation"
+                  >
+                    <a
+                      data-bypass="false"
+                      href="#"
+                    >
+                       
+                      Last 30 days
                     </a>
                   </li>
                 </ul>
@@ -22277,7 +22420,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="03/08/2022 17:13"
+                      value="03/15/2022 11:41"
                     />
                   </div>
                 </div>
@@ -22297,7 +22440,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="03/15/2022 16:13"
+                      value="03/22/2022 11:41"
                     />
                   </div>
                 </div>
@@ -22318,7 +22461,7 @@ Object {
                 <span
                   class="btn__label"
                 >
-                  Custom
+                  Last 7 days
                 </span>
                 <span
                   class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
@@ -22388,6 +22531,17 @@ Object {
                   >
                      
                     Last 15 days
+                  </a>
+                </li>
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Last 30 days
                   </a>
                 </li>
               </ul>
@@ -23404,7 +23558,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="03/08/2022 17:13"
+                        value="03/15/2022 11:41"
                       />
                     </div>
                   </div>
@@ -23424,7 +23578,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="03/15/2022 16:13"
+                        value="03/22/2022 11:41"
                       />
                     </div>
                   </div>
@@ -23445,7 +23599,7 @@ Object {
                   <span
                     class="btn__label"
                   >
-                    Custom
+                    Last 7 days
                   </span>
                   <span
                     class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
@@ -23515,6 +23669,17 @@ Object {
                     >
                        
                       Last 15 days
+                    </a>
+                  </li>
+                  <li
+                    role="presentation"
+                  >
+                    <a
+                      data-bypass="false"
+                      href="#"
+                    >
+                       
+                      Last 30 days
                     </a>
                   </li>
                 </ul>
@@ -24465,7 +24630,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="03/08/2022 17:13"
+                      value="03/15/2022 11:41"
                     />
                   </div>
                 </div>
@@ -24485,7 +24650,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="03/15/2022 16:13"
+                      value="03/22/2022 11:41"
                     />
                   </div>
                 </div>
@@ -24506,7 +24671,7 @@ Object {
                 <span
                   class="btn__label"
                 >
-                  Custom
+                  Last 7 days
                 </span>
                 <span
                   class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
@@ -24576,6 +24741,17 @@ Object {
                   >
                      
                     Last 15 days
+                  </a>
+                </li>
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Last 30 days
                   </a>
                 </li>
               </ul>

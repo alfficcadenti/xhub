@@ -13,8 +13,6 @@ const LineChartWrapper = ({
     data = [],
     keys = [],
     onDotClick,
-    tooltipData,
-    renderTooltipContent,
     enableLineHiding = false,
     refAreaLeft,
     refAreaRight,
@@ -26,28 +24,9 @@ const LineChartWrapper = ({
     width = '100%',
     connectNulls = false
 }) => {
-    const [selectedLine, setSelectedLine] = useState();
     const [hiddenKeys, setHiddenKeys] = useState([]);
 
     const yAxisId = `${title}-yAxis`;
-
-    const CustomTooltip = ({label, active, payload}) => {
-        if (!active || !selectedLine) {
-            return null;
-        }
-        for (const line of payload) {
-            if (line.dataKey === selectedLine) {
-                return (
-                    <div className="custom-tooltip-container">
-                        <div className="dot-date">{label}</div>
-                        <div className="dot-title">{line?.name}</div>
-                        {tooltipData[label][line.name].map(renderTooltipContent)}
-                    </div>
-                );
-            }
-        }
-        return null;
-    };
 
     const handleLegendClick = (e) => {
         if (e && e.dataKey) {
@@ -69,7 +48,6 @@ const LineChartWrapper = ({
             dataKey={line}
             stroke={CHART_COLORS[idx]}
             activeDot={{
-                onMouseOver: () => setSelectedLine(line),
                 onClick: onDotClick || (() => {})
             }}
             hide={hiddenKeys.includes(line)}
@@ -87,7 +65,7 @@ const LineChartWrapper = ({
     );
 
     return (
-        <div className="line-chart-wrapper">
+        <div className="line-chart-wrapper" title={title}>
             {title && renderTitle()}
             <ResponsiveContainer width={width} height={height}>
                 <LineChart
@@ -102,10 +80,7 @@ const LineChartWrapper = ({
                     <XAxis dataKey="name" />
                     <YAxis yAxisId={yAxisId} allowDecimals={false} type="number" />
                     <Legend onClick={handleLegendClick} cursor={enableLineHiding ? 'pointer' : ''} />
-                    {!tooltipData || !renderTooltipContent
-                        ? <Tooltip />
-                        : <Tooltip content={<CustomTooltip />} />
-                    }
+                    <Tooltip />
                     {keys.map(renderLine)}
                     {
                         (refAreaLeft && refAreaRight)
