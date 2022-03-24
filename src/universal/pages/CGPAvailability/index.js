@@ -77,7 +77,10 @@ const CGPAvailibility = () => {
     const handleOnClick = (selected) => setSelectedApp(selected || null);
 
     useEffect(() => {
-        const newFilteredAvailability = availability.length && availability.filter((x) => x?.applicationName !== 'unknown').map((x) => mapAvailabilityRow(x, handleOnClick, dateTimeFormat)).filter((x) => typeof x.avgValue === 'number' && x?.avgValue <= availabilityFilter && x?.Application.includes(applicationFilter));
+        const newFilteredAvailability = (availability || [])
+            .filter((x) => x?.applicationName !== 'unknown')
+            .map((x) => mapAvailabilityRow(x, handleOnClick, dateTimeFormat))
+            .filter((x) => typeof x.avgValue === 'number' && x.avgValue <= availabilityFilter && x.app.includes(applicationFilter));
         setFilteredAvailability(newFilteredAvailability);
     }, [availabilityFilter, applicationFilter, availability, dateTimeFormat]);
 

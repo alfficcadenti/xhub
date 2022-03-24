@@ -41,13 +41,18 @@ export const exactAvailability = (availability, requestCount) => {
 
 export const mapAvailabilityRow = (row = {}, handleClick, dateTimeFormat = DATE_FORMAT) => {
     const app = getOrDefault(row, 'applicationName');
-    const res = Array.isArray(row?.availabilities) &&
-        Object.assign(
-            {Application: app},
-            {Availability: <AvailabilityCell value={periodAvailability(row?.availabilities)} applicationName={app} handleClick={handleClick}/>},
-            {avgValue: periodAvailability(row?.availabilities)},
-            ...row?.availabilities.map((x) => ({[moment(x.timestamp).format(dateTimeFormat)]: <AvailabilityCell value={exactAvailability(x.availability, x.requestCount)} applicationName={app} handleClick={handleClick}/>}))) || {};
-    return res;
+    const availabilities = row?.availabilities;
+    return !Array.isArray(availabilities)
+        ? {}
+        : Object.assign(
+            {
+                Application: <a href={`https://expediagroup.datadoghq.com/dashboard/yuk-xd8-ik5/sro---cgp-alerting?tpl_var_application=${app}`} target="_blank">{app}</a>,
+                app,
+                Availability: <AvailabilityCell value={periodAvailability(availabilities)} applicationName={app} handleClick={handleClick}/>,
+                avgValue: periodAvailability(availabilities)
+            },
+            ...availabilities.map((x) => ({[moment(x.timestamp).format(dateTimeFormat)]: <AvailabilityCell value={exactAvailability(x.availability, x.requestCount)} applicationName={app} handleClick={handleClick}/>}))
+        );
 };
 
 export const getAppErrorsDataForChart = (applicationName = '', availability = []) => Array.isArray(availability) && availability?.find((x) => x.applicationName === applicationName)?.availabilities?.map((x) => ({name: moment(x?.timestamp).format(DATE_FORMAT), '5xx Errors': x?.errorCount})) || [];

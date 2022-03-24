@@ -128,7 +128,10 @@ describe('mapAvailabilityRow()', () => {
     it('returns row mapped with DATE_FORMAT Do MMM YY by default', () => {
         let handleClick; // undefined
         const row = mapAvailabilityRow(AVAILABILITY[0]);
-        expect(row.Application).to.be.eql('cars-shopping-service');
+        const appName = 'cars-shopping-service';
+        expect(row.app).to.be.eql(appName);
+        expect(row.Application.props.children).to.be.eql('cars-shopping-service');
+        expect(row.Application.props.href).to.be.eql(`https://expediagroup.datadoghq.com/dashboard/yuk-xd8-ik5/sro---cgp-alerting?tpl_var_application=${appName}`);
         expect(row['1st Mar 22'].props).to.be.eql({applicationName: 'cars-shopping-service', value: 99.99, handleClick});
         expect(row['2nd Mar 22'].props).to.be.eql({applicationName: 'cars-shopping-service', value: 99, handleClick});
         expect(row['3rd Mar 22'].props).to.be.eql({applicationName: 'cars-shopping-service', value: '50', handleClick});
