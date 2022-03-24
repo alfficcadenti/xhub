@@ -42,4 +42,5 @@ describe('<Header />', () => {
         expect(input).toHaveClass('active');
         expect(searchText).toBeVisible();
     });
+    
 });
