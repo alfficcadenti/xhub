@@ -31,7 +31,9 @@ import {
     getSuccessRateGrafanaDashboardByBrand,
     brandsWithGrafanaDashboard,
     DEFAULT_DAY_RANGE, mapGroupedData, checkIsContentPercentage, threeWeekComparison,
-    getLobDeltaUserCount
+    getLobDeltaUserCount,
+    getAdjustedRefAreas,
+    isInvalidRange
 } from './utils';
 import {
     EG_BRAND,
@@ -769,5 +771,26 @@ describe('getLobDeltaUserCount()', () => {
             {'deltaCount': 34, 'lineOfBusiness': 'Hotels'}]
 
         );
+    });
+});
+
+describe('getAdjustedRefAreas()', () => {
+    it('returns [refAreaLeft, refAreaRight] when refAreaRight is AFTER refAreaLeft', () => {
+        expect(getAdjustedRefAreas(1, 2)).to.be.eql([1, 2]);
+    });
+
+    it('returns [refAreaRight, refAreaLeft] when refAreaRight is BEFORE (or same as) refAreaLeft', () => {
+        expect(getAdjustedRefAreas(2, 1)).to.be.eql([1, 2]);
+    });
+});
+
+describe('isInvalidRange()', () => {
+    it('returns true (invalid) if either areas are empty, are equal, or is less than minRange', () => {
+        expect(isInvalidRange('', 400000)).to.eql(true);
+        expect(isInvalidRange(400000, '')).to.eql(true);
+        expect(isInvalidRange('', '')).to.eql(true);
+        expect(isInvalidRange(400000, 400000)).to.eql(true);
+        expect(isInvalidRange(200001, 400000)).to.eql(true);
+        expect(isInvalidRange(200000, 400001)).to.eql(false);
     });
 });

@@ -3,7 +3,7 @@ import {useHistory, useLocation} from 'react-router-dom';
 import qs from 'query-string';
 import moment from 'moment';
 import {getIntervalInMinutes} from '../pages/SuccessRates/utils';
-import {checkResponse} from './utils';
+import {checkResponse, getAdjustedRefAreas, isInvalidRange} from './utils';
 import {EG_BRAND, EGENCIA_BRAND} from '../constants';
 
 export const usePrevious = (value) => {
@@ -36,20 +36,6 @@ export const useQueryParamChange = (onBrandChange) => {
             localStorage.setItem('isBrandFilterChanged', JSON.stringify(true));
         }
     }, [query.selectedBrand, onBrandChange]);
-};
-
-export const getAdjustedRefAreas = (refAreaLeft, refAreaRight) => {
-    if (moment(refAreaLeft).isAfter(refAreaRight)) {
-        // if refArea was dragged right to left
-        return [refAreaRight, refAreaLeft];
-    }
-    return [refAreaLeft, refAreaRight];
-};
-
-export const isInvalidRange = (refAreaRight, refAreaLeft) => {
-    const range = Math.abs(refAreaRight - refAreaLeft);
-    const minRange = 200000;
-    return refAreaLeft === refAreaRight || refAreaRight === '' || range < minRange;
 };
 
 export const useZoomAndSynced = (

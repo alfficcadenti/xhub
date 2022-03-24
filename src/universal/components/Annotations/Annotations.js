@@ -166,6 +166,9 @@ const Annotations = ({
             fetch(`/deployments?${dateQuery}`)
                 .then(checkResponse)
                 .then((fetchedAnnotations) => {
+                    if (fetchedAnnotations?.error) {
+                        throw new Error('Error occurred when fetching annotations');
+                    }
                     const adjustedAnnotations = fetchedAnnotations.map((annotation) => ({
                         ...annotation,
                         tags: [annotation.product_name, annotation.platform],
@@ -193,6 +196,9 @@ const Annotations = ({
             fetch(`/v1/incidents${dateQuery}`)
                 .then(checkResponse)
                 .then((data) => {
+                    if (data?.error) {
+                        throw new Error('Error occurred when fetching incidents');
+                    }
                     const uniqueTickets = getUniqueByProperty(data, 'id');
                     const adjustedUniqueTickets = adjustTicketProperties(uniqueTickets)
                         .map((incident) => {
@@ -229,6 +235,9 @@ const Annotations = ({
             fetch(`/abTests${dateQuery}`)
                 .then(checkResponse)
                 .then((data) => {
+                    if (data?.error) {
+                        throw new Error('Error occurred when fetching abTests');
+                    }
                     const adjustedAbTests = data.map((abTest) => ({
                         ...abTest,
                         status: abTest.ab_test_details?.status,
@@ -279,9 +288,10 @@ const Annotations = ({
     };
 
     useEffect(() => {
-        const adjustedProducts = productMapping.map(({product_name: productName}) => productName);
+        const products = !productMapping || productMapping.error ? [] : productMapping;
+        const adjustedProducts = products.map(({product_name: productName}) => productName);
 
-        const adjustedApplications = productMapping.reduce((acc, current) => {
+        const adjustedApplications = products.reduce((acc, current) => {
             return [...acc, ...current.application_names];
         }, []);
         const serviceTier = ['Tier 1', 'Tier 2', 'Tier 3'];

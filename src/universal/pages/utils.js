@@ -611,3 +611,17 @@ export const getQueryValues = (search) => {
             : moment().format(DATE_FORMAT)
     };
 };
+
+export const getAdjustedRefAreas = (refAreaLeft, refAreaRight) => {
+    if (moment(refAreaLeft).isAfter(refAreaRight)) {
+        // if refArea was dragged right to left
+        return [refAreaRight, refAreaLeft];
+    }
+    return [refAreaLeft, refAreaRight];
+};
+
+export const isInvalidRange = (refAreaLeft, refAreaRight) => {
+    const range = Math.abs(refAreaLeft - refAreaRight);
+    const minRange = 200000;
+    return refAreaRight === '' || refAreaLeft === '' || range < minRange;
+};

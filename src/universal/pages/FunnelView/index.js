@@ -37,7 +37,6 @@ import {triggerEdapPageView} from '../../edap';
 import GrafanaDashboard from '../../components/GrafanaDashboard';
 
 
-// eslint-disable-next-line complexity
 const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}) => {
     const selectedBrand = selectedBrands[0];
     const {search} = useLocation();
@@ -198,10 +197,19 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}
         setIsDirtyForm(true);
     };
 
+    const resetGraphZoom = () => {
+        setChartLeft('dataMin');
+        setChartRight('dataMax');
+        setRefAreaLeft('');
+        setRefAreaRight('');
+        setIsZoomedIn(false);
+    };
+
     const handleApplyFilters = () => {
         setCurrentTimeRange(pendingTimeRange);
         setStart(pendingStart);
         setEnd(pendingEnd);
+        resetGraphZoom();
         setIsDirtyForm(false);
     };
 
@@ -239,25 +247,17 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}
     const handleNativeGrafanaSwitch = () => setIsGrafanaView(!isGrafanaView);
 
     const handleEPSPartnerChange = (epsPartner) => {
-        if (epsPartner === null) {
-            setSelectedEPSPartner('');
-        } else {
-            setSelectedEPSPartner(epsPartner.value);
-        }
+        setSelectedEPSPartner(epsPartner === null ? '' : epsPartner.value);
     };
 
     const resetGraphToDefault = () => {
         const defaultStart = moment().utc().subtract(6, 'hour');
         const defaultEnd = moment().utc();
-        setChartLeft('dataMin');
-        setChartRight('dataMax');
-        setRefAreaLeft('');
-        setRefAreaRight('');
+        resetGraphZoom();
         setStart(defaultStart.format());
         setEnd(defaultEnd.format());
         setPendingStart(defaultStart);
         setPendingEnd(defaultEnd);
-        setIsZoomedIn(false);
     };
 
     const renderPageViews = (data) => (
@@ -265,87 +265,101 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}
             {data && data.length && data.map(renderWidget) || `No Data. Try selecting a different time frame or refreshing the page. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`}
         </div>
     );
+
+    const renderGrafanaDashboard = () => (
+        <GrafanaDashboard
+            selectedBrands={[selectedBrand]}
+            availableBrands={brandsWithGrafanaDashboard()}
+            name="success-rates"
+            url={getPageViewsGrafanaDashboardByBrand(selectedBrand)}
+        />
+    );
+
+    const renderFilters = () => (
+        <div className="filters-wrapper">
+            {
+                selectedBrand === EXPEDIA_PARTNER_SERVICES_BRAND &&
+            <Select
+                classNamePrefix="eps-partner-select"
+                className="eps-partner-select-container"
+                options={EPS_PARTNER_SITENAMES}
+                onChange={handleEPSPartnerChange}
+                placeholder="Select Partner"
+                isClearable
+                isSearchable
+            />
+            }
+            <div className="dynamic-filters-wrapper">
+                {
+                    isLoBAvailable &&
+                    <Select
+                        isMulti
+                        classNamePrefix="lob-select"
+                        className="lob-select-container"
+                        options={LOB_LIST}
+                        onChange={handleLoBChange}
+                        placeholder={getLobPlaceholder(isLoBLoading, lobWidgets.length)}
+                        isDisabled={!lobWidgets.length}
+                        defaultValue={selectedLobs}
+                    />
+                }
+                <Annotations
+                    productMapping={productMapping}
+                    setFilteredAnnotations={setFilteredAnnotations}
+                    setEnableAnnotations={setEnableAnnotations}
+                    start={start}
+                    end={end}
+                />
+            </div>
+            <DateFiltersWrapper
+                isFormDisabled={isFormDisabled}
+                pendingStart={pendingStart}
+                pendingEnd={pendingEnd}
+                handleApplyFilters={handleApplyFilters}
+                handleDatetimeChange={handleDatetimeChange}
+                isDirtyForm={isDirtyForm}
+                showTimePicker
+            />
+            <ResetButton
+                isDisabled={moment(end).diff(moment(start), 'hour') === 6}
+                resetGraphToDefault={resetGraphToDefault}
+            />
+        </div>
+    );
+
+    const renderPageViewDashboard = () => (
+        <>
+            {renderFilters()}
+            <LoadingContainer isLoading={isLoading} error={!selectedLobs.length ? error : LoBError} className="page-views-loading-container">
+                {selectedLobs && selectedLobs.length && renderPageViews(lobWidgets) || renderPageViews(widgets)}
+            </LoadingContainer>
+        </>
+    );
+
+    const renderGrafanaViewSwitch = () => (
+        <div id="grafana-switch-container">
+            <Switch
+                name="grafanaView"
+                id="grafana-view"
+                checked={isGrafanaView}
+                onChange={handleNativeGrafanaSwitch}
+                size="sm"
+            />
+            <h4>{'Grafana View'}</h4>
+        </div>
+    );
+
     return (
         <div className="funnel-views-container">
             <div className="title-iframe-container">
                 <h1 className="page-title">{'Traveler Page Views'}{!isLoBAvailable && <HelpText text="Only for LOB Hotels" placement="top" />}
-                    {brandsWithGrafanaDashboard()?.includes(selectedBrand) &&
-                        <div id="grafana-switch-container">
-                            <Switch
-                                name="grafanaView"
-                                id="grafana-view"
-                                checked={isGrafanaView}
-                                onChange={handleNativeGrafanaSwitch}
-                                size="sm"
-                            />
-                            <h4>{'Grafana View'}</h4>
-                        </div>
-                    }
+                    {brandsWithGrafanaDashboard()?.includes(selectedBrand) && renderGrafanaViewSwitch()}
                 </h1>
                 <LagIndicator selectedBrand={selectedBrand} />
             </div>
-            {
-                isGrafanaView ?
-                    <GrafanaDashboard
-                        selectedBrands={[selectedBrand]}
-                        availableBrands={brandsWithGrafanaDashboard()}
-                        name="success-rates"
-                        url={getPageViewsGrafanaDashboardByBrand(selectedBrand)}
-                    /> :
-                    <div>
-                        <div className="filters-wrapper">
-                            {
-                                selectedBrand === EXPEDIA_PARTNER_SERVICES_BRAND &&
-                            <Select
-                                classNamePrefix="eps-partner-select"
-                                className="eps-partner-select-container"
-                                options={EPS_PARTNER_SITENAMES}
-                                onChange={handleEPSPartnerChange}
-                                placeholder="Select Partner"
-                                isClearable
-                                isSearchable
-                            />
-                            }
-                            <div className="dynamic-filters-wrapper">
-                                {
-                                    isLoBAvailable &&
-                                <Select
-                                    isMulti
-                                    classNamePrefix="lob-select"
-                                    className="lob-select-container"
-                                    options={LOB_LIST}
-                                    onChange={handleLoBChange}
-                                    placeholder={getLobPlaceholder(isLoBLoading, lobWidgets.length)}
-                                    isDisabled={!lobWidgets.length}
-                                    defaultValue={selectedLobs}
-                                />
-                                }
-                                <Annotations
-                                    productMapping={productMapping}
-                                    setFilteredAnnotations={setFilteredAnnotations}
-                                    setEnableAnnotations={setEnableAnnotations}
-                                    start={start}
-                                    end={end}
-                                />
-                            </div>
-                            <DateFiltersWrapper
-                                isFormDisabled={isFormDisabled}
-                                pendingStart={pendingStart}
-                                pendingEnd={pendingEnd}
-                                handleApplyFilters={handleApplyFilters}
-                                handleDatetimeChange={handleDatetimeChange}
-                                isDirtyForm={isDirtyForm}
-                                showTimePicker
-                            />
-                            <ResetButton
-                                isDisabled={moment(end).diff(moment(start), 'hour') === 6}
-                                resetGraphToDefault={resetGraphToDefault}
-                            />
-                        </div>
-                        <LoadingContainer isLoading={isLoading} error={!selectedLobs.length ? error : LoBError} className="page-views-loading-container">
-                            {selectedLobs && selectedLobs.length && renderPageViews(lobWidgets) || renderPageViews(widgets)}
-                        </LoadingContainer>
-                    </div>
+            {isGrafanaView
+                ? renderGrafanaDashboard()
+                : renderPageViewDashboard()
             }
         </div>
     );

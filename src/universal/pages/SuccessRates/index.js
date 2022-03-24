@@ -223,11 +223,9 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
     }, [selectedLobs, selectedEPSPartner, selectedBrand]);
 
     useEffect(() => {
-        if (!selectedLobs.length) {
-            setCurrentWidgets(widgets);
-        } else {
-            setCurrentWidgets(lobWidgets);
-        }
+        setCurrentWidgets(!selectedLobs.length
+            ? widgets
+            : lobWidgets);
     }, [selectedLobs, widgets, lobWidgets]);
 
     useAddToUrl(selectedBrands, start, end, selectedLobs, pendingStart, pendingEnd);
@@ -239,25 +237,30 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
         setIsDirtyForm(true);
     };
 
+    const resetGraphZoom = () => {
+        setChartLeft('dataMin');
+        setChartRight('dataMax');
+        setRefAreaLeft('');
+        setRefAreaRight('');
+        setIsZoomedIn(false);
+    };
+
     const handleApplyFilters = () => {
         setCurrentTimeRange(pendingTimeRange);
         setStart(pendingStart);
         setEnd(pendingEnd);
+        resetGraphZoom();
         setIsDirtyForm(false);
     };
 
     const resetGraphToDefault = () => {
         const defaultStart = moment().utc().subtract(6, 'hour');
         const defaultEnd = moment().utc();
-        setChartLeft('dataMin');
-        setChartRight('dataMax');
-        setRefAreaLeft('');
-        setRefAreaRight('');
+        resetGraphZoom();
         setStart(defaultStart.format());
         setEnd(defaultEnd.format());
         setPendingStart(defaultStart);
         setPendingEnd(defaultEnd);
-        setIsZoomedIn(false);
     };
 
     const handleLoBChange = (lobs) => setSelectedLobs(lobs || []);
@@ -265,11 +268,9 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
     const handleNativeGrafanaSwitch = () => setIsGrafanaView(!isGrafanaView);
 
     const handleEPSPartnerChange = (epsPartner) => {
-        if (epsPartner === null) {
-            setSelectedEPSPartner('');
-        } else {
-            setSelectedEPSPartner(epsPartner.value);
-        }
+        setSelectedEPSPartner(epsPartner === null
+            ? ''
+            : epsPartner.value);
     };
 
     const renderWidget = ({chartName, aggregatedData, pageBrand, minValue, metricName}) => (
@@ -297,101 +298,114 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
         />
     );
 
+    const renderGrafanaDashboard = () => (
+        <GrafanaDashboard
+            selectedBrands={[selectedBrand]}
+            availableBrands={brandsWithGrafanaDashboard()}
+            name="success-rates"
+            url={getSuccessRateGrafanaDashboardByBrand(selectedBrand)}
+        />
+    );
+
+    const renderFilters = () => (
+        <div className="filters-wrapper">
+            {
+                selectedBrand === EXPEDIA_PARTNER_SERVICES_BRAND &&
+                <Select
+                    classNamePrefix="eps-partner-select"
+                    className="eps-partner-select-container"
+                    options={EPS_PARTNER_TPIDS}
+                    onChange={handleEPSPartnerChange}
+                    placeholder="Select Partner"
+                    isClearable
+                    isSearchable
+                />
+            }
+            <div className="dynamic-filters-wrapper">
+                {
+                    isLoBAvailable &&
+                    <Select
+                        isMulti
+                        classNamePrefix="lob-select"
+                        className="lob-select-container"
+                        options={getAllAvailableLOBs(AVAILABLE_LOBS)}
+                        onChange={handleLoBChange}
+                        placeholder={getLobPlaceholder(isLoading, lobWidgets.length)}
+                        isDisabled={!lobWidgets.length}
+                        defaultValue={selectedLobs}
+                    />
+                }
+                <Annotations
+                    productMapping={productMapping}
+                    setFilteredAnnotations={setFilteredAnnotations}
+                    setEnableAnnotations={setEnableAnnotations}
+                    start={start}
+                    end={end}
+                />
+            </div>
+            <DateFiltersWrapper
+                isFormDisabled={isFormDisabled}
+                pendingStart={pendingStart}
+                pendingEnd={pendingEnd}
+                handleApplyFilters={handleApplyFilters}
+                handleDatetimeChange={handleDatetimeChange}
+                isDirtyForm={isDirtyForm}
+                showTimePicker
+            />
+            <ResetButton
+                isDisabled={moment(end).diff(moment(start), 'hour') === 6}
+                resetGraphToDefault={resetGraphToDefault}
+            />
+        </div>
+    );
+
+    const renderSuccessRatesDashboard = () => (
+        <>
+            {renderFilters()}
+            {isSupportedBrand && (
+                <RealTimeSummaryPanel
+                    realTimeTotals={realTimeTotals}
+                    isRttLoading={isRttLoading}
+                    rttError={rttError}
+                    tooltipLabel={'Latest real time success rate. Refreshes every minute.'}
+                    label={'Real Time Success Rates'}
+                />
+            )}
+            <LoadingContainer isLoading={isLoading} error={error} className="success-rates-loading-container">
+                <div className="success-rates-widget-container">
+                    {currentWidgets.map(renderWidget)}
+                </div>
+            </LoadingContainer>
+        </>
+    );
+
+
+    const renderGrafanaViewSwitch = () => (
+        <div id="grafana-switch-container">
+            <Switch
+                name="grafanaView"
+                id="grafana-view"
+                checked={isGrafanaView}
+                onChange={handleNativeGrafanaSwitch}
+                size="sm"
+            />
+            <h4>{'Grafana View'}</h4>
+        </div>
+    );
+
     return (
         <div className="success-rates-container">
             <div className="title-iframe-container">
                 <h1 className="page-title">
                     {'Success Rates'}
                     {!isLoBAvailable && <HelpText text="Only for LOB Hotels" placement="top" />}
-                    {brandsWithGrafanaDashboard()?.includes(selectedBrand) &&
-                        <div id="grafana-switch-container">
-                            <Switch
-                                name="grafanaView"
-                                id="grafana-view"
-                                checked={isGrafanaView}
-                                onChange={handleNativeGrafanaSwitch}
-                                size="sm"
-                            />
-                            <h4>{'Grafana View'}</h4>
-                        </div>
-                    }
+                    {brandsWithGrafanaDashboard()?.includes(selectedBrand) && renderGrafanaViewSwitch()}
                 </h1>
                 <LagIndicator selectedBrand={selectedBrand} />
             </div>
-            {
-                isGrafanaView ?
-                    <GrafanaDashboard
-                        selectedBrands={[selectedBrand]}
-                        availableBrands={brandsWithGrafanaDashboard()}
-                        name="success-rates"
-                        url={getSuccessRateGrafanaDashboardByBrand(selectedBrand)}
-                    />
-                    :
-                    <div>
-                        <div className="filters-wrapper">
-                            {
-                                selectedBrand === EXPEDIA_PARTNER_SERVICES_BRAND &&
-                                <Select
-                                    classNamePrefix="eps-partner-select"
-                                    className="eps-partner-select-container"
-                                    options={EPS_PARTNER_TPIDS}
-                                    onChange={handleEPSPartnerChange}
-                                    placeholder="Select Partner"
-                                    isClearable
-                                    isSearchable
-                                />
-                            }
-                            <div className="dynamic-filters-wrapper">
-                                {
-                                    isLoBAvailable &&
-                                    <Select
-                                        isMulti
-                                        classNamePrefix="lob-select"
-                                        className="lob-select-container"
-                                        options={getAllAvailableLOBs(AVAILABLE_LOBS)}
-                                        onChange={handleLoBChange}
-                                        placeholder={getLobPlaceholder(isLoading, lobWidgets.length)}
-                                        isDisabled={!lobWidgets.length}
-                                        defaultValue={selectedLobs}
-                                    />
-                                }
-                                <Annotations
-                                    productMapping={productMapping}
-                                    setFilteredAnnotations={setFilteredAnnotations}
-                                    setEnableAnnotations={setEnableAnnotations}
-                                    start={start}
-                                    end={end}
-                                />
-                            </div>
-                            <DateFiltersWrapper
-                                isFormDisabled={isFormDisabled}
-                                pendingStart={pendingStart}
-                                pendingEnd={pendingEnd}
-                                handleApplyFilters={handleApplyFilters}
-                                handleDatetimeChange={handleDatetimeChange}
-                                isDirtyForm={isDirtyForm}
-                                showTimePicker
-                            />
-                            <ResetButton
-                                isDisabled={moment(end).diff(moment(start), 'hour') === 6}
-                                resetGraphToDefault={resetGraphToDefault}
-                            />
-                        </div>
-                        {isSupportedBrand && (
-                            <RealTimeSummaryPanel
-                                realTimeTotals={realTimeTotals}
-                                isRttLoading={isRttLoading}
-                                rttError={rttError}
-                                tooltipLabel={'Latest real time success rate. Refreshes every minute.'}
-                                label={'Real Time Success Rates'}
-                            />
-                        )}
-                        <LoadingContainer isLoading={isLoading} error={error} className="success-rates-loading-container">
-                            <div className="success-rates-widget-container">
-                                {currentWidgets.map(renderWidget)}
-                            </div>
-                        </LoadingContainer>
-                    </div>
+            {isGrafanaView
+                ? renderGrafanaDashboard()
+                : renderSuccessRatesDashboard()
             }
 
         </div>
