@@ -29,7 +29,7 @@ describe('DatetimeRangePicker component testing', () => {
         expect(onChange).toHaveBeenCalledTimes(2);
     });
 
-    it('assign the active class when an input node is clicked by the user', async () => {
+    it('call onChange function with the dates selected from the calendar as params', async () => {
         const onChange = jest.fn();
         await act(async () => {
             render(<DatetimeRangePicker startDate={dates.start} endDate={dates.end} onChange={onChange} />);
@@ -59,7 +59,7 @@ describe('DatetimeRangePicker component testing', () => {
         expect(inputs[1]).not.toHaveClass('active');
     });
 
-    it('assign a start date when user input in textboxes', async () => {
+    it('assign a start and end dates when the user inputs new dates in the textboxes', async () => {
         const onChange = jest.fn();
         await act(async () => {
             render(<DatetimeRangePicker startDate={dates.start} endDate={dates.end} onChange={onChange} />);
@@ -67,14 +67,14 @@ describe('DatetimeRangePicker component testing', () => {
         let inputs = screen.queryAllByRole(/textbox/);
         expect(onChange).toHaveBeenCalledTimes(1);
         fireEvent.click(inputs[0]);
-        fireEvent.change(screen.queryAllByRole(/textbox/)[0], {target: {value: '2021-12-26'}});
+        fireEvent.change(screen.queryAllByRole(/textbox/)[0], {target: {value: '12/26/2021'}});
+        fireEvent.keyUp(screen.queryAllByRole(/textbox/)[0], {key: 'Enter', code: 13, charCode: 13});
+        expect(screen.queryByLabelText('Start').value).toMatch('12/26/2021');
         expect(onChange).toHaveBeenCalledTimes(2);
-        expect(screen.queryByLabelText('Start')).toHaveFocus();
-        fireEvent.change(screen.queryAllByRole(/textbox/)[1], {target: {value: '2022-02-28'}});
-        expect(screen.queryByLabelText('End')).toHaveFocus();
-        expect(onChange).toHaveBeenCalledTimes(3);
-        expect(onChange).toHaveBeenLastCalledWith(finalDates);
+        fireEvent.change(screen.queryAllByRole(/textbox/)[1], {target: {value: '02/28/2022'}});
         fireEvent.keyUp(screen.queryAllByRole(/textbox/)[1], {key: 'Enter', code: 13, charCode: 13});
+        expect(screen.queryByLabelText('End').value).toMatch('02/28/2022');
+        expect(onChange).toHaveBeenLastCalledWith(finalDates);
         expect(screen.queryByLabelText('Start')).not.toHaveFocus();
         expect(screen.queryByLabelText('End')).not.toHaveFocus();
     });
@@ -88,9 +88,14 @@ describe('DatetimeRangePicker component testing', () => {
         let inputs = screen.queryAllByRole(/textbox/);
         expect(onChange).toHaveBeenCalledTimes(1);
         fireEvent.click(inputs[0]);
-        fireEvent.change(screen.queryAllByRole(/textbox/)[0], {target: {value: '2022-03-26'}});
+        fireEvent.change(screen.queryByLabelText('Start'), {target: {value: '03/26/2022'}});
+        fireEvent.keyUp(screen.queryByLabelText('Start'), {key: 'Enter', code: 13, charCode: 13});
         expect(onChange).toHaveBeenCalledTimes(2);
-        fireEvent.change(screen.queryAllByRole(/textbox/)[1], {target: {value: '2022-02-28'}});
+        fireEvent.click(inputs[1]);
+        fireEvent.change(screen.queryByLabelText('End'), {target: {value: '02/28/2022'}});
+        fireEvent.click(inputs[1]);
+        // fireEvent.keyUp(screen.queryByLabelText('End'), {key: 'Enter', code: 13, charCode: 13});
+        fireEvent.blur(screen.queryByLabelText('End'));
         expect(onChange).toHaveBeenCalledTimes(3);
         expect(onChange).toHaveBeenLastCalledWith(finalValidDates);
     });
@@ -104,9 +109,11 @@ describe('DatetimeRangePicker component testing', () => {
         let inputs = screen.queryAllByRole(/textbox/);
         expect(onChange).toHaveBeenCalledTimes(1);
         fireEvent.click(inputs[0]);
-        fireEvent.change(screen.queryAllByRole(/textbox/)[0], {target: {value: '2022-03-26 05:40'}});
+        fireEvent.change(screen.queryByLabelText('Start'), {target: {value: '03/26/2022 05:40'}});
+        fireEvent.blur(screen.queryByLabelText('Start'));
         expect(onChange).toHaveBeenCalledTimes(2);
-        fireEvent.change(screen.queryAllByRole(/textbox/)[1], {target: {value: '2022-02-28 04:32'}});
+        fireEvent.change(screen.queryByLabelText('End'), {target: {value: '02/28/2022 04:32'}});
+        fireEvent.blur(screen.queryByLabelText('End'));
         expect(onChange).toHaveBeenCalledTimes(3);
         expect(onChange).toHaveBeenLastCalledWith(finalValidDates);
     });
@@ -117,9 +124,8 @@ describe('DatetimeRangePicker component testing', () => {
         await act(async () => {
             render(<DatetimeRangePicker startDate={dates.start} endDate={dates.end} onChange={onChange} showTimePicker/>);
         });
-        let inputs = screen.queryAllByRole(/textbox/);
-        fireEvent.click(inputs[0]);
-        fireEvent.change(screen.queryAllByRole(/textbox/)[0], {target: {value: '2022-05-28 04:32'}});
+        fireEvent.change(screen.queryByLabelText('Start'), {target: {value: '05/28/2022 04:32'}});
+        fireEvent.blur(screen.queryByLabelText('Start'));
         expect(onChange).toHaveBeenLastCalledWith(finalValidDates);
     });
 

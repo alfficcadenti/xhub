@@ -18,8 +18,6 @@ const BaseDateTimeRangePicker = ({
     const format = timeFormat ? 'MM/DD/YYYY HH:mm' : 'MM/DD/YYYY';
     const interval = timeFormat ? 'h' : 'd';
 
-    const [prevStart, setPrevStart] = useState();
-    const [prevEnd, setPrevEnd] = useState();
     const [start, setStart] = useState(moment(startDate).format(format));
     const [end, setEnd] = useState(moment(endDate).format(format));
     const [calendarOpen, setCalendarOpen] = useState(false);
@@ -27,30 +25,18 @@ const BaseDateTimeRangePicker = ({
     const startInputRef = useRef(null);
     const endInputRef = useRef(null);
 
-    useEffect(() => {
-        if (moment(prevStart).format(format) !== moment(startDate).format(format)) {
-            setPrevStart(moment(startDate).format(format));
-            setStart(moment(startDate).format(format));
-        }
-        if (moment(prevEnd).format(format) !== moment(endDate).format(format)) {
-            setPrevEnd(moment(endDate).format(format));
-            setEnd(moment(endDate).format(format));
-        }
-    }, [prevStart, prevEnd, startDate, endDate, format, onChange]);
-
-    useEffect(() => {
-        onChange({
-            end: moment(end, format).toDate(),
-            start: moment(start, format).toDate()
-        });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [start, end]);
 
     const onBlur = () => {
         setCalendarOpen(false);
         setFocusOnDate(null);
         startInputRef.current.blur();
         endInputRef.current.blur();
+        if (moment(startDate).format(format) !== moment(startInputRef.current.value, format).format(format) || moment(endDate).format(format) !== moment(endInputRef.current.value, format).format(format)) {
+            onChange({
+                end: moment(endInputRef.current.value, format).toDate(),
+                start: moment(startInputRef.current.value, format).toDate()
+            });
+        }
     };
 
     function useOutsideAlerter(ref) {
@@ -77,42 +63,77 @@ const BaseDateTimeRangePicker = ({
         setCalendarOpen(true);
     };
 
-    const handleEndDateChange = (e) => {
-        if (!moment(e).isSame(end, 'day')) {
-            setEnd(moment(e).format(format));
-            onBlur();
-        } else {
-            setEnd(moment(e).format(format));
-        }
-        if (moment(e).isBefore(moment(start))) {
-            setStart(moment(e).subtract(1, interval).format(format));
+    const validateEndDateChange = (date) => {
+        if (moment(date, format).isBefore(moment(startInputRef.current.value, format))) {
+            startInputRef.current.value = moment(date, format).subtract(1, interval).format(format);
+            setStart(moment(endInputRef.current.value, format).subtract(1, interval).format(format));
         }
     };
 
-    const handleStartDateChange = (e) => {
-        if (moment(e).isValid()) {
-            if (!moment(e).isSame(start, 'day')) {
-                setFocusOnDate('end');
-                setStart(moment(e).format(format));
-                if (moment(end).isBefore(moment(e))) {
-                    setEnd(moment(e).add(1, interval).format(format));
-                }
+    const validateStartDateChange = (date) => {
+        if (moment(date, format).isAfter(moment(endInputRef.current.value, format))) {
+            endInputRef.current.value = moment(date, format).add(1, interval).format(format);
+            setEnd(moment(startInputRef.current.value, format).add(1, interval).format(format));
+        }
+    };
+
+    const handleInputOnBlur = (type) => {
+        if (type === 'start') {
+            if (moment(startInputRef.current.value, format).isValid()) {
+                startInputRef.current.value = moment(startInputRef.current.value, format).format(format);
+                setStart(moment(startInputRef.current.value, format).format(format));
+                validateStartDateChange(startInputRef.current.value);
             } else {
-                setStart(moment(e).format(format));
-                if (moment(end).isBefore(moment(e))) {
-                    setEnd(moment(e).add(1, interval).format(format));
-                }
+                startInputRef.current.value = moment(start).format(format);
+            }
+        }
+        if (type === 'end') {
+            if (moment(endInputRef.current.value, format).isValid()) {
+                endInputRef.current.value = moment(endInputRef.current.value, format).format(format);
+                setEnd(moment(endInputRef.current.value, format).format(format));
+                validateEndDateChange(endInputRef.current.value);
+            } else {
+                endInputRef.current.value = moment(end).format(format);
             }
         }
     };
 
-    const handleDateChange = (e) => {
+    const handleCalendarOnChange = (e) => {
         if (focusOnDate === 'end') {
-            handleEndDateChange(e);
+            setEnd(moment(e).format(format));
+            endInputRef.current.value = moment(e).format(format);
+            validateEndDateChange(e);
+            if (!moment(e).isSame(end, 'day')) {
+                setFocusOnDate(null);
+                setCalendarOpen(false);
+            }
         } else if (focusOnDate === 'start') {
-            handleStartDateChange(e);
+            if (!moment(e).isSame(start, 'day')) {
+                setFocusOnDate('end');
+            }
+            setStart(moment(e).format(format));
+            startInputRef.current.value = moment(e).format(format);
+            validateStartDateChange(e);
         }
     };
+
+    useEffect(() => {
+        onChange({
+            end: moment(end, format).toDate(),
+            start: moment(start, format).toDate()
+        });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [start, end]);
+
+    useEffect(() => {
+        if (moment(startDate).format(format) !== moment(startInputRef.current.value, format).format(format)) {
+            startInputRef.current.value = moment(startDate).format(format);
+        }
+        if (moment(endDate).format(format) !== moment(endInputRef.current.value, format).format(format)) {
+            endInputRef.current.value = moment(endDate).format(format);
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [startDate, endDate]);
 
     const renderDay = (props, currentDate) => {
         const {...rest} = props;
@@ -137,20 +158,7 @@ const BaseDateTimeRangePicker = ({
 
     const inputClass = (type) => `form-control ${!timeFormat ? 'short' : ''} ${type === focusOnDate ? 'active' : ''}`;
 
-    const getInputValue = (type) => start && end && type === 'start' ? start : end;
-
-    const handleValueChange = (event, type) => {
-        event.preventDefault();
-        if (moment(event.target.value).isValid()) {
-            if (type === 'start') {
-                handleStartDateChange(event.target.value);
-                startInputRef.current.focus();
-            } else if (type === 'end') {
-                handleEndDateChange(event.target.value);
-                endInputRef.current.focus();
-            }
-        }
-    };
+    const getInputValue = (type) => startDate && endDate && type === 'start' ? moment(startDate).format(format) : moment(endDate).format(format);
 
     const renderInput = (type) => (
         <div className={`rdt-${type}-container`} key={`rdt-${type}-container`}>
@@ -161,11 +169,11 @@ const BaseDateTimeRangePicker = ({
                     className={inputClass(type)}
                     type={'text'}
                     id={`datepicker-${type}-date`}
-                    value={getInputValue(type)}
-                    onChange={(e) => handleValueChange(e, type)}
+                    defaultValue={getInputValue(type)}
                     onClick={() => handleOnClick(type)}
                     disabled={disabled}
                     onKeyUp={(e) => e.key === 'Enter' && onBlur()}
+                    onBlur={() => handleInputOnBlur(type)}
                 />
             </div>
         </div>
@@ -179,10 +187,10 @@ const BaseDateTimeRangePicker = ({
             </div>
             {calendarOpen &&
             <Datetime
-                value={focusOnDate === 'end' ? moment(end) : moment(start)}
+                value={focusOnDate === 'end' ? moment(end, format) : moment(start, format)}
                 input={false}
                 isValidDate={isValidEndDate}
-                onChange={handleDateChange}
+                onChange={handleCalendarOnChange}
                 renderDay={renderDay}
                 onClose={onBlur}
                 timeFormat={timeFormat}
