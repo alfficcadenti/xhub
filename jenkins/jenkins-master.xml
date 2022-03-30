@@ -110,7 +110,7 @@ jenkins
   <builders>
     <jenkins.plugins.nodejs.NodeJSCommandInterpreter plugin="nodejs@1.1.3">
       <command>process.version</command>
-      <nodeJSInstallationName>node-10.19.0</nodeJSInstallationName>
+      <nodeJSInstallationName>node-12.13.1</nodeJSInstallationName>
       <configId>17918394-2bc2-4fa1-9cb1-e753ae418702</configId>
     </jenkins.plugins.nodejs.NodeJSCommandInterpreter>
     <hudson.tasks.Shell>
