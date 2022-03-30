@@ -43,7 +43,11 @@ const BaseDateTimeRangePicker = ({
         useEffect(() => {
             const handleClickOutside = (event) => {
                 if (ref.current && !ref.current.contains(event.target)) {
-                    onBlur();
+                    if (calendarOpen === true) {
+                        onBlur();
+                    }
+                    setCalendarOpen(false);
+                    setFocusOnDate(null);
                 }
             };
 

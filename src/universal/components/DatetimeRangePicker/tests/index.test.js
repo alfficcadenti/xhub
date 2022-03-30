@@ -85,16 +85,11 @@ describe('DatetimeRangePicker component testing', () => {
         await act(async () => {
             render(<DatetimeRangePicker startDate={dates.start} endDate={dates.end} onChange={onChange} />);
         });
-        let inputs = screen.queryAllByRole(/textbox/);
         expect(onChange).toHaveBeenCalledTimes(1);
-        fireEvent.click(inputs[0]);
         fireEvent.change(screen.queryByLabelText('Start'), {target: {value: '03/26/2022'}});
         fireEvent.keyUp(screen.queryByLabelText('Start'), {key: 'Enter', code: 13, charCode: 13});
         expect(onChange).toHaveBeenCalledTimes(2);
-        fireEvent.click(inputs[1]);
         fireEvent.change(screen.queryByLabelText('End'), {target: {value: '02/28/2022'}});
-        fireEvent.click(inputs[1]);
-        // fireEvent.keyUp(screen.queryByLabelText('End'), {key: 'Enter', code: 13, charCode: 13});
         fireEvent.blur(screen.queryByLabelText('End'));
         expect(onChange).toHaveBeenCalledTimes(3);
         expect(onChange).toHaveBeenLastCalledWith(finalValidDates);

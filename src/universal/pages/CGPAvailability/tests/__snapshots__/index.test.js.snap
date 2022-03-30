@@ -115,7 +115,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="03/17/2022 12:01"
+                        value="03/22/2022 10:40"
                       />
                     </div>
                   </div>
@@ -135,8 +135,11 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="03/24/2022 12:01"
+                        value="03/29/2022 10:40"
                       />
+                    </div>
+                  </div>
+                </div>
               </div>
               <div
                 class="Dropdown rdt-preset-dropdown"
@@ -1917,7 +1920,12 @@ Object {
                   <td
                     class=""
                   >
-                    cars-shopping-service
+                    <a
+                      href="https://expediagroup.datadoghq.com/dashboard/yuk-xd8-ik5/sro---cgp-alerting?tpl_var_application=cars-shopping-service"
+                      target="_blank"
+                    >
+                      cars-shopping-service
+                    </a>
                   </td>
                   <td
                     class=""
@@ -2246,7 +2254,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="03/17/2022 12:01"
+                      value="03/22/2022 10:40"
                     />
                   </div>
                 </div>
@@ -2266,8 +2274,11 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="03/24/2022 12:01"
+                      value="03/29/2022 10:40"
                     />
+                  </div>
+                </div>
+              </div>
             </div>
             <div
               class="Dropdown rdt-preset-dropdown"
@@ -4048,7 +4059,12 @@ Object {
                 <td
                   class=""
                 >
-                  cars-shopping-service
+                  <a
+                    href="https://expediagroup.datadoghq.com/dashboard/yuk-xd8-ik5/sro---cgp-alerting?tpl_var_application=cars-shopping-service"
+                    target="_blank"
+                  >
+                    cars-shopping-service
+                  </a>
                 </td>
                 <td
                   class=""
@@ -4434,7 +4450,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="03/17/2022 12:00"
+                        value="03/22/2022 10:40"
                       />
                     </div>
                   </div>
@@ -4454,7 +4470,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="03/24/2022 12:00"
+                        value="03/29/2022 10:40"
                       />
                     </div>
                   </div>
@@ -5115,7 +5131,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="03/17/2022 12:00"
+                      value="03/22/2022 10:40"
                     />
                   </div>
                 </div>
@@ -5135,7 +5151,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="03/24/2022 12:00"
+                      value="03/29/2022 10:40"
                     />
                   </div>
                 </div>
@@ -5853,7 +5869,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="03/17/2022 12:00"
+                        value="03/22/2022 10:40"
                       />
                     </div>
                   </div>
@@ -5873,7 +5889,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="03/24/2022 12:00"
+                        value="03/29/2022 10:40"
                       />
                     </div>
                   </div>
@@ -6588,7 +6604,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="03/17/2022 12:00"
+                      value="03/22/2022 10:40"
                     />
                   </div>
                 </div>
@@ -6608,7 +6624,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="03/24/2022 12:00"
+                      value="03/29/2022 10:40"
                     />
                   </div>
                 </div>
@@ -7380,7 +7396,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="03/17/2022 12:00"
+                        value="03/22/2022 10:40"
                       />
                     </div>
                   </div>
@@ -7400,7 +7416,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="03/24/2022 12:00"
+                        value="03/29/2022 10:40"
                       />
                     </div>
                   </div>
@@ -9187,7 +9203,12 @@ Object {
                   <td
                     class=""
                   >
-                    flights-shopping
+                    <a
+                      href="https://expediagroup.datadoghq.com/dashboard/yuk-xd8-ik5/sro---cgp-alerting?tpl_var_application=flights-shopping"
+                      target="_blank"
+                    >
+                      flights-shopping
+                    </a>
                   </td>
                   <td
                     class=""
@@ -9282,7 +9303,12 @@ Object {
                   <td
                     class=""
                   >
-                    cars-shopping-service
+                    <a
+                      href="https://expediagroup.datadoghq.com/dashboard/yuk-xd8-ik5/sro---cgp-alerting?tpl_var_application=cars-shopping-service"
+                      target="_blank"
+                    >
+                      cars-shopping-service
+                    </a>
                   </td>
                   <td
                     class=""
@@ -9377,7 +9403,12 @@ Object {
                   <td
                     class=""
                   >
-                    flights-shopping-service
+                    <a
+                      href="https://expediagroup.datadoghq.com/dashboard/yuk-xd8-ik5/sro---cgp-alerting?tpl_var_application=flights-shopping-service"
+                      target="_blank"
+                    >
+                      flights-shopping-service
+                    </a>
                   </td>
                   <td
                     class=""
@@ -9706,7 +9737,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="03/17/2022 12:00"
+                      value="03/22/2022 10:40"
                     />
                   </div>
                 </div>
@@ -9726,7 +9757,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="03/24/2022 12:00"
+                      value="03/29/2022 10:40"
                     />
                   </div>
                 </div>
@@ -11513,7 +11544,12 @@ Object {
                 <td
                   class=""
                 >
-                  flights-shopping
+                  <a
+                    href="https://expediagroup.datadoghq.com/dashboard/yuk-xd8-ik5/sro---cgp-alerting?tpl_var_application=flights-shopping"
+                    target="_blank"
+                  >
+                    flights-shopping
+                  </a>
                 </td>
                 <td
                   class=""
@@ -11608,7 +11644,12 @@ Object {
                 <td
                   class=""
                 >
-                  cars-shopping-service
+                  <a
+                    href="https://expediagroup.datadoghq.com/dashboard/yuk-xd8-ik5/sro---cgp-alerting?tpl_var_application=cars-shopping-service"
+                    target="_blank"
+                  >
+                    cars-shopping-service
+                  </a>
                 </td>
                 <td
                   class=""
@@ -11703,7 +11744,12 @@ Object {
                 <td
                   class=""
                 >
-                  flights-shopping-service
+                  <a
+                    href="https://expediagroup.datadoghq.com/dashboard/yuk-xd8-ik5/sro---cgp-alerting?tpl_var_application=flights-shopping-service"
+                    target="_blank"
+                  >
+                    flights-shopping-service
+                  </a>
                 </td>
                 <td
                   class=""
@@ -12089,7 +12135,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="03/17/2022 12:00"
+                        value="03/22/2022 10:40"
                       />
                     </div>
                   </div>
@@ -12109,7 +12155,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="03/24/2022 12:00"
+                        value="03/29/2022 10:40"
                       />
                     </div>
                   </div>
@@ -12130,7 +12176,7 @@ Object {
                   <span
                     class="btn__label"
                   >
-                    Custom
+                    Last 7 days
                   </span>
                   <span
                     class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
@@ -13905,7 +13951,12 @@ Object {
                   <td
                     class=""
                   >
-                    flights-shopping
+                    <a
+                      href="https://expediagroup.datadoghq.com/dashboard/yuk-xd8-ik5/sro---cgp-alerting?tpl_var_application=flights-shopping"
+                      target="_blank"
+                    >
+                      flights-shopping
+                    </a>
                   </td>
                   <td
                     class=""
@@ -14000,7 +14051,12 @@ Object {
                   <td
                     class=""
                   >
-                    cars-shopping-service
+                    <a
+                      href="https://expediagroup.datadoghq.com/dashboard/yuk-xd8-ik5/sro---cgp-alerting?tpl_var_application=cars-shopping-service"
+                      target="_blank"
+                    >
+                      cars-shopping-service
+                    </a>
                   </td>
                   <td
                     class=""
@@ -14095,7 +14151,12 @@ Object {
                   <td
                     class=""
                   >
-                    flights-shopping-service
+                    <a
+                      href="https://expediagroup.datadoghq.com/dashboard/yuk-xd8-ik5/sro---cgp-alerting?tpl_var_application=flights-shopping-service"
+                      target="_blank"
+                    >
+                      flights-shopping-service
+                    </a>
                   </td>
                   <td
                     class=""
@@ -14424,7 +14485,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="03/17/2022 12:00"
+                      value="03/22/2022 10:40"
                     />
                   </div>
                 </div>
@@ -14444,7 +14505,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="03/24/2022 12:00"
+                      value="03/29/2022 10:40"
                     />
                   </div>
                 </div>
@@ -14465,7 +14526,7 @@ Object {
                 <span
                   class="btn__label"
                 >
-                  Custom
+                  Last 7 days
                 </span>
                 <span
                   class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
@@ -16240,7 +16301,12 @@ Object {
                 <td
                   class=""
                 >
-                  flights-shopping
+                  <a
+                    href="https://expediagroup.datadoghq.com/dashboard/yuk-xd8-ik5/sro---cgp-alerting?tpl_var_application=flights-shopping"
+                    target="_blank"
+                  >
+                    flights-shopping
+                  </a>
                 </td>
                 <td
                   class=""
@@ -16335,7 +16401,12 @@ Object {
                 <td
                   class=""
                 >
-                  cars-shopping-service
+                  <a
+                    href="https://expediagroup.datadoghq.com/dashboard/yuk-xd8-ik5/sro---cgp-alerting?tpl_var_application=cars-shopping-service"
+                    target="_blank"
+                  >
+                    cars-shopping-service
+                  </a>
                 </td>
                 <td
                   class=""
@@ -16430,7 +16501,12 @@ Object {
                 <td
                   class=""
                 >
-                  flights-shopping-service
+                  <a
+                    href="https://expediagroup.datadoghq.com/dashboard/yuk-xd8-ik5/sro---cgp-alerting?tpl_var_application=flights-shopping-service"
+                    target="_blank"
+                  >
+                    flights-shopping-service
+                  </a>
                 </td>
                 <td
                   class=""
@@ -16816,7 +16892,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="03/17/2022 12:00"
+                        value="03/22/2022 10:40"
                       />
                     </div>
                   </div>
@@ -16836,7 +16912,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="03/24/2022 12:00"
+                        value="03/29/2022 10:40"
                       />
                     </div>
                   </div>
@@ -16857,7 +16933,7 @@ Object {
                   <span
                     class="btn__label"
                   >
-                    Custom
+                    Last 7 days
                   </span>
                   <span
                     class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
@@ -18622,7 +18698,12 @@ Object {
                   <td
                     class=""
                   >
-                    flights-shopping
+                    <a
+                      href="https://expediagroup.datadoghq.com/dashboard/yuk-xd8-ik5/sro---cgp-alerting?tpl_var_application=flights-shopping"
+                      target="_blank"
+                    >
+                      flights-shopping
+                    </a>
                   </td>
                   <td
                     class=""
@@ -18717,7 +18798,12 @@ Object {
                   <td
                     class=""
                   >
-                    cars-shopping-service
+                    <a
+                      href="https://expediagroup.datadoghq.com/dashboard/yuk-xd8-ik5/sro---cgp-alerting?tpl_var_application=cars-shopping-service"
+                      target="_blank"
+                    >
+                      cars-shopping-service
+                    </a>
                   </td>
                   <td
                     class=""
@@ -19046,7 +19132,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="03/17/2022 12:00"
+                      value="03/22/2022 10:40"
                     />
                   </div>
                 </div>
@@ -19066,7 +19152,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="03/24/2022 12:00"
+                      value="03/29/2022 10:40"
                     />
                   </div>
                 </div>
@@ -19087,7 +19173,7 @@ Object {
                 <span
                   class="btn__label"
                 >
-                  Custom
+                  Last 7 days
                 </span>
                 <span
                   class="SVGIcon SVGIcon--12px Dropdown__toggle-icon"
@@ -20852,7 +20938,12 @@ Object {
                 <td
                   class=""
                 >
-                  flights-shopping
+                  <a
+                    href="https://expediagroup.datadoghq.com/dashboard/yuk-xd8-ik5/sro---cgp-alerting?tpl_var_application=flights-shopping"
+                    target="_blank"
+                  >
+                    flights-shopping
+                  </a>
                 </td>
                 <td
                   class=""
@@ -20947,7 +21038,12 @@ Object {
                 <td
                   class=""
                 >
-                  cars-shopping-service
+                  <a
+                    href="https://expediagroup.datadoghq.com/dashboard/yuk-xd8-ik5/sro---cgp-alerting?tpl_var_application=cars-shopping-service"
+                    target="_blank"
+                  >
+                    cars-shopping-service
+                  </a>
                 </td>
                 <td
                   class=""
@@ -21333,7 +21429,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="03/17/2022 12:01"
+                        value="03/22/2022 10:40"
                       />
                     </div>
                   </div>
@@ -21353,7 +21449,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="03/24/2022 12:01"
+                        value="03/29/2022 10:40"
                       />
                     </div>
                   </div>
@@ -22414,7 +22510,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="03/17/2022 12:01"
+                      value="03/22/2022 10:40"
                     />
                   </div>
                 </div>
@@ -22434,7 +22530,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="03/24/2022 12:01"
+                      value="03/29/2022 10:40"
                     />
                   </div>
                 </div>
@@ -23552,7 +23648,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="03/17/2022 12:01"
+                        value="03/22/2022 10:40"
                       />
                     </div>
                   </div>
@@ -23572,7 +23668,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="03/24/2022 12:01"
+                        value="03/29/2022 10:40"
                       />
                     </div>
                   </div>
@@ -24624,7 +24720,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="03/17/2022 12:01"
+                      value="03/22/2022 10:40"
                     />
                   </div>
                 </div>
@@ -24644,7 +24740,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="03/24/2022 12:01"
+                      value="03/29/2022 10:40"
                     />
                   </div>
                 </div>
