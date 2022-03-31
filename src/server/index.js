@@ -8,9 +8,9 @@ const ServiceClient = require('@vrbo/service-client');
 const Path = require('path');
 const Error = require('./error');
 const {routes} = require('./routes/index');
-const H2o2 = require('@hapi/h2o2');
+const H2o2 = require('h2o2');
 
-const ExpediaCACerts = require('@catalyst/ca-certs-expedia');
+const ExpediaCACerts = require('@homeaway/ca-certs-expedia');
 const SecretHandler = require('@homeaway/shortstop-secret-expedia-vault');
 
 ExpediaCACerts.load(); // necessary to establish secure communication with Vault
