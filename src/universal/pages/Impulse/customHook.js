@@ -188,10 +188,9 @@ export const useFetchBlipData = (
             .then(checkResponse)
             .then((anomalies) => {
                 const filteredAnomalies = anomalies.map((anomaly) => {
-                    const impactArr = anomaly.impact.filter((impObj) => impObj.deviceType === 'null');
                     return {
                         ...anomaly,
-                        impact: impactArr
+                        impact: anomaly.impact
                     };
                 }).filter((anomaly) => anomaly.impact.length !== 0);
                 const anomalyData = filteredAnomalies.map((item) => ({
