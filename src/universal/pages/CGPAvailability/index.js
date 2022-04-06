@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {withRouter} from 'react-router-dom';
+import {useLocation, withRouter} from 'react-router-dom';
 import LoadingContainer from '../../components/LoadingContainer';
 import HelpText from '../../components/HelpText/HelpText';
 import {checkResponse} from '../utils';
 import DataTable from '../../components/DataTable';
 import moment from 'moment';
-import {extractColumns, getAppErrorsDataForChart, mapAvailabilityRow, getSelectedRegions, getPresets} from './utils';
+import {extractColumns, getAppErrorsDataForChart, mapAvailabilityRow, getSelectedRegions, getPresets, getQueryValues} from './utils';
 import ErrorCountModal from './ErrorCountModal';
 import Legend from './Legend';
 import {FormInput} from '@homeaway/react-form-components';
@@ -29,7 +29,10 @@ const regions = [{
     nested: true
 })));
 
+// eslint-disable-next-line complexity
 const CGPAvailibility = () => {
+    const {search} = useLocation();
+    const {kioskMode} = getQueryValues(search);
     const [availability, setAvailability] = useState([]);
     const [filteredAvailability, setFilteredAvailability] = useState(availability);
     const [isLoading, setIsLoading] = useState(false);
@@ -42,8 +45,8 @@ const CGPAvailibility = () => {
     const [selectedRegionFilter, setSelectedRegionFilter] = useState(pendingRegionFilter);
     const [isDirtyForm, setIsDirtyForm] = useState(false);
     const [regionErrorMsg, setRegionErrorMsg] = useState('');
-    const [start, setStart] = useState(moment().local().tz('America/Los_Angeles').subtract(7, 'days'));
-    const [end, setEnd] = useState(moment().local().tz('America/Los_Angeles'));
+    const [start, setStart] = useState(kioskMode ? moment().utc().subtract(59, 'minutes') : moment().utc().subtract(7, 'days'));
+    const [end, setEnd] = useState(moment().utc());
     const [pendingStart, setPendingStart] = useState(start);
     const [pendingEnd, setPendingEnd] = useState(end);
     const [dateTimeFormat, setDateTimeFormat] = useState(DATE_FORMAT);
@@ -67,12 +70,27 @@ const CGPAvailibility = () => {
             setIsDirtyForm(false);
         };
         getNewData();
+
         if (end.diff(start, 'days') >= 1) {
             setDateTimeFormat(DATE_FORMAT);
         } else {
             setDateTimeFormat(DATETIME_FORMAT);
         }
     }, [selectedRegionFilter, start, end]);
+
+    const setAutoRefresh = () => {
+        setInterval(() => {
+            setStart(moment().utc().subtract(59, 'minutes'));
+            setEnd(moment().utc());
+        }, 60000); // REFRESH EVERY 1 MINUTE
+    };
+
+    useEffect(() => {
+        const refreshStartInternal = kioskMode && setAutoRefresh();
+        return () => {
+            clearInterval(refreshStartInternal);
+        };
+    }, []);
 
     const handleOnClick = (selected) => setSelectedApp(selected || null);
 
@@ -142,6 +160,63 @@ const CGPAvailibility = () => {
         return columns.length ? columns.reduce((a, content) => ({...a, [content]: <AvailabilityHeader content={content} dateTimeFormat={dateTimeFormat} handleHeaderClick={handleHeaderClick} />}), {}) : {};
     };
 
+    const renderFilters = () => (
+        <div className="top-container">
+            <div className="filter-container">
+                <DatetimeRangePicker
+                    onChange={handleDatetimeChange}
+                    startDate={pendingStart.toDate()}
+                    endDate={pendingEnd.toDate()}
+                    presets={getPresets()}
+                    disabled={isLoading}
+                    isValidEndDate={(currentDate) => currentDate.diff(pendingStart, 'days') <= 30}
+                    showTimePicker
+                />
+                <MultiSelect
+                    id="regionSelect"
+                    className="region-select"
+                    label="AWS Regions"
+                    items={pendingRegionFilter}
+                    onChange={handleRegionChange}
+                    errorMsg={regionErrorMsg}
+                    disabled={isLoading}
+                />
+                <button
+                    type="button"
+                    className="apply-button btn btn-primary active"
+                    onClick={handleApplyButtonClicked}
+                    disabled={!isDirtyForm}
+                >
+                    {'Apply'}
+                </button>
+            </div>
+            <Tooltip tooltipType="tooltip--lg" content={'Display only applications with availability lower than the specified value'} placement="top" fullWidth>
+                <FormInput
+                    id="availabilityFilter"
+                    className="availability-filter"
+                    type="number"
+                    min={0}
+                    max={100}
+                    name="availabilityFilter"
+                    label="Availability Filter"
+                    onChange={handleAvailabilityFilterChange}
+                    value={availabilityFilter}
+                    errorMsg={errorMessage}
+                    disabled={isLoading}
+                />
+            </Tooltip>
+            <FormInput
+                id="applicationFilter"
+                className="application-filter"
+                name="applicationFilter"
+                label="Application Name"
+                onChange={handleApplicationFilterChange}
+                value={applicationFilter}
+                disabled={isLoading}
+            />
+        </div>
+    );
+
     return (
         <div className="cgp-availability-container">
             <div className="header-container">
@@ -151,60 +226,7 @@ const CGPAvailibility = () => {
                 </h1>
                 <Legend/>
             </div>
-            <div className="top-container">
-                <div className="filter-container">
-                    <DatetimeRangePicker
-                        onChange={handleDatetimeChange}
-                        startDate={pendingStart.toDate()}
-                        endDate={pendingEnd.toDate()}
-                        presets={getPresets()}
-                        disabled={isLoading}
-                        isValidEndDate={(currentDate) => currentDate.diff(pendingStart, 'days') <= 30}
-                        showTimePicker
-                    />
-                    <MultiSelect
-                        id="regionSelect"
-                        className="region-select"
-                        label="AWS Regions"
-                        items={pendingRegionFilter}
-                        onChange={handleRegionChange}
-                        errorMsg={regionErrorMsg}
-                        disabled={isLoading}
-                    />
-                    <button
-                        type="button"
-                        className="apply-button btn btn-primary active"
-                        onClick={handleApplyButtonClicked}
-                        disabled={!isDirtyForm}
-                    >
-                        {'Apply'}
-                    </button>
-                </div>
-                <Tooltip tooltipType="tooltip--lg" content={'Display only applications with availability lower than the specified value'} placement="top" fullWidth>
-                    <FormInput
-                        id="availabilityFilter"
-                        className="availability-filter"
-                        type="number"
-                        min={0}
-                        max={100}
-                        name="availabilityFilter"
-                        label="Availability Filter"
-                        onChange={handleAvailabilityFilterChange}
-                        value={availabilityFilter}
-                        errorMsg={errorMessage}
-                        disabled={isLoading}
-                    />
-                </Tooltip>
-                <FormInput
-                    id="applicationFilter"
-                    className="application-filter"
-                    name="applicationFilter"
-                    label="Application Name"
-                    onChange={handleApplicationFilterChange}
-                    value={applicationFilter}
-                    disabled={isLoading}
-                />
-            </div>
+            {!kioskMode && renderFilters()}
             <LoadingContainer isLoading={isLoading} error={error}>
                 <DataTable
                     data={filteredAvailability?.length && filteredAvailability || []}
@@ -213,7 +235,7 @@ const CGPAvailibility = () => {
                     sortByColumn = "Availability"
                     sortByDirection = "asc"
                     paginated
-                    enableCSVDownload
+                    enableCSVDownload = {!kioskMode}
                     columnsInfo={{'Availability': 'Availability for the time frame calculated as: (Total Requests - 5XX request) * 100) / Total Requests'}}
                 />
                 <ErrorCountModal

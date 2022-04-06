@@ -8,7 +8,6 @@ import PAGES from '../../pages';
 import {EG_BRAND, BRANDS} from '../../constants';
 import {usePrevious} from '../../pages/hooks';
 
-
 const PageWrapper = (props) => {
     useEffect(() => {
         document.title = `OpXHub${` - ${props.title}` || ''}`;
@@ -39,10 +38,14 @@ function renderRoute(p, selectedBrands, handleBrandChange, prevSelectedBrand) {
 function App() {
     const validBrands = BRANDS.map((brand) => brand.label);
     let storedBrands;
+    let kioskMode;
+
     try {
         // Validate selected brands
         const query = new URLSearchParams(window.location.search);
+
         const selectedBrand = query.get('selectedBrand');
+        kioskMode = query.get('kiosk');
 
         if (selectedBrand) {
             storedBrands = [selectedBrand];
@@ -71,12 +74,14 @@ function App() {
     }, []);
 
     const prevSelectedBrand = usePrevious(selectedBrands[0]);
+
+    const renderHeader = () => !kioskMode && <Header selectedBrands={selectedBrands} onBrandChange={handleBrandChange} brands={validBrands} />;
     return (
         <Fragment>
-            <Header selectedBrands={selectedBrands} onBrandChange={handleBrandChange} brands={validBrands} />
+            {renderHeader()}
             <ErrorBoundary>
                 <Feedback />
-                <div className="main-container">
+                <div className={kioskMode ? 'main-container-kiosk' : 'main-container'}>
                     <Switch>
                         {PAGES.map((p) => p.external ? null : renderRoute(p, selectedBrands, handleBrandChange, prevSelectedBrand))}
                     </Switch>

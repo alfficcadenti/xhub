@@ -4,6 +4,7 @@ import {getValue} from '../utils';
 import {THRESHOLDS, DATE_FORMAT} from './constants.js';
 import AvailabilityCell from './AvailabilityCell';
 import React from 'react';
+import qs from 'query-string';
 
 // eslint-disable-next-line complexity
 export const defineClassByValue = (value) => {
@@ -66,3 +67,8 @@ export const getPresets = () => [
     {text: 'Last 15 days', value: getValue(15, 'days')},
     {text: 'Last 30 days', value: getValue(30, 'days')},
 ];
+
+export const getQueryValues = (search) => {
+    const {kiosk} = qs.parse(search);
+    return {kioskMode: !!kiosk};
+};
