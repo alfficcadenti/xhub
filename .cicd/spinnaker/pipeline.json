@@ -201,17 +201,6 @@
 			}
 		},
 		{
-			"name": "nightwatch_UI_testing",
-			"type": "jenkins",
-			"refId": "12",
-			"requisiteStageRefIds": ["3"],
-			"failPipeline": false,
-			"continuePipeline": false,
-			"completeOtherBranchesThenFail": true,
-			"master": "ewe.builds.sb.karmalab.net",
-			"job": "opxhub-nw-test-kube"
-		},
-		{
 			"name": "Deploy-To-USE1-Prod",
 			"type": "manualJudgment",
 			"refId": "13",
