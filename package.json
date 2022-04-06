@@ -216,7 +216,6 @@
     "eslint-plugin-react-hooks": "^3.0.0",
     "extract-css-chunks-webpack-plugin": "^4.7.4",
     "file-loader": "^6.0.0",
-    "geckodriver": "^3.0.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^25.4.0",
     "jest-fetch-mock": "^3.0.3",
