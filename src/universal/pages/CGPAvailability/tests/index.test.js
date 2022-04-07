@@ -72,6 +72,19 @@ describe('<CGPAvailibility />', () => {
         expect(wrapper).toMatchSnapshot();
     });
 
+    it('renders Error Message when backend service returned 400', async () => {
+        fetch.mockImplementation(() => {
+            return Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve({timestamp: '2022-04-07T08:36:48.217+00:00', status: 400, error: 'Bad Request'})
+            });
+        });
+        await act(async () => {
+            wrapper = render(<Router><CGPAvailibility /></Router>);
+        });
+        expect(wrapper.getByText(/Error loading CGP Availability. Try refreshing the page/)).toBeInTheDocument();
+    });
+
     it('renders error message only when availability filter input is higher than 100', async () => {
         fetch.mockImplementation(() => {
             return Promise.resolve({

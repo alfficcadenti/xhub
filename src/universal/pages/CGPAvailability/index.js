@@ -60,6 +60,9 @@ const CGPAvailibility = () => {
                 try {
                     const res = await fetch(url);
                     const resJson = await checkResponse(res);
+                    if (!Array.isArray(resJson)) {
+                        throw new Error(resJson);
+                    }
                     await setAvailability(resJson);
                 } catch (e) {
                     setError('Error loading CGP Availability. Try refreshing the page');
@@ -80,8 +83,8 @@ const CGPAvailibility = () => {
 
     const setAutoRefresh = () => {
         setInterval(() => {
-            setStart(moment().utc().subtract(59, 'minutes'));
-            setEnd(moment().utc());
+            setStart(moment().utc().seconds(0).subtract(59, 'minutes'));
+            setEnd(moment().utc().seconds(0));
         }, 60000); // REFRESH EVERY 1 MINUTE
     };
 
