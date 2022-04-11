@@ -6,7 +6,7 @@ module.exports = {
         return true;
     },
     output: {
-        path: "opxhub.txt", // name of file
+        path: "opxhub-ui.txt", // name of file
         options: {
             path: "logs/", // path to write fils
             size: "10M", // max size

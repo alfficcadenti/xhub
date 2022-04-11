@@ -1,4 +1,4 @@
-FROM kumorelease-docker-virtual.artylab.expedia.biz/stratus/primer-base-expressjs:10.15.1-1.0.0
+FROM kumorelease-docker-virtual.artylab.expedia.biz/stratus/primer-base-expressjs:12.13.1-3
 
 # When this Dockerfile is built (with "docker build .") the base "primer-base-expressjs" image will:
 # - Copy files from this directory into /app on the image

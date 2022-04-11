@@ -2,6 +2,17 @@
   // application configuration
   "server": {
     "app": {
+      "services": {
+        "plugins": [
+          // These plugins provide functionality previously found in the core code of
+          "require:@catalyst/service-client-plugins/lib/headers",
+          "require:@catalyst/service-client-plugins/lib/metrics",
+          "require:@catalyst/service-client-plugins/lib/tracing"
+        ]
+      },
+      "base": {
+        "hostname": "require:@catalyst/service-host"
+      },
       "secrets": {
         "$filter": "env.NODE_ENV",
         "development": {
@@ -946,18 +957,20 @@
       "oauthApi": {
         "$filter": "env.NODE_ENV",
         "$default": {
-          "connectionTimeout": 3000,
+          "connectTimeout": 3000,
           "timeout": 30000
         },
         "development": {
           "oauthClientId": "",
           "oauthClientSecret": "",
-          "baseUrl": "https://dev-315805.okta.com"
+          "protocol": "https:",
+          "hostname": "dev-315805.okta.com"
         },
         "production": {
           "oauthClientId": "secret:oauthClientId",
           "oauthClientSecret": "secret:oauthClientSecret",
-          "baseUrl": "https://expediagroup.okta.com"
+          "protocol": "https:",
+          "hostname": "expediagroup.okta.com"
         }
       }
     }
@@ -981,18 +994,18 @@
     },
     // plugin for serving static content from application
     "inert": {
-      "plugin": "require:inert"
+      "plugin": "require:@hapi/inert"
     },
     // plugin for reading babel prime property files
-    "catalyst-l10n-reader": {
-      "plugin": "require:@homeaway/catalyst-l10n-reader",
+    "hapi-l10n-reader": {
+      "plugin": "require:@catalyst/hapi-l10n-reader",
       "options": {
         "pathTemplate": "./src/i18n/app_{locale}.properties"
       }
     },
     // Plugin for EDAP/Bizops routing
     "hapi-dev-bizops-proxy-handler": {
-      "plugin": "require:@homeaway/hapi-dev-bizops-proxy-handler",
+      "plugin": "require:@catalyst/hapi-dev-bizops-proxy-handler",
       "options": {
         "baseEdapUrl": {
           "$filter": "env.EXPEDIA_ENVIRONMENT",
@@ -1021,7 +1034,7 @@
     },
     // plugin for statsd monitoring
     "hapi-statsd": {
-      "plugin": "require:@homeaway/catalyst-monitoring-statsd",
+      "plugin": "require:@catalyst/hapi-monitoring-statsd",
       "options": {
         "host": {
           "$filter": "env.EXPEDIA_ENVIRONMENT",

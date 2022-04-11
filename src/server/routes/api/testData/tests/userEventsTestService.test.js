@@ -7,7 +7,6 @@ import {
 describe('getTestData', () => {
     it('handles empty query params correctly', async () => {
         expect(await getTestData({})).to.eql([]);
-        expect(await getTestData({url: {}})).to.eql([]);
     });
 
     it('handles non-empty query params correctly', async () => {
@@ -17,7 +16,7 @@ describe('getTestData', () => {
         const endDate = moment(roundedNow);
         const expectedArray = Array.from({length: 4}, (_, i) => moment(endDate).subtract(i * 5, 'minute').format()).reverse();
         expect(await getTestData(
-            {url: {query: {startDate: startDate.format(), endDate: endDate.format(), timeInterval: 5}}},
+            {query: {startDate: startDate.format(), endDate: endDate.format(), timeInterval: 5}},
             (time, result) => {
                 result.push(time);
                 return result;
@@ -29,7 +28,7 @@ describe('getTestData', () => {
 describe('getPageViewsTestData', () => {
     const startDate = moment().subtract(2, 'minute').toISOString();
     const endDate = moment().toISOString();
-    const req = {url: {query: {startDate, endDate, timeInterval: 1}}};
+    const req = {query: {startDate, endDate, timeInterval: 1}};
 
     it('formats data correctly', async () => {
         const results = await getPageViewsTestData(req);
@@ -41,7 +40,7 @@ describe('getPageViewsTestData', () => {
 describe('getFunnelTestData', () => {
     const startDate = moment().subtract(2, 'minute').toISOString();
     const endDate = moment().toISOString();
-    const req = {url: {query: {startDate, endDate, timeInterval: 1}}};
+    const req = {query: {startDate, endDate, timeInterval: 1}};
 
     it('formats data correctly', async () => {
         const results = await getFunnelTestData(req);
@@ -53,7 +52,7 @@ describe('getFunnelTestData', () => {
 describe('getEPSFunnelTestData', () => {
     const startDate = moment().subtract(2, 'minute').toISOString();
     const endDate = moment().toISOString();
-    const req = {url: {query: {startDate, endDate, timeInterval: 1}}};
+    const req = {query: {startDate, endDate, timeInterval: 1}};
 
     it('formats data correctly', async () => {
         const results = await getEPSFunnelTestData(req);

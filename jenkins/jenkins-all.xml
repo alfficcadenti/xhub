@@ -136,10 +136,11 @@
   </triggers>
   <concurrentBuild>false</concurrentBuild>
   <builders>
-    <jenkins.plugins.nodejs.NodeJSCommandInterpreter plugin="nodejs@1.1.3">
+    <jenkins.plugins.nodejs.NodeJSCommandInterpreter plugin="nodejs@1.3.4">
       <command>process.version</command>
-      <nodeJSInstallationName>node-10.19.0</nodeJSInstallationName>
-      <configId>17918394-2bc2-4fa1-9cb1-e753ae418702</configId>
+      <nodeJSInstallationName>node-12.13.1</nodeJSInstallationName>
+      <configId>9db443b1-81db-4244-9ff2-5009d1946b4b</configId>
+      <cacheLocationStrategy class="jenkins.plugins.nodejs.cache.DefaultCacheLocationLocator"/>
     </jenkins.plugins.nodejs.NodeJSCommandInterpreter>
     <hudson.tasks.Shell>
       <command>chmod 755 ./build.sh

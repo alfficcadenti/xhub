@@ -1,11 +1,11 @@
 import moment from 'moment';
 
 const getTestData = async (req, appender) => {
-    if (!req.url || !req.url.query) {
+    if (!req.query) {
         return [];
     }
-    const {startDate, endDate} = req.url.query;
-    const {timeInterval} = req.url.query || 5;
+    const {startDate, endDate} = req.query;
+    const {timeInterval} = req.query || 5;
     let result = [];
     const start = moment(startDate);
     const roundedStart = start.subtract(start.minute() % 5, 'minute').startOf('minute');

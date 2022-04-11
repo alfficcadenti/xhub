@@ -14,7 +14,7 @@ import {BRANDS_CHART, CHART_COLORS, LOBS_CHART, DEVICE_CHART, REGION_CHART} from
 import {startTime, endTime, getColor, getDefaultTimeInterval, getTimeIntervals, isValidTimeInterval} from '../../../../impulseHandler';
 import AnomalyLabel from '../BookingChart/AnomalyLabel';
 import ReferenceLabel from '../../../../../../components/ReferenceLabel';
-import '/src/universal/pages/Impulse/tabs/BookingTrends/sections/BookingChart/styles.less';
+import '../../../../../../pages/Impulse/tabs/BookingTrends/sections/BookingChart/styles.less';
 import {getResetGraphTitle} from '../../../../../utils';
 
 const GroupedBookingTrends = ({

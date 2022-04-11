@@ -11,5 +11,5 @@ module.exports.postFciComment = {
     method: 'POST',
     path: '/v2/comment/{param*}',
     config: getConfig('fci-comment-api-v2-post'),
-    handler: getHandler(Object.assign(getHandlerParams('postFciComment'), {timeout: 120000, connectionTimeout: 120000}))
+    handler: getHandler(Object.assign(getHandlerParams('postFciComment'), {timeout: 120000, connectTimeout: 120000}))
 };

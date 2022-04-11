@@ -126,7 +126,7 @@ const TravelerMetricsWidget = ({
 
         const renderDeltaTag = () => (
             !selectedLoBs.length
-                ? `<span class="delta-link">delta users = ${point.payload.totalDeltaUserCount ?? 0}</span>`
+                ? `<span class="delta-link">delta users = ${point.payload.totalDeltaUserCount || 0}</span>`
                 : selectedLoBs
                     .map(({label}) => `<div class="delta-link lob-label">${label} delta users = ${deltaUserCountByLob?.find((i) => i.lineOfBusiness === label)?.deltaCount || 0}</div>`)
                     .join('')

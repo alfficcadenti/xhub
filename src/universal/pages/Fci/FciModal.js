@@ -12,7 +12,7 @@ import {OPXHUB_SUPPORT_CHANNEL} from '../../constants';
 import {checkResponse} from '../utils';
 import {mapComment} from './utils';
 import {
-    FCI_DETAIL_COLUMNS,
+    CHECKOUT_DETAIL_COLUMNS,
     COMMENT_TABLE_COLUMNS,
     TRACE_TABLE_COLUMNS,
     CHECKOUT_FCI_TABLE_COLUMNS,
@@ -149,7 +149,7 @@ const FciModal = ({fci, fcis, fciType, editMode, isOpen, onClose, onSaveComment,
             {fcis && fcis.length ? renderBackButton() : null}
             <h3>{`FCI Details (traceId="${fci.Trace}")`}</h3>
             <div className="details-table">
-                {FCI_DETAIL_COLUMNS
+                {CHECKOUT_DETAIL_COLUMNS
                     .map((column) => renderRow(column, fci[column]))}
                 <div className="detail-row">
                     <div className="detail-label">{'Comment'}</div>

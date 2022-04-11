@@ -34,7 +34,13 @@ See our official documentation [here](https://pages.github.expedia.biz/eg-reo-op
 
 ## Development
 
-1. To start developing locally, clone the project:
+### Requirements
+- `node -v` is v12+
+- `npm -v` is v6+
+
+### Running Locally
+
+1. Clone the project:
 
    ```bash
    git clone git@github.expedia.biz:eg-reo-opex/opxhub-ui.git
@@ -123,18 +129,18 @@ module.exports.apiPathKey = {
 4. Your endpoint should now work after running npm start (e.g. localhost:8080/v1/custom-path)
 5. Done!
 
-###Tips for investigation UI Component
+### Tips for investigation UI Component
 
 1. Read the file from the render function (usually bottom of file) to understand where in the UI to first investigate
 2. Use the browser [developer tools](https://developer.chrome.com/docs/devtools/) to view Console and Network tabs
 
-###Resources
+### Resources
 
 Check if a common component already exists in [UI-Discovery Portal](https://ui-discovery.homeawaycorp.com/discovery/overview)
 such as Dropdown, Navigation, etc. Also see the common [color palette](https://ui-discovery.homeawaycorp.com/discovery/web-components/base/colors#BaselineThemecolorpaletteandLessvariables)
 and [SVG icon system](https://ui-discovery.homeawaycorp.com/discovery/web-components/base/icons#SVGIconSystem).
 
-###Monitoring
+### Monitoring
 
 - [Splunk dashboards](https://splunk.prod.egmonitoring.expedia.com/en-US/app/eg-opex-opxhub/dashboards)
 - [Splunk](https://splunk.prod.egmonitoring.expedia.com/en-US/app/eg-opex-opxhub/search) search for API calls in the following format: 
@@ -142,7 +148,7 @@ and [SVG icon system](https://ui-discovery.homeawaycorp.com/discovery/web-compon
 - [Support Rota](https://confluence.expedia.biz/pages/viewpage.action?spaceKey=REO&title=Support+Rota)
 - [BigPanda](https://a.bigpanda.io/) (Search for host:"OpXHub Forecasting")
 
-###Pipeline
+### Pipeline
 
 - [Git](https://github.expedia.biz/eg-reo-opex/opxhub-ui)
 - [Spinnaker](https://spinnaker.expedia.biz/#/applications/opxhub-ui/executions)

@@ -1,4 +1,4 @@
-const Vision = require('vision');
+const Vision = require('@hapi/vision');
 const Handlebars = require('handlebars');
 const Path = require('path');
 

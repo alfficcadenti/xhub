@@ -1,5 +1,5 @@
 const _ = require('lodash-chain');
-const HttpClient = require('@homeaway/http-client');
+const ServiceClient = require('@vrbo/service-client');
 const jws = require('jws');
 const jwt = require('jsonwebtoken');
 const jwkToPem = require('jwk-to-pem');
@@ -10,10 +10,11 @@ class OktaAuth {
             require('../../../devOkta.json').okta.oauthClientId :
             server.app.config.get('oauthApi.oauthClientId');
         this.oauthUrl = server.app.config.get('oauthApi.baseUrl');
-        this.oauthApiClient = new HttpClient('oauthClient', {
+        this.oauthApiClient = ServiceClient.create('oauthClient', {
             timeout: server.app.config.get('oauthApi.timeout'),
-            connectionTimeout: server.app.config.get('oauthApi.connectionTimeout'),
-            baseUrl: server.app.config.get('oauthApi.baseUrl')
+            connectTimeout: server.app.config.get('oauthApi.connectTimeout'),
+            protocol: server.app.config.get('oauthApi.protocol'),
+            hostname: server.app.config.get('oauthApi.hostname')
         });
         this.keys = {};
         this.id_token = '';
@@ -40,7 +41,12 @@ class OktaAuth {
 
     getKeys() {
         return this.oauthApiClient
-            .get(`/oauth2/v1/keys?client_id=${this.clientId}`)
+            .request({
+                method: 'GET',
+                path: '/oauth2/v1/keys',
+                queryParams: {client_id: this.clientId},
+                operation: 'get_oauth_keys'
+            })
             .then(({payload}) => {
                 const keys = _.chain(payload.keys)
                     .map((jwk) => {
@@ -107,11 +113,12 @@ class OktaAuth {
                 `&client_secret=${clientSecret}` +
                 `&redirect_uri=${this.redirectUri(request)}` +
                 '&grant_type=authorization_code';
-            return this.oauthApiClient.post('/oauth2/v1/token', {
+            return this.oauthApiClient.request({
+                method: 'POST',
+                path: '/oauth2/v1/token',
+                operation: 'post_oauth_token',
                 payload: formData,
-                headers: {
-                    'content-type': 'application/x-www-form-urlencoded'
-                }
+                headers: {'content-type': 'application/x-www-form-urlencoded'}
             }).then((oauthResponse) => {
                 const mysecret = clientSecret || 'none';
                 if (oauthResponse.statusCode !== 200) {
@@ -129,14 +136,15 @@ class OktaAuth {
                     };
                 });
             }).then((tokenDecoded) => {
-                return this.oauthApiClient.post('/oauth2/v1/userinfo', {
-                    headers: {
-                        'Authorization': `Bearer ${tokenDecoded.token}`,
-                    }})
-                    .then((data) => {
-                        const {email} = data.payload;
-                        return {email, tokenDecoded};
-                    });
+                return this.oauthApiClient.request({
+                    method: 'POST',
+                    path: '/oauth2/v1/userinfo',
+                    operation: 'post_oauth_userinfo',
+                    headers: {'Authorization': `Bearer ${tokenDecoded.token}`}
+                }).then((data) => {
+                    const {email} = data.payload;
+                    return {email, tokenDecoded};
+                });
             });
         });
     }

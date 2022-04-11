@@ -23,7 +23,7 @@ module.exports = (id) => ({
                 );
                 const renderTime = Date.now() - startRender;
 
-                const statsd = request.plugins['@homeaway/catalyst-monitoring-statsd'];
+                const statsd = request.plugins['@catalyst/hapi-monitoring-statsd'];
                 statsd.timing('react_ssr_render_time', renderTime);
 
                 // render the output with context and handlebars.

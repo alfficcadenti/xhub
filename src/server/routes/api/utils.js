@@ -17,7 +17,7 @@ const makeRequest = async (option, testData, req, refreshClient) => {
         routeKey,
         serviceName,
         timeout = 20000,
-        connectionTimeout = 20000,
+        connectTimeout = 20000,
         maxConnectRetry = 1,
         pathParam
     } = option;
@@ -31,10 +31,10 @@ const makeRequest = async (option, testData, req, refreshClient) => {
         method,
         path: pathParam ? `${path}/${req.params[pathParam] || ''}` : path,
         operation,
-        queryParams: req.url.query ? req.url.query : {},
+        queryParams: req.query ? req.query : {},
         payload: req.payload,
         timeout,
-        connectionTimeout,
+        connectTimeout,
         maxConnectRetry
     };
     req.log('[API-REQUEST-DETAILS]', Object.assign(request, {hostname, protocol}));
