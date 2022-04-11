@@ -9,7 +9,7 @@ class OktaAuth {
         this.clientId = (process.env.NODE_ENV === 'development') ?
             require('../../../devOkta.json').okta.oauthClientId :
             server.app.config.get('oauthApi.oauthClientId');
-        this.oauthUrl = server.app.config.get('oauthApi.baseUrl');
+        this.oauthUrl = `${server.app.config.get('oauthApi.protocol')}${server.app.config.get('oauthApi.hostname')}`;
         this.oauthApiClient = ServiceClient.create('oauthClient', {
             timeout: server.app.config.get('oauthApi.timeout'),
             connectTimeout: server.app.config.get('oauthApi.connectTimeout'),
