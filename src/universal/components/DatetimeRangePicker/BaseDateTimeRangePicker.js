@@ -15,7 +15,7 @@ const BaseDateTimeRangePicker = ({
 }) => {
     const containerRef = useRef(null);
 
-    const format = timeFormat ? 'MM/DD/YYYY HH:mm' : 'MM/DD/YYYY';
+    const format = timeFormat ? 'MM/DD/YYYY hh:mm A' : 'MM/DD/YYYY';
     const interval = timeFormat ? 'h' : 'd';
 
     const [start, setStart] = useState(moment(startDate).format(format));
