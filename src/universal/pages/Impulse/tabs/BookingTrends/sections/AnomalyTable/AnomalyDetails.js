@@ -22,9 +22,6 @@ const AnomalyDetails = ({data = [], setAnomalyTableData}) => {
             changePercentage: getPercentage(impactObj),
             timestamp: `${moment(data[0].timestamp).format('YYYY-MM-DD HH:mm')} ${moment().tz?.(moment.tz.guess()).format('z')}`
         }));
-        finalAnomalyData.forEach((anomalyObj) => {
-            delete anomalyObj.deviceType;
-        });
         return finalAnomalyData;
     };
 
