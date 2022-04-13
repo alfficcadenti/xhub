@@ -235,7 +235,7 @@ export const convertRelativeDateRange = (date = '') => {
 
     const match = regex.exec(date);
     if (!match) {
-        return moment().format();
+        return date;
     }
     const [, , time] = match;
     if (!time) {
