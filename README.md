@@ -1,42 +1,37 @@
-# OpXHub-UI
+# OpXHub
 
-A [Catalyst](https://pages.github.expedia.biz/Catalyst/information/guide/introduction) web application that retrieves, organizes, and presents operational metrics across brands. OpXhub-UI is a [React](https://reactjs.org/) web application that runs on [Hapijs](https://hapi.dev/tutorials), an enterprise-grade [node](https://nodejs.org/) server system. [Recharts](https://recharts.org/) is the primary library used for its data visualizations.
+OpXHub is a [Catalyst](https://pages.github.expedia.biz/Catalyst/information/guide/introduction) web application that retrieves, organizes, and presents operation and business metrics across brands.
 
-See our official documentation [here](https://pages.github.expedia.biz/eg-reo-opex/eg-reo-opex-docs/guide/products/availability_and_trends/opxhub_ui/)
+See our official documentation [here](https://pages.github.expedia.biz/eg-reo-opex/eg-reo-opex-docs/guide/products/availability_and_trends/opxhub_ui/).
 
-## App URL
+
+## Deployments
 
 | Environment | Endpoints                                                                                      |
 | ----------- | ---------------------------------------------------------------------------------------------- |
 | Test        | [https://opxhub-ui.us-west-2.test.expedia.com/](https://opxhub-ui.us-west-2.test.expedia.com/) |
-| Integration | [https://opxhub-ui.us-west-2.int.expedia.com/](https://opxhub-ui.us-west-2.int.expedia.com/)   |
 | Prod        | [https://opxhub-ui.us-east-1.prod.expedia.com/](https://opxhub-ui.us-east-1.prod.expedia.com/) |
 
-## VPCE
-
-| Environment | Endpoints                                                                                      |
-| ----------- | ---------------------------------------------------------------------------------------------- |
-| Prod        | opxhub-user-events-data-service                                                                |
 
 ## Logs
 
 | Environment | Endpoints                                                                                                                                                                                                |
 | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Test        | [https://splunk.test.egmonitoring.expedia.com/en-US/app/eg-opex-opxhub/opxhub_status_code_dashboard](https://splunk.test.egmonitoring.expedia.com/en-US/app/eg-opex-opxhub/opxhub_status_code_dashboard) |
-| Prod        | [https://splunk.prod.egmonitoring.expedia.com/en-US/app/eg-opex-opxhub/opxhub_status_code_dashboard](https://splunk.prod.egmonitoring.expedia.com/en-US/app/eg-opex-opxhub/opxhub_status_code_dashboard) |
+| Test        | [Splunk](https://splunk.test.egmonitoring.expedia.com/en-US/app/search/search?q=search%20index%3Dapp%20splunk_server_group%3Dbexg*%20sourcetype%3Dopxhub-ui*&sid=1650479189.36285_F24F4D69-7903-4F71-8690-62FCB4BBD9AB&display.page.search.mode=smart&dispatch.sample_ratio=1&earliest=-5m&latest=now) |
+| Prod        | [Splunk](https://splunk.prod.egmonitoring.expedia.com/en-US/app/eg-opex-opxhub/opxhub_status_code_dashboard) |
 
 ## Monitoring
 
 | Environment | Endpoints                                                                                                                                                                                                        |
 | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Test        | [https://grafana.test.expedia.com/d/ZPlMgQyZz/opxhub-ui-monitoring-dashboard?orgId=1&from=now-1d&to=now](https://grafana.test.expedia.com/d/ZPlMgQyZz/opxhub-ui-monitoring-dashboard?orgId=1&from=now-1d&to=now) |
-| Prod        | [https://grafana.prod.expedia.com/d/rGyxu1mGz/opxhub-ui-monitoring-dashboard?orgId=1&from=now-1d&to=now](https://grafana.prod.expedia.com/d/rGyxu1mGz/opxhub-ui-monitoring-dashboard?orgId=1&from=now-1d&to=now) |
+| Test        | [Grafana](https://grafana.test.expedia.com/d/ZPlMgQyZz/opxhub-ui-monitoring-dashboard?orgId=1&from=now-1d&to=now) |
+| Prod        | [Grafana](https://grafana.prod.expedia.com/d/rGyxu1mGz/opxhub-ui-monitoring-dashboard?orgId=1&from=now-1d&to=now) |
 
 ## Development
 
 ### Requirements
-- `node -v` is v12+
-- `npm -v` is v6+
+- `node -v` is v12.13.1
+- `npm -v` is v6
 
 ### Running Locally
 
@@ -58,19 +53,22 @@ See our official documentation [here](https://pages.github.expedia.biz/eg-reo-op
    npm config set registry https://npm.homeawaycorp.com/artifactory/api/npm/npm
    ```
 
-3. Run the script build to generate the buildInfo.js
-
-   ```bash
-   npm run build
-   ```
-
-4. Run the application
+3. Run the application
 
    ```bash
    npm start
    ```
 
-5. Navigate to `localhost:8080`
+4. Navigate to `localhost:8080`
+
+
+### Troubleshooting
+
+- Ensure that you meet the requirements listed above
+- Refresh dependencies (`rm -r node_modules/` and run `npm install` again)
+- If there's a auth issue with api endpoints, add `process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;` to `src/server/index.js` but do NOT check this in with your pull request
+- Follow [Catalyst](https://pages.github.expedia.biz/Catalyst/information/guide/before-you-begin) troubleshooting doc
+- Reach out to #opxhub-support
 
 ### Project Structure
 
@@ -129,16 +127,17 @@ module.exports.apiPathKey = {
 4. Your endpoint should now work after running npm start (e.g. localhost:8080/v1/custom-path)
 5. Done!
 
-### Tips for investigation UI Component
+### Tips for Investigating UI Component
 
 1. Read the file from the render function (usually bottom of file) to understand where in the UI to first investigate
 2. Use the browser [developer tools](https://developer.chrome.com/docs/devtools/) to view Console and Network tabs
 
 ### Resources
 
-Check if a common component already exists in [UI-Discovery Portal](https://ui-discovery.homeawaycorp.com/discovery/overview)
+- Check if a common component already exists in [UI-Discovery Portal](https://ui-discovery.homeawaycorp.com/discovery/overview)
 such as Dropdown, Navigation, etc. Also see the common [color palette](https://ui-discovery.homeawaycorp.com/discovery/web-components/base/colors#BaselineThemecolorpaletteandLessvariables)
 and [SVG icon system](https://ui-discovery.homeawaycorp.com/discovery/web-components/base/icons#SVGIconSystem).
+- Use [nvm](https://github.com/nvm-sh/nvm) as your local node version manager
 
 ### Monitoring
 
