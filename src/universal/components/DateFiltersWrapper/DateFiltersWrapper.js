@@ -35,10 +35,10 @@ const DateFiltersWrapper = ({isFormDisabled, pendingStart, pendingEnd, handleApp
                 <span><SVGIcon usefill markup={CALENDAR__16} /></span>
                 <div className="dates">
                     <div>
-                        {pendingStart.format('MMM Do YY h:mm:ss a')}
+                        {pendingStart.format('MMM Do YY hh:mm A')}
                     </div>
                     <div>
-                        {pendingEnd.format('MMM Do YY h:mm:ss a')}
+                        {pendingEnd.format('MMM Do YY hh:mm A')}
                     </div>
                 </div>
             </div>

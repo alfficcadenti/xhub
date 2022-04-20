@@ -26,7 +26,11 @@ const LagIndicator = ({selectedBrand}) => {
     const {token, title} = selectAttributes(selectedBrand);
 
     if (token && title) {
-        return <iframe src={`https://app.datadoghq.com/graph/embed?token=${token}&height=100&width=200&legend=false"`} width="200" height="100" frameBorder="0" title={title}/>;
+        return (
+            <div className="lag-indicator">
+                <iframe src={`https://app.datadoghq.com/graph/embed?token=${token}&height=100&width=200&legend=false"`} width="200" height="100" frameBorder="0" title={title}/>
+            </div>
+        );
     }
     return null;
 };

@@ -272,7 +272,7 @@ const Impulse = (props) => {
     const filterAnnotationsOnBrand = () => {
         if (selectedBrandMulti.length > 0) {
             filteredAnnotationsOnBrand = annotations.filter((annotation) => {
-                let estimatedImpact = annotation.estimatedImpact;
+                let estimatedImpact = Array.isArray(annotation.estimatedImpact) ? annotation.estimatedImpact : [];
                 let impactedBrands = estimatedImpact.map((estimatedImpactObj) => estimatedImpactObj.brand);
                 if (impactedBrands.includes(null)) {
                     return true;

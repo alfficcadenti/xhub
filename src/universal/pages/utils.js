@@ -1,4 +1,6 @@
 import React from 'react';
+import qs from 'query-string';
+import moment from 'moment';
 import {
     BRANDS,
     DATE_FORMAT,
@@ -8,24 +10,25 @@ import {
     HOTELS_COM_BRAND,
     LOB_LIST,
     PAGE_VIEWS_DATE_FORMAT,
-    SUCCESS_RATES_PAGES_LIST,
     TIMEZONE_ABBR,
     VRBO_BRAND,
     GRAFANA_DASHBOARDS
 } from '../constants';
 import {getOrDefault} from '../utils';
-import {METRIC_NAMES} from './SuccessRates/constants';
-import ALL_PAGES from './index';
-import qs from 'query-string';
-import moment from 'moment';
 import {
     ENABLED_RESET_GRAPH_BUTTON,
     DISABLED_RESET_GRAPH_BUTTON
 } from './Impulse/constants';
-const BOOKING_COUNT = 'Booking Counts';
-const PREDICTION_COUNT = 'Prediction Counts';
-export const DEFAULT_DAY_RANGE = 3;
+import {LOGIN_RATES_LABEL} from './SuccessRates/constants';
+import ALL_PAGES from './index';
+import {getRateMetrics} from './SuccessRates/utils';
 
+
+const BOOKING_COUNT = 'Booking Counts';
+
+const PREDICTION_COUNT = 'Prediction Counts';
+
+export const DEFAULT_DAY_RANGE = 3;
 
 export const getVisiblePages = (selectedBrands, pages = [...ALL_PAGES]) => (
     pages.filter(({hidden, brands}) => (
@@ -356,14 +359,13 @@ export const filterNewSelectedItems = (input, key) => {
         : [];
 };
 
-export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pageBrand = '', deltaUserData = []) => {
+export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pageBrand = '', deltaUserData = [], metricGroup) => {
     let minValue;
-
+    const rateMetrics = getRateMetrics(metricGroup);
     const formatRate = (rate) => rate ? parseFloat((Number(rate) || 0).toFixed(2)) : null;
     // eslint-disable-next-line complexity
-    return SUCCESS_RATES_PAGES_LIST.map((chartName, i) => {
+    return rateMetrics.map(({metricName, chartName}, i) => {
         const aggregatedData = [];
-        let metricName = '';
         let tempMinValue = 0;
 
         // eslint-disable-next-line complexity
@@ -372,9 +374,8 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
         ).reduce((prev, {time, brandWiseSuccessRateData}) => {
             let localMin = prev;
             const momentTime = moment(time);
-            metricName = METRIC_NAMES[i];
             const deltaUserCount = deltaUserData
-                .find((item) => item.metricName === METRIC_NAMES[i])?.metricDeltaUserCounts
+                .find((item) => item.metricName === metricName)?.metricDeltaUserCounts
                 .find((deltaUserItem) => momentTime.isSame(deltaUserItem.time))?.lobTotalDeltaUserCount;
 
             if (momentTime.isBetween(start, end, 'minutes', '[]')) {
@@ -420,10 +421,11 @@ export const makeSuccessRatesLOBObjects = (
     pageBrand = '',
     selectedBrand = '',
     lobs = [],
-    deltaUserData
+    deltaUserData,
+    metricGroup
 ) => {
     let minValue;
-    let metricName = '';
+    const rateMetrics = getRateMetrics(metricGroup);
     const successRateFilter = ({brand, lineOfBusiness}) => (
         mapBrandNames(brand) === selectedBrand
         && (!lobs.length || !lineOfBusiness || lobs.findIndex(({value}) => value === lineOfBusiness) > -1)
@@ -434,7 +436,7 @@ export const makeSuccessRatesLOBObjects = (
     );
     const formatRate = (rate) => parseFloat((Number(rate) || 0).toFixed(2));
     // eslint-disable-next-line complexity
-    return SUCCESS_RATES_PAGES_LIST.map((chartName, i) => {
+    return rateMetrics.map(({metricName, chartName}, i) => {
         const aggregatedData = [];
         let tempMinValue = 0;
 
@@ -443,17 +445,16 @@ export const makeSuccessRatesLOBObjects = (
             Array.isArray(data[i]) ? data[i] : []
         ).reduce((prev, {time, successRatePercentagesData}) => {
             let localMin = prev;
-            metricName = METRIC_NAMES[i];
             successRatePercentagesData
                 .filter(selectedBrand === 'eps' ? successRateEPSFilter : successRateFilter)
                 // eslint-disable-next-line complexity
                 .forEach(({rate, lineOfBusiness}) => {
                     const momentTime = moment(time);
-                    const deltaUserCount = deltaUserData.find((item) => item.metricName === METRIC_NAMES[i])?.metricDeltaUserCounts
+                    const deltaUserCount = deltaUserData
+                        .find((item) => item.metricName === metricName)?.metricDeltaUserCounts
                         .find((deltaUserItem) => {
                             return momentTime.isSame(deltaUserItem.time);
                         });
-
                     if (momentTime.isBetween(start, end, 'minutes', '[]')) {
                         const lob = lineOfBusiness ? lobs.find(({value}) => value === lineOfBusiness) : null;
                         const valueKey = lob ? lob.label : 'value';
@@ -594,7 +595,14 @@ export const getChartDataForFutureEvents = (dateInvalid, chartData, simplifiedPr
 export const getResetGraphTitle = (daysRange) => daysRange === DEFAULT_DAY_RANGE ? DISABLED_RESET_GRAPH_BUTTON : ENABLED_RESET_GRAPH_BUTTON;
 
 export const getPageViewsGrafanaDashboardByBrand = (brand) => GRAFANA_DASHBOARDS.find((x) => x.brand === brand)?.pageViewsUrl || '';
-export const getSuccessRateGrafanaDashboardByBrand = (brand) => GRAFANA_DASHBOARDS.find((x) => x.brand === brand)?.successRateUrl || '';
+
+export const getSuccessRateGrafanaDashboard = (brand, metric) => {
+    const brandDashboards = GRAFANA_DASHBOARDS.find((x) => x.brand === brand) || {};
+    const successRatesUrl = (metric === LOGIN_RATES_LABEL)
+        ? brandDashboards.loginSuccessRateUrl
+        : brandDashboards.successRateUrl;
+    return successRatesUrl || '';
+};
 
 export const brandsWithGrafanaDashboard = () => GRAFANA_DASHBOARDS.map((x) => x.brand) || [];
 

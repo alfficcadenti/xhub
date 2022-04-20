@@ -100,13 +100,6 @@ export const PAGES_LIST = [
     {name: 'bookingconfirmation', label: 'Booking Confirmation'},
 ];
 
-export const SUCCESS_RATES_PAGES_LIST = [
-    'Home To Search Page (SERP)',
-    'Search (SERP) To Property Page (PDP)',
-    'Property (PDP) To Checkout Page (CKO)',
-    'Checkout (CKO) To Checkout Confirmation Page'
-];
-
 export const TIMEZONE_ABBR = moment().tz(moment.tz.guess()).format('z');
 
 export const BRANDS = [
@@ -175,17 +168,20 @@ export const GRAFANA_DASHBOARDS = [
     {
         brand: EXPEDIA_BRAND,
         pageViewsUrl: 'https://opexhub-grafana.expedia.biz/d/DdypXxKLZ/bex-pageviews?orgId=1&var-eventType=pageview&var-brandGroup=bexg&var-lineOfBusiness=All&theme=light',
-        successRateUrl: 'https://opex-grafana.expedia.biz/d/3-CbFic7z/expedia-success-rate?orgId=2&theme=light'
+        successRateUrl: 'https://opex-grafana.expedia.biz/d/3-CbFic7z/expedia-success-rate?orgId=2&theme=light',
+        loginSuccessRateUrl: 'https://opex-grafana.expedia.biz/d/ZpygTf8nk/expedia-login-success-rate?orgId=2&theme=light'
     },
     {
         brand: VRBO_BRAND,
         pageViewsUrl: 'https://opexhub-grafana.expedia.biz/d/aZXj08Fnz/vrbo-pageviews?orgId=1&theme=light',
-        successRateUrl: 'https://opex-grafana.expedia.biz/d/m2a5Kmcnk/vrbo-success-rate?orgId=2&theme=light'
+        successRateUrl: 'https://opex-grafana.expedia.biz/d/m2a5Kmcnk/vrbo-success-rate?orgId=2&theme=light',
+        loginSuccessRateUrl: 'https://opex-grafana.expedia.biz/d/wcxKSg4Zz/vrbo-login-success-rate?orgId=2&theme=light'
     },
     {
         brand: HOTELS_COM_BRAND,
         pageViewsUrl: 'https://opexhub-grafana.expedia.biz/d/0LmLA8F7z/hcom-pageview?orgId=1&theme=light',
-        successRateUrl: 'https://opex-grafana.expedia.biz/d/qgdtFi57z/hcom-success-rate?orgId=2&theme=light'
+        successRateUrl: 'https://opex-grafana.expedia.biz/d/qgdtFi57z/hcom-success-rate?orgId=2&theme=light',
+        loginSuccessRateUrl: 'https://opex-grafana.expedia.biz/d/B1A32BU7z/hcom-login-success-rate?orgId=2&theme=light'
     },
 ];
 

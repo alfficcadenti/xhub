@@ -216,7 +216,7 @@ export const useFetchBlipData = (
                     [THREE_WEEK_AVG_COUNT]: item?.prediction?.weighted_count ? item.prediction.weighted_count : 0,
                 };
             });
-            if (finalChartDataYOY.length === chartData.length) {
+            if (finalChartDataYOY && finalChartDataYOY.length === chartData?.length) {
                 chartData = chartData.map((item, i) => {
                     return {
                         ...item,

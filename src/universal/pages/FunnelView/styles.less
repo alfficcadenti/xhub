@@ -40,9 +40,10 @@
         width: 100%;
         display: inline-flex;
 
-        .dynamic-filters-wrapper,
         .eps-partner-select-container {
-            padding: @spacing-1x @spacing-1x 0 @spacing-1x;
+            margin-right: @spacing-1x;
+            min-height: @filter-size;
+            min-width: 320px;
 
             .eps-partner-select__menu {
                 z-index: 999;
@@ -56,6 +57,7 @@
             position: relative;
 
             .lob-select-container {
+                margin-right: @spacing-1x;
                 min-width: 300px;
                 width: 90%;
                 z-index: 99;
@@ -67,11 +69,6 @@
             min-height: @filter-size;
             border-radius: @spacing-1x;
             border-color: @border-color-dark;
-        }
-
-        .eps-partner-select-container {
-            min-height: @filter-size;
-            min-width: 320px;
         }
     }
 }

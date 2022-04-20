@@ -2,14 +2,16 @@
 
 .date-filters-wrapper {
     display: flex;
+    margin-left: auto;
     position: relative;
     min-width: 250px;
-    padding: @spacing-1x @spacing-1x 0 @spacing-1x;
 
     .dates-button {
         display: flex;
         align-items: center;
-        min-height: @spacing-7x;
+        padding: 0 0 0 @spacing-2x;
+        min-height: 55px;
+        height: 55px;
         font-size: 12px;
         line-height: @spacing-2x;
         box-shadow: none;
@@ -38,13 +40,14 @@
         position: absolute;
         right: 0;
         width: 600px;
-        top: @filter-size + @spacing-1x ;
+        top: @filter-size + @spacing-1x;
         z-index: 100;
         background-color: @color-bg-accent;
         border: @border-color-dark 1px solid;
-        border-radius: @spacing-1x;
+        border-radius: @spacing-1x 0 @spacing-1x @spacing-1x;
         padding: @spacing-1x;
-        display: block;
+        display: flex;
+        margin-top: -9px;
 
         .datetime-range-picker {
             display: inline-grid;
@@ -56,11 +59,6 @@
             margin-top: @spacing-1x;
             margin-left: @spacing-1x;
         }
-    }
-
-    .rdt-preset-dropdown {
-        margin-top: @spacing-1x;
-        margin-left: 0;
     }
 
     .rdt-preset-dropdown {

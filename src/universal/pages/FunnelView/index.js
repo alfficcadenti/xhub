@@ -21,7 +21,7 @@ import {
     OPXHUB_SUPPORT_CHANNEL,
     PAGE_VIEWS_PAGE_NAME,
 } from '../../constants';
-import {getErrorMessage} from './constants';
+import {getErrorMessage} from './utils';
 import {
     checkResponse,
     getBrand,

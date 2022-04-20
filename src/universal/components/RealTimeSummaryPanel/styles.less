@@ -4,7 +4,8 @@
     text-align: center;
     background: @color-bg-contrast;
     border-radius: @spacing-1x;
-    padding: @spacing-2x;
+    padding: @spacing-1x;
+    margin-bottom: @spacing-3x;
 
     h3 {
         margin-bottom: @spacing-1x;
@@ -20,14 +21,15 @@
         .real-time-card {
             width: 100%;
             height: auto;
-            padding: @spacing-1x @spacing-2x;
+            padding: @spacing-1x;
+            margin-bottom: @spacing-1x;
             display: grid;
             grid-template-columns: 1fr;
             text-align: center;
-            margin-right: 15px;
+            margin-right: @spacing-2x;
 
             .rtt-label {
-                font-weight: 400;
+                font-weight: 800;
             }
 
             .rtt-summed-value {
@@ -38,10 +40,6 @@
             .rtt-lob-wrapper {
                 display: flex;
                 flex-direction: column;
-
-                .rtt-lob-item {
-
-                }
             }
 
             &:last-child {

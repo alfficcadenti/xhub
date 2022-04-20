@@ -1,96 +1,140 @@
-/* eslint-disable complexity */
 import React, {useEffect, useRef, useState} from 'react';
 import {useLocation, withRouter} from 'react-router-dom';
 import Select from 'react-select';
 import moment from 'moment';
-import {Switch} from '@homeaway/react-form-components';
+import {Alert} from '@homeaway/react-alerts';
+import FilterDropDown from '../../components/FilterDropDown';
 import TravelerMetricsWidget from '../../components/TravelerMetricsWidget';
 import LoadingContainer from '../../components/LoadingContainer';
 import RealTimeSummaryPanel from '../../components/RealTimeSummaryPanel';
-import {useFetchProductMapping, useQueryParamChange, useSelectedBrand, useZoomAndSynced, useAddToUrl} from '../hooks';
+import Annotations from '../../components/Annotations/Annotations';
+import DateFiltersWrapper from '../../components/DateFiltersWrapper/DateFiltersWrapper';
+import ResetButton from '../../components/ResetButton';
+import LagIndicator from '../../components/LagIndicator';
+import GrafanaDashboard from '../../components/GrafanaDashboard';
+import HelpText from '../../components/HelpText/HelpText';
+import {triggerEdapPageView} from '../../edap';
 import {
     EG_BRAND,
     EGENCIA_BRAND,
     EXPEDIA_PARTNER_SERVICES_BRAND,
     HOTELS_COM_BRAND,
-    VRBO_BRAND,
-    OPXHUB_SUPPORT_CHANNEL,
-    SUCCESS_RATES_PAGES_LIST
+    VRBO_BRAND
 } from '../../constants';
+import {
+    useFetchProductMapping,
+    useQueryParamChange,
+    useSelectedBrand,
+    useZoomAndSynced,
+    useAddToUrl
+} from '../hooks';
 import {
     checkResponse,
     getBrand,
     makeSuccessRatesObjects,
     makeSuccessRatesLOBObjects,
     getLobPlaceholder,
-    getSuccessRateGrafanaDashboardByBrand,
+    getSuccessRateGrafanaDashboard,
     brandsWithGrafanaDashboard
 } from '../utils';
-import HelpText from '../../components/HelpText/HelpText';
-import {METRIC_NAMES, EPS_PARTNER_TPIDS, AVAILABLE_LOBS} from './constants';
 import {
+    EPS_PARTNER_TPIDS,
+    AVAILABLE_LOBS,
+    NATIVE_VIEW_LABEL,
+    GRAFANA_VIEW_LABEL,
+    SHOPPING_RATES_LABEL,
+    VIEW_TYPES,
+    RATE_METRICS,
+    SHOPPING_METRICS,
+    LOGIN_RATES_LABEL
+} from './constants';
+import {
+    getBrandUnsupportedMessage,
+    getFetchErrorMessage,
+    isMetricGroupSelected,
+    isViewSelected,
     getWidgetXAxisTickGap,
     shouldShowTooltip,
     successRatesRealTimeObject,
     buildSuccessRateApiQueryString,
     getIntervalInMinutes,
     getAllAvailableLOBs,
-    getQueryParams
+    getQueryParams,
+    getRateMetrics
 } from './utils';
-import {getErrorMessage} from './constants';
 import './styles.less';
-import Annotations from '../../components/Annotations/Annotations';
-import DateFiltersWrapper from '../../components/DateFiltersWrapper/DateFiltersWrapper';
-import ResetButton from '../../components/ResetButton';
-import LagIndicator from '../../components/LagIndicator';
-import {triggerEdapPageView} from '../../edap';
-import GrafanaDashboard from '../../components/GrafanaDashboard';
 
 
 const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, location}) => {
     const selectedBrand = selectedBrands[0];
-    const {search} = useLocation();
-    const {initialStart, initialEnd, initialTimeRange, initialLobs} = getQueryParams(search);
+    const [isSupportedBrand, setIsSupportedBrand] = useState(false);
 
+    // initial states based on url query values
+    const {search} = useLocation();
+    const {
+        initialStart, initialEnd, initialTimeRange, initialLobs,
+        initialMetricGroup, initialViewType
+    } = getQueryParams(search);
+
+    // filter states
+    const [viewType, setViewType] = useState(initialViewType);
+    const [metricGroup, setMetricGroup] = useState(initialMetricGroup);
+    const [selectedEPSPartner, setSelectedEPSPartner] = useState('');
+
+    // real time data states
     const [realTimeTotals, setRealTimeTotals] = useState({});
     const [isRttLoading, setIsRttLoading] = useState(true);
     const [rttError, setRttError] = useState('');
 
+    // chart widget states
     const [widgets, setWidgets] = useState([]);
     const [lobWidgets, setLoBWidgets] = useState([]);
     const [currentWidgets, setCurrentWidgets] = useState([]);
+
+    // line of business states
     const [isLoBAvailable, setIsLoBAvailable] = useState(true);
     const [selectedLobs, setSelectedLobs] = useState(initialLobs);
 
+    // api fetch states
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
+
+    // date time range picker states
     const [pendingStart, setPendingStart] = useState(initialStart);
     const [pendingEnd, setPendingEnd] = useState(initialEnd);
     const [start, setStart] = useState(initialStart);
     const [end, setEnd] = useState(initialEnd);
-
-    const [isDirtyForm, setIsDirtyForm] = useState(false);
     const [currentTimeRange, setCurrentTimeRange] = useState(initialTimeRange);
     const [pendingTimeRange, setPendingTimeRange] = useState(initialTimeRange);
-    const [isFormDisabled, setIsFormDisabled] = useState(false);
-    const [isSupportedBrand, setIsSupportedBrand] = useState(false);
-    const [isZoomedIn, setIsZoomedIn] = useState(false);
-    const [isGrafanaView, setIsGrafanaView] = useState(false);
+    const [isDirtyForm, setIsDirtyForm] = useState(false);
 
+    // chart states
+    const [isZoomedIn, setIsZoomedIn] = useState(false);
     const [refAreaLeft, setRefAreaLeft] = useState('');
     const [refAreaRight, setRefAreaRight] = useState('');
     const [chartLeft, setChartLeft] = useState('dataMin');
     const [chartRight, setChartRight] = useState('dataMax');
 
-    // annotations state
+    // annotations states
     const [enableAnnotations, setEnableAnnotations] = useState(false);
     const [filteredAnnotations, setFilteredAnnotations] = useState([]);
 
-    const [selectedEPSPartner, setSelectedEPSPartner] = useState('');
-    const productMapping = useFetchProductMapping(start, end);
+    // refs
+    const rttRef = useRef();
+    const didMount = useRef(false);
+
+
+    // -----------
+    // HOOKS
+    // ___________
+
+    const productMapping = useFetchProductMapping(start, end, viewType, metricGroup);
 
     useQueryParamChange(onBrandChange);
+
     useSelectedBrand(selectedBrand, prevSelectedBrand);
+
+    useAddToUrl(selectedBrands, viewType, metricGroup, start, end, selectedLobs, pendingStart, pendingEnd);
 
     const {
         handleMouseDown,
@@ -116,15 +160,12 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
         getIntervalInMinutes(start, end)
     );
 
-    const rttRef = useRef();
-    const didMount = useRef(false);
-
     useEffect(() => {
         triggerEdapPageView(location.pathname);
     }, [location.pathname]);
 
     useEffect(() => {
-        if ([EG_BRAND, EGENCIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND].includes(selectedBrand)) {
+        if (metricGroup === LOGIN_RATES_LABEL || [EG_BRAND, EGENCIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND].includes(selectedBrand)) {
             setIsLoBAvailable(false);
             setSelectedLobs([]);
         } else {
@@ -137,18 +178,15 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
                 didMount.current = true;
             }
         }
-    }, [selectedBrand]);
+    }, [selectedBrand, metricGroup]);
 
     // Fetch Delta User Info
     useEffect(() => {
         if ([EG_BRAND, EGENCIA_BRAND].includes(selectedBrand)) {
             setIsSupportedBrand(false);
-            setError(getErrorMessage(selectedBrand));
-            setIsFormDisabled(true);
-        } else {
+        } else if (viewType === NATIVE_VIEW_LABEL && isMetricGroupSelected(metricGroup)) {
             setIsSupportedBrand(true);
             setError(null);
-            setIsFormDisabled(false);
             if (!isZoomedIn) { // we need this flag right after zoomed in so that we don't re-fetch because it filters on existing data
                 const {label: pageBrand, funnelBrand} = getBrand(selectedBrand, 'label');
                 setIsLoading(true);
@@ -157,7 +195,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
                 const endpoint = buildSuccessRateApiQueryString({start, end, brand: funnelBrand, EPSPartner: selectedEPSPartner, interval});
                 Promise.all([
                     fetch(`/v1/delta-users-counts-by-metrics?brand=${funnelBrand}&from_date=${moment(start).utc().format()}&to_date=${moment(end).utc().format()}&${selectedLobs.map((l) => `line_of_business=${l.value}`).join('&')}`),
-                    ...METRIC_NAMES.map((metricName) => fetch(`${endpoint}&metricName=${metricName}`))
+                    ...getRateMetrics(metricGroup).map(({metricName}) => fetch(`${endpoint}&metricName=${metricName}`))
                 ])
                     .then((responses) => Promise.all(responses.map(checkResponse)))
                     .then(([deltaUserData, ...fetchedSuccessRates]) => {
@@ -167,50 +205,40 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
                         }
 
                         const successRatesLOBs = getAllAvailableLOBs(AVAILABLE_LOBS);
-                        const widgetObjects = makeSuccessRatesObjects(fetchedSuccessRates, start, end, pageBrand, deltaUserData);
-                        const widgetLOBObjects = makeSuccessRatesLOBObjects(fetchedSuccessRates, start, end, pageBrand, selectedBrand, successRatesLOBs, deltaUserData);
+                        const widgetObjects = makeSuccessRatesObjects(fetchedSuccessRates, start, end, pageBrand, deltaUserData, metricGroup);
+                        const widgetLOBObjects = makeSuccessRatesLOBObjects(fetchedSuccessRates, start, end, pageBrand, selectedBrand, successRatesLOBs, deltaUserData, metricGroup);
                         setWidgets(widgetObjects);
                         setLoBWidgets(widgetLOBObjects);
                     })
-                    .catch((err) => {
-                        let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
-                            ? `Query has timed out. Try refreshing the page. If the problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`
-                            : `An unexpected error has occurred. Try refreshing the page. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`;
-                        setError(errorMessage);
-                        // eslint-disable-next-line no-console
-                        console.error(err);
-                    })
+                    .catch((err) => setError(getFetchErrorMessage(err)))
                     .finally(() => setIsLoading(false));
             }
+        } else {
+            setIsSupportedBrand(true);
         }
 
         return function cleanup() {
             setIsZoomedIn(false); // set to false so that it fetch data when changing brands
         };
-    }, [selectedBrand, start, end, selectedEPSPartner, selectedLobs]);
+    }, [selectedBrand, start, end, selectedEPSPartner, selectedLobs, metricGroup, viewType]);
 
     useEffect(() => {
         const fetchRealTimeData = () => {
-            setIsRttLoading(true);
-            setRttError('');
-            const rttStart = moment().utc().subtract(11, 'minute').startOf('minute').format();
-            const rttEnd = moment().utc().subtract(1, 'minute').startOf('minute').format();
-            const {funnelBrand} = getBrand(selectedBrand, 'label');
-            const endpoint = buildSuccessRateApiQueryString({rttStart, rttEnd, brand: funnelBrand, EPSPartner: selectedEPSPartner, interval: 1});
+            if (viewType === NATIVE_VIEW_LABEL && isMetricGroupSelected(metricGroup)) {
+                setIsRttLoading(true);
+                setRttError('');
+                const rttStart = moment().utc().subtract(11, 'minute').startOf('minute').format();
+                const rttEnd = moment().utc().subtract(1, 'minute').startOf('minute').format();
+                const {funnelBrand} = getBrand(selectedBrand, 'label');
+                const endpoint = buildSuccessRateApiQueryString({rttStart, rttEnd, brand: funnelBrand, EPSPartner: selectedEPSPartner, interval: 1});
 
-            Promise.all(METRIC_NAMES.map((metricName) => fetch(`${endpoint}&metricName=${metricName}`)))
-                .then((responses) => Promise.all(responses.map(checkResponse)))
-                .then((fetchedSuccessRates) => successRatesRealTimeObject(fetchedSuccessRates, selectedLobs, selectedBrand))
-                .then((realTimeData) => setRealTimeTotals(realTimeData))
-                .catch((err) => {
-                    let errorMessage = (err?.message?.includes('query-timeout limit exceeded'))
-                        ? `Query has timed out. Try refreshing the page. If the problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`
-                        : `An unexpected error has occurred. Try refreshing the page. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`;
-                    setRttError(errorMessage);
-                    // eslint-disable-next-line no-console
-                    console.error(err);
-                })
-                .finally(() => setIsRttLoading(false));
+                Promise.all(getRateMetrics(metricGroup).map(({metricName}) => fetch(`${endpoint}&metricName=${metricName}`)))
+                    .then((responses) => Promise.all(responses.map(checkResponse)))
+                    .then((fetchedSuccessRates) => successRatesRealTimeObject(fetchedSuccessRates, selectedLobs, selectedBrand, metricGroup))
+                    .then((realTimeData) => setRealTimeTotals(realTimeData))
+                    .catch((err) => setRttError(getFetchErrorMessage(err)))
+                    .finally(() => setIsRttLoading(false));
+            }
         };
         if (![EG_BRAND, EGENCIA_BRAND].includes(selectedBrand)) {
             fetchRealTimeData();
@@ -220,7 +248,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
         return function cleanup() {
             clearInterval(rttRef.current);
         };
-    }, [selectedLobs, selectedEPSPartner, selectedBrand]);
+    }, [selectedLobs, selectedEPSPartner, selectedBrand, metricGroup, viewType]);
 
     useEffect(() => {
         setCurrentWidgets(!selectedLobs.length
@@ -228,7 +256,10 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
             : lobWidgets);
     }, [selectedLobs, widgets, lobWidgets]);
 
-    useAddToUrl(selectedBrands, start, end, selectedLobs, pendingStart, pendingEnd);
+
+    // -----------
+    // HANDLERS
+    // ___________
 
     const handleDatetimeChange = ({start: startDateTimeStr, end: endDateTimeStr}, text) => {
         setPendingTimeRange(text || pendingTimeRange);
@@ -244,6 +275,10 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
         setRefAreaRight('');
         setIsZoomedIn(false);
     };
+
+    const handleViewTypeChange = (e) => setViewType(e);
+
+    const handleMetricChange = (e) => setMetricGroup(e);
 
     const handleApplyFilters = () => {
         setCurrentTimeRange(pendingTimeRange);
@@ -265,13 +300,16 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
 
     const handleLoBChange = (lobs) => setSelectedLobs(lobs || []);
 
-    const handleNativeGrafanaSwitch = () => setIsGrafanaView(!isGrafanaView);
-
     const handleEPSPartnerChange = (epsPartner) => {
         setSelectedEPSPartner(epsPartner === null
             ? ''
             : epsPartner.value);
     };
+
+
+    // -----------
+    // RENDERERS
+    // ___________
 
     const renderWidget = ({chartName, aggregatedData, pageBrand, minValue, metricName}) => (
         <TravelerMetricsWidget
@@ -292,25 +330,16 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
             formatYAxis={(value) => `${value.toFixed()}%`}
             minChartValue={minValue}
             maxChartValue={100}
-            selectedLoBs={chartName !== SUCCESS_RATES_PAGES_LIST[0] ? selectedLobs : []}
+            selectedLoBs={chartName !== SHOPPING_METRICS[0].chartName ? selectedLobs : []}
             annotations={enableAnnotations ? filteredAnnotations : []}
             stacked
         />
     );
 
-    const renderGrafanaDashboard = () => (
-        <GrafanaDashboard
-            selectedBrands={[selectedBrand]}
-            availableBrands={brandsWithGrafanaDashboard()}
-            name="success-rates"
-            url={getSuccessRateGrafanaDashboardByBrand(selectedBrand)}
-        />
-    );
-
-    const renderFilters = () => (
+    const renderSecondaryFilters = () => (
         <div className="filters-wrapper">
             {
-                selectedBrand === EXPEDIA_PARTNER_SERVICES_BRAND &&
+                metricGroup === SHOPPING_RATES_LABEL && selectedBrand === EXPEDIA_PARTNER_SERVICES_BRAND &&
                 <Select
                     classNamePrefix="eps-partner-select"
                     className="eps-partner-select-container"
@@ -323,7 +352,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
             }
             <div className="dynamic-filters-wrapper">
                 {
-                    isLoBAvailable &&
+                    metricGroup === SHOPPING_RATES_LABEL && isLoBAvailable &&
                     <Select
                         isMulti
                         classNamePrefix="lob-select"
@@ -344,7 +373,6 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
                 />
             </div>
             <DateFiltersWrapper
-                isFormDisabled={isFormDisabled}
                 pendingStart={pendingStart}
                 pendingEnd={pendingEnd}
                 handleApplyFilters={handleApplyFilters}
@@ -359,18 +387,25 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
         </div>
     );
 
+    const renderGrafanaDashboard = () => (
+        <GrafanaDashboard
+            selectedBrands={[selectedBrand]}
+            availableBrands={brandsWithGrafanaDashboard()}
+            name="success-rates"
+            url={getSuccessRateGrafanaDashboard(selectedBrand, metricGroup)}
+        />
+    );
+
     const renderSuccessRatesDashboard = () => (
         <>
-            {renderFilters()}
-            {isSupportedBrand && (
-                <RealTimeSummaryPanel
-                    realTimeTotals={realTimeTotals}
-                    isRttLoading={isRttLoading}
-                    rttError={rttError}
-                    tooltipLabel={'Latest real time success rate. Refreshes every minute.'}
-                    label={'Real Time Success Rates'}
-                />
-            )}
+            <RealTimeSummaryPanel
+                realTimeTotals={realTimeTotals}
+                isRttLoading ={isRttLoading}
+                rttError={rttError}
+                tooltipLabel={'Latest real time success rate. Refreshes every minute.'}
+                label={'Real Time Success Rates'}
+            />
+            {viewType === NATIVE_VIEW_LABEL && isMetricGroupSelected(metricGroup) && renderSecondaryFilters()}
             <LoadingContainer isLoading={isLoading} error={error} className="success-rates-loading-container">
                 <div className="success-rates-widget-container">
                     {currentWidgets.map(renderWidget)}
@@ -379,35 +414,54 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
         </>
     );
 
+    const renderDashboardHelpIcon = () => (
+        metricGroup === SHOPPING_RATES_LABEL && !isLoBAvailable && <HelpText text="Only for LOB Hotels" placement="top" />
+    );
 
-    const renderGrafanaViewSwitch = () => (
-        <div id="grafana-switch-container">
-            <Switch
-                name="grafanaView"
-                id="grafana-view"
-                checked={isGrafanaView}
-                onChange={handleNativeGrafanaSwitch}
-                size="sm"
-            />
-            <h4>{'Grafana View'}</h4>
+    const renderCharts = () => viewType === GRAFANA_VIEW_LABEL
+        ? renderGrafanaDashboard()
+        : renderSuccessRatesDashboard();
+
+    const renderDashboardHeader = () => (
+        <div className="dashboard-header-container">
+            <h1 className="page-title">
+                {'Success Rates'}{renderDashboardHelpIcon()}
+            </h1>
+            {isSupportedBrand && metricGroup === SHOPPING_RATES_LABEL && <LagIndicator selectedBrand={selectedBrand} />}
         </div>
     );
 
+    const renderDashboardBody = () => (
+        isSupportedBrand
+            ? isViewSelected(viewType) && isMetricGroupSelected(metricGroup) && renderCharts()
+            : <Alert className="loading-alert" msg={getBrandUnsupportedMessage(selectedBrand)} />
+    );
+
+    const renderViewRateSelectors = () => (
+        <div className="main-selectors-container">
+            <FilterDropDown
+                id="view-type-dropdown"
+                list={VIEW_TYPES}
+                selectedValue={viewType}
+                onClickHandler={handleViewTypeChange}
+                className="filter-dropdown"
+            />
+            <FilterDropDown
+                id="rate-type-dropdown"
+                list={RATE_METRICS}
+                selectedValue={metricGroup}
+                onClickHandler={handleMetricChange}
+                className="filter-dropdown"
+            />
+        </div>
+    );
+
+
     return (
         <div className="success-rates-container">
-            <div className="title-iframe-container">
-                <h1 className="page-title">
-                    {'Success Rates'}
-                    {!isLoBAvailable && <HelpText text="Only for LOB Hotels" placement="top" />}
-                    {brandsWithGrafanaDashboard()?.includes(selectedBrand) && renderGrafanaViewSwitch()}
-                </h1>
-                <LagIndicator selectedBrand={selectedBrand} />
-            </div>
-            {isGrafanaView
-                ? renderGrafanaDashboard()
-                : renderSuccessRatesDashboard()
-            }
-
+            {renderDashboardHeader()}
+            {renderViewRateSelectors()}
+            {renderDashboardBody()}
         </div>
     );
 };

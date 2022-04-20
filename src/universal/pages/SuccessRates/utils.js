@@ -1,9 +1,33 @@
 import moment from 'moment';
-import {EXPEDIA_BRAND, SUCCESS_RATES_PAGES_LIST, LOB_LIST} from '../../constants';
-import {AVAILABLE_LOBS} from './constants';
+import {OPXHUB_SUPPORT_CHANNEL, EXPEDIA_BRAND, LOB_LIST} from '../../constants';
+import {
+    AVAILABLE_LOBS,
+    LOGIN_METRICS,
+    LOGIN_RATES_LABEL,
+    RATE_METRICS,
+    SELECT_METRIC_LABEL,
+    SELECT_VIEW_LABEL,
+    SHOPPING_METRICS,
+    VIEW_TYPES
+} from './constants';
 import {mapBrandNames, validDateRange} from '../utils';
 import qs from 'query-string';
 
+
+export const getBrandUnsupportedMessage = (selectedBrand) => {
+    return `Success rates for ${selectedBrand} is not yet available.
+        If you have any questions, please ping ${OPXHUB_SUPPORT_CHANNEL} or leave a comment via our Feedback form.`;
+};
+
+export const getFetchErrorMessage = (err) => err.message && err.message.includes('query-timeout limit exceeded')
+    ? `Query has timed out. Try refreshing the page. If the problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`
+    : `An unexpected error has occurred. Try refreshing the page. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`;
+
+export const isMetricGroupSelected = (rateMetric) => RATE_METRICS.includes(rateMetric);
+
+export const isViewSelected = (viewType) => VIEW_TYPES.includes(viewType);
+
+export const getRateMetrics = (rateMetric) => rateMetric === LOGIN_RATES_LABEL ? LOGIN_METRICS : SHOPPING_METRICS;
 
 export const getWidgetXAxisTickGap = (timeRange) => [
     'Last 1 hour',
@@ -14,18 +38,18 @@ export const getWidgetXAxisTickGap = (timeRange) => [
 ].includes(timeRange) ? 20 : 5;
 
 export const shouldShowTooltip = (chartName, pageBrand, selectedLobs = []) => {
-    if (pageBrand === EXPEDIA_BRAND && chartName === SUCCESS_RATES_PAGES_LIST[3]) {
+    if (pageBrand === EXPEDIA_BRAND && chartName === SHOPPING_METRICS[3].chartName) {
         return 'Only for nonNativeApps';
-    } else if (selectedLobs.length && chartName === SUCCESS_RATES_PAGES_LIST[0]) {
+    } else if (selectedLobs.length && chartName === SHOPPING_METRICS[0].chartName) {
         return 'Only aggregated view is available for search';
     }
     return null;
 };
 
-const getSuccessRates = (currentSuccessRates, counter, selectedLobs, selectedBrand, label) => {
+const getSuccessRates = (currentSuccessRates, counter, selectedLobs, selectedBrand, chartName) => {
     const {successRatePercentagesData, brandWiseSuccessRateData} = currentSuccessRates[currentSuccessRates.length - counter];
     const isLOBSelected = !!selectedLobs.length;
-    const isHomeToSearch = label === SUCCESS_RATES_PAGES_LIST[0];
+    const isHomeToSearch = chartName === SHOPPING_METRICS[0].chartName;
     if (isHomeToSearch) {
         return brandWiseSuccessRateData;
     }
@@ -55,30 +79,31 @@ const isSuccessRatesNonEmpty = (successRates) => {
 };
 
 
-export const successRatesRealTimeObject = (fetchedSuccessRates = [], selectedLobs = [], selectedBrand) => {
-    const nextRealTimeTotals = SUCCESS_RATES_PAGES_LIST.reduce((acc, label) => {
-        acc[label] = 0;
+export const successRatesRealTimeObject = (fetchedSuccessRates = [], selectedLobs = [], selectedBrand, metricGroup) => {
+    const nextRealTimeTotals = getRateMetrics(metricGroup).reduce((acc, metric) => {
+        acc[metric.chartName] = 0;
         return acc;
     }, {});
 
-    SUCCESS_RATES_PAGES_LIST.forEach((label, i) => {
+    getRateMetrics(metricGroup).forEach((metric, i) => {
         const currentSuccessRates = fetchedSuccessRates[i];
+        const {chartName} = metric;
 
         if (!currentSuccessRates?.length) {
-            nextRealTimeTotals[label] = 'N/A';
+            nextRealTimeTotals[chartName] = 'N/A';
             return;
         }
 
         for (let counter = 1; counter <= currentSuccessRates.length; counter++) {
-            const successRates = getSuccessRates(currentSuccessRates, counter, selectedLobs, selectedBrand, label);
+            const successRates = getSuccessRates(currentSuccessRates, counter, selectedLobs, selectedBrand, chartName);
 
             if (isSuccessRatesNonEmpty(successRates)) {
-                nextRealTimeTotals[label] = getNextRealTimeTotals(successRates);
+                nextRealTimeTotals[chartName] = getNextRealTimeTotals(successRates);
                 break;
             }
 
             if (counter === currentSuccessRates.length) {
-                nextRealTimeTotals[label] = 0;
+                nextRealTimeTotals[chartName] = 0;
                 break;
             }
         }
@@ -124,21 +149,24 @@ export const getAllAvailableLOBs = (availableLOBs = []) => {
 };
 
 export const getQueryParams = (search) => {
-    const {from, to, lobs} = qs.parse(search, {decoder: (c) => c});
+    const {from, to, lobs, view, metric} = qs.parse(search);
     const initialLobs = lobs
         ? lobs.split(',').map((l) => LOB_LIST.find(({value}) => value === l)).filter((l) => l)
         : getAllAvailableLOBs(AVAILABLE_LOBS);
-
-    return validDateRange(from, to)
+    const initialDateRangePickerValues = validDateRange(from, to)
         ? {
             initialStart: moment(from),
             initialEnd: moment(to),
             initialTimeRange: 'Custom',
-            initialLobs
         } : {
             initialStart: moment().subtract(6, 'hours').startOf('minute'),
             initialEnd: moment(),
             initialTimeRange: 'Last 6 Hours',
-            initialLobs
         };
+    return {
+        ...initialDateRangePickerValues,
+        initialLobs,
+        initialViewType: VIEW_TYPES.includes(view) ? view : SELECT_VIEW_LABEL,
+        initialMetricGroup: RATE_METRICS.includes(metric) ? metric : SELECT_METRIC_LABEL
+    };
 };

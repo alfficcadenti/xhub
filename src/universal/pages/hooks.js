@@ -2,9 +2,10 @@ import {useEffect, useRef, useState} from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
 import qs from 'query-string';
 import moment from 'moment';
-import {getIntervalInMinutes} from '../pages/SuccessRates/utils';
-import {checkResponse, getAdjustedRefAreas, isInvalidRange} from './utils';
+import {getIntervalInMinutes, isMetricGroupSelected, isViewSelected} from '../pages/SuccessRates/utils';
 import {EG_BRAND, EGENCIA_BRAND} from '../constants';
+import {checkResponse, getAdjustedRefAreas, isInvalidRange} from './utils';
+import {NATIVE_VIEW_LABEL, GRAFANA_VIEW_LABEL} from './SuccessRates/constants';
 
 export const usePrevious = (value) => {
     const ref = useRef();
@@ -118,33 +119,37 @@ export const useZoomAndSynced = (
     };
 };
 
-export const useFetchProductMapping = (startDate, endDate) => {
+export const useFetchProductMapping = (startDate, endDate, viewType, metricGroup) => {
     const [productMapping, setProductMapping] = useState([]);
 
     useEffect(() => {
         const fetchProductMapping = () => {
-            const dateQuery = startDate && endDate
-                ? `from_datetime=${moment(startDate).utc().format()}&to_datetime=${moment(endDate).utc().format()}`
-                : '';
-            fetch(`/productMapping?${dateQuery}`)
-                .then(checkResponse)
-                .then((mapping) => {
-                    setProductMapping(mapping);
-                })
-                .catch((err) => {
-                    // eslint-disable-next-line no-console
-                    console.error(err);
-                });
+            if (viewType === NATIVE_VIEW_LABEL && isMetricGroupSelected(metricGroup)) {
+                const dateQuery = startDate && endDate
+                    ? `from_datetime=${moment(startDate).utc().format()}&to_datetime=${moment(endDate).utc().format()}`
+                    : '';
+                fetch(`/productMapping?${dateQuery}`)
+                    .then(checkResponse)
+                    .then((mapping) => {
+                        setProductMapping(mapping);
+                    })
+                    .catch((err) => {
+                        // eslint-disable-next-line no-console
+                        console.error(err);
+                    });
+            }
         };
 
         fetchProductMapping();
-    }, [startDate, endDate]);
+    }, [startDate, endDate, viewType, metricGroup]);
 
     return productMapping;
 };
 
 export const useAddToUrl = (
     selectedBrands,
+    viewType,
+    metricGroup,
     start,
     end,
     selectedLobs,
@@ -153,14 +158,21 @@ export const useAddToUrl = (
 ) => {
     const history = useHistory();
     const {pathname} = useLocation();
-
     useEffect(() => {
-        if (![EG_BRAND, EGENCIA_BRAND].includes(selectedBrands[0])) {
+        if (!isViewSelected(viewType) || !isMetricGroupSelected(metricGroup)) {
+            history.push(`${pathname}?selectedBrand=${selectedBrands[0]}`);
+        } else if (viewType === GRAFANA_VIEW_LABEL) {
             history.push(`${pathname}?selectedBrand=${selectedBrands[0]}`
+                + `&view=${viewType}`
+                + `&metric=${metricGroup}`);
+        } else if (![EG_BRAND, EGENCIA_BRAND].includes(selectedBrands[0])) {
+            history.push(`${pathname}?selectedBrand=${selectedBrands[0]}`
+                + `&view=${viewType}`
+                + `&metric=${metricGroup}`
                 + `&from=${encodeURIComponent(pendingStart?.format())}`
                 + `&to=${encodeURIComponent(pendingEnd?.format())}`
                 + `&lobs=${selectedLobs.map((l) => l.value).join(',')}`
             );
         }
-    }, [history, pathname, selectedBrands, start, end, selectedLobs, pendingStart, pendingEnd]);
+    }, [history, pathname, selectedBrands, metricGroup, viewType, start, end, selectedLobs, pendingStart, pendingEnd]);
 };

@@ -11,8 +11,8 @@ const GrafanaDashboard = ({selectedBrands = [], availableBrands = [], name, titl
 
     useEffect(() => {
         if (selectedBrand && !availableBrands.includes(selectedBrand)) {
-            setError(`${title} for ${selectedBrand} is not yet available.
-                The following brands are supported at this time: "${availableBrands.map((brand) => brand)}".
+            setError(`${title || 'This dashboard'} is not available yet for ${selectedBrand}.
+                The following brands are supported at this time: ${availableBrands.join(', ')}.
                 If you have any questions, please ping ${OPXHUB_SUPPORT_CHANNEL} or leave a comment via our Feedback form.`);
         } else {
             setError(null);

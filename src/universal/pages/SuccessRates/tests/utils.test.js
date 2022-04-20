@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import moment from 'moment';
-import {EXPEDIA_BRAND, SUCCESS_RATES_PAGES_LIST} from '../../../constants';
-import {AVAILABLE_LOBS} from '../constants';
+import {EXPEDIA_BRAND} from '../../../constants';
+import {AVAILABLE_LOBS, SHOPPING_METRICS} from '../constants';
 import {
     shouldShowTooltip,
     successRatesRealTimeObject,
@@ -15,8 +15,8 @@ import {successRateRealTimeMock} from '../mockData';
 
 describe('SuccessRates Util', () => {
     it('shouldShowTooltip', () => {
-        expect(shouldShowTooltip(SUCCESS_RATES_PAGES_LIST[3], EXPEDIA_BRAND, [])).to.equal('Only for nonNativeApps');
-        expect(shouldShowTooltip(SUCCESS_RATES_PAGES_LIST[0], null, [{value: 'H', label: 'Hotels'}])).to.equal('Only aggregated view is available for search');
+        expect(shouldShowTooltip(SHOPPING_METRICS[3].chartName, EXPEDIA_BRAND, [])).to.equal('Only for nonNativeApps');
+        expect(shouldShowTooltip(SHOPPING_METRICS[0].chartName, null, [{value: 'H', label: 'Hotels'}])).to.equal('Only aggregated view is available for search');
         expect(shouldShowTooltip()).to.eql(null);
     });
 });

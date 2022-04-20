@@ -58,7 +58,7 @@ export const getBrandQueryParam = (IMPULSE_MAPPING, globalBrandName) => {
     return '';
 };
 export const getRevLoss = (incident) => {
-    if (incident.estimatedImpact === null) {
+    if (!Array.isArray(incident?.estimatedImpact)) {
         return 'NA';
     }
     return [].concat(...incident.estimatedImpact.map((impacts) => impacts.lobs.map((losses) => losses.revenueLoss !== 'NA' ? parseFloat(losses.revenueLoss) : 'NA'))).reduce((a, b) => a + b, 0);

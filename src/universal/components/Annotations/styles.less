@@ -21,15 +21,23 @@
     }
 
     .display-annotations-btn {
-        margin: 0 @spacing-1x 0 @spacing-1x;
-        min-height: @spacing-7x;
+        margin-right: @spacing-1x;
+        min-height: 55px;
+        height: 55px;
         font-size: 12px;
         line-height: @spacing-2x;
+        border: @border-color-dark 1px solid;
         box-shadow: none;
         border-radius: @spacing-1x;
 
+        &.active {
+            background: @color-bg-accent;
+            border-radius: @spacing-1x @spacing-1x 0 0;
+            border: @border-color-dark 1px solid;
+        }
+
         &:hover {
-            box-shadow: none;
+            background: @color-bg-accent;
         }
     }
 
@@ -42,7 +50,7 @@
         border-radius: @spacing-1x;
         padding: @spacing-1x;
         z-index: 100;
-        margin-left: @spacing-1x;
+        margin-top: -9px;
         border-top-left-radius: 0;
 
         .annotations-filters-container {

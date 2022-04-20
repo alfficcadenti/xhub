@@ -1,10 +1,10 @@
 import React from 'react';
 import {expect} from 'chai';
-import {mount} from 'enzyme';
-import SuccessRates from '../';
-import {EG_BRAND} from '../../../constants';
 import {BrowserRouter as Router} from 'react-router-dom';
-import {getErrorMessage} from '../constants';
+import {render, act, screen} from '@testing-library/react';
+import SuccessRates from '../';
+import {EGENCIA_BRAND} from '../../../constants';
+import {getBrandUnsupportedMessage} from '../utils';
 
 
 global.fetch = require('node-fetch');
@@ -19,33 +19,22 @@ jest.mock('react-router-dom', () => {
         useLocation: () => ({
             pathname: '/test',
             hash: '',
-            search: '',
+            search: '?selectedBrand=Expedia&view=Native%20View&metric=Login%20Success%20Rates',
             state: ''
         }),
     };
 });
 
-describe('SuccessRates component testing', () => {
-    let wrapper;
-
-    beforeEach(() => {
-        wrapper = mount(<Router>
-            <SuccessRates selectedBrands={[EG_BRAND]} />
-        </Router>);
-    });
-
-    afterEach(() => {
-        wrapper.unmount();
-    });
-
-    it('renders successfully', () => {
-        expect(wrapper).to.have.length(1);
-    });
-
-    it('LoadingContainer should have right props', async () => {
-        wrapper.setProps({selectedBrands: [EG_BRAND]});
-        const props = wrapper.find('.success-rates-loading-container').at(0).props();
-        expect(props.isLoading).equal(true);
-        expect(props.error).equal(getErrorMessage(EG_BRAND));
+describe('SuccessRates Dashboard', () => {
+    it('renders error message for unsupported brands', async () => {
+        await act(async () => {
+            render(
+                <Router>
+                    <SuccessRates selectedBrands={[EGENCIA_BRAND]} onBrandChange={() => {}} />
+                </Router>
+            );
+        });
+        const inputs = screen.getByText(/Success rates for Egencia is not yet available/);
+        expect(inputs.innerHTML).equal(getBrandUnsupportedMessage(EGENCIA_BRAND));
     });
 });

@@ -1,10 +1,10 @@
 import React from 'react';
 import {expect} from 'chai';
 import {mount} from 'enzyme';
+import {BrowserRouter as Router} from 'react-router-dom';
 import FunnelView from '../';
 import {EG_BRAND} from '../../../constants';
-import {BrowserRouter as Router} from 'react-router-dom';
-import {getErrorMessage} from '../constants';
+import {getErrorMessage} from '../utils';
 
 
 global.fetch = require('node-fetch');

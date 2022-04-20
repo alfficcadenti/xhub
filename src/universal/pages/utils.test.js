@@ -28,7 +28,7 @@ import {
     getChartDataForFutureEvents,
     getResetGraphTitle,
     getPageViewsGrafanaDashboardByBrand,
-    getSuccessRateGrafanaDashboardByBrand,
+    getSuccessRateGrafanaDashboard,
     brandsWithGrafanaDashboard,
     DEFAULT_DAY_RANGE, mapGroupedData, checkIsContentPercentage, threeWeekComparison,
     getLobDeltaUserCount,
@@ -41,11 +41,12 @@ import {
     HOTELS_COM_BRAND,
     EXPEDIA_BRAND,
     EGENCIA_BRAND,
-    EXPEDIA_PARTNER_SERVICES_BRAND,
-    SUCCESS_RATES_PAGES_LIST
+    EXPEDIA_PARTNER_SERVICES_BRAND
 } from '../constants';
 import moment from 'moment';
 import {successRatesMockData, deltaUserMock} from './SuccessRates/mockData';
+import {LOGIN_RATES_LABEL, SHOPPING_RATES_LABEL} from './SuccessRates/constants';
+import {getRateMetrics} from './SuccessRates/utils';
 
 
 describe('divisionToBrand', () => {
@@ -536,15 +537,15 @@ describe('makeSuccessRatesObjects()', () => {
     const start = moment('2020-08-10');
     const end = moment('2020-08-11');
     it('creates an array with one element for each page view in PAGES_LIST', () => {
-        expect(makeSuccessRatesObjects([[], [], [], []], start, end, EXPEDIA_BRAND, EXPEDIA_BRAND)).to.have.length(SUCCESS_RATES_PAGES_LIST.length);
+        expect(makeSuccessRatesObjects([[], [], [], []], start, end, EXPEDIA_BRAND, EXPEDIA_BRAND)).to.have.length(getRateMetrics().length);
     });
 
     it('returns array with objects if no inputs are passed', () => {
         const emptyPageViewsMockResults = [
-            {aggregatedData: [], minValue: 0, pageBrand: '', chartName: 'Home To Search Page (SERP)', metricName: ''},
-            {aggregatedData: [], minValue: 0, pageBrand: '', chartName: 'Search (SERP) To Property Page (PDP)', metricName: ''},
-            {aggregatedData: [], minValue: 0, pageBrand: '', chartName: 'Property (PDP) To Checkout Page (CKO)', metricName: ''},
-            {aggregatedData: [], minValue: 0, pageBrand: '', chartName: 'Checkout (CKO) To Checkout Confirmation Page', metricName: ''}];
+            {aggregatedData: [], minValue: 0, pageBrand: '', chartName: 'Home To Search Page (SERP)', metricName: 'SearchSuccessRate'},
+            {aggregatedData: [], minValue: 0, pageBrand: '', chartName: 'Search (SERP) To Property Page (PDP)', metricName: 'SERPSuccessRate'},
+            {aggregatedData: [], minValue: 0, pageBrand: '', chartName: 'Property (PDP) To Checkout Page (CKO)', metricName: 'PDPSuccessRate'},
+            {aggregatedData: [], minValue: 0, pageBrand: '', chartName: 'Checkout (CKO) To Checkout Confirmation Page', metricName: 'checkoutSuccessRate'}];
 
         expect(makeSuccessRatesObjects()).to.eql(emptyPageViewsMockResults);
     });
@@ -691,13 +692,15 @@ describe('getPageViewsGrafanaDashboardByBrand()', () => {
     });
 });
 
-describe('getSuccessRateGrafanaDashboardByBrand()', () => {
+describe('getSuccessRateGrafanaDashboard()', () => {
     it('returns endpoint for expedia grafana dashboard', () => {
-        expect(getSuccessRateGrafanaDashboardByBrand(EXPEDIA_BRAND)).to.equal('https://opex-grafana.expedia.biz/d/3-CbFic7z/expedia-success-rate?orgId=2&theme=light');
+        expect(getSuccessRateGrafanaDashboard(EXPEDIA_BRAND, SHOPPING_RATES_LABEL)).to.equal('https://opex-grafana.expedia.biz/d/3-CbFic7z/expedia-success-rate?orgId=2&theme=light');
+        expect(getSuccessRateGrafanaDashboard(EXPEDIA_BRAND, LOGIN_RATES_LABEL)).to.equal('https://opex-grafana.expedia.biz/d/ZpygTf8nk/expedia-login-success-rate?orgId=2&theme=light');
     });
 
     it('returns empty string for EXPEDIA_PARTNER_SERVICES_BRAND', () => {
-        expect(getSuccessRateGrafanaDashboardByBrand(EXPEDIA_PARTNER_SERVICES_BRAND)).to.equal('');
+        expect(getSuccessRateGrafanaDashboard(EXPEDIA_PARTNER_SERVICES_BRAND, SHOPPING_RATES_LABEL)).to.equal('');
+        expect(getSuccessRateGrafanaDashboard(EXPEDIA_PARTNER_SERVICES_BRAND, LOGIN_RATES_LABEL)).to.equal('');
     });
 });
 
