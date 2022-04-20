@@ -28,7 +28,7 @@ import {Checkbox, Switch} from '@homeaway/react-form-components';
 import {IncidentDetails} from './tabs/BookingTrends';
 import AnomalyDetails from './tabs/BookingTrends/sections/AnomalyTable/AnomalyDetails';
 import BookingsDataTable from './tabs/BookingTrends/sections/BookingChart/BookingsDataTable';
-import {getValue} from '../utils';
+import {getPresetValue} from '../utils';
 import {Dropdown, DropdownItem} from '@homeaway/react-dropdown';
 import GroupedBookingTrends from './tabs/BookingTrends/sections/BookingChartGrouped/GroupedBookingTrends';
 import html2canvas from 'html2canvas';
@@ -73,11 +73,11 @@ const navLinks = [
 ];
 
 const getPresets = () => [
-    {text: 'Last 5 Minutes', value: getValue(6, 'minute')},
-    {text: 'Last 15 Minutes', value: getValue(15, 'minute')},
-    {text: 'Last 60 Minutes', value: getValue(60, 'minute')},
-    {text: 'Last 4 Hours', value: getValue(4, 'hours')},
-    {text: 'Last 24 Hours', value: getValue(23.98, 'hours')},
+    {text: 'Last 5 Minutes', value: getPresetValue(6, 'minute')},
+    {text: 'Last 15 Minutes', value: getPresetValue(15, 'minute')},
+    {text: 'Last 60 Minutes', value: getPresetValue(60, 'minute')},
+    {text: 'Last 4 Hours', value: getPresetValue(4, 'hours')},
+    {text: 'Last 24 Hours', value: getPresetValue(23.98, 'hours')},
 
 ];
 

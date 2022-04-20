@@ -15,7 +15,7 @@ import {REGIONS} from './constants';
 import './styles.less';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
 import AvailabilityHeader from './AvailabilityHeader';
-import {DATE_FORMAT, DATETIME_FORMAT, API_UTC_FORMAT} from './constants';
+import {DATE_FORMAT, DATETIME_FORMAT, API_UTC_FORMAT, PST_TIMEZONE} from './constants';
 
 const regions = [{
     name: 'all',
@@ -55,7 +55,10 @@ const CGPAvailibility = () => {
         const getNewData = () => {
             setIsLoading(true);
             setError('');
-            const url = `/v1/application-availability/filters?from_date=${start.format(API_UTC_FORMAT)}&to_date=${end.format(API_UTC_FORMAT)}&aws_region=${getSelectedRegions(selectedRegionFilter)}`;
+            const url = '/v1/application-availability/filters'
+                + `?from_date=${start.utc().format(API_UTC_FORMAT)}`
+                + `&to_date=${end.utc().format(API_UTC_FORMAT)}`
+                + `&aws_region=${getSelectedRegions(selectedRegionFilter)}`;
             const fetchAPI = async () => {
                 try {
                     const res = await fetch(url);
@@ -148,19 +151,40 @@ const CGPAvailibility = () => {
     };
 
     const handleHeaderClick = (header) => {
-        if (moment(header, DATE_FORMAT).isValid()) {
-            const newStart = moment(header, DATE_FORMAT).tz('America/Los_Angeles').hours(0).minutes(0).seconds(0);
-            const newEnd = moment(header, DATE_FORMAT).tz('America/Los_Angeles').hours(23).minutes(59).seconds(0);
-            setPendingEnd(newStart);
-            setPendingEnd(newEnd);
-            setStart(newStart);
-            setEnd(newEnd);
+        if (end.diff(start, 'hours') < 1) {
+            return;
         }
+        let newStart;
+        let newEnd;
+        if (end.diff(start, 'days') >= 1) {
+            // Set range for 24 hours
+            newStart = moment(header, DATE_FORMAT).hours(0).minutes(0).seconds(0);
+            newEnd = newStart.clone().hours(23).minutes(59).seconds(59);
+        } else {
+            // Set range for 1 hour
+            const headerTime = moment(header, 'hh:mm');
+            newStart = moment(start).tz(PST_TIMEZONE, true).hours(headerTime.get('hours')).minutes(0).seconds(0);
+            newEnd = newStart.clone().add(59, 'minutes').seconds(59);
+        }
+        setPendingStart(newStart);
+        setPendingEnd(newEnd);
+        setStart(newStart.clone());
+        setEnd(newEnd.clone());
     };
 
     const headers = () => {
-        const columns = availability?.length ? extractColumns(availability, end.diff(start, 'days') >= 1 ? 'Do MMM YY' : 'HH:mm') : [];
-        return columns.length ? columns.reduce((a, content) => ({...a, [content]: <AvailabilityHeader content={content} dateTimeFormat={dateTimeFormat} handleHeaderClick={handleHeaderClick} />}), {}) : {};
+        const format = end.diff(start, 'days') >= 1 ? DATE_FORMAT : DATETIME_FORMAT;
+        const columns = extractColumns(availability, format);
+        return columns.reduce((a, content) => ({
+            ...a,
+            [content]: (
+                <AvailabilityHeader
+                    content={content}
+                    handleHeaderClick={handleHeaderClick}
+                    enableHeaderClick={end.diff(start, 'hours') >= 1}
+                />
+            )
+        }), {});
     };
 
     const renderFilters = () => (
@@ -232,8 +256,8 @@ const CGPAvailibility = () => {
             {!kioskMode && renderFilters()}
             <LoadingContainer isLoading={isLoading} error={error}>
                 <DataTable
-                    data={filteredAvailability?.length && filteredAvailability || []}
-                    columns={availability?.length ? extractColumns(availability, dateTimeFormat) : []}
+                    data={filteredAvailability}
+                    columns={extractColumns(availability, dateTimeFormat)}
                     columnHeaders={headers()}
                     sortByColumn = "Availability"
                     sortByDirection = "asc"

@@ -534,16 +534,16 @@ const getNowDate = () => moment().endOf('minute').toDate();
 
 const getLastDate = (value, unit) => moment().subtract(value, unit).startOf('minute').toDate();
 
-export const getValue = (value, unit) => ({start: getLastDate(value, unit), end: getNowDate()});
+export const getPresetValue = (value, unit) => ({start: getLastDate(value, unit), end: getNowDate()});
 
 export const getPresets = () => [
-    {text: 'Last 15 minutes', value: getValue(15, 'minutes')},
-    {text: 'Last 30 minutes', value: getValue(30, 'minutes')},
-    {text: 'Last 1 hour', value: getValue(1, 'hour')},
-    {text: 'Last 3 hours', value: getValue(3, 'hours')},
-    {text: 'Last 6 hours', value: getValue(6, 'hours')},
-    {text: 'Last 12 hours', value: getValue(12, 'hours')},
-    {text: 'Last 24 hours', value: getValue(24, 'hours')}
+    {text: 'Last 15 minutes', value: getPresetValue(15, 'minutes')},
+    {text: 'Last 30 minutes', value: getPresetValue(30, 'minutes')},
+    {text: 'Last 1 hour', value: getPresetValue(1, 'hour')},
+    {text: 'Last 3 hours', value: getPresetValue(3, 'hours')},
+    {text: 'Last 6 hours', value: getPresetValue(6, 'hours')},
+    {text: 'Last 12 hours', value: getPresetValue(12, 'hours')},
+    {text: 'Last 24 hours', value: getPresetValue(24, 'hours')}
 ];
 
 export const getTableNumValue = (row, property) => row && property && row[property] !== null ? row[property] : '-';

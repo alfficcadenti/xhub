@@ -1,5 +1,5 @@
 import qs from 'query-string';
-import {validDateRange, getUrlParam, getValue} from '../utils';
+import {validDateRange, getUrlParam, getPresetValue} from '../utils';
 import moment from 'moment';
 import {getOrDefault} from '../../utils';
 import {DATE_FORMAT, ALL_PROJECTS_OPTION, ALL_STATUSES_OPTION} from '../../constants';
@@ -83,11 +83,11 @@ export const mapIssues = (x) => {
 };
 
 export const getPresets = () => [
-    {text: 'Last 24 hours', value: getValue(24, 'hours')},
-    {text: 'Last 7 days', value: getValue(7, 'days')},
-    {text: 'Last 14 days', value: getValue(14, 'days')},
-    {text: 'Last 30 days', value: getValue(30, 'days')},
-    {text: 'Last 60 days', value: getValue(60, 'days')},
-    {text: 'Last 90 days', value: getValue(90, 'days')},
-    {text: 'Last 1 year', value: getValue(1, 'year')}
+    {text: 'Last 24 hours', value: getPresetValue(24, 'hours')},
+    {text: 'Last 7 days', value: getPresetValue(7, 'days')},
+    {text: 'Last 14 days', value: getPresetValue(14, 'days')},
+    {text: 'Last 30 days', value: getPresetValue(30, 'days')},
+    {text: 'Last 60 days', value: getPresetValue(60, 'days')},
+    {text: 'Last 90 days', value: getPresetValue(90, 'days')},
+    {text: 'Last 1 year', value: getPresetValue(1, 'year')}
 ];

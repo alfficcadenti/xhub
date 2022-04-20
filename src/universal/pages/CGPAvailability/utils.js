@@ -1,12 +1,12 @@
-import moment from 'moment';
-import {getOrDefault} from '../../utils';
-import {getValue} from '../utils';
-import {THRESHOLDS, DATE_FORMAT} from './constants.js';
-import AvailabilityCell from './AvailabilityCell';
 import React from 'react';
 import qs from 'query-string';
+import moment from 'moment';
+import {getOrDefault} from '../../utils';
+import {getPresetValue} from '../utils';
+import {THRESHOLDS, DATE_FORMAT, PST_TIMEZONE} from './constants.js';
+import AvailabilityCell from './AvailabilityCell';
 
-// eslint-disable-next-line complexity
+
 export const defineClassByValue = (value) => {
     if (typeof value !== 'number') {
         return '';
@@ -31,7 +31,9 @@ export const periodAvailability = (availabilities) => {
     return formattedValue((periodSummary.totalRequests - periodSummary.errorsCount) / periodSummary.totalRequests * 100);
 };
 
-export const extractColumns = (data = [], dateTimeFormat) => ['Application', ...data[0]?.availabilities?.map((item) => item && moment(item.timestamp).format(dateTimeFormat)) || [], 'Availability'];
+export const extractColumns = (data, dateTimeFormat) => data?.length
+    ? ['Application', ...data[0].availabilities?.map((item) => item && moment.tz(item.timestamp, PST_TIMEZONE).format(dateTimeFormat)) || [], 'Availability']
+    : [];
 
 export const exactAvailability = (availability, requestCount) => {
     if (requestCount) {
@@ -52,7 +54,7 @@ export const mapAvailabilityRow = (row = {}, handleClick, dateTimeFormat = DATE_
                 Availability: <AvailabilityCell value={periodAvailability(availabilities)} applicationName={app} handleClick={handleClick}/>,
                 avgValue: periodAvailability(availabilities)
             },
-            ...availabilities.map((x) => ({[moment(x.timestamp).format(dateTimeFormat)]: <AvailabilityCell value={exactAvailability(x.availability, x.requestCount)} applicationName={app} handleClick={handleClick}/>}))
+            ...availabilities.map((x) => ({[moment.tz(x.timestamp, PST_TIMEZONE).format(dateTimeFormat)]: <AvailabilityCell value={exactAvailability(x.availability, x.requestCount)} applicationName={app} handleClick={handleClick}/>}))
         );
 };
 
@@ -61,11 +63,12 @@ export const getAppErrorsDataForChart = (applicationName = '', availability = []
 export const getSelectedRegions = (regionsObj) => (regionsObj?.length ? regionsObj.filter((x) => x.counted && x.checked).map((x) => x.name) : '');
 
 export const getPresets = () => [
-    {text: 'Last 24 Hours', value: getValue(23.98, 'hours')},
-    {text: 'Last 3 days', value: getValue(3, 'days')},
-    {text: 'Last 7 days', value: getValue(7, 'days')},
-    {text: 'Last 15 days', value: getValue(15, 'days')},
-    {text: 'Last 30 days', value: getValue(30, 'days')},
+    {text: 'Last 1 Hour', value: getPresetValue(59, 'minutes', 5, 'minutes')},
+    {text: 'Last 24 Hours', value: getPresetValue(1439, 'minutes', 1, 'hour')},
+    {text: 'Last 3 days', value: getPresetValue(3, 'days', 1, 'day')},
+    {text: 'Last 7 days', value: getPresetValue(7, 'days', 1, 'day')},
+    {text: 'Last 15 days', value: getPresetValue(15, 'days', 1, 'day')},
+    {text: 'Last 30 days', value: getPresetValue(30, 'days', 1, 'day')},
 ];
 
 export const getQueryValues = (search) => {

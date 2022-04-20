@@ -115,7 +115,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="03/31/2022 08:43 PM"
+                        value="04/12/2022 09:55 PM"
                       />
                     </div>
                   </div>
@@ -135,7 +135,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="04/07/2022 08:43 PM"
+                        value="04/19/2022 09:55 PM"
                       />
                     </div>
                   </div>
@@ -184,6 +184,17 @@ Object {
                   id="rdt-preset-dropdown--container"
                   role="dialog"
                 >
+                  <li
+                    role="presentation"
+                  >
+                    <a
+                      data-bypass="false"
+                      href="#"
+                    >
+                       
+                      Last 1 Hour
+                    </a>
+                  </li>
                   <li
                     role="presentation"
                   >
@@ -1124,6 +1135,31 @@ Object {
                           class="availability-header-cell"
                         >
                           Application
+                          <div
+                            class="pointer search-icon"
+                            role="button"
+                            tabindex="0"
+                          >
+                            <span
+                              class="SVGIcon SVGIcon--16px SVGIcon--inline"
+                            >
+                              <svg
+                                data-id="SVG_SEARCH__16"
+                                focusable="false"
+                                height="16"
+                                viewBox="0 0 16 16"
+                                width="16"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M11.8 8a5 5 0 0 0-.7-3.7A4.9 4.9 0 0 0 7 2a5 5 0 0 0-2.7 9 5 5 0 0 0 6.2-.6m0 0l3.4 3.4"
+                                  fill="none"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                              </svg>
+                            </span>
+                          </div>
                         </div>
                       </span>
                       <span
@@ -1851,6 +1887,31 @@ Object {
                           class="availability-header-cell"
                         >
                           Availability
+                          <div
+                            class="pointer search-icon"
+                            role="button"
+                            tabindex="0"
+                          >
+                            <span
+                              class="SVGIcon SVGIcon--16px SVGIcon--inline"
+                            >
+                              <svg
+                                data-id="SVG_SEARCH__16"
+                                focusable="false"
+                                height="16"
+                                viewBox="0 0 16 16"
+                                width="16"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M11.8 8a5 5 0 0 0-.7-3.7A4.9 4.9 0 0 0 7 2a5 5 0 0 0-2.7 9 5 5 0 0 0 6.2-.6m0 0l3.4 3.4"
+                                  fill="none"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                              </svg>
+                            </span>
+                          </div>
                         </div>
                       </span>
                       <span
@@ -2254,7 +2315,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="03/31/2022 08:43 PM"
+                      value="04/12/2022 09:55 PM"
                     />
                   </div>
                 </div>
@@ -2274,7 +2335,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="04/07/2022 08:43 PM"
+                      value="04/19/2022 09:55 PM"
                     />
                   </div>
                 </div>
@@ -2323,6 +2384,17 @@ Object {
                 id="rdt-preset-dropdown--container"
                 role="dialog"
               >
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Last 1 Hour
+                  </a>
+                </li>
                 <li
                   role="presentation"
                 >
@@ -3263,6 +3335,31 @@ Object {
                         class="availability-header-cell"
                       >
                         Application
+                        <div
+                          class="pointer search-icon"
+                          role="button"
+                          tabindex="0"
+                        >
+                          <span
+                            class="SVGIcon SVGIcon--16px SVGIcon--inline"
+                          >
+                            <svg
+                              data-id="SVG_SEARCH__16"
+                              focusable="false"
+                              height="16"
+                              viewBox="0 0 16 16"
+                              width="16"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M11.8 8a5 5 0 0 0-.7-3.7A4.9 4.9 0 0 0 7 2a5 5 0 0 0-2.7 9 5 5 0 0 0 6.2-.6m0 0l3.4 3.4"
+                                fill="none"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          </span>
+                        </div>
                       </div>
                     </span>
                     <span
@@ -3990,6 +4087,31 @@ Object {
                         class="availability-header-cell"
                       >
                         Availability
+                        <div
+                          class="pointer search-icon"
+                          role="button"
+                          tabindex="0"
+                        >
+                          <span
+                            class="SVGIcon SVGIcon--16px SVGIcon--inline"
+                          >
+                            <svg
+                              data-id="SVG_SEARCH__16"
+                              focusable="false"
+                              height="16"
+                              viewBox="0 0 16 16"
+                              width="16"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M11.8 8a5 5 0 0 0-.7-3.7A4.9 4.9 0 0 0 7 2a5 5 0 0 0-2.7 9 5 5 0 0 0 6.2-.6m0 0l3.4 3.4"
+                                fill="none"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          </span>
+                        </div>
                       </div>
                     </span>
                     <span
@@ -4450,7 +4572,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="03/31/2022 08:43 PM"
+                        value="04/12/2022 09:55 PM"
                       />
                     </div>
                   </div>
@@ -4470,7 +4592,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="04/07/2022 08:43 PM"
+                        value="04/19/2022 09:55 PM"
                       />
                     </div>
                   </div>
@@ -4519,6 +4641,17 @@ Object {
                   id="rdt-preset-dropdown--container"
                   role="dialog"
                 >
+                  <li
+                    role="presentation"
+                  >
+                    <a
+                      data-bypass="false"
+                      href="#"
+                    >
+                       
+                      Last 1 Hour
+                    </a>
+                  </li>
                   <li
                     role="presentation"
                   >
@@ -5131,7 +5264,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="03/31/2022 08:43 PM"
+                      value="04/12/2022 09:55 PM"
                     />
                   </div>
                 </div>
@@ -5151,7 +5284,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="04/07/2022 08:43 PM"
+                      value="04/19/2022 09:55 PM"
                     />
                   </div>
                 </div>
@@ -5200,6 +5333,17 @@ Object {
                 id="rdt-preset-dropdown--container"
                 role="dialog"
               >
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Last 1 Hour
+                  </a>
+                </li>
                 <li
                   role="presentation"
                 >
@@ -5869,7 +6013,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="03/31/2022 08:43 PM"
+                        value="04/12/2022 09:55 PM"
                       />
                     </div>
                   </div>
@@ -5889,7 +6033,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="04/07/2022 08:43 PM"
+                        value="04/19/2022 09:55 PM"
                       />
                     </div>
                   </div>
@@ -5938,6 +6082,17 @@ Object {
                   id="rdt-preset-dropdown--container"
                   role="dialog"
                 >
+                  <li
+                    role="presentation"
+                  >
+                    <a
+                      data-bypass="false"
+                      href="#"
+                    >
+                       
+                      Last 1 Hour
+                    </a>
+                  </li>
                   <li
                     role="presentation"
                   >
@@ -6604,7 +6759,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="03/31/2022 08:43 PM"
+                      value="04/12/2022 09:55 PM"
                     />
                   </div>
                 </div>
@@ -6624,7 +6779,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="04/07/2022 08:43 PM"
+                      value="04/19/2022 09:55 PM"
                     />
                   </div>
                 </div>
@@ -6673,6 +6828,17 @@ Object {
                 id="rdt-preset-dropdown--container"
                 role="dialog"
               >
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Last 1 Hour
+                  </a>
+                </li>
                 <li
                   role="presentation"
                 >
@@ -7396,7 +7562,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="03/31/2022 08:43 PM"
+                        value="04/12/2022 09:55 PM"
                       />
                     </div>
                   </div>
@@ -7416,7 +7582,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="04/07/2022 08:43 PM"
+                        value="04/19/2022 09:55 PM"
                       />
                     </div>
                   </div>
@@ -7465,6 +7631,17 @@ Object {
                   id="rdt-preset-dropdown--container"
                   role="dialog"
                 >
+                  <li
+                    role="presentation"
+                  >
+                    <a
+                      data-bypass="false"
+                      href="#"
+                    >
+                       
+                      Last 1 Hour
+                    </a>
+                  </li>
                   <li
                     role="presentation"
                   >
@@ -8407,6 +8584,31 @@ Object {
                           class="availability-header-cell"
                         >
                           Application
+                          <div
+                            class="pointer search-icon"
+                            role="button"
+                            tabindex="0"
+                          >
+                            <span
+                              class="SVGIcon SVGIcon--16px SVGIcon--inline"
+                            >
+                              <svg
+                                data-id="SVG_SEARCH__16"
+                                focusable="false"
+                                height="16"
+                                viewBox="0 0 16 16"
+                                width="16"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M11.8 8a5 5 0 0 0-.7-3.7A4.9 4.9 0 0 0 7 2a5 5 0 0 0-2.7 9 5 5 0 0 0 6.2-.6m0 0l3.4 3.4"
+                                  fill="none"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                              </svg>
+                            </span>
+                          </div>
                         </div>
                       </span>
                       <span
@@ -9134,6 +9336,31 @@ Object {
                           class="availability-header-cell"
                         >
                           Availability
+                          <div
+                            class="pointer search-icon"
+                            role="button"
+                            tabindex="0"
+                          >
+                            <span
+                              class="SVGIcon SVGIcon--16px SVGIcon--inline"
+                            >
+                              <svg
+                                data-id="SVG_SEARCH__16"
+                                focusable="false"
+                                height="16"
+                                viewBox="0 0 16 16"
+                                width="16"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M11.8 8a5 5 0 0 0-.7-3.7A4.9 4.9 0 0 0 7 2a5 5 0 0 0-2.7 9 5 5 0 0 0 6.2-.6m0 0l3.4 3.4"
+                                  fill="none"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                              </svg>
+                            </span>
+                          </div>
                         </div>
                       </span>
                       <span
@@ -9737,7 +9964,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="03/31/2022 08:43 PM"
+                      value="04/12/2022 09:55 PM"
                     />
                   </div>
                 </div>
@@ -9757,7 +9984,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="04/07/2022 08:43 PM"
+                      value="04/19/2022 09:55 PM"
                     />
                   </div>
                 </div>
@@ -9806,6 +10033,17 @@ Object {
                 id="rdt-preset-dropdown--container"
                 role="dialog"
               >
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Last 1 Hour
+                  </a>
+                </li>
                 <li
                   role="presentation"
                 >
@@ -10748,6 +10986,31 @@ Object {
                         class="availability-header-cell"
                       >
                         Application
+                        <div
+                          class="pointer search-icon"
+                          role="button"
+                          tabindex="0"
+                        >
+                          <span
+                            class="SVGIcon SVGIcon--16px SVGIcon--inline"
+                          >
+                            <svg
+                              data-id="SVG_SEARCH__16"
+                              focusable="false"
+                              height="16"
+                              viewBox="0 0 16 16"
+                              width="16"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M11.8 8a5 5 0 0 0-.7-3.7A4.9 4.9 0 0 0 7 2a5 5 0 0 0-2.7 9 5 5 0 0 0 6.2-.6m0 0l3.4 3.4"
+                                fill="none"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          </span>
+                        </div>
                       </div>
                     </span>
                     <span
@@ -11475,6 +11738,31 @@ Object {
                         class="availability-header-cell"
                       >
                         Availability
+                        <div
+                          class="pointer search-icon"
+                          role="button"
+                          tabindex="0"
+                        >
+                          <span
+                            class="SVGIcon SVGIcon--16px SVGIcon--inline"
+                          >
+                            <svg
+                              data-id="SVG_SEARCH__16"
+                              focusable="false"
+                              height="16"
+                              viewBox="0 0 16 16"
+                              width="16"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M11.8 8a5 5 0 0 0-.7-3.7A4.9 4.9 0 0 0 7 2a5 5 0 0 0-2.7 9 5 5 0 0 0 6.2-.6m0 0l3.4 3.4"
+                                fill="none"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          </span>
+                        </div>
                       </div>
                     </span>
                     <span
@@ -12135,7 +12423,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="03/31/2022 08:43 PM"
+                        value="04/12/2022 09:55 PM"
                       />
                     </div>
                   </div>
@@ -12155,7 +12443,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="04/07/2022 08:43 PM"
+                        value="04/19/2022 09:55 PM"
                       />
                     </div>
                   </div>
@@ -12204,6 +12492,17 @@ Object {
                   id="rdt-preset-dropdown--container"
                   role="dialog"
                 >
+                  <li
+                    role="presentation"
+                  >
+                    <a
+                      data-bypass="false"
+                      href="#"
+                    >
+                       
+                      Last 1 Hour
+                    </a>
+                  </li>
                   <li
                     role="presentation"
                   >
@@ -13155,6 +13454,31 @@ Object {
                           class="availability-header-cell"
                         >
                           Application
+                          <div
+                            class="pointer search-icon"
+                            role="button"
+                            tabindex="0"
+                          >
+                            <span
+                              class="SVGIcon SVGIcon--16px SVGIcon--inline"
+                            >
+                              <svg
+                                data-id="SVG_SEARCH__16"
+                                focusable="false"
+                                height="16"
+                                viewBox="0 0 16 16"
+                                width="16"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M11.8 8a5 5 0 0 0-.7-3.7A4.9 4.9 0 0 0 7 2a5 5 0 0 0-2.7 9 5 5 0 0 0 6.2-.6m0 0l3.4 3.4"
+                                  fill="none"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                              </svg>
+                            </span>
+                          </div>
                         </div>
                       </span>
                       <span
@@ -13882,6 +14206,31 @@ Object {
                           class="availability-header-cell"
                         >
                           Availability
+                          <div
+                            class="pointer search-icon"
+                            role="button"
+                            tabindex="0"
+                          >
+                            <span
+                              class="SVGIcon SVGIcon--16px SVGIcon--inline"
+                            >
+                              <svg
+                                data-id="SVG_SEARCH__16"
+                                focusable="false"
+                                height="16"
+                                viewBox="0 0 16 16"
+                                width="16"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M11.8 8a5 5 0 0 0-.7-3.7A4.9 4.9 0 0 0 7 2a5 5 0 0 0-2.7 9 5 5 0 0 0 6.2-.6m0 0l3.4 3.4"
+                                  fill="none"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                              </svg>
+                            </span>
+                          </div>
                         </div>
                       </span>
                       <span
@@ -14485,7 +14834,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="03/31/2022 08:43 PM"
+                      value="04/12/2022 09:55 PM"
                     />
                   </div>
                 </div>
@@ -14505,7 +14854,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="04/07/2022 08:43 PM"
+                      value="04/19/2022 09:55 PM"
                     />
                   </div>
                 </div>
@@ -14554,6 +14903,17 @@ Object {
                 id="rdt-preset-dropdown--container"
                 role="dialog"
               >
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Last 1 Hour
+                  </a>
+                </li>
                 <li
                   role="presentation"
                 >
@@ -15505,6 +15865,31 @@ Object {
                         class="availability-header-cell"
                       >
                         Application
+                        <div
+                          class="pointer search-icon"
+                          role="button"
+                          tabindex="0"
+                        >
+                          <span
+                            class="SVGIcon SVGIcon--16px SVGIcon--inline"
+                          >
+                            <svg
+                              data-id="SVG_SEARCH__16"
+                              focusable="false"
+                              height="16"
+                              viewBox="0 0 16 16"
+                              width="16"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M11.8 8a5 5 0 0 0-.7-3.7A4.9 4.9 0 0 0 7 2a5 5 0 0 0-2.7 9 5 5 0 0 0 6.2-.6m0 0l3.4 3.4"
+                                fill="none"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          </span>
+                        </div>
                       </div>
                     </span>
                     <span
@@ -16232,6 +16617,31 @@ Object {
                         class="availability-header-cell"
                       >
                         Availability
+                        <div
+                          class="pointer search-icon"
+                          role="button"
+                          tabindex="0"
+                        >
+                          <span
+                            class="SVGIcon SVGIcon--16px SVGIcon--inline"
+                          >
+                            <svg
+                              data-id="SVG_SEARCH__16"
+                              focusable="false"
+                              height="16"
+                              viewBox="0 0 16 16"
+                              width="16"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M11.8 8a5 5 0 0 0-.7-3.7A4.9 4.9 0 0 0 7 2a5 5 0 0 0-2.7 9 5 5 0 0 0 6.2-.6m0 0l3.4 3.4"
+                                fill="none"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          </span>
+                        </div>
                       </div>
                     </span>
                     <span
@@ -16892,7 +17302,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="03/31/2022 08:43 PM"
+                        value="04/12/2022 09:55 PM"
                       />
                     </div>
                   </div>
@@ -16912,7 +17322,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="04/07/2022 08:43 PM"
+                        value="04/19/2022 09:55 PM"
                       />
                     </div>
                   </div>
@@ -16961,6 +17371,17 @@ Object {
                   id="rdt-preset-dropdown--container"
                   role="dialog"
                 >
+                  <li
+                    role="presentation"
+                  >
+                    <a
+                      data-bypass="false"
+                      href="#"
+                    >
+                       
+                      Last 1 Hour
+                    </a>
+                  </li>
                   <li
                     role="presentation"
                   >
@@ -17902,6 +18323,31 @@ Object {
                           class="availability-header-cell"
                         >
                           Application
+                          <div
+                            class="pointer search-icon"
+                            role="button"
+                            tabindex="0"
+                          >
+                            <span
+                              class="SVGIcon SVGIcon--16px SVGIcon--inline"
+                            >
+                              <svg
+                                data-id="SVG_SEARCH__16"
+                                focusable="false"
+                                height="16"
+                                viewBox="0 0 16 16"
+                                width="16"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M11.8 8a5 5 0 0 0-.7-3.7A4.9 4.9 0 0 0 7 2a5 5 0 0 0-2.7 9 5 5 0 0 0 6.2-.6m0 0l3.4 3.4"
+                                  fill="none"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                              </svg>
+                            </span>
+                          </div>
                         </div>
                       </span>
                       <span
@@ -18629,6 +19075,31 @@ Object {
                           class="availability-header-cell"
                         >
                           Availability
+                          <div
+                            class="pointer search-icon"
+                            role="button"
+                            tabindex="0"
+                          >
+                            <span
+                              class="SVGIcon SVGIcon--16px SVGIcon--inline"
+                            >
+                              <svg
+                                data-id="SVG_SEARCH__16"
+                                focusable="false"
+                                height="16"
+                                viewBox="0 0 16 16"
+                                width="16"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M11.8 8a5 5 0 0 0-.7-3.7A4.9 4.9 0 0 0 7 2a5 5 0 0 0-2.7 9 5 5 0 0 0 6.2-.6m0 0l3.4 3.4"
+                                  fill="none"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                              </svg>
+                            </span>
+                          </div>
                         </div>
                       </span>
                       <span
@@ -19132,7 +19603,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="03/31/2022 08:43 PM"
+                      value="04/12/2022 09:55 PM"
                     />
                   </div>
                 </div>
@@ -19152,7 +19623,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="04/07/2022 08:43 PM"
+                      value="04/19/2022 09:55 PM"
                     />
                   </div>
                 </div>
@@ -19201,6 +19672,17 @@ Object {
                 id="rdt-preset-dropdown--container"
                 role="dialog"
               >
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Last 1 Hour
+                  </a>
+                </li>
                 <li
                   role="presentation"
                 >
@@ -20142,6 +20624,31 @@ Object {
                         class="availability-header-cell"
                       >
                         Application
+                        <div
+                          class="pointer search-icon"
+                          role="button"
+                          tabindex="0"
+                        >
+                          <span
+                            class="SVGIcon SVGIcon--16px SVGIcon--inline"
+                          >
+                            <svg
+                              data-id="SVG_SEARCH__16"
+                              focusable="false"
+                              height="16"
+                              viewBox="0 0 16 16"
+                              width="16"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M11.8 8a5 5 0 0 0-.7-3.7A4.9 4.9 0 0 0 7 2a5 5 0 0 0-2.7 9 5 5 0 0 0 6.2-.6m0 0l3.4 3.4"
+                                fill="none"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          </span>
+                        </div>
                       </div>
                     </span>
                     <span
@@ -20869,6 +21376,31 @@ Object {
                         class="availability-header-cell"
                       >
                         Availability
+                        <div
+                          class="pointer search-icon"
+                          role="button"
+                          tabindex="0"
+                        >
+                          <span
+                            class="SVGIcon SVGIcon--16px SVGIcon--inline"
+                          >
+                            <svg
+                              data-id="SVG_SEARCH__16"
+                              focusable="false"
+                              height="16"
+                              viewBox="0 0 16 16"
+                              width="16"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M11.8 8a5 5 0 0 0-.7-3.7A4.9 4.9 0 0 0 7 2a5 5 0 0 0-2.7 9 5 5 0 0 0 6.2-.6m0 0l3.4 3.4"
+                                fill="none"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          </span>
+                        </div>
                       </div>
                     </span>
                     <span
@@ -21429,7 +21961,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="03/31/2022 08:43 PM"
+                        value="04/12/2022 09:55 PM"
                       />
                     </div>
                   </div>
@@ -21449,7 +21981,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="04/07/2022 08:43 PM"
+                        value="04/19/2022 09:55 PM"
                       />
                     </div>
                   </div>
@@ -21498,6 +22030,17 @@ Object {
                   id="rdt-preset-dropdown--container"
                   role="dialog"
                 >
+                  <li
+                    role="presentation"
+                  >
+                    <a
+                      data-bypass="false"
+                      href="#"
+                    >
+                       
+                      Last 1 Hour
+                    </a>
+                  </li>
                   <li
                     role="presentation"
                   >
@@ -22510,7 +23053,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="03/31/2022 08:43 PM"
+                      value="04/12/2022 09:55 PM"
                     />
                   </div>
                 </div>
@@ -22530,7 +23073,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="04/07/2022 08:43 PM"
+                      value="04/19/2022 09:55 PM"
                     />
                   </div>
                 </div>
@@ -22579,6 +23122,17 @@ Object {
                 id="rdt-preset-dropdown--container"
                 role="dialog"
               >
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Last 1 Hour
+                  </a>
+                </li>
                 <li
                   role="presentation"
                 >
@@ -23648,7 +24202,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="03/31/2022 08:43 PM"
+                        value="04/12/2022 09:55 PM"
                       />
                     </div>
                   </div>
@@ -23668,7 +24222,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="04/07/2022 08:43 PM"
+                        value="04/19/2022 09:55 PM"
                       />
                     </div>
                   </div>
@@ -23717,6 +24271,17 @@ Object {
                   id="rdt-preset-dropdown--container"
                   role="dialog"
                 >
+                  <li
+                    role="presentation"
+                  >
+                    <a
+                      data-bypass="false"
+                      href="#"
+                    >
+                       
+                      Last 1 Hour
+                    </a>
+                  </li>
                   <li
                     role="presentation"
                   >
@@ -24720,7 +25285,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="03/31/2022 08:43 PM"
+                      value="04/12/2022 09:55 PM"
                     />
                   </div>
                 </div>
@@ -24740,7 +25305,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="04/07/2022 08:43 PM"
+                      value="04/19/2022 09:55 PM"
                     />
                   </div>
                 </div>
@@ -24789,6 +25354,17 @@ Object {
                 id="rdt-preset-dropdown--container"
                 role="dialog"
               >
+                <li
+                  role="presentation"
+                >
+                  <a
+                    data-bypass="false"
+                    href="#"
+                  >
+                     
+                    Last 1 Hour
+                  </a>
+                </li>
                 <li
                   role="presentation"
                 >

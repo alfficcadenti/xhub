@@ -98,24 +98,19 @@ describe('getAppErrorsDataForChart()', () => {
 });
 
 describe('extractColumns()', () => {
-    it('returns only the first column Application when no input', () => {
+    it('returns empty array with no input', () => {
         const columns = extractColumns();
-        expect(columns).to.be.eqls(['Application', 'Availability']);
+        expect(columns).to.be.eqls([]);
     });
 
-    it('returns only the first column Application when input is empty array', () => {
-        const columns = extractColumns([]);
-        expect(columns).to.be.eqls(['Application', 'Availability']);
-    });
-
-    it('returns array with Applicationm, extracted dates and Availability', () => {
+    it('returns array with Application, extracted dates and Availability', () => {
         const columns = extractColumns(AVAILABILITY, DATE_FORMAT);
         expect(columns).to.be.eqls(['Application', '1st Mar 22', '2nd Mar 22', '3rd Mar 22', '4th Mar 22', '5th Mar 22', '6th Mar 22', '7th Mar 22', 'Availability']);
     });
 
     it('returns array with Application, extracted hours and Availability', () => {
         const columns = extractColumns(HOURLY_AVAILABILITY, DATETIME_FORMAT);
-        expect(columns).to.be.eqls(['Application', '08:00', '09:00', 'Availability']);
+        expect(columns).to.be.eqls(['Application', '00:00', '01:00', 'Availability']);
     });
 });
 
