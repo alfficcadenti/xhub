@@ -3,7 +3,6 @@ import {shallow} from 'enzyme';
 import TotalChart from '../index';
 import {expect} from 'chai';
 import {mockData} from '../../mock-bookings';
-import {mockEmptyChart} from './mockChart';
 
 const selectedBrands = ['Expedia Group'];
 jest.mock('react-router-dom', () => {
@@ -30,10 +29,5 @@ describe('<TotalBookingsChart />', () => {
     it('renders the class .total-bookings-container', () => {
         const wrapper = shallow(<TotalChart data={mockData} brands={selectedBrands}/>);
         expect(wrapper.find('.total-bookings-container')).to.have.length(1);
-    });
-
-    it('renders successfully an empty chart even if data is an empty array', () => {
-        const wrapper = shallow(<TotalChart data={[]} brands={selectedBrands}/>);
-        expect(wrapper.html()).to.be.eql(mockEmptyChart);
     });
 });

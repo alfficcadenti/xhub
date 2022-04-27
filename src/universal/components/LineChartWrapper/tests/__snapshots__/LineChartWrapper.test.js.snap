@@ -30,7 +30,7 @@ Object {
             >
               <defs>
                 <clippath
-                  id="recharts2-clip"
+                  id="recharts1-clip"
                 >
                   <rect
                     height="260"
@@ -49,6 +49,7 @@ Object {
                   <line
                     fill="none"
                     height="260"
+                    offset="[object Object]"
                     stroke="#ccc"
                     stroke-dasharray="3 3"
                     width="590"
@@ -62,6 +63,7 @@ Object {
                   <line
                     fill="none"
                     height="260"
+                    offset="[object Object]"
                     stroke="#ccc"
                     stroke-dasharray="3 3"
                     width="590"
@@ -79,6 +81,7 @@ Object {
                   <line
                     fill="none"
                     height="260"
+                    offset="[object Object]"
                     stroke="#ccc"
                     stroke-dasharray="3 3"
                     width="590"
@@ -92,6 +95,7 @@ Object {
                   <line
                     fill="none"
                     height="260"
+                    offset="[object Object]"
                     stroke="#ccc"
                     stroke-dasharray="3 3"
                     width="590"
@@ -105,6 +109,7 @@ Object {
                   <line
                     fill="none"
                     height="260"
+                    offset="[object Object]"
                     stroke="#ccc"
                     stroke-dasharray="3 3"
                     width="590"
@@ -124,7 +129,9 @@ Object {
                   class="recharts-cartesian-axis-line"
                   fill="none"
                   height="30"
+                  orientation="bottom"
                   stroke="#666"
+                  type="category"
                   width="590"
                   x="80"
                   x1="80"
@@ -143,7 +150,9 @@ Object {
                       class="recharts-cartesian-axis-tick-line"
                       fill="none"
                       height="30"
+                      orientation="bottom"
                       stroke="#666"
+                      type="category"
                       width="590"
                       x="80"
                       x1="375"
@@ -156,8 +165,10 @@ Object {
                       class="recharts-text recharts-cartesian-axis-tick-value"
                       fill="#666"
                       height="30"
+                      orientation="bottom"
                       stroke="none"
                       text-anchor="middle"
+                      type="category"
                       width="590"
                       x="375"
                       y="273"
@@ -179,7 +190,9 @@ Object {
                   class="recharts-cartesian-axis-line"
                   fill="none"
                   height="260"
+                  orientation="left"
                   stroke="#666"
+                  type="number"
                   width="60"
                   x="20"
                   x1="80"
@@ -233,6 +246,7 @@ Object {
                   </svg>
                   <span
                     class="recharts-legend-item-text"
+                    style="color: rgb(51, 102, 204);"
                   >
                     value
                   </span>
@@ -241,7 +255,7 @@ Object {
             </div>
             <div
               class="recharts-tooltip-wrapper"
-              style="transform: translate(undefinedpx, undefinedpx); pointer-events: none; visibility: hidden; position: absolute; top: 0px;"
+              style="transform: translate(undefinedpx, undefinedpx); pointer-events: none; visibility: hidden; position: absolute; top: 0px; left: 0px;"
             >
               <div
                 class="recharts-default-tooltip"
@@ -254,13 +268,11 @@ Object {
               </div>
             </div>
           </div>
-          <div
-            style="position: absolute; width: 0px; height: 0px; visibility: hidden; display: none;"
-          />
         </div>
       </div>
     </div>
     <span
+      aria-hidden="true"
       id="recharts_measurement_span"
       style="position: absolute; top: -20000px; left: 0px; padding: 0px; margin: 0px; white-space: pre;"
     >
@@ -293,7 +305,7 @@ Object {
           >
             <defs>
               <clippath
-                id="recharts2-clip"
+                id="recharts1-clip"
               >
                 <rect
                   height="260"
@@ -312,6 +324,7 @@ Object {
                 <line
                   fill="none"
                   height="260"
+                  offset="[object Object]"
                   stroke="#ccc"
                   stroke-dasharray="3 3"
                   width="590"
@@ -325,6 +338,7 @@ Object {
                 <line
                   fill="none"
                   height="260"
+                  offset="[object Object]"
                   stroke="#ccc"
                   stroke-dasharray="3 3"
                   width="590"
@@ -342,6 +356,7 @@ Object {
                 <line
                   fill="none"
                   height="260"
+                  offset="[object Object]"
                   stroke="#ccc"
                   stroke-dasharray="3 3"
                   width="590"
@@ -355,6 +370,7 @@ Object {
                 <line
                   fill="none"
                   height="260"
+                  offset="[object Object]"
                   stroke="#ccc"
                   stroke-dasharray="3 3"
                   width="590"
@@ -368,6 +384,7 @@ Object {
                 <line
                   fill="none"
                   height="260"
+                  offset="[object Object]"
                   stroke="#ccc"
                   stroke-dasharray="3 3"
                   width="590"
@@ -387,7 +404,9 @@ Object {
                 class="recharts-cartesian-axis-line"
                 fill="none"
                 height="30"
+                orientation="bottom"
                 stroke="#666"
+                type="category"
                 width="590"
                 x="80"
                 x1="80"
@@ -406,7 +425,9 @@ Object {
                     class="recharts-cartesian-axis-tick-line"
                     fill="none"
                     height="30"
+                    orientation="bottom"
                     stroke="#666"
+                    type="category"
                     width="590"
                     x="80"
                     x1="375"
@@ -419,8 +440,10 @@ Object {
                     class="recharts-text recharts-cartesian-axis-tick-value"
                     fill="#666"
                     height="30"
+                    orientation="bottom"
                     stroke="none"
                     text-anchor="middle"
+                    type="category"
                     width="590"
                     x="375"
                     y="273"
@@ -442,7 +465,9 @@ Object {
                 class="recharts-cartesian-axis-line"
                 fill="none"
                 height="260"
+                orientation="left"
                 stroke="#666"
+                type="number"
                 width="60"
                 x="20"
                 x1="80"
@@ -496,6 +521,7 @@ Object {
                 </svg>
                 <span
                   class="recharts-legend-item-text"
+                  style="color: rgb(51, 102, 204);"
                 >
                   value
                 </span>
@@ -504,7 +530,7 @@ Object {
           </div>
           <div
             class="recharts-tooltip-wrapper"
-            style="transform: translate(undefinedpx, undefinedpx); pointer-events: none; visibility: hidden; position: absolute; top: 0px;"
+            style="transform: translate(undefinedpx, undefinedpx); pointer-events: none; visibility: hidden; position: absolute; top: 0px; left: 0px;"
           >
             <div
               class="recharts-default-tooltip"
@@ -517,9 +543,6 @@ Object {
             </div>
           </div>
         </div>
-        <div
-          style="position: absolute; width: 0px; height: 0px; visibility: hidden; display: none;"
-        />
       </div>
     </div>
   </div>,
@@ -582,10 +605,11 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     <span
+      aria-hidden="true"
       id="recharts_measurement_span"
       style="position: absolute; top: -20000px; left: 0px; padding: 0px; margin: 0px; white-space: pre;"
     >
-       
+      auto
     </span>
     <div>
       <div
@@ -632,6 +656,7 @@ Object {
                   <line
                     fill="none"
                     height="260"
+                    offset="[object Object]"
                     stroke="#ccc"
                     stroke-dasharray="3 3"
                     width="590"
@@ -645,6 +670,7 @@ Object {
                   <line
                     fill="none"
                     height="260"
+                    offset="[object Object]"
                     stroke="#ccc"
                     stroke-dasharray="3 3"
                     width="590"
@@ -662,6 +688,7 @@ Object {
                   <line
                     fill="none"
                     height="260"
+                    offset="[object Object]"
                     stroke="#ccc"
                     stroke-dasharray="3 3"
                     width="590"
@@ -675,6 +702,7 @@ Object {
                   <line
                     fill="none"
                     height="260"
+                    offset="[object Object]"
                     stroke="#ccc"
                     stroke-dasharray="3 3"
                     width="590"
@@ -688,13 +716,114 @@ Object {
                 </g>
               </g>
               <g
+                class="recharts-layer recharts-cartesian-axis recharts-xAxis xAxis"
+              >
+                <line
+                  class="recharts-cartesian-axis-line"
+                  fill="none"
+                  height="30"
+                  orientation="bottom"
+                  stroke="#666"
+                  type="category"
+                  width="590"
+                  x="80"
+                  x1="80"
+                  x2="670"
+                  y="265"
+                  y1="265"
+                  y2="265"
+                />
+                <g
+                  class="recharts-cartesian-axis-ticks"
+                >
+                  <g
+                    class="recharts-layer recharts-cartesian-axis-tick"
+                  >
+                    <line
+                      class="recharts-cartesian-axis-tick-line"
+                      fill="none"
+                      height="30"
+                      orientation="bottom"
+                      stroke="#666"
+                      type="category"
+                      width="590"
+                      x="80"
+                      x1="80"
+                      x2="80"
+                      y="265"
+                      y1="271"
+                      y2="265"
+                    />
+                    <text
+                      class="recharts-text recharts-cartesian-axis-tick-value"
+                      fill="#666"
+                      height="30"
+                      orientation="bottom"
+                      stroke="none"
+                      text-anchor="middle"
+                      type="category"
+                      width="590"
+                      x="80"
+                      y="273"
+                    >
+                      <tspan
+                        dy="0.71em"
+                        x="80"
+                      >
+                        0
+                      </tspan>
+                    </text>
+                  </g>
+                  <g
+                    class="recharts-layer recharts-cartesian-axis-tick"
+                  >
+                    <line
+                      class="recharts-cartesian-axis-tick-line"
+                      fill="none"
+                      height="30"
+                      orientation="bottom"
+                      stroke="#666"
+                      type="category"
+                      width="590"
+                      x="80"
+                      x1="670"
+                      x2="670"
+                      y="265"
+                      y1="271"
+                      y2="265"
+                    />
+                    <text
+                      class="recharts-text recharts-cartesian-axis-tick-value"
+                      fill="#666"
+                      height="30"
+                      orientation="bottom"
+                      stroke="none"
+                      text-anchor="middle"
+                      type="category"
+                      width="590"
+                      x="670"
+                      y="273"
+                    >
+                      <tspan
+                        dy="0.71em"
+                        x="670"
+                      >
+                        auto
+                      </tspan>
+                    </text>
+                  </g>
+                </g>
+              </g>
+              <g
                 class="recharts-layer recharts-cartesian-axis recharts-yAxis yAxis"
               >
                 <line
                   class="recharts-cartesian-axis-line"
                   fill="none"
                   height="260"
+                  orientation="left"
                   stroke="#666"
+                  type="number"
                   width="60"
                   x="20"
                   x1="80"
@@ -714,7 +843,7 @@ Object {
             />
             <div
               class="recharts-tooltip-wrapper"
-              style="transform: translate(undefinedpx, undefinedpx); pointer-events: none; visibility: hidden; position: absolute; top: 0px;"
+              style="transform: translate(undefinedpx, undefinedpx); pointer-events: none; visibility: hidden; position: absolute; top: 0px; left: 0px;"
             >
               <div
                 class="recharts-default-tooltip"
@@ -727,9 +856,6 @@ Object {
               </div>
             </div>
           </div>
-          <div
-            style="position: absolute; width: 0px; height: 0px; visibility: hidden; display: none;"
-          />
         </div>
       </div>
     </div>
@@ -779,6 +905,7 @@ Object {
                 <line
                   fill="none"
                   height="260"
+                  offset="[object Object]"
                   stroke="#ccc"
                   stroke-dasharray="3 3"
                   width="590"
@@ -792,6 +919,7 @@ Object {
                 <line
                   fill="none"
                   height="260"
+                  offset="[object Object]"
                   stroke="#ccc"
                   stroke-dasharray="3 3"
                   width="590"
@@ -809,6 +937,7 @@ Object {
                 <line
                   fill="none"
                   height="260"
+                  offset="[object Object]"
                   stroke="#ccc"
                   stroke-dasharray="3 3"
                   width="590"
@@ -822,6 +951,7 @@ Object {
                 <line
                   fill="none"
                   height="260"
+                  offset="[object Object]"
                   stroke="#ccc"
                   stroke-dasharray="3 3"
                   width="590"
@@ -835,13 +965,114 @@ Object {
               </g>
             </g>
             <g
+              class="recharts-layer recharts-cartesian-axis recharts-xAxis xAxis"
+            >
+              <line
+                class="recharts-cartesian-axis-line"
+                fill="none"
+                height="30"
+                orientation="bottom"
+                stroke="#666"
+                type="category"
+                width="590"
+                x="80"
+                x1="80"
+                x2="670"
+                y="265"
+                y1="265"
+                y2="265"
+              />
+              <g
+                class="recharts-cartesian-axis-ticks"
+              >
+                <g
+                  class="recharts-layer recharts-cartesian-axis-tick"
+                >
+                  <line
+                    class="recharts-cartesian-axis-tick-line"
+                    fill="none"
+                    height="30"
+                    orientation="bottom"
+                    stroke="#666"
+                    type="category"
+                    width="590"
+                    x="80"
+                    x1="80"
+                    x2="80"
+                    y="265"
+                    y1="271"
+                    y2="265"
+                  />
+                  <text
+                    class="recharts-text recharts-cartesian-axis-tick-value"
+                    fill="#666"
+                    height="30"
+                    orientation="bottom"
+                    stroke="none"
+                    text-anchor="middle"
+                    type="category"
+                    width="590"
+                    x="80"
+                    y="273"
+                  >
+                    <tspan
+                      dy="0.71em"
+                      x="80"
+                    >
+                      0
+                    </tspan>
+                  </text>
+                </g>
+                <g
+                  class="recharts-layer recharts-cartesian-axis-tick"
+                >
+                  <line
+                    class="recharts-cartesian-axis-tick-line"
+                    fill="none"
+                    height="30"
+                    orientation="bottom"
+                    stroke="#666"
+                    type="category"
+                    width="590"
+                    x="80"
+                    x1="670"
+                    x2="670"
+                    y="265"
+                    y1="271"
+                    y2="265"
+                  />
+                  <text
+                    class="recharts-text recharts-cartesian-axis-tick-value"
+                    fill="#666"
+                    height="30"
+                    orientation="bottom"
+                    stroke="none"
+                    text-anchor="middle"
+                    type="category"
+                    width="590"
+                    x="670"
+                    y="273"
+                  >
+                    <tspan
+                      dy="0.71em"
+                      x="670"
+                    >
+                      auto
+                    </tspan>
+                  </text>
+                </g>
+              </g>
+            </g>
+            <g
               class="recharts-layer recharts-cartesian-axis recharts-yAxis yAxis"
             >
               <line
                 class="recharts-cartesian-axis-line"
                 fill="none"
                 height="260"
+                orientation="left"
                 stroke="#666"
+                type="number"
                 width="60"
                 x="20"
                 x1="80"
@@ -861,7 +1092,7 @@ Object {
           />
           <div
             class="recharts-tooltip-wrapper"
-            style="transform: translate(undefinedpx, undefinedpx); pointer-events: none; visibility: hidden; position: absolute; top: 0px;"
+            style="transform: translate(undefinedpx, undefinedpx); pointer-events: none; visibility: hidden; position: absolute; top: 0px; left: 0px;"
           >
             <div
               class="recharts-default-tooltip"
@@ -874,9 +1105,6 @@ Object {
             </div>
           </div>
         </div>
-        <div
-          style="position: absolute; width: 0px; height: 0px; visibility: hidden; display: none;"
-        />
       </div>
     </div>
   </div>,

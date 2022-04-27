@@ -5,7 +5,15 @@ import HelpText from '../../components/HelpText/HelpText';
 import {checkResponse} from '../utils';
 import DataTable from '../../components/DataTable';
 import moment from 'moment';
-import {extractColumns, getAppErrorsDataForChart, mapAvailabilityRow, getSelectedRegions, getPresets, getQueryValues} from './utils';
+import {
+    extractColumns,
+    getAvailabilityRows,
+    getAppErrorsDataForChart,
+    mapAvailabilityRow,
+    getSelectedRegions,
+    getPresets,
+    getQueryValues
+} from './utils';
 import ErrorCountModal from './ErrorCountModal';
 import Legend from './Legend';
 import {FormInput} from '@homeaway/react-form-components';
@@ -14,8 +22,7 @@ import Tooltip from '@homeaway/react-tooltip';
 import {REGIONS} from './constants';
 import './styles.less';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
-import AvailabilityHeader from './AvailabilityHeader';
-import {DATE_FORMAT, DATETIME_FORMAT, API_UTC_FORMAT, PST_TIMEZONE} from './constants';
+import {DATE_FORMAT, DATETIME_FORMAT, API_UTC_FORMAT} from './constants';
 
 const regions = [{
     name: 'all',
@@ -29,7 +36,7 @@ const regions = [{
     nested: true
 })));
 
-// eslint-disable-next-line complexity
+
 const CGPAvailibility = () => {
     const {search} = useLocation();
     const {kioskMode} = getQueryValues(search);
@@ -150,22 +157,11 @@ const CGPAvailibility = () => {
         setEnd(pendingEnd);
     };
 
-    const handleHeaderClick = (header) => {
-        if (end.diff(start, 'hours') < 1) {
-            return;
-        }
-        let newStart;
-        let newEnd;
-        if (end.diff(start, 'days') >= 1) {
-            // Set range for 24 hours
-            newStart = moment(header, DATE_FORMAT).hours(0).minutes(0).seconds(0);
-            newEnd = newStart.clone().hours(23).minutes(59).seconds(59);
-        } else {
-            // Set range for 1 hour
-            const headerTime = moment(header, 'hh:mm');
-            newStart = moment(start).tz(PST_TIMEZONE, true).hours(headerTime.get('hours')).minutes(0).seconds(0);
-            newEnd = newStart.clone().add(59, 'minutes').seconds(59);
-        }
+    const handleHeaderClick = (timestamp) => {
+        const newStart = moment(timestamp);
+        const newEnd = dateTimeFormat === DATE_FORMAT
+            ? newStart.clone().add(23, 'hours').minutes(59).seconds(59)
+            : newStart.clone().minutes(59, 'minutes').seconds(59);
         setPendingStart(newStart);
         setPendingEnd(newEnd);
         setStart(newStart.clone());
@@ -173,18 +169,8 @@ const CGPAvailibility = () => {
     };
 
     const headers = () => {
-        const format = end.diff(start, 'days') >= 1 ? DATE_FORMAT : DATETIME_FORMAT;
-        const columns = extractColumns(availability, format);
-        return columns.reduce((a, content) => ({
-            ...a,
-            [content]: (
-                <AvailabilityHeader
-                    content={content}
-                    handleHeaderClick={handleHeaderClick}
-                    enableHeaderClick={end.diff(start, 'hours') >= 1}
-                />
-            )
-        }), {});
+        const enableHeaderClick = end.diff(start, 'hours') >= 1;
+        return getAvailabilityRows(availability, dateTimeFormat, handleHeaderClick, enableHeaderClick);
     };
 
     const renderFilters = () => (
@@ -249,7 +235,7 @@ const CGPAvailibility = () => {
             <div className="header-container">
                 <h1 className="page-title" data-testid="title">
                     {'CGP Availability'}
-                    <HelpText className="page-info" text="Data are displayed in PST time. Display the last 7 days availability for each application calculated monitoring the CGP logs as: (Total Requests - 5XX request) * 100) / Total Requests" />
+                    <HelpText className="page-info" text="Daily rollups are bucketed 12:00AM to 11:59PM PST time. Availability is calculated with the following formula: (Total Requests - 5XX request) * 100) / Total Requests" />
                 </h1>
                 <Legend/>
             </div>
@@ -269,7 +255,7 @@ const CGPAvailibility = () => {
                     isOpen={Boolean(selectedApp)}
                     onClose={handleOnClose}
                     app={selectedApp}
-                    errorsData={selectedApp && getAppErrorsDataForChart(selectedApp, availability)}
+                    data={selectedApp && getAppErrorsDataForChart(selectedApp, availability, dateTimeFormat)}
                 />
             </LoadingContainer>
         </div>

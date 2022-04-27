@@ -13,8 +13,6 @@ export const REGIONS = [
 
 export const DATE_FORMAT = 'Do MMM YY';
 
-export const DATETIME_FORMAT = 'HH:mm';
+export const DATETIME_FORMAT = 'hh:mm A';
 
 export const API_UTC_FORMAT = 'YYYY-MM-DDTHH:mm:ss[Z]';
-
-export const PST_TIMEZONE = 'America/Los_Angeles';

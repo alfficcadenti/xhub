@@ -2,6 +2,7 @@ import {defineClassByValue, exactAvailability, extractColumns, formattedValue, g
 import {AVAILABILITY, HOURLY_AVAILABILITY} from '../../../../server/routes/api/testData/availability';
 import {DATETIME_FORMAT, DATE_FORMAT} from '../constants';
 import {expect} from 'chai';
+import moment from 'moment';
 
 describe('defineClassByValue()', () => {
     it('returns color for values above high Threshold (99.99)', () => {
@@ -110,7 +111,8 @@ describe('extractColumns()', () => {
 
     it('returns array with Application, extracted hours and Availability', () => {
         const columns = extractColumns(HOURLY_AVAILABILITY, DATETIME_FORMAT);
-        expect(columns).to.be.eqls(['Application', '00:00', '01:00', 'Availability']);
+        const dates = HOURLY_AVAILABILITY[0].availabilities.map((a) => moment(a.timestamp, 'YYYY-MM-DD[T]HH:mm:ssZ').format('hh:mm A'));
+        expect(columns).to.be.eqls(['Application', ...dates, 'Availability']);
     });
 });
 

@@ -3,8 +3,9 @@ import qs from 'query-string';
 import moment from 'moment';
 import {getOrDefault} from '../../utils';
 import {getPresetValue} from '../utils';
-import {THRESHOLDS, DATE_FORMAT, PST_TIMEZONE} from './constants.js';
+import {THRESHOLDS, DATE_FORMAT} from './constants.js';
 import AvailabilityCell from './AvailabilityCell';
+import AvailabilityHeader from './AvailabilityHeader';
 
 
 export const defineClassByValue = (value) => {
@@ -32,8 +33,30 @@ export const periodAvailability = (availabilities) => {
 };
 
 export const extractColumns = (data, dateTimeFormat) => data?.length
-    ? ['Application', ...data[0].availabilities?.map((item) => item && moment.tz(item.timestamp, PST_TIMEZONE).format(dateTimeFormat)) || [], 'Availability']
+    ? ['Application', ...data[0].availabilities?.map((item) => item && moment(item.timestamp).format(dateTimeFormat)) || [], 'Availability']
     : [];
+
+
+export const getAvailabilityRows = (data, dateTimeFormat, handleHeaderClick, enableHeaderClick) => {
+    const timestamps = data?.length ? [...data[0].availabilities?.map((item) => item && moment(item.timestamp))] : [];
+    return timestamps.reduce((acc, momentObj) => {
+        const headerText = momentObj.format(dateTimeFormat);
+        return {
+            ...acc,
+            [headerText]: (
+                <AvailabilityHeader
+                    content={headerText}
+                    value={momentObj.format()}
+                    onHeaderClick={handleHeaderClick}
+                    enableHeaderClick={enableHeaderClick}
+                />
+            )
+        };
+    }, {
+        Application: <AvailabilityHeader content={'Application'} />,
+        Availability: <AvailabilityHeader content={'Availability'} />
+    });
+};
 
 export const exactAvailability = (availability, requestCount) => {
     if (requestCount) {
@@ -54,11 +77,11 @@ export const mapAvailabilityRow = (row = {}, handleClick, dateTimeFormat = DATE_
                 Availability: <AvailabilityCell value={periodAvailability(availabilities)} applicationName={app} handleClick={handleClick}/>,
                 avgValue: periodAvailability(availabilities)
             },
-            ...availabilities.map((x) => ({[moment.tz(x.timestamp, PST_TIMEZONE).format(dateTimeFormat)]: <AvailabilityCell value={exactAvailability(x.availability, x.requestCount)} applicationName={app} handleClick={handleClick}/>}))
+            ...availabilities.map((x) => ({[moment(x.timestamp).format(dateTimeFormat)]: <AvailabilityCell value={exactAvailability(x.availability, x.requestCount)} applicationName={app} handleClick={handleClick}/>}))
         );
 };
 
-export const getAppErrorsDataForChart = (applicationName = '', availability = []) => Array.isArray(availability) && availability?.find((x) => x.applicationName === applicationName)?.availabilities?.map((x) => ({name: moment(x?.timestamp).format(DATE_FORMAT), '5xx Errors': x?.errorCount})) || [];
+export const getAppErrorsDataForChart = (applicationName = '', availability = [], dateTimeFormat = DATE_FORMAT) => Array.isArray(availability) && availability?.find((x) => x.applicationName === applicationName)?.availabilities?.map((x) => ({name: moment(x?.timestamp).format(dateTimeFormat), '5xx Errors': x?.errorCount})) || [];
 
 export const getSelectedRegions = (regionsObj) => (regionsObj?.length ? regionsObj.filter((x) => x.counted && x.checked).map((x) => x.name) : '');
 
