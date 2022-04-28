@@ -12,10 +12,12 @@ import {
     mapAvailabilityRow,
     getSelectedRegions,
     getPresets,
-    getQueryValues
+    getQueryValues,
+    getTotalStats
 } from './utils';
 import ErrorCountModal from './ErrorCountModal';
 import Legend from './Legend';
+import Overall from './Overall';
 import {FormInput} from '@homeaway/react-form-components';
 import MultiSelect from '@homeaway/react-multiselect-dropdown';
 import Tooltip from '@homeaway/react-tooltip';
@@ -46,6 +48,8 @@ const CGPAvailibility = () => {
     const [error, setError] = useState('');
     const [selectedApp, setSelectedApp] = useState(null);
     const [availabilityFilter, setAvailabilityFilter] = useState(100.00);
+    const [totalRequests, setTotalRequests] = useState('');
+    const [totalErrors, setTotalErrors] = useState('');
     const [applicationFilter, setApplicationFilter] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [pendingRegionFilter, setPendingRegionFilter] = useState(regions);
@@ -113,6 +117,9 @@ const CGPAvailibility = () => {
             .map((x) => mapAvailabilityRow(x, handleOnClick, dateTimeFormat))
             .filter((x) => typeof x.avgValue === 'number' && x.avgValue <= availabilityFilter && x.app.includes(applicationFilter));
         setFilteredAvailability(newFilteredAvailability);
+        const totalStats = getTotalStats(newFilteredAvailability);
+        setTotalRequests(totalStats.totalRequests);
+        setTotalErrors(totalStats.totalErrors);
     }, [availabilityFilter, applicationFilter, availability, dateTimeFormat]);
 
     useEffect(() => {
@@ -237,6 +244,10 @@ const CGPAvailibility = () => {
                     {'CGP Availability'}
                     <HelpText className="page-info" text="Daily rollups are bucketed 12:00AM to 11:59PM PST time. Availability is calculated with the following formula: (Total Requests - 5XX request) * 100) / Total Requests" />
                 </h1>
+                <Overall
+                    totalErrors={totalErrors}
+                    totalRequests={totalRequests}
+                />
                 <Legend/>
             </div>
             {!kioskMode && renderFilters()}

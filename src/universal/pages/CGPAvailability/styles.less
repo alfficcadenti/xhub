@@ -13,10 +13,15 @@
         font-weight: 400;
     }
 
-    .legend-label {
+    .legend-label, 
+    .overall-label {
         display: grid;
         font-size: 12px;
         color: --color-dark;
+    }
+
+    .overall-label {
+        font-weight: 900;
     }
 
     .loading-container {
@@ -24,7 +29,8 @@
     }
 
     .legend-container div,
-    .data-table div {
+    .data-table div,
+    .overall-container div {
         padding: @spacing-1x;
         border-radius: @spacing-1x;
         margin: 1px;
@@ -32,9 +38,16 @@
         cursor: default;
     }
 
+    .overall-container {
+        .availability-cell:hover {
+            cursor: default;
+        }
+    }
+
     .header-container {
         display: flex;
         justify-content: space-between;
+        max-width: 95vw;
 
         .legend-container {
             height: fit-content;
@@ -45,8 +58,9 @@
     }
 
     .top-container {
-        width: 100%;
-        display: inline-flex;
+        max-width: 95vw;
+        display: flex;
+        justify-content: space-between;
     
         .availability-filter {
             min-width: 150px;

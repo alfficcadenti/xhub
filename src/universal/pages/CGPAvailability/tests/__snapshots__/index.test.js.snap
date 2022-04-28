@@ -57,6 +57,22 @@ Object {
             </span>
           </h1>
           <label
+            class="overall-label"
+            for="overall"
+          >
+            Overall Availability
+            <div
+              class="overall-container"
+              id="overall"
+            >
+              <div
+                class="availability-cell negative"
+              >
+                92.64
+              </div>
+            </div>
+          </label>
+          <label
             class="legend-label"
             for="legend"
           >
@@ -115,7 +131,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="04/19/2022 07:42 PM"
+                        value="04/21/2022 11:28 AM"
                       />
                     </div>
                   </div>
@@ -135,7 +151,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="04/26/2022 07:42 PM"
+                        value="04/28/2022 11:28 AM"
                       />
                     </div>
                   </div>
@@ -2207,6 +2223,22 @@ Object {
           </span>
         </h1>
         <label
+          class="overall-label"
+          for="overall"
+        >
+          Overall Availability
+          <div
+            class="overall-container"
+            id="overall"
+          >
+            <div
+              class="availability-cell negative"
+            >
+              92.64
+            </div>
+          </div>
+        </label>
+        <label
           class="legend-label"
           for="legend"
         >
@@ -2265,7 +2297,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="04/19/2022 07:42 PM"
+                      value="04/21/2022 11:28 AM"
                     />
                   </div>
                 </div>
@@ -2285,7 +2317,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="04/26/2022 07:42 PM"
+                      value="04/28/2022 11:28 AM"
                     />
                   </div>
                 </div>
@@ -4414,6 +4446,22 @@ Object {
             </span>
           </h1>
           <label
+            class="overall-label"
+            for="overall"
+          >
+            Overall Availability
+            <div
+              class="overall-container"
+              id="overall"
+            >
+              <div
+                class="availability-cell "
+              >
+                -
+              </div>
+            </div>
+          </label>
+          <label
             class="legend-label"
             for="legend"
           >
@@ -4472,7 +4520,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="04/19/2022 07:42 PM"
+                        value="04/21/2022 11:28 AM"
                       />
                     </div>
                   </div>
@@ -4492,7 +4540,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="04/26/2022 07:42 PM"
+                        value="04/28/2022 11:28 AM"
                       />
                     </div>
                   </div>
@@ -5106,6 +5154,22 @@ Object {
           </span>
         </h1>
         <label
+          class="overall-label"
+          for="overall"
+        >
+          Overall Availability
+          <div
+            class="overall-container"
+            id="overall"
+          >
+            <div
+              class="availability-cell "
+            >
+              -
+            </div>
+          </div>
+        </label>
+        <label
           class="legend-label"
           for="legend"
         >
@@ -5164,7 +5228,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="04/19/2022 07:42 PM"
+                      value="04/21/2022 11:28 AM"
                     />
                   </div>
                 </div>
@@ -5184,7 +5248,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="04/26/2022 07:42 PM"
+                      value="04/28/2022 11:28 AM"
                     />
                   </div>
                 </div>
@@ -5855,6 +5919,22 @@ Object {
             </span>
           </h1>
           <label
+            class="overall-label"
+            for="overall"
+          >
+            Overall Availability
+            <div
+              class="overall-container"
+              id="overall"
+            >
+              <div
+                class="availability-cell "
+              >
+                -
+              </div>
+            </div>
+          </label>
+          <label
             class="legend-label"
             for="legend"
           >
@@ -5913,7 +5993,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="04/19/2022 07:42 PM"
+                        value="04/21/2022 11:28 AM"
                       />
                     </div>
                   </div>
@@ -5933,7 +6013,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="04/26/2022 07:42 PM"
+                        value="04/28/2022 11:28 AM"
                       />
                     </div>
                   </div>
@@ -6601,6 +6681,22 @@ Object {
           </span>
         </h1>
         <label
+          class="overall-label"
+          for="overall"
+        >
+          Overall Availability
+          <div
+            class="overall-container"
+            id="overall"
+          >
+            <div
+              class="availability-cell "
+            >
+              -
+            </div>
+          </div>
+        </label>
+        <label
           class="legend-label"
           for="legend"
         >
@@ -6659,7 +6755,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="04/19/2022 07:42 PM"
+                      value="04/21/2022 11:28 AM"
                     />
                   </div>
                 </div>
@@ -6679,7 +6775,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="04/26/2022 07:42 PM"
+                      value="04/28/2022 11:28 AM"
                     />
                   </div>
                 </div>
@@ -7404,6 +7500,22 @@ Object {
             </span>
           </h1>
           <label
+            class="overall-label"
+            for="overall"
+          >
+            Overall Availability
+            <div
+              class="overall-container"
+              id="overall"
+            >
+              <div
+                class="availability-cell negative"
+              >
+                91.52
+              </div>
+            </div>
+          </label>
+          <label
             class="legend-label"
             for="legend"
           >
@@ -7462,7 +7574,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="04/19/2022 07:42 PM"
+                        value="04/21/2022 11:28 AM"
                       />
                     </div>
                   </div>
@@ -7482,7 +7594,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="04/26/2022 07:42 PM"
+                        value="04/28/2022 11:28 AM"
                       />
                     </div>
                   </div>
@@ -9756,6 +9868,22 @@ Object {
           </span>
         </h1>
         <label
+          class="overall-label"
+          for="overall"
+        >
+          Overall Availability
+          <div
+            class="overall-container"
+            id="overall"
+          >
+            <div
+              class="availability-cell negative"
+            >
+              91.52
+            </div>
+          </div>
+        </label>
+        <label
           class="legend-label"
           for="legend"
         >
@@ -9814,7 +9942,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="04/19/2022 07:42 PM"
+                      value="04/21/2022 11:28 AM"
                     />
                   </div>
                 </div>
@@ -9834,7 +9962,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="04/26/2022 07:42 PM"
+                      value="04/28/2022 11:28 AM"
                     />
                   </div>
                 </div>
@@ -12165,6 +12293,22 @@ Object {
             </span>
           </h1>
           <label
+            class="overall-label"
+            for="overall"
+          >
+            Overall Availability
+            <div
+              class="overall-container"
+              id="overall"
+            >
+              <div
+                class="availability-cell negative"
+              >
+                91.52
+              </div>
+            </div>
+          </label>
+          <label
             class="legend-label"
             for="legend"
           >
@@ -12223,7 +12367,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="04/19/2022 07:42 PM"
+                        value="04/21/2022 11:28 AM"
                       />
                     </div>
                   </div>
@@ -12243,7 +12387,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="04/26/2022 07:42 PM"
+                        value="04/28/2022 11:28 AM"
                       />
                     </div>
                   </div>
@@ -14526,6 +14670,22 @@ Object {
           </span>
         </h1>
         <label
+          class="overall-label"
+          for="overall"
+        >
+          Overall Availability
+          <div
+            class="overall-container"
+            id="overall"
+          >
+            <div
+              class="availability-cell negative"
+            >
+              91.52
+            </div>
+          </div>
+        </label>
+        <label
           class="legend-label"
           for="legend"
         >
@@ -14584,7 +14744,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="04/19/2022 07:42 PM"
+                      value="04/21/2022 11:28 AM"
                     />
                   </div>
                 </div>
@@ -14604,7 +14764,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="04/26/2022 07:42 PM"
+                      value="04/28/2022 11:28 AM"
                     />
                   </div>
                 </div>
@@ -16944,6 +17104,22 @@ Object {
             </span>
           </h1>
           <label
+            class="overall-label"
+            for="overall"
+          >
+            Overall Availability
+            <div
+              class="overall-container"
+              id="overall"
+            >
+              <div
+                class="availability-cell negative"
+              >
+                87.34
+              </div>
+            </div>
+          </label>
+          <label
             class="legend-label"
             for="legend"
           >
@@ -17002,7 +17178,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="04/19/2022 07:42 PM"
+                        value="04/21/2022 11:28 AM"
                       />
                     </div>
                   </div>
@@ -17022,7 +17198,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="04/26/2022 07:42 PM"
+                        value="04/28/2022 11:28 AM"
                       />
                     </div>
                   </div>
@@ -19195,6 +19371,22 @@ Object {
           </span>
         </h1>
         <label
+          class="overall-label"
+          for="overall"
+        >
+          Overall Availability
+          <div
+            class="overall-container"
+            id="overall"
+          >
+            <div
+              class="availability-cell negative"
+            >
+              87.34
+            </div>
+          </div>
+        </label>
+        <label
           class="legend-label"
           for="legend"
         >
@@ -19253,7 +19445,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="04/19/2022 07:42 PM"
+                      value="04/21/2022 11:28 AM"
                     />
                   </div>
                 </div>
@@ -19273,7 +19465,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="04/26/2022 07:42 PM"
+                      value="04/28/2022 11:28 AM"
                     />
                   </div>
                 </div>
@@ -21503,6 +21695,22 @@ Object {
             </span>
           </h1>
           <label
+            class="overall-label"
+            for="overall"
+          >
+            Overall Availability
+            <div
+              class="overall-container"
+              id="overall"
+            >
+              <div
+                class="availability-cell "
+              >
+                -
+              </div>
+            </div>
+          </label>
+          <label
             class="legend-label"
             for="legend"
           >
@@ -21561,7 +21769,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="04/19/2022 07:42 PM"
+                        value="04/21/2022 11:28 AM"
                       />
                     </div>
                   </div>
@@ -21581,7 +21789,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="04/26/2022 07:42 PM"
+                        value="04/28/2022 11:28 AM"
                       />
                     </div>
                   </div>
@@ -22595,6 +22803,22 @@ Object {
           </span>
         </h1>
         <label
+          class="overall-label"
+          for="overall"
+        >
+          Overall Availability
+          <div
+            class="overall-container"
+            id="overall"
+          >
+            <div
+              class="availability-cell "
+            >
+              -
+            </div>
+          </div>
+        </label>
+        <label
           class="legend-label"
           for="legend"
         >
@@ -22653,7 +22877,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="04/19/2022 07:42 PM"
+                      value="04/21/2022 11:28 AM"
                     />
                   </div>
                 </div>
@@ -22673,7 +22897,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="04/26/2022 07:42 PM"
+                      value="04/28/2022 11:28 AM"
                     />
                   </div>
                 </div>
@@ -23744,6 +23968,22 @@ Object {
             </span>
           </h1>
           <label
+            class="overall-label"
+            for="overall"
+          >
+            Overall Availability
+            <div
+              class="overall-container"
+              id="overall"
+            >
+              <div
+                class="availability-cell "
+              >
+                -
+              </div>
+            </div>
+          </label>
+          <label
             class="legend-label"
             for="legend"
           >
@@ -23802,7 +24042,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="04/19/2022 07:42 PM"
+                        value="04/21/2022 11:28 AM"
                       />
                     </div>
                   </div>
@@ -23822,7 +24062,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="04/26/2022 07:42 PM"
+                        value="04/28/2022 11:28 AM"
                       />
                     </div>
                   </div>
@@ -24827,6 +25067,22 @@ Object {
           </span>
         </h1>
         <label
+          class="overall-label"
+          for="overall"
+        >
+          Overall Availability
+          <div
+            class="overall-container"
+            id="overall"
+          >
+            <div
+              class="availability-cell "
+            >
+              -
+            </div>
+          </div>
+        </label>
+        <label
           class="legend-label"
           for="legend"
         >
@@ -24885,7 +25141,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="04/19/2022 07:42 PM"
+                      value="04/21/2022 11:28 AM"
                     />
                   </div>
                 </div>
@@ -24905,7 +25161,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="04/26/2022 07:42 PM"
+                      value="04/28/2022 11:28 AM"
                     />
                   </div>
                 </div>

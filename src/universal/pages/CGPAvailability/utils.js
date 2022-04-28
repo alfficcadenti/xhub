@@ -32,6 +32,15 @@ export const periodAvailability = (availabilities) => {
     return formattedValue((periodSummary.totalRequests - periodSummary.errorsCount) / periodSummary.totalRequests * 100);
 };
 
+export const periodRequestStats = (availabilities) => {
+    const periodSummary = availabilities?.reduce((acc, curr) => {
+        acc.totalRequests += (curr.requestCount || 0);
+        acc.errorsCount += (curr.errorCount || 0);
+        return acc;
+    }, {totalRequests: 0, errorsCount: 0});
+    return periodSummary;
+};
+
 export const extractColumns = (data, dateTimeFormat) => data?.length
     ? ['Application', ...data[0].availabilities?.map((item) => item && moment(item.timestamp).format(dateTimeFormat)) || [], 'Availability']
     : [];
@@ -75,7 +84,8 @@ export const mapAvailabilityRow = (row = {}, handleClick, dateTimeFormat = DATE_
                 Application: <a href={`https://expediagroup.datadoghq.com/dashboard/yuk-xd8-ik5/sro---cgp-alerting?tpl_var_application=${app}`} target="_blank">{app}</a>,
                 app,
                 Availability: <AvailabilityCell value={periodAvailability(availabilities)} applicationName={app} handleClick={handleClick}/>,
-                avgValue: periodAvailability(availabilities)
+                avgValue: periodAvailability(availabilities),
+                stats: periodRequestStats(availabilities)
             },
             ...availabilities.map((x) => ({[moment(x.timestamp).format(dateTimeFormat)]: <AvailabilityCell value={exactAvailability(x.availability, x.requestCount)} applicationName={app} handleClick={handleClick}/>}))
         );
@@ -98,3 +108,9 @@ export const getQueryValues = (search) => {
     const {kiosk} = qs.parse(search);
     return {kioskMode: !!kiosk};
 };
+
+export const getTotalStats = (data) => data.reduce((acc, curr) => {
+    const totalRequests = isNaN(curr?.stats?.totalRequests) ? 0 : curr?.stats?.totalRequests;
+    const totalErrors = isNaN(curr?.stats?.errorsCount) ? 0 : curr?.stats?.errorsCount;
+    return {totalRequests: acc.totalRequests + totalRequests, totalErrors: acc.totalErrors + totalErrors};
+}, {totalRequests: 0, totalErrors: 0});
