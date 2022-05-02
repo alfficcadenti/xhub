@@ -183,7 +183,8 @@ export default [
         link: '/partner-business-metrics',
         text: 'Partner Business Metrics',
         component: PartnerBusinessMetrics,
-        brands: [VRBO_BRAND]
+        brands: [VRBO_BRAND],
+        hidden: true
     },
     {
         category: AAT,

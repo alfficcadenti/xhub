@@ -23,7 +23,7 @@ describe('<Header />', () => {
 
     it('renders Platform Health, Availability and CE Analysis dropdown menus if brand is VRBO', () => {
         const wrapper = render(<BrowserRouter><Header selectedBrands={[VRBO_BRAND]} onBrandChange={sinon.spy} brands={validBrands} /></BrowserRouter>);
-        expect((wrapper.getAllByRole('dialog')[0]).children).toHaveLength(12); // Availavbility & Trends
+        expect((wrapper.getAllByRole('dialog')[0]).children).toHaveLength(11); // Availability & Trends
         expect((wrapper.getAllByRole('dialog')[1]).children).toHaveLength(2); // CE Analysis
         expect((wrapper.getAllByRole('dialog')[3]).children).toHaveLength(9); // Platform Health & Resiliency
     });
