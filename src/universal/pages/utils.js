@@ -1,6 +1,7 @@
 import React from 'react';
 import qs from 'query-string';
 import moment from 'moment';
+import {getTzFormat} from '../components/TimeZonePicker/utils';
 import {
     BRANDS,
     DATE_FORMAT,
@@ -10,7 +11,6 @@ import {
     HOTELS_COM_BRAND,
     LOB_LIST,
     PAGE_VIEWS_DATE_FORMAT,
-    TIMEZONE_ABBR,
     VRBO_BRAND,
     GRAFANA_DASHBOARDS
 } from '../constants';
@@ -368,7 +368,6 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
         const aggregatedData = [];
         let tempMinValue = 0;
 
-        // eslint-disable-next-line complexity
         tempMinValue = (
             Array.isArray(data[i]) ? data[i] : []
         ).reduce((prev, {time, brandWiseSuccessRateData}) => {
@@ -385,7 +384,7 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
                     aggregatedData[found].value = formatRate(brandWiseSuccessRateData.rate);
                 } else {
                     aggregatedData.push({
-                        label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
+                        label: getTzFormat(momentTime, PAGE_VIEWS_DATE_FORMAT),
                         time: moment.utc(time).valueOf(),
                         value: formatRate(brandWiseSuccessRateData.rate),
                         totalDeltaUserCount: deltaUserCount
@@ -463,7 +462,7 @@ export const makeSuccessRatesLOBObjects = (
                             aggregatedData[found][valueKey] = rate === null ? null : formatRate(rate);
                         } else {
                             aggregatedData.push({
-                                label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
+                                label: getTzFormat(momentTime, PAGE_VIEWS_DATE_FORMAT),
                                 time: moment.utc(time).valueOf(),
                                 [valueKey]: rate === null ? null : formatRate(rate),
                                 totalDeltaUserCount: deltaUserCount?.lobTotalDeltaUserCount,
@@ -612,11 +611,11 @@ export const getQueryValues = (search) => {
 
     return {
         initialStart: isValidDateRange
-            ? moment(start).format(DATE_FORMAT)
-            : moment().subtract(1, 'years').startOf('minute').format(DATE_FORMAT),
+            ? getTzFormat(start, DATE_FORMAT)
+            : getTzFormat(moment().subtract(1, 'years').startOf('minute'), DATE_FORMAT),
         initialEnd: isValidDateRange
-            ? moment(end).format(DATE_FORMAT)
-            : moment().format(DATE_FORMAT)
+            ? getTzFormat(end, DATE_FORMAT)
+            : getTzFormat(moment(), DATE_FORMAT)
     };
 };
 

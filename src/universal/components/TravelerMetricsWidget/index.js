@@ -12,6 +12,7 @@ import {
     Tooltip
 } from 'recharts';
 import {v1 as uuid} from 'uuid';
+import {getTzFormat} from '../TimeZonePicker/utils';
 import HelpText from '../HelpText/HelpText';
 import ReferenceLabel from '../ReferenceLabel';
 import {checkResponse, getBrand} from '../../pages/utils';
@@ -20,7 +21,7 @@ import {EXPEDIA_PARTNER_SERVICES_BRAND, PAGE_VIEWS_PAGE_NAME} from '../../consta
 import './styles.less';
 
 
-const formatXAxis = (date) => moment(date).format('MM/DD HH:mm');
+const formatXAxis = (date) => getTzFormat(date, 'MM/DD HH:mm');
 
 const renderHeader = (title, helpText) => (
     <h3>

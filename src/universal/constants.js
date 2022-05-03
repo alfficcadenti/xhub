@@ -1,6 +1,3 @@
-import moment from 'moment';
-import 'moment-timezone';
-
 export const RC_PORTFOLIOS = 'All RootCause Portfolios';
 export const RC_PORTFOLIO_GROUPS = 'All RootCause Portfolio Groups';
 export const IMPACTED_PORTFOLIOS = 'All Impacted Portfolios';
@@ -99,8 +96,6 @@ export const PAGES_LIST = [
     {name: 'bookingform', label: 'Booking Form'},
     {name: 'bookingconfirmation', label: 'Booking Confirmation'},
 ];
-
-export const TIMEZONE_ABBR = moment().tz(moment.tz.guess()).format('z');
 
 export const BRANDS = [
     {

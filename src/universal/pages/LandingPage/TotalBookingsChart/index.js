@@ -3,7 +3,7 @@ import {
     AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
 import HelpText from '../../../components/HelpText/HelpText';
-import {BRANDS, TIMEZONE_ABBR, EG_BRAND} from '../../../constants';
+import {BRANDS, EG_BRAND} from '../../../constants';
 import {getBrand, isNotEmptyString} from '../../utils';
 import './styles.less';
 
@@ -39,7 +39,7 @@ export default class TotalChart extends PureComponent {
             <div className="total-bookings-container">
                 <h2 className="total-bookings-title">
                     {'Total Bookings'}
-                    <HelpText className="chart-info" text={`Total Bookings for the last 24 hours in ${TIMEZONE_ABBR} time. Data refreshes every minute.`} placement="bottom"/>
+                    <HelpText className="chart-info" text={'Total Bookings for the last 24 hours time. Data refreshes every minute.'} placement="bottom"/>
                 </h2>
                 <ResponsiveContainer width="100%" height="80%">
                     <AreaChart width={730} height={250} data={data}

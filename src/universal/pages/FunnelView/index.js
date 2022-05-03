@@ -7,6 +7,8 @@ import LoadingContainer from '../../components/LoadingContainer';
 import DateFiltersWrapper from '../../components/DateFiltersWrapper/DateFiltersWrapper';
 import Annotations from '../../components/Annotations/Annotations';
 import HelpText from '../../components/HelpText/HelpText';
+import TimeZonePicker from '../../components/TimeZonePicker';
+import {getTimeZone, setTimeZone} from '../../components/TimeZonePicker/utils';
 import ResetButton from '../../components/ResetButton';
 import {Switch} from '@homeaway/react-form-components';
 import {useAddToUrl, useFetchProductMapping, useQueryParamChange, useSelectedBrand, useZoomAndSynced} from '../hooks';
@@ -250,14 +252,19 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}
         setSelectedEPSPartner(epsPartner === null ? '' : epsPartner.value);
     };
 
+    const handleTimeZoneChange = (selectedTimeZone) => {
+        setTimeZone(selectedTimeZone);
+        window.location.reload(false);
+    };
+
     const resetGraphToDefault = () => {
         const defaultStart = moment().utc().subtract(6, 'hour');
         const defaultEnd = moment().utc();
         resetGraphZoom();
-        setStart(defaultStart.format());
-        setEnd(defaultEnd.format());
-        setPendingStart(defaultStart);
-        setPendingEnd(defaultEnd);
+        setStart(defaultStart.clone());
+        setEnd(defaultEnd.clone());
+        setPendingStart(defaultStart.clone());
+        setPendingEnd(defaultEnd.clone());
     };
 
     const renderPageViews = (data) => (
@@ -319,11 +326,13 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}
                 handleDatetimeChange={handleDatetimeChange}
                 isDirtyForm={isDirtyForm}
                 showTimePicker
+                enableTimeZone
             />
             <ResetButton
                 isDisabled={moment(end).diff(moment(start), 'hour') === 6}
                 resetGraphToDefault={resetGraphToDefault}
             />
+            <TimeZonePicker timeZone={getTimeZone()} onChange={handleTimeZoneChange} />
         </div>
     );
 

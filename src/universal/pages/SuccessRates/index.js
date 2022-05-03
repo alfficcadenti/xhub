@@ -13,6 +13,8 @@ import ResetButton from '../../components/ResetButton';
 import LagIndicator from '../../components/LagIndicator';
 import GrafanaDashboard from '../../components/GrafanaDashboard';
 import HelpText from '../../components/HelpText/HelpText';
+import TimeZonePicker from '../../components/TimeZonePicker';
+import {getTimeZone, setTimeZone} from '../../components/TimeZonePicker/utils';
 import {triggerEdapPageView} from '../../edap';
 import {
     EG_BRAND,
@@ -292,10 +294,10 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
         const defaultStart = moment().utc().subtract(6, 'hour');
         const defaultEnd = moment().utc();
         resetGraphZoom();
-        setStart(defaultStart.format());
-        setEnd(defaultEnd.format());
-        setPendingStart(defaultStart);
-        setPendingEnd(defaultEnd);
+        setStart(defaultStart.clone());
+        setEnd(defaultEnd.clone());
+        setPendingStart(defaultStart.clone());
+        setPendingEnd(defaultEnd.clone());
     };
 
     const handleLoBChange = (lobs) => setSelectedLobs(lobs || []);
@@ -304,6 +306,11 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
         setSelectedEPSPartner(epsPartner === null
             ? ''
             : epsPartner.value);
+    };
+
+    const handleTimeZoneChange = (selectedTimeZone) => {
+        setTimeZone(selectedTimeZone);
+        window.location.reload(false);
     };
 
 
@@ -379,11 +386,13 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
                 handleDatetimeChange={handleDatetimeChange}
                 isDirtyForm={isDirtyForm}
                 showTimePicker
+                enableTimeZone
             />
             <ResetButton
                 isDisabled={moment(end).diff(moment(start), 'hour') === 6}
                 resetGraphToDefault={resetGraphToDefault}
             />
+            <TimeZonePicker timeZone={getTimeZone()} onChange={handleTimeZoneChange} />
         </div>
     );
 
