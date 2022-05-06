@@ -684,7 +684,7 @@ describe('brandsWithGrafanaDashboard()', () => {
 
 describe('getPageViewsGrafanaDashboardByBrand()', () => {
     it('returns endpoint for expedia grafana dashboard', () => {
-        expect(getPageViewsGrafanaDashboardByBrand(EXPEDIA_BRAND)).to.equal('https://opexhub-grafana.expedia.biz/d/DdypXxKLZ/bex-pageviews?orgId=1&var-eventType=pageview&var-brandGroup=bexg&var-lineOfBusiness=All&theme=light');
+        expect(getPageViewsGrafanaDashboardByBrand(EXPEDIA_BRAND, 'pageViewsUrl')).to.equal('https://opexhub-grafana.expedia.biz/d/DdypXxKLZ/bex-pageviews?orgId=1&var-eventType=pageview&var-brandGroup=bexg&var-lineOfBusiness=All&theme=light');
     });
 
     it('returns empty string for EXPEDIA_PARTNER_SERVICES_BRAND', () => {

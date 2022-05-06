@@ -164,19 +164,22 @@ export const GRAFANA_DASHBOARDS = [
         brand: EXPEDIA_BRAND,
         pageViewsUrl: 'https://opexhub-grafana.expedia.biz/d/DdypXxKLZ/bex-pageviews?orgId=1&var-eventType=pageview&var-brandGroup=bexg&var-lineOfBusiness=All&theme=light',
         successRateUrl: 'https://opex-grafana.expedia.biz/d/3-CbFic7z/expedia-success-rate?orgId=2&theme=light',
-        loginSuccessRateUrl: 'https://opex-grafana.expedia.biz/d/ZpygTf8nk/expedia-login-success-rate?orgId=2&theme=light'
+        loginSuccessRateUrl: 'https://opex-grafana.expedia.biz/d/ZpygTf8nk/expedia-login-success-rate?orgId=2&theme=light',
+        loginPageViewsUrl: 'https://opexhub-grafana.expedia.biz/d/moO-JSlnz/eg-clickstream-login-events-ui?orgId=1&var-brand=expedia&theme=light'
     },
     {
         brand: VRBO_BRAND,
         pageViewsUrl: 'https://opexhub-grafana.expedia.biz/d/aZXj08Fnz/vrbo-pageviews?orgId=1&theme=light',
         successRateUrl: 'https://opex-grafana.expedia.biz/d/m2a5Kmcnk/vrbo-success-rate?orgId=2&theme=light',
-        loginSuccessRateUrl: 'https://opex-grafana.expedia.biz/d/wcxKSg4Zz/vrbo-login-success-rate?orgId=2&theme=light'
+        loginSuccessRateUrl: 'https://opex-grafana.expedia.biz/d/wcxKSg4Zz/vrbo-login-success-rate?orgId=2&theme=light',
+        loginPageViewsUrl: 'https://opexhub-grafana.expedia.biz/d/moO-JSlnz/eg-clickstream-login-events-ui?orgId=1&var-brand=vrbo&theme=light'
     },
     {
         brand: HOTELS_COM_BRAND,
         pageViewsUrl: 'https://opexhub-grafana.expedia.biz/d/0LmLA8F7z/hcom-pageview?orgId=1&theme=light',
         successRateUrl: 'https://opex-grafana.expedia.biz/d/qgdtFi57z/hcom-success-rate?orgId=2&theme=light',
-        loginSuccessRateUrl: 'https://opex-grafana.expedia.biz/d/B1A32BU7z/hcom-login-success-rate?orgId=2&theme=light'
+        loginSuccessRateUrl: 'https://opex-grafana.expedia.biz/d/B1A32BU7z/hcom-login-success-rate?orgId=2&theme=light',
+        loginPageViewsUrl: 'https://opexhub-grafana.expedia.biz/d/moO-JSlnz/eg-clickstream-login-events-ui?orgId=1&var-brand=hcom&theme=light'
     },
 ];
 

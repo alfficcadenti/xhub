@@ -6,11 +6,11 @@ import TravelerMetricsWidget from '../../components/TravelerMetricsWidget';
 import LoadingContainer from '../../components/LoadingContainer';
 import DateFiltersWrapper from '../../components/DateFiltersWrapper/DateFiltersWrapper';
 import Annotations from '../../components/Annotations/Annotations';
+import FilterDropDown from '../../components/FilterDropDown';
 import HelpText from '../../components/HelpText/HelpText';
 import TimeZonePicker from '../../components/TimeZonePicker';
 import {getTimeZone, setTimeZone} from '../../components/TimeZonePicker/utils';
 import ResetButton from '../../components/ResetButton';
-import {Switch} from '@homeaway/react-form-components';
 import {useAddToUrl, useFetchProductMapping, useQueryParamChange, useSelectedBrand, useZoomAndSynced} from '../hooks';
 import {
     EG_BRAND,
@@ -27,22 +27,23 @@ import {getErrorMessage} from './utils';
 import {
     checkResponse,
     getBrand,
-    getQueryParams,
     getLobPlaceholder,
     getPageViewsGrafanaDashboardByBrand,
-    brandsWithGrafanaDashboard
+    brandsWithGrafanaDashboard,
+    getQueryParams
 } from '../utils';
 import {makePageViewLoBObjects, makePageViewObjects, buildPageViewsApiQueryString} from './pageViewsUtils';
 import LagIndicator from '../../components/LagIndicator';
 import './styles.less';
 import {triggerEdapPageView} from '../../edap';
 import GrafanaDashboard from '../../components/GrafanaDashboard';
-
+import {VIEW_TYPES, PAGEVIEWS_METRICS, SHOPPING_VIEWS_LABEL} from './constants';
 
 const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}) => {
     const selectedBrand = selectedBrands[0];
     const {search} = useLocation();
-    const {initialStart, initialEnd, initialTimeRange, initialLobs} = getQueryParams(search);
+    const {initialStart, initialEnd, initialTimeRange, initialLobs, initialViewType, initialMetricGroup} = getQueryParams(search);
+    const [isSupportedBrand, setIsSupportedBrand] = useState(false);
 
     const [widgets, setWidgets] = useState([]);
     const [lobWidgets, setLoBWidgets] = useState([]);
@@ -61,7 +62,8 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}
     const [isLoBAvailable, setIsLoBAvailable] = useState(true);
     const [selectedLobs, setSelectedLobs] = useState(initialLobs);
     const [isZoomedIn, setIsZoomedIn] = useState(false);
-    const [isGrafanaView, setIsGrafanaView] = useState(false);
+    const [viewType, setViewType] = useState(initialViewType);
+    const [metricGroup, setMetricGroup] = useState(initialMetricGroup);
 
     const [refAreaLeft, setRefAreaLeft] = useState('');
     const [refAreaRight, setRefAreaRight] = useState('');
@@ -171,18 +173,16 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}
 
         if ([EG_BRAND, EGENCIA_BRAND].includes(selectedBrand)) {
             setError(getErrorMessage(selectedBrand));
+            setIsSupportedBrand(false);
             setIsFormDisabled(true);
         } else {
             setError(null);
+            setIsSupportedBrand(true);
             setIsFormDisabled(false);
 
             if (!isZoomedIn) { // we need this flag right after zoomed in so that we don't re-fetch because it filters on existing data
                 fetchPageViewsData(selectedBrand);
             }
-        }
-
-        if (!brandsWithGrafanaDashboard()?.includes(selectedBrand)) {
-            setIsGrafanaView(false);
         }
 
         return function cleanup() {
@@ -246,7 +246,9 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}
 
     const handleLoBChange = (lobValue) => setSelectedLobs(lobValue || []);
 
-    const handleNativeGrafanaSwitch = () => setIsGrafanaView(!isGrafanaView);
+    const handleViewTypeChange = (e) => setViewType(e);
+
+    const handleMetricChange = (e) => setMetricGroup(e);
 
     const handleEPSPartnerChange = (epsPartner) => {
         setSelectedEPSPartner(epsPartner === null ? '' : epsPartner.value);
@@ -273,12 +275,22 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}
         </div>
     );
 
+    const grafanaDashboardType = () => {
+        if (metricGroup === 'Login Page Views') {
+            return 'loginPageViewsUrl';
+        }
+        if (metricGroup === 'Shopping Page Views') {
+            return 'pageViewsUrl';
+        }
+        return '';
+    };
+
     const renderGrafanaDashboard = () => (
         <GrafanaDashboard
             selectedBrands={[selectedBrand]}
             availableBrands={brandsWithGrafanaDashboard()}
-            name="success-rates"
-            url={getPageViewsGrafanaDashboardByBrand(selectedBrand)}
+            name="pageviews"
+            url={getPageViewsGrafanaDashboardByBrand(selectedBrand, grafanaDashboardType())}
         />
     );
 
@@ -345,31 +357,58 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}
         </>
     );
 
-    const renderGrafanaViewSwitch = () => (
-        <div id="grafana-switch-container">
-            <Switch
-                name="grafanaView"
-                id="grafana-view"
-                checked={isGrafanaView}
-                onChange={handleNativeGrafanaSwitch}
-                size="sm"
-            />
-            <h4>{'Grafana View'}</h4>
+    const renderDashboardHelpIcon = () => !isLoBAvailable && <HelpText text="Only for LOB Hotels" placement="top" />;
+
+    const renderDashboardHeader = () => (
+        <div className="dashboard-header-container">
+            <h1 className="page-title">
+                {'Traveler Page Views'}{renderDashboardHelpIcon()}
+            </h1>
+            {
+                isSupportedBrand &&
+                (metricGroup === SHOPPING_VIEWS_LABEL || viewType === 'Native View') &&
+                <LagIndicator
+                    selectedBrand={selectedBrand}
+                />
+            }
         </div>
+    );
+
+    const renderDashboardBody = () => {
+        if (viewType === 'Native View') {
+            return renderPageViewDashboard();
+        }
+        if (metricGroup) {
+            return renderGrafanaDashboard();
+        }
+        return '';
+    };
+
+    const renderPageViewsSelectors = () => (
+        isSupportedBrand &&
+            <div className="main-selectors-container">
+                <FilterDropDown
+                    id="view-type-dropdown"
+                    list={VIEW_TYPES}
+                    selectedValue={viewType}
+                    onClickHandler={handleViewTypeChange}
+                    className="filter-dropdown"
+                />
+                {viewType === 'Grafana View' && <FilterDropDown
+                    id="pageviews-type-dropdown"
+                    list={PAGEVIEWS_METRICS}
+                    selectedValue={metricGroup}
+                    onClickHandler={handleMetricChange}
+                    className="filter-dropdown"
+                />}
+            </div>
     );
 
     return (
         <div className="funnel-views-container">
-            <div className="title-iframe-container">
-                <h1 className="page-title">{'Traveler Page Views'}{!isLoBAvailable && <HelpText text="Only for LOB Hotels" placement="top" />}
-                    {brandsWithGrafanaDashboard()?.includes(selectedBrand) && renderGrafanaViewSwitch()}
-                </h1>
-                <LagIndicator selectedBrand={selectedBrand} />
-            </div>
-            {isGrafanaView
-                ? renderGrafanaDashboard()
-                : renderPageViewDashboard()
-            }
+            {renderDashboardHeader()}
+            {renderPageViewsSelectors()}
+            {renderDashboardBody()}
         </div>
     );
 };

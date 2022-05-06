@@ -55,7 +55,7 @@ Object {
             <li
               aria-hidden="true"
               class="Navigation__li--highlight"
-              style="transform: translateX(0px) scaleY(1); width: 0px;"
+              style="transform: translateX(0px) scaleY(2); width: 0px;"
             />
           </ul>
         </nav>
@@ -88,7 +88,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="04/27/2022 11:17 AM"
+                      value="05/04/2022 10:19 AM"
                     />
                   </div>
                 </div>
@@ -108,7 +108,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="04/28/2022 11:17 AM"
+                      value="05/05/2022 10:19 AM"
                     />
                   </div>
                 </div>
@@ -715,7 +715,11 @@ Object {
             <div
               class="recharts-responsive-container"
               style="width: 100%; height: 360px;"
-            />
+            >
+              <div
+                style="position: absolute; width: 0px; height: 0px; visibility: hidden; display: none;"
+              />
+            </div>
           </div>
         </div>
         <div />
@@ -773,7 +777,7 @@ Object {
           <li
             aria-hidden="true"
             class="Navigation__li--highlight"
-            style="transform: translateX(0px) scaleY(1); width: 0px;"
+            style="transform: translateX(0px) scaleY(2); width: 0px;"
           />
         </ul>
       </nav>
@@ -806,7 +810,7 @@ Object {
                     class="form-control  "
                     id="datepicker-start-date"
                     type="text"
-                    value="04/27/2022 11:17 AM"
+                    value="05/04/2022 10:19 AM"
                   />
                 </div>
               </div>
@@ -826,7 +830,7 @@ Object {
                     class="form-control  "
                     id="datepicker-end-date"
                     type="text"
-                    value="04/28/2022 11:17 AM"
+                    value="05/05/2022 10:19 AM"
                   />
                 </div>
               </div>
@@ -1433,7 +1437,11 @@ Object {
           <div
             class="recharts-responsive-container"
             style="width: 100%; height: 360px;"
-          />
+          >
+            <div
+              style="position: absolute; width: 0px; height: 0px; visibility: hidden; display: none;"
+            />
+          </div>
         </div>
       </div>
       <div />
@@ -1581,7 +1589,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="04/27/2022 11:17 AM"
+                      value="05/04/2022 10:19 AM"
                     />
                   </div>
                 </div>
@@ -1601,7 +1609,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="04/28/2022 11:17 AM"
+                      value="05/05/2022 10:19 AM"
                     />
                   </div>
                 </div>
@@ -2274,7 +2282,7 @@ Object {
                     class="form-control  "
                     id="datepicker-start-date"
                     type="text"
-                    value="04/27/2022 11:17 AM"
+                    value="05/04/2022 10:19 AM"
                   />
                 </div>
               </div>
@@ -2294,7 +2302,7 @@ Object {
                     class="form-control  "
                     id="datepicker-end-date"
                     type="text"
-                    value="04/28/2022 11:17 AM"
+                    value="05/05/2022 10:19 AM"
                   />
                 </div>
               </div>

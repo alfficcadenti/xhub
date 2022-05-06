@@ -4,6 +4,37 @@
     width: 100%;
     margin-bottom: @spacing-1x;
 
+    .dashboard-header-container {
+        .lag-indicator {
+            float: right;
+        }
+    }
+
+    .main-selectors-container {
+        margin-bottom: @spacing-2x;
+
+        .filter-dropdown {
+            margin-right: @spacing-1x;
+            margin-bottom: @spacing-1x;
+
+            .filter-dropdown__control {
+                min-height: @filter-size;
+                border-radius: @spacing-1x;
+                border-color: @border-color-dark;
+            }
+
+            .filter-dropdown__menu,
+            .filter-dropdown__control {
+                z-index: 999;
+            }
+
+            .Dropdown__toggle {
+                .dropdown-button(160px);
+                border-color: @border-color-dark;
+            }
+        }
+    }
+
     #grafana-switch-container {
         display: flex;
         h4 {
