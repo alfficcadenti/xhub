@@ -1,5 +1,6 @@
 import qs from 'query-string';
 import moment from 'moment';
+import 'moment-timezone';
 import {validDateRange} from '../../utils';
 import {ALL_PRIORITIES_OPTION, ALL_STATUSES_OPTION} from '../../../constants';
 

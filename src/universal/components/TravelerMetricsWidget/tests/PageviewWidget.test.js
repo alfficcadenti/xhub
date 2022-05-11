@@ -1,9 +1,8 @@
 import React from 'react';
 import {expect} from 'chai';
-import {shallow, mount} from 'enzyme';
+import {shallow} from 'enzyme';
 import TravelerMetricsWidget from '..';
-import {pageViewsMockResults} from '../../../pages/FunnelView/tests/mockResults';
-import {mockPageViewsChart, mockPageViewsChartWithMinValues} from '../tests/mockPageViewsChart';
+
 
 const data = [
     {label: '1:00 AM', value: 240},
@@ -39,63 +38,5 @@ describe('LineChart component testing', () => {
     it('checks TravelerMetricsWidget render annotations if data is empty', () => {
         wrapper.setProps({annotations: []});
         expect(wrapper.find('.recharts-reference-line')).to.have.length(0);
-    });
-
-    it('render TravelerMetricsWidget with pageViewsMockData and matchTheSnapshot', () => {
-        const handleMouseDown = jest.fn();
-        const handleMouseMove = jest.fn();
-        const handleMouseUp = jest.fn();
-        const chartLeft = jest.fn();
-        const chartRight = jest.fn();
-
-        const wrapperWithData = mount(
-            <TravelerMetricsWidget
-                title={'test'}
-                data={pageViewsMockResults[0].aggregatedData}
-                key={'expediaTest'}
-                brand={'Expedia'}
-                tickGap={5}
-                onMouseDown={handleMouseDown}
-                onMouseMove={handleMouseMove}
-                onMouseUp={handleMouseUp}
-                chartLeft={chartLeft}
-                chartRight={chartRight}
-                ResponsiveContainerWidth={100}
-                ResponsiveContainerHeight={80}
-                annotations={[]}
-                selectedLoB={''}
-            />
-        );
-
-        expect(wrapperWithData.html()).to.be.eql(mockPageViewsChart);
-    });
-    it('render TravelerMetricsWidget with pageViewsMockData and matchTheSnapshot with minValues', () => {
-        const handleMouseDown = jest.fn();
-        const handleMouseMove = jest.fn();
-        const handleMouseUp = jest.fn();
-        const chartLeft = jest.fn();
-        const chartRight = jest.fn();
-
-        const wrapperWithData = mount(
-            <TravelerMetricsWidget
-                title="test"
-                data={pageViewsMockResults[0].aggregatedData}
-                key="expediaTest"
-                brand="Expedia"
-                tickGap={5}
-                onMouseDown={handleMouseDown}
-                onMouseMove={handleMouseMove}
-                onMouseUp={handleMouseUp}
-                chartLeft={chartLeft}
-                chartRight={chartRight}
-                ResponsiveContainerWidth={100}
-                ResponsiveContainerHeight={80}
-                annotations={[]}
-                selectedLoB={''}
-                minChartValue={1000}
-            />
-        );
-
-        expect(wrapperWithData.html()).to.be.eql(mockPageViewsChartWithMinValues);
     });
 });

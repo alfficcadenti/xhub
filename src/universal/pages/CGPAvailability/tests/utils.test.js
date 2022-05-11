@@ -1,7 +1,18 @@
-import {defineClassByValue, exactAvailability, extractColumns, formattedValue, getAppErrorsDataForChart, periodAvailability, mapAvailabilityRow, getSelectedRegions} from '../utils';
+import {
+    defineClassByValue,
+    exactAvailability,
+    extractColumns,
+    formattedValue,
+    getAppErrorsDataForChart,
+    periodAvailability,
+    mapAvailabilityRow,
+    getSelectedRegions,
+    getTotalStats
+} from '../utils';
 import {AVAILABILITY, HOURLY_AVAILABILITY} from '../../../../server/routes/api/testData/availability';
 import {DATETIME_FORMAT, DATE_FORMAT} from '../constants';
 import {expect} from 'chai';
+import moment from 'moment';
 
 describe('defineClassByValue()', () => {
     it('returns color for values above high Threshold (99.99)', () => {
@@ -110,7 +121,8 @@ describe('extractColumns()', () => {
 
     it('returns array with Application, extracted hours and Availability', () => {
         const columns = extractColumns(HOURLY_AVAILABILITY, DATETIME_FORMAT);
-        expect(columns).to.be.eqls(['Application', '00:00', '01:00', 'Availability']);
+        const dates = HOURLY_AVAILABILITY[0].availabilities.map((a) => moment(a.timestamp, 'YYYY-MM-DD[T]HH:mm:ssZ').format('hh:mm A'));
+        expect(columns).to.be.eqls(['Application', ...dates, 'Availability']);
     });
 });
 
@@ -202,5 +214,14 @@ describe('selectedRegions()', () => {
         }
         ];
         expect(getSelectedRegions(regions2)).to.be.eqls(['ap-northeast-1']);
+    });
+});
+
+describe('getTotalStats()', () => {
+    it('returns an object with totalRequests totalErrors', () => {
+        expect(getTotalStats(AVAILABILITY.map((x) => mapAvailabilityRow(x, null, DATE_FORMAT)))).to.be.eqls({'totalErrors': 2529, 'totalRequests': 23000});
+    });
+    it('returns an object with default values for totalRequests totalErrors when empty array is passed in input', () => {
+        expect(getTotalStats([])).to.be.eqls({'totalErrors': 0, 'totalRequests': 0});
     });
 });

@@ -1,4 +1,5 @@
-import {PAGE_VIEWS_DATE_FORMAT, PAGES_LIST, LOB_LIST, TIMEZONE_ABBR} from '../../constants';
+import {PAGE_VIEWS_DATE_FORMAT, PAGES_LIST, LOB_LIST} from '../../constants';
+import {getTzFormat} from '../../components/TimeZonePicker/utils';
 import moment from 'moment';
 
 export const buildPageViewsApiQueryString = ({start, end, brand, lob = false, EPSPartner = ''}) => {
@@ -31,7 +32,7 @@ export const makePageViewLoBObjects = (data = [], start, end, pageBrand = '') =>
                 if (momentTime.isBetween(start, end, 'minutes', '[]')) {
                     aggregatedData.push({
                         ...viewsByLoB,
-                        label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
+                        label: getTzFormat(momentTime, PAGE_VIEWS_DATE_FORMAT),
                         time: moment.utc(time).valueOf()
                     });
                 }
@@ -58,7 +59,7 @@ export const makePageViewObjects = (data = [], start, end, pageBrand = '') => {
                 const momentTime = moment(time);
                 if (momentTime.isBetween(start, end, 'minutes', '[]')) {
                     aggregatedData.push({
-                        label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
+                        label: getTzFormat(momentTime, PAGE_VIEWS_DATE_FORMAT),
                         time: moment.utc(time).valueOf(),
                         value: currentPageViews.views
                     });

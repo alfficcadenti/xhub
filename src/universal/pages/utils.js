@@ -1,6 +1,7 @@
 import React from 'react';
 import qs from 'query-string';
 import moment from 'moment';
+import {getTzFormat} from '../components/TimeZonePicker/utils';
 import {
     BRANDS,
     DATE_FORMAT,
@@ -10,7 +11,6 @@ import {
     HOTELS_COM_BRAND,
     LOB_LIST,
     PAGE_VIEWS_DATE_FORMAT,
-    TIMEZONE_ABBR,
     VRBO_BRAND,
     GRAFANA_DASHBOARDS
 } from '../constants';
@@ -22,6 +22,12 @@ import {
 import {LOGIN_RATES_LABEL} from './SuccessRates/constants';
 import ALL_PAGES from './index';
 import {getRateMetrics} from './SuccessRates/utils';
+import {
+    SELECT_VIEW_LABEL,
+    VIEW_TYPES,
+    PAGEVIEWS_METRICS,
+    SELECT_METRIC_LABEL
+} from './FunnelView/constants';
 
 
 const BOOKING_COUNT = 'Booking Counts';
@@ -368,7 +374,6 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
         const aggregatedData = [];
         let tempMinValue = 0;
 
-        // eslint-disable-next-line complexity
         tempMinValue = (
             Array.isArray(data[i]) ? data[i] : []
         ).reduce((prev, {time, brandWiseSuccessRateData}) => {
@@ -385,7 +390,7 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
                     aggregatedData[found].value = formatRate(brandWiseSuccessRateData.rate);
                 } else {
                     aggregatedData.push({
-                        label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
+                        label: getTzFormat(momentTime, PAGE_VIEWS_DATE_FORMAT),
                         time: moment.utc(time).valueOf(),
                         value: formatRate(brandWiseSuccessRateData.rate),
                         totalDeltaUserCount: deltaUserCount
@@ -463,7 +468,7 @@ export const makeSuccessRatesLOBObjects = (
                             aggregatedData[found][valueKey] = rate === null ? null : formatRate(rate);
                         } else {
                             aggregatedData.push({
-                                label: `${momentTime.format(PAGE_VIEWS_DATE_FORMAT)} ${TIMEZONE_ABBR}`,
+                                label: getTzFormat(momentTime, PAGE_VIEWS_DATE_FORMAT),
                                 time: moment.utc(time).valueOf(),
                                 [valueKey]: rate === null ? null : formatRate(rate),
                                 totalDeltaUserCount: deltaUserCount?.lobTotalDeltaUserCount,
@@ -498,23 +503,28 @@ export const validDateRange = (start, end) => {
 };
 
 export const getQueryParams = (search) => {
-    const {from, to, lobs} = qs.parse(search, {decoder: (c) => c});
+    const {from, to, lobs, view, metric} = qs.parse(search, {decoder: (c) => c});
     const initialLobs = lobs
         ? lobs.split(',').map((l) => LOB_LIST.find(({value}) => value === l)).filter((l) => l)
         : [];
 
-    return validDateRange(from, to)
+    const initialDateRangePickerValues = validDateRange(from, to)
         ? {
             initialStart: moment(from),
             initialEnd: moment(to),
             initialTimeRange: 'Custom',
-            initialLobs
         } : {
             initialStart: moment().subtract(6, 'hours').startOf('minute'),
             initialEnd: moment(),
             initialTimeRange: 'Last 6 Hours',
-            initialLobs
         };
+
+    return {
+        ...initialDateRangePickerValues,
+        initialLobs,
+        initialViewType: VIEW_TYPES.includes(view) ? view : SELECT_VIEW_LABEL,
+        initialMetricGroup: PAGEVIEWS_METRICS.includes(metric) ? metric : SELECT_METRIC_LABEL
+    };
 };
 
 export const getLobPlaceholder = (isLoading, lobWidgetsLength = 0) => {
@@ -594,7 +604,7 @@ export const getChartDataForFutureEvents = (dateInvalid, chartData, simplifiedPr
 
 export const getResetGraphTitle = (daysRange) => daysRange === DEFAULT_DAY_RANGE ? DISABLED_RESET_GRAPH_BUTTON : ENABLED_RESET_GRAPH_BUTTON;
 
-export const getPageViewsGrafanaDashboardByBrand = (brand) => GRAFANA_DASHBOARDS.find((x) => x.brand === brand)?.pageViewsUrl || '';
+export const getPageViewsGrafanaDashboardByBrand = (brand, type) => GRAFANA_DASHBOARDS.find((x) => x.brand === brand)?.[type] || '';
 
 export const getSuccessRateGrafanaDashboard = (brand, metric) => {
     const brandDashboards = GRAFANA_DASHBOARDS.find((x) => x.brand === brand) || {};
@@ -612,11 +622,11 @@ export const getQueryValues = (search) => {
 
     return {
         initialStart: isValidDateRange
-            ? moment(start).format(DATE_FORMAT)
-            : moment().subtract(1, 'years').startOf('minute').format(DATE_FORMAT),
+            ? getTzFormat(start, DATE_FORMAT)
+            : getTzFormat(moment().subtract(1, 'years').startOf('minute'), DATE_FORMAT),
         initialEnd: isValidDateRange
-            ? moment(end).format(DATE_FORMAT)
-            : moment().format(DATE_FORMAT)
+            ? getTzFormat(end, DATE_FORMAT)
+            : getTzFormat(moment(), DATE_FORMAT)
     };
 };
 

@@ -57,6 +57,22 @@ Object {
             </span>
           </h1>
           <label
+            class="overall-label"
+            for="overall"
+          >
+            Overall Availability
+            <div
+              class="overall-container"
+              id="overall"
+            >
+              <div
+                class="availability-cell negative"
+              >
+                92.64
+              </div>
+            </div>
+          </label>
+          <label
             class="legend-label"
             for="legend"
           >
@@ -115,7 +131,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="04/12/2022 09:55 PM"
+                        value="04/28/2022 10:19 AM"
                       />
                     </div>
                   </div>
@@ -135,7 +151,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="04/19/2022 09:55 PM"
+                        value="05/05/2022 10:19 AM"
                       />
                     </div>
                   </div>
@@ -1135,31 +1151,6 @@ Object {
                           class="availability-header-cell"
                         >
                           Application
-                          <div
-                            class="pointer search-icon"
-                            role="button"
-                            tabindex="0"
-                          >
-                            <span
-                              class="SVGIcon SVGIcon--16px SVGIcon--inline"
-                            >
-                              <svg
-                                data-id="SVG_SEARCH__16"
-                                focusable="false"
-                                height="16"
-                                viewBox="0 0 16 16"
-                                width="16"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M11.8 8a5 5 0 0 0-.7-3.7A4.9 4.9 0 0 0 7 2a5 5 0 0 0-2.7 9 5 5 0 0 0 6.2-.6m0 0l3.4 3.4"
-                                  fill="none"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                              </svg>
-                            </span>
-                          </div>
                         </div>
                       </span>
                       <span
@@ -1887,31 +1878,6 @@ Object {
                           class="availability-header-cell"
                         >
                           Availability
-                          <div
-                            class="pointer search-icon"
-                            role="button"
-                            tabindex="0"
-                          >
-                            <span
-                              class="SVGIcon SVGIcon--16px SVGIcon--inline"
-                            >
-                              <svg
-                                data-id="SVG_SEARCH__16"
-                                focusable="false"
-                                height="16"
-                                viewBox="0 0 16 16"
-                                width="16"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M11.8 8a5 5 0 0 0-.7-3.7A4.9 4.9 0 0 0 7 2a5 5 0 0 0-2.7 9 5 5 0 0 0 6.2-.6m0 0l3.4 3.4"
-                                  fill="none"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                              </svg>
-                            </span>
-                          </div>
                         </div>
                       </span>
                       <span
@@ -2257,6 +2223,22 @@ Object {
           </span>
         </h1>
         <label
+          class="overall-label"
+          for="overall"
+        >
+          Overall Availability
+          <div
+            class="overall-container"
+            id="overall"
+          >
+            <div
+              class="availability-cell negative"
+            >
+              92.64
+            </div>
+          </div>
+        </label>
+        <label
           class="legend-label"
           for="legend"
         >
@@ -2315,7 +2297,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="04/12/2022 09:55 PM"
+                      value="04/28/2022 10:19 AM"
                     />
                   </div>
                 </div>
@@ -2335,7 +2317,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="04/19/2022 09:55 PM"
+                      value="05/05/2022 10:19 AM"
                     />
                   </div>
                 </div>
@@ -3335,31 +3317,6 @@ Object {
                         class="availability-header-cell"
                       >
                         Application
-                        <div
-                          class="pointer search-icon"
-                          role="button"
-                          tabindex="0"
-                        >
-                          <span
-                            class="SVGIcon SVGIcon--16px SVGIcon--inline"
-                          >
-                            <svg
-                              data-id="SVG_SEARCH__16"
-                              focusable="false"
-                              height="16"
-                              viewBox="0 0 16 16"
-                              width="16"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M11.8 8a5 5 0 0 0-.7-3.7A4.9 4.9 0 0 0 7 2a5 5 0 0 0-2.7 9 5 5 0 0 0 6.2-.6m0 0l3.4 3.4"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                            </svg>
-                          </span>
-                        </div>
                       </div>
                     </span>
                     <span
@@ -4087,31 +4044,6 @@ Object {
                         class="availability-header-cell"
                       >
                         Availability
-                        <div
-                          class="pointer search-icon"
-                          role="button"
-                          tabindex="0"
-                        >
-                          <span
-                            class="SVGIcon SVGIcon--16px SVGIcon--inline"
-                          >
-                            <svg
-                              data-id="SVG_SEARCH__16"
-                              focusable="false"
-                              height="16"
-                              viewBox="0 0 16 16"
-                              width="16"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M11.8 8a5 5 0 0 0-.7-3.7A4.9 4.9 0 0 0 7 2a5 5 0 0 0-2.7 9 5 5 0 0 0 6.2-.6m0 0l3.4 3.4"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                            </svg>
-                          </span>
-                        </div>
                       </div>
                     </span>
                     <span
@@ -4514,6 +4446,22 @@ Object {
             </span>
           </h1>
           <label
+            class="overall-label"
+            for="overall"
+          >
+            Overall Availability
+            <div
+              class="overall-container"
+              id="overall"
+            >
+              <div
+                class="availability-cell "
+              >
+                -
+              </div>
+            </div>
+          </label>
+          <label
             class="legend-label"
             for="legend"
           >
@@ -4572,7 +4520,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="04/12/2022 09:55 PM"
+                        value="04/28/2022 10:19 AM"
                       />
                     </div>
                   </div>
@@ -4592,7 +4540,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="04/19/2022 09:55 PM"
+                        value="05/05/2022 10:19 AM"
                       />
                     </div>
                   </div>
@@ -5206,6 +5154,22 @@ Object {
           </span>
         </h1>
         <label
+          class="overall-label"
+          for="overall"
+        >
+          Overall Availability
+          <div
+            class="overall-container"
+            id="overall"
+          >
+            <div
+              class="availability-cell "
+            >
+              -
+            </div>
+          </div>
+        </label>
+        <label
           class="legend-label"
           for="legend"
         >
@@ -5264,7 +5228,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="04/12/2022 09:55 PM"
+                      value="04/28/2022 10:19 AM"
                     />
                   </div>
                 </div>
@@ -5284,7 +5248,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="04/19/2022 09:55 PM"
+                      value="05/05/2022 10:19 AM"
                     />
                   </div>
                 </div>
@@ -5955,6 +5919,22 @@ Object {
             </span>
           </h1>
           <label
+            class="overall-label"
+            for="overall"
+          >
+            Overall Availability
+            <div
+              class="overall-container"
+              id="overall"
+            >
+              <div
+                class="availability-cell "
+              >
+                -
+              </div>
+            </div>
+          </label>
+          <label
             class="legend-label"
             for="legend"
           >
@@ -6013,7 +5993,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="04/12/2022 09:55 PM"
+                        value="04/28/2022 10:19 AM"
                       />
                     </div>
                   </div>
@@ -6033,7 +6013,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="04/19/2022 09:55 PM"
+                        value="05/05/2022 10:19 AM"
                       />
                     </div>
                   </div>
@@ -6701,6 +6681,22 @@ Object {
           </span>
         </h1>
         <label
+          class="overall-label"
+          for="overall"
+        >
+          Overall Availability
+          <div
+            class="overall-container"
+            id="overall"
+          >
+            <div
+              class="availability-cell "
+            >
+              -
+            </div>
+          </div>
+        </label>
+        <label
           class="legend-label"
           for="legend"
         >
@@ -6759,7 +6755,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="04/12/2022 09:55 PM"
+                      value="04/28/2022 10:19 AM"
                     />
                   </div>
                 </div>
@@ -6779,7 +6775,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="04/19/2022 09:55 PM"
+                      value="05/05/2022 10:19 AM"
                     />
                   </div>
                 </div>
@@ -7504,6 +7500,22 @@ Object {
             </span>
           </h1>
           <label
+            class="overall-label"
+            for="overall"
+          >
+            Overall Availability
+            <div
+              class="overall-container"
+              id="overall"
+            >
+              <div
+                class="availability-cell negative"
+              >
+                91.52
+              </div>
+            </div>
+          </label>
+          <label
             class="legend-label"
             for="legend"
           >
@@ -7562,7 +7574,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="04/12/2022 09:55 PM"
+                        value="04/28/2022 10:19 AM"
                       />
                     </div>
                   </div>
@@ -7582,7 +7594,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="04/19/2022 09:55 PM"
+                        value="05/05/2022 10:19 AM"
                       />
                     </div>
                   </div>
@@ -8584,31 +8596,6 @@ Object {
                           class="availability-header-cell"
                         >
                           Application
-                          <div
-                            class="pointer search-icon"
-                            role="button"
-                            tabindex="0"
-                          >
-                            <span
-                              class="SVGIcon SVGIcon--16px SVGIcon--inline"
-                            >
-                              <svg
-                                data-id="SVG_SEARCH__16"
-                                focusable="false"
-                                height="16"
-                                viewBox="0 0 16 16"
-                                width="16"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M11.8 8a5 5 0 0 0-.7-3.7A4.9 4.9 0 0 0 7 2a5 5 0 0 0-2.7 9 5 5 0 0 0 6.2-.6m0 0l3.4 3.4"
-                                  fill="none"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                              </svg>
-                            </span>
-                          </div>
                         </div>
                       </span>
                       <span
@@ -9336,31 +9323,6 @@ Object {
                           class="availability-header-cell"
                         >
                           Availability
-                          <div
-                            class="pointer search-icon"
-                            role="button"
-                            tabindex="0"
-                          >
-                            <span
-                              class="SVGIcon SVGIcon--16px SVGIcon--inline"
-                            >
-                              <svg
-                                data-id="SVG_SEARCH__16"
-                                focusable="false"
-                                height="16"
-                                viewBox="0 0 16 16"
-                                width="16"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M11.8 8a5 5 0 0 0-.7-3.7A4.9 4.9 0 0 0 7 2a5 5 0 0 0-2.7 9 5 5 0 0 0 6.2-.6m0 0l3.4 3.4"
-                                  fill="none"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                              </svg>
-                            </span>
-                          </div>
                         </div>
                       </span>
                       <span
@@ -9906,6 +9868,22 @@ Object {
           </span>
         </h1>
         <label
+          class="overall-label"
+          for="overall"
+        >
+          Overall Availability
+          <div
+            class="overall-container"
+            id="overall"
+          >
+            <div
+              class="availability-cell negative"
+            >
+              91.52
+            </div>
+          </div>
+        </label>
+        <label
           class="legend-label"
           for="legend"
         >
@@ -9964,7 +9942,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="04/12/2022 09:55 PM"
+                      value="04/28/2022 10:19 AM"
                     />
                   </div>
                 </div>
@@ -9984,7 +9962,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="04/19/2022 09:55 PM"
+                      value="05/05/2022 10:19 AM"
                     />
                   </div>
                 </div>
@@ -10986,31 +10964,6 @@ Object {
                         class="availability-header-cell"
                       >
                         Application
-                        <div
-                          class="pointer search-icon"
-                          role="button"
-                          tabindex="0"
-                        >
-                          <span
-                            class="SVGIcon SVGIcon--16px SVGIcon--inline"
-                          >
-                            <svg
-                              data-id="SVG_SEARCH__16"
-                              focusable="false"
-                              height="16"
-                              viewBox="0 0 16 16"
-                              width="16"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M11.8 8a5 5 0 0 0-.7-3.7A4.9 4.9 0 0 0 7 2a5 5 0 0 0-2.7 9 5 5 0 0 0 6.2-.6m0 0l3.4 3.4"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                            </svg>
-                          </span>
-                        </div>
                       </div>
                     </span>
                     <span
@@ -11738,31 +11691,6 @@ Object {
                         class="availability-header-cell"
                       >
                         Availability
-                        <div
-                          class="pointer search-icon"
-                          role="button"
-                          tabindex="0"
-                        >
-                          <span
-                            class="SVGIcon SVGIcon--16px SVGIcon--inline"
-                          >
-                            <svg
-                              data-id="SVG_SEARCH__16"
-                              focusable="false"
-                              height="16"
-                              viewBox="0 0 16 16"
-                              width="16"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M11.8 8a5 5 0 0 0-.7-3.7A4.9 4.9 0 0 0 7 2a5 5 0 0 0-2.7 9 5 5 0 0 0 6.2-.6m0 0l3.4 3.4"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                            </svg>
-                          </span>
-                        </div>
                       </div>
                     </span>
                     <span
@@ -12365,6 +12293,22 @@ Object {
             </span>
           </h1>
           <label
+            class="overall-label"
+            for="overall"
+          >
+            Overall Availability
+            <div
+              class="overall-container"
+              id="overall"
+            >
+              <div
+                class="availability-cell negative"
+              >
+                91.52
+              </div>
+            </div>
+          </label>
+          <label
             class="legend-label"
             for="legend"
           >
@@ -12423,7 +12367,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="04/12/2022 09:55 PM"
+                        value="04/28/2022 10:19 AM"
                       />
                     </div>
                   </div>
@@ -12443,7 +12387,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="04/19/2022 09:55 PM"
+                        value="05/05/2022 10:19 AM"
                       />
                     </div>
                   </div>
@@ -13454,31 +13398,6 @@ Object {
                           class="availability-header-cell"
                         >
                           Application
-                          <div
-                            class="pointer search-icon"
-                            role="button"
-                            tabindex="0"
-                          >
-                            <span
-                              class="SVGIcon SVGIcon--16px SVGIcon--inline"
-                            >
-                              <svg
-                                data-id="SVG_SEARCH__16"
-                                focusable="false"
-                                height="16"
-                                viewBox="0 0 16 16"
-                                width="16"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M11.8 8a5 5 0 0 0-.7-3.7A4.9 4.9 0 0 0 7 2a5 5 0 0 0-2.7 9 5 5 0 0 0 6.2-.6m0 0l3.4 3.4"
-                                  fill="none"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                              </svg>
-                            </span>
-                          </div>
                         </div>
                       </span>
                       <span
@@ -14206,31 +14125,6 @@ Object {
                           class="availability-header-cell"
                         >
                           Availability
-                          <div
-                            class="pointer search-icon"
-                            role="button"
-                            tabindex="0"
-                          >
-                            <span
-                              class="SVGIcon SVGIcon--16px SVGIcon--inline"
-                            >
-                              <svg
-                                data-id="SVG_SEARCH__16"
-                                focusable="false"
-                                height="16"
-                                viewBox="0 0 16 16"
-                                width="16"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M11.8 8a5 5 0 0 0-.7-3.7A4.9 4.9 0 0 0 7 2a5 5 0 0 0-2.7 9 5 5 0 0 0 6.2-.6m0 0l3.4 3.4"
-                                  fill="none"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                              </svg>
-                            </span>
-                          </div>
                         </div>
                       </span>
                       <span
@@ -14776,6 +14670,22 @@ Object {
           </span>
         </h1>
         <label
+          class="overall-label"
+          for="overall"
+        >
+          Overall Availability
+          <div
+            class="overall-container"
+            id="overall"
+          >
+            <div
+              class="availability-cell negative"
+            >
+              91.52
+            </div>
+          </div>
+        </label>
+        <label
           class="legend-label"
           for="legend"
         >
@@ -14834,7 +14744,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="04/12/2022 09:55 PM"
+                      value="04/28/2022 10:19 AM"
                     />
                   </div>
                 </div>
@@ -14854,7 +14764,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="04/19/2022 09:55 PM"
+                      value="05/05/2022 10:19 AM"
                     />
                   </div>
                 </div>
@@ -15865,31 +15775,6 @@ Object {
                         class="availability-header-cell"
                       >
                         Application
-                        <div
-                          class="pointer search-icon"
-                          role="button"
-                          tabindex="0"
-                        >
-                          <span
-                            class="SVGIcon SVGIcon--16px SVGIcon--inline"
-                          >
-                            <svg
-                              data-id="SVG_SEARCH__16"
-                              focusable="false"
-                              height="16"
-                              viewBox="0 0 16 16"
-                              width="16"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M11.8 8a5 5 0 0 0-.7-3.7A4.9 4.9 0 0 0 7 2a5 5 0 0 0-2.7 9 5 5 0 0 0 6.2-.6m0 0l3.4 3.4"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                            </svg>
-                          </span>
-                        </div>
                       </div>
                     </span>
                     <span
@@ -16617,31 +16502,6 @@ Object {
                         class="availability-header-cell"
                       >
                         Availability
-                        <div
-                          class="pointer search-icon"
-                          role="button"
-                          tabindex="0"
-                        >
-                          <span
-                            class="SVGIcon SVGIcon--16px SVGIcon--inline"
-                          >
-                            <svg
-                              data-id="SVG_SEARCH__16"
-                              focusable="false"
-                              height="16"
-                              viewBox="0 0 16 16"
-                              width="16"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M11.8 8a5 5 0 0 0-.7-3.7A4.9 4.9 0 0 0 7 2a5 5 0 0 0-2.7 9 5 5 0 0 0 6.2-.6m0 0l3.4 3.4"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                            </svg>
-                          </span>
-                        </div>
                       </div>
                     </span>
                     <span
@@ -17244,6 +17104,22 @@ Object {
             </span>
           </h1>
           <label
+            class="overall-label"
+            for="overall"
+          >
+            Overall Availability
+            <div
+              class="overall-container"
+              id="overall"
+            >
+              <div
+                class="availability-cell negative"
+              >
+                87.34
+              </div>
+            </div>
+          </label>
+          <label
             class="legend-label"
             for="legend"
           >
@@ -17302,7 +17178,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="04/12/2022 09:55 PM"
+                        value="04/28/2022 10:19 AM"
                       />
                     </div>
                   </div>
@@ -17322,7 +17198,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="04/19/2022 09:55 PM"
+                        value="05/05/2022 10:19 AM"
                       />
                     </div>
                   </div>
@@ -18323,31 +18199,6 @@ Object {
                           class="availability-header-cell"
                         >
                           Application
-                          <div
-                            class="pointer search-icon"
-                            role="button"
-                            tabindex="0"
-                          >
-                            <span
-                              class="SVGIcon SVGIcon--16px SVGIcon--inline"
-                            >
-                              <svg
-                                data-id="SVG_SEARCH__16"
-                                focusable="false"
-                                height="16"
-                                viewBox="0 0 16 16"
-                                width="16"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M11.8 8a5 5 0 0 0-.7-3.7A4.9 4.9 0 0 0 7 2a5 5 0 0 0-2.7 9 5 5 0 0 0 6.2-.6m0 0l3.4 3.4"
-                                  fill="none"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                              </svg>
-                            </span>
-                          </div>
                         </div>
                       </span>
                       <span
@@ -19075,31 +18926,6 @@ Object {
                           class="availability-header-cell"
                         >
                           Availability
-                          <div
-                            class="pointer search-icon"
-                            role="button"
-                            tabindex="0"
-                          >
-                            <span
-                              class="SVGIcon SVGIcon--16px SVGIcon--inline"
-                            >
-                              <svg
-                                data-id="SVG_SEARCH__16"
-                                focusable="false"
-                                height="16"
-                                viewBox="0 0 16 16"
-                                width="16"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M11.8 8a5 5 0 0 0-.7-3.7A4.9 4.9 0 0 0 7 2a5 5 0 0 0-2.7 9 5 5 0 0 0 6.2-.6m0 0l3.4 3.4"
-                                  fill="none"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                              </svg>
-                            </span>
-                          </div>
                         </div>
                       </span>
                       <span
@@ -19545,6 +19371,22 @@ Object {
           </span>
         </h1>
         <label
+          class="overall-label"
+          for="overall"
+        >
+          Overall Availability
+          <div
+            class="overall-container"
+            id="overall"
+          >
+            <div
+              class="availability-cell negative"
+            >
+              87.34
+            </div>
+          </div>
+        </label>
+        <label
           class="legend-label"
           for="legend"
         >
@@ -19603,7 +19445,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="04/12/2022 09:55 PM"
+                      value="04/28/2022 10:19 AM"
                     />
                   </div>
                 </div>
@@ -19623,7 +19465,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="04/19/2022 09:55 PM"
+                      value="05/05/2022 10:19 AM"
                     />
                   </div>
                 </div>
@@ -20624,31 +20466,6 @@ Object {
                         class="availability-header-cell"
                       >
                         Application
-                        <div
-                          class="pointer search-icon"
-                          role="button"
-                          tabindex="0"
-                        >
-                          <span
-                            class="SVGIcon SVGIcon--16px SVGIcon--inline"
-                          >
-                            <svg
-                              data-id="SVG_SEARCH__16"
-                              focusable="false"
-                              height="16"
-                              viewBox="0 0 16 16"
-                              width="16"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M11.8 8a5 5 0 0 0-.7-3.7A4.9 4.9 0 0 0 7 2a5 5 0 0 0-2.7 9 5 5 0 0 0 6.2-.6m0 0l3.4 3.4"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                            </svg>
-                          </span>
-                        </div>
                       </div>
                     </span>
                     <span
@@ -21376,31 +21193,6 @@ Object {
                         class="availability-header-cell"
                       >
                         Availability
-                        <div
-                          class="pointer search-icon"
-                          role="button"
-                          tabindex="0"
-                        >
-                          <span
-                            class="SVGIcon SVGIcon--16px SVGIcon--inline"
-                          >
-                            <svg
-                              data-id="SVG_SEARCH__16"
-                              focusable="false"
-                              height="16"
-                              viewBox="0 0 16 16"
-                              width="16"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M11.8 8a5 5 0 0 0-.7-3.7A4.9 4.9 0 0 0 7 2a5 5 0 0 0-2.7 9 5 5 0 0 0 6.2-.6m0 0l3.4 3.4"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                            </svg>
-                          </span>
-                        </div>
                       </div>
                     </span>
                     <span
@@ -21903,6 +21695,22 @@ Object {
             </span>
           </h1>
           <label
+            class="overall-label"
+            for="overall"
+          >
+            Overall Availability
+            <div
+              class="overall-container"
+              id="overall"
+            >
+              <div
+                class="availability-cell "
+              >
+                -
+              </div>
+            </div>
+          </label>
+          <label
             class="legend-label"
             for="legend"
           >
@@ -21961,7 +21769,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="04/12/2022 09:55 PM"
+                        value="04/28/2022 10:19 AM"
                       />
                     </div>
                   </div>
@@ -21981,7 +21789,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="04/19/2022 09:55 PM"
+                        value="05/05/2022 10:19 AM"
                       />
                     </div>
                   </div>
@@ -22995,6 +22803,22 @@ Object {
           </span>
         </h1>
         <label
+          class="overall-label"
+          for="overall"
+        >
+          Overall Availability
+          <div
+            class="overall-container"
+            id="overall"
+          >
+            <div
+              class="availability-cell "
+            >
+              -
+            </div>
+          </div>
+        </label>
+        <label
           class="legend-label"
           for="legend"
         >
@@ -23053,7 +22877,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="04/12/2022 09:55 PM"
+                      value="04/28/2022 10:19 AM"
                     />
                   </div>
                 </div>
@@ -23073,7 +22897,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="04/19/2022 09:55 PM"
+                      value="05/05/2022 10:19 AM"
                     />
                   </div>
                 </div>
@@ -24144,6 +23968,22 @@ Object {
             </span>
           </h1>
           <label
+            class="overall-label"
+            for="overall"
+          >
+            Overall Availability
+            <div
+              class="overall-container"
+              id="overall"
+            >
+              <div
+                class="availability-cell "
+              >
+                -
+              </div>
+            </div>
+          </label>
+          <label
             class="legend-label"
             for="legend"
           >
@@ -24202,7 +24042,7 @@ Object {
                         class="form-control  "
                         id="datepicker-start-date"
                         type="text"
-                        value="04/12/2022 09:55 PM"
+                        value="04/28/2022 10:19 AM"
                       />
                     </div>
                   </div>
@@ -24222,7 +24062,7 @@ Object {
                         class="form-control  "
                         id="datepicker-end-date"
                         type="text"
-                        value="04/19/2022 09:55 PM"
+                        value="05/05/2022 10:19 AM"
                       />
                     </div>
                   </div>
@@ -25227,6 +25067,22 @@ Object {
           </span>
         </h1>
         <label
+          class="overall-label"
+          for="overall"
+        >
+          Overall Availability
+          <div
+            class="overall-container"
+            id="overall"
+          >
+            <div
+              class="availability-cell "
+            >
+              -
+            </div>
+          </div>
+        </label>
+        <label
           class="legend-label"
           for="legend"
         >
@@ -25285,7 +25141,7 @@ Object {
                       class="form-control  "
                       id="datepicker-start-date"
                       type="text"
-                      value="04/12/2022 09:55 PM"
+                      value="04/28/2022 10:19 AM"
                     />
                   </div>
                 </div>
@@ -25305,7 +25161,7 @@ Object {
                       class="form-control  "
                       id="datepicker-end-date"
                       type="text"
-                      value="04/19/2022 09:55 PM"
+                      value="05/05/2022 10:19 AM"
                     />
                   </div>
                 </div>

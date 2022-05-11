@@ -6,7 +6,7 @@ import HelpText from '../../components/HelpText/HelpText';
 import {CHART_COLORS} from '../../constants';
 import './styles.less';
 
-// eslint-disable-next-line complexity
+
 const LineChartWrapper = ({
     title,
     helpText,
@@ -64,6 +64,10 @@ const LineChartWrapper = ({
         </h3>
     );
 
+    const renderReferenceArea = () => (
+        keys.refAreaLeft && refAreaRight && <ReferenceArea yAxisId={yAxisId} x1={refAreaLeft} x2={refAreaRight} strokeOpacity={0.3} />
+    );
+
     return (
         <div className="line-chart-wrapper" title={title}>
             {title && renderTitle()}
@@ -82,11 +86,7 @@ const LineChartWrapper = ({
                     <Legend onClick={handleLegendClick} cursor={enableLineHiding ? 'pointer' : ''} />
                     <Tooltip />
                     {keys.map(renderLine)}
-                    {
-                        (refAreaLeft && refAreaRight)
-                            ? <ReferenceArea yAxisId={yAxisId} x1={refAreaLeft} x2={refAreaRight} strokeOpacity={0.3} />
-                            : null
-                    }
+                    {renderReferenceArea()}
                 </LineChart>
             </ResponsiveContainer>
         </div>
