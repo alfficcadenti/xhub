@@ -187,7 +187,8 @@ export const GRAFANA_DASHBOARDS = [
 export const EPS_CHANNELS = [{value: 'E4P API', label: 'E4P API'},
     {value: 'E4P Template', label: 'E4P Template'},
     {value: 'TAAP', label: 'TAAP'},
-    {value: 'RAPID', label: 'RAPID'}];
+    {value: 'RAPID', label: 'RAPID'},
+    {value: 'WLT', label: 'WLT'}];
 
 export const EPS_CHANNEL_SITE_URL = {
     'E4P API': ['amextravel.com',
@@ -273,4 +274,6 @@ export const EPS_CHANNEL_SITE_URL = {
         'taap.expedia.TW',
         'taap.expedia.UK',
         'taap.expedia.VN',
-        'taap.expedia.US']};
+        'taap.expedia.US'],
+    'WLT': ['travel.sceneplus.ca',
+        'hotels.bookety.com']};
