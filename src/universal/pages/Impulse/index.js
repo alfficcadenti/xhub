@@ -324,10 +324,35 @@ const Impulse = (props) => {
         return <div className="widget-card wrapper1" >{'Select 1 or more point of sales from filters above and click submit to display trendlines'}</div>;
     };
 
+    const getRapidSiteUrls = () => {
+        const epsChannelSiteUrl = new Map();
+        const rapidSiteUrl = [];
+        const allEpsPos = getFiltersForMultiKeys([EXPEDIA_PARTNER_SERVICES_BRAND], brandsFilterData, 'point_of_sales');
+        EPS_CHANNELS.forEach((channel) => {
+            epsChannelSiteUrl.set(channel.label, new Set(EPS_CHANNEL_SITE_URL[channel.label]));
+        });
+        allEpsPos.forEach((pos) => {
+            let posPresent = false;
+            EPS_CHANNELS.forEach((channel) => {
+                if (epsChannelSiteUrl.get(channel.label).has(pos.value)) {
+                    posPresent = true;
+                }
+            });
+            if (!posPresent) {
+                rapidSiteUrl.push(pos.value);
+            }
+        });
+        return rapidSiteUrl;
+    };
+
     useEffect(() => {
         const selectedChannelEgSiteList = [];
         const allPosSet = new Set(allPos);
-        selectedEpsChannels.map((channel) => {
+        selectedEpsChannels.forEach((channel) => {
+            if (channel === 'RAPID') {
+                selectedChannelEgSiteList.push(...getRapidSiteUrls());
+                return;
+            }
             EPS_CHANNEL_SITE_URL[channel].forEach((pos) => {
                 if (allPosSet.has(pos)) {
                     selectedChannelEgSiteList.push(pos);
