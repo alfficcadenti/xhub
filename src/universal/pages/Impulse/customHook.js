@@ -18,7 +18,6 @@ import {
     endTime,
     getCategory,
     getQueryStringPrediction,
-    simplifyBookingsData,
     simplifyPredictionData,
     getQueryStringPercentageChange,
     getQueryStringYOY,
@@ -57,6 +56,7 @@ let intervalForAnnotations = null;
 let intervalForHealth = null;
 let intervalForAnomalies = null;
 let finalChartDataYOY = null;
+let chartData1 = null;
 
 export const useFetchBlipData = (
     isApplyClicked,
@@ -209,22 +209,22 @@ export const useFetchBlipData = (
     const fetchData = (start, end, interval) => fetch(`/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval, '')}`)
         .then(checkResponse)
         .then((respJson) => {
-            let chartData = respJson.map((item) => {
+            chartData1 = respJson.map((item) => {
                 return {
                     time: moment.utc(item.time).valueOf(),
                     [BOOKING_COUNT]: item.count,
                     [THREE_WEEK_AVG_COUNT]: item?.prediction?.weighted_count ? item.prediction.weighted_count : 0,
                 };
             });
-            if (finalChartDataYOY && finalChartDataYOY.length === chartData?.length) {
-                chartData = chartData.map((item, i) => {
+            if (finalChartDataYOY && finalChartDataYOY.length === chartData1?.length) {
+                chartData1 = chartData1.map((item, i) => {
                     return {
                         ...item,
                         [YOY_COUNT]: finalChartDataYOY[i]?.count ? finalChartDataYOY[i]?.count : 0
                     };
                 });
             }
-            return chartData;
+            return chartData1;
         });
 
     const fetchCallGrouped = (start, end, interval, groupType) =>
@@ -238,24 +238,15 @@ export const useFetchBlipData = (
             ));
 
     const fetchPredictions = (start = startDateTime, end = endDateTime, interval = timeInterval, chartData) => {
-        Promise.all([
-            fetch(`/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval, '')}`).then(checkResponse),
+        Promise.all([chartData1,
             timeInterval === '5m' || timeInterval === '1m' ? fetch(`/v1/impulse/prediction${getQueryStringPrediction(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval)}`).then(checkResponse) : []
         ]).then(([bookingsData, predictionData]) => {
-            const simplifiedBookingsData = simplifyBookingsData(bookingsData);
+            bookingsData = chartData1;
+            const simplifiedBookingsData = bookingsData;
             const simplifiedPredictionData = simplifyPredictionData(predictionData);
 
             let finalChartData = simplifiedBookingsData;
             let chartDataForFutureEvents = simplifiedPredictionData;
-
-            if (finalChartDataYOY.length === finalChartData.length) {
-                finalChartData = finalChartData.map((item, i) => {
-                    return {
-                        ...item,
-                        [YOY_COUNT]: finalChartDataYOY[i]?.count ? finalChartDataYOY[i]?.count : 0
-                    };
-                });
-            }
 
             if (simplifiedBookingsData.length === simplifiedPredictionData.length) {
                 finalChartData = finalChartData.map((item, i) => {
