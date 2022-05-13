@@ -180,7 +180,6 @@ const Annotations = ({
                 })
                 .catch((err) => {
                     setDeploymentAnnotationsError(true);
-                    // eslint-disable-next-line no-console
                     console.error(err);
                 })
                 .finally(() => setIsDeploymentsAnnotationsLoading(false));
@@ -219,7 +218,6 @@ const Annotations = ({
                 })
                 .catch((err) => {
                     setIncidentAnnotationsError(true);
-                    // eslint-disable-next-line no-console
                     console.error(err);
                 })
                 .finally(() => setIsIncidentsAnnotationsLoading(false));
@@ -255,7 +253,6 @@ const Annotations = ({
                 })
                 .catch((err) => {
                     setAbTestsAnnotationsError(true);
-                    // eslint-disable-next-line no-console
                     console.error(err);
                 })
                 .finally(() => setIsAbTestsAnnotationsLoading(false));

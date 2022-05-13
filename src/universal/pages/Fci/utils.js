@@ -25,34 +25,49 @@ export const getUnsupportedBrandMsg = (selectedBrands) => `FCIs for ${selectedBr
     + `For now only ${EXPEDIA_PARTNER_SERVICES_BRAND} and ${EXPEDIA_BRAND} is supported. `
     + `If you have any questions, please ping ${OPXHUB_SUPPORT_CHANNEL} or leave a comment via our Feedback form.`;
 
-// eslint-disable-next-line complexity
-export const shouldFetchData = (prev, start, end, selectedSite, selectedLob, chartProperty, selectedErrorCode, hideIntentionalCheck, selectedErrorType) => (
-    !prev.start
-    || !prev.end
-    || start.isBefore(prev.start)
+const dateRangeUninitialized = (prev) => !prev.start || !prev.end;
+
+const startChanged = (prev, start) => (
+    start.isBefore(prev.start)
     || start.minutes() !== 0 // Zooming always results in a start beginning at the top of the hour
-    || end.isAfter(prev.end)
+);
+
+const endChanged = (prev, end) => (
+    end.isAfter(prev.end)
     || end.minutes() !== 59 // Zooming always results in a end finishing at the top of the hour
-    || prev.selectedSite !== selectedSite
+);
+
+const filtersChanged = (prev, selectedSite, selectedLob, chartProperty, selectedErrorCode, hideIntentionalCheck) => (
+    prev.selectedSite !== selectedSite
     || prev.selectedLob !== selectedLob
-    || prev.chartProperty !== chartProperty
     || prev.selectedErrorCode !== selectedErrorCode
     || prev.hideIntentionalCheck !== hideIntentionalCheck
+);
+
+const chartPropsChanged = (prev, chartProperty, selectedErrorType) => (
+    prev.chartProperty !== chartProperty
     || prev.selectedErrorType !== selectedErrorType
 );
 
-// eslint-disable-next-line complexity
-export const getQueryValues = (search, brand = 'Expedia') => {
-    const {
-        tab, from, to, lobs, code, sites, hide_intentional: hideIntentional, search_id: searchId,
-        bucket, id, deltaUsersId, type, chart_property: chartProperty
-    } = qs.parse(search);
+export const shouldFetchData = (prev, start, end, selectedSite, selectedLob, chartProperty, selectedErrorCode, hideIntentionalCheck, selectedErrorType) => (
+    dateRangeUninitialized(prev)
+    || startChanged(prev, start)
+    || endChanged(prev, end)
+    || filtersChanged(prev, selectedSite, selectedLob, chartProperty, selectedErrorCode, hideIntentionalCheck, selectedErrorType)
+    || chartPropsChanged(prev, chartProperty, selectedErrorType)
+);
+
+const getInitialDateRange = (from, to) => {
     const isValidDateRange = validDateRange(from, to);
-    const fciType = [FCI_TYPE_CHECKOUT, FCI_TYPE_LOGIN].includes(type) ? type : FCI_TYPE_CHECKOUT;
     return {
         initialStart: isValidDateRange ? moment(from) : moment().subtract(24, 'hours').startOf('minute'),
         initialEnd: isValidDateRange ? moment(to) : moment(),
-        initialTimeRange: isValidDateRange ? 'Custom' : 'Last 24 Hours',
+        initialTimeRange: isValidDateRange ? 'Custom' : 'Last 24 Hours'
+    };
+};
+
+const getInitialFilters = (lobs, sites, brand, code, hideIntentional, fciType, chartProperty) => {
+    return {
         initialLobs: lobs
             ? lobs.split(',').map((l) => LOB_LIST.find(({value}) => value === l)).filter((l) => l)
             : [],
@@ -61,13 +76,26 @@ export const getQueryValues = (search, brand = 'Expedia') => {
             : [getBrandSites(brand)[0]],
         initialErrorCode: code ? code.split(',') : [],
         initialHideIntentionalCheck: hideIntentional === 'true',
-        initialSearchId: searchId || '',
-        initialDeltaUsersId: deltaUsersId || '',
-        initialSelectedId: id || '',
-        initialIndex: ['0', '1'].includes(tab) ? Number(tab) : 0,
-        initialBucket: bucket && moment(bucket).isValid ? bucket : null,
         initialFciType: fciType,
-        initialChartProperty: [CATEGORY_OPTION, CODE_OPTION].includes(chartProperty) ? chartProperty : CODE_OPTION
+        initialChartProperty: [CATEGORY_OPTION, CODE_OPTION].includes(chartProperty) ? chartProperty : CODE_OPTION,
+    };
+};
+
+export const getQueryValues = (search, brand = 'Expedia') => {
+    const {
+        tab, from, to, lobs, code, sites, hide_intentional: hideIntentional, search_id: searchId,
+        bucket, id, deltaUsersId, type, chart_property: chartProperty
+    } = qs.parse(search);
+    const fciType = [FCI_TYPE_CHECKOUT, FCI_TYPE_LOGIN].includes(type) ? type : FCI_TYPE_CHECKOUT;
+    const getOrEmptyString = (item) => item || '';
+    return {
+        ...getInitialDateRange(from, to),
+        ...getInitialFilters(lobs, sites, brand, code, hideIntentional, fciType, chartProperty),
+        initialSearchId: getOrEmptyString(searchId),
+        initialDeltaUsersId: getOrEmptyString(deltaUsersId),
+        initialSelectedId: getOrEmptyString(id),
+        initialIndex: ['0', '1'].includes(tab) ? Number(tab) : 0,
+        initialBucket: bucket && moment(bucket).isValid ? bucket : null
     };
 };
 
@@ -127,7 +155,6 @@ export const getTraceCounts = (traces) => traces.reduce((acc, curr) => {
     return acc;
 }, {errors: 0, total: 0});
 
-// eslint-disable-next-line complexity
 export const mapTrace = (t) => {
     const tags = t.trace_tag || [];
     const hasError = traceHasError(t);

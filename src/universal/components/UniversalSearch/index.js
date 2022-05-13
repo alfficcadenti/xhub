@@ -51,8 +51,7 @@ const UniversalSearch = ({onFilterChange, suggestionMapping, suggestions, defaul
             setIsKeySelection(!isKeySelection);
             onClear();
         } catch (e) {
-            // eslint-disable-next-line no-console
-            console.log(e);
+            console.error(e);
         }
     };
 
@@ -69,15 +68,17 @@ const UniversalSearch = ({onFilterChange, suggestionMapping, suggestions, defaul
         return adjustedApplications && adjustedApplications.length ? adjustedApplications : '';
     };
 
-    // eslint-disable-next-line complexity
+    const getCurrentFilter = () => fieldSelection && fieldSelection.length && fieldSelection[fieldSelection.length - 1];
+
+    const isFilterByApplication = (products) => products && products.length && getCurrentFilter(fieldSelection).key === 'application_name';
+
     const setNewTypeaheadList = () => {
         try {
             if (isKeySelection) {
                 setTypeaheadList(keyTags);
             } else {
                 const products = selectedProduct();
-                const currentFilter = fieldSelection && fieldSelection.length && fieldSelection[fieldSelection.length - 1];
-                if (products && products.length && currentFilter.key === 'application_name') {
+                if (isFilterByApplication(products)) {
                     const newList = productApplications(products) ?
                         productApplications(products) :
                         suggestions[fieldSelection[fieldSelection.length - 1].key];
@@ -88,8 +89,7 @@ const UniversalSearch = ({onFilterChange, suggestionMapping, suggestions, defaul
                 }
             }
         } catch (e) {
-            // eslint-disable-next-line no-console
-            console.log(e);
+            console.error(e);
         }
     };
 
@@ -98,8 +98,7 @@ const UniversalSearch = ({onFilterChange, suggestionMapping, suggestions, defaul
             const newLabel = isKeySelection ? 'Select the field to search' : `Select a value for ${fieldSelection[fieldSelection.length - 1].key}`;
             setLabel(newLabel);
         } catch (e) {
-            // eslint-disable-next-line no-console
-            console.log(e);
+            console.error(e);
         }
     };
 

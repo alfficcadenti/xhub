@@ -23,7 +23,7 @@ describe('<BrandSelector />', () => {
         expect(wrapper.exists()).toBeTruthy();
         const mEvent = {stopPropagation: jest.fn(), preventDefault: jest.fn()};
         wrapper.find('#brand-selector').at(0).simulate('click');
-        wrapper.find('#brand-selector--container a').at(2).simulate('click', mEvent);
+        wrapper.find('#brand-selector--container button').at(2).simulate('click', mEvent);
         expect(mEvent.preventDefault).toBeCalledTimes(1);
     });
 });

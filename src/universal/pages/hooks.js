@@ -134,7 +134,6 @@ export const useFetchProductMapping = (startDate, endDate, viewType, metricGroup
                         setProductMapping(mapping);
                     })
                     .catch((err) => {
-                        // eslint-disable-next-line no-console
                         console.error(err);
                     });
             }

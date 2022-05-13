@@ -41,7 +41,6 @@ const getPageViewsTestData = async (req) => {
     });
 };
 
-// eslint-disable-next-line complexity
 const getFunnelTestData = async (req) => {
     const BRANDS = ['All', 'airnewzealand', 'cheaptickets', 'ebookers', 'expedia', 'hawaiianairlines', 'hotwire', 'nike', 'orbitz', 'travelocity', 'vrbo', 'wotif', 'hcom'];
     return getTestData(req, (time, result) => {

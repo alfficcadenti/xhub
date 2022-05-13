@@ -14,6 +14,7 @@ import {
 } from '../../constants';
 import {CA_STATUS_LIST} from './constants';
 import {DATE_FORMAT} from '../../constants';
+import {getOrDefault} from '../../utils';
 import {validDateRange, getUrlParam} from '../utils';
 
 
@@ -128,7 +129,6 @@ const renderDetail = (label, value) => {
 export const filterType = (tickets, selectedType) => {
     let result = [];
     const matchesType = (i) => selectedType === ALL_TYPES_OPTION || !i['Issue Type'].localeCompare(selectedType);
-    // eslint-disable-next-line complexity
     tickets.forEach((t) => {
         const ticket = t;
         const {linked_issues: linkedIssues = [], brands_affected: brandsAffected = [], lobs: linesOfBusinessImpacted} = ticket;
@@ -190,7 +190,6 @@ const mapLinkedIssues = (i) => {
     });
 };
 
-// eslint-disable-next-line complexity
 export const mapTickets = (t) => {
     const linkedIssues = (t.linked_issues || []).map(mapLinkedIssues);
     return ({
@@ -200,7 +199,7 @@ export const mapTickets = (t) => {
         'Epic Name': t.summary,
         'Owning Org': t.owning_organization,
         'RC Owner': t.root_cause_owner,
-        'RC Category': t.root_cause_category || '-',
+        'RC Category': getOrDefault(t, 'root_cause_category'),
         Status: t.status,
         linked_issues: linkedIssues, // for filtering purposes
         brands_affected: t.brands_affected ? t.brands_affected.split(',') : [],

@@ -126,7 +126,6 @@ const BaseDateTimeRangePicker = ({
             end: moment(end, format).toDate(),
             start: moment(start, format).toDate()
         });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [start, end]);
 
     useEffect(() => {
@@ -136,7 +135,6 @@ const BaseDateTimeRangePicker = ({
         if (moment(endDate).format(format) !== moment(endInputRef.current.value, format).format(format)) {
             endInputRef.current.value = moment(endDate).format(format);
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [startDate, endDate]);
 
     const renderDay = (props, currentDate) => {
@@ -152,7 +150,7 @@ const BaseDateTimeRangePicker = ({
 
         return (
             <td
-                {...rest} // eslint-disable-line
+                {...rest}
                 className={classes}
             >
                 {currentDate.date()}

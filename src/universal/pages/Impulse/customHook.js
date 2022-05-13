@@ -145,7 +145,6 @@ export const useFetchBlipData = (
                 setDeviceTypesMulti(getFilters(respJson, 'device_types'));
             })
             .catch((err) => {
-                // eslint-disable-next-line no-console
                 console.error(err);
             });
     };
@@ -156,7 +155,6 @@ export const useFetchBlipData = (
                 setBrandsFilterData(respJson);
             })
             .catch((err) => {
-                // eslint-disable-next-line no-console
                 console.error(err);
             });
     };
@@ -177,7 +175,6 @@ export const useFetchBlipData = (
                 setIncidentMulti(incidentMultiOptions);
             })
             .catch((err) => {
-                // eslint-disable-next-line no-console
                 console.error(err);
             });
     };
@@ -202,7 +199,6 @@ export const useFetchBlipData = (
                 setAnomaliesMulti(anomalyMultiOptions);
             })
             .catch((err) => {
-                // eslint-disable-next-line no-console
                 console.error(err);
             });
     };
@@ -276,7 +272,6 @@ export const useFetchBlipData = (
             setRes(finalChartData);
         })
             .catch((err) => {
-                // eslint-disable-next-line no-console
                 console.error(err);
             })
             .finally(() => {
@@ -292,7 +287,6 @@ export const useFetchBlipData = (
                 setIsLatencyHealthy(respJson.isLatencyHealthy);
             })
             .catch((err) => {
-                // eslint-disable-next-line no-console
                 console.error(err);
             });
     };
@@ -304,7 +298,6 @@ export const useFetchBlipData = (
             .then(({selectedLobs, weekly, monthly, yearly}) => setAverageCount({selectedLobs, weekly, monthly, yearly}))
             .catch((err) => {
                 setError('No data found for this selection.');
-                // eslint-disable-next-line no-console
                 console.error(err);
             })
             .finally(() => setIsAverageCountLoading(false));
@@ -325,7 +318,6 @@ export const useFetchBlipData = (
             })
             .catch((err) => {
                 setError('No data found for this selection.');
-                // eslint-disable-next-line no-console
                 console.error(err);
             });
 
@@ -374,7 +366,6 @@ export const useFetchBlipData = (
                         .catch((err) => {
                             setError('No data found for this selection.');
                             setIsLoading(false);
-                            // eslint-disable-next-line no-console
                             console.error(err);
                         });
                 }
@@ -382,7 +373,6 @@ export const useFetchBlipData = (
             .catch((err) => {
                 setError('No data found for this selection.');
                 setIsLoading(false);
-                // eslint-disable-next-line no-console
                 console.error(err);
             });
     };
@@ -420,7 +410,6 @@ export const useFetchBlipData = (
                             setGroupedResByRegion(newRegionGroupedDataFuture);
                         })
                         .catch((err) => {
-                            // eslint-disable-next-line no-console
                             console.error(err);
                         });
                 } else {
@@ -438,7 +427,6 @@ export const useFetchBlipData = (
                 }
             })
             .catch((err) => {
-                // eslint-disable-next-line no-console
                 console.error(err);
             });
     };
@@ -468,7 +456,6 @@ export const useFetchBlipData = (
             .catch((err) => {
                 setIsLoading(false);
                 setError('No data found for this selection.');
-                // eslint-disable-next-line no-console
                 console.error(err);
             });
     };

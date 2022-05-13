@@ -20,7 +20,7 @@ const Search = ({isSearchOpen, onSearch, onBlur, onToggleSearch, selectedPages, 
                     onChange={onSearch}
                     noOptionsMessage={() => 'No Results Found'}
                 />
-                <div className={`site-search-blur ${isSearchOpen ? 'active' : ''}`} onClick={onBlur} />  {/* eslint-disable-line */}
+                <div className={`site-search-blur ${isSearchOpen ? 'active' : ''}`} onClick={onBlur} onKeyUp={onBlur} role="presentation" />
             </div>
 
         </div>

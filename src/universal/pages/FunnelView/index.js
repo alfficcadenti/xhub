@@ -108,7 +108,6 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}
         triggerEdapPageView(location.pathname);
     }, [location.pathname]);
 
-    // eslint-disable-next-line complexity
     useEffect(() => {
         const fetchPageViewsData = (brand) => {
             const {label: pageBrand, funnelBrand} = getBrand(brand, 'label');
@@ -130,7 +129,6 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}
                         ? `Query has timed out. Try refreshing the page. If the problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`
                         : `An unexpected error has occurred. Try refreshing the page. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`;
                     setLoBError(errorMessage);
-                    // eslint-disable-next-line no-console
                     console.error(err);
                 })
                 .finally(() => setIsLoading(false));
@@ -156,7 +154,6 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}
                         ? `Query has timed out. Try refreshing the page. If the problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`
                         : `An unexpected error has occurred. Try refreshing the page. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`;
                     setLoBError(errorMessage);
-                    // eslint-disable-next-line no-console
                     console.error(err);
                 })
                 .finally(() => setIsLoBLoading(false));

@@ -127,7 +127,6 @@ export const formatObjectFromIncident = (inc = {}) => {
 };
 
 export const getQualityData = (filteredDefects = []) => filteredDefects
-    // eslint-disable-next-line complexity
     .map((t) => ({
         Defect: buildTicketLinks(t.id, t.Brand, t.url) || '-',
         Priority: getOrDefault(t, 'priority'),

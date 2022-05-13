@@ -1,4 +1,4 @@
-const { resolve } = require('path');
+const {resolve} = require('path');
 
 const assetsRootPath = 'build/static';
 const assetSizeConfig = 'assetSizeConfig.json';
@@ -7,10 +7,6 @@ function absolutePath(fileName = '') {
     return resolve(__dirname, '..', '..', assetsRootPath, fileName);
 }
 
-/* eslint-disable global-require */
-/* eslint-disable import/no-dynamic-require */
-/* eslint-disable array-callback-return */
-/* eslint-disable consistent-return */
 (async () => {
     try {
         const manifest = require(absolutePath('manifest.json'));
@@ -19,14 +15,15 @@ function absolutePath(fileName = '') {
 
         const assetSizeCheckResult = Object.entries(bundleSizeConfig)
             .map(([bundleName, threshold]) => {
-                const fileStat = stats.find(({ name }) => name === manifest[bundleName]);
+                const fileStat = stats.find(({name}) => name === manifest[bundleName]);
                 const fileSize = fileStat ? fileStat.size : 0;
 
                 if (fileSize > threshold) {
                     return `${bundleName} threshold: ${threshold} size: ${fileSize}`;
                 }
+                return '';
             })
-            .filter(resultText => resultText !== undefined);
+            .filter((resultText) => resultText !== undefined);
 
         if (assetSizeCheckResult.length > 0) {
             throw new Error(assetSizeCheckResult);

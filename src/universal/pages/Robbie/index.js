@@ -34,7 +34,6 @@ const Robbie = () => {
             ))
             .catch((e) => {
                 setError('Could not retrieve all Robbie Notification Logs. Refresh the page to try again.');
-                // eslint-disable-next-line no-console
                 console.error(e);
             })
             .finally(() => setIsLoading(false));

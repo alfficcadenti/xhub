@@ -283,7 +283,6 @@ const DataTable = ({
         {enableTextSearch && renderSearchInput()}
     </>);
 
-    // eslint-disable-next-line complexity
     const renderToolbar = (tableTitle, tableInfo, id) => (
         <Fragment key={id}>
             <h3 className="data-table__title">{tableTitle}{tableInfo && renderInfoTooltip(tableInfo)}</h3>

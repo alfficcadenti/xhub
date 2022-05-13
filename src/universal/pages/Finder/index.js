@@ -132,7 +132,6 @@ const Finder = (props) => {
         setActiveIndex(activeLinkIndex);
     };
 
-    // eslint-disable-next-line complexity
     const renderTabs = () => {
         switch (activeIndex) {
             case 0:

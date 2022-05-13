@@ -51,7 +51,6 @@ const FciModal = ({fci, fcis, fciType, editMode, isOpen, onClose, onSaveComment,
                 .catch((err) => {
                     setCommentsError('Failed to retrieve comment data. Try refreshing the page. '
                         + `If the problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`);
-                    // eslint-disable-next-line no-console
                     console.error(err);
                 })
                 .finally(() => setIsLoadingComments(false));

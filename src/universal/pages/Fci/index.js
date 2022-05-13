@@ -180,7 +180,6 @@ const Fci = ({selectedBrands}) => {
             })
             .catch((err) => {
                 setModalError(FETCH_FAILED_MSG);
-                // eslint-disable-next-line no-console
                 console.error(err);
             })
             .finally(() => setIsModalLoading(false));
@@ -202,13 +201,11 @@ const Fci = ({selectedBrands}) => {
             })
             .catch((err) => {
                 setModalError(FETCH_FAILED_MSG);
-                // eslint-disable-next-line no-console
                 console.error(err);
             })
             .finally(() => setIsModalLoading(false));
     };
 
-    // eslint-disable-next-line complexity
     useEffect(() => {
         if (!getIsSupportedBrand(selectedBrands)) {
             setIsSupportedBrand(false);
@@ -231,7 +228,6 @@ const Fci = ({selectedBrands}) => {
                 })
                 .catch((err) => {
                     setError(FETCH_FAILED_MSG);
-                    // eslint-disable-next-line no-console
                     console.error(err);
                 })
                 .finally(() => setIsLoading(false));
@@ -254,7 +250,6 @@ const Fci = ({selectedBrands}) => {
                 .then((data) => processTableData(data))
                 .catch((err) => {
                     setModalError(FETCH_FAILED_MSG);
-                    // eslint-disable-next-line no-console
                     console.error(err);
                 })
                 .finally(() => setIsModalLoading(false));
@@ -474,7 +469,19 @@ const Fci = ({selectedBrands}) => {
         />
     );
 
-    // eslint-disable-next-line complexity
+    const renderIntentionalCheckbox = () => pendingFciType === FCI_TYPE_CHECKOUT && (
+        <Checkbox
+            name="intent-cbox"
+            label="Hide Intentional Errors"
+            checked={pendingHideIntentionalCheck}
+            onChange={handleHideIntentionalCheck}
+            size="sm"
+            className="intent-cbox"
+        />
+    );
+
+    const getDefaultOptions = (arr) => (arr || []).map((e) => ({label: e, value: e}));
+
     const renderTrendsTab = () => (
         <>
             {isSupportedBrand && <div className="form-container">
@@ -513,7 +520,7 @@ const Fci = ({selectedBrands}) => {
                         onChange={handleErrorCodeChange}
                         onFocus={fetchErrorCodes}
                         placeholder={pendingChartProperty === CODE_OPTION ? 'All Error Codes' : 'All Error Categories'}
-                        defaultValue={(pendingErrorCode || []).map((e) => ({label: e, value: e}))}
+                        defaultValue={getDefaultOptions(pendingErrorCode)}
                         isLoading={errorCodesIsLoading}
                         isSearchable
                     />
@@ -525,7 +532,7 @@ const Fci = ({selectedBrands}) => {
                         onChange={handleSiteChange}
                         onFocus={fetchSites}
                         placeholder={'All Sites'}
-                        defaultValue={(pendingSite || []).map((e) => ({label: e, value: e}))}
+                        defaultValue={getDefaultOptions(pendingSite)}
                         isLoading={sitesIsLoading}
                         isSearchable
                     />
@@ -538,21 +545,12 @@ const Fci = ({selectedBrands}) => {
                             onChange={handleLobChange}
                             onFocus={fetchLobs}
                             placeholder={'All LoBs'}
-                            defaultValue={(pendingLob || []).map((e) => ({label: e, value: e}))}
+                            defaultValue={getDefaultOptions(pendingLob)}
                             isLoading={lobsIsLoading}
                             isSearchable
                         />
                     </Tooltip>
-                    {pendingFciType === FCI_TYPE_CHECKOUT &&
-                        <Checkbox
-                            name="intent-cbox"
-                            label="Hide Intentional Errors"
-                            checked={pendingHideIntentionalCheck}
-                            onChange={handleHideIntentionalCheck}
-                            size="sm"
-                            className="intent-cbox"
-                        />
-                    }
+                    {renderIntentionalCheckbox()}
                     <button
                         className="btn btn-primary apply-btn"
                         type="button"

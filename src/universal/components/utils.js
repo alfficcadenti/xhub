@@ -1,4 +1,3 @@
-// eslint-disable-next-line consistent-return
 import {
     AB_TESTS_ANNOTATION_CATEGORY,
     DEPLOYMENT_ANNOTATION_CATEGORY,
@@ -9,7 +8,6 @@ import {
 } from '../constants';
 import moment from 'moment';
 
-// eslint-disable-next-line consistent-return
 export function brandLogoFile(brand) {
     const brandsArray = [VRBO_BRAND, EGENCIA_BRAND, HOTELS_COM_BRAND, EXPEDIA_BRAND];
     if (brandsArray.includes(brand)) {

@@ -5,14 +5,7 @@ import {getOrDefault} from '../../utils';
 import {DATE_FORMAT, ALL_PROJECTS_OPTION, ALL_STATUSES_OPTION} from '../../constants';
 
 
-// eslint-disable-next-line complexity
-export const getQueryValues = (search) => {
-    const {
-        start,
-        end,
-        status,
-        project
-    } = qs.parse(search);
+const getInitialRangeQuery = (start, end) => {
     const isValidDateRange = validDateRange(start, end);
     return {
         initialStart: isValidDateRange
@@ -22,6 +15,18 @@ export const getQueryValues = (search) => {
             ? moment(end).format(DATE_FORMAT)
             : moment().format(DATE_FORMAT),
         initialTimeRange: isValidDateRange ? 'Custom' : 'Last 7 days',
+    };
+};
+
+export const getQueryValues = (search) => {
+    const {
+        start,
+        end,
+        status,
+        project
+    } = qs.parse(search);
+    return {
+        ...getInitialRangeQuery(start, end),
         initialStatus: status || ALL_STATUSES_OPTION,
         initialProject: project || ALL_PROJECTS_OPTION,
     };

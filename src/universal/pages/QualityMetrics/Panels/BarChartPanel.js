@@ -14,7 +14,6 @@ const BarChartPanel = ({title, info, tickets, panelData, dataKey}) => {
     const [hiddenKeys, setHiddenKeys] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    // eslint-disable-next-line complexity
     useEffect(() => {
         const formattedData = (panelData?.info?.message === 'no data found')
             ? []

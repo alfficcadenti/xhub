@@ -7,11 +7,9 @@ import {timeout, compareObjArraysElements} from './utils';
 import {checkResponse} from '../utils';
 
 const StatusPage = () => {
-    // eslint-disable-next-line no-unused-vars
-    const [services, setServices] = useState(LIST_OF_SERVICES);
+    const [_, setServices] = useState(LIST_OF_SERVICES);
 
     useEffect(() => {
-        // eslint-disable-next-line new-cap
         Promise.all(LIST_OF_SERVICES.map(({endpoint}) => fetch(endpoint, {signal: timeout(5).signal})))
             .then((res) => Promise.all(res.map(checkResponse)))
             .then((allData) => setServices(LIST_OF_SERVICES.map((service, idx) => {
@@ -22,10 +20,8 @@ const StatusPage = () => {
             })))
             .catch((err) => {
                 if (err.name === 'AbortError') {
-                    // eslint-disable-next-line no-console
-                    console.log('Response timed out');
+                    console.error('Response timed out');
                 } else {
-                    // eslint-disable-next-line no-console
                     console.error(err);
                 }
             });

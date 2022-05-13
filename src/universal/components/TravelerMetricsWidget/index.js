@@ -30,7 +30,7 @@ const renderHeader = (title, helpText) => (
     </h3>
 );
 
-// eslint-disable-next-line complexity
+
 const TravelerMetricsWidget = ({
     title = '',
     data = [],
@@ -115,7 +115,6 @@ const TravelerMetricsWidget = ({
                 saveData()(deltaUserDetailsData);
             })
             .catch((err) => {
-                // eslint-disable-next-line no-console
                 console.error(err);
             });
     };

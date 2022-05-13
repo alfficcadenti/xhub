@@ -35,18 +35,11 @@ export const filterBrandProjectKeys = (projectKeys, brand) => {
     return (projectKeys || []).filter((projectKey) => brandProjectKeyValues.includes(projectKey));
 };
 
-// eslint-disable-next-line complexity
 export const validDateRange = (start, end) => {
-    if (!start || !end) {
-        return false;
-    }
     const startMoment = moment(start);
-    const endMoment = moment(end);
-    return startMoment.isValid() && endMoment.isValid() && startMoment.isBefore(new Date()) && endMoment.isAfter(startMoment);
+    return !!start && !!end && startMoment.isBefore(new Date()) && startMoment.isBefore(end);
 };
 
-
-// eslint-disable-next-line complexity
 export const getQueryValues = (search, selectedBrands) => {
     const {projectKeys, from, to} = qs.parse(search);
     const isValidDateRange = validDateRange(from, to);
@@ -60,7 +53,6 @@ export const getQueryValues = (search, selectedBrands) => {
     };
 };
 
-// eslint-disable-next-line complexity
 export const getQueryString = (brand, projectKeys, start, end) => {
     const brandQuery = `selectedBrand=${brand}`;
     const brandProjectKeys = filterBrandProjectKeys(projectKeys, brand);

@@ -7,8 +7,9 @@ import {formatCRData} from '../../crUtils';
 
 const renderTable = (filteredCR = [], selectedBrand = '') => {
     const columns = ['CR Number', 'Description', 'Application', 'Product', 'Business Reason', 'Started', 'Team'];
-    /* eslint-disable no-unused-expressions */
-    selectedBrand === EG_BRAND ? columns.push('Platform') : '';
+    if (selectedBrand === EG_BRAND) {
+        columns.push('Platform');
+    }
     const csvColumns = columns.concat(['Executive Summary', 'Resolution Notes']);
     return (
         <DataTable

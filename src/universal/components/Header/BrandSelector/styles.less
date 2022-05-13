@@ -24,11 +24,37 @@
         min-width: 270px;
         margin-right: @spacing-1x;
 
-        li:first-child a {
-            border-bottom: 1px solid @color-border-default;
+        li button {
+            display: block;
+            padding: @spacing-1x @spacing-3x;
+            clear: both;
+            font-weight: 400;
+            line-height: 1.5rem;
+            color: @filter-color;
+            white-space: nowrap;
+            border: none;
+            box-shadow: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+
+            &:hover {
+                color: @color-link-default;
+                background: @color-bg-contrast;
+            }
         }
 
-        li a.selected {
+        li:first-child button {
+            color: @color-link-default;
+            cursor: pointer;
+            border-bottom: 1px solid @color-border-default;
+
+            &:hover {
+                color: @color-link-hover;
+            }
+        }
+
+        li button.selected {
             border-left: @spacing-1x solid @color-link-default;
         }
     }

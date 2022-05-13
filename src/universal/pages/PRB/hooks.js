@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import {useState, useEffect} from 'react';
 import moment from 'moment';
 import {isNotEmptyString, isNotDuplicate, checkResponse, sortArrayByMostRecentDate} from '../utils';
@@ -50,7 +49,6 @@ export const useFetchTickets = (
             .catch((err) => {
                 setIsLoading(false);
                 setError('Could not retrieve all problem management tickets. Refresh the page to try again.');
-                // eslint-disable-next-line no-console
                 console.error(err);
             });
     };

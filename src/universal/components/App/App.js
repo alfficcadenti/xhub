@@ -50,7 +50,7 @@ function App() {
         if (selectedBrand) {
             storedBrands = [selectedBrand];
         } else {
-            storedBrands = String(localStorage.getItem('selectedBrands') || '')
+            storedBrands = String(localStorage.getItem('selectedBrands'))
                 .split(',')
                 .filter((brand) => validBrands.includes(brand));
             // Default to EG_BRAND if none selected

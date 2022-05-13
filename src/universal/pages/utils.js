@@ -205,8 +205,8 @@ export const getUniqueByProperty = (element, property) => {
         return acc;
     }, {});
     const output = [];
-    // eslint-disable-next-line no-unused-vars
-    for (let [key, val] of Object.entries(group)) {
+
+    for (let [_, val] of Object.entries(group)) {
         const obj = {...val[0]};
         obj.tag = [val[0].tag];
         for (let i = 1; i < val.length; ++i) {
@@ -365,16 +365,14 @@ export const filterNewSelectedItems = (input, key) => {
         : [];
 };
 
+const formatRate = (rate) => rate ? parseFloat((Number(rate) || 0).toFixed(2)) : null;
+
 export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pageBrand = '', deltaUserData = [], metricGroup) => {
     let minValue;
     const rateMetrics = getRateMetrics(metricGroup);
-    const formatRate = (rate) => rate ? parseFloat((Number(rate) || 0).toFixed(2)) : null;
-    // eslint-disable-next-line complexity
     return rateMetrics.map(({metricName, chartName}, i) => {
         const aggregatedData = [];
-        let tempMinValue = 0;
-
-        tempMinValue = (
+        const tempMinValue = (
             Array.isArray(data[i]) ? data[i] : []
         ).reduce((prev, {time, brandWiseSuccessRateData}) => {
             let localMin = prev;
@@ -404,7 +402,7 @@ export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pag
         if (i === 0) {
             minValue = tempMinValue;
         } else {
-            minValue = tempMinValue < minValue ? tempMinValue : minValue;
+            minValue = Math.min(tempMinValue, minValue);
         }
 
         return {chartName, aggregatedData, pageBrand, metricName};
@@ -439,38 +437,36 @@ export const makeSuccessRatesLOBObjects = (
     const successRateEPSFilter = ({lineOfBusiness}) => (
         (!lobs.length || !lineOfBusiness || lobs.findIndex(({value}) => value === lineOfBusiness) > -1)
     );
-    const formatRate = (rate) => parseFloat((Number(rate) || 0).toFixed(2));
-    // eslint-disable-next-line complexity
+
+    const getLobValueKey = (lineOfBusiness) => lineOfBusiness
+        ? lobs.find(({value}) => value === lineOfBusiness)?.label
+        : 'value';
+
+    const getRate = (rate) => rate === null ? null : formatRate(rate);
+
     return rateMetrics.map(({metricName, chartName}, i) => {
         const aggregatedData = [];
-        let tempMinValue = 0;
-
-        // eslint-disable-next-line complexity
-        tempMinValue = (
+        const tempMinValue = (
             Array.isArray(data[i]) ? data[i] : []
         ).reduce((prev, {time, successRatePercentagesData}) => {
             let localMin = prev;
             successRatePercentagesData
                 .filter(selectedBrand === 'eps' ? successRateEPSFilter : successRateFilter)
-                // eslint-disable-next-line complexity
                 .forEach(({rate, lineOfBusiness}) => {
                     const momentTime = moment(time);
                     const deltaUserCount = deltaUserData
                         .find((item) => item.metricName === metricName)?.metricDeltaUserCounts
-                        .find((deltaUserItem) => {
-                            return momentTime.isSame(deltaUserItem.time);
-                        });
+                        .find((deltaUserItem) => momentTime.isSame(deltaUserItem.time));
                     if (momentTime.isBetween(start, end, 'minutes', '[]')) {
-                        const lob = lineOfBusiness ? lobs.find(({value}) => value === lineOfBusiness) : null;
-                        const valueKey = lob ? lob.label : 'value';
+                        const valueKey = getLobValueKey(lineOfBusiness);
                         const found = aggregatedData.findIndex((d) => d.time === moment.utc(time).valueOf());
                         if (found > -1) {
-                            aggregatedData[found][valueKey] = rate === null ? null : formatRate(rate);
+                            aggregatedData[found][valueKey] = getRate(rate);
                         } else {
                             aggregatedData.push({
                                 label: getTzFormat(momentTime, PAGE_VIEWS_DATE_FORMAT),
                                 time: moment.utc(time).valueOf(),
-                                [valueKey]: rate === null ? null : formatRate(rate),
+                                [valueKey]: getRate(rate),
                                 totalDeltaUserCount: deltaUserCount?.lobTotalDeltaUserCount,
                                 ['deltaUserCountByLob']: getLobDeltaUserCount(deltaUserCount)});
                         }
@@ -485,21 +481,16 @@ export const makeSuccessRatesLOBObjects = (
         if (i === 0) {
             minValue = tempMinValue;
         } else {
-            minValue = tempMinValue < minValue ? tempMinValue : minValue;
+            minValue = Math.min(tempMinValue, minValue);
         }
 
         return {chartName, aggregatedData, pageBrand, metricName};
     }).map((item) => ({...item, minValue}));
 };
 
-// eslint-disable-next-line complexity
 export const validDateRange = (start, end) => {
-    if (!start || !end) {
-        return false;
-    }
     const startMoment = moment(start);
-    const endMoment = moment(end);
-    return startMoment.isValid() && endMoment.isValid() && startMoment.isBefore(new Date()) && endMoment.isAfter(startMoment);
+    return !!start && !!end && startMoment.isBefore(new Date()) && startMoment.isBefore(end);
 };
 
 export const getQueryParams = (search) => {

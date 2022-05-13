@@ -25,7 +25,6 @@ export const useFetchIssues = (
         fetch(`/v1/dog-food-data?fromDate=${startDate}&toDate=${endDate}`)
             .then(checkResponse)
             .then((data) => {
-                // setAllIssues(data);
                 setAllIssues(data.map(mapIssues));
                 setCurrentProjects(getListOfUniqueProperties(data, 'project'));
                 setCurrentStatuses(getListOfUniqueProperties(data, 'status'));
@@ -34,7 +33,6 @@ export const useFetchIssues = (
             .catch((err) => {
                 setIsLoading(false);
                 setError('Could not retrieve all Dog Food Issues. Refresh the page to try again.');
-                // eslint-disable-next-line no-console
                 console.error(err);
             });
     };

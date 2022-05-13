@@ -43,7 +43,12 @@ const ScoreCard = ({start, end, selectedBrand}) => {
             .finally(() => setIsLoading(false));
     }, [start, end, selectedBrand, history, pathname]);
 
-    // eslint-disable-next-line complexity
+    const getNextOrgDetails = (subOrgDetails, businessOwnerType) => {
+        const subOrgs = (subOrgDetails || []).map((subOrg) => subOrg.name);
+        const nextBusinessOwnerType = `l${Number(businessOwnerType[1]) + 1}`;
+        return (data[nextBusinessOwnerType] || []).filter((row) => subOrgs.includes(row.name));
+    };
+
     const handleSelectOrg = (org, businessOwnerType, subOrgDetails) => {
         if (!ORGS.includes(businessOwnerType) || !subOrgDetails?.length) {
             return;
@@ -53,9 +58,7 @@ const ScoreCard = ({start, end, selectedBrand}) => {
             setOrgDetails(subOrgDetails);
         } else {
             // Need to know if subOrgDetails has its own subOrgDetails for enabling/disabling link purposes
-            const subOrgs = (subOrgDetails || []).map((subOrg) => subOrg.name);
-            const nextBusinessOwnerType = `l${Number(businessOwnerType[1]) + 1}`;
-            const nextOrgDetails = (data[nextBusinessOwnerType] || []).filter((row) => subOrgs.includes(row.name));
+            const nextOrgDetails = getNextOrgDetails(subOrgDetails, businessOwnerType);
             if (!nextOrgDetails.length) {
                 return;
             }

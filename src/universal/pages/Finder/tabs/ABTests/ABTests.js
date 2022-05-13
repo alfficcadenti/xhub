@@ -6,8 +6,6 @@ import {formatABTestsData} from '../../crUtils';
 
 const renderTable = (abTests = []) => {
     const columns = ['A/B Tests Number', 'Description', 'Application', 'Business Reason', 'Started'];
-    /* eslint-disable no-unused-expressions */
-
     const csvColumns = columns.concat(['Executive Summary', 'Resolution Notes']);
     return (
         <DataTable

@@ -28,7 +28,6 @@ class OktaAuth {
         }
         const kid = decoded.header.kid;
         if (kid in this.keys) {
-            // eslint-disable-next-line no-undef
             return Promise.resolve(this.keys[kid]);
         }
         return this.getKeys().then((keys) => {
@@ -68,21 +67,18 @@ class OktaAuth {
             return this.getKey(token).then((key) => {
                 return jwt.verify(token, key.pem);
             })
-                .catch((e) => { // eslint-disable-line
+                .catch(() => {
                     return jws.decode(token).payload;
                 });
         } catch (err) {
-            // eslint-disable-next-line no-undef
             return Promise.reject(err);
         }
     }
 
     getSecrets(server) {
         if (process.env.NODE_ENV === 'development') {
-            // eslint-disable-next-line no-undef
             return Promise.resolve({'oauthClientSecret': require('../../../devOkta.json').okta.oauthClientSecret});
         }
-        // eslint-disable-next-line no-undef
         return Promise.resolve({'oauthClientSecret': server.app.config.get('secrets.oauthClientSecret')});
     }
 

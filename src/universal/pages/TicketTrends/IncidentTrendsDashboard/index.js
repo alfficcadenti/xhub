@@ -155,7 +155,6 @@ const IncidentTrendsDashboard = ({selectedBrands, onBrandChange, prevSelectedBra
         </LoadingContainer>
     );
 
-    // eslint-disable-next-line complexity
     const renderTabs = () => {
         switch (activeIndex) {
             case 0:

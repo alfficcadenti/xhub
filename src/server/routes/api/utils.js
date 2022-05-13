@@ -7,11 +7,9 @@ module.exports.getConfig = (id) => ({
     log: {collect: true}
 });
 
-// eslint-disable-next-line complexity
-const makeRequest = async (option, testData, req, refreshClient) => {
-    if (testData && process.env.EXPEDIA_ENVIRONMENT !== 'prod') {
-        return await testData(req);
-    }
+const formatPath = (req, path, pathParam) => pathParam ? `${path}/${req.params[pathParam] || ''}` : path;
+
+const makeRequest = async (option, req, refreshClient) => {
     const {
         configKey,
         routeKey,
@@ -29,9 +27,9 @@ const makeRequest = async (option, testData, req, refreshClient) => {
     const {method, path, operation} = routes[routeKey];
     const request = {
         method,
-        path: pathParam ? `${path}/${req.params[pathParam] || ''}` : path,
+        path: formatPath(req, path, pathParam),
         operation,
-        queryParams: req.query ? req.query : {},
+        queryParams: req.query || {},
         payload: req.payload,
         timeout,
         connectTimeout,
@@ -45,13 +43,15 @@ const makeRequest = async (option, testData, req, refreshClient) => {
     return payload;
 };
 
-// eslint-disable-next-line complexity
 module.exports.getHandler = (option, testData) => async (req) => {
     try {
-        return makeRequest(option, testData, req, false);
+        if (testData && process.env.EXPEDIA_ENVIRONMENT !== 'prod') {
+            return await testData(req);
+        }
+        return makeRequest(option, req, false);
     } catch (e1) {
         try {
-            return makeRequest(option, testData, req, true);
+            return makeRequest(option, req, true);
         } catch (e2) {
             req.log('[ERROR]', e2);
             return e2;

@@ -66,7 +66,6 @@ const CorrectiveActions = ({
             .catch((err) => {
                 setError('Failed to retrieve data. Try refreshing the page. '
                     + `If the problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`);
-                // eslint-disable-next-line no-console
                 console.error(err);
             })
             .finally(() => setIsLoading(false));

@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, {useState} from 'react';
 import {FormTextArea, FormInput} from '@homeaway/react-form-components';
 import FilterDropDown from '../../components/FilterDropDown';
@@ -68,8 +67,7 @@ const Feedback = () => {
                     throw new Error();
                 }
             }).catch((error) => {
-                // eslint-disable-next-line no-console
-                console.log(error);
+                console.error(error);
             });
         };
 
@@ -77,6 +75,16 @@ const Feedback = () => {
 
         clearForm();
         handleClose();
+    };
+
+    const handleThumbsUp = () => {
+        setThumbsUp(true);
+        setThumbsDown(false);
+    };
+
+    const handleThumbsDown = () => {
+        setThumbsUp(false);
+        setThumbsDown(true);
     };
 
     return (
@@ -93,18 +101,10 @@ const Feedback = () => {
                         <hr/>
                         <div className="ratings-wrapper">
                             <span className="ratings-label">{'Page rating'}</span>
-                            <div className="thumbs-wrapper thumbs-up" tabIndex={0} role="button" onClick={() => {
-                                setThumbsUp(true);
-                                setThumbsDown(false);
-                            }}
-                            >
+                            <div className="thumbs-wrapper thumbs-up" tabIndex={0} role="button" onClick={handleThumbsUp} onKeyUp={handleThumbsUp}>
                                 <SVGIcon markup={thumbsUp ? THUMB_SELECTED__24 : THUMB__24} />
                             </div>
-                            <div className="thumbs-wrapper thumbs-down" tabIndex={0} role="button" onClick={() => {
-                                setThumbsUp(false);
-                                setThumbsDown(true);
-                            }}
-                            >
+                            <div className="thumbs-wrapper thumbs-down" tabIndex={0} role="button" onClick={handleThumbsDown} onKeyUp={handleThumbsDown}>
                                 <SVGIcon markup={thumbsDown ? THUMB_SELECTED__24 : THUMB__24} />
                             </div>
                         </div>

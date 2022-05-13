@@ -29,7 +29,6 @@ import {validDateRange} from '../utils';
 import './styles.less';
 
 
-// eslint-disable-next-line complexity
 const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const history = useHistory();
     const {pathname, search} = useLocation();
@@ -102,7 +101,6 @@ const PRB = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const matchesRcOwner = (t) => selectedRcOwner === ALL_RC_OWNERS_OPTION || t['RC Owner'] === selectedRcOwner;
     const matchesRcCategory = (t) => selectedRcCategory === ALL_RC_CATEGORIES_OPTION || t['RC Category'] === selectedRcCategory;
 
-    // eslint-disable-next-line complexity
     const filterTickets = (t) => (
         matchesPriority(t)
         && matchesStatus(t)

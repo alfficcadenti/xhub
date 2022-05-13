@@ -10,7 +10,6 @@ export const convertDateToISOString = (date) => {
     return moment(date.toString()).tz(browserTimezone).toISOString();
 };
 
-// eslint-disable-next-line complexity
 export const getQueryValues = (search) => {
     const {from, to, status, priority} = qs.parse(search);
     const isValidDateRange = validDateRange(from, to);

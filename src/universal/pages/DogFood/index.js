@@ -61,11 +61,7 @@ const DogFood = ({selectedBrands, onBrandChange, prevSelectedBrand}) => {
     const matchesProject = (x) => selectedProject === ALL_PROJECTS_OPTION || x.Project === selectedProject;
     const matchesStatus = (x) => selectedStatus === ALL_STATUSES_OPTION || x.Status === selectedStatus;
 
-    // eslint-disable-next-line complexity
-    const filterIssues = (x) => (
-        matchesProject(x)
-            && matchesStatus(x)
-    );
+    const filterIssues = (x) => matchesProject(x) && matchesStatus(x);
 
     const applyFilters = () => {
         if (!validDateRange(startDate, endDate)) {

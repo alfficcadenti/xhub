@@ -59,7 +59,6 @@ const QualityMetrics = ({selectedBrands}) => {
         setIsSupportedBrand([HOTELS_COM_BRAND, VRBO_BRAND].includes(selectedBrands[0]));
     }, [selectedBrands]);
 
-    // eslint-disable-next-line complexity
     useEffect(() => {
         const brandProjectKeys = filterBrandProjectKeys(selectedProjectKeys, brand);
         history.push(getQueryString(brand, selectedProjectKeys, start, end));
@@ -180,7 +179,6 @@ const QualityMetrics = ({selectedBrands}) => {
         );
     };
 
-    // eslint-disable-next-line complexity
     const renderForm = () => (
         <div className="search-form">
             <DatetimeRangePicker
@@ -370,7 +368,6 @@ const QualityMetrics = ({selectedBrands}) => {
         </>
     );
 
-    // eslint-disable-next-line complexity
     const renderBody = () => (
         <>
             {renderForm()}

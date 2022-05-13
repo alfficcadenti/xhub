@@ -52,7 +52,6 @@ export const useFetchTickets = (
                         .then(checkResponse)
                         .then((data) => data)
                         .catch(() => {
-                            // eslint-disable-next-line no-console
                             console.error('Failed to fetch EPS data');
                             return [];
                         });
@@ -74,7 +73,6 @@ export const useFetchTickets = (
                 setAllTickets(tickets);
                 setIsLoading(false);
             }).catch((err) => {
-                // eslint-disable-next-line no-console
                 console.error(JSON.stringify(err, null, 4));
                 setIsLoading(false);
                 setError(FETCH_FAILED_MSG);

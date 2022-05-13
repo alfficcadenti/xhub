@@ -19,6 +19,10 @@ module.exports = {
         "@homeaway/eslint-config/react",
         "@homeaway/eslint-config/jsx-a11y"
     ],
+    "rules": {
+        "no-unused-vars": ['error', {"varsIgnorePattern": "^_+$", "argsIgnorePattern": "^_+$"}],
+        "no-console": ['error', {allow: ["error"]}]
+    },
     "settings": {
         "react": {
             "pragma": "React",

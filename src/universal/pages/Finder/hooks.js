@@ -62,7 +62,6 @@ export const useFetchCRs = (
                 .catch((err) => {
                     setIsLoading(false);
                     setError('Not all change requests are available. Refresh the page to try again.');
-                    // eslint-disable-next-line no-console
                     console.error(err);
                 });
         };
@@ -135,7 +134,6 @@ export const useFetchABTests = (
                 .catch((err) => {
                     setIsLoading(false);
                     setError('Not all A/B tests are available. Refresh the page to try again.');
-                    // eslint-disable-next-line no-console
                     console.error(err);
                 });
         };

@@ -42,7 +42,6 @@ const LandingPage = (props) => {
                     setBookingsData(dataMapped);
                 })
                 .catch((err) => {
-                    // eslint-disable-next-line no-console
                     console.error(err);
                 });
         };
@@ -55,7 +54,6 @@ const LandingPage = (props) => {
                     setCSRData(fetchedCSRData);
                 })
                 .catch((err) => {
-                    // eslint-disable-next-line no-console
                     console.error(err);
                 });
         };

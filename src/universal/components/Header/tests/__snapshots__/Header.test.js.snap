@@ -427,8 +427,8 @@ Object {
               </div>
               <div
                 class="site-search-blur "
+                role="presentation"
               />
-                
             </div>
           </div>
           <div
@@ -598,58 +598,52 @@ Object {
               role="dialog"
             >
               <li>
-                <a
+                <button
                   class=""
-                  role="button"
                   tabindex="0"
                 >
                   Expedia Group
-                </a>
+                </button>
               </li>
               <li>
-                <a
+                <button
                   class="selected"
-                  role="button"
                   tabindex="0"
                 >
                   Expedia
-                </a>
+                </button>
               </li>
               <li>
-                <a
+                <button
                   class=""
-                  role="button"
                   tabindex="0"
                 >
                   Egencia
-                </a>
+                </button>
               </li>
               <li>
-                <a
+                <button
                   class=""
-                  role="button"
                   tabindex="0"
                 >
                   Hotels.com Retail
-                </a>
+                </button>
               </li>
               <li>
-                <a
+                <button
                   class=""
-                  role="button"
                   tabindex="0"
                 >
                   Vrbo Retail
-                </a>
+                </button>
               </li>
               <li>
-                <a
+                <button
                   class=""
-                  role="button"
                   tabindex="0"
                 >
                   Expedia Partner Solutions
-                </a>
+                </button>
               </li>
             </ul>
           </div>
@@ -1080,8 +1074,8 @@ Object {
             </div>
             <div
               class="site-search-blur "
+              role="presentation"
             />
-              
           </div>
         </div>
         <div
@@ -1251,58 +1245,52 @@ Object {
             role="dialog"
           >
             <li>
-              <a
+              <button
                 class=""
-                role="button"
                 tabindex="0"
               >
                 Expedia Group
-              </a>
+              </button>
             </li>
             <li>
-              <a
+              <button
                 class="selected"
-                role="button"
                 tabindex="0"
               >
                 Expedia
-              </a>
+              </button>
             </li>
             <li>
-              <a
+              <button
                 class=""
-                role="button"
                 tabindex="0"
               >
                 Egencia
-              </a>
+              </button>
             </li>
             <li>
-              <a
+              <button
                 class=""
-                role="button"
                 tabindex="0"
               >
                 Hotels.com Retail
-              </a>
+              </button>
             </li>
             <li>
-              <a
+              <button
                 class=""
-                role="button"
                 tabindex="0"
               >
                 Vrbo Retail
-              </a>
+              </button>
             </li>
             <li>
-              <a
+              <button
                 class=""
-                role="button"
                 tabindex="0"
               >
                 Expedia Partner Solutions
-              </a>
+              </button>
             </li>
           </ul>
         </div>

@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 import React from 'react';
 import {Dropdown} from '@homeaway/react-dropdown';
 import {EG_BRAND} from '../../../constants';
@@ -37,16 +36,14 @@ const BrandSelector = ({selectedBrands, onBrandChange, brands}) => {
 
     const renderBrandItem = (brand) => (
         <li key={brand}>
-            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-            <a
+            <button
                 onClick={(e) => handleOnClick(e, brand)}
                 onKeyDown={() => handleOnClick(brand)}
-                role="button"
                 tabIndex={0}
                 className={selectedBrands.includes(brand) ? 'selected' : ''}
             >
                 {brand}
-            </a>
+            </button>
         </li>
     );
     return (

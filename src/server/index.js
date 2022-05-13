@@ -1,4 +1,3 @@
-/* eslint-disable complexity */
 require('source-map-support').install();
 require('css-modules-require-hook')({}); // enable processing of css in external modules
 
@@ -45,7 +44,7 @@ async function start(options = {}) {
     server.route(routes);
 
     // set up production route for static assets
-    const isProd = (process.env.NODE_ENV || 'development') === 'production';
+    const isProd = process.env.NODE_ENV === 'production';
     const hasCDN = !!process.env.CDN_URL;
     if (isProd && !hasCDN) {
         server.route({
