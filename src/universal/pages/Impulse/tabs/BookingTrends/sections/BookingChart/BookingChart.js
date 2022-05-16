@@ -43,6 +43,7 @@ const INCIDENT = 'Incident';
 const ANOMALY_DETECTED = 'Detected';
 const ANOMALY_RECOVERED = 'Recovered';
 const UPSTREAM_UNHEALTHY = 'Upstream Unhealthy';
+const PERCENTAGE_BOOKING_DROP = 'Percentage Booking Drop';
 const AreaChartType = 'Area';
 const BarChartType = 'Bar';
 
