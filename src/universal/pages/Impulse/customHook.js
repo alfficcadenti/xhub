@@ -254,7 +254,7 @@ export const useFetchBlipData = (
                         return {
                             ...item,
                             [PREDICTION_COUNT]: simplifiedPredictionData[i]?.count ? Math.round(simplifiedPredictionData[i].count) : 0,
-                            [PERCENTAGE_BOOKING_DROP]: 0
+                            [PERCENTAGE_BOOKING_DROP]: simplifiedPredictionData[i]?.count ? Math.round((bookingsData[i][BOOKING_COUNT] - Number(simplifiedPredictionData[i].count)) / Number(simplifiedPredictionData[i].count) * 100) : 'NA'
                         };
                     }
                     return item;
