@@ -14,8 +14,6 @@ import {useHistory, useLocation} from 'react-router-dom';
 import {useEffect} from 'react';
 import {ANOMALY_SELECTOR, BRANDS, DEVICES, EG_SITE_URLS, INCIDENT_SELECTOR, LOBS, POS_MAPPINGS} from './constants';
 
-const THREE_WEEK_AVG_COUNT = '3 Week Avg Counts';
-const BOOKING_COUNT = 'Booking Counts';
 export const getFilters = (data = [], typeOfFilter) =>
     data.filter((item) => item.tag === typeOfFilter).map((item) => item.values)[0].map((a) => ({
         value: a,
@@ -119,14 +117,6 @@ export const getQueryStringPercentageChange = (selectedLobMulti, selectedBrandMu
     '?'
     + `${getQueryParamMulti('lobs', selectedLobMulti)}`
     + `${getQueryParamMulti('brands', selectedBrandMulti)}`
-);
-
-export const simplifyBookingsData = (bookingsData) => (
-    bookingsData.map(({time, count, prediction}) => ({
-        time: moment.utc(time).valueOf(),
-        [BOOKING_COUNT]: count,
-        [THREE_WEEK_AVG_COUNT]: prediction.weighted_count
-    }))
 );
 
 export const simplifyPredictionData = (predictionData) => (

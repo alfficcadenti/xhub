@@ -43,6 +43,7 @@ const INCIDENT = 'Incident';
 const ANOMALY_DETECTED = 'Detected';
 const ANOMALY_RECOVERED = 'Recovered';
 const UPSTREAM_UNHEALTHY = 'Upstream Unhealthy';
+const PERCENTAGE_BOOKING_DROP = 'Percentage Booking Drop';
 const AreaChartType = 'Area';
 const BarChartType = 'Bar';
 
@@ -254,6 +255,7 @@ const BookingChart = ({
                     {IMPULSE_CHART_TYPE.map(renderChart)}
                     { data.length && data[0].hasOwnProperty(YOY_COUNT) ? <Line type="monotone" dataKey={YOY_COUNT} stroke="#2E8B57" yAxisId={1} strokeWidth={1} dot={false} animationDuration={300} hide = {hiddenKeys.includes(YOY_COUNT)}/> : ''}
                     { data.length && data[0].hasOwnProperty(PREDICTION_COUNT) ? <Line type="monotone" dataKey={PREDICTION_COUNT} stroke="#c9405b" yAxisId={1} strokeWidth={1.5} dot={false} animationDuration={300} hide = {hiddenKeys.includes(PREDICTION_COUNT)}/> : ''}
+                    { data.length && data[0].hasOwnProperty(PERCENTAGE_BOOKING_DROP) ? <Line type="monotone" dataKey={PERCENTAGE_BOOKING_DROP} stroke="#336BFF" yAxisId={1} strokeWidth={0.5} dot={false} animationDuration={300} hide = {hiddenKeys.includes(PERCENTAGE_BOOKING_DROP)}/> : ''}
                     {
                         anomalies && anomalies.map((anomaly) => (
                             <ReferenceLine

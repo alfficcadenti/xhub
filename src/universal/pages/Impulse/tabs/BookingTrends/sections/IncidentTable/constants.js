@@ -6,7 +6,8 @@ export const INCIDENT_TABLE_COLUMN_HEADERS = {
     zoneEndDate: 'End Date',
     status: 'Status',
     priority: 'Priority',
-    bookingImpact: 'Booking Impact'};
+    bookingImpact: 'Booking Impact',
+    timeToDetect: 'Time to Detect'};
 
 export const INCIDENT_TABLE_COLUMNS = ['summary',
     'rootCause',
@@ -15,7 +16,8 @@ export const INCIDENT_TABLE_COLUMNS = ['summary',
     'zoneEndDate',
     'status',
     'priority',
-    'bookingImpact'];
+    'bookingImpact',
+    'timeToDetect'];
 
 export const REVLOSS_TABLE_COLUMN_HEADERS = {
     brand: 'Brand',

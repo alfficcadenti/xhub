@@ -11,7 +11,6 @@ import {
     getTimeIntervals,
     getDefaultTimeInterval,
     getCategory,
-    simplifyBookingsData,
     simplifyPredictionData,
     convertRelativeDateInString,
     convertRelativeDateRange,
@@ -269,11 +268,6 @@ describe('impulseHandler', () => {
         });
         it('should return Upstream Unhealthy when state is IMPULSE_ALERT_RECOVERED', () => {
             expect(getCategory({state: 'IMPULSE_ALERT_RECOVERED', isLatencyHealthy: true})).eql('Anomaly Recovered');
-        });
-    });
-    describe('get simplify booking data', () => {
-        it('return empty object', () => {
-            expect(simplifyBookingsData([])).eql([]);
         });
     });
     describe('get simplify prediction data', () => {
