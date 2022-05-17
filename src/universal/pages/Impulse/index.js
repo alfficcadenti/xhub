@@ -327,7 +327,7 @@ const Impulse = (props) => {
     useEffect(() => {
         const selectedChannelEgSiteList = [];
         const allPosSet = new Set(allPos);
-        selectedEpsChannels.map((channel) => {
+        selectedEpsChannels.forEach((channel) => {
             EPS_CHANNEL_SITE_URL[channel].forEach((pos) => {
                 if (allPosSet.has(pos)) {
                     selectedChannelEgSiteList.push(pos);
