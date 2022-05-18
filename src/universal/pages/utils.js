@@ -572,7 +572,6 @@ export const getChartDataForFutureEvents = (dateInvalid, chartData, simplifiedPr
     if (!dateInvalid && chartData && chartData.length && chartData.length < simplifiedPredictionData.length) {
         chartDataForFutureEvents = chartData.map((item, i) => {
             const predictionCount = getPredictionCount(simplifiedPredictionData, item);
-
             if (item.time === chartData[i]?.time) {
                 return {
                     ...item,
