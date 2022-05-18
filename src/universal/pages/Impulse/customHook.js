@@ -57,7 +57,7 @@ let intervalForAnnotations = null;
 let intervalForHealth = null;
 let intervalForAnomalies = null;
 let finalChartDataYOY = null;
-let newChartData = null;
+let chartData = null;
 
 export const useFetchBlipData = (
     isApplyClicked,
@@ -206,22 +206,22 @@ export const useFetchBlipData = (
     const fetchData = (start, end, interval) => fetch(`/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval, '')}`)
         .then(checkResponse)
         .then((respJson) => {
-            newChartData = respJson.map((item) => {
+            chartData = respJson.map((item) => {
                 return {
                     time: moment.utc(item.time).valueOf(),
                     [BOOKING_COUNT]: item.count,
                     [THREE_WEEK_AVG_COUNT]: item?.prediction?.weighted_count ? item.prediction.weighted_count : 0,
                 };
             });
-            if (finalChartDataYOY && finalChartDataYOY.length === newChartData?.length) {
-                newChartData = newChartData.map((item, i) => {
+            if (finalChartDataYOY && finalChartDataYOY.length === chartData?.length) {
+                chartData = chartData.map((item, i) => {
                     return {
                         ...item,
                         [YOY_COUNT]: finalChartDataYOY[i]?.count ? finalChartDataYOY[i]?.count : 0
                     };
                 });
             }
-            return newChartData;
+            return chartData;
         });
 
     const fetchCallGrouped = (start, end, interval, groupType) =>
@@ -234,23 +234,22 @@ export const useFetchBlipData = (
                 }))
             ));
 
-    const fetchPredictions = (start = startDateTime, end = endDateTime, interval = timeInterval, chartData) => {
-        Promise.all([newChartData,
+    const fetchPredictions = (start = startDateTime, end = endDateTime, interval = timeInterval) => {
+        Promise.all([
             timeInterval === '5m' || timeInterval === '1m' ? fetch(`/v1/impulse/prediction${getQueryStringPrediction(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval)}`).then(checkResponse) : []
-        ]).then(([bookingsData, predictionData]) => {
-            bookingsData = newChartData;
+        ]).then(([predictionData]) => {
             const simplifiedPredictionData = simplifyPredictionData(predictionData);
 
-            let finalChartData = bookingsData;
+            let finalChartData = chartData;
             let chartDataForFutureEvents = simplifiedPredictionData;
 
-            if (bookingsData.length === simplifiedPredictionData.length) {
+            if (chartData.length === simplifiedPredictionData.length) {
                 finalChartData = finalChartData.map((item, i) => {
-                    if (bookingsData.length && simplifiedPredictionData.length && (bookingsData[i].time === simplifiedPredictionData[i].time)) {
+                    if (chartData.length && simplifiedPredictionData.length && (chartData[i].time === simplifiedPredictionData[i].time)) {
                         return {
                             ...item,
                             [PREDICTION_COUNT]: simplifiedPredictionData[i]?.count ? Math.round(simplifiedPredictionData[i].count) : 0,
-                            [PERCENTAGE_BOOKING_DROP]: simplifiedPredictionData[i]?.count ? Math.round((bookingsData[i][BOOKING_COUNT] - Number(simplifiedPredictionData[i].count)) / Number(simplifiedPredictionData[i].count) * 100) : 'NA'
+                            [PERCENTAGE_BOOKING_DROP]: simplifiedPredictionData[i]?.count ? Math.round((chartData[i][BOOKING_COUNT] - Number(simplifiedPredictionData[i].count)) / Number(simplifiedPredictionData[i].count) * 100) : 'NA'
                         };
                     }
                     return item;
@@ -259,7 +258,7 @@ export const useFetchBlipData = (
 
             const dateInvalid = checkIsDateInvalid(startDateTime, endDateTime);
 
-            finalChartData = getChartDataForFutureEvents(dateInvalid, chartData, simplifiedPredictionData, chartDataForFutureEvents, bookingsData, finalChartData);
+            finalChartData = getChartDataForFutureEvents(dateInvalid, chartData, simplifiedPredictionData, chartDataForFutureEvents, finalChartData);
 
             setRes(finalChartData);
         })
@@ -313,10 +312,10 @@ export const useFetchBlipData = (
                 console.error(err);
             });
 
-    const getPredictions = (start, end, interval, chartData) => {
+    const getPredictions = (start, end, interval) => {
         const dayRange = moment(endDateTime).diff(moment(startDateTime), 'days');
         if (dayRange < 7) {
-            fetchPredictions(start, end, interval, chartData);
+            fetchPredictions(start, end, interval);
         } else {
             getScreenshot();
         }
@@ -327,14 +326,14 @@ export const useFetchBlipData = (
         const defaultRange = moment(endDateTime).diff(moment(startDateTime), 'hours') === 72;
 
         fetchData(startDateTime, endTime(), timeInterval)
-            .then((chartData) => {
+            .then((respJson) => {
                 setError('');
 
-                getPredictions(startDateTime, futureEvent ? endDateTime : endTime(), timeInterval, chartData);
+                getPredictions(startDateTime, futureEvent ? endDateTime : endTime(), timeInterval);
 
                 if (!futureEvent) {
                     setEndDateTime(endTime());
-                    setRes(chartData);
+                    setRes(respJson);
 
                     if (defaultRange) {
                         setStartDateTime(startTime());
@@ -343,14 +342,14 @@ export const useFetchBlipData = (
                     fetchData(startDateTime, endDateTime, timeInterval)
                         .then((data) => {
                             const newData = data.map((item, i) => {
-                                if (item.time === chartData[i]?.time) {
-                                    item[BOOKING_COUNT] = chartData[i][BOOKING_COUNT];
+                                if (item.time === respJson[i]?.time) {
+                                    item[BOOKING_COUNT] = respJson[i][BOOKING_COUNT];
                                 }
                                 return item;
                             });
 
-                            if (newData.length <= chartData.length) {
-                                setRes(chartData);
+                            if (newData.length <= respJson.length) {
+                                setRes(respJson);
                             } else {
                                 setRes(newData);
                             }
@@ -440,9 +439,9 @@ export const useFetchBlipData = (
         setIsLoading(true);
         setGraphImage(null);
         fetchData(start, end, interval)
-            .then((chartData) => {
+            .then((respJson) => {
                 setError('');
-                setRes(chartData);
+                setRes(respJson);
                 setIsLoading(false);
             })
             .catch((err) => {

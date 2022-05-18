@@ -568,9 +568,9 @@ const getPredictionCount = (simplifiedPredictionData, item) => {
     return predictionCount;
 };
 
-export const getChartDataForFutureEvents = (dateInvalid, chartData, simplifiedPredictionData, chartDataForFutureEvents, simplifiedBookingsData, finalChartData) => {
+export const getChartDataForFutureEvents = (dateInvalid, chartData, simplifiedPredictionData, chartDataForFutureEvents, finalChartData) => {
     if (!dateInvalid && chartData && chartData.length && chartData.length < simplifiedPredictionData.length) {
-        chartDataForFutureEvents = simplifiedBookingsData.map((item, i) => {
+        chartDataForFutureEvents = chartData.map((item, i) => {
             const predictionCount = getPredictionCount(simplifiedPredictionData, item);
 
             if (item.time === chartData[i]?.time) {
