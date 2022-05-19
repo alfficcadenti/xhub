@@ -35,7 +35,7 @@ import moment from 'moment';
 
 const THREE_WEEK_AVG_COUNT = '3 Week Avg Counts';
 const PREDICTION_COUNT = 'Prediction Counts';
-const PERCENTAGE_BOOKING_DROP = 'Percentage Booking Drop';
+const PERCENTAGE_CHANGE = '% Change';
 const YOY_COUNT = 'YOY Counts';
 const BOOKING_COUNT = 'Booking Counts';
 const IMPULSE_MAPPING = [
@@ -210,7 +210,7 @@ export const useFetchBlipData = (
                 return {
                     time: moment.utc(item.time).valueOf(),
                     [BOOKING_COUNT]: item.count,
-                    [THREE_WEEK_AVG_COUNT]: item?.prediction?.weighted_count ? item.prediction.weighted_count : 0,
+                    [THREE_WEEK_AVG_COUNT]: item?.prediction?.weighted_count ? item.prediction.weighted_count : 0
                 };
             });
             if (finalChartDataYOY && finalChartDataYOY.length === chartData?.length) {
@@ -249,13 +249,12 @@ export const useFetchBlipData = (
                         return {
                             ...item,
                             [PREDICTION_COUNT]: simplifiedPredictionData[i]?.count ? Math.round(simplifiedPredictionData[i].count) : 0,
-                            [PERCENTAGE_BOOKING_DROP]: simplifiedPredictionData[i]?.count ? Math.round((chartData[i][BOOKING_COUNT] - Number(simplifiedPredictionData[i].count)) / Number(simplifiedPredictionData[i].count) * 100) : 'NA'
+                            [PERCENTAGE_CHANGE]: simplifiedPredictionData[i]?.count ? (Math.round((chartData[i][BOOKING_COUNT] - Number(simplifiedPredictionData[i].count)) / Number(simplifiedPredictionData[i].count) * 100)) : 'NA'
                         };
                     }
                     return item;
                 });
             }
-
             const dateInvalid = checkIsDateInvalid(startDateTime, endDateTime);
 
             finalChartData = getChartDataForFutureEvents(dateInvalid, chartData, simplifiedPredictionData, chartDataForFutureEvents, finalChartData);
