@@ -1,4 +1,5 @@
 import React from 'react';
+import {act} from '@testing-library/react';
 import {mount} from 'enzyme';
 import {expect} from 'chai';
 import CorrectiveActions from '../index';
@@ -8,8 +9,10 @@ global.fetch = require('node-fetch');
 describe('<CorrectiveActions />', () => {
     let wrapper;
 
-    beforeEach(() => {
-        wrapper = mount(<CorrectiveActions />);
+    beforeEach(async () => {
+        await act(async () => {
+            wrapper = mount(<CorrectiveActions />);
+        });
     });
 
     afterEach(() => {

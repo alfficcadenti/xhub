@@ -1,4 +1,5 @@
 import React from 'react';
+import {act} from 'react-dom/test-utils';
 import {mount, shallow} from 'enzyme';
 import OngoingIncidents from '../index';
 import {EG_BRAND} from '../../../constants';
@@ -47,18 +48,24 @@ describe('OngoingIncidents component testing', () => {
         })
     );
 
-    it('checks OngoingIncidents component exists', () => {
-        wrapper = shallow(<OngoingIncidents selectedBrands={[EG_BRAND]} />);
-        expect(wrapper).toHaveLength(1);
+    it('checks OngoingIncidents component exists', async () => {
+        await (act(async () => {
+            wrapper = shallow(<OngoingIncidents selectedBrands={[EG_BRAND]} />);
+            expect(wrapper).toHaveLength(1);
+        }));
     });
 
-    it('checks OngoingIncidents has title', () => {
-        wrapper = mount(<OngoingIncidents selectedBrands={[EG_BRAND]} />);
-        expect(wrapper.find('h2.ongoing-incidents-label').text()).toMatch('Ongoing Incidents');
+    it('checks OngoingIncidents has title', async () => {
+        await (act(async () => {
+            wrapper = mount(<OngoingIncidents selectedBrands={[EG_BRAND]} />);
+            expect(wrapper.find('h2.ongoing-incidents-label').text()).toMatch('Ongoing Incidents');
+        }));
     });
 
-    it('checks OngoingIncidents renders incidents', () => {
-        wrapper = mount(<OngoingIncidents selectedBrands={[EG_BRAND]} />);
+    it('checks OngoingIncidents renders incidents', async () => {
+        await (act(async () => {
+            wrapper = mount(<OngoingIncidents selectedBrands={[EG_BRAND]} />);
+        }));
         expect(fetch).toHaveBeenCalledTimes(2);
     });
 });

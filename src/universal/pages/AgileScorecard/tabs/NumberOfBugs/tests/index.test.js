@@ -7,6 +7,8 @@ import '@testing-library/jest-dom';
 
 
 describe('<NumberOfBugs />', () => {
+    global.scrollTo = jest.fn();
+
     let wrapper = '';
     beforeEach(() => {
         fetch.resetMocks();
@@ -47,7 +49,7 @@ describe('<NumberOfBugs />', () => {
 
 describe('<BugsModal />', () => {
     it('renders successfully', () => {
-        const wrapper = render(<BugsModal dataObj={MOCK_BUG_LIST} onClose />);
+        const wrapper = render(<BugsModal dataObj={MOCK_BUG_LIST} onClose={() => {}} />);
         expect(wrapper.getByText('open bugs (2 Results)')).toBeInTheDocument();
         expect(wrapper.getByText('closed bugs (1 Result)')).toBeInTheDocument();
         expect(wrapper).toMatchSnapshot();

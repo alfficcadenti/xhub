@@ -20,12 +20,20 @@ const waitForComponentToPaint = async (wrapper) => {
 
 describe('<IncidentTrendsDashboard/>', () => {
     let wrapper;
+    const original = console.error;
 
     beforeEach(async () => {
-        wrapper = mount(<Router>
-            <IncidentTrendsDashboard selectedBrands={[EG_BRAND]} />
-        </Router>);
+        console.error = jest.fn();
+        wrapper = mount(
+            <Router>
+                <IncidentTrendsDashboard selectedBrands={[EG_BRAND]} />
+            </Router>
+        );
         await waitForComponentToPaint(wrapper);
+    });
+
+    afterEach(() => {
+        console.error = original;
     });
 
     it('renders successfully', () => {
@@ -37,8 +45,9 @@ describe('<IncidentTrendsDashboard/>', () => {
         const endDateDefaultValue = moment().format(DATE_FORMAT);
 
         const props = wrapper.find('DatetimeRangePicker').props();
-        expect(moment(props.startDate).format(DATE_FORMAT)).equal(startDateDefaultValue);
-        expect(moment(props.endDate).format(DATE_FORMAT)).equal(endDateDefaultValue);
+        const ISOStringFormat = 'YYYY-MM-DDTHH:mm:ss.sssZ';
+        expect(moment(props.startDate, ISOStringFormat).format(DATE_FORMAT)).equal(startDateDefaultValue);
+        expect(moment(props.endDate, ISOStringFormat).format(DATE_FORMAT)).equal(endDateDefaultValue);
     });
 
     it('Navigation tab has correct tabs', async () => {

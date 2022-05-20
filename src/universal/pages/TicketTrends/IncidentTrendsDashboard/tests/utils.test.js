@@ -10,14 +10,15 @@ describe('Fci Utils', () => {
     it('convertDateToISOString', () => {
         const browserTimezone = moment.tz.guess();
         const date = '2021-10-12 22:13';
-        const ISOString = moment(date).tz(browserTimezone).toISOString();
+        const ISOString = moment(date, 'YYYY-MM-DD hh:mm').tz(browserTimezone).toISOString();
         expect(convertDateToISOString(date)).to.be.eql(ISOString);
     });
 
     it('getQueryValues - default', () => {
         const result = getQueryValues();
-        expect(moment(result.initialStart).diff(moment().subtract(14, 'days'), 'minutes')).to.be.lessThan(2);
-        expect(moment(result.initialEnd).diff(moment(), 'minutes')).to.be.lessThan(2);
+        const ISOStringFormat = 'YYYY-MM-DDTHH:mm:ss.sssZ';
+        expect(moment(result.initialStart, ISOStringFormat).diff(moment().subtract(14, 'days'), 'minutes')).to.be.lessThan(2);
+        expect(moment(result.initialEnd, ISOStringFormat).diff(moment(), 'minutes')).to.be.lessThan(2);
         expect(result.initialStatus).to.be.eql(ALL_STATUSES_OPTION);
         expect(result.initialPriority).to.be.eql(ALL_PRIORITIES_OPTION);
     });

@@ -59,10 +59,9 @@ export const useFetchCRs = (
                     setAllCRs(crs);
                     setIsLoading(false);
                 })
-                .catch((err) => {
+                .catch(() => {
                     setIsLoading(false);
                     setError('Not all change requests are available. Refresh the page to try again.');
-                    console.error(err);
                 });
         };
 
@@ -131,10 +130,9 @@ export const useFetchABTests = (
                     setAbTests(adjustedAbTests);
                     setIsLoading(false);
                 })
-                .catch((err) => {
+                .catch(() => {
                     setIsLoading(false);
                     setError('Not all A/B tests are available. Refresh the page to try again.');
-                    console.error(err);
                 });
         };
 
