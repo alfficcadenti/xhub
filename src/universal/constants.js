@@ -186,7 +186,9 @@ export const GRAFANA_DASHBOARDS = [
 
 export const EPS_CHANNELS = [{value: 'E4P API', label: 'E4P API'},
     {value: 'E4P Template', label: 'E4P Template'},
-    {value: 'TAAP', label: 'TAAP'}];
+    {value: 'TAAP', label: 'TAAP'},
+    {value: 'RAPID', label: 'RAPID'},
+    {value: 'WLT', label: 'WLT'}];
 
 export const EPS_CHANNEL_SITE_URL = {
     'E4P API': ['amextravel.com',
@@ -239,8 +241,9 @@ export const EPS_CHANNEL_SITE_URL = {
         'ww5.neckermann-reisen.de',
         'www.expedia-aarp.com',
         'www.expediafortd.com',
-        'hotels.airnewzealand.co.nz'],
-    'RAPID': [],
+        'hotels.airnewzealand.co.nz',
+        'vacations.marriott.com'],
+    'RAPID': ['ean.expediacustomer.com'],
     'TAAP': ['amextravelthc.com',
         'taap.expedia.AR',
         'taap.expedia.AU',
@@ -272,4 +275,8 @@ export const EPS_CHANNEL_SITE_URL = {
         'taap.expedia.TW',
         'taap.expedia.UK',
         'taap.expedia.VN',
-        'taap.expedia.US']};
+        'taap.expedia.US',
+        'taap.expedia.BE',
+        'taap.expedia.FI'],
+    'WLT': ['travel.sceneplus.ca',
+        'hotels.bookety.com']};
