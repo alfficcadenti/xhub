@@ -63,10 +63,9 @@ const CorrectiveActions = ({
                 initData(l3Response, initialL3, setL3Data, onL3Change);
                 initData(l4Response, initialL4, setL4Data, onL4Change);
             })
-            .catch((err) => {
+            .catch(() => {
                 setError('Failed to retrieve data. Try refreshing the page. '
                     + `If the problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`);
-                console.error(err);
             })
             .finally(() => setIsLoading(false));
     };

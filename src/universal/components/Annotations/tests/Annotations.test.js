@@ -1,4 +1,5 @@
 import React from 'react';
+import {act} from 'react-dom/test-utils';
 import {expect} from 'chai';
 import {mount, shallow} from 'enzyme';
 import Annotations from '../Annotations';
@@ -92,9 +93,16 @@ describe('Annotations component testing', () => {
         expect(wrapper.find('.advanced-filter-active')).to.have.length(1);
     });
 
-    it('renders 3 checkboxes', () => {
-        wrapper = mount(<Annotations setFilteredAnnotations={jest.fn()} setEnableAnnotations={jest.fn()} productMapping={[]} />);
-        wrapper.find('.display-annotations-btn').simulate('click');
-        expect(wrapper.find('.annotations-wrapper')).to.have.length(1);
+    it('renders 3 checkboxes', async () => {
+        await (act(async () => {
+            global.fetch = jest.fn(() =>
+                Promise.resolve({
+                    json: () => Promise.resolve([]),
+                })
+            );
+            wrapper = mount(<Annotations setFilteredAnnotations={() => {}} setEnableAnnotations={() => {}} productMapping={[]} />);
+            wrapper.find('.display-annotations-btn').simulate('click');
+            expect(wrapper.find('.annotations-wrapper')).to.have.length(1);
+        }));
     });
 });

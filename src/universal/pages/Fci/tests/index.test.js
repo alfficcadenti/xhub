@@ -21,9 +21,11 @@ jest.mock('react-router-dom', () => {
 
 describe('<Fci/>', () => {
     let wrapper = '';
+
     beforeEach(() => {
         fetch.resetMocks();
     });
+
     afterEach(() => {
         wrapper.unmount();
     });
@@ -39,15 +41,22 @@ describe('<Fci/>', () => {
         const fetchMock = jest
             .spyOn(global, 'fetch')
             .mockImplementation(() =>
-                Promise.resolve({ok: true, json: () => Promise.resolve([{'timestamp': '2022-02-16T10:00:00Z', 'counts': {'No Mapping Found': 32, 'CC Supply': 1}}])})
+                Promise.resolve({
+                    ok: true,
+                    json: () => Promise.resolve(
+                        [{'timestamp': '2022-02-16T10:00:00Z', 'counts': {'No Mapping Found': 32, 'CC Supply': 1}}]
+                    )
+                })
             );
         await act(async () => {
             wrapper = render(<Router><Fci selectedBrands={[EXPEDIA_BRAND]} /></Router>);
         });
         expect(fetchMock).toHaveBeenNthCalledWith(1, expect.stringContaining('/v1/checkout-failures/error-counts'));
         expect(wrapper.getByText(/Errors over Time/)).toBeInTheDocument();
-        fireEvent.click(screen.queryAllByText(/Chart by Error Code/i)[0]);
-        fireEvent.click(screen.queryAllByText(/Chart by Category/i)[0]);
+        await act(async () => {
+            fireEvent.click(screen.queryAllByText(/Chart by Error Code/i)[0]);
+            fireEvent.click(screen.queryAllByText(/Chart by Category/i)[0]);
+        });
         expect(fetchMock).toHaveBeenNthCalledWith(2, expect.stringContaining('/v1/checkout-failures/error-categories'));
         expect(wrapper).toMatchSnapshot();
     });

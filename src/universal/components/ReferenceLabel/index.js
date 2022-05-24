@@ -7,7 +7,7 @@ import {DEPLOYMENT_ANNOTATION_CATEGORY, AB_TESTS_ANNOTATION_CATEGORY} from '../.
 import './styles.less';
 
 
-const ReferenceLabel = ({viewBox: {x}, annotation, isImpulse = false, setTableData}) => {
+const ReferenceLabel = ({viewBox, annotation, isImpulse = false, setTableData}) => {
     const {
         time,
         number,
@@ -73,22 +73,24 @@ const ReferenceLabel = ({viewBox: {x}, annotation, isImpulse = false, setTableDa
     };
 
     return (
-        <foreignObject
-            className="foreign-object"
-            x={x - 5.5}
-            y={isImpulse ? -5 : -12}
-            width={10}
-            height={10}
-        >
-            <div className={`annotation-tooltip ${isImpulse ? 'incidents-impulse' : category}`}>
-                <div className="tooltip-body">
-                    <p className="timestamp">{`${moment(time).format('YYYY-MM-DD HH:mm')} ${moment().tz(moment.tz.guess()).format('z')}`}</p>
-                    <div className="tooltip-wrapper">
-                        {renderLabel()}
+        <svg>
+            <foreignObject
+                className="foreign-object"
+                x={(viewBox.x || 0) - 5.5}
+                y={isImpulse ? -5 : -12}
+                width={10}
+                height={10}
+            >
+                <div className={`annotation-tooltip ${isImpulse ? 'incidents-impulse' : category}`}>
+                    <div className="tooltip-body">
+                        <p className="timestamp">{`${moment(time).format('YYYY-MM-DD HH:mm')} ${moment().tz(moment.tz.guess()).format('z')}`}</p>
+                        <div className="tooltip-wrapper">
+                            {renderLabel()}
+                        </div>
                     </div>
                 </div>
-            </div>
-        </foreignObject>
+            </foreignObject>
+        </svg>
     );
 };
 

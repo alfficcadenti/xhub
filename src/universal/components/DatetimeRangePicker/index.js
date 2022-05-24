@@ -47,13 +47,13 @@ const getPresets = () => {
     }, {
         text: 'All Months',
         value: {
-            start: moment('2017-12-01').startOf('day').toDate(),
+            start: moment('2017-12-01', 'YYYY-MM-DD').startOf('day').toDate(),
             end: moment().endOf('month').endOf('day').toDate()
         }
     }];
     // Initialize each month date since Dec-1-2017
     const currDate = moment();
-    const endDate = moment('2017-12-01');
+    const endDate = moment('2017-12-01', 'YYYY-MM-DD');
     while (currDate.diff(endDate, 'days') > 0) {
         presets.push({
             text: currDate.format('MMM YYYY'),

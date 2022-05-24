@@ -1,5 +1,6 @@
 import {shallow} from 'enzyme';
 import React from 'react';
+import {act} from '@testing-library/react';
 import {expect} from 'chai';
 import fakeData from './anomalyData.test.json';
 import AnomalyDetails from '../sections/AnomalyTable/AnomalyDetails';
@@ -8,9 +9,12 @@ import AnomalyDetails from '../sections/AnomalyTable/AnomalyDetails';
 describe('Anomaly Table component testing', () => {
     let wrapper;
 
-    beforeEach(() => {
-        wrapper = shallow(<AnomalyDetails data ={fakeData} setAnomalyTableData={jest.fn()}/>);
+    beforeEach(async () => {
+        await act(async () => {
+            wrapper = shallow(<AnomalyDetails data ={fakeData} setAnomalyTableData={jest.fn()}/>);
+        });
     });
+
     afterEach(() => {
         wrapper.unmount();
     });

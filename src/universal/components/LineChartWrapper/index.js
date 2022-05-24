@@ -68,27 +68,40 @@ const LineChartWrapper = ({
         keys.refAreaLeft && refAreaRight && <ReferenceArea yAxisId={yAxisId} x1={refAreaLeft} x2={refAreaRight} strokeOpacity={0.3} />
     );
 
+    const renderLineChart = (isResponsive) => (
+        <LineChart
+            width={isResponsive ? '' : width}
+            height={isResponsive ? '' : height}
+            data={data}
+            margin={{top: 5, right: 30, left: 20, bottom: 5}}
+            cursor={onDotClick ? 'pointer' : ''}
+            onMouseDown={onMouseDown}
+            onMouseMove={onMouseMove}
+            onMouseUp={onMouseUp}
+        >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis yAxisId={yAxisId} allowDecimals={false} type="number" />
+            <Legend onClick={handleLegendClick} cursor={enableLineHiding ? 'pointer' : ''} />
+            <Tooltip />
+            {keys.map(renderLine)}
+            {renderReferenceArea()}
+        </LineChart>
+    );
+
+    const renderResponsiveLineChart = () => (
+        <ResponsiveContainer width={width} height={height}>
+            {renderLineChart(true)}
+        </ResponsiveContainer>
+    );
+
     return (
         <div className="line-chart-wrapper" title={title}>
             {title && renderTitle()}
-            <ResponsiveContainer width={width} height={height}>
-                <LineChart
-                    data={data}
-                    margin={{top: 5, right: 30, left: 20, bottom: 5}}
-                    cursor={onDotClick ? 'pointer' : ''}
-                    onMouseDown={onMouseDown}
-                    onMouseMove={onMouseMove}
-                    onMouseUp={onMouseUp}
-                >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis yAxisId={yAxisId} allowDecimals={false} type="number" />
-                    <Legend onClick={handleLegendClick} cursor={enableLineHiding ? 'pointer' : ''} />
-                    <Tooltip />
-                    {keys.map(renderLine)}
-                    {renderReferenceArea()}
-                </LineChart>
-            </ResponsiveContainer>
+            {`${width}`.includes('%') || `${height}`.includes('%')
+                ? renderResponsiveLineChart()
+                : renderLineChart()
+            }
         </div>
     );
 };

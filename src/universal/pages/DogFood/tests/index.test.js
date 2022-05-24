@@ -1,8 +1,9 @@
 import React from 'react';
 import {mount} from 'enzyme';
 import {expect} from 'chai';
-import DogFood from '../index';
+import {act} from '@testing-library/react';
 import {BrowserRouter} from 'react-router-dom';
+import DogFood from '../index';
 import {VRBO_BRAND} from '../../../constants';
 import {mockIssues} from './mockIssue';
 
@@ -18,10 +19,14 @@ describe('<DogFood />', () => {
         })
     );
 
-    beforeEach(() => {
-        wrapper = mount(<BrowserRouter>
-            <DogFood selectedBrands={[VRBO_BRAND]} />
-        </BrowserRouter>);
+    beforeEach(async () => {
+        await act(async () => {
+            wrapper = mount(
+                <BrowserRouter>
+                    <DogFood selectedBrands={[VRBO_BRAND]} />
+                </BrowserRouter>
+            );
+        });
     });
 
     afterEach(() => {

@@ -226,9 +226,8 @@ const Fci = ({selectedBrands}) => {
                     setPrev({start, end, data, selectedSite, selectedChartProperty, selectedErrorCode, selectedLob, hideIntentionalCheck, selectedFciType});
                     processData(data, selectedChartProperty);
                 })
-                .catch((err) => {
+                .catch(() => {
                     setError(FETCH_FAILED_MSG);
-                    console.error(err);
                 })
                 .finally(() => setIsLoading(false));
         } else {

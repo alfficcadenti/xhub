@@ -178,9 +178,8 @@ const Annotations = ({
 
                     setDeploymentAnnotations(adjustedAnnotations);
                 })
-                .catch((err) => {
+                .catch(() => {
                     setDeploymentAnnotationsError(true);
-                    console.error(err);
                 })
                 .finally(() => setIsDeploymentsAnnotationsLoading(false));
         };
@@ -216,9 +215,8 @@ const Annotations = ({
                         incidentStatus
                     }));
                 })
-                .catch((err) => {
+                .catch(() => {
                     setIncidentAnnotationsError(true);
-                    console.error(err);
                 })
                 .finally(() => setIsIncidentsAnnotationsLoading(false));
         };
@@ -251,9 +249,8 @@ const Annotations = ({
                         abTestsStatus
                     }));
                 })
-                .catch((err) => {
+                .catch(() => {
                     setAbTestsAnnotationsError(true);
-                    console.error(err);
                 })
                 .finally(() => setIsAbTestsAnnotationsLoading(false));
         };

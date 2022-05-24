@@ -81,8 +81,15 @@ const Finder = (props) => {
             applyAdvancedFilter();
             setResetSelection((reset) => !reset);
         }
-    }, [activeIndex, allUniqueCRs]);
+    }, [activeIndex, allUniqueCRs]); // eslint-disable-line react-hooks/exhaustive-deps
 
+    const assignFilteredData = (isCRTabSelected, items) => {
+        if (isCRTabSelected) {
+            setFilteredUniqueCRs([...items]);
+        } else {
+            setFilteredABTests([...items]);
+        }
+    };
 
     const applyAdvancedFilter = () => {
         const filterNewFormat = adjustInputValue(advancedFilter);
@@ -100,16 +107,9 @@ const Finder = (props) => {
                     newFilteredData = newFilteredData.filter((x) => x[filter.key] === filter.values);
                 }
             });
-
-            if (isCRTabSelected) {
-                setFilteredUniqueCRs(newFilteredData);
-            } else {
-                setFilteredABTests(newFilteredData);
-            }
-        } else if (isCRTabSelected) {
-            setFilteredUniqueCRs([...currentItems]);
+            assignFilteredData(isCRTabSelected, newFilteredData);
         } else {
-            setFilteredABTests([...currentItems]);
+            assignFilteredData(isCRTabSelected, [...currentItems]);
         }
     };
 
@@ -120,7 +120,7 @@ const Finder = (props) => {
 
     useEffect(() => {
         applyAdvancedFilter();
-    }, [allCRs, allUniqueCRs, abTests, advancedFilter, selectedBrand]);
+    }, [allCRs, allUniqueCRs, abTests, advancedFilter, selectedBrand]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const handleDateRangeChange = ({start, end}) => {
         setStartDate(moment(start).format(DATE_FORMAT));

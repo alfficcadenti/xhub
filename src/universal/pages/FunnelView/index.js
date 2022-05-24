@@ -129,7 +129,6 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}
                         ? `Query has timed out. Try refreshing the page. If the problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`
                         : `An unexpected error has occurred. Try refreshing the page. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`;
                     setLoBError(errorMessage);
-                    console.error(err);
                 })
                 .finally(() => setIsLoading(false));
         };
@@ -154,7 +153,6 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}
                         ? `Query has timed out. Try refreshing the page. If the problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`
                         : `An unexpected error has occurred. Try refreshing the page. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`;
                     setLoBError(errorMessage);
-                    console.error(err);
                 })
                 .finally(() => setIsLoBLoading(false));
         };
@@ -391,13 +389,15 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}
                     onClickHandler={handleViewTypeChange}
                     className="filter-dropdown"
                 />
-                {viewType === 'Grafana View' && <FilterDropDown
-                    id="pageviews-type-dropdown"
-                    list={PAGEVIEWS_METRICS}
-                    selectedValue={metricGroup}
-                    onClickHandler={handleMetricChange}
-                    className="filter-dropdown"
-                />}
+                {viewType === 'Grafana View' && (
+                    <FilterDropDown
+                        id="pageviews-type-dropdown"
+                        list={PAGEVIEWS_METRICS}
+                        selectedValue={metricGroup}
+                        onClickHandler={handleMetricChange}
+                        className="filter-dropdown"
+                    />
+                )}
             </div>
     );
 
