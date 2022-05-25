@@ -646,13 +646,12 @@ describe('getChartDataForFutureEvents()', () => {
 
     it('getChartDataForFutureEvents should return false if date is invalid', () => {
         dateInvalid = true;
-        expect(getChartDataForFutureEvents(dateInvalid, chartData, simplifiedPredictionData, chartDataForFutureEvents, simplifiedBookingsData, simplifiedBookingsData)).to.be.eql(simplifiedBookingsData);
+        expect(getChartDataForFutureEvents(dateInvalid, chartData, simplifiedPredictionData, chartDataForFutureEvents, simplifiedBookingsData)).to.be.eql(simplifiedBookingsData);
     });
 
     it('getChartDataForFutureEvents should return true if date is valid', () => {
-        expect(getChartDataForFutureEvents(dateInvalid, chartData, simplifiedPredictionData, chartDataForFutureEvents, simplifiedBookingsData, simplifiedBookingsData)).to.be.eql([
-            {time: 123123123, 'Booking Counts': 123, '3 Week Avg Counts': 615, 'Prediction Counts': 123},
-            {time: 123123124, 'Booking Counts': 0, '3 Week Avg Counts': 761, 'Prediction Counts': 124}
+        expect(getChartDataForFutureEvents(dateInvalid, chartData, simplifiedPredictionData, chartDataForFutureEvents, simplifiedBookingsData)).to.be.eql([
+            {time: 123123123, 'Booking Counts': 123, 'Prediction Counts': 123}
         ]);
     });
 });
