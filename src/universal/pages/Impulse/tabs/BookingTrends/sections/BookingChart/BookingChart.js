@@ -43,7 +43,7 @@ const INCIDENT = 'Incident';
 const ANOMALY_DETECTED = 'Detected';
 const ANOMALY_RECOVERED = 'Recovered';
 const UPSTREAM_UNHEALTHY = 'Upstream Unhealthy';
-const PERCENTAGE_BOOKING_DROP = 'Percentage Booking Drop';
+const PERCENTAGE_CHANGE = '% Change';
 const AreaChartType = 'Area';
 const BarChartType = 'Bar';
 
@@ -53,7 +53,10 @@ const IMPULSE_CHART_TYPE = [
         color: BOOKING_CHART_COLOR,
         chartType: BarChartType,
         key: 'bookingChart'
-    },
+    }
+];
+
+const IMPULSE_CHART_TYPE_3_WEEK_AVG = [
     {
         name: THREE_WEEK_AVG_COUNT,
         color: THREE_WEEK_AVG_COUNT_COLOR,
@@ -247,15 +250,18 @@ const BookingChart = ({
                 >
                     <defs>
                         {IMPULSE_CHART_TYPE.map(getGradient)}
+                        {IMPULSE_CHART_TYPE_3_WEEK_AVG.map(getGradient)}
                     </defs>
                     <XAxis allowDataOverflow type="number" scale="time" dataKey="time" tick={{fontSize: 10}} tickFormatter={formatDateTimeLocal} domain={[left, right]}/>
                     <YAxis allowDataOverflow yAxisId={1} tick={{fontSize: 10}} type="number"/>
                     <CartesianGrid strokeDasharray="3 3"/>
                     <Tooltip content={<CustomTooltip/>}/>
+
                     {IMPULSE_CHART_TYPE.map(renderChart)}
-                    { data.length && data[0].hasOwnProperty(YOY_COUNT) ? <Line type="monotone" dataKey={YOY_COUNT} stroke="#2E8B57" yAxisId={1} strokeWidth={1} dot={false} animationDuration={300} hide = {hiddenKeys.includes(YOY_COUNT)}/> : ''}
                     { data.length && data[0].hasOwnProperty(PREDICTION_COUNT) ? <Line type="monotone" dataKey={PREDICTION_COUNT} stroke="#c9405b" yAxisId={1} strokeWidth={1.5} dot={false} animationDuration={300} hide = {hiddenKeys.includes(PREDICTION_COUNT)}/> : ''}
-                    { data.length && data[0].hasOwnProperty(PERCENTAGE_BOOKING_DROP) ? <Line type="monotone" dataKey={PERCENTAGE_BOOKING_DROP} stroke="#336BFF" yAxisId={1} strokeWidth={0.5} dot={false} animationDuration={300} hide = {hiddenKeys.includes(PERCENTAGE_BOOKING_DROP)}/> : ''}
+                    { data.length && data[0].hasOwnProperty(PERCENTAGE_CHANGE) ? <Line type="monotone" dataKey={PERCENTAGE_CHANGE} stroke="#336BFF" yAxisId={1} strokeWidth={0.5} dot={false} animationDuration={300} hide = {hiddenKeys.includes(PERCENTAGE_CHANGE)}/> : ''}
+                    {IMPULSE_CHART_TYPE_3_WEEK_AVG.map(renderChart)}
+                    { data.length && data[0].hasOwnProperty(YOY_COUNT) ? <Line type="monotone" dataKey={YOY_COUNT} stroke="#2E8B57" yAxisId={1} strokeWidth={1} dot={false} animationDuration={300} hide = {hiddenKeys.includes(YOY_COUNT)}/> : ''}
                     {
                         anomalies && anomalies.map((anomaly) => (
                             <ReferenceLine
