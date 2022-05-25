@@ -20,9 +20,9 @@ describe('FeedbackModal component testing', () => {
     });
 
     it('check fetch params', (done) => {
-        const mockSuccessResponse = {};
-        const mockJsonPromise = Promise.resolve(mockSuccessResponse);
+        const mockJsonPromise = Promise.resolve({});
         const mockFetchPromise = Promise.resolve({
+            ok: true,
             json: () => mockJsonPromise,
         });
 

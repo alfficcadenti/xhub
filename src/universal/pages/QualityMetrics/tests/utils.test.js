@@ -31,8 +31,8 @@ describe('Quality Metrics Util', () => {
 
     it('getQueryString - projects', () => {
         const brand = HOTELS_COM_BRAND;
-        const start = moment('06-01-21');
-        const end = moment('06-21-21');
+        const start = moment('06-01-21', 'MM-DD-YY');
+        const end = moment('06-21-21', 'MM-DD-YY');
         const projectKeys = ['LASER'];
         expect(getQueryString(brand, projectKeys, start, end))
             .to.eql(`/quality-metrics?selectedBrand=${brand}&from=${start.toISOString()}&to=${end.toISOString()}&projectKeys=${projectKeys[0]}`);

@@ -8,12 +8,15 @@ import {INCIDENTS_EXPECTED_DATA} from './mockData/mockData';
 describe('Status Page', () => {
     let wrapper;
     const c = new AbortController();
+    const original = console.error;
 
     beforeEach(() => {
+        console.error = jest.fn();
         fetch.resetMocks();
     });
 
     afterEach(() => {
+        console.error = original;
         wrapper.unmount();
     });
 

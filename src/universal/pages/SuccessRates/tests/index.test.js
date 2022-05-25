@@ -25,6 +25,16 @@ jest.mock('react-router-dom', () => {
     };
 });
 
+const original = console.error;
+
+beforeEach(() => {
+    console.error = jest.fn();
+});
+
+afterEach(() => {
+    console.error = original;
+});
+
 describe('SuccessRates Dashboard', () => {
     it('renders error message for unsupported brands', async () => {
         await act(async () => {

@@ -1,7 +1,7 @@
 import React from 'react';
-import DataTable from '../index';
 import {render, act, screen, fireEvent} from '@testing-library/react';
 import '@testing-library/jest-dom';
+import DataTable from '../index';
 
 describe('<DataTable/>', () => {
     let wrapper;
@@ -20,13 +20,9 @@ describe('<DataTable/>', () => {
         rules = [
             {
                 column: 'name',
-                setClass: (val) => val !== null
+                setClass: (val) => val !== null ? 'some-class' : 'other-class'
             }
         ];
-    });
-
-    afterEach(() => {
-        wrapper.unmount();
     });
 
     it('Renders successfully', async () => {

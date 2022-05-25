@@ -1,4 +1,5 @@
 import React from 'react';
+import {act} from '@testing-library/react';
 import {mount} from 'enzyme';
 import Finder from '../index';
 import {EG_BRAND} from '../../../constants';
@@ -9,17 +10,16 @@ global.fetch = require('node-fetch');
 
 
 describe('<Finder/>', () => {
-    const wrapper = mount(<Router>
-        <Finder selectedBrands={[EG_BRAND]} />
-    </Router>);
+    let wrapper;
 
-    it('renders successfully', () => {
+    it('renders successfully', async () => {
+        await act(async () => {
+            wrapper = mount(
+                <Router>
+                    <Finder selectedBrands={[EG_BRAND]} onBrandChange={() => {}} prevSelectedBrand={EG_BRAND}/>
+                </Router>
+            );
+        });
         expect(wrapper).to.have.length(1);
-    });
-
-    it('LoadingContainer should have right props', async () => {
-        const props = wrapper.find('LoadingContainer').props();
-        expect(props.isLoading).to.be.eql(true);
-        expect(props.error).to.be.eql('');
     });
 });

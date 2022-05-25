@@ -1,4 +1,5 @@
 import React from 'react';
+import {v1 as uuid} from 'uuid';
 import LoadingContainer from '../LoadingContainer';
 import HelpText from '../HelpText/HelpText';
 import './styles.less';
@@ -10,7 +11,9 @@ const RealTimeSummaryPanel = ({realTimeTotals, isRttLoading, rttError, tooltipLa
         const renderLOBs = (lobData) => {
             return lobData.map((lob) => {
                 return (
-                    <div key={lob.label} className="rtt-lob-item">{`${lob.label} : ${lob.rate}${showPercentageSign(lob.rate) ? '%' : ''}`}</div>
+                    <div key={uuid()} className="rtt-lob-item">
+                        {`${lob.label} : ${lob.rate}${showPercentageSign(lob.rate) ? '%' : ''}`}
+                    </div>
                 );
             });
         };
@@ -19,9 +22,13 @@ const RealTimeSummaryPanel = ({realTimeTotals, isRttLoading, rttError, tooltipLa
             <div key={`rtt-${rttLabel}`} className="card real-time-card">
                 <div className="rtt-label">{rttLabel}</div>
                 {
-                    Array.isArray(value) ?
-                        <div key={`lob-${rttLabel}`} className="rtt-lob-wrapper">{renderLOBs(value)}</div> :
-                        (<div className="rtt-summed-value">{`${value}${showPercentageSign(value) ? '%' : ''}`}</div>)
+                    Array.isArray(value)
+                        ? <div className="rtt-lob-wrapper">{renderLOBs(value)}</div>
+                        : (
+                            <div className="rtt-summed-value">
+                                {`${value}${showPercentageSign(value) ? '%' : ''}`}
+                            </div>
+                        )
                 }
 
             </div>
