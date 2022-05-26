@@ -1018,7 +1018,8 @@
     "catalyst-status": {
       "plugin": "require:@homeaway/catalyst-status",
       "options": {
-        "routes": [{
+        "routes": [
+          {
             "path": "/isActive",
             "response": {
               "status": 200,

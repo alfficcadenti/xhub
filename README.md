@@ -4,7 +4,6 @@ OpXHub is a [Catalyst](https://pages.github.expedia.biz/Catalyst/information/gui
 
 See our official documentation [here](https://pages.github.expedia.biz/eg-reo-opex/eg-reo-opex-docs/guide/products/availability_and_trends/opxhub_ui/).
 
-
 ## Deployments
 
 | Environment | Endpoints                                                                                      |
@@ -12,25 +11,25 @@ See our official documentation [here](https://pages.github.expedia.biz/eg-reo-op
 | Test        | [https://opxhub-ui.us-west-2.test.expedia.com/](https://opxhub-ui.us-west-2.test.expedia.com/) |
 | Prod        | [https://opxhub-ui.us-east-1.prod.expedia.com/](https://opxhub-ui.us-east-1.prod.expedia.com/) |
 
-
 ## Logs
 
-| Environment | Endpoints                                                                                                                                                                                                |
-| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Environment | Endpoints                                                                                                                                                                                                                                                                                              |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Test        | [Splunk](https://splunk.test.egmonitoring.expedia.com/en-US/app/search/search?q=search%20index%3Dapp%20splunk_server_group%3Dbexg*%20sourcetype%3Dopxhub-ui*&sid=1650479189.36285_F24F4D69-7903-4F71-8690-62FCB4BBD9AB&display.page.search.mode=smart&dispatch.sample_ratio=1&earliest=-5m&latest=now) |
-| Prod        | [Splunk](https://splunk.prod.egmonitoring.expedia.com/en-US/app/eg-opex-opxhub/opxhub_status_code_dashboard) |
+| Prod        | [Splunk](https://splunk.prod.egmonitoring.expedia.com/en-US/app/eg-opex-opxhub/opxhub_status_code_dashboard)                                                                                                                                                                                           |
 
 ## Monitoring
 
-| Environment | Endpoints                                                                                                                                                                                                        |
-| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Environment | Endpoints                                                                                                         |
+| ----------- | ----------------------------------------------------------------------------------------------------------------- |
 | Test        | [Grafana](https://grafana.test.expedia.com/d/ZPlMgQyZz/opxhub-ui-monitoring-dashboard?orgId=1&from=now-1d&to=now) |
 | Prod        | [Grafana](https://grafana.prod.expedia.com/d/rGyxu1mGz/opxhub-ui-monitoring-dashboard?orgId=1&from=now-1d&to=now) |
 
 ## Development
 
 ### Requirements
-- `node -v` is v12.13.1
+
+- `node -v` is v14.7.0
 - `npm -v` is v6
 
 ### Running Locally
@@ -61,7 +60,6 @@ See our official documentation [here](https://pages.github.expedia.biz/eg-reo-op
 
 4. Navigate to `localhost:8080`
 
-
 ### Troubleshooting
 
 - Ensure that you meet the requirements listed above
@@ -88,7 +86,8 @@ See our official documentation [here](https://pages.github.expedia.biz/eg-reo-op
 
 ### Adding a New Endpoint
 
-1. Add your custom serviceKey under server.app in manifest.json (unless a key for your hostname already exists, then just add your pathKey under the existing serviceKey) like so: 
+1. Add your custom serviceKey under server.app in manifest.json (unless a key for your hostname already exists, then just add your pathKey under the existing serviceKey) like so:
+
 ```
 "serviceKey": {
     "$filter": "env.EXPEDIA_ENVIRONMENT",
@@ -105,8 +104,10 @@ See our official documentation [here](https://pages.github.expedia.biz/eg-reo-op
     "test": { /* similar format to $default */},
     "prod": { /* similar format to $default */}
 }
- ```
+```
+
 2. Add your new service js file under src/server/routes/api (unless the hostname/service already exists, skip this step) like so (remember to pass in your serviceKey defined in the manifest.json:
+
 ```
 import {getConfig, getHandler} from './utils';
 
@@ -123,7 +124,8 @@ module.exports.apiPathKey = {
     handler: getHandler(Object.assign(getHandlerParams('serviceKey')))
 };
 ```
-3. Import the new apiPathKey in src/server/routes/api/index.js and add to apiRoutes array 
+
+3. Import the new apiPathKey in src/server/routes/api/index.js and add to apiRoutes array
 4. Your endpoint should now work after running npm start (e.g. localhost:8080/v1/custom-path)
 5. Done!
 
@@ -135,15 +137,15 @@ module.exports.apiPathKey = {
 ### Resources
 
 - Check if a common component already exists in [UI-Discovery Portal](https://ui-discovery.homeawaycorp.com/discovery/overview)
-such as Dropdown, Navigation, etc. Also see the common [color palette](https://ui-discovery.homeawaycorp.com/discovery/web-components/base/colors#BaselineThemecolorpaletteandLessvariables)
-and [SVG icon system](https://ui-discovery.homeawaycorp.com/discovery/web-components/base/icons#SVGIconSystem).
+  such as Dropdown, Navigation, etc. Also see the common [color palette](https://ui-discovery.homeawaycorp.com/discovery/web-components/base/colors#BaselineThemecolorpaletteandLessvariables)
+  and [SVG icon system](https://ui-discovery.homeawaycorp.com/discovery/web-components/base/icons#SVGIconSystem).
 - Use [nvm](https://github.com/nvm-sh/nvm) as your local node version manager
 
 ### Monitoring
 
 - [Splunk dashboards](https://splunk.prod.egmonitoring.expedia.com/en-US/app/eg-opex-opxhub/dashboards)
-- [Splunk](https://splunk.prod.egmonitoring.expedia.com/en-US/app/eg-opex-opxhub/search) search for API calls in the following format: 
-```API-REQUEST-DETAILS"| spath "data.path" | search "data.path"="/v2/checkout-failure-category-counts"```
+- [Splunk](https://splunk.prod.egmonitoring.expedia.com/en-US/app/eg-opex-opxhub/search) search for API calls in the following format:
+  `API-REQUEST-DETAILS"| spath "data.path" | search "data.path"="/v2/checkout-failure-category-counts"`
 - [Support Rota](https://confluence.expedia.biz/pages/viewpage.action?spaceKey=REO&title=Support+Rota)
 - [BigPanda](https://a.bigpanda.io/) (Search for host:"OpXHub Forecasting")
 
