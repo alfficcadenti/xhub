@@ -229,22 +229,22 @@
       "egAvailDataServiceConfig": {
         "$filter": "env.EXPEDIA_ENVIRONMENT",
         "$default": {
-          "hostname": "eg-avail-data-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black",
+          "hostname": "eg-avail-data-service-egdp-prod-us-east-1.eglocal.exp-prod.net",
           "protocol": "https:",
           "routes": {
             "egApplicationAvailability": {
-              "path": "/v1/application-availability",
+              "path": "/v2/application-availability",
               "method": "GET",
               "operation": "GET_eg_avail_data_service_api_v2"
             }
           }
         },
         "test": {
-          "hostname": "eg-avail-data-service-egdp-prod.us-east-1-vpc-018bd5207b3335f70.slb.egdp-prod.aws.away.black",
+          "hostname": "eg-avail-data-service-egdp-prod-us-east-1.eglocal.exp-prod.net",
           "protocol": "https:",
           "routes": {
             "egApplicationAvailability": {
-              "path": "/v1/application-availability",
+              "path": "/v2/application-availability",
               "method": "GET",
               "operation": "GET_eg_avail_data_service_api_v2"
             }
@@ -255,7 +255,7 @@
           "protocol": "https:",
           "routes": {
             "egApplicationAvailability": {
-              "path": "/v1/application-availability",
+              "path": "/v2/application-availability",
               "method": "GET",
               "operation": "GET_eg_avail_data_service_api_v2"
             }

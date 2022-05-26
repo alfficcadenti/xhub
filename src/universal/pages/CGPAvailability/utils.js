@@ -6,6 +6,7 @@ import {getPresetValue} from '../utils';
 import {THRESHOLDS, DATE_FORMAT} from './constants.js';
 import AvailabilityCell from './AvailabilityCell';
 import AvailabilityHeader from './AvailabilityHeader';
+import {BRANDS, EG_BRAND} from '../../constants';
 
 
 export const defineClassByValue = (value) => {
@@ -93,7 +94,9 @@ export const mapAvailabilityRow = (row = {}, handleClick, dateTimeFormat = DATE_
 
 export const getAppErrorsDataForChart = (applicationName = '', availability = [], dateTimeFormat = DATE_FORMAT) => Array.isArray(availability) && availability?.find((x) => x.applicationName === applicationName)?.availabilities?.map((x) => ({name: moment(x?.timestamp).format(dateTimeFormat), '5xx Errors': x?.errorCount})) || [];
 
-export const getSelectedRegions = (regionsObj) => (regionsObj?.length ? regionsObj.filter((x) => x.counted && x.checked).map((x) => x.name) : '');
+const arrayToString = (array) => Array.isArray(array) ? `[\"${array.join('\",\"')}\"]` : '';
+
+export const getSelectedRegions = (regionsObj) => (regionsObj?.length ? arrayToString(regionsObj.filter((x) => x.counted && x.checked).map((x) => x.name)) : '');
 
 export const getPresets = () => [
     {text: 'Last 1 Hour', value: getPresetValue(59, 'minutes', 5, 'minutes')},
@@ -114,3 +117,5 @@ export const getTotalStats = (data) => data.reduce((acc, curr) => {
     const totalErrors = isNaN(curr?.stats?.errorsCount) ? 0 : curr?.stats?.errorsCount;
     return {totalRequests: acc.totalRequests + totalRequests, totalErrors: acc.totalErrors + totalErrors};
 }, {totalRequests: 0, totalErrors: 0});
+
+export const getSelectedBrandForApi = (selectedBrands = [EG_BRAND]) => arrayToString(BRANDS.find((brand) => brand.label === selectedBrands[0]).cgpApi);

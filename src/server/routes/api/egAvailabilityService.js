@@ -8,7 +8,7 @@ const getHandlerParams = (routeKey) => ({
 
 module.exports.availability = {
     method: 'GET',
-    path: '/v1/application-availability/{param*}',
+    path: '/v2/application-availability/{param*}',
     config: getConfig('availability-get'),
     handler: getHandler(Object.assign(getHandlerParams('egApplicationAvailability'), {pathParam: 'param'}))
 };

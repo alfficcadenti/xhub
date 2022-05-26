@@ -105,6 +105,7 @@ export const BRANDS = [
         funnelBrand: EG_BRAND,
         landingBrand: '',
         changeRequests: '',
+        cgpApi: '',
         color: '#1B5CAF'
     },
     {
@@ -114,6 +115,7 @@ export const BRANDS = [
         funnelBrand: 'expedia',
         changeRequests: 'Expedia',
         landingBrand: EXPEDIA_BRAND,
+        cgpApi: ['BEXG', 'BEX', 'BEXG-DECOMMISSIONING'],
         color: '#1B5CAF'
     },
     {
@@ -123,6 +125,7 @@ export const BRANDS = [
         funnelBrand: 'egencia',
         changeRequests: 'Egencia EU,Egencia NA',
         landingBrand: '',
+        cgpApi: '',
         color: '#1B5CAF'
     },
     {
@@ -132,6 +135,7 @@ export const BRANDS = [
         funnelBrand: 'hcom',
         changeRequests: 'Hotels',
         landingBrand: HOTELS_COM_BRAND,
+        cgpApi: ['HCOM'],
         color: '#F71414'
     },
     {
@@ -141,6 +145,7 @@ export const BRANDS = [
         funnelBrand: 'vrbo',
         changeRequests: 'HomeAway',
         landingBrand: VRBO_BRAND,
+        cgpApi: ['VRBO'],
         color: '#1478F7'
     },
     {
@@ -149,6 +154,7 @@ export const BRANDS = [
         psrBrand: '',
         funnelBrand: 'eps',
         landingBrand: EXPEDIA_PARTNER_SERVICES_BRAND,
+        cgpApi: '',
         color: '#FFC72C'
     }
 ];
