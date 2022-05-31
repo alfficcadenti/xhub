@@ -76,6 +76,17 @@ See our official documentation [here](https://pages.github.expedia.biz/eg-reo-op
 - Shared components in src/universal/components
 - A typical component directory includes: index.js, styles.less, and tests directory
 
+### Testing
+
+- Testing scripts are defined in `package.json`
+  - `npm test` to run all tests
+  - `npm run lint` to run linter
+  - `npm run test:unit` to run unit tests
+- Example modification to run against specific file pattern:
+```
+"test:unit": "BABEL_ENV=test TZ=UTC jest --colors --verbose --testNamePattern -u 'src/<FILE_PATH>/.*\\.test\\.js'",
+```
+
 ### Adding a new Page
 
 1. Create page component in src/universal/pages
@@ -133,6 +144,9 @@ module.exports.apiPathKey = {
 
 1. Read the file from the render function (usually bottom of file) to understand where in the UI to first investigate
 2. Use the browser [developer tools](https://developer.chrome.com/docs/devtools/) to view Console and Network tabs
+
+### Managing Secrets
+- See Catalyst [secrets-vault documentation](https://pages.github.expedia.biz/Catalyst/information/guide/secrets-vault)
 
 ### Resources
 
