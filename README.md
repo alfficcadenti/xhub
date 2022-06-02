@@ -2,8 +2,6 @@
 
 OpXHub is a [Catalyst](https://pages.github.expedia.biz/Catalyst/information/guide/introduction) web application that retrieves, organizes, and presents operation and business metrics across brands.
 
-See our official documentation [here](https://pages.github.expedia.biz/eg-reo-opex/eg-reo-opex-docs/guide/products/availability_and_trends/opxhub_ui/).
-
 ## Deployments
 
 | Environment | Endpoints                                                                                      |
@@ -18,12 +16,25 @@ See our official documentation [here](https://pages.github.expedia.biz/eg-reo-op
 | Test        | [Splunk](https://splunk.test.egmonitoring.expedia.com/en-US/app/search/search?q=search%20index%3Dapp%20splunk_server_group%3Dbexg*%20sourcetype%3Dopxhub-ui*&sid=1650479189.36285_F24F4D69-7903-4F71-8690-62FCB4BBD9AB&display.page.search.mode=smart&dispatch.sample_ratio=1&earliest=-5m&latest=now) |
 | Prod        | [Splunk](https://splunk.prod.egmonitoring.expedia.com/en-US/app/eg-opex-opxhub/opxhub_status_code_dashboard)                                                                                                                                                                                           |
 
-## Monitoring
+## Grafana
 
 | Environment | Endpoints                                                                                                         |
 | ----------- | ----------------------------------------------------------------------------------------------------------------- |
 | Test        | [Grafana](https://grafana.test.expedia.com/d/ZPlMgQyZz/opxhub-ui-monitoring-dashboard?orgId=1&from=now-1d&to=now) |
 | Prod        | [Grafana](https://grafana.prod.expedia.com/d/rGyxu1mGz/opxhub-ui-monitoring-dashboard?orgId=1&from=now-1d&to=now) |
+
+## Monitoring
+
+- [Splunk dashboards](https://splunk.prod.egmonitoring.expedia.com/en-US/app/eg-opex-opxhub/dashboards)
+- [Splunk](https://splunk.prod.egmonitoring.expedia.com/en-US/app/eg-opex-opxhub/search) search for API calls in the following format:
+  `API-REQUEST-DETAILS"| spath "data.path" | search "data.path"="/v2/checkout-failure-category-counts"`
+- [Support Rota](https://confluence.expedia.biz/pages/viewpage.action?spaceKey=REO&title=Support+Rota)
+- [BigPanda](https://a.bigpanda.io/) (Search for host:"OpXHub Forecasting")
+
+## Pipeline
+
+- [Git](https://github.expedia.biz/eg-reo-opex/opxhub-ui)
+- [Spinnaker](https://spinnaker.expedia.biz/#/applications/opxhub-ui/executions)
 
 ## Development
 
@@ -31,6 +42,11 @@ See our official documentation [here](https://pages.github.expedia.biz/eg-reo-op
 
 - `node -v` is v14.7.0
 - `npm -v` is v6
+
+### nvm (Node Version Manager)
+
+- We highly recommend using [nvm](https://github.com/nvm-sh/nvm) to install different versions of nodejs.
+- This project specifies its node version in an .nvmrc file. Run `nvm use` to ensure you're working with the correct versions of node and npm.
 
 ### Running Locally
 
@@ -140,30 +156,13 @@ module.exports.apiPathKey = {
 4. Your endpoint should now work after running npm start (e.g. localhost:8080/v1/custom-path)
 5. Done!
 
-### Tips for Investigating UI Component
-
-1. Read the file from the render function (usually bottom of file) to understand where in the UI to first investigate
-2. Use the browser [developer tools](https://developer.chrome.com/docs/devtools/) to view Console and Network tabs
-
-### Managing Secrets
+### Secrets
 - See Catalyst [secrets-vault documentation](https://pages.github.expedia.biz/Catalyst/information/guide/secrets-vault)
 
-### Resources
+### Tips for UI Work
 
+- Read the file from the render function (usually bottom of file) to understand where in the UI to first investigate
+- Use the browser [developer tools](https://developer.chrome.com/docs/devtools/) to view Console and Network tabs
 - Check if a common component already exists in [UI-Discovery Portal](https://ui-discovery.homeawaycorp.com/discovery/overview)
   such as Dropdown, Navigation, etc. Also see the common [color palette](https://ui-discovery.homeawaycorp.com/discovery/web-components/base/colors#BaselineThemecolorpaletteandLessvariables)
   and [SVG icon system](https://ui-discovery.homeawaycorp.com/discovery/web-components/base/icons#SVGIconSystem).
-- Use [nvm](https://github.com/nvm-sh/nvm) as your local node version manager
-
-### Monitoring
-
-- [Splunk dashboards](https://splunk.prod.egmonitoring.expedia.com/en-US/app/eg-opex-opxhub/dashboards)
-- [Splunk](https://splunk.prod.egmonitoring.expedia.com/en-US/app/eg-opex-opxhub/search) search for API calls in the following format:
-  `API-REQUEST-DETAILS"| spath "data.path" | search "data.path"="/v2/checkout-failure-category-counts"`
-- [Support Rota](https://confluence.expedia.biz/pages/viewpage.action?spaceKey=REO&title=Support+Rota)
-- [BigPanda](https://a.bigpanda.io/) (Search for host:"OpXHub Forecasting")
-
-### Pipeline
-
-- [Git](https://github.expedia.biz/eg-reo-opex/opxhub-ui)
-- [Spinnaker](https://spinnaker.expedia.biz/#/applications/opxhub-ui/executions)
