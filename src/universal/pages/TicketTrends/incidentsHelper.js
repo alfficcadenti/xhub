@@ -84,8 +84,8 @@ export const getIncidentsData = (filteredIncidents = []) => filteredIncidents
         partner_divisions: getOrDefault(inc, 'divisions'),
         'Impacted Partners': getOrDefault(inc, 'impacted_partners_lobs'),
         'Notification Sent': getOrDefault(inc, 'notification_sent'),
-        'Success Rates': <a href={`/success-rates${getUrlParams(inc.Brand, inc.start_date)}`} target="_blank" >{'View'}</a>,
-        'Page Views': <a href={`/funnel-view${getUrlParams(inc.Brand, inc.start_date)}`} target="_blank" >{'View'}</a>,
+        'Success Rates': <a href={`/success-rates${getUrlParams(inc.Brand, inc.start_date)}`} target="_blank" rel="noopener noreferrer">{'View'}</a>,
+        'Page Views': <a href={`/funnel-view${getUrlParams(inc.Brand, inc.start_date)}`} target="_blank" rel="noopener noreferrer">{'View'}</a>,
         Details: (
             <div className="expandable-row-wrapper">
                 <div className="expandable-row">

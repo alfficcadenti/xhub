@@ -30,7 +30,7 @@ export const formatLeadTimeData = (data) => Array.isArray(data) && data
     .map((x) => ({name: moment(x.openDate).format('MMM-DD'), openDate: x.openDate, 'Mean Lead Time': x.leadTime ? Math.round(x.leadTime / 60) : x.leadTime}));
 
 export const mapAgileInsight = (a) => ({
-    ID: <a href={a.url} target="_blank" rel="noop">{getOrDefault(a, 'id')}</a>,
+    ID: <a href={a.url} target="_blank" rel="noopener noreferrer">{getOrDefault(a, 'id')}</a>,
     Project: getOrDefault(a, 'project'),
     Severity: getOrDefault(a, 'severity'),
     Brand: getOrDefault(a, 'brand'),

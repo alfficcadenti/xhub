@@ -26,7 +26,7 @@ import incData from './incData.test.json';
 const dataResult = {
     'Brand': 'Expedia Partner Solutions (EPS)',
     'Duration': '<divvalue=8000>0m</div>',
-    'Incident': <a href="https://expedia.service-now.com/go.do?id=INC4419505" target="_blank">{'INC4419505'}</a>,
+    'Incident': <a href="https://expedia.service-now.com/go.do?id=INC4419505" rel="noopener noreferrer" target="_blank">{'INC4419505'}</a>,
     'Priority': '1-Critical',
     'Root Cause Owner': 'EAN Release - Deploy',
     'Status': 'Closed',

@@ -82,7 +82,7 @@ export const mapAvailabilityRow = (row = {}, handleClick, dateTimeFormat = DATE_
         ? {}
         : Object.assign(
             {
-                Application: <a href={`https://expediagroup.datadoghq.com/dashboard/yuk-xd8-ik5/sro---cgp-alerting?tpl_var_application=${app}`} target="_blank">{app}</a>,
+                Application: <a href={`https://expediagroup.datadoghq.com/dashboard/yuk-xd8-ik5/sro---cgp-alerting?tpl_var_application=${app}`} target="_blank" rel="noopener noreferrer">{app}</a>,
                 app,
                 Availability: <AvailabilityCell value={periodAvailability(availabilities)} applicationName={app} handleClick={handleClick}/>,
                 avgValue: periodAvailability(availabilities),

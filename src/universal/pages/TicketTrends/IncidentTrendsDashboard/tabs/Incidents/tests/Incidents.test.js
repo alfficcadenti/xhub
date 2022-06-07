@@ -27,7 +27,7 @@ describe('Incidents component testing', () => {
         const props = wrapper.find('DataTable').props();
         const firstRow = props.data[0];
 
-        expect(firstRow.Incident).to.be.eql(<a href="https://expedia.service-now.com/go.do?id=INC4624976" target="_blank">{'INC4624976'}</a>);
+        expect(firstRow.Incident).to.be.eql(<a href="https://expedia.service-now.com/go.do?id=INC4624976" rel="noopener noreferrer" target="_blank">{'INC4624976'}</a>);
         expect(firstRow.Priority).to.be.eql('2-High');
         expect(firstRow.Brand).to.be.eql('BEX - Expedia Group');
         expect(firstRow.Division).to.be.eql('Platform & Marketplaces');

@@ -235,8 +235,8 @@ describe('buildTicketLinks', () => {
     it('return href link for each id and url passed', () => {
         expect(buildTicketLinks('INC1234,INC5678', '', 'www.expedia.com/,www.vrbo.com/')).to.be.eql(
             <div>
-                <div><a href="www.expedia.com/" target="_blank">{'INC1234'}</a></div>
-                <div><a href="www.vrbo.com/" target="_blank">{'INC5678'}</a></div>
+                <div><a href="www.expedia.com/" rel="noopener noreferrer" target="_blank">{'INC1234'}</a></div>
+                <div><a href="www.vrbo.com/" rel="noopener noreferrer" target="_blank">{'INC5678'}</a></div>
             </div>
         );
     });
@@ -244,15 +244,15 @@ describe('buildTicketLinks', () => {
 
 describe('buildTicketLink', () => {
     it('return a href link to url if url is passed', () => {
-        expect(buildTicketLink('INC1234', '', 'www.test.com/')).to.be.eql(<a href="www.test.com/" target="_blank">{'INC1234'}</a>);
+        expect(buildTicketLink('INC1234', '', 'www.test.com/')).to.be.eql(<a href="www.test.com/" rel="noopener noreferrer" target="_blank">{'INC1234'}</a>);
     });
 
     it('return a href link to homeaway Jira if url is not passed and brand is VRBO', () => {
-        expect(buildTicketLink('INC1234', VRBO_BRAND, '')).to.be.eql(<a href="https://jira.homeawaycorp.com/browse/INC1234" target="_blank">{'INC1234'}</a>);
+        expect(buildTicketLink('INC1234', VRBO_BRAND, '')).to.be.eql(<a href="https://jira.homeawaycorp.com/browse/INC1234" rel="noopener noreferrer" target="_blank">{'INC1234'}</a>);
     });
 
     it('return a href link to expedia service now if ticket is not vrbo', () => {
-        expect(buildTicketLink('INC1234', '', '')).to.be.eql(<a href="https://expedia.service-now.com/go.do?id=INC1234" target="_blank">{'INC1234'}</a>);
+        expect(buildTicketLink('INC1234', '', '')).to.be.eql(<a href="https://expedia.service-now.com/go.do?id=INC1234" rel="noopener noreferrer" target="_blank">{'INC1234'}</a>);
     });
 });
 

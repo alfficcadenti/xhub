@@ -27,14 +27,14 @@ export const platformToBrand = (platform) => {
 
 export const buildLink = (number = '', url = '') => {
     if (url) {
-        return (`<a href="${url}" target="_blank">${number || '-'}</a>`);
+        return (`<a href="${url}" target="_blank" rel="noopener noreferrer">${number || '-'}</a>`);
     }
     return (number || '-');
 };
 
 export const buildServiceNowLink = (id = '', number = '') => {
     if (number) {
-        return (`<a href="https://expedia.service-now.com/sp?id=ticket&table=change_request&sys_id=${id}" target="_blank">${number || '-'}</a>`);
+        return (`<a href="https://expedia.service-now.com/sp?id=ticket&table=change_request&sys_id=${id}" target="_blank" rel="noopener noreferrer">${number || '-'}</a>`);
     }
     return (id || '-');
 };

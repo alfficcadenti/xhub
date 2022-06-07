@@ -8,7 +8,7 @@ import './styles.less';
 const singleId = (id) => ({
     ID: (
         <div key={id + Math.random()} className="tooltip-bug-div">
-            <a href={`https://jira.expedia.biz/browse/${id}`} target="_blank">{id}</a>
+            <a href={`https://jira.expedia.biz/browse/${id}`} target="_blank" rel="noopener noreferrer">{id}</a>
         </div>
     )
 });

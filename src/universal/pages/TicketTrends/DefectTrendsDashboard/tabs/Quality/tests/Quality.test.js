@@ -27,7 +27,7 @@ describe('Quality component testing', () => {
         const props = wrapper.find('DataTable').props();
         const firstRow = props.data[0];
 
-        expect(firstRow.Defect).to.be.eql(<a href="https://jira.expedia.biz/browse/LASER-358" target="_blank">{'LASER-358'}</a>);
+        expect(firstRow.Defect).to.be.eql(<a href="https://jira.expedia.biz/browse/LASER-358" rel="noopener noreferrer" target="_blank">{'LASER-358'}</a>);
         expect(firstRow.Priority).to.be.eql('3-Medium');
         expect(firstRow.Brand).to.be.eql('BEX - Expedia Group');
         // expect(firstRow.Opened).to.be.eql('2020-03-21 12:38'); // local conversation prone to error local vs build env

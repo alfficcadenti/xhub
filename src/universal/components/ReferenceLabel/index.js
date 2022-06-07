@@ -36,7 +36,7 @@ const ReferenceLabel = ({viewBox, annotation, isImpulse = false, setTableData}) 
     const renderABTestLabel = () => (
         <>
             {buildTicketLink(number, brand)}
-            <a className="experiment-link" href={`https://egtnl.prod.expedia.com/experiment/${annotation?.ab_test_details?.experiment_id}`} target="_blank">{annotation?.ab_test_details?.experiment_name}</a>
+            <a className="experiment-link" href={`https://egtnl.prod.expedia.com/experiment/${annotation?.ab_test_details?.experiment_id}`} target="_blank" rel="noopener noreferrer">{annotation?.ab_test_details?.experiment_name}</a>
             <span className="experiment-status">{`status: ${annotation?.ab_test_details?.status}`}</span>
             <span className="experiment-owner">{annotation?.ab_test_details?.owner}</span>
         </>

@@ -7,7 +7,7 @@ export const formatValue = (data, prop) => data[prop] === null ? BLANK : data[pr
 export const mapNotification = (notification) => ({
     ID: formatValue(notification, 'id'),
     PRB: notification.prbId === null ? BLANK : (
-        <a href={`https://jira.expedia.biz/browse/${notification.prbId}`} target="_blank">{notification.prbId}</a>
+        <a href={`https://jira.expedia.biz/browse/${notification.prbId}`} target="_blank" rel="noopener noreferrer">{notification.prbId}</a>
     ),
     'Channel ID': formatValue(notification, 'channelId'),
     Email: formatValue(notification, 'emailAddress'),

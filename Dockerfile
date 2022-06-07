@@ -1,4 +1,5 @@
-FROM kumorelease-docker-virtual.artylab.expedia.biz/stratus/app-node:14.7.0-alpine
+FROM kumorelease-docker-virtual.artylab.expedia.biz/stratus/app-node:14.19.1-alpine
+RUN apk update && apk upgrade
 COPY . /app
 
 WORKDIR /app

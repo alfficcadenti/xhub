@@ -248,11 +248,11 @@ export const getListOfUniqueProperties = (data = [], prop) => {
 
 export const buildTicketLink = (id = '', brand = '', url = '') => {
     if (url) {
-        return (<a href={url} target="_blank">{id}</a>);
+        return (<a href={url} target="_blank" rel="noopener noreferrer">{id}</a>);
     }
     const brandInUppercase = brand && brand.toUpperCase();
     const brandUrl = brandInUppercase === VRBO_BRAND.toUpperCase() ? `https://jira.homeawaycorp.com/browse/${id}` : `https://expedia.service-now.com/go.do?id=${id}`;
-    return (<a href={brandUrl} target="_blank">{id}</a>);
+    return (<a href={brandUrl} target="_blank" rel="noopener noreferrer">{id}</a>);
 };
 
 export const buildTicketLinks = (id = '', brand = '', url = '') => {
