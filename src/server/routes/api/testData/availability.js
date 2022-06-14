@@ -1,6 +1,7 @@
 export const AVAILABILITY = [
     {
         'applicationName': 'cars-shopping-service',
+        'metadata': {'serviceTier': 'Tier 1'},
         'availabilities': [
             {
                 'timestamp': '2022-03-01T00:00:00-08:00',
