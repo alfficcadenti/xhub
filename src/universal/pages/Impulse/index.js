@@ -85,6 +85,7 @@ const getPresets = () => [
 const filterSelectionClass = 'filter-option-selection';
 const filterExpandClass = 'filter-option-expand';
 let filteredAnnotationsOnBrand = [];
+let filteredAnomaliesOnBrandLob = [];
 const healthUrl = 'https://opexhub-grafana.expedia.biz/d/x8JcATVMk/opex-impulse?viewPanel=42&orgId=1&from=now-3d&to=now';
 
 const Impulse = (props) => {
@@ -262,13 +263,58 @@ const Impulse = (props) => {
 
     const filterAnomalies = (newValuesOnChange) => {
         if (typeof newValuesOnChange !== 'undefined' && newValuesOnChange !== null && newValuesOnChange.length > 0) {
-            const filteredAnomalies = anomalies.filter((anomaly) => newValuesOnChange.includes(anomaly.category));
-            setAnomaliesData(filteredAnomalies);
+            if (selectedBrandMulti.length > 0 || selectedLobMulti.length > 0) {
+                const filteredAnomalies = filteredAnomaliesOnBrandLob.filter((anomaly) => newValuesOnChange.includes(anomaly.category));
+                setAnomaliesData(filteredAnomalies);
+            } else {
+                const filteredAnomalies = anomalies.filter((anomaly) => newValuesOnChange.includes(anomaly.category));
+                setAnomaliesData(filteredAnomalies);
+            }
+        } else if (selectedBrandMulti.length > 0 || selectedLobMulti.length > 0) {
+            setAnomaliesData(filteredAnomaliesOnBrandLob);
         } else {
             setAnomaliesData(anomalies);
         }
     };
 
+
+    const filterAnomaliesOnBrandLob = () => {
+        if (selectedBrandMulti.length > 0) {
+            filteredAnomaliesOnBrandLob = anomalies.filter((anomaly) => {
+                let estimatedImpact = Array.isArray(anomaly.impact) ? anomaly.impact : [];
+                let impactedBrands = estimatedImpact.map((estimatedImpactObj) => estimatedImpactObj.brand);
+                if (impactedBrands.includes(null)) {
+                    return true;
+                }
+                let toShowAnomaliesBrand = false;
+                toShowAnomaliesBrand = selectedBrandMulti.some((selectedBrand) => {
+                    return impactedBrands.includes(selectedBrand);
+                });
+                if (selectedLobMulti.length > 0) {
+                    let impactedLobs = estimatedImpact.map((estimatedImpactObj) => estimatedImpactObj.lob);
+                    if (impactedLobs.includes(null)) {
+                        return true;
+                    }
+                    let toShowAnomaliesLob = selectedLobMulti.some((selectedLob) => {
+                        return impactedLobs.includes(selectedLob);
+                    });
+                    return toShowAnomaliesBrand && toShowAnomaliesLob;
+                }
+                return toShowAnomaliesBrand;
+            });
+            if (typeof selectedAnomaliesMulti !== 'undefined' && selectedAnomaliesMulti !== null && selectedAnomaliesMulti.length > 0) {
+                const filteredAnomalies = filteredAnomaliesOnBrandLob.filter((anomaly) => selectedAnomaliesMulti.includes(anomaly.category));
+                setAnomaliesData(filteredAnomalies);
+            } else {
+                setAnomaliesData(filteredAnomaliesOnBrandLob);
+            }
+        } else if (typeof selectedAnomaliesMulti !== 'undefined' && selectedAnomaliesMulti !== null && selectedAnomaliesMulti.length > 0) {
+            const filteredAnomalies = anomalies.filter((anomaly) => selectedAnomaliesMulti.includes(anomaly.category));
+            setAnomaliesData(filteredAnomalies);
+        } else {
+            setAnomaliesData(anomalies);
+        }
+    };
     const filterAnnotationsOnBrand = () => {
         if (selectedBrandMulti.length > 0) {
             filteredAnnotationsOnBrand = annotations.filter((annotation) => {
@@ -353,6 +399,7 @@ const Impulse = (props) => {
         filterAnnotationsOnBrand();
 
         setAnomaliesData(anomalies);
+        filterAnomaliesOnBrandLob();
         filterAnomalies(selectedAnomaliesMulti);
     }, [res, annotations, anomalies, groupedResByBrands, groupedResByLobs, groupedResByPos, groupedResByDeviceType, groupedResByRegion]);
     const customStyles = {

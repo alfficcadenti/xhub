@@ -22,6 +22,15 @@ const AnomalyDetails = ({data = [], setAnomalyTableData}) => {
             changePercentage: getPercentage(impactObj),
             timestamp: `${moment(data[0].timestamp).format('YYYY-MM-DD HH:mm')} ${moment().tz?.(moment.tz.guess()).format('z')}`
         }));
+        finalAnomalyData = finalAnomalyData.map((inc) => ({
+            timestamp: inc.timestamp,
+            lob: inc.lob === 'null' ? '-' : inc.lob,
+            brand: inc.brand === 'null' ? '-' : inc.brand,
+            deviceType: inc.deviceType === 'null' ? '-' : inc.deviceType,
+            count: inc.count,
+            predicted: inc.predicted,
+            changePercentage: inc.changePercentage
+        }));
         return finalAnomalyData;
     };
 
