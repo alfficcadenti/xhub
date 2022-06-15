@@ -24,9 +24,9 @@ const AnomalyDetails = ({data = [], setAnomalyTableData}) => {
         }));
         finalAnomalyData = finalAnomalyData.map((inc) => ({
             timestamp: inc.timestamp,
-            lob: inc.lob === 'null' ? '' : inc.lob,
-            brand: inc.brand === 'null' ? '' : inc.brand,
-            deviceType: inc.deviceType === 'null' ? '' : inc.deviceType,
+            lob: inc.lob === 'null' ? '-' : inc.lob,
+            brand: inc.brand === 'null' ? '-' : inc.brand,
+            deviceType: inc.deviceType === 'null' ? '-' : inc.deviceType,
             count: inc.count,
             predicted: inc.predicted,
             changePercentage: inc.changePercentage
