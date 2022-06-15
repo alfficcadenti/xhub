@@ -77,6 +77,7 @@ export const exactAvailability = (availability, requestCount) => {
 
 export const mapAvailabilityRow = (row = {}, handleClick, dateTimeFormat = DATE_FORMAT) => {
     const app = getOrDefault(row, 'applicationName');
+    const serviceTier = getOrDefault(row?.metadata, 'serviceTier');
     const availabilities = row?.availabilities;
     return !Array.isArray(availabilities)
         ? {}
@@ -86,7 +87,8 @@ export const mapAvailabilityRow = (row = {}, handleClick, dateTimeFormat = DATE_
                 app,
                 Availability: <AvailabilityCell value={periodAvailability(availabilities)} applicationName={app} handleClick={handleClick}/>,
                 avgValue: periodAvailability(availabilities),
-                stats: periodRequestStats(availabilities)
+                stats: periodRequestStats(availabilities),
+                serviceTier
             },
             ...availabilities.map((x) => ({[moment(x.timestamp).format(dateTimeFormat)]: <AvailabilityCell value={exactAvailability(x.availability, x.requestCount)} applicationName={app} handleClick={handleClick}/>}))
         );
