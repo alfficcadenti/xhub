@@ -193,7 +193,7 @@ describe('selectedRegions()', () => {
             counted: true
         }
         ];
-        expect(getSelectedRegions(regions)).to.be.eqls(['ap-northeast-1', 'ap-southeast-1']);
+        expect(getSelectedRegions(regions)).to.be.eqls('[\"ap-northeast-1\",\"ap-southeast-1\"]');
         const regions2 = [{
             name: 'all',
             label: 'All',
@@ -213,7 +213,7 @@ describe('selectedRegions()', () => {
             counted: true
         }
         ];
-        expect(getSelectedRegions(regions2)).to.be.eqls(['ap-northeast-1']);
+        expect(getSelectedRegions(regions2)).to.be.eqls('["ap-northeast-1"]');
     });
 });
 

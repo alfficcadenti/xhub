@@ -7,8 +7,10 @@ import {INFO__16} from '@homeaway/svg-defs';
 
 export const rowComponent = ({name, endpointName, status, endpoint}) =>
     ({cols: [<ServiceName service={name}/>,
-        <a href={`https://opxhub-ui.us-east-1.prod.expedia.com${endpoint}`} className={'serviceName'}
+        <a href={`https://opxhub-ui.us-east-1.prod.expedia.com${endpoint}`}
+            className={'serviceName'}
             target="_blank"
+            rel="noopener noreferrer"
         >{endpointName}</a>,
         <DisplayStatus status={status}/>]
     });

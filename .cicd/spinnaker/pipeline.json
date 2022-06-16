@@ -260,22 +260,6 @@
 				"ROLE_NAME": "opxhub-ui",
 				"VERSION": "${trigger.parameters.version}"
 			}
-		},
-		{
-			"name": "Mandatory Security Scan",
-			"type": "jenkins",
-			"refId": "16",
-			"requisiteStageRefIds": ["1"],
-			"failPipeline": false,
-			"continuePipeline": false,
-			"completeOtherBranchesThenFail": true,
-			"master": "security.builds.exp-tools.net",
-			"job": "run-fortify-scan",
-			"parameters": {
-				"APPLICATION": "opxhub-ui",
-				"PORTFOLIO": "EWE Primer",
-				"VERSION": "${trigger.parameters.version}"
-			}
 		}
 	],
 	"triggers": [

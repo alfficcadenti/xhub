@@ -71,7 +71,7 @@ describe('crUtils', () => {
 
         it('returns - with href if id not present', () => {
             const result = buildLink('', 'https://github.expedia.biz/Brand-Expedia/supply-baggagefees-dwsvc-service');
-            expect(result).to.be.eql('<a href=\"https://github.expedia.biz/Brand-Expedia/supply-baggagefees-dwsvc-service\" target=\"_blank\">-</a>');
+            expect(result).to.be.eql('<a href=\"https://github.expedia.biz/Brand-Expedia/supply-baggagefees-dwsvc-service\" target=\"_blank\" rel=\"noopener noreferrer\">-</a>');
         });
     });
 });

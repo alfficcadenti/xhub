@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useLocation, withRouter} from 'react-router-dom';
+import {useHistory, useLocation, withRouter} from 'react-router-dom';
 import LoadingContainer from '../../components/LoadingContainer';
 import HelpText from '../../components/HelpText/HelpText';
 import {checkResponse} from '../utils';
@@ -10,6 +10,7 @@ import {
     getAvailabilityRows,
     getAppErrorsDataForChart,
     mapAvailabilityRow,
+    getSelectedBrandForApi,
     getSelectedRegions,
     getPresets,
     getQueryValues,
@@ -21,10 +22,9 @@ import Overall from './Overall';
 import {FormInput} from '@homeaway/react-form-components';
 import MultiSelect from '@homeaway/react-multiselect-dropdown';
 import Tooltip from '@homeaway/react-tooltip';
-import {REGIONS} from './constants';
 import './styles.less';
 import {DatetimeRangePicker} from '../../components/DatetimeRangePicker';
-import {DATE_FORMAT, DATETIME_FORMAT, API_UTC_FORMAT} from './constants';
+import {DATE_FORMAT, DATETIME_FORMAT, API_UTC_FORMAT, REGIONS, TIERS} from './constants';
 
 const regions = [{
     name: 'all',
@@ -38,8 +38,23 @@ const regions = [{
     nested: true
 })));
 
+const serviceTier = [{
+    name: 'all',
+    label: 'All',
+    checked: true,
+    counted: false
+}].concat(TIERS.map((r) => ({
+    name: r,
+    label: r,
+    checked: true,
+    nested: true
+})));
 
-const CGPAvailibility = () => {
+
+const CGPAvailibility = ({selectedBrands}) => {
+    const history = useHistory();
+    const {pathname} = useLocation();
+
     const {search} = useLocation();
     const {kioskMode} = getQueryValues(search);
     const [availability, setAvailability] = useState([]);
@@ -53,9 +68,11 @@ const CGPAvailibility = () => {
     const [applicationFilter, setApplicationFilter] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [pendingRegionFilter, setPendingRegionFilter] = useState(regions);
+    const [serviceTierFilter, setServiceTierFilter] = useState(serviceTier);
     const [selectedRegionFilter, setSelectedRegionFilter] = useState(pendingRegionFilter);
     const [isDirtyForm, setIsDirtyForm] = useState(false);
     const [regionErrorMsg, setRegionErrorMsg] = useState('');
+    const [serviceTierErrorMsg, setServiceTierErrorMsg] = useState('');
     const [start, setStart] = useState(kioskMode ? moment().utc().subtract(59, 'minutes') : moment().utc().subtract(7, 'days'));
     const [end, setEnd] = useState(moment().utc());
     const [pendingStart, setPendingStart] = useState(start);
@@ -66,10 +83,12 @@ const CGPAvailibility = () => {
         const getNewData = () => {
             setIsLoading(true);
             setError('');
-            const url = '/v1/application-availability/filters'
+            const apiBrand = getSelectedBrandForApi(selectedBrands) ? `&filters={"filterName":"brand","filterValues":${getSelectedBrandForApi(selectedBrands)}}` : '';
+            const url = `${'/v2/application-availability/filters'
                 + `?from_date=${start.utc().format(API_UTC_FORMAT)}`
                 + `&to_date=${end.utc().format(API_UTC_FORMAT)}`
-                + `&aws_region=${getSelectedRegions(selectedRegionFilter)}`;
+                + `&filters={"filterName":"aws_region","filterValues":${getSelectedRegions(selectedRegionFilter)}}`}${
+                apiBrand}`;
             const fetchAPI = async () => {
                 try {
                     const res = await fetch(url);
@@ -85,6 +104,7 @@ const CGPAvailibility = () => {
             fetchAPI()
                 .finally(() => setIsLoading(false));
             setIsDirtyForm(false);
+            history.push(`${pathname}?selectedBrand=${selectedBrands}`);
         };
         getNewData();
 
@@ -93,7 +113,7 @@ const CGPAvailibility = () => {
         } else {
             setDateTimeFormat(DATETIME_FORMAT);
         }
-    }, [selectedRegionFilter, start, end]);
+    }, [selectedBrands, selectedRegionFilter, start, end, history, pathname]);
 
     const setAutoRefresh = () => {
         setInterval(() => {
@@ -115,12 +135,12 @@ const CGPAvailibility = () => {
         const newFilteredAvailability = (availability || [])
             .filter((x) => x?.applicationName !== 'unknown')
             .map((x) => mapAvailabilityRow(x, handleOnClick, dateTimeFormat))
-            .filter((x) => typeof x.avgValue === 'number' && x.avgValue <= availabilityFilter && x.app.includes(applicationFilter));
+            .filter((x) => typeof x.avgValue === 'number' && x.avgValue <= availabilityFilter && x.app.includes(applicationFilter) && serviceTierFilter.find((item) => item.checked && item.label === x.serviceTier));
         setFilteredAvailability(newFilteredAvailability);
         const totalStats = getTotalStats(newFilteredAvailability);
         setTotalRequests(totalStats.totalRequests);
         setTotalErrors(totalStats.totalErrors);
-    }, [availabilityFilter, applicationFilter, availability, dateTimeFormat]);
+    }, [availabilityFilter, applicationFilter, serviceTierFilter, availability, dateTimeFormat]);
 
     useEffect(() => {
         if (availabilityFilter < 0 || availabilityFilter > 100) {
@@ -145,6 +165,16 @@ const CGPAvailibility = () => {
         setIsDirtyForm(true);
         setRegionErrorMsg('');
         setPendingRegionFilter(e.items);
+        return;
+    };
+
+    const handleServiceTierChange = (e) => {
+        if (e.items.filter((x) => x.checked === true).length === 0) {
+            setServiceTierErrorMsg('Field required. Choose at least one tier');
+            return;
+        }
+        setServiceTierErrorMsg('');
+        setServiceTierFilter(e.items);
         return;
     };
 
@@ -232,6 +262,15 @@ const CGPAvailibility = () => {
                 label="Application Name"
                 onChange={handleApplicationFilterChange}
                 value={applicationFilter}
+                disabled={isLoading}
+            />
+            <MultiSelect
+                id="serviceTierSelect"
+                className="service-tier-select"
+                label="Service Tier"
+                items={serviceTierFilter}
+                onChange={handleServiceTierChange}
+                errorMsg={serviceTierErrorMsg}
                 disabled={isLoading}
             />
         </div>

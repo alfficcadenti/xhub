@@ -18,7 +18,7 @@ it('mapNotification', () => {
     };
     expect(mapNotification(notification)).to.eql({
         ID: notification.id,
-        PRB: <a href= "https://jira.expedia.biz/browse/PRB-1424" target="_blank">{notification.prbId}</a>,
+        PRB: <a href= "https://jira.expedia.biz/browse/PRB-1424" rel="noopener noreferrer" target="_blank">{notification.prbId}</a>,
         'Channel ID': notification.channelId,
         Email: notification.emailAddress,
         'Robbie Reminder': notification.robbieReminder,

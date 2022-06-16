@@ -1091,7 +1091,9 @@ Object {
             class="data-table-body"
           >
             <tr>
-              <td>
+              <td
+                class="some-class"
+              >
                 B
               </td>
             </tr>
@@ -1104,7 +1106,9 @@ Object {
               />
             </tr>
             <tr>
-              <td>
+              <td
+                class="some-class"
+              >
                 A
               </td>
             </tr>
@@ -1117,7 +1121,9 @@ Object {
               />
             </tr>
             <tr>
-              <td>
+              <td
+                class="some-class"
+              >
                 D
               </td>
             </tr>
@@ -1130,7 +1136,9 @@ Object {
               />
             </tr>
             <tr>
-              <td>
+              <td
+                class="some-class"
+              >
                 C
               </td>
             </tr>
@@ -1313,7 +1321,9 @@ Object {
           class="data-table-body"
         >
           <tr>
-            <td>
+            <td
+              class="some-class"
+            >
               B
             </td>
           </tr>
@@ -1326,7 +1336,9 @@ Object {
             />
           </tr>
           <tr>
-            <td>
+            <td
+              class="some-class"
+            >
               A
             </td>
           </tr>
@@ -1339,7 +1351,9 @@ Object {
             />
           </tr>
           <tr>
-            <td>
+            <td
+              class="some-class"
+            >
               D
             </td>
           </tr>
@@ -1352,7 +1366,9 @@ Object {
             />
           </tr>
           <tr>
-            <td>
+            <td
+              class="some-class"
+            >
               C
             </td>
           </tr>
@@ -1840,7 +1856,9 @@ Object {
             class="data-table-body"
           >
             <tr>
-              <td>
+              <td
+                class="some-class"
+              >
                 B
               </td>
             </tr>
@@ -1853,7 +1871,9 @@ Object {
               />
             </tr>
             <tr>
-              <td>
+              <td
+                class="some-class"
+              >
                 A
               </td>
             </tr>
@@ -1866,7 +1886,9 @@ Object {
               />
             </tr>
             <tr>
-              <td>
+              <td
+                class="some-class"
+              >
                 D
               </td>
             </tr>
@@ -1879,7 +1901,9 @@ Object {
               />
             </tr>
             <tr>
-              <td>
+              <td
+                class="some-class"
+              >
                 C
               </td>
             </tr>
@@ -2061,7 +2085,9 @@ Object {
           class="data-table-body"
         >
           <tr>
-            <td>
+            <td
+              class="some-class"
+            >
               B
             </td>
           </tr>
@@ -2074,7 +2100,9 @@ Object {
             />
           </tr>
           <tr>
-            <td>
+            <td
+              class="some-class"
+            >
               A
             </td>
           </tr>
@@ -2087,7 +2115,9 @@ Object {
             />
           </tr>
           <tr>
-            <td>
+            <td
+              class="some-class"
+            >
               D
             </td>
           </tr>
@@ -2100,7 +2130,9 @@ Object {
             />
           </tr>
           <tr>
-            <td>
+            <td
+              class="some-class"
+            >
               C
             </td>
           </tr>
@@ -2340,7 +2372,9 @@ Object {
             class="data-table-body"
           >
             <tr>
-              <td>
+              <td
+                class="some-class"
+              >
                 99
               </td>
             </tr>
@@ -2353,7 +2387,9 @@ Object {
               />
             </tr>
             <tr>
-              <td>
+              <td
+                class="some-class"
+              >
                 2010
               </td>
             </tr>
@@ -2366,7 +2402,9 @@ Object {
               />
             </tr>
             <tr>
-              <td>
+              <td
+                class="some-class"
+              >
                 1009
               </td>
             </tr>
@@ -2379,7 +2417,9 @@ Object {
               />
             </tr>
             <tr>
-              <td>
+              <td
+                class="some-class"
+              >
                 99
               </td>
             </tr>
@@ -2562,7 +2602,9 @@ Object {
           class="data-table-body"
         >
           <tr>
-            <td>
+            <td
+              class="some-class"
+            >
               99
             </td>
           </tr>
@@ -2575,7 +2617,9 @@ Object {
             />
           </tr>
           <tr>
-            <td>
+            <td
+              class="some-class"
+            >
               2010
             </td>
           </tr>
@@ -2588,7 +2632,9 @@ Object {
             />
           </tr>
           <tr>
-            <td>
+            <td
+              class="some-class"
+            >
               1009
             </td>
           </tr>
@@ -2601,7 +2647,9 @@ Object {
             />
           </tr>
           <tr>
-            <td>
+            <td
+              class="some-class"
+            >
               99
             </td>
           </tr>
@@ -2841,7 +2889,9 @@ Object {
             class="data-table-body"
           >
             <tr>
-              <td>
+              <td
+                class="some-class"
+              >
                 1.9%
               </td>
             </tr>
@@ -2854,7 +2904,9 @@ Object {
               />
             </tr>
             <tr>
-              <td>
+              <td
+                class="some-class"
+              >
                 3.99%
               </td>
             </tr>
@@ -2867,7 +2919,9 @@ Object {
               />
             </tr>
             <tr>
-              <td>
+              <td
+                class="some-class"
+              >
                 20.0%
               </td>
             </tr>
@@ -3050,7 +3104,9 @@ Object {
           class="data-table-body"
         >
           <tr>
-            <td>
+            <td
+              class="some-class"
+            >
               1.9%
             </td>
           </tr>
@@ -3063,7 +3119,9 @@ Object {
             />
           </tr>
           <tr>
-            <td>
+            <td
+              class="some-class"
+            >
               3.99%
             </td>
           </tr>
@@ -3076,7 +3134,9 @@ Object {
             />
           </tr>
           <tr>
-            <td>
+            <td
+              class="some-class"
+            >
               20.0%
             </td>
           </tr>

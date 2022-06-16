@@ -11,6 +11,13 @@ export const REGIONS = [
     'us-west-2'
 ];
 
+export const TIERS = [
+    'Tier 1',
+    'Tier 2',
+    'Tier 3',
+    '-',
+];
+
 export const DATE_FORMAT = 'Do MMM YY';
 
 export const DATETIME_FORMAT = 'hh:mm A';

@@ -158,6 +158,25 @@ describe('<CGPAvailibility />', () => {
 
         expect(wrapper).toMatchSnapshot();
     });
+
+    it('display only application with service tier selected', async () => {
+        fetch.mockImplementation(() => {
+            return Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve(AVAILABILITY)
+            });
+        });
+        await act(async () => {
+            wrapper = render(<Router><CGPAvailibility /></Router>);
+        });
+        const inputField = wrapper.getByLabelText('Service Tier (4 of 4 selected)');
+        fireEvent.click(inputField);
+        fireEvent.click(screen.getByText('Tier 1'));
+        const table = screen.getByLabelText('DataTable');
+        const rows = within(table);
+        expect(rows.getAllByRole('row')).toHaveLength(5);
+        expect(wrapper).toMatchSnapshot();
+    });
 });
 
 

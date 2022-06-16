@@ -3,7 +3,7 @@
 
 .cgp-availability-container {
     display: grid;
-    
+
     .page-title {
         margin-bottom: @spacing-3x;
         text-align: left;
@@ -13,7 +13,7 @@
         font-weight: 400;
     }
 
-    .legend-label, 
+    .legend-label,
     .overall-label {
         display: grid;
         font-size: 12px;
@@ -58,15 +58,18 @@
     }
 
     .top-container {
+        margin-bottom: @spacing-3x;
         max-width: 95vw;
         display: flex;
         justify-content: space-between;
-    
+
         .availability-filter {
             min-width: 150px;
         }
 
-        .filter-container, .availability-filter {
+        .filter-container,
+        .availability-filter,
+        .application-filter {
             margin-right: @spacing-3x;
         }
 
@@ -98,10 +101,11 @@
 
             .region-select {
                 width: 350px;
-
             }
 
-            .datetime-range-picker, .MultiSelect .form-group, .apply-button {
+            .datetime-range-picker,
+            .MultiSelect .form-group,
+            .apply-button {
                 margin-right: @spacing-3x;
             }
 
@@ -113,45 +117,65 @@
     }
 
     .data-table__container {
-        margin-top: @spacing-3x;
+        // Allow only horitzontal scroll
+        max-width: 100%;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        // Make room for pagination dropdown
+        padding-bottom: 220px;
 
         .table-search-input {
             float: left;
         }
 
-        .data-table {
+        th {
+            text-align: center;
+            vertical-align: bottom;
+            padding: 0;
 
-            th {
-                text-align: center;
+            // Rotate all header text to be horizontal except the first column
+            &:not(:first-child) .availability-header-cell {
                 padding: 0;
+                writing-mode: vertical-rl;
+                text-orientation: mixed;
+                transform: rotate(180deg);
 
-                .availability-header-cell {
-                    display: inline-flex;
-                    align-items: center;
-                    padding-top: 0;
-                    padding-bottom: 0;
-                }
-
-                .search-icon {
-                    margin: 0;
-                    padding: 0 @spacing-1x 0 @spacing-1x;
+                svg {
+                    transform: rotate(180deg);
                 }
             }
-    
-            td {
+
+            .availability-header-cell {
+                display: inline-flex;
+                align-items: center;
+                padding-top: 0;
+                padding-bottom: 0;
+            }
+
+            .header-cell {
                 padding: 0;
             }
-    
-            td:first-child, th:first-child {
-                text-align: left;
-                white-space: nowrap;
-                min-width: @spacing-4x;
-                padding-left: @spacing-1x;
+
+            .search-icon {
+                margin: 0;
+                padding: 0 @spacing-1x 0 @spacing-1x;
             }
-    
-            .info-tooltip {
-                padding: 0;
-            }
+        }
+
+        td {
+            padding: 0;
+        }
+
+        td:first-child,
+        th:first-child {
+            text-align: left;
+            white-space: nowrap;
+            min-width: @spacing-4x;
+            padding-left: @spacing-1x;
+        }
+
+        .info-tooltip {
+            padding: 0;
         }
     }
 
@@ -161,7 +185,9 @@
         }
     }
 
-    .positive, .attention, .negative {
+    .positive,
+    .attention,
+    .negative {
         white-space: nowrap;
     }
 

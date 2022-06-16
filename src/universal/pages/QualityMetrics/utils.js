@@ -68,7 +68,7 @@ export const getPropValue = (item, prop) => item[prop] || item[prop] === 0 ? ite
 export const formatDefect = (defect) => ({
     Portfolio: getPropValue(defect, 'portfolio'),
     Key: defect.defectNumber
-        ? (<a href={`${defect.url}`} target="_blank">{defect.defectNumber}</a>)
+        ? (<a href={`${defect.url}`} target="_blank" rel="noopener noreferrer">{defect.defectNumber}</a>)
         : '-',
     id: getPropValue(defect, 'defectNumber'),
     Summary: getPropValue(defect, 'summary'),

@@ -3,7 +3,7 @@ import {getOrDefault} from '../../../../utils';
 
 
 export const mapDetails = (row) => ({
-    ID: <a href={row.url} target="_blank" rel="noop">{getOrDefault(row, 'id')}</a>,
+    ID: <a href={row.url} target="_blank" rel="noopener noreferrer">{getOrDefault(row, 'id')}</a>,
     Assignee: getOrDefault(row, 'assignee'),
     Project: getOrDefault(row, 'project_name'),
     Summary: getOrDefault(row, 'summary'),
