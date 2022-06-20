@@ -285,4 +285,5 @@ export const EPS_CHANNEL_SITE_URL = {
         'taap.expedia.BE',
         'taap.expedia.FI'],
     'WLT': ['travel.sceneplus.ca',
-        'hotels.bookety.com']};
+        'hotels.bookety.com',
+        'www.travelextras-delta.com']};
