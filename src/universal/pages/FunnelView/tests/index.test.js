@@ -41,7 +41,7 @@ describe('FunnelView component testing', () => {
     });
 
     it('renders error message for expedia group brand', async () => {
-        const message = 'This dashboard is not available yet for Expedia Group. The following brands are supported at this time: Expedia, Vrbo, Hotels.com. If you have any questions, please ping #opxhub-support or leave a comment via our Feedback form.';
+        const message = 'Page views for Expedia Group is not yet available. The following brands are supported at this time: "Expedia", "Hotels.com Retail", and "Vrbo Retail". If you have any questions, please ping #opxhub-support or leave a comment via our Feedback form.';
         await act(async () => {
             render(
                 <Router>

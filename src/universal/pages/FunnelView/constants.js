@@ -13,3 +13,11 @@ export const GRAFANA_VIEW_LABEL = 'Grafana View';
 export const SELECT_VIEW_LABEL = 'Select View';
 
 export const VIEW_TYPES = [NATIVE_VIEW_LABEL, GRAFANA_VIEW_LABEL];
+
+export const LOGIN_EVENT_TYPE = [
+    {eventType: 'loginform', chartName: 'Sign-in Presented'},
+    {eventType: 'loginattemptclick', chartName: 'Sign-in Submitted'},
+    {eventType: 'loginsuccesspageview', chartName: 'Sign-in Succeded'},
+    {eventType: 'universalLoginError', chartName: 'Sign-in Failed'},
+    {eventType: 'loginAdjustedSuccessOutcome', chartName: 'Bad user name / password'}
+];

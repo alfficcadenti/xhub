@@ -39,7 +39,7 @@ module.exports.pageViewsUserEvents = {
     method: 'GET',
     path: '/v1/pageViews/{param*}',
     config: getConfig('page-views-api-v1-get'),
-    handler: getHandler(getHandlerParams('pageViews'), getPageViewsTestData)
+    handler: getHandler(getHandlerParams('pageViews'))
 };
 
 module.exports.impulseBookingDataService = {

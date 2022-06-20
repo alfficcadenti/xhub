@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useLocation, withRouter} from 'react-router-dom';
+import {Alert} from '@homeaway/react-alerts';
 import moment from 'moment';
 import Select from 'react-select';
 import TravelerMetricsWidget from '../../components/TravelerMetricsWidget';
@@ -14,6 +15,7 @@ import ResetButton from '../../components/ResetButton';
 import {useAddToUrl, useFetchProductMapping, useQueryParamChange, useSelectedBrand, useZoomAndSynced} from '../hooks';
 import {
     EG_BRAND,
+    EXPEDIA_BRAND,
     VRBO_BRAND,
     HOTELS_COM_BRAND,
     EGENCIA_BRAND,
@@ -22,8 +24,14 @@ import {
     EPS_PARTNER_SITENAMES,
     OPXHUB_SUPPORT_CHANNEL,
     PAGE_VIEWS_PAGE_NAME,
+    PAGE_VIEWS_DATE_FORMAT
 } from '../../constants';
-import {getErrorMessage} from './utils';
+import {
+    getErrorMessage,
+    getPageEventType,
+    isMetricGroupSelected,
+    isViewSelected
+} from './utils';
 import {
     checkResponse,
     getBrand,
@@ -32,12 +40,13 @@ import {
     brandsWithGrafanaDashboard,
     getQueryParams
 } from '../utils';
+import {getTzFormat} from '../../components/TimeZonePicker/utils';
 import {makePageViewLoBObjects, makePageViewObjects, buildPageViewsApiQueryString} from './pageViewsUtils';
 import LagIndicator from '../../components/LagIndicator';
 import './styles.less';
 import {triggerEdapPageView} from '../../edap';
 import GrafanaDashboard from '../../components/GrafanaDashboard';
-import {VIEW_TYPES, PAGEVIEWS_METRICS, SHOPPING_VIEWS_LABEL} from './constants';
+import {GRAFANA_VIEW_LABEL, VIEW_TYPES, PAGEVIEWS_METRICS, SHOPPING_VIEWS_LABEL, LOGIN_VIEWS_LABEL, LOGIN_EVENT_TYPE} from './constants';
 
 const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}) => {
     const selectedBrand = selectedBrands[0];
@@ -108,8 +117,9 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}
         triggerEdapPageView(location.pathname);
     }, [location.pathname]);
 
+    // eslint-disable-next-line complexity
     useEffect(() => {
-        const fetchPageViewsData = (brand) => {
+        const fetchPageViewsShoppingData = (brand) => {
             const {label: pageBrand, funnelBrand} = getBrand(brand, 'label');
             setIsLoading(true);
             setError('');
@@ -129,6 +139,38 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}
                         ? `Query has timed out. Try refreshing the page. If the problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`
                         : `An unexpected error has occurred. Try refreshing the page. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`;
                     setLoBError(errorMessage);
+                })
+                .finally(() => setIsLoading(false));
+        };
+
+        const fetchPageViewsLoginData = (brand) => {
+            const {label: pageBrand, funnelBrand} = getBrand(brand, 'label');
+            setIsLoading(true);
+            setError('');
+            const endpoint = buildPageViewsApiQueryString({start, end, brand: funnelBrand, lob: false, EPSPartner: selectedEPSPartner});
+            Promise.all([
+                ...getPageEventType(metricGroup).map(({eventType}) => fetch(`${endpoint}&eventType=${eventType}&pageTypes=loginform`))
+            ])
+                .then((responses) => Promise.all(responses.map(checkResponse)))
+                .then((fetchedLoginPageviews) => {
+                    if (!fetchedLoginPageviews || !fetchedLoginPageviews.length) {
+                        setError('No data found. Try refreshing the page or select another brand.');
+                        return;
+                    }
+                    const widgetObjects = fetchedLoginPageviews.map((eventData, idx) => {
+                        return {chartName: LOGIN_EVENT_TYPE[idx].chartName, aggregatedData: eventData.map((datapoint) => ({
+                            label: getTzFormat(moment(datapoint.time), PAGE_VIEWS_DATE_FORMAT),
+                            time: moment.utc(datapoint.time).valueOf(),
+                            value: datapoint.pageViewsData[0].views
+                        })), pageBrand, minValue: 0};
+                    });
+                    setWidgets(widgetObjects);
+                })
+                .catch((err) => {
+                    let errorMessage = (err.message && err.message.includes('query-timeout limit exceeded'))
+                        ? `Query has timed out. Try refreshing the page. If the problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`
+                        : `An unexpected error has occurred. Try refreshing the page. If this problem persists, please message ${OPXHUB_SUPPORT_CHANNEL} or fill out our Feedback form.`;
+                    setError(errorMessage);
                 })
                 .finally(() => setIsLoading(false));
         };
@@ -157,7 +199,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}
                 .finally(() => setIsLoBLoading(false));
         };
 
-        if ([EG_BRAND, EGENCIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND].includes(selectedBrand)) {
+        if ([EXPEDIA_BRAND, EGENCIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND].includes(selectedBrand) || metricGroup === LOGIN_VIEWS_LABEL) {
             setIsLoBAvailable(false);
             setSelectedLobs([]);
         } else if (!isZoomedIn) { // we need this flag right after zoomed in so that we don't re-fetch because it filters on existing data
@@ -176,14 +218,18 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}
             setIsFormDisabled(false);
 
             if (!isZoomedIn) { // we need this flag right after zoomed in so that we don't re-fetch because it filters on existing data
-                fetchPageViewsData(selectedBrand);
+                if (metricGroup === LOGIN_VIEWS_LABEL) {
+                    fetchPageViewsLoginData(selectedBrand);
+                } else {
+                    fetchPageViewsShoppingData(selectedBrand);
+                }
             }
         }
 
         return function cleanup() {
             setIsZoomedIn(false); // set to false so that it fetch data when changing brands
         };
-    }, [selectedBrand, start, end, selectedEPSPartner, isZoomedIn]);
+    }, [selectedBrand, start, end, selectedEPSPartner, isZoomedIn, metricGroup]);
 
     useAddToUrl(selectedBrands, start, end, selectedLobs, pendingStart, pendingEnd);
 
@@ -354,6 +400,11 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}
 
     const renderDashboardHelpIcon = () => !isLoBAvailable && <HelpText text="Only for LOB Hotels" placement="top" />;
 
+
+    const renderCharts = () => viewType === GRAFANA_VIEW_LABEL
+        ? renderGrafanaDashboard()
+        : isMetricGroupSelected(metricGroup) && renderPageViewDashboard();
+
     const renderDashboardHeader = () => (
         <div className="dashboard-header-container">
             <h1 className="page-title">
@@ -361,7 +412,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}
             </h1>
             {
                 isSupportedBrand &&
-                (metricGroup === SHOPPING_VIEWS_LABEL || viewType === 'Native View') &&
+                metricGroup === SHOPPING_VIEWS_LABEL &&
                 <LagIndicator
                     selectedBrand={selectedBrand}
                 />
@@ -369,15 +420,11 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}
         </div>
     );
 
-    const renderDashboardBody = () => {
-        if (viewType === 'Native View') {
-            return renderPageViewDashboard();
-        }
-        if (metricGroup) {
-            return renderGrafanaDashboard();
-        }
-        return '';
-    };
+    const renderDashboardBody = () => (
+        isSupportedBrand
+            ? isViewSelected(viewType) && isMetricGroupSelected(metricGroup) && renderCharts()
+            : <Alert className="loading-alert" msg={getErrorMessage(selectedBrand)} />
+    );
 
     const renderPageViewsSelectors = () => (
         isSupportedBrand &&
@@ -389,15 +436,13 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}
                     onClickHandler={handleViewTypeChange}
                     className="filter-dropdown"
                 />
-                {viewType === 'Grafana View' && (
-                    <FilterDropDown
-                        id="pageviews-type-dropdown"
-                        list={PAGEVIEWS_METRICS}
-                        selectedValue={metricGroup}
-                        onClickHandler={handleMetricChange}
-                        className="filter-dropdown"
-                    />
-                )}
+                <FilterDropDown
+                    id="pageviews-type-dropdown"
+                    list={PAGEVIEWS_METRICS}
+                    selectedValue={metricGroup}
+                    onClickHandler={handleMetricChange}
+                    className="filter-dropdown"
+                />
             </div>
     );
 
