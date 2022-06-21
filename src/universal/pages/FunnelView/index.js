@@ -15,7 +15,6 @@ import ResetButton from '../../components/ResetButton';
 import {useAddToUrl, useFetchProductMapping, useQueryParamChange, useSelectedBrand, useZoomAndSynced} from '../hooks';
 import {
     EG_BRAND,
-    EXPEDIA_BRAND,
     VRBO_BRAND,
     HOTELS_COM_BRAND,
     EGENCIA_BRAND,
@@ -199,7 +198,7 @@ const FunnelView = ({selectedBrands, onBrandChange, prevSelectedBrand, location}
                 .finally(() => setIsLoBLoading(false));
         };
 
-        if ([EXPEDIA_BRAND, EGENCIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND].includes(selectedBrand) || metricGroup === LOGIN_VIEWS_LABEL) {
+        if ([EG_BRAND, EGENCIA_BRAND, VRBO_BRAND, HOTELS_COM_BRAND].includes(selectedBrand) || metricGroup === LOGIN_VIEWS_LABEL) {
             setIsLoBAvailable(false);
             setSelectedLobs([]);
         } else if (!isZoomedIn) { // we need this flag right after zoomed in so that we don't re-fetch because it filters on existing data
