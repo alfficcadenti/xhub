@@ -33,6 +33,8 @@ describe('Impulse custom hooks', () => {
                 setEgSiteURLMulti,
                 lobsMulti,
                 setLobsMulti,
+                regionMulti,
+                setRegionMulti,
                 brandsMulti,
                 deviceTypeMulti,
                 setDeviceTypesMulti,
@@ -55,6 +57,8 @@ describe('Impulse custom hooks', () => {
             expect(typeof (setEgSiteURLMulti)).eql('function');
             expect(lobsMulti).eql({});
             expect(typeof (setLobsMulti)).eql('function');
+            expect(regionMulti).eql({});
+            expect(typeof (setRegionMulti)).eql('function');
             expect(brandsMulti).eql({});
             expect(deviceTypeMulti).eql({});
             expect(typeof (setDeviceTypesMulti)).eql('function');

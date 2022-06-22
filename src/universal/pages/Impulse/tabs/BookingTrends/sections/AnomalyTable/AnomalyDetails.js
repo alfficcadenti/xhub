@@ -27,6 +27,8 @@ const AnomalyDetails = ({data = [], setAnomalyTableData}) => {
             lob: inc.lob === 'null' ? '-' : inc.lob,
             brand: inc.brand === 'null' ? '-' : inc.brand,
             deviceType: inc.deviceType === 'null' ? '-' : inc.deviceType,
+            region: inc.region === 'null' ? '-' : inc.region,
+            egSiteUrl: inc.egSiteUrl === 'null' ? '-' : inc.egSiteUrl,
             count: inc.count,
             predicted: inc.predicted,
             changePercentage: inc.changePercentage

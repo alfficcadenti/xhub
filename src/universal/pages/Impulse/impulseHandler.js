@@ -12,7 +12,7 @@ import qs from 'query-string';
 import {validDateRange} from '../utils';
 import {useHistory, useLocation} from 'react-router-dom';
 import {useEffect} from 'react';
-import {ANOMALY_SELECTOR, BRANDS, DEVICES, EG_SITE_URLS, INCIDENT_SELECTOR, LOBS, POS_MAPPINGS} from './constants';
+import {ANOMALY_SELECTOR, BRANDS, REGIONS, DEVICES, EG_SITE_URLS, INCIDENT_SELECTOR, LOBS, POS_MAPPINGS} from './constants';
 
 export const getFilters = (data = [], typeOfFilter) =>
     data.filter((item) => item.tag === typeOfFilter).map((item) => item.values)[0].map((a) => ({
@@ -82,10 +82,11 @@ export const getGroupType = (groupType) => {
     return groupType.length > 0 ? `&group_by=${groupType}` : '';
 };
 
-export const getQueryString = (start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval, groupType) => (
+export const getQueryString = (start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedRegionMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval, groupType) => (
     `?start_time=${start.format('YYYY-MM-DDTHH:mm:ss')}Z&end_time=${end.format('YYYY-MM-DDTHH:mm:ss')}Z`
     + `${getQueryParamMulti('point_of_sales', selectedSiteURLMulti)}`
     + `${getQueryParamMulti('lobs', selectedLobMulti)}`
+    + `${getQueryParamMulti('region', selectedRegionMulti)}`
     + `${getQueryParamMulti('brands', selectedBrandMulti)}`
     + `${getQueryParamMulti('device_types', selectedDeviceTypeMulti)}`
     + `${getBrandQueryParam(IMPULSE_MAPPING, globalBrandName)}`
@@ -93,29 +94,32 @@ export const getQueryString = (start, end, IMPULSE_MAPPING, globalBrandName, sel
     + `${getGroupType(groupType)}`
 );
 
-export const getQueryStringYOY = (start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval) => (
+export const getQueryStringYOY = (start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedRegionMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval) => (
     `?start_time=${start.format('YYYY-MM-DDTHH:mm:ss')}Z&end_time=${end.format('YYYY-MM-DDTHH:mm:ss')}Z`
     + `${getQueryParamMulti('point_of_sales', selectedSiteURLMulti)}`
     + `${getQueryParamMulti('lobs', selectedLobMulti)}`
+    + `${getQueryParamMulti('region', selectedRegionMulti)}`
     + `${getQueryParamMulti('brands', selectedBrandMulti)}`
     + `${getQueryParamMulti('device_types', selectedDeviceTypeMulti)}`
     + `${getBrandQueryParam(IMPULSE_MAPPING, globalBrandName)}`
     + `&time_interval=${interval}`
 );
 
-export const getQueryStringPrediction = (start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval) => (
+export const getQueryStringPrediction = (start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedRegionMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval) => (
     `?start_time=${start.format('YYYY-MM-DDTHH:mm:ss')}Z&end_time=${end.format('YYYY-MM-DDTHH:mm:ss')}Z`
     + `${getQueryParamMulti('egSiteUrl', selectedSiteURLMulti)}`
     + `${getQueryParamMulti('lob', selectedLobMulti)}`
+    + `${getQueryParamMulti('region', selectedRegionMulti)}`
     + `${getQueryParamMulti('brand', selectedBrandMulti)}`
     + `${getQueryParamMulti('device_type', selectedDeviceTypeMulti)}`
     + `${getBrandQueryParam(IMPULSE_MAPPING, globalBrandName)}`
     + `&time_interval=${interval}`
 );
 
-export const getQueryStringPercentageChange = (selectedLobMulti, selectedBrandMulti) => (
+export const getQueryStringPercentageChange = (selectedLobMulti, selectedRegionMulti, selectedBrandMulti) => (
     '?'
     + `${getQueryParamMulti('lobs', selectedLobMulti)}`
+    + `${getQueryParamMulti('region', selectedRegionMulti)}`
     + `${getQueryParamMulti('brands', selectedBrandMulti)}`
 );
 
@@ -243,7 +247,7 @@ export const convertRelativeDateRange = (date = '') => {
 
 // eslint-disable-next-line complexity
 export const getQueryValues = (search) => {
-    const {from, to, interval, refresh, brands, lobs, siteUrls, devices, incidents, anomalies} = qs.parse(search);
+    const {from, to, interval, refresh, brands, region, lobs, siteUrls, devices, incidents, anomalies} = qs.parse(search);
     const relativeFrom = convertRelativeDateRange(from);
     const relativeTo = convertRelativeDateRange(to);
     const isValidDateRange = validDateRange(relativeFrom, relativeTo);
@@ -257,6 +261,7 @@ export const getQueryValues = (search) => {
         initialInterval: isValidInterval ? interval : getDefaultTimeInterval(initStart, initEnd),
         initialAutoRefresh: refresh === null || refresh !== 'false',
         initialBrands: brands ? brands.split(',').filter((item) => BRANDS.includes(item)) : [],
+        initialRegion: region ? region.split(',').filter((item) => REGIONS.includes(item)) : [],
         initialLobs: lobs ? lobs.split(',').filter((item) => LOBS.includes(item)) : [],
         initialEgSiteUrls: siteUrls ? siteUrls.split(',').filter((item) => EG_SITE_URLS.includes(item)) : [],
         initialDevices: devices ? devices.split(',').filter((item) => DEVICES.includes(item)) : [],
@@ -318,6 +323,7 @@ export const useAddToUrl = (
     interval,
     refresh,
     lobs,
+    region,
     brands,
     egSiteUrls,
     devices,
@@ -335,11 +341,12 @@ export const useAddToUrl = (
             + `&interval=${interval}`
             + `&refresh=${refresh}`
         }${brands.length === 0 ? '' : `&brands=${brands.join(',')}`
+        }${region.length === 0 ? '' : `&region=${region.join(',')}`
         }${lobs.length === 0 ? '' : `&lobs=${lobs.join(',')}`
         }${egSiteUrls.length === 0 ? '' : `&siteUrls=${egSiteUrls.join(',')}`
         }${devices.length === 0 ? '' : `&devices=${devices.join(',')}`
         }${incidents.length === 0 ? '' : `&incidents=${incidents.join(',')}`
         }${anomalies.length === 0 ? '' : `&anomalies=${anomalies.join(',')}`}`
         );
-    }, [selectedBrands, isSubmitClicked, chartSliced, start, end, interval, refresh, lobs, brands, egSiteUrls, devices, incidents, anomalies, history, pathname, activeIndex]);
+    }, [selectedBrands, isSubmitClicked, chartSliced, start, end, interval, refresh, lobs, region, brands, egSiteUrls, devices, incidents, anomalies, history, pathname, activeIndex]);
 };

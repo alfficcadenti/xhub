@@ -3,6 +3,8 @@ export const ANOMALY_TABLE_COLUMN_HEADERS = {
     lob: 'LOB',
     brand: 'Brand',
     deviceType: 'Device Type',
+    region: 'Region',
+    egSiteUrl: 'POS',
     count: 'Count',
     predicted: 'Predicted',
     changePercentage: 'Percentage Change'
@@ -13,6 +15,8 @@ export const ANOMALY_TABLE_COLUMNS = [
     'lob',
     'brand',
     'deviceType',
+    'region',
+    'egSiteUrl',
     'count',
     'predicted',
     'changePercentage'

@@ -7,6 +7,7 @@ export const ALL_PRIORITIES_OPTION = 'All Priorities';
 export const ALL_PROJECTS_OPTION = 'All Projects';
 export const ALL_STATUSES_OPTION = 'All Statuses';
 export const ALL_LOB = 'All LOBs';
+export const ALL_REGION = 'All Regions';
 export const ALL_BRANDS = 'All Brands';
 export const ALL_EPS_CHANNELS = 'All EPS Channels';
 export const ALL_POS = 'All POS';

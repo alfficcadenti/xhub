@@ -14,6 +14,7 @@ import {FILTER__16} from '@homeaway/svg-defs';
 import './styles.less';
 import {
     ALL_LOB,
+    ALL_REGION,
     ALL_POS,
     ALL_BRANDS,
     ALL_DEVICES,
@@ -97,6 +98,7 @@ const Impulse = (props) => {
         initialInterval,
         initialAutoRefresh,
         initialBrands,
+        initialRegion,
         initialLobs,
         initialEgSiteUrls,
         initialDevices,
@@ -119,6 +121,7 @@ const Impulse = (props) => {
     const [annotationsMulti, setAnnotationsMulti] = useState([]);
     const [selectedSiteURLMulti, setSelectedSiteURLMulti] = useState(initialEgSiteUrls);
     const [selectedLobMulti, setSelectedLobMulti] = useState(initialLobs);
+    const [selectedRegionMulti, setSelectedRegionMulti] = useState(initialRegion);
     const [selectedBrandMulti, setSelectedBrandMulti] = useState(initialBrands);
     const [selectedDeviceTypeMulti, setSelectedDeviceTypeMulti] = useState(initialDevices);
     const [selectedIncidentMulti, setSelectedIncidentMulti] = useState(initialIncidents);
@@ -184,6 +187,8 @@ const Impulse = (props) => {
         setEgSiteURLMulti,
         lobsMulti,
         setLobsMulti,
+        regionMulti,
+        setRegionMulti,
         brandsMulti,
         deviceTypesMulti,
         setDeviceTypesMulti,
@@ -212,6 +217,7 @@ const Impulse = (props) => {
         props.prevSelectedBrand,
         selectedSiteURLMulti,
         selectedLobMulti,
+        selectedRegionMulti,
         selectedBrandMulti,
         selectedDeviceTypeMulti,
         chartSliced,
@@ -230,15 +236,18 @@ const Impulse = (props) => {
         setGraphImage);
 
     const modifyFilters = (newValuesOnChange) => {
+        setSelectedRegionMulti([]);
         setSelectedLobMulti([]);
         setSelectedDeviceTypeMulti([]);
         setSelectedSiteURLMulti([]);
         setSelectedEpsChannels([]);
         if (typeof newValuesOnChange !== 'undefined' && brandsFilterData !== null && newValuesOnChange.length > 0) {
+            setRegionMulti(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'region'));
             setLobsMulti(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'lobs'));
             setDeviceTypesMulti(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'device_types'));
             setEgSiteURLMulti(mapPosFilterLabels(getFiltersForMultiKeys(newValuesOnChange, brandsFilterData, 'point_of_sales')));
         } else {
+            setRegionMulti(getFilters(filterData, 'region'));
             setLobsMulti(getFilters(filterData, 'lobs'));
             setDeviceTypesMulti(getFilters(filterData, 'device_types'));
             setEgSiteURLMulti(mapPosFilterLabels(getFilters(filterData, 'point_of_sales')));
@@ -351,6 +360,8 @@ const Impulse = (props) => {
             setSelectedBrandMulti(newValuesOnChange);
         } else if (handler === 'deviceType') {
             setSelectedDeviceTypeMulti(newValuesOnChange);
+        } else if (handler === 'region') {
+            setSelectedRegionMulti(newValuesOnChange);
         } else if (handler === 'egSiteUrl') {
             setSelectedSiteURLMulti(newValuesOnChange);
         } else if (handler === 'incidentCategory') {
@@ -454,7 +465,7 @@ const Impulse = (props) => {
             </a>
         </button>
     );
-    useAddToUrl(newBrand, isSubmitClicked, chartSliced, startDateTime, endDateTime, timeInterval, isAutoRefresh, selectedLobMulti, selectedBrandMulti, selectedSiteURLMulti, selectedDeviceTypeMulti, selectedIncidentMulti, selectedAnomaliesMulti, activeIndex);
+    useAddToUrl(newBrand, isSubmitClicked, chartSliced, startDateTime, endDateTime, timeInterval, isAutoRefresh, selectedLobMulti, selectedRegionMulti, selectedBrandMulti, selectedSiteURLMulti, selectedDeviceTypeMulti, selectedIncidentMulti, selectedAnomaliesMulti, activeIndex);
     const renderTabs = () => {
         switch (activeIndex) {
             case 0:
@@ -661,7 +672,7 @@ const Impulse = (props) => {
                 isMulti
                 styles={customStyles}
                 value={value.map((v) => ({value: v, label: v}))}
-                options={options}
+                options={options.length ? options : []}
                 onChange={(e) => handleMultiChange(e, key)}
                 placeholder={placeholder}
             />
@@ -722,6 +733,7 @@ const Impulse = (props) => {
                     {renderMultiSelectFilters(selectedLobMulti, lobsMulti, 'lob', ALL_LOB, filterSelectionClass)}
                     {isEpsSelected && renderMultiSelectFilters(selectedEpsChannels, EPS_CHANNELS, 'EPS_Channels', ALL_EPS_CHANNELS, filterSelectionClass)}
                     {selectedEpsChannels.length === 0 && renderMultiSelectFilters(selectedSiteURLMulti, egSiteURLMulti, 'egSiteUrl', ALL_POS, filterExpandClass)}
+                    {renderMultiSelectFilters(selectedRegionMulti, regionMulti, 'region', ALL_REGION, filterSelectionClass)}
                     <button
                         type="button"
                         className="apply-button btn btn-primary active"

@@ -68,6 +68,7 @@ export const useFetchBlipData = (
     prevBrand,
     selectedSiteURLMulti,
     selectedLobMulti,
+    selectedRegionMulti,
     selectedBrandMulti,
     selectedDeviceTypeMulti,
     chartSliced,
@@ -89,6 +90,7 @@ export const useFetchBlipData = (
     const [isLoading, setIsLoading] = useState(true);
     const [egSiteURLMulti, setEgSiteURLMulti] = useState({});
     const [lobsMulti, setLobsMulti] = useState({});
+    const [regionMulti, setRegionMulti] = useState({});
     const [brandsMulti, setBrandMulti] = useState({});
     const [deviceTypeMulti, setDeviceTypesMulti] = useState({});
     const [incidentMulti, setIncidentMulti] = useState({});
@@ -136,12 +138,13 @@ export const useFetchBlipData = (
             label: 'Upstream Unhealthy'
         }];
     const getFilter = () => {
-        fetch(`/v1/bookings/filters?tags=lobs,brands,point_of_sales,device_types,brand_group_names${getBrandQueryParam(IMPULSE_MAPPING, globalBrandName)}`)
+        fetch(`/v1/bookings/filters?tags=lobs,region,brands,point_of_sales,device_types,brand_group_names${getBrandQueryParam(IMPULSE_MAPPING, globalBrandName)}`)
             .then(checkResponse)
             .then((respJson) => {
                 setFilterData(respJson);
                 setEgSiteURLMulti(mapPosFilterLabels(getFilters(respJson, 'point_of_sales')));
                 setLobsMulti(getFilters(respJson, 'lobs'));
+                setRegionMulti(getFilters(respJson, 'region'));
                 setBrandMulti(getFilters(respJson, 'brands'));
                 setDeviceTypesMulti(getFilters(respJson, 'device_types'));
             })
@@ -203,7 +206,7 @@ export const useFetchBlipData = (
                 console.error(err);
             });
     };
-    const fetchData = (start, end, interval) => fetch(`/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval, '')}`)
+    const fetchData = (start, end, interval) => fetch(`/v1/bookings/count${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedRegionMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval, '')}`)
         .then(checkResponse)
         .then((respJson) => {
             chartData = respJson.map((item) => {
@@ -225,7 +228,7 @@ export const useFetchBlipData = (
         });
 
     const fetchCallGrouped = (start, end, interval, groupType) =>
-        fetch(`/v1/bookings/count/group${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval, groupType)}`)
+        fetch(`/v1/bookings/count/group${getQueryString(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedRegionMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval, groupType)}`)
             .then(checkResponse)
             .then((respJson) => (
                 respJson.map(({time, count}) => ({
@@ -236,7 +239,7 @@ export const useFetchBlipData = (
 
     const fetchPredictions = (start = startDateTime, end = endDateTime, interval = timeInterval) => {
         Promise.all([
-            timeInterval === '5m' || timeInterval === '1m' ? fetch(`/v1/impulse/prediction${getQueryStringPrediction(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval)}`).then(checkResponse) : []
+            timeInterval === '5m' || timeInterval === '1m' ? fetch(`/v1/impulse/prediction${getQueryStringPrediction(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedRegionMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval)}`).then(checkResponse) : []
         ]).then(([predictionData]) => {
             const simplifiedPredictionData = simplifyPredictionData(predictionData);
 
@@ -283,7 +286,7 @@ export const useFetchBlipData = (
 
     const fetchAverage = () => {
         setIsAverageCountLoading(true);
-        fetch(`/v1/bookings/change/percentage${getQueryStringPercentageChange(selectedLobMulti, selectedBrandMulti)}`)
+        fetch(`/v1/bookings/change/percentage${getQueryStringPercentageChange(selectedLobMulti, selectedRegionMulti, selectedBrandMulti)}`)
             .then(checkResponse)
             .then(({selectedLobs, weekly, monthly, yearly}) => setAverageCount({selectedLobs, weekly, monthly, yearly}))
             .catch((err) => {
@@ -294,7 +297,7 @@ export const useFetchBlipData = (
     };
 
     const fetchCallYOY = (start = startDateTime, end = endDateTime, interval = timeInterval) =>
-        fetch(`/v1/bookings/count/YOY${getQueryStringYOY(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval)}`)
+        fetch(`/v1/bookings/count/YOY${getQueryStringYOY(start, end, IMPULSE_MAPPING, globalBrandName, selectedSiteURLMulti, selectedLobMulti, selectedRegionMulti, selectedBrandMulti, selectedDeviceTypeMulti, interval)}`)
             .then(checkResponse)
             .then((respJson) => {
                 if (Array.isArray(respJson)) {
@@ -604,6 +607,8 @@ export const useFetchBlipData = (
         setEgSiteURLMulti,
         lobsMulti,
         setLobsMulti,
+        regionMulti,
+        setRegionMulti,
         brandsMulti,
         deviceTypeMulti,
         setDeviceTypesMulti,

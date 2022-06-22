@@ -9,6 +9,15 @@ export const LOBS = [
     'Package',
     'Rail'
 ];
+
+export const REGIONS = [
+    'APAC',
+    'EU',
+    'EMEA',
+    'NA',
+    'unknown',
+    'LATAM'
+];
 export const BRANDS = [
     'all',
     'Vrbo',
