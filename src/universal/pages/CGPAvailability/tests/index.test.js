@@ -177,6 +177,22 @@ describe('<CGPAvailibility />', () => {
         expect(rows.getAllByRole('row')).toHaveLength(5);
         expect(wrapper).toMatchSnapshot();
     });
+
+    it('open overall availability modal when clicking on the overall availability', async () => {
+        fetch.mockImplementation(() => {
+            return Promise.resolve({
+                ok: true,
+                json: () => Promise.resolve(AVAILABILITY)
+            });
+        });
+        await act(async () => {
+            wrapper = render(<Router><CGPAvailibility /></Router>);
+        });
+        fireEvent.click(wrapper.getByText('Overall Availability'));
+        const chartModal = wrapper.getByText('Overall Availability over Time');
+        expect(chartModal).toBeInTheDocument();
+        expect(wrapper).toMatchSnapshot();
+    });
 });
 
 

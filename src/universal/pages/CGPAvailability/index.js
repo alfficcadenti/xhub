@@ -14,9 +14,11 @@ import {
     getSelectedRegions,
     getPresets,
     getQueryValues,
+    getTotalAvailabilityOverTime,
     getTotalStats
 } from './utils';
 import ErrorCountModal from './ErrorCountModal';
+import OverallAvailabilityModal from './OverallAvailabilityModal';
 import Legend from './Legend';
 import Overall from './Overall';
 import {FormInput} from '@homeaway/react-form-components';
@@ -59,6 +61,7 @@ const CGPAvailibility = ({selectedBrands}) => {
     const {kioskMode} = getQueryValues(search);
     const [availability, setAvailability] = useState([]);
     const [filteredAvailability, setFilteredAvailability] = useState(availability);
+    const [totalAvailabilityOverTime, setTotalAvailabilityOverTime] = useState(getTotalAvailabilityOverTime(filteredAvailability));
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
     const [selectedApp, setSelectedApp] = useState(null);
@@ -71,6 +74,7 @@ const CGPAvailibility = ({selectedBrands}) => {
     const [serviceTierFilter, setServiceTierFilter] = useState(serviceTier);
     const [selectedRegionFilter, setSelectedRegionFilter] = useState(pendingRegionFilter);
     const [isDirtyForm, setIsDirtyForm] = useState(false);
+    const [isOverallModalOpen, setIsOverallModalOpen] = useState(false);
     const [regionErrorMsg, setRegionErrorMsg] = useState('');
     const [serviceTierErrorMsg, setServiceTierErrorMsg] = useState('');
     const [start, setStart] = useState(kioskMode ? moment().utc().subtract(59, 'minutes') : moment().utc().subtract(7, 'days'));
@@ -137,6 +141,7 @@ const CGPAvailibility = ({selectedBrands}) => {
             .map((x) => mapAvailabilityRow(x, handleOnClick, dateTimeFormat))
             .filter((x) => typeof x.avgValue === 'number' && x.avgValue <= availabilityFilter && x.app.includes(applicationFilter) && serviceTierFilter.find((item) => item.checked && item.label === x.serviceTier));
         setFilteredAvailability(newFilteredAvailability);
+        setTotalAvailabilityOverTime(getTotalAvailabilityOverTime(newFilteredAvailability));
         const totalStats = getTotalStats(newFilteredAvailability);
         setTotalRequests(totalStats.totalRequests);
         setTotalErrors(totalStats.totalErrors);
@@ -204,6 +209,10 @@ const CGPAvailibility = ({selectedBrands}) => {
         setStart(newStart.clone());
         setEnd(newEnd.clone());
     };
+
+    const handleOverallClick = () => setIsOverallModalOpen(true);
+
+    const handleOverallOnClose = () => setIsOverallModalOpen(false);
 
     const headers = () => {
         const enableHeaderClick = end.diff(start, 'hours') >= 1;
@@ -286,6 +295,7 @@ const CGPAvailibility = ({selectedBrands}) => {
                 <Overall
                     totalErrors={totalErrors}
                     totalRequests={totalRequests}
+                    onClickHandler={handleOverallClick}
                 />
                 <Legend/>
             </div>
@@ -306,6 +316,12 @@ const CGPAvailibility = ({selectedBrands}) => {
                     onClose={handleOnClose}
                     app={selectedApp}
                     data={selectedApp && getAppErrorsDataForChart(selectedApp, availability, dateTimeFormat)}
+                />
+                <OverallAvailabilityModal
+                    isOpen={isOverallModalOpen}
+                    onClose={handleOverallOnClose}
+                    data={totalAvailabilityOverTime}
+                    dateTimeFormat={dateTimeFormat}
                 />
             </LoadingContainer>
         </div>

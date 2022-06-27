@@ -88,6 +88,7 @@ export const mapAvailabilityRow = (row = {}, handleClick, dateTimeFormat = DATE_
                 Availability: <AvailabilityCell value={periodAvailability(availabilities)} applicationName={app} handleClick={handleClick}/>,
                 avgValue: periodAvailability(availabilities),
                 stats: periodRequestStats(availabilities),
+                rawData: availabilities,
                 serviceTier
             },
             ...availabilities.map((x) => ({[moment(x.timestamp).format(dateTimeFormat)]: <AvailabilityCell value={exactAvailability(x.availability, x.requestCount)} applicationName={app} handleClick={handleClick}/>}))
@@ -121,3 +122,18 @@ export const getTotalStats = (data) => data.reduce((acc, curr) => {
 }, {totalRequests: 0, totalErrors: 0});
 
 export const getSelectedBrandForApi = (selectedBrands = [EG_BRAND]) => arrayToString(BRANDS.find((brand) => brand.label === selectedBrands[0]).cgpApi);
+
+export const getTotalAvailabilityOverTime = (data) => {
+    let totalAvailabilityOverTime = {};
+    data.forEach((app) =>
+        app.rawData?.forEach((x) => {
+            if (totalAvailabilityOverTime[x.timestamp]) {
+                totalAvailabilityOverTime[x.timestamp].requestCount = totalAvailabilityOverTime[x.timestamp].requestCount + x.requestCount;
+                totalAvailabilityOverTime[x.timestamp].errorCount = totalAvailabilityOverTime[x.timestamp].errorCount + x.errorCount;
+            } else {
+                totalAvailabilityOverTime[x.timestamp] = {requestCount: x.requestCount, errorCount: x.errorCount};
+            }
+        })
+    );
+    return totalAvailabilityOverTime;
+};

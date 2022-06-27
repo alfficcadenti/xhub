@@ -22,11 +22,15 @@ const LineChartWrapper = ({
     showDot = true,
     height = 300,
     width = '100%',
-    connectNulls = false
+    connectNulls = false,
+    allowDecimals = false,
+    minChartValue = 'auto',
+    maxChartValue = 'auto'
 }) => {
     const [hiddenKeys, setHiddenKeys] = useState([]);
 
     const yAxisId = `${title}-yAxis`;
+    const allowEscapeViewBox = {'x': true, 'y': true};
 
     const handleLegendClick = (e) => {
         if (e && e.dataKey) {
@@ -70,8 +74,8 @@ const LineChartWrapper = ({
 
     const renderLineChart = (isResponsive) => (
         <LineChart
-            width={isResponsive ? '' : width}
-            height={isResponsive ? '' : height}
+            width={isResponsive ? Number('') : width}
+            height={isResponsive ? Number('') : height}
             data={data}
             margin={{top: 5, right: 30, left: 20, bottom: 5}}
             cursor={onDotClick ? 'pointer' : ''}
@@ -81,9 +85,9 @@ const LineChartWrapper = ({
         >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
-            <YAxis yAxisId={yAxisId} allowDecimals={false} type="number" />
+            <YAxis yAxisId={yAxisId} allowDecimals={allowDecimals} type="number" domain={[minChartValue, maxChartValue]}/>
             <Legend onClick={handleLegendClick} cursor={enableLineHiding ? 'pointer' : ''} />
-            <Tooltip />
+            <Tooltip allowEscapeViewBox={allowEscapeViewBox} />
             {keys.map(renderLine)}
             {renderReferenceArea()}
         </LineChart>
