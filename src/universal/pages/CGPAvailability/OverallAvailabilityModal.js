@@ -16,6 +16,7 @@ const OverallAvailabilityModal = ({isOpen, onClose, data = {}, dateTimeFormat}) 
                 }
             )
         );
+    const minValue = Math.min(...dataForChart.map((x) => x?.availability));
     return (
         <Modal
             id="overall-availability-modal"
@@ -31,6 +32,8 @@ const OverallAvailabilityModal = ({isOpen, onClose, data = {}, dateTimeFormat}) 
                     keys={['availability']}
                     height={360}
                     allowDecimals
+                    minChartValue={minValue}
+                    maxChartValue={100}
                 />
             }
         </Modal>
