@@ -369,7 +369,7 @@ const formatRate = (rate) => rate ? parseFloat((Number(rate) || 0).toFixed(2)) :
 
 export const makeSuccessRatesObjects = (data = [[], [], [], []], start, end, pageBrand = '', deltaUserData = [], metricGroup) => {
     let minValue;
-    const rateMetrics = getRateMetrics(metricGroup);
+    const rateMetrics = getRateMetrics(metricGroup, pageBrand);
     return rateMetrics.map(({metricName, chartName}, i) => {
         const aggregatedData = [];
         const tempMinValue = (
@@ -428,7 +428,7 @@ export const makeSuccessRatesLOBObjects = (
     metricGroup
 ) => {
     let minValue;
-    const rateMetrics = getRateMetrics(metricGroup);
+    const rateMetrics = getRateMetrics(metricGroup, selectedBrand);
     const successRateFilter = ({brand, lineOfBusiness}) => (
         mapBrandNames(brand) === selectedBrand
         && (!lobs.length || !lineOfBusiness || lobs.findIndex(({value}) => value === lineOfBusiness) > -1)

@@ -197,7 +197,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
                 const endpoint = buildSuccessRateApiQueryString({start, end, brand: funnelBrand, EPSPartner: selectedEPSPartner, interval});
                 Promise.all([
                     fetch(`/v1/delta-users-counts-by-metrics?brand=${funnelBrand}&from_date=${moment(start).utc().format()}&to_date=${moment(end).utc().format()}&${selectedLobs.map((l) => `line_of_business=${l.value}`).join('&')}`),
-                    ...getRateMetrics(metricGroup).map(({metricName}) => fetch(`${endpoint}&metricName=${metricName}`))
+                    ...getRateMetrics(metricGroup, selectedBrand).map(({metricName}) => fetch(`${endpoint}&metricName=${metricName}`))
                 ])
                     .then((responses) => Promise.all(responses.map(checkResponse)))
                     .then(([deltaUserData, ...fetchedSuccessRates]) => {
@@ -234,7 +234,7 @@ const SuccessRates = ({selectedBrands, onBrandChange, prevSelectedBrand, locatio
                 const {funnelBrand} = getBrand(selectedBrand, 'label');
                 const endpoint = buildSuccessRateApiQueryString({rttStart, rttEnd, brand: funnelBrand, EPSPartner: selectedEPSPartner, interval: 1});
 
-                Promise.all(getRateMetrics(metricGroup).map(({metricName}) => fetch(`${endpoint}&metricName=${metricName}`)))
+                Promise.all(getRateMetrics(metricGroup, selectedBrand).map(({metricName}) => fetch(`${endpoint}&metricName=${metricName}`)))
                     .then((responses) => Promise.all(responses.map(checkResponse)))
                     .then((fetchedSuccessRates) => successRatesRealTimeObject(fetchedSuccessRates, selectedLobs, selectedBrand, metricGroup))
                     .then((realTimeData) => setRealTimeTotals(realTimeData))

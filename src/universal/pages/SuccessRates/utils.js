@@ -27,7 +27,7 @@ export const isMetricGroupSelected = (rateMetric) => RATE_METRICS.includes(rateM
 
 export const isViewSelected = (viewType) => VIEW_TYPES.includes(viewType);
 
-export const getRateMetrics = (rateMetric) => rateMetric === LOGIN_RATES_LABEL ? LOGIN_METRICS : SHOPPING_METRICS;
+export const getRateMetrics = (rateMetric, selectedBrand) => rateMetric === LOGIN_RATES_LABEL ? LOGIN_METRICS.filter((loginMetric) => loginMetric.availableBrands.includes(selectedBrand)) : SHOPPING_METRICS;
 
 export const getWidgetXAxisTickGap = (timeRange) => [
     'Last 1 hour',
@@ -80,12 +80,12 @@ const isSuccessRatesNonEmpty = (successRates) => {
 
 
 export const successRatesRealTimeObject = (fetchedSuccessRates = [], selectedLobs = [], selectedBrand, metricGroup) => {
-    const nextRealTimeTotals = getRateMetrics(metricGroup).reduce((acc, metric) => {
+    const nextRealTimeTotals = getRateMetrics(metricGroup, selectedBrand).reduce((acc, metric) => {
         acc[metric.chartName] = 0;
         return acc;
     }, {});
 
-    getRateMetrics(metricGroup).forEach((metric, i) => {
+    getRateMetrics(metricGroup, selectedBrand).forEach((metric, i) => {
         const currentSuccessRates = fetchedSuccessRates[i];
         const {chartName} = metric;
 

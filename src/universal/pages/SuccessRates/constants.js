@@ -1,3 +1,5 @@
+import {VRBO_BRAND, EXPEDIA_BRAND, HOTELS_COM_BRAND, EGENCIA_BRAND, EG_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND} from '../../constants';
+
 export const SHOPPING_RATES_LABEL = 'Shopping Success Rates';
 
 export const LOGIN_RATES_LABEL = 'Login Success Rates';
@@ -22,9 +24,9 @@ export const SHOPPING_METRICS = [
 ];
 
 export const LOGIN_METRICS = [
-    {metricName: 'ownerLoginRate', chartName: 'Owner Login Rate'},
-    {metricName: 'travelerLoginRate', chartName: 'Traveler Login Rate'},
-    {metricName: 'universalLoginRate', chartName: 'Universal Login Rate'}
+    {metricName: 'ownerLoginRate', chartName: 'Owner Login Rate', availableBrands: [VRBO_BRAND]},
+    {metricName: 'travelerLoginRate', chartName: 'Traveler Login Rate', availableBrands: [VRBO_BRAND]},
+    {metricName: 'universalLoginRate', chartName: 'Universal Login Rate', availableBrands: [VRBO_BRAND, EXPEDIA_BRAND, HOTELS_COM_BRAND, EGENCIA_BRAND, EG_BRAND, EXPEDIA_PARTNER_SERVICES_BRAND]}
 ];
 
 export const EPS_PARTNER_TPIDS = [
